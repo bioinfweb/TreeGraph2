@@ -1,0 +1,25 @@
+getValue(THIS)*1000
+getValue(THIS)*100
+getValue(THIS)
+getValue(LENGTH)
+getValue("rate")-getValue("rate_95%_HPD[0]")
+getValue("rate_95%_HPD[1]")-getValue("rate")
+getValue(THIS)-0.5
+getValue("rate_95%_HPD[0]")-getValue("rate")
+getValue("rate_95%_HPD[1]")-getValue("rate_95%_HPD[0]")
+0
+getValue(THIS) * 0
+if(getValue(THIS) < 100 && getValue(THIS) > 50, "A", "B")
+getValue(NAME, getValue(UNIQUE))
+getValue(NAME, "empty")
+getValue(NAME)
+if(hasValue(NAME), "name", "no name")
+if(hasBrLen(), "has", "empty")
+if(hasBrLen(), name, "empty")
+if(hasName(), name, "empty")
+hasBrLen()
+if(hasName(), name, 18)
+hasName()
+if(2 < 1, name, "empty")
+"empty"
+3 * v
