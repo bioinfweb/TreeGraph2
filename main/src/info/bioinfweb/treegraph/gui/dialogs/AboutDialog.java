@@ -359,7 +359,7 @@ public class AboutDialog extends JDialog {
 					"<p>Development: <a href='http://bioinfweb.info/People/Stoever'>Ben St&ouml;ver</a> &amp; " +
 					    "<a href='http://bioinfweb.info/People/Mueller'>Kai M&uuml;ller</a><br />" +
 					"Homepage: <a href='http://treegraph.bioinfweb.info/'>treegraph.bioinfweb.info</a><br />" +
-					"Copyright 2007-2010 Ben St&ouml;ver &amp; Kai M&uuml;ller</p>" +
+					"Copyright 2007-2011 Ben St&ouml;ver &amp; Kai M&uuml;ller</p>" +
 					
 					"<p><b>Publication:</b><br /> St&ouml;ver B C, M&uuml;ller K F: " +
 					    "<a href='http://www.biomedcentral.com/1471-2105/11/7'>TreeGraph 2: Combining and " +
@@ -379,13 +379,15 @@ public class AboutDialog extends JDialog {
   				"<p>The included Apache Batic Libraries are distributed under " +
 					"Apache Public Licence (see Apache Public Licence tab).</p>" +
 					
-					"<p>The following libraries are used by TreeGraph 2:</p>" +
+					"<p><b>The following libraries are used by TreeGraph 2:</b></p>" +
 					"<ul>" +
 					  "<li>Apache Batik SVG Toolkit (<a href='http://xmlgraphics.apache.org/batik/'>http://xmlgraphics.apache.org/batik/</a>)</li>" +
 					  "<li>FreeHEP Java Libraries (<a href='http://java.freehep.org/'>http://java.freehep.org/</a>)</li>" +
 					  "<li>Java Math Expression Parser (<a href='http://sourceforge.net/projects/jep/'>http://sourceforge.net/projects/jep/</a>)</li>" +
 					  "<li>Browser Launcher (<a href='http://browserlaunch2.sourceforge.net/'>http://browserlaunch2.sourceforge.net/</a>)</li>" +
+					  "<li>Tango Desktop Project (<a href='http://tango.freedesktop.org/'>http://tango.freedesktop.org/</a>)</li>" +
 					"</ul>" +
+					"<p>See <a href='http://treegraph.bioinfweb.info/Development/Libraries'>here</a> for more information." +
 					"</body></html>");			
 			generalEditorPane.setCaretPosition(0);
 			generalEditorPane.setEditable(false);
