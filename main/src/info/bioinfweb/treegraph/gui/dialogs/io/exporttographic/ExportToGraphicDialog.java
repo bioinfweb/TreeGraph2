@@ -31,7 +31,6 @@ import info.bioinfweb.treegraph.graphics.export.GraphicWriter;
 import info.bioinfweb.treegraph.graphics.export.GraphicWriterFactory;
 import info.bioinfweb.treegraph.graphics.export.GraphicWriterHints;
 import info.bioinfweb.treegraph.graphics.positionpaint.PositionPaintFactory;
-import info.bioinfweb.treegraph.gui.CurrentDirectoryModel;
 import info.bioinfweb.treegraph.gui.dialogs.DistanceValueInput;
 import info.bioinfweb.treegraph.gui.dialogs.ResolutionInput;
 import info.bioinfweb.treegraph.gui.dialogs.io.FileDialog;
@@ -551,7 +550,7 @@ public class ExportToGraphicDialog extends FileDialog {
 			fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
 			fileChooser.setControlButtonsAreShown(false);
 			
-			if (fileChooser.getFileFilter() != null) {  // "Alle Datein"-Filter entfernen
+			if (fileChooser.getFileFilter() != null) {  // "Alle Dateien"-Filter entfernen
 				fileChooser.removeChoosableFileFilter(fileChooser.getFileFilter());
 			}
 			GraphicFilter[] filters = GraphicWriterFactory.getInstance().getAllFilters();
@@ -573,8 +572,6 @@ public class ExportToGraphicDialog extends FileDialog {
 					}
 				}
 			});
-  		
-			CurrentDirectoryModel.getInstance().addFileChooser(fileChooser);
 		}
 		return fileChooser;
 	}

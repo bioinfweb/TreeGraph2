@@ -30,7 +30,6 @@ import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextElementDataAdapter;
 import info.bioinfweb.treegraph.document.undo.file.AddSupportValuesEdit;
 import info.bioinfweb.treegraph.document.undo.file.AddSupportValuesEdit.TargetType;
-import info.bioinfweb.treegraph.gui.CurrentDirectoryModel;
 import info.bioinfweb.treegraph.gui.dialogs.io.loadlogger.LoadLoggerDialog;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataInput;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
@@ -263,7 +262,6 @@ public class AddSupportValuesDialog extends FileDialog {
 							}
 						}
 					});
-			CurrentDirectoryModel.getInstance().addFileChooser(fileChooser);
 		}
 		return fileChooser;
 	}

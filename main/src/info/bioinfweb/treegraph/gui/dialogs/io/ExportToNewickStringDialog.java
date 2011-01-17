@@ -26,7 +26,6 @@ import info.bioinfweb.treegraph.document.io.ReadWriteFormat;
 import info.bioinfweb.treegraph.document.io.nexus.NexusFilter;
 import info.bioinfweb.treegraph.document.io.xtg.XTGFilter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
-import info.bioinfweb.treegraph.gui.CurrentDirectoryModel;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataInput;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 
@@ -192,8 +191,6 @@ public class ExportToNewickStringDialog extends FileDialog {
 			fileChooser.addChoosableFileFilter(nexusFilter);
 			fileChooser.addChoosableFileFilter(ReadWriteFactory.getInstance().getFilter(ReadWriteFormat.NEWICK));
 			fileChooser.setFileFilter(nexusFilter);
-			
-			CurrentDirectoryModel.getInstance().addFileChooser(fileChooser);
 		}
 		return fileChooser;
 	}

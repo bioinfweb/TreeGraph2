@@ -27,12 +27,13 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.plaf.basic.BasicFileChooserUI;
 
+import info.bioinfweb.treegraph.gui.CurrentDirectoryModel;
 import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
 
 
 
 /**
- * All dialogs that deal with files shoud be inherited from this class.
+ * All dialogs that deal with files should be inherited from this class.
  * @author Ben St&ouml;ver
  */
 public abstract class FileDialog extends EditDialog {
@@ -47,12 +48,19 @@ public abstract class FileDialog extends EditDialog {
 	public FileDialog(Dialog owner, Option option) {
 		super(owner);
 		this.option = option;
+		init();
 	}
 
 	
 	public FileDialog(Frame owner, Option option) {
 		super(owner);
 		this.option = option;
+		init();
+	}
+	
+	
+	private void init() {
+		CurrentDirectoryModel.getInstance().addFileChooser(getFileChooser());
 	}
 	
 	

@@ -19,8 +19,6 @@
 package info.bioinfweb.treegraph.gui.dialogs.io;
 
 
-import info.bioinfweb.treegraph.gui.CurrentDirectoryModel;
-
 import javax.swing.JPanel;
 import javax.swing.BoxLayout;
 import javax.swing.JFileChooser;
@@ -108,7 +106,6 @@ public class ImportTableDialog extends FileDialog {
       };
 			fileChooser.addChoosableFileFilter(textFiler);
 			fileChooser.setFileFilter(textFiler);
-			CurrentDirectoryModel.getInstance().addFileChooser(fileChooser);
 		}
 		return fileChooser;
 	}

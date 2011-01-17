@@ -475,6 +475,7 @@ main/src/info/bioinfweb/treegraph/gui/actions/file/AddSupportValuesAction.java -
 main/src/info/bioinfweb/treegraph/gui/actions/file/ApplyNameTableAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/file/CloseAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/file/ExitAction.java -text
+main/src/info/bioinfweb/treegraph/gui/actions/file/ExportBayesTraitsNodeDefinitionsAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/actions/file/ExportTableAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/file/ExportToGraphicAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/file/ExportToNewickNexusAction.java -text
@@ -570,6 +571,7 @@ main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/piecolor/PieColorLi
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/AddSupportValuesDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/ApplyNameTableDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/AssignImportColumnsDialog.java -text
+main/src/info/bioinfweb/treegraph/gui/dialogs/io/ExportBayesTraitsNodeDefinitionsDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/ExportNodeDataTableModel.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/ExportTableDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/ExportToNewickStringDialog.java -text

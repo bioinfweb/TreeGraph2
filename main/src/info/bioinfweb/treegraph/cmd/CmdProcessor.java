@@ -87,7 +87,7 @@ public class CmdProcessor {
 			}
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			e.printStackTrace();  //TODO evtl. spezielle Ausgabe oder gar keine Ausgabe
 		}
 	}
 
