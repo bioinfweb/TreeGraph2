@@ -23,7 +23,7 @@ import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.gui.actions.EditDialogAction;
 import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
-import info.bioinfweb.treegraph.gui.dialogs.io.ExportBayesTraitsNodeDefinitionsDialog;
+import info.bioinfweb.treegraph.gui.dialogs.io.ExportBayesTraitsCommandFileDialog;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 
@@ -39,8 +39,8 @@ import javax.swing.Action;
  * @author Ben St&ouml;ver
  * @since 2.0.46
  */
-public class ExportBayesTraitsNodeDefinitionsAction extends EditDialogAction {
-	public ExportBayesTraitsNodeDefinitionsAction(MainFrame mainFrame) {
+public class ExportBayesTraitsCommandFileAction extends EditDialogAction {
+	public ExportBayesTraitsCommandFileAction(MainFrame mainFrame) {
 		super(mainFrame);
 		putValue(Action.NAME, "Export BayesTraits node definitions..."); 
 	  putValue(Action.MNEMONIC_KEY, KeyEvent.VK_B);
@@ -50,7 +50,7 @@ public class ExportBayesTraitsNodeDefinitionsAction extends EditDialogAction {
 	
 	@Override
 	public EditDialog createDialog() {
-		return new ExportBayesTraitsNodeDefinitionsDialog(getMainFrame());
+		return new ExportBayesTraitsCommandFileDialog(getMainFrame());
 	}
 
 

@@ -48,7 +48,7 @@ import javax.swing.JRadioButton;
  * @author Ben St&ouml;ver
  * @since 2.0.46
  */
-public class ExportBayesTraitsNodeDefinitionsDialog extends FileDialog {
+public class ExportBayesTraitsCommandFileDialog extends FileDialog {
 	public static final String EXPORT_FILE_EXT = "txt";
 	
 	private static final long serialVersionUID = 1L;
@@ -66,7 +66,7 @@ public class ExportBayesTraitsNodeDefinitionsDialog extends FileDialog {
 	/**
 	 * @param owner
 	 */
-	public ExportBayesTraitsNodeDefinitionsDialog(Frame owner) {
+	public ExportBayesTraitsCommandFileDialog(Frame owner) {
 		super(owner, Option.ASK_TO_OVERWRITE);
 		initialize();
 		setLocationRelativeTo(owner);
