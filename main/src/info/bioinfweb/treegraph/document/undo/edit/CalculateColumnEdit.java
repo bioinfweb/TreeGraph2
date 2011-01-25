@@ -53,6 +53,10 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 	public static final String BRANCH_LENGTH_VAR = "LENGTH";
 	public static final String GET_VALUE_FUNC = "getValue";
 	public static final String HAS_VALUE_FUNC = "hasValue";
+	public static final String MIN_FUNC = "min";
+	public static final String MAX_FUNC = "max";
+	public static final String SUM_FUNC = "sum";
+	public static final String PRODUCT_FUNC = "product";
 	
 	
   private String expression;
@@ -105,6 +109,34 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 					}
 				});
 		
+		result.addFunction(MIN_FUNC, new DoubleVarargFunction() {
+					@Override
+					protected double calculate(double value1, double value2) {
+						return Math.min(value1, value2);
+					}
+				});
+		
+		result.addFunction(MAX_FUNC, new DoubleVarargFunction() {
+					@Override
+					protected double calculate(double value1, double value2) {
+						return Math.max(value1, value2);
+					}
+				});
+
+		result.addFunction(SUM_FUNC, new DoubleVarargFunction() {
+					@Override
+					protected double calculate(double value1, double value2) {
+						return value1 + value2;
+					}
+				});
+
+		result.addFunction(PRODUCT_FUNC, new DoubleVarargFunction() {
+					@Override
+					protected double calculate(double value1, double value2) {
+						return value1 * value2;
+					}
+				});
+
 		return result;
 	}
 	

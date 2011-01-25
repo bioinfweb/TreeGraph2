@@ -32,10 +32,7 @@ import org.nfunk.jep.function.PostfixMathCommandI;
  * @author Ben St&ouml;ver
  * @since 2.0.24
  */
-public abstract class IDFunction implements PostfixMathCommandI {
-	private int curNumberOfParameters = 1;
-	
-	
+public abstract class IDFunction extends AbstractFunction implements PostfixMathCommandI {
   public static Double codeBoolean(boolean value) {
   	if (value) {
   		return new Double(1);
@@ -56,15 +53,10 @@ public abstract class IDFunction implements PostfixMathCommandI {
 	}
 
 	
-	public void setCurNumberOfParameters(int n) {
-		curNumberOfParameters = n;
-	}
-
-	
 	public void run(Stack stack) throws ParseException {
-		if (checkNumberOfParameters(curNumberOfParameters)) {
+		if (checkNumberOfParameters(getCurNumberOfParameters())) {
 			Object defaultValue = null;
-			if (curNumberOfParameters > 1) {
+			if (getCurNumberOfParameters() > 1) {
 				defaultValue = stack.pop();
 			}
 			Object id = stack.pop();
