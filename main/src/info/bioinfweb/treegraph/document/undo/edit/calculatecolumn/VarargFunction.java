@@ -73,7 +73,7 @@ public abstract class VarargFunction extends AbstractFunction implements Postfix
 		if (checkNumberOfParameters(getCurNumberOfParameters())) {
 			if (checkParamTypes(stack)) {
 				Object result = stack.pop();
-				while (!stack.isEmpty()) {
+				for (int i = 0; i < getCurNumberOfParameters() - 1; i++) {
 					if (result instanceof Double) {
 						result = calculate(result, stack.pop());
 					}
