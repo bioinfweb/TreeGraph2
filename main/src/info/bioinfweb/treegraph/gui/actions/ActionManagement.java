@@ -65,7 +65,7 @@ public class ActionManagement extends ActionHashMap {
 	
 	/**
 	 * All <code>Action</code> objects used in TreeGraph 2 added to the <code>HashMap</code>
-	 * in this mehtod. New actions should be added here as well.
+	 * in this method. New actions should be added here as well.
 	 */
 	protected void fillMap() {
 		put("file.newDocument", new NewDocumentAction(mainFrame));
