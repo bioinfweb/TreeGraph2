@@ -27,6 +27,7 @@ import info.bioinfweb.treegraph.document.DocumentChangeEvent;
 import info.bioinfweb.treegraph.document.DocumentListener;
 import info.bioinfweb.treegraph.document.IDManager;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.TextLabel;
 import info.bioinfweb.treegraph.document.nodebranchdata.BranchLengthAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.HiddenBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.HiddenNodeDataAdapter;
@@ -118,10 +119,10 @@ public class DocumentTableModel extends AbstractTableModel implements DocumentLi
 		adapters.add(new NodeNameAdapter());
 		adapters.add(new BranchLengthAdapter());
 
-		Vector<String> ids = IDManager.getTextLabelIDVector(root);
+		Vector<String> ids = IDManager.getLabelIDVector(root, TextLabel.class);
 		for (int i = 0; i < ids.size(); i++) {
 			adapters.add(new TextLabelAdapter(ids.get(i), 
-					IDManager.getFirstTextLabel(root, ids.get(i)).getFormats().getDecimalFormat()));
+					((TextLabel)IDManager.getFirstLabel(root, TextLabel.class, ids.get(i))).getFormats().getDecimalFormat()));
 		}
 		
 		ids = IDManager.getHiddenNodeDataIDVector(root);

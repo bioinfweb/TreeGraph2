@@ -47,17 +47,13 @@ public class IDManager {
    * @param above
    * @param list
    */
-  private static void searchLabelIDsInLabelBlock(Labels labels, boolean above, boolean includeTextLabels, 
-  		boolean includeIconLabels, Vector<String> list) {
+  private static void searchLabelIDsInLabelBlock(Labels labels, boolean above, Class<? extends Label> labelClass, Vector<String> list) {
   	
   	for (int lineNo = 0; lineNo < labels.lineCount(above); lineNo++) {
 			for (int lineIndex = 0; lineIndex < labels.labelCount(above, lineNo); lineIndex++) {
 				Label l = labels.get(above, lineNo, lineIndex);
 				String id = l.getID();
-				if (!id.equals("") && (id != null) && !list.contains(id) && 
-						((includeTextLabels && (l instanceof TextLabel)) || 
-						 (includeIconLabels && (l instanceof IconLabel)))   ) {
-					
+				if (!id.equals("") && (id != null) && !list.contains(id) && labelClass.isInstance(l)) {
 					list.add(id);
 				}
 			}
@@ -76,15 +72,15 @@ public class IDManager {
   }
   
   
-  private static void searchIDsInSubtree(Node root, Vector<String> list, boolean includeTextLabels, 
-  		boolean includeIconLabels, boolean includeNodeHiddenData,	boolean includeBranchHiddenData) {
+  private static void searchIDsInSubtree(Node root, Vector<String> list, Class<? extends Label> labelClass, 
+  		boolean includeNodeHiddenData,	boolean includeBranchHiddenData) {
   	
   	if (root != null) {
 	  	if (root.hasAfferentBranch()) {
 	  		Labels labels = root.getAfferentBranch().getLabels();
-	  		if (includeTextLabels || includeIconLabels) {
-	  			searchLabelIDsInLabelBlock(labels, true, includeTextLabels, includeIconLabels, list);
-	    		searchLabelIDsInLabelBlock(labels, false, includeTextLabels, includeIconLabels, list);
+	  		if (labelClass != null) {
+	  			searchLabelIDsInLabelBlock(labels, true, labelClass, list);
+	    		searchLabelIDsInLabelBlock(labels, false, labelClass, list);
 	  		}
 	  		if (includeNodeHiddenData) {
 	  			searchHiddenDataIDs(root, list);
@@ -96,7 +92,7 @@ public class IDManager {
 	  	
 	  	for (int i = 0; i < root.getChildren().size(); i++) {
 				searchIDsInSubtree(root.getChildren().get(i), list, 
-						includeTextLabels, includeIconLabels, includeNodeHiddenData, includeBranchHiddenData);
+						labelClass, includeNodeHiddenData, includeBranchHiddenData);
 			}
   	}
   }
@@ -143,14 +139,8 @@ public class IDManager {
    * @param root - the root node of the subtree to be searched. 
    * @return a list of all IDs (every string is contained only once)
    */
-  public static String[] getLabelIDs(Node root) {
-  	Vector<String> list = getLabelIDVector(root);
-  	return list.toArray(new String[list.size()]);
-  }
-  
-  
-  public static String[] getTextLabelIDs(Node root) {
-  	Vector<String> list = getTextLabelIDVector(root);
+  public static String[] getLabelIDs(Node root, Class<? extends Label> labelClass) {
+  	Vector<String> list = getLabelIDVector(root, labelClass);
   	return list.toArray(new String[list.size()]);
   }
   
@@ -181,17 +171,12 @@ public class IDManager {
   
   /**
    * Returns a vector of IDs which is sorted alphabetically.
-   * @param root
-   * @param includeLabels
-   * @param includeNodeHiddenData
-   * @param includeBranchHiddenData
-   * @return
    */
-  private static Vector<String> getVector(Node root, boolean includeTextLabels, boolean includeIconLabels, 
+  private static Vector<String> getVector(Node root, Class<? extends Label> labelClass, 
   		boolean includeNodeHiddenData, boolean includeBranchHiddenData) {
   	
   	Vector<String> list = new Vector<String>();
-  	searchIDsInSubtree(root, list, includeTextLabels, includeIconLabels, includeNodeHiddenData, 
+  	searchIDsInSubtree(root, list, labelClass, includeNodeHiddenData, 
   			includeBranchHiddenData);
   	Collections.sort(list, STRING_COMPARATOR);
   	return list;
@@ -199,37 +184,32 @@ public class IDManager {
   
   
   /**
-   * Searches for all IDs present in the subtree under root.
+   * Searches for all IDs (labels, hidden data) present in the subtree under root.
    * @param root - the root node of the subtree to be searched. 
    * @return a list of all IDs (every string is contained only once)
    */
   public static Vector<String> getIDVector(Node root) {
-  	return getVector(root, true, true, true, true);
+  	return getVector(root, Label.class, true, true);
   }
   
   
-  public static Vector<String> getLabelIDVector(Node root) {
-  	return getVector(root, true, true, false, false);
-  }
-  
-  
-  public static Vector<String> getTextLabelIDVector(Node root) {
-  	return getVector(root, true, false, false, false);
-  }
-  
-  
-  public static Vector<String> getIconLabelIDVector(Node root) {
-  	return getVector(root, false, true, false, false);
+  /**
+   * Searches for all label IDs present in the subtree under root.
+   * @param root - the root node of the subtree to be searched. 
+   * @return a list of all label IDs (every string is contained only once)
+   */
+  public static Vector<String> getLabelIDVector(Node root, Class<? extends Label> labelClass) {
+  	return getVector(root, labelClass, false, false);
   }
   
   
   public static Vector<String> getHiddenBranchDataIDVector(Node root) {
-  	return getVector(root, false, false, false, true);
+  	return getVector(root, null, false, true);
   }
   
   
   public static Vector<String> getHiddenNodeDataIDVector(Node root) {
-  	return getVector(root, false, false, true, false);
+  	return getVector(root, null, true, false);
   }
   
   
@@ -348,20 +328,21 @@ public class IDManager {
   
   
   /**
-   * Returns the first label with the specified ID to be found in the subtree under <code>root</code>.
-   * @param root
-   * @param id
-   * @return
+   * Returns the first label of the specified type with the specified ID to be found in the subtree under <code>root</code>.
+   * @param root - the root of the subtree to be searched
+   * @param elementClass - the class defining the sought-after type(s) of labels
+   * @param id - the ID of the sought-after label
+   * @return the label of <code>null</code> of none was found
    */
-  public static Label getFirstLabel(Node root, String id) {
-  	Label l = root.getAfferentBranch().getLabels().get(id);
-  	if (l != null) {
+  public static Label getFirstLabel(Node root, Class<? extends Label> elementClass, String id) {
+  	Label l = root.getAfferentBranch().getLabels().get(id);  // Only the first label with the specified ID needs to be tested, because IDs should be unique on a node.
+  	if (elementClass.isInstance(l)) {
   		return l;
   	}
   	else {
   		for (int i = 0; i < root.getChildren().size(); i++) {
-				l = getFirstLabel(root.getChildren().get(i), id);
-				if (l != null) {
+				l = getFirstLabel(root.getChildren().get(i), elementClass, id);
+				if (elementClass.isInstance(l)) {
 					return l;
 				}
 			}
@@ -369,51 +350,6 @@ public class IDManager {
   	return null;
   }
   
-  
-  /**
-   * Returns the first text label with the specified ID to be found in the subtree under <code>root</code>.
-   * @param root
-   * @param id
-   * @return
-   */
-  public static TextLabel getFirstTextLabel(Node root, String id) {
-  	Label l = root.getAfferentBranch().getLabels().get(id);
-  	if ((l != null) && (l instanceof TextLabel)) {
-  		return (TextLabel)l;
-  	}
-  	else {
-  		for (int i = 0; i < root.getChildren().size(); i++) {
-				TextLabel tl = getFirstTextLabel(root.getChildren().get(i), id);
-				if (tl != null) {
-					return tl;
-				}
-			}
-  	}
-  	return null;
-  }
-  
-  
-  /**
-   * Returns the first icon label with the specified ID to be found in the subtree under <code>root</code>.
-   * @param root
-   * @param id
-   * @return
-   */
-  public static IconLabel getFirstIconLabel(Node root, String id) {
-  	Label l = root.getAfferentBranch().getLabels().get(id);
-  	if ((l != null) && (l instanceof IconLabel)) {
-  		return (IconLabel)l;
-  	}
-  	else {
-  		for (int i = 0; i < root.getChildren().size(); i++) {
-				IconLabel il = getFirstIconLabel(root.getChildren().get(i), id);
-				if (il != null) {
-					return il;
-				}
-			}
-  	}
-  	return null;
-  }
   
   
   public static boolean idExists(Node root, String id) {

@@ -125,7 +125,7 @@ main/src/info/bioinfweb/treegraph/document/format/adapters/color/LabelTextColorA
 main/src/info/bioinfweb/treegraph/document/format/adapters/color/NodeLineColorAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/format/adapters/color/NodeTextColorAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/format/adapters/distance/AbstractDistanceValueAdapter.java -text
-main/src/info/bioinfweb/treegraph/document/format/adapters/distance/AbstractIconLabelDistanceAdapter.java -text
+main/src/info/bioinfweb/treegraph/document/format/adapters/distance/AbstractGraphicalLabelDistanceAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/format/adapters/distance/AbstractLabelDistanceAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/format/adapters/distance/AbstractLegendAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/format/adapters/distance/BranchLineWidthAdapter.java -text
@@ -134,13 +134,13 @@ main/src/info/bioinfweb/treegraph/document/format/adapters/distance/BranchSpaceA
 main/src/info/bioinfweb/treegraph/document/format/adapters/distance/BranchSpaceBelowAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/format/adapters/distance/CornerRadiusAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/format/adapters/distance/DistanceAdapter.java -text
-main/src/info/bioinfweb/treegraph/document/format/adapters/distance/IconHeightAdapter.java -text
-main/src/info/bioinfweb/treegraph/document/format/adapters/distance/IconWidthAdapter.java -text
+main/src/info/bioinfweb/treegraph/document/format/adapters/distance/LabelHeightAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/format/adapters/distance/LabelMarginBottomAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/format/adapters/distance/LabelMarginLeftAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/format/adapters/distance/LabelMarginRightAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/format/adapters/distance/LabelMarginTopAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/format/adapters/distance/LabelTextHeightAdapter.java -text
+main/src/info/bioinfweb/treegraph/document/format/adapters/distance/LabelWidthAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/format/adapters/distance/LeafMarginBottomAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/format/adapters/distance/LeafMarginLeftAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/format/adapters/distance/LeafMarginRightAdapter.java -text

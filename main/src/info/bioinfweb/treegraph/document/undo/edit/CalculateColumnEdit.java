@@ -33,6 +33,7 @@ import org.nfunk.jep.ParseException;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.IDManager;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.TextLabel;
 import info.bioinfweb.treegraph.document.format.TextFormats;
 import info.bioinfweb.treegraph.document.nodebranchdata.*;
 import info.bioinfweb.treegraph.document.undo.NodeBranchDataBackup;
@@ -144,7 +145,7 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 	private HashMap<String, NodeBranchDataAdapter> createAdapterMap() {
 		HashMap<String, NodeBranchDataAdapter> result = new HashMap<String, NodeBranchDataAdapter>();
 		
-		String[] ids = IDManager.getLabelIDs(document.getTree().getPaintStart());
+		String[] ids = IDManager.getLabelIDs(document.getTree().getPaintStart(), TextLabel.class);
 		for (int i = 0; i < ids.length; i++) {
 			result.put(ids[i], new TextLabelAdapter(ids[i], 
 					new DecimalFormat(TextFormats.DEFAULT_DECIMAL_FORMAT_EXPR)));

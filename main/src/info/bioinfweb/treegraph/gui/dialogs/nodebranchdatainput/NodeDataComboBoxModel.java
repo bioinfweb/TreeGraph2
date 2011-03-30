@@ -20,6 +20,7 @@ package info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput;
 
 
 import info.bioinfweb.treegraph.document.IDManager;
+import info.bioinfweb.treegraph.document.TextLabel;
 import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.nodebranchdata.*;
 
@@ -29,6 +30,10 @@ import javax.swing.ComboBoxModel;
 
 
 
+/**
+ * Model for a cambo box displaying node/branch data.
+ * @author Ben St&ouml;ver
+ */
 public class NodeDataComboBoxModel extends AbstractListModel implements ComboBoxModel {
 	private Vector<NodeBranchDataAdapter> adapters = new Vector<NodeBranchDataAdapter>();
 	private NodeBranchDataAdapter selected = null;
@@ -66,7 +71,7 @@ public class NodeDataComboBoxModel extends AbstractListModel implements ComboBox
    *        element are included (This flag overwrites <code>nodeNamesSelectable</code> and
    *        <code>branchLengthSelectable</code>.)
    * @param newIDSelectable - If true an adaptor for a new user defined label ID is 
-   *        added. Note that ths label ID has still to be set. This adapters are also added if 
+   *        added. Note that the label ID has still to be set. This adapters are also added if 
    *        <code>decimalOnly</code> is <code>true</code>. 
    */
   public void setAdapters(Tree tree, boolean nodeNamesSelectable, boolean branchLengthSelectable, 
@@ -84,10 +89,10 @@ public class NodeDataComboBoxModel extends AbstractListModel implements ComboBox
 		// More adapters can be added here.
 		
 		if (tree != null) {
-			String[] ids = IDManager.getTextLabelIDs(tree.getPaintStart());
+			String[] ids = IDManager.getLabelIDs(tree.getPaintStart(), TextLabel.class);
 			for (int i = 0; i < ids.length; i++) {
-				adapters.add(new TextLabelAdapter(ids[i], IDManager.getFirstTextLabel(
-						tree.getPaintStart(), ids[i]).getFormats().getDecimalFormat()));
+				adapters.add(new TextLabelAdapter(ids[i], 
+						((TextLabel)IDManager.getFirstLabel(tree.getPaintStart(), TextLabel.class, ids[i])).getFormats().getDecimalFormat()));
 			}
 			
 			ids = IDManager.getHiddenBranchDataIDs(tree.getPaintStart());

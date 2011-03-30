@@ -19,7 +19,6 @@
 package info.bioinfweb.treegraph.gui.dialogs.io;
 
 
-import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.io.DocumentReader;
 import info.bioinfweb.treegraph.document.io.ReadWriteFactory;
 import info.bioinfweb.treegraph.document.io.SupportedFormatsFilter;
@@ -184,7 +183,9 @@ public class OpenDialog extends FileDialog {
 			gridBagConstraints.gridy = 0;
 			fileChooserPanel = new JPanel();
 			fileChooserPanel.setLayout(new GridBagLayout());
-			fileChooserPanel.setBorder(BorderFactory.createTitledBorder(null, "File", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
+			fileChooserPanel.setBorder(BorderFactory.createTitledBorder(null, "File", 
+					TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, 
+					new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
 			fileChooserPanel.add(getFileChooser(), gridBagConstraints);
 		}
 		return fileChooserPanel;

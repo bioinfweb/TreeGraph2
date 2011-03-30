@@ -20,7 +20,7 @@ package info.bioinfweb.treegraph.document.format.adapters.distance;
 
 
 import info.bioinfweb.treegraph.document.format.DistanceValue;
-import info.bioinfweb.treegraph.document.format.IconLabelFormats;
+import info.bioinfweb.treegraph.document.format.GraphicalLabelFormats;
 
 
 
@@ -28,20 +28,20 @@ import info.bioinfweb.treegraph.document.format.IconLabelFormats;
  * @author Ben St&ouml;ver
  * @since 2.0.25
  */
-public class IconWidthAdapter extends AbstractIconLabelDistanceAdapter implements DistanceAdapter {
-	public IconWidthAdapter(String id) {
+public class LabelWidthAdapter extends AbstractGraphicalLabelDistanceAdapter implements DistanceAdapter {
+	public LabelWidthAdapter(String id) {
 		super(id);
 	}
 
 
 	@Override
-	protected DistanceValue getIconDistanceValue(IconLabelFormats formats) {
+	protected DistanceValue getGraphicalLabelDistanceValue(GraphicalLabelFormats formats) {
 		return formats.getWidth();
 	}
 
 
 	@Override
 	public String toString() {
-		return toString("Label icon widths");
+		return toString("Label widths");
 	}
 }

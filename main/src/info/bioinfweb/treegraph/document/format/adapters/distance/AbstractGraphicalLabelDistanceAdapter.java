@@ -20,28 +20,33 @@ package info.bioinfweb.treegraph.document.format.adapters.distance;
 
 
 import info.bioinfweb.treegraph.document.format.DistanceValue;
+import info.bioinfweb.treegraph.document.format.GraphicalLabelFormats;
 import info.bioinfweb.treegraph.document.format.IconLabelFormats;
+import info.bioinfweb.treegraph.document.format.LabelFormats;
 
 
 
 /**
  * @author Ben St&ouml;ver
- * @since 2.0.25
+ * @since 2.0.26
  */
-public class IconHeightAdapter extends AbstractIconLabelDistanceAdapter implements DistanceAdapter {
-	public IconHeightAdapter(String id) {
+public abstract class AbstractGraphicalLabelDistanceAdapter extends AbstractLabelDistanceAdapter {
+  protected abstract DistanceValue getGraphicalLabelDistanceValue(GraphicalLabelFormats formats);
+	
+	
+	public AbstractGraphicalLabelDistanceAdapter(String id) {
 		super(id);
 	}
 
 
 	@Override
-	protected DistanceValue getIconDistanceValue(IconLabelFormats formats) {
-		return formats.getHeight();
+	protected DistanceValue getDistanceValue(LabelFormats formats) {
+		if (formats instanceof GraphicalLabelFormats) {
+			return getGraphicalLabelDistanceValue((GraphicalLabelFormats)formats);
+		}
+		else {
+			return null;
+		}
 	}
 
-
-	@Override
-	public String toString() {
-		return toString("Label icon heights");
-	}
 }

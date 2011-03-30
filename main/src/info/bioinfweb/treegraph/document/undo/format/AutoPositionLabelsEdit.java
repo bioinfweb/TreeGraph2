@@ -52,7 +52,7 @@ public class AutoPositionLabelsEdit extends DocumentEdit {
   public AutoPositionLabelsEdit(Document document, Branch[] branches) {
 		super(document);
 		this.branches = branches;
-  	ids = IDManager.getTextLabelIDs(document.getTree().getPaintStart());
+  	ids = IDManager.getLabelIDs(document.getTree().getPaintStart(), Label.class);
   	backupFormats();
 	}
   
@@ -123,7 +123,7 @@ public class AutoPositionLabelsEdit extends DocumentEdit {
 
 
 	public static void position(Node root) {
-  	String[] ids = IDManager.getTextLabelIDs(root);
+  	String[] ids = IDManager.getLabelIDs(root, Label.class);
   	Branch[] branches = TreeSerializer.getElementsInSubtree(root, false, Branch.class);
   	for (int i = 0; i < branches.length; i++) {
     	position(branches[i], ids);

@@ -20,7 +20,9 @@ package info.bioinfweb.treegraph.gui.dialogs.specialformats;
 
 
 import info.bioinfweb.treegraph.document.IDManager;
+import info.bioinfweb.treegraph.document.Label;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.TextLabel;
 import info.bioinfweb.treegraph.document.format.adapters.color.*;
 
 import java.util.List;
@@ -53,12 +55,13 @@ public class ColorAdapterListModel extends AbstractListModel implements ListMode
 		adapters.add(new BranchLineColorAdapter());
 		adapters.add(new NodeLineColorAdapter());
 		adapters.add(new NodeTextColorAdapter());
-		String[] ids = IDManager.getLabelIDs(root);
-		for (int i = 0; i < ids.length; i++) {
-			adapters.add(new LabelTextColorAdapter(ids[i]));
-		}
+		String[] ids = IDManager.getLabelIDs(root, Label.class);
+		Vector<String> textLabelIDs = IDManager.getLabelIDVector(root, TextLabel.class);
 		for (int i = 0; i < ids.length; i++) {
 			adapters.add(new LabelLineColorAdapter(ids[i]));
+			if (textLabelIDs.contains(ids[i])) {
+				adapters.add(new LabelTextColorAdapter(ids[i]));
+			}
 		}
 		fireIntervalAdded(this, 0, getSize() - 1);
 	}
