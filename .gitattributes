@@ -701,3 +701,8 @@ main/src/resources/symbols/ZoomToOriginal16.png -text
 main/src/resources/symbols/ZoomToOriginal22.png -text
 main/xsd/1.1.xsd -text
 main/xsd/1.2.xsd -text
+test/.classpath -text svneol=unset#text/plain
+test/.project -text svneol=unset#text/plain
+test/.settings/org.eclipse.jdt.core.prefs -text svneol=unset#text/plain
+test/lib/junit-4.9b1.jar -text
+test/src/info/bioinfweb/treegraph/document/IDManagerTest.java -text svneol=unset#text/plain
