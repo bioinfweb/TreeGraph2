@@ -72,27 +72,51 @@ public class IDManager {
   }
   
   
+  /**
+   * Lists all IDs of elements attached to the specified node.
+   * @param node - the node to be searched
+   * @param list - the list to add found IDs to
+   * @param labelClass - the type of labels to be searched
+   * @param includeHiddenNodeData - flag to include hidden node data IDs
+   * @param includeHiddenBranchData - flag to include hidden branch data IDs
+   * @throws NullPointerException - if node is <code>null</code>
+   */
+  private static void searchIDsOnNode(Node node, Vector<String> list, Class<? extends Label> labelClass, 
+  		boolean includeHiddenNodeData,	boolean includeHiddenBranchData) {
+  	
+  	if (node.hasAfferentBranch()) {
+  		Labels labels = node.getAfferentBranch().getLabels();
+  		if (labelClass != null) {
+  			searchLabelIDsInLabelBlock(labels, true, labelClass, list);
+    		searchLabelIDsInLabelBlock(labels, false, labelClass, list);
+  		}
+  		if (includeHiddenNodeData) {
+  			searchHiddenDataIDs(node, list);
+  		}
+  		if (includeHiddenBranchData) {
+  			searchHiddenDataIDs(node.getAfferentBranch(), list);
+  		}
+  	}
+  }
+  
+  
+  /**
+   * Lists all IDs of elements attached to the specified node or any of its subtrees. Each ID is contained only once.
+   * @param node - the node to be searched
+   * @param list - the list to add found IDs to
+   * @param labelClass - the type of labels to be searched
+   * @param includeHiddenNodeData - flag to include hidden node data IDs
+   * @param includeHiddenBranchData - flag to include hidden branch data IDs
+   */
   private static void searchIDsInSubtree(Node root, Vector<String> list, Class<? extends Label> labelClass, 
-  		boolean includeNodeHiddenData,	boolean includeBranchHiddenData) {
+  		boolean includeHiddenNodeData,	boolean includeHiddenBranchData) {
   	
   	if (root != null) {
-	  	if (root.hasAfferentBranch()) {
-	  		Labels labels = root.getAfferentBranch().getLabels();
-	  		if (labelClass != null) {
-	  			searchLabelIDsInLabelBlock(labels, true, labelClass, list);
-	    		searchLabelIDsInLabelBlock(labels, false, labelClass, list);
-	  		}
-	  		if (includeNodeHiddenData) {
-	  			searchHiddenDataIDs(root, list);
-	  		}
-	  		if (includeBranchHiddenData) {
-	  			searchHiddenDataIDs(root.getAfferentBranch(), list);
-	  		}
-	  	}
+  		searchIDsOnNode(root, list, labelClass, includeHiddenNodeData, includeHiddenBranchData);
 	  	
 	  	for (int i = 0; i < root.getChildren().size(); i++) {
 				searchIDsInSubtree(root.getChildren().get(i), list, 
-						labelClass, includeNodeHiddenData, includeBranchHiddenData);
+						labelClass, includeHiddenNodeData, includeHiddenBranchData);
 			}
   	}
   }
@@ -105,7 +129,7 @@ public class IDManager {
    * @return a list of all IDs (every string is contained only once)
    */
   public static String[] getIDs(Node root) {
-  	Vector<String> list = getIDVector(root);
+  	Vector<String> list = getIDVectorFromSubtree(root);
   	return list.toArray(new String[list.size()]);
   }
   
@@ -140,7 +164,7 @@ public class IDManager {
    * @return a list of all IDs (every string is contained only once)
    */
   public static String[] getLabelIDs(Node root, Class<? extends Label> labelClass) {
-  	Vector<String> list = getLabelIDVector(root, labelClass);
+  	Vector<String> list = getLabelIDVectorFromSubtree(root, labelClass);
   	return list.toArray(new String[list.size()]);
   }
   
@@ -152,7 +176,7 @@ public class IDManager {
    * @return a list of all IDs (every string is contained only once)
    */
   public static String[] getHiddenBranchDataIDs(Node root) {
-  	Vector<String> list = getHiddenBranchDataIDVector(root);
+  	Vector<String> list = getHiddenBranchDataIDVectorFromSubtree(root);
   	return list.toArray(new String[list.size()]);
   }
   
@@ -164,15 +188,15 @@ public class IDManager {
    * @return a list of all IDs (every string is contained only once)
    */
   public static String[] getHiddenNodeDataIDs(Node root) {
-  	Vector<String> list = getHiddenNodeDataIDVector(root);
+  	Vector<String> list = getHiddenNodeDataIDVectorFromSubtree(root);
   	return list.toArray(new String[list.size()]);
   }
   
   
   /**
-   * Returns a vector of IDs which is sorted alphabetically.
+   * Returns a vector of IDs from a whole subtree which is sorted alphabetically.
    */
-  private static Vector<String> getVector(Node root, Class<? extends Label> labelClass, 
+  private static Vector<String> getVectorFromSubtree(Node root, Class<? extends Label> labelClass, 
   		boolean includeNodeHiddenData, boolean includeBranchHiddenData) {
   	
   	Vector<String> list = new Vector<String>();
@@ -184,12 +208,35 @@ public class IDManager {
   
   
   /**
-   * Searches for all IDs (labels, hidden data) present in the subtree under root.
+   * Returns a vector of IDs from a single node which is sorted alphabetically.
+   */
+  private static Vector<String> getVectorFromNode(Node node, Class<? extends Label> labelClass, 
+  		boolean includeNodeHiddenData, boolean includeBranchHiddenData) {
+  	
+  	Vector<String> list = new Vector<String>();
+  	searchIDsOnNode(node, list, labelClass, includeNodeHiddenData, includeBranchHiddenData);
+  	Collections.sort(list, STRING_COMPARATOR);
+  	return list;
+  }
+  
+  
+  /**
+   * Searches for all IDs (labels, hidden data) present in the subtree under <code>root</code>.
    * @param root - the root node of the subtree to be searched. 
    * @return a list of all IDs (every string is contained only once)
    */
-  public static Vector<String> getIDVector(Node root) {
-  	return getVector(root, Label.class, true, true);
+  public static Vector<String> getIDVectorFromSubtree(Node root) {
+  	return getVectorFromSubtree(root, Label.class, true, true);
+  }
+  
+  
+  /**
+   * Searches for all IDs (labels, hidden data) attached to <code>node</code>.
+   * @param root - the root node of the subtree to be searched. 
+   * @return a list of all IDs (every string is contained only once)
+   */
+  public static Vector<String> getIDVectorFromNode(Node root) {
+  	return getVectorFromNode(root, Label.class, true, true);
   }
   
   
@@ -198,18 +245,18 @@ public class IDManager {
    * @param root - the root node of the subtree to be searched. 
    * @return a list of all label IDs (every string is contained only once)
    */
-  public static Vector<String> getLabelIDVector(Node root, Class<? extends Label> labelClass) {
-  	return getVector(root, labelClass, false, false);
+  public static Vector<String> getLabelIDVectorFromSubtree(Node root, Class<? extends Label> labelClass) {
+  	return getVectorFromSubtree(root, labelClass, false, false);
   }
   
   
-  public static Vector<String> getHiddenBranchDataIDVector(Node root) {
-  	return getVector(root, null, false, true);
+  public static Vector<String> getHiddenBranchDataIDVectorFromSubtree(Node root) {
+  	return getVectorFromSubtree(root, null, false, true);
   }
   
   
-  public static Vector<String> getHiddenNodeDataIDVector(Node root) {
-  	return getVector(root, null, true, false);
+  public static Vector<String> getHiddenNodeDataIDVectorFromSubtree(Node root) {
+  	return getVectorFromSubtree(root, null, true, false);
   }
   
   
@@ -328,6 +375,50 @@ public class IDManager {
   
   
   /**
+   * Returns the element specified by the given ID which is linked to this node (either any type of label
+   * label or a hidden node or hidden branch data). (The subtree is not searched.)  
+   * @param node - the node to which the returned value is linked
+   * @return an instance of a class inherited from {@link Label} or an {@link TextElementData} object or
+   *         <code>null</code> if no element with the specified ID is present
+   * @since 2.0.48
+   */
+  public static Object getElementByID(Node node, String id) {
+  	Object result = node.getAfferentBranch().getLabels().get(id);
+  	if (result == null) {
+  		result = node.getHiddenDataMap().get(id);
+  		if (result == null) {
+    		result = node.getAfferentBranch().getHiddenDataMap().get(id);
+  		}
+  	}
+  	return result;
+  }
+  
+  
+  /**
+   * Removes a label or a hidden element with the specified ID which is attached to <code>node</code> or its
+   * afferent branch.
+   * 
+   * @param node 
+   * @param id - the ID of the element to be removed
+   * @return the removed element (either a {@link TextElementData} object or an instance of a class inherited from {@link Label}.
+   */
+  public static Object removeElementWithID(Node node, String id) {
+  	Labels labels = node.getAfferentBranch().getLabels();
+  	Object result = labels.get(id);
+  	if (result != null) {
+  		labels.remove((Label)result);
+  	}
+  	else {
+  		result = node.getHiddenDataMap().remove(id);
+    	if (result == null) {
+    		result = node.getAfferentBranch().getHiddenDataMap().remove(id);
+    	}
+  	}
+  	return result;
+  }
+  
+  
+  /**
    * Returns the first label of the specified type with the specified ID to be found in the subtree under <code>root</code>.
    * @param root - the root of the subtree to be searched
    * @param elementClass - the class defining the sought-after type(s) of labels
@@ -352,7 +443,28 @@ public class IDManager {
   
   
   
-  public static boolean idExists(Node root, String id) {
-  	return getIDVector(root).contains(id);
+  /**
+   * Tests whether any type of label or any hidden data entry with the specified ID is present 
+   * in the subtree under <code>root</code>.
+   * 
+   * @param root - the root of the subtree to be searched
+   * @param id - the ID to be searched for
+   * @return <code>true</code>, if any element was found
+   */
+  public static boolean idExistsInSubtree(Node root, String id) {
+  	return getIDVectorFromSubtree(root).contains(id);
+  }
+  
+  
+  /**
+   * Tests whether any type of label or any hidden data entry with the specified is attached 
+   * to <code>node</code>.
+   * 
+   * @param root - the root of the subtree to be searched
+   * @param id - the ID to be searched for
+   * @return <code>true</code>, if any element was found
+   */
+  public static boolean idExistsOnNode(Node node, String id) {
+  	return getIDVectorFromSubtree(node).contains(id);
   }
 }

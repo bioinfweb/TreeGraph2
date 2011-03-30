@@ -34,7 +34,14 @@ public class Branch extends ConcretePaintableElement
   private Labels labels = new Labels(this);
   private Node targetNode = null;  // Notwendig um von markiertem Knoten in den umgebenden Baum zu gelangen.
   private BranchFormats formats = new BranchFormats();
-  private HiddenDataMap hiddenDataMap = new HiddenDataMap();
+  private HiddenDataMap hiddenDataMap = null;
+  
+  
+	public Branch(Node target) {
+		super();
+  	targetNode = target;
+  	hiddenDataMap = new HiddenDataMap(getTargetNode());
+  }
   
   
   public LineFormats getLineFormats() {
@@ -42,11 +49,6 @@ public class Branch extends ConcretePaintableElement
 	}
 
 
-	public Branch(Node target) {
-  	targetNode = target;
-  }
-  
-  
   public double getLength() {
 		return length;
 	}

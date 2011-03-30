@@ -27,9 +27,9 @@ import java.util.*;
 
 
 
-/**This class stores the Labels of a Node and provides infomation about whole rows and
- * columns.
- * @author BenStoever
+/**
+ * This class stores the labels attached to a branch.
+ * @author Ben St&ouml;ver
  */
 public class Labels implements Cloneable {
 	private static final int INITIAL_CAPACITY = 2; 
@@ -85,27 +85,37 @@ public class Labels implements Cloneable {
 	
 	
 	/**
-	 * Adds a label to the List. 
-	 * @param label the label to add
-	 * @return the index the label has in its line
+	 * Adds a label to the List and removes any other label or hidden data entry with the same ID on the same node or branch.
+	 * @param label - the label to add
+	 * 
+	 * @return the previous element which was attached to the node or branch this <code>Labels</code> object belongs to 
+	 *         with the same ID as the inserted label (This can either be a {@link TextElementData} object, if a hidden 
+	 *         data entry was replaces or an instance of a class inherited from {@link Label}), if a label with the 
+	 *         specified ID was attached to the node attached to this map.        
 	 */
-	public int add(Label label) {
-		label.setLabels(this);
+	public Object add(Label label) {
+		Object result = IDManager.removeElementWithID(getHoldingBranch().getTargetNode(), label.getID());
 		
+		label.setLabels(this);
 		LabelFormats f = label.getFormats();
 		List<LabelLine> lines = getLines(f.isAbove());
-		
 		// Ggf. Zeile hinzufügen:
 		if (f.getLineNumber() >= lines.size()) {
 			for (int i = lines.size(); i <= f.getLineNumber(); i++) {
 				lines.add(new LabelLine());
 			}
 		}
+		lines.get(f.getLineNumber()).insert(label);
 		
-		return lines.get(f.getLineNumber()).insert(label); 
+		return result;
 	}
 	
 	
+	/**
+	 * Removes the specified label.
+	 * @param label - the object to be removed
+	 * @return <code>true</code> if an element was removed
+	 */
 	public boolean remove(Label label) {
 		for (int i = 0; i < lineCount(true); i++) {
 			if (labelLinesAbove.get(i).remove(label)) {
@@ -118,6 +128,22 @@ public class Labels implements Cloneable {
 			}
 		}
 		return false;
+	}
+	
+	
+	/**
+	 * Removes the label with the specified ID.
+	 * @param id - the ID of the label to be removed
+	 * @return <code>true</code> if an element was removed
+	 */
+	public boolean remove(String id) {
+		Label l = get(id);
+		if (l != null) {
+			return remove(l);
+		}
+		else {
+			return false;
+		}
 	}
 	
 	

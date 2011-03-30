@@ -23,15 +23,36 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 
 
-public class HiddenDataMap implements Cloneable, Map<String, TextElementData> {
-	
+public class HiddenDataMap {
   private HashMap<String, TextElementData> map = new HashMap<String, TextElementData>();
+  private Node owner = null;
 
   
+	/**
+	 * Creates a new hidden data map.
+	 * @param owner - the node this map (or its branch) is attached to
+	 * @since 2.0.48
+	 */
+	public HiddenDataMap(Node owner) {
+		super();
+		this.owner = owner;
+	}
+
+
+	/**
+	 * Returns the node this map (or its branch) is attached to
+	 * @since 2.0.48
+	 */
+	public Node getOwner() {
+		return owner;
+	}
+
+
 	/* (non-Javadoc)
 	 * @see java.util.Map#clear()
 	 */
@@ -48,11 +69,19 @@ public class HiddenDataMap implements Cloneable, Map<String, TextElementData> {
 	}
 
 	
-	/* (non-Javadoc)
-	 * @see java.util.Map#put(java.lang.Object, java.lang.Object)
+	/**
+	 * Adds a new entry to this map. Current entries with this ID attached to the same node are replaced. 
+	 * (This includes hidden data entries in other maps as well as labels.)
+	 * 
+	 * @return the previous element which was attached to this node under this ID (This can
+	 *         either be a {@link TextElementData} object, if a hidden data entry was replaces or an 
+	 *         instance of a class inherited from {@link Label}), if a label with the specified ID was
+	 *         attached to the node attached to this map.        
 	 */
-	public TextElementData put(String key, TextElementData value) {
-		return map.put(key, value);
+	public Object put(String id, TextElementData value) {
+		Object result = IDManager.removeElementWithID(getOwner(), id);
+		map.put(id, value);
+		return result;
 	}
 
 	
@@ -133,11 +162,28 @@ public class HiddenDataMap implements Cloneable, Map<String, TextElementData> {
 	}
 
 
-	/* (non-Javadoc)
-	 * @see java.util.Map#putAll(java.util.Map)
+	/**
+	 * Adds all elements of the specified map to this map.
+	 * @since 2.0.48
 	 */
 	public void putAll(Map<? extends String, ? extends TextElementData> m) {
-		map.putAll(m);
+		// This method cannot be delegated to map.putAll() because it would not remove labels and 
+		// elements from the other map of this node which have the same ID.
+		
+		Iterator<? extends String> i = m.keySet().iterator();
+		while (i.hasNext()) {
+			String id = i.next();
+			put(id, m.get(id));
+		}
+	}
+
+
+	/**
+	 * Adds all elements of the specified map to this map.
+	 * @since 2.0.48
+	 */
+	public void putAll(HiddenDataMap m) {
+		putAll((Map)m);
 	}
 
 
@@ -186,17 +232,5 @@ public class HiddenDataMap implements Cloneable, Map<String, TextElementData> {
 			String id = iterator.next();
 			put(id, other.get(id).clone());
 		}
-	}
-
-
-	/** 
-	 * Returns a deep copy of this map and its contents.
-	 * @see java.lang.Object#clone()
-	 */
-	@Override
-	public HiddenDataMap clone() {
-		HiddenDataMap result = new HiddenDataMap();
-		result.assign(this);
-		return result;
 	}
 }

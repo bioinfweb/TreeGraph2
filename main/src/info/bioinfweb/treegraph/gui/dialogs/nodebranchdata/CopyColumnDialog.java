@@ -83,7 +83,7 @@ public class CopyColumnDialog extends EditDialog {
 	@Override
 	protected boolean apply() {
 		boolean result = !getDestAdapter().isNewColumn() || 
-		    !IDManager.idExists(getDocument().getTree().getPaintStart(), 
+		    !IDManager.idExistsInSubtree(getDocument().getTree().getPaintStart(), 
 				    ((NewNodeDataAdapter)getDestAdapter()).getID());
 		if (result) {
 			getDocument().executeEdit(new CopyColumnEdit(getDocument(), getSrcAdapter(), getDestAdapter(), 

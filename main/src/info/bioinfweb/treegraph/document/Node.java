@@ -39,7 +39,7 @@ public class Node extends AbstractTextElement
   private Branch afferentBranch = null;
   private NodeFormats formats = new NodeFormats();
   private String uniqueName = null;
-  private HiddenDataMap hiddenDataMap = new HiddenDataMap();
+  private HiddenDataMap hiddenDataMap = new HiddenDataMap(this);
   private HashMap<String, Object> attributeMap = new HashMap<String, Object>(); 
 
   

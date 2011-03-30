@@ -119,18 +119,18 @@ public class DocumentTableModel extends AbstractTableModel implements DocumentLi
 		adapters.add(new NodeNameAdapter());
 		adapters.add(new BranchLengthAdapter());
 
-		Vector<String> ids = IDManager.getLabelIDVector(root, TextLabel.class);
+		Vector<String> ids = IDManager.getLabelIDVectorFromSubtree(root, TextLabel.class);
 		for (int i = 0; i < ids.size(); i++) {
 			adapters.add(new TextLabelAdapter(ids.get(i), 
 					((TextLabel)IDManager.getFirstLabel(root, TextLabel.class, ids.get(i))).getFormats().getDecimalFormat()));
 		}
 		
-		ids = IDManager.getHiddenNodeDataIDVector(root);
+		ids = IDManager.getHiddenNodeDataIDVectorFromSubtree(root);
 		for (int i = 0; i < ids.size(); i++) {
 			adapters.add(new HiddenNodeDataAdapter(ids.get(i)));
 		}
 		
-		ids = IDManager.getHiddenBranchDataIDVector(root);
+		ids = IDManager.getHiddenBranchDataIDVectorFromSubtree(root);
 		for (int i = 0; i < ids.size(); i++) {
 			adapters.add(new HiddenBranchDataAdapter(ids.get(i)));
 		}
