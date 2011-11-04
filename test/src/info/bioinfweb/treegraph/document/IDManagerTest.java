@@ -133,7 +133,7 @@ public class IDManagerTest extends PrivateTester {
   
   @Test
   public void test_searchLabelIDsInLabelBlock_absent() {
-  	Method method = getPrivateMethod("searchLabelIDsInLabelBlock", Labels.class, boolean.class,  Class.class, Vector.class);
+  	Method method = getPrivateMethod("searchLabelIDsInLabelBlock", Labels.class, boolean.class, Class.class, Vector.class);
   	
   	Tree tree = createBasicTree(true, false, false, true);
   	Vector<String> list = new Vector<String>();
@@ -170,6 +170,6 @@ public class IDManagerTest extends PrivateTester {
   @Test
   public void test_getLabelIDVector() {
   	Tree tree = createBasicTree(false, false, false, true);
-  	assertEquals(0, IDManager.getLabelIDVector(tree.getPaintStart(), TextLabel.class).size());
+  	assertEquals(0, IDManager.getLabelIDVectorFromSubtree(tree.getPaintStart(), TextLabel.class).size());
   }
 }
