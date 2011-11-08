@@ -50,7 +50,8 @@ import javax.xml.stream.events.XMLEvent;
  * If the document contains additional (not defined tags) they are ignored. Note that they 
  * can not transfered to the internal data structure and therefor a not written back to a 
  * document generated with TreeGraph 2.<br>
- * If defined attributes are missing in the document, standard values are used. 
+ * If defined attributes are missing in the document, standard values are used.
+ * 
  * @author Ben St&ouml;ver
  */
 public class XTGReader extends AbstractDocumentReader implements XTGConstants {

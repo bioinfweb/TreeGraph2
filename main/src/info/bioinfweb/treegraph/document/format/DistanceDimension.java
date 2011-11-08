@@ -20,8 +20,6 @@ package info.bioinfweb.treegraph.document.format;
 
 
 
-
-
 public class DistanceDimension implements Cloneable {
   private DistanceValue width = null;
   private DistanceValue height = null;
@@ -83,23 +81,32 @@ public class DistanceDimension implements Cloneable {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
-		final DistanceDimension other = (DistanceDimension) obj;
+		}
+		final DistanceDimension OTHER = (DistanceDimension) obj;
 		if (height == null) {
-			if (other.height != null)
+			if (OTHER.height != null) {
 				return false;
-		} else if (!height.equals(other.height))
+			}
+		} 
+		else if (!height.equals(OTHER.height)) {
 			return false;
+		}
 		if (width == null) {
-			if (other.width != null)
+			if (OTHER.width != null) {
 				return false;
-		} else if (!width.equals(other.width))
+			}
+		} 
+		else if (!width.equals(OTHER.width)) {
 			return false;
+		}
 		return true;
 	}
 }
