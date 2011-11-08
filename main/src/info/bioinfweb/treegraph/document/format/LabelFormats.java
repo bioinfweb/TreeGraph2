@@ -34,7 +34,7 @@ public class LabelFormats implements ElementFormats, Cloneable {
 	
 	private boolean above = true;
 	private int lineNumber = 0;
-	private int linePosition = 0;  // Bestimmt die Reihenfolge aller Elemente einer Zeile
+	private double linePosition = 0;  // Bestimmt die Reihenfolge aller Elemente einer Zeile
 	private Label owner = null;
 	private Margin margin = new Margin(DEFAULT_MARGIN_IN_MM);
 	
@@ -90,12 +90,12 @@ public class LabelFormats implements ElementFormats, Cloneable {
 	 * on the left.
 	 * @return the current value of line position
 	 */
-	public int getLinePosition() {
+	public double getLinePosition() {
 		return linePosition;
 	}
 
 
-	public void setLinePosition(int linePosition) {
+	public void setLinePosition(double linePosition) {
 		if (this.linePosition != linePosition) {
 			this.linePosition = linePosition;
 			reinsert();

@@ -27,12 +27,6 @@
 	<classpathentry kind="lib" path="include/lib/freehep-graphics2d.jar"/>
 	<classpathentry kind="lib" path="include/lib/freehep-graphicsio-emf.jar"/>
 	<classpathentry kind="lib" path="include/lib/freehep-graphicsio.jar"/>
-	<classpathentry kind="lib" path="include/lib/info.webinsel.util.appversion.jar"/>
-	<classpathentry kind="lib" path="include/lib/info.webinsel.util.graphics.jar"/>
-	<classpathentry kind="lib" path="include/lib/info.webinsel.util.io.jar"/>
-	<classpathentry kind="lib" path="include/lib/info.webinsel.util.jar"/>
-	<classpathentry kind="lib" path="include/lib/info.webinsel.util.swing.jar"/>
-	<classpathentry kind="lib" path="include/lib/info.webinsel.wikihelp.client.jar"/>
 	<classpathentry kind="lib" path="include/lib/jdom.jar"/>
 	<classpathentry kind="lib" path="include/lib/jep-2.4.1.jar"/>
 	<classpathentry kind="lib" path="include/lib/js.jar"/>
@@ -43,5 +37,6 @@
 	<classpathentry kind="lib" path="include/lib/xerces_2_5_0.jar"/>
 	<classpathentry kind="lib" path="include/lib/xml-apis-ext.jar"/>
 	<classpathentry kind="lib" path="include/lib/xml-apis.jar"/>
+	<classpathentry kind="lib" path="/_Lib/bin" sourcepath="/_Lib/src"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -207,7 +207,7 @@ public class ContrastManager {
 	 */
 	private boolean ensureLabelContrast(Document document, Label label) {
 		Color color;
-		if (label instanceof TextLabel) {
+		if (label instanceof TextLabel) {  //TODO Auf PieChartLabels anpassen
 			color = ((TextLabel)label).getFormats().getTextColor();
 		}
 		else {  // IconLabel

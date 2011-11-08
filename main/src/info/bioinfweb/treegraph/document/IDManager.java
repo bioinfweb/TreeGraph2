@@ -285,20 +285,23 @@ public class IDManager {
   }
   
   
+  public static void renameID(String oldName, String newName, Node node) {
+  		renameLabelIDInLabelBlock(oldName, newName, 
+  				node.getAfferentBranch().getLabels(), true);
+  		renameLabelIDInLabelBlock(oldName, newName, 
+  				node.getAfferentBranch().getLabels(), false);
+  		renameHiddenDataID(node.getAfferentBranch(), oldName, newName);
+  		renameHiddenDataID(node, oldName, newName);
+  }
+  
+  
   /**
    * Changes all occurrences of the given ID in the subtree under root.
    * @param root - the root node of the subtree where the renaming should take place 
    */
   private static void renameIDSubtree(String oldName, String newName, Node root) {
-  	if (root.hasAfferentBranch()) {
-  		renameLabelIDInLabelBlock(oldName, newName, 
-  				root.getAfferentBranch().getLabels(), true);
-  		renameLabelIDInLabelBlock(oldName, newName, 
-  				root.getAfferentBranch().getLabels(), false);
-  		renameHiddenDataID(root.getAfferentBranch(), oldName, newName);
-  		renameHiddenDataID(root, oldName, newName);
-  	}
-  	
+	  renameID(oldName, newName, root);
+    	
   	for (int i = 0; i < root.getChildren().size(); i++) {
 			renameIDSubtree(oldName, newName, root.getChildren().get(i));
 		}
@@ -467,4 +470,14 @@ public class IDManager {
   public static boolean idExistsOnNode(Node node, String id) {
   	return getIDVectorFromSubtree(node).contains(id);
   }
+
+
+  public static boolean idConflict(String id, Branch[] selection){
+		for (int i = 0; i < selection.length; i++) {
+			if (IDManager.idExistsOnNode(selection[i].getTargetNode(),id)){
+				return true;
+			}
+		}
+		return false;
+	}
 }

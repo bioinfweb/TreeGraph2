@@ -25,10 +25,10 @@ import info.bioinfweb.treegraph.document.format.LabelFormats;
 
 
 public class LabelLinePositionOperator extends AbstractLabelOperator implements FormatOperator {
-  private int linePosition;
+  private double linePosition;
 
   
-	public LabelLinePositionOperator(int linePosition) {
+	public LabelLinePositionOperator(double linePosition) {
 		super();
 		this.linePosition = linePosition;
 	}
@@ -36,6 +36,8 @@ public class LabelLinePositionOperator extends AbstractLabelOperator implements 
 
 	@Override
 	protected void doApplyTo(ElementFormats format) {
+		System.out.println(linePosition + "doApplyTo");
 		((LabelFormats)format).setLinePosition(linePosition);
+		System.out.println(((LabelFormats)format).getLinePosition());
 	}
 }

@@ -60,9 +60,9 @@ public class LabelLine implements Cloneable {
 	 * @param linePos
 	 * @return the index of the element in the line list.
 	 */
-	public int getPosBeforeLinePos(int linePos) {
+	public int getIndexBeforeLinePos(double linePos) {
 		int pos = 0;
-		while ((pos < line.size()) && (linePos <= get(pos).getFormats().getLinePosition())) {
+		while ((pos < line.size()) && (linePos >= get(pos).getFormats().getLinePosition())) {
 			pos++;
 		}
 	  return pos - 1;

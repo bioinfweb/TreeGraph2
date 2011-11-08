@@ -533,6 +533,7 @@ main/src/info/bioinfweb/treegraph/gui/actions/window/SelectFrameAction.java -tex
 main/src/info/bioinfweb/treegraph/gui/actions/window/TileHorizontalAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/window/TileVerticalAction.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/AboutDialog.java -text
+main/src/info/bioinfweb/treegraph/gui/dialogs/CollidingIDsDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/DataIDComboBox.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/DecimalUnitInput.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/DistanceValueInput.java -text

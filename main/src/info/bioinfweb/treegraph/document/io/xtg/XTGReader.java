@@ -277,7 +277,7 @@ public class XTGReader extends AbstractDocumentReader implements XTGConstants {
 		LabelFormats f = l.getFormats();
     f.setAbove(XMLUtils.readBooleanAttr(rootElement, ATTR_LABEL_ABOVE, f.isAbove()));
     f.setLineNumber(XMLUtils.readIntAttr(rootElement, ATTR_LINE_NO, f.getLineNumber()));
-    f.setLinePosition(XMLUtils.readIntAttr(rootElement, ATTR_LINE_POS, f.getLinePosition()));
+    f.setLinePosition(XMLUtils.readDoubleAttr(rootElement, ATTR_LINE_POS, f.getLinePosition()));
     
     XMLEvent event = reader.nextEvent();
     while (event.getEventType() != XMLStreamConstants.END_ELEMENT) {

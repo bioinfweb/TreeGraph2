@@ -34,6 +34,7 @@ import java.util.*;
 public class Labels implements Cloneable {
 	private static final int INITIAL_CAPACITY = 2; 
 	private static final int CAPACITY_INCREMENT = 2; 
+	public static final double DEFAULT_LINE_INDEX_INCREMENT = 10; 
 
 	
 	private Branch holdingBranch = null;
@@ -84,6 +85,24 @@ public class Labels implements Cloneable {
 	}
 	
 	
+	private void calculateNewLinePosition(Label label, LabelLine line) {
+		double newLinePos = label.getFormats().getLinePosition();
+	  int leftIndex = line.getIndexBeforeLinePos(newLinePos);
+	  
+	  if (leftIndex != -1) {	
+	  	double leftLinePos = line.get(leftIndex).getFormats().getLinePosition();
+	  	if (newLinePos == leftLinePos) {
+	  		if (line.size() - 1 != leftIndex) {
+	  			label.getFormats().setLinePosition((leftLinePos + line.get(leftIndex + 1).getFormats().getLinePosition()) / 2);
+	  		}
+	  		else {
+	  			label.getFormats().setLinePosition(newLinePos + DEFAULT_LINE_INDEX_INCREMENT);
+	  		}
+	  	}
+	  }
+	}
+	
+	
 	/**
 	 * Adds a label to the List and removes any other label or hidden data entry with the same ID on the same node or branch.
 	 * @param label - the label to add
@@ -105,7 +124,9 @@ public class Labels implements Cloneable {
 				lines.add(new LabelLine());
 			}
 		}
-		lines.get(f.getLineNumber()).insert(label);
+		LabelLine line = lines.get(f.getLineNumber());
+		calculateNewLinePosition(label, line);
+		line.insert(label);
 		
 		return result;
 	}
@@ -159,7 +180,7 @@ public class Labels implements Cloneable {
 	
 	/**
 	 * Returns the label at the specified position
-	 * @param above indicates wheather the label is above the branch
+	 * @param above indicates whether the label is above the branch
 	 * @param lineNo the number of the line the label in located in (below or above the branch) The first line has the index 0.
 	 * @param lineIndex the position in the line counted from the left (Does not equal the linePosition value.)
 	 * @return the label at the specified position
@@ -259,6 +280,16 @@ public class Labels implements Cloneable {
 		}
 		else {
 			return contains(false, label);
+		}
+	}
+	
+	
+	public double getLastLinePos(boolean above, int lineNumber) {
+		if (isEmpty()){
+			return 0; 
+		}
+		else {
+			return get(above, lineNumber, labelCount(above, lineNumber) - 1).getFormats().getLinePosition() + DEFAULT_LINE_INDEX_INCREMENT;
 		}
 	}
 	

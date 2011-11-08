@@ -20,6 +20,7 @@ package info.bioinfweb.treegraph.document.undo.edit;
 
 
 import info.bioinfweb.treegraph.document.*;
+import info.bioinfweb.treegraph.document.format.LabelFormats;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
 
 
@@ -37,6 +38,8 @@ public abstract class InsertRemoveLabelEdit extends DocumentEdit {
 	
 	
 	protected void insert() {
+		LabelFormats f = label.getFormats();  
+		f.setLinePosition(owner.getLastLinePos(f.isAbove(), f.getLineNumber()));
 		label.setLabels(owner);
 		owner.add(label);
 	}

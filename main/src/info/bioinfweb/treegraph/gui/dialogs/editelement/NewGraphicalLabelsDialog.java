@@ -21,12 +21,15 @@ package info.bioinfweb.treegraph.gui.dialogs.editelement;
 
 import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.GraphicalLabel;
+import info.bioinfweb.treegraph.document.IDManager;
 import info.bioinfweb.treegraph.document.format.FormatUtils;
 import info.bioinfweb.treegraph.document.format.GraphicalLabelFormats;
 import info.bioinfweb.treegraph.document.undo.edit.InsertLabelsEdit;
+import info.bioinfweb.treegraph.gui.dialogs.CollidingIDsDialog;
 import info.bioinfweb.treegraph.gui.dialogs.DataIDComboBox;
 import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
@@ -80,18 +83,24 @@ public abstract class NewGraphicalLabelsDialog extends EditDialog {
 	@Override
 	protected boolean apply() {
 		GraphicalLabel label = createLabel();
-		if (getIDComboBox().getSelectedItem() != null) {
-			label.setID((String)getIDComboBox().getSelectedItem());
+		Branch[] selection = getSelection().getAllElementsOfType(Branch.class);
+		if (getIDComboBox().getSelectedItem() == null) {
+			JOptionPane.showMessageDialog(this, "You have to specify an ID.", "Error", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		else {
+			label.setID(CollidingIDsDialog.getInstance().checkConflicts(selection, 
+					(String)getIDComboBox().getSelectedItem()));			
 		}
 		GraphicalLabelFormats f = label.getFormats();
 		f.setLineColor(FormatUtils.getLineColor(getDocument()));
 		
 		getDocument().executeEdit(new InsertLabelsEdit(getDocument(), label, 
-				getSelection().getAllElementsOfType(Branch.class)));
+				selection));
 		return true;
 	}
 
-
+	
 	/**
 	 * This method initializes idPanel	
 	 * 	

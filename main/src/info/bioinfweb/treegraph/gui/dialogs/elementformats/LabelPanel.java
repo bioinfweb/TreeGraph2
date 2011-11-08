@@ -31,6 +31,8 @@ import info.bioinfweb.treegraph.document.format.operate.LabelMarginRightOperator
 import info.bioinfweb.treegraph.document.format.operate.LabelMarginTopOperator;
 import info.bioinfweb.treegraph.gui.dialogs.MarginInput;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
+import info.webinsel.util.Math2;
+import info.webinsel.util.StringUtils;
 import info.webinsel.util.swing.SwingChangeMonitor;
 
 import java.awt.Color;
@@ -60,8 +62,7 @@ import javax.swing.border.TitledBorder;
 public class LabelPanel extends JPanel implements ElementFormatTab {
 	private static final long serialVersionUID = 1L;
 
-
-	private DecimalFormat decimalFormat = new DecimalFormat("#########");  //  @jve:decl-index=0:
+	
 	private JRadioButton aboveRadioButton = null;
 	private JRadioButton belowRadioButton = null;
 	private JLabel lineNoLabel = null;
@@ -94,8 +95,8 @@ public class LabelPanel extends JPanel implements ElementFormatTab {
 			LabelFormats f = first.getFormats();
 	  	getAboveRadioButton().setSelected(f.isAbove());
 	  	getBelowRadioButton().setSelected(!f.isAbove());
-			getLineNoTextField().setText(decimalFormat.format(f.getLineNumber()));
-			getLinePosTextField().setText(decimalFormat.format(f.getLinePosition()));
+			getLineNoTextField().setText(StringUtils.INTEGER_FORMAT.format(f.getLineNumber()));
+			getLinePosTextField().setText(StringUtils.DOUBLE_FORMAT.format(f.getLinePosition()));
 			getMarginInput().setValue(f.getMargin());
 		}
 		return result;
@@ -116,7 +117,7 @@ public class LabelPanel extends JPanel implements ElementFormatTab {
 					getLineNoTextField().getText())));
 		}
 		if (linePosMonitor.hasChanged()) {
-			operators.add(new LabelLinePositionOperator(Integer.parseInt(
+			operators.add(new LabelLinePositionOperator(Math2.parseDouble(
 					getLinePosTextField().getText())));
 		}
 		if (getMarginInput().getLeft().getChangeMonitor().hasChanged()) {
@@ -277,13 +278,13 @@ public class LabelPanel extends JPanel implements ElementFormatTab {
 	 */
 	private JFormattedTextField getLineNoTextField() {
 		if (lineNoTextField == null) {
-			lineNoTextField = new JFormattedTextField(decimalFormat);
+			lineNoTextField = new JFormattedTextField(StringUtils.INTEGER_FORMAT);
 			lineNoTextField.getDocument().addDocumentListener(lineNoMonitor);
 		}
 		return lineNoTextField;
 	}
 
-
+	
 	/**
 	 * This method initializes linePosTextField	
 	 * 	
@@ -291,7 +292,7 @@ public class LabelPanel extends JPanel implements ElementFormatTab {
 	 */
 	private JFormattedTextField getLinePosTextField() {
 		if (linePosTextField == null) {
-			linePosTextField = new JFormattedTextField(decimalFormat);
+			linePosTextField = new JFormattedTextField(StringUtils.DOUBLE_FORMAT);
 			linePosTextField.getDocument().addDocumentListener(linePosMonitor);
 		}
 		return linePosTextField;

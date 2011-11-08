@@ -27,6 +27,7 @@ import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Label;
 import info.bioinfweb.treegraph.document.TextLabel;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
+import info.bioinfweb.treegraph.gui.dialogs.CollidingIDsDialog;
 
 
 
@@ -44,6 +45,7 @@ public class PasteLabelEdit extends DocumentEdit {
 
 	@Override
 	public void redo() throws CannotRedoException {
+		label.setID(CollidingIDsDialog.getInstance().checkConflicts(new Branch[]{branch}, label.getID()));
 		label.setLabels(branch.getLabels());
 		branch.getLabels().add(label);
 		super.redo();

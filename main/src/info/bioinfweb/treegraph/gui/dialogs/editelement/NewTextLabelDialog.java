@@ -25,6 +25,7 @@ import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextLabel;
 import info.bioinfweb.treegraph.document.format.FormatUtils;
 import info.bioinfweb.treegraph.document.undo.edit.InsertLabelEdit;
+import info.bioinfweb.treegraph.gui.dialogs.CollidingIDsDialog;
 import info.bioinfweb.treegraph.gui.dialogs.DataIDComboBox;
 import info.webinsel.util.Math2;
 
@@ -37,6 +38,7 @@ import java.awt.GridBagLayout;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
@@ -83,15 +85,20 @@ public class NewTextLabelDialog extends AbstractTextElementDialog {
 		else {
 			label.getData().setText(getValueTextField().getText());
 		}
-		if (getIDComboBox().getSelectedItem() != null) {
-			label.setID((String)getIDComboBox().getSelectedItem());
+		if (getIDComboBox().getSelectedItem() == null) {
+			JOptionPane.showMessageDialog(this, "You have to specify an ID.", "Error", JOptionPane.ERROR_MESSAGE);
+			return false;
 		}
-		label.getFormats().setTextColor(FormatUtils.getTextColor(getDocument()));
-		getDocument().executeEdit(new InsertLabelEdit(getDocument(), label, 
-				getSelection().getFirstElementOfType(Branch.class).getLabels()));
-		return true;
+		else {
+			Branch branch = getSelection().getFirstElementOfType(Branch.class); 
+			label.setID(CollidingIDsDialog.getInstance().checkConflicts(new Branch[]{branch}, 
+					(String)getIDComboBox().getSelectedItem()));		
+			label.getFormats().setTextColor(FormatUtils.getTextColor(getDocument()));
+			getDocument().executeEdit(new InsertLabelEdit(getDocument(), label, 
+					branch.getLabels()));
+			return true;
+		}
 	}
-
 	
 	/**
 	 * This method initializes this dialog
