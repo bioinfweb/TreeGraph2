@@ -2,49 +2,43 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="lib" path="/TreeGraph (LukasAalderingStart)/include/lib/batik-anim.jar"/>
+	<classpathentry kind="lib" path="/TreeGraph (LukasAalderingStart)/include/lib/batik-awt-util.jar"/>
+	<classpathentry kind="lib" path="/TreeGraph (LukasAalderingStart)/include/lib/batik-bridge.jar"/>
+	<classpathentry kind="lib" path="/TreeGraph (LukasAalderingStart)/include/lib/batik-codec.jar"/>
+	<classpathentry kind="lib" path="/TreeGraph (LukasAalderingStart)/include/lib/batik-css.jar"/>
+	<classpathentry kind="lib" path="/TreeGraph (LukasAalderingStart)/include/lib/batik-dom.jar"/>
+	<classpathentry kind="lib" path="/TreeGraph (LukasAalderingStart)/include/lib/batik-ext.jar"/>
+	<classpathentry kind="lib" path="/TreeGraph (LukasAalderingStart)/include/lib/batik-extension.jar"/>
+	<classpathentry kind="lib" path="/TreeGraph (LukasAalderingStart)/include/lib/batik-gui-util.jar"/>
+	<classpathentry kind="lib" path="/TreeGraph (LukasAalderingStart)/include/lib/batik-gvt.jar"/>
+	<classpathentry kind="lib" path="/TreeGraph (LukasAalderingStart)/include/lib/batik-parser.jar"/>
+	<classpathentry kind="lib" path="/TreeGraph (LukasAalderingStart)/include/lib/batik-script.jar"/>
+	<classpathentry kind="lib" path="/TreeGraph (LukasAalderingStart)/include/lib/batik-svg-dom.jar"/>
+	<classpathentry kind="lib" path="/TreeGraph (LukasAalderingStart)/include/lib/batik-svggen.jar"/>
+	<classpathentry kind="lib" path="/TreeGraph (LukasAalderingStart)/include/lib/batik-swing.jar"/>
+	<classpathentry kind="lib" path="/TreeGraph (LukasAalderingStart)/include/lib/batik-transcoder.jar"/>
+	<classpathentry kind="lib" path="/TreeGraph (LukasAalderingStart)/include/lib/batik-util.jar"/>
+	<classpathentry kind="lib" path="/TreeGraph (LukasAalderingStart)/include/lib/batik-xml.jar"/>
+	<classpathentry kind="lib" path="/TreeGraph (LukasAalderingStart)/include/lib/BrowserLauncher2-1_3.jar"/>
+	<classpathentry kind="lib" path="/TreeGraph (LukasAalderingStart)/include/lib/ErrorReporter.jar"/>
+	<classpathentry kind="lib" path="/TreeGraph (LukasAalderingStart)/include/lib/ext-1.1.1.jar"/>
+	<classpathentry kind="lib" path="/TreeGraph (LukasAalderingStart)/include/lib/freehep-base.jar"/>
+	<classpathentry kind="lib" path="/TreeGraph (LukasAalderingStart)/include/lib/freehep-graphics2d.jar"/>
+	<classpathentry kind="lib" path="/TreeGraph (LukasAalderingStart)/include/lib/freehep-graphicsio-emf.jar"/>
+	<classpathentry kind="lib" path="/TreeGraph (LukasAalderingStart)/include/lib/freehep-graphicsio.jar"/>
+	<classpathentry kind="lib" path="/TreeGraph (LukasAalderingStart)/include/lib/jdom.jar"/>
+	<classpathentry kind="lib" path="/TreeGraph (LukasAalderingStart)/include/lib/jep-2.4.1.jar"/>
+	<classpathentry kind="lib" path="/TreeGraph (LukasAalderingStart)/include/lib/js.jar"/>
+	<classpathentry kind="lib" path="/TreeGraph (LukasAalderingStart)/include/lib/org.jdesktop.swingx.scrollpaneselector.jar"/>
+	<classpathentry kind="lib" path="/TreeGraph (LukasAalderingStart)/include/lib/pdf-transcoder.jar"/>
+	<classpathentry kind="lib" path="/TreeGraph (LukasAalderingStart)/include/lib/UpdateCenterClient.jar"/>
+	<classpathentry kind="lib" path="/TreeGraph (LukasAalderingStart)/include/lib/xalan-2.6.0.jar"/>
+	<classpathentry kind="lib" path="/TreeGraph (LukasAalderingStart)/include/lib/xerces_2_5_0.jar"/>
+	<classpathentry kind="lib" path="/TreeGraph (LukasAalderingStart)/include/lib/xml-apis-ext.jar"/>
+	<classpathentry kind="lib" path="/TreeGraph (LukasAalderingStart)/include/lib/xml-apis.jar"/>
 	<classpathentry kind="lib" path="lib/junit-4.9b1.jar"/>
-	<classpathentry kind="lib" path="/_Lib/bin"/>
+	<classpathentry kind="lib" path="/_Lib/bin" sourcepath="/_Lib/src"/>
 	<classpathentry kind="lib" path="/TreeGraph/bin"/>
-	<classpathentry kind="lib" path="/TreeGraph/include/lib/batik-anim.jar"/>
-	<classpathentry kind="lib" path="/TreeGraph/include/lib/batik-awt-util.jar"/>
-	<classpathentry kind="lib" path="/TreeGraph/include/lib/batik-bridge.jar"/>
-	<classpathentry kind="lib" path="/TreeGraph/include/lib/batik-codec.jar"/>
-	<classpathentry kind="lib" path="/TreeGraph/include/lib/batik-css.jar"/>
-	<classpathentry kind="lib" path="/TreeGraph/include/lib/batik-dom.jar"/>
-	<classpathentry kind="lib" path="/TreeGraph/include/lib/batik-ext.jar"/>
-	<classpathentry kind="lib" path="/TreeGraph/include/lib/batik-extension.jar"/>
-	<classpathentry kind="lib" path="/TreeGraph/include/lib/batik-gui-util.jar"/>
-	<classpathentry kind="lib" path="/TreeGraph/include/lib/batik-gvt.jar"/>
-	<classpathentry kind="lib" path="/TreeGraph/include/lib/batik-parser.jar"/>
-	<classpathentry kind="lib" path="/TreeGraph/include/lib/batik-script.jar"/>
-	<classpathentry kind="lib" path="/TreeGraph/include/lib/batik-svg-dom.jar"/>
-	<classpathentry kind="lib" path="/TreeGraph/include/lib/batik-svggen.jar"/>
-	<classpathentry kind="lib" path="/TreeGraph/include/lib/batik-swing.jar"/>
-	<classpathentry kind="lib" path="/TreeGraph/include/lib/batik-transcoder.jar"/>
-	<classpathentry kind="lib" path="/TreeGraph/include/lib/batik-util.jar"/>
-	<classpathentry kind="lib" path="/TreeGraph/include/lib/batik-xml.jar"/>
-	<classpathentry kind="lib" path="/TreeGraph/include/lib/BrowserLauncher2-1_3.jar"/>
-	<classpathentry kind="lib" path="/TreeGraph/include/lib/ErrorReporter.jar"/>
-	<classpathentry kind="lib" path="/TreeGraph/include/lib/ext-1.1.1.jar"/>
-	<classpathentry kind="lib" path="/TreeGraph/include/lib/freehep-base.jar"/>
-	<classpathentry kind="lib" path="/TreeGraph/include/lib/freehep-graphics2d.jar"/>
-	<classpathentry kind="lib" path="/TreeGraph/include/lib/freehep-graphicsio-emf.jar"/>
-	<classpathentry kind="lib" path="/TreeGraph/include/lib/freehep-graphicsio.jar"/>
-	<classpathentry kind="lib" path="/TreeGraph/include/lib/info.webinsel.util.appversion.jar"/>
-	<classpathentry kind="lib" path="/TreeGraph/include/lib/info.webinsel.util.graphics.jar"/>
-	<classpathentry kind="lib" path="/TreeGraph/include/lib/info.webinsel.util.io.jar"/>
-	<classpathentry kind="lib" path="/TreeGraph/include/lib/info.webinsel.util.jar"/>
-	<classpathentry kind="lib" path="/TreeGraph/include/lib/info.webinsel.util.swing.jar"/>
-	<classpathentry kind="lib" path="/TreeGraph/include/lib/info.webinsel.wikihelp.client.jar"/>
-	<classpathentry kind="lib" path="/TreeGraph/include/lib/jdom.jar"/>
-	<classpathentry kind="lib" path="/TreeGraph/include/lib/jep-2.4.1.jar"/>
-	<classpathentry kind="lib" path="/TreeGraph/include/lib/js.jar"/>
-	<classpathentry kind="lib" path="/TreeGraph/include/lib/org.jdesktop.swingx.scrollpaneselector.jar"/>
-	<classpathentry kind="lib" path="/TreeGraph/include/lib/pdf-transcoder.jar"/>
-	<classpathentry kind="lib" path="/TreeGraph/include/lib/UpdateCenterClient.jar"/>
-	<classpathentry kind="lib" path="/TreeGraph/include/lib/xalan-2.6.0.jar"/>
-	<classpathentry kind="lib" path="/TreeGraph/include/lib/xerces_2_5_0.jar"/>
-	<classpathentry kind="lib" path="/TreeGraph/include/lib/xml-apis-ext.jar"/>
-	<classpathentry kind="lib" path="/TreeGraph/include/lib/xml-apis.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

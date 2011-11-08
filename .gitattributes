@@ -707,3 +707,5 @@ test/.project -text svneol=unset#text/plain
 test/.settings/org.eclipse.jdt.core.prefs -text svneol=unset#text/plain
 test/lib/junit-4.9b1.jar -text
 test/src/info/bioinfweb/treegraph/document/IDManagerTest.java -text svneol=unset#text/plain
+test/src/info/bioinfweb/treegraph/document/LabelLineTest.java -text svneol=unset#text/plain
+test/src/info/bioinfweb/treegraph/document/LabelsTest.java -text svneol=unset#text/plain
