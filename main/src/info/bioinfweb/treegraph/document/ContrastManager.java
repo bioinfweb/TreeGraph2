@@ -207,11 +207,11 @@ public class ContrastManager {
 	 */
 	private boolean ensureLabelContrast(Document document, Label label) {
 		Color color;
-		if (label instanceof TextLabel) {  //TODO Auf PieChartLabels anpassen
+		if (label instanceof TextLabel) {
 			color = ((TextLabel)label).getFormats().getTextColor();
 		}
-		else {  // IconLabel
-			color = ((IconLabel)label).getFormats().getLineColor();
+		else {  // GraphicalLabel
+			color = ((GraphicalLabel)label).getFormats().getLineColor();
 		}
 		if (checkColor(color, 
 				document.getTree().getFormats().getBackgroundColor())) {
@@ -220,8 +220,8 @@ public class ContrastManager {
 				if (label instanceof TextLabel) {
 					((TextLabel)label).getFormats().setTextColor(FormatUtils.getTextColor(document));
 				}
-				else {  // IconLabel
-					((IconLabel)label).getFormats().setLineColor(FormatUtils.getTextColor(document));
+				else {  // GraphicalLabel
+					((GraphicalLabel)label).getFormats().setLineColor(FormatUtils.getTextColor(document));
 				}
 			}
 		}

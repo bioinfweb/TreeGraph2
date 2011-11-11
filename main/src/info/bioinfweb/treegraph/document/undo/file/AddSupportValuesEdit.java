@@ -170,7 +170,7 @@ public class AddSupportValuesEdit extends ComplexDocumentEdit {
 	protected void performRedo() {
 		addLeafList(leafValues, document.getTree().getPaintStart(), targetLeafsAdapter);  // Source und target sollten das selbe Ergebnis liefern.
     String errorMsg = compareLeafs();
-    if (errorMsg == null) {
+    if (errorMsg == null) {  // The terminal nodes of both trees are identical.
   		addLeafFields(src.getTree().getPaintStart(), SOURCE_LEAFS_ADAPTER);
       addLeafFields(document.getTree().getPaintStart(), targetLeafsAdapter);
   		processSubtree(document.getTree().getPaintStart());
@@ -200,6 +200,10 @@ public class AddSupportValuesEdit extends ComplexDocumentEdit {
 	}
 	
 	
+	/**
+	 * Checks if both the loaded and the imported tree contain exactly the same terminals.
+	 * @return an error message, if the terminal nodes are not identical or <code>null</code> if they are
+	 */
 	private String compareLeafs() {
 		Vector<TextElementData> sourceLeafValues = new Vector<TextElementData>();
 		addLeafList(sourceLeafValues, src.getTree().getPaintStart(), SOURCE_LEAFS_ADAPTER);
@@ -234,6 +238,11 @@ public class AddSupportValuesEdit extends ComplexDocumentEdit {
 	}
 	
 	
+	/**
+	 * Returns the leaf field attribute of <code>node</code> if it has one attached. If not an according object
+	 * is created first and than returned.
+	 * @param node - the node from which the leaf field attribute shall be returned or created. 
+	 */
 	private LeafField getLeafField(Node node) {
 		if (node.getAttributeMap().get(KEY_LEAF_REFERENCE) == null) {
 			int size = leafValues.size();
