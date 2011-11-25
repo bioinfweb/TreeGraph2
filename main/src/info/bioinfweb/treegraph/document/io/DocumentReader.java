@@ -24,6 +24,7 @@ import info.bioinfweb.treegraph.document.io.log.LoadLogger;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 
 import java.io.*;
+import java.util.Iterator;
 
 
 
@@ -49,4 +50,20 @@ public interface DocumentReader {
 	
 	public Document read(File file, LoadLogger loadLogger, NodeBranchDataAdapter internalAdapter, NodeBranchDataAdapter branchLengthsAdapter,
 			TreeSelector selector, boolean translateInternalNodes) throws Exception;
+	
+	/**
+	 * Implementations of this method should return an iterator that reads the next tree in <code>file</code>, if 
+	 * {@link Iterator#next()} is called. (The single trees must not be loaded at once, but should be loaded one by
+	 * one each time {@link Iterator#next()} is called.)
+	 */
+	public DocumentIterator readAll(InputStream stream, LoadLogger loadLogger, NodeBranchDataAdapter internalAdapter, NodeBranchDataAdapter branchLengthsAdapter,
+			boolean translateInternalNodes) throws Exception;
+
+	/**
+	 * Implementations of this method should return an iterator that reads the next tree in <code>file</code>, if 
+	 * {@link Iterator#next()} is called. (The single trees must not be loaded at once, but should be loaded one by
+	 * one each time {@link Iterator#next()} is called.)
+	 */
+	public DocumentIterator readAll(File file, LoadLogger loadLogger, NodeBranchDataAdapter internalAdapter, NodeBranchDataAdapter branchLengthsAdapter,
+			boolean translateInternalNodes) throws Exception;
 }

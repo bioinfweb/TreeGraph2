@@ -19,18 +19,24 @@
 package info.bioinfweb.treegraph.document.io.newick;
 
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Vector;
 
 import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Tree;
+import info.bioinfweb.treegraph.document.io.AbstractDocumentIterator;
+import info.bioinfweb.treegraph.document.io.DocumentIterator;
 import info.bioinfweb.treegraph.document.io.DocumentReader;
 import info.bioinfweb.treegraph.document.io.TextStreamReader;
 import info.bioinfweb.treegraph.document.io.TreeSelector;
 import info.bioinfweb.treegraph.document.io.log.LoadLogger;
+import info.bioinfweb.treegraph.document.io.nexus.NexusParser;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 
 
@@ -45,6 +51,30 @@ public class NewickReader extends TextStreamReader implements DocumentReader {
 		FREE,
 		NAME,
 		COMMENT;
+	}
+	
+	
+	private class NewickDocumentIterator extends AbstractDocumentIterator {
+		private InputStreamReader streamReader;
+		private NewickStringReader newickReader = new NewickStringReader(); 
+		
+		
+		public NewickDocumentIterator(InputStreamReader reader, LoadLogger loadLogger,
+				NodeBranchDataAdapter internalAdapter,
+				NodeBranchDataAdapter branchLengthsAdapter) {
+			
+			super(loadLogger, internalAdapter, branchLengthsAdapter, false);
+			streamReader = reader;
+		}
+
+
+		@Override
+		public Document next() throws IOException {
+			Document result = new Document();
+			result.setTree(newickReader.read(
+					readNextTree(streamReader), getInternalAdapter(), getBranchLengthsAdapter(), null, false));
+			return result;
+		}
 	}
 	
 	
@@ -64,7 +94,51 @@ public class NewickReader extends TextStreamReader implements DocumentReader {
 	}
 	
 	
+	private String readNextTree(InputStreamReader reader) throws IOException {
+		int code = reader.read();
+		if (code == -1) {
+			return null;
+		}
+		else {
+			StringBuffer result = new StringBuffer(NexusParser.MAX_EXPECTED_COMMAND_LENGTH);
+			
+			Status status = Status.FREE;
+			while (code != -1) {
+				char c = (char)code;  //TODO Konvertierung nachsehen
+				result.append(c);
+				switch (status) {
+				  case FREE:
+						switch (result.charAt(result.length() - 1)) {
+						  case NewickStringChars.NAME_DELIMITER:
+			  				status = Status.NAME;
+			  				break;
+						  case NewickStringChars.COMMENT_START:
+			  				status = Status.COMMENT;
+			  				break;
+						  case NewickStringChars.TERMINAL_SYMBOL:
+						  	return result.toString();
+						}
+						break;
+				  case NAME:
+				  	if (c == NewickStringChars.NAME_DELIMITER) {
+				  		status = Status.FREE;
+				  	}
+				  	break;
+				  case COMMENT:
+				  	if (c == NewickStringChars.COMMENT_END) {
+				  		status = Status.FREE;
+				  	}
+				  	break;
+				}
+			}
+	  	return terminateNewick(result.toString());  // If end of file was reached without a terminal symbol, the sequence until than is returned.
+		}
+	}
+	
+	
 	private String[] splitDocument(String content) {
+		//TODO Methode auf einen einzigen Schleifendurchlauf umstellen und dann direkt aus Datei lesen
+		//TODO hier readNextTree aufrufen und nicht mehr von TextStreamReader erben
 		Vector<Integer> ends = new Vector<Integer>();
 		ends.add(-1);
 		
@@ -151,5 +225,16 @@ public class NewickReader extends TextStreamReader implements DocumentReader {
 		result.setDefaultName(result.getDefaultName().replaceAll(
 				Main.getInstance().getNameManager().getPrefix(), file.getName()));
 		return result;
+	}
+
+
+	@Override
+	public DocumentIterator readAll(InputStream stream, LoadLogger loadLogger,
+			NodeBranchDataAdapter internalAdapter,
+			NodeBranchDataAdapter branchLengthsAdapter, boolean translateInternalNodes)
+			throws Exception {
+
+		InputStreamReader reader = new InputStreamReader(new BufferedInputStream(stream));
+		return new NewickDocumentIterator(reader, loadLogger, internalAdapter, branchLengthsAdapter);
 	}
 }

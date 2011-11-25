@@ -27,6 +27,8 @@ import java.util.regex.Pattern;
 
 
 public class NexusParser {
+	public static final int MAX_EXPECTED_COMMAND_LENGTH = 512 * 1024;
+	
 	public static final String NAME_NEXUS = "#nexus"; 
 	public static final char COMMENT_START = '['; 
 	public static final char COMMENT_END = ']'; 
@@ -54,13 +56,13 @@ public class NexusParser {
 	
 	
   /**
-   * Splite the passed text into Nexus commands. Comments are not removed.
+   * Splits the passed text into Nexus commands. Comments are not removed.
    * @param content
    * @return
    */
   private static NexusCommand[] scan(String content) {
   	Vector<NexusCommand> result  = new Vector<NexusCommand>();
-  	StringBuffer command = new StringBuffer(content.length());
+  	StringBuffer command = new StringBuffer(Math.max(MAX_EXPECTED_COMMAND_LENGTH, content.length())); 
   	for (int i = 0; i < content.length(); i++) {
   		switch (content.charAt(i)) {
   			case COMMENT_START:

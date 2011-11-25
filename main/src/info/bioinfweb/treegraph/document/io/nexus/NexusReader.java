@@ -26,6 +26,7 @@ import java.io.InputStream;
 import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Tree;
+import info.bioinfweb.treegraph.document.io.DocumentIterator;
 import info.bioinfweb.treegraph.document.io.TextStreamReader;
 import info.bioinfweb.treegraph.document.io.TreeSelector;
 import info.bioinfweb.treegraph.document.io.log.LoadLogger;
@@ -73,5 +74,15 @@ public class NexusReader extends TextStreamReader {
 		result.setDefaultName(result.getDefaultName().replaceAll(
 				Main.getInstance().getNameManager().getPrefix(), file.getName()));
 		return result;
+	}
+
+
+	@Override
+	public DocumentIterator readAll(InputStream stream, LoadLogger loadLogger,
+			NodeBranchDataAdapter internalAdapter,
+			NodeBranchDataAdapter branchLengthsAdapter, boolean translateInternalNodes)
+			throws Exception {
+
+		return null;
 	}
 }

@@ -22,6 +22,8 @@ package info.bioinfweb.treegraph.document.io.xtg;
 import info.bioinfweb.treegraph.document.*;
 import info.bioinfweb.treegraph.document.format.*;
 import info.bioinfweb.treegraph.document.io.AbstractDocumentReader;
+import info.bioinfweb.treegraph.document.io.DocumentIterator;
+import info.bioinfweb.treegraph.document.io.SingleDocumentIterator;
 import info.bioinfweb.treegraph.document.io.TreeSelector;
 import info.bioinfweb.treegraph.document.io.log.LoadLogger;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
@@ -647,5 +649,15 @@ public class XTGReader extends AbstractDocumentReader implements XTGConstants {
 				translateInternalNodes);
 		result.setFile(file);
 		return result;
+	}
+
+
+	@Override
+	public DocumentIterator readAll(InputStream stream, LoadLogger loadLogger,
+			NodeBranchDataAdapter internalAdapter,
+			NodeBranchDataAdapter branchLengthsAdapter, boolean translateInternalNodes)
+			throws Exception {
+		
+		return new SingleDocumentIterator(read(stream, loadLogger, internalAdapter, branchLengthsAdapter));
 	}
 }

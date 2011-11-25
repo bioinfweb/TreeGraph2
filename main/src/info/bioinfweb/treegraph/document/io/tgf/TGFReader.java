@@ -29,6 +29,7 @@ import info.bioinfweb.treegraph.document.format.LineFormats;
 import info.bioinfweb.treegraph.document.format.NodeFormats;
 import info.bioinfweb.treegraph.document.format.LabelFormats;
 import info.bioinfweb.treegraph.document.io.AbstractDocumentReader;
+import info.bioinfweb.treegraph.document.io.DocumentIterator;
 import info.bioinfweb.treegraph.document.io.TreeSelector;
 import info.bioinfweb.treegraph.document.io.log.LoadLogger;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
@@ -81,6 +82,16 @@ public class TGFReader extends AbstractDocumentReader {
 		lineWidth.setInMillimeters(LineFormats.DEFAULT_LINE_WIDTH_IN_MM);
 		cornerRadius.setInMillimeters(CornerRadiusFormats.STD_EDGE_RADIUS_IN_MM);
 		
+		return null;
+	}
+
+
+	@Override
+	public DocumentIterator readAll(InputStream stream, LoadLogger loadLogger,
+			NodeBranchDataAdapter internalAdapter,
+			NodeBranchDataAdapter branchLengthsAdapter, boolean translateInternalNodes)
+			throws Exception {
+
 		return null;
 	}
 }

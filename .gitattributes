@@ -211,17 +211,20 @@ main/src/info/bioinfweb/treegraph/document/format/operate/TextOrientationOperato
 main/src/info/bioinfweb/treegraph/document/format/operate/TextStyleOperator.java -text
 main/src/info/bioinfweb/treegraph/document/format/operate/package.html -text
 main/src/info/bioinfweb/treegraph/document/format/package.html -text
+main/src/info/bioinfweb/treegraph/document/io/AbstractDocumentIterator.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/io/AbstractDocumentReader.java -text
 main/src/info/bioinfweb/treegraph/document/io/AbstractDocumentWriter.java -text
 main/src/info/bioinfweb/treegraph/document/io/AbstractFilter.java -text
 main/src/info/bioinfweb/treegraph/document/io/AbstractXMLFilter.java -text
 main/src/info/bioinfweb/treegraph/document/io/DefaultTreeSelector.java -text
 main/src/info/bioinfweb/treegraph/document/io/DocumentFilter.java -text
+main/src/info/bioinfweb/treegraph/document/io/DocumentIterator.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/io/DocumentReader.java -text
 main/src/info/bioinfweb/treegraph/document/io/DocumentWriter.java -text
 main/src/info/bioinfweb/treegraph/document/io/ReadWriteFactory.java -text
 main/src/info/bioinfweb/treegraph/document/io/ReadWriteFactoryException.java -text
 main/src/info/bioinfweb/treegraph/document/io/ReadWriteFormat.java -text
+main/src/info/bioinfweb/treegraph/document/io/SingleDocumentIterator.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/io/SingleReadWriteFactory.java -text
 main/src/info/bioinfweb/treegraph/document/io/SupportedFormatsFilter.java -text
 main/src/info/bioinfweb/treegraph/document/io/TextStreamReader.java -text

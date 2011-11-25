@@ -109,4 +109,14 @@ public abstract class AbstractDocumentReader implements DocumentReader {
 		return read(stream, loadLogger, NodeNameAdapter.getSharedInstance(), BranchLengthAdapter.getSharedInstance(),
 				new DefaultTreeSelector(), false);
 	}
+
+
+	@Override
+	public DocumentIterator readAll(File file, LoadLogger loadLogger,
+			NodeBranchDataAdapter internalAdapter,
+			NodeBranchDataAdapter branchLengthsAdapter, boolean translateInternalNodes)
+			throws Exception {
+
+		return readAll(new FileInputStream(file), loadLogger, internalAdapter, branchLengthsAdapter, translateInternalNodes);
+	}
 }

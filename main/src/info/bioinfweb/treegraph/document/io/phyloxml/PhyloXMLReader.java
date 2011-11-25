@@ -28,6 +28,7 @@ import info.bioinfweb.treegraph.document.TextLabel;
 import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.format.GlobalFormats;
 import info.bioinfweb.treegraph.document.io.AbstractDocumentReader;
+import info.bioinfweb.treegraph.document.io.DocumentIterator;
 import info.bioinfweb.treegraph.document.io.TreeSelector;
 import info.bioinfweb.treegraph.document.io.log.LoadLogger;
 import info.bioinfweb.treegraph.document.io.newick.BranchLengthsScaler;
@@ -390,6 +391,16 @@ public class PhyloXMLReader extends AbstractDocumentReader implements PhyloXMLCo
 	    stream.close();
 		}
     phylogenies.clear();
+		return null;
+	}
+
+
+	@Override
+	public DocumentIterator readAll(InputStream stream, LoadLogger loadLogger,
+			NodeBranchDataAdapter internalAdapter,
+			NodeBranchDataAdapter branchLengthsAdapter, boolean translateInternalNodes)
+			throws Exception {
+
 		return null;
 	}
 }
