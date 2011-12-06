@@ -25,6 +25,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.LinkedList;
 import java.util.Vector;
 
 import info.bioinfweb.treegraph.Main;
@@ -79,7 +80,7 @@ public class NewickReader extends TextStreamReader implements DocumentReader {
 	
 	
 	/**
-	 * Contructs an instance of <code>NewickReader</code>.
+	 * Creates a new instance of <code>NewickReader</code>.
 	 */
 	public NewickReader() {
 		super();
@@ -96,7 +97,7 @@ public class NewickReader extends TextStreamReader implements DocumentReader {
 	
 	private String readNextTree(InputStreamReader reader) throws IOException {
 		int code = reader.read();
-		if (code == -1) {
+		if (code == -1) {  //TODO Wird hier wirklich -1 zurückgegeben, wenn Ende des Streams erreicht ist.
 			return null;
 		}
 		else {
@@ -130,70 +131,76 @@ public class NewickReader extends TextStreamReader implements DocumentReader {
 				  	}
 				  	break;
 				}
+				code = reader.read();
 			}
 	  	return terminateNewick(result.toString());  // If end of file was reached without a terminal symbol, the sequence until than is returned.
 		}
 	}
 	
 	
-	private String[] splitDocument(String content) {
-		//TODO Methode auf einen einzigen Schleifendurchlauf umstellen und dann direkt aus Datei lesen
-		//TODO hier readNextTree aufrufen und nicht mehr von TextStreamReader erben
-		Vector<Integer> ends = new Vector<Integer>();
-		ends.add(-1);
+	private String[] splitDocument(InputStreamReader reader) throws IOException {
+  	LinkedList<String> result = new LinkedList<String>();
+		String tree = readNextTree(reader);
+		while (tree != null) {
+			result.add(tree);
+		}
+		return result.toArray(new String[result.size()]);
 		
-		Status status = Status.FREE;
-		for (int i = 0; i < content.length(); i++) {
-			switch (status) {
-			  case FREE:
-					switch (content.charAt(i)) {
-					  case NewickStringChars.NAME_DELIMITER:
-		  				status = Status.NAME;
-		  				break;
-					  case NewickStringChars.COMMENT_START:
-		  				status = Status.COMMENT;
-		  				break;
-					  case NewickStringChars.TERMINAL_SYMBOL:
-					  	ends.add(i);
-					  	break;
-					}
-					break;
-			  case NAME:
-			  	if (content.charAt(i) == NewickStringChars.NAME_DELIMITER) {
-			  		status = Status.FREE;
-			  	}
-			  	break;
-			  case COMMENT:
-			  	if (content.charAt(i) == NewickStringChars.COMMENT_END) {
-			  		status = Status.FREE;
-			  	}
-			  	break;
-			}
-		}
-		
-		String[] result = new String[0];
-		if (ends.size() == 0) {
-			content = content.trim();
-			if (!content.equals("")) {
-				result = new String[1];
-				result[0] = terminateNewick(content);
-			}
-		}
-		else {
-			String lastTree = content.substring(ends.lastElement() + 1).trim();
-			int addend = 0;
-			if (!lastTree.equals("")) {
-				addend = 1;  // Letzten Eintrag als Newick mit fehlendem ";" behandeln
-			}
-			result = new String[ends.size() - 1 + addend];
-			for (int i = 0; i < ends.size() - 1; i++) {
-				result[i] = terminateNewick(content.substring(ends.get(i) + 1, ends.get(i + 1)).trim());
-			}
-			if (addend == 1) {
-				result[result.length - 1] = terminateNewick(lastTree);  // Es könnte bei einem nicht abgeschlossenen Namen oder Kommentar bereits ein TERMINAL_SYMBOL enthalten sein. Damit im Fehlerdialog kein zweites ; angezeigt wird, prüft die Methode dies.
-			}
-		}
-		return result;
+//		Vector<Integer> ends = new Vector<Integer>();
+//		ends.add(-1);
+//		
+//		Status status = Status.FREE;
+//		for (int i = 0; i < content.length(); i++) {
+//			switch (status) {
+//			  case FREE:
+//					switch (content.charAt(i)) {
+//					  case NewickStringChars.NAME_DELIMITER:
+//		  				status = Status.NAME;
+//		  				break;
+//					  case NewickStringChars.COMMENT_START:
+//		  				status = Status.COMMENT;
+//		  				break;
+//					  case NewickStringChars.TERMINAL_SYMBOL:
+//					  	ends.add(i);
+//					  	break;
+//					}
+//					break;
+//			  case NAME:
+//			  	if (content.charAt(i) == NewickStringChars.NAME_DELIMITER) {
+//			  		status = Status.FREE;
+//			  	}
+//			  	break;
+//			  case COMMENT:
+//			  	if (content.charAt(i) == NewickStringChars.COMMENT_END) {
+//			  		status = Status.FREE;
+//			  	}
+//			  	break;
+//			}
+//		}
+//		
+//		String[] result = new String[0];
+//		if (ends.size() == 0) {
+//			content = content.trim();
+//			if (!content.equals("")) {
+//				result = new String[1];
+//				result[0] = terminateNewick(content);
+//			}
+//		}
+//		else {
+//			String lastTree = content.substring(ends.lastElement() + 1).trim();
+//			int addend = 0;
+//			if (!lastTree.equals("")) {
+//				addend = 1;  // Letzten Eintrag als Newick mit fehlendem ";" behandeln
+//			}
+//			result = new String[ends.size() - 1 + addend];
+//			for (int i = 0; i < ends.size() - 1; i++) {
+//				result[i] = terminateNewick(content.substring(ends.get(i) + 1, ends.get(i + 1)).trim());
+//			}
+//			if (addend == 1) {
+//				result[result.length - 1] = terminateNewick(lastTree);  // Es könnte bei einem nicht abgeschlossenen Namen oder Kommentar bereits ein TERMINAL_SYMBOL enthalten sein. Damit im Fehlerdialog kein zweites ; angezeigt wird, prüft die Methode dies.
+//			}
+//		}
+//		return result;
 	}
 	
 	
@@ -201,7 +208,7 @@ public class NewickReader extends TextStreamReader implements DocumentReader {
 			NodeBranchDataAdapter branchLengthsAdapter,	TreeSelector selector, 
 			boolean translateInternals) throws Exception {
 		
-		String[] parts = splitDocument(readStream(stream));
+		String[] parts = splitDocument(new InputStreamReader(new BufferedInputStream(stream)));
 
 		//
 	  String[] names = new String[parts.length];

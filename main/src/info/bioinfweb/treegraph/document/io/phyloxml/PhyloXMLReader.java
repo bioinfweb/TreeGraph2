@@ -38,6 +38,7 @@ import info.webinsel.util.io.XMLUtils;
 
 import java.awt.Color;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Vector;
 
 import javax.xml.stream.XMLEventReader;
@@ -302,15 +303,23 @@ public class PhyloXMLReader extends AbstractDocumentReader implements PhyloXMLCo
 	}
   
   
-	private void readPhylogeny(StartElement rootElement) throws XMLStreamException {
-		phylogenies.add(new Tree());
+	public Tree readNextTree(XMLEventReader reader, StartElement rootElement) throws XMLStreamException {
+		this.reader = reader;
+		Tree result = readPhylogeny(rootElement);
+		names.clear();
+		return result;
+	}
+	
+	
+	private Tree readPhylogeny(StartElement rootElement) throws XMLStreamException {
 		names.add(DEFAULT_TREE_NAME + phylogenies.size());
-		
-		phylogenies.lastElement().getFormats().setShowRooted(
-        XMLUtils.readBooleanAttr(rootElement, ATTR_ROOTED, GlobalFormats.DEFAULT_SHOW_ROOTED));
-		phylogenies.lastElement().getScaleBar().getData().setText(
-        XMLUtils.readStringAttr(rootElement, ATTR_BRANCH_LENGTH_UNIT, ""));
 
+		Tree result = new Tree();
+		result.getFormats().setShowRooted(
+        XMLUtils.readBooleanAttr(rootElement, ATTR_ROOTED, GlobalFormats.DEFAULT_SHOW_ROOTED));
+		result.getScaleBar().getData().setText(
+        XMLUtils.readStringAttr(rootElement, ATTR_BRANCH_LENGTH_UNIT, ""));
+		
     XMLEvent event = reader.nextEvent();
     while (event.getEventType() != XMLStreamConstants.END_ELEMENT) {
       if (event.getEventType() == XMLStreamConstants.START_ELEMENT) {
@@ -320,9 +329,9 @@ public class PhyloXMLReader extends AbstractDocumentReader implements PhyloXMLCo
           reader.nextEvent();
         }
         else if (element.getName().equals(TAG_CLADE)) {
-        	phylogenies.lastElement().setPaintStart(readSubtree(element, null));
-        	phylogenies.lastElement().assignUniqueNames();  // If nodes without an unique name were present.
-        	phylogenies.lastElement().updateElementSet();
+        	result.setPaintStart(readSubtree(element, null));
+        	result.assignUniqueNames();  // If nodes without an unique name were present.
+        	result.updateElementSet();
           reader.nextEvent();
         }
         else {  // evtl. zusätzlich vorhandenes Element, dass nicht gelesen wird
@@ -333,6 +342,7 @@ public class PhyloXMLReader extends AbstractDocumentReader implements PhyloXMLCo
     }
     
   	BranchLengthsScaler.getSharedInstance().setDefaultAverageScale(phylogenies.lastElement());
+  	return result;
   }
 	
 	
@@ -342,7 +352,7 @@ public class PhyloXMLReader extends AbstractDocumentReader implements PhyloXMLCo
       if (event.getEventType() == XMLStreamConstants.START_ELEMENT) {
       	StartElement element = event.asStartElement();
         if (element.getName().equals(TAG_PHYLOGENY)) {
-         	readPhylogeny(element);
+      		phylogenies.add(readPhylogeny(element));
         }
         else {  // evtl. zusätzlich vorhandenes Element, dass nicht gelesen wird
           XMLUtils.reachElementEnd(reader);  
