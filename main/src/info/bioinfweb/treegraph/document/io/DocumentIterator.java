@@ -23,6 +23,16 @@ import info.bioinfweb.treegraph.document.Document;
 
 
 
+/**
+ * All classes that iterate over documents with multiple trees should implement this interface.
+ * 
+ * @author Ben St&ouml;ver
+ * @since 2.0.48
+ */
 public interface DocumentIterator {
   public Document next() throws Exception;
+  
+  public boolean hasNext() throws Exception;
+  
+  public Document peek() throws Exception;
 }

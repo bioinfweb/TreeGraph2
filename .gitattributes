@@ -263,7 +263,6 @@ main/src/info/bioinfweb/treegraph/document/io/package.html -text
 main/src/info/bioinfweb/treegraph/document/io/phyloxml/PhyloXMLConstants.java -text
 main/src/info/bioinfweb/treegraph/document/io/phyloxml/PhyloXMLFactory.java -text
 main/src/info/bioinfweb/treegraph/document/io/phyloxml/PhyloXMLFilter.java -text
-main/src/info/bioinfweb/treegraph/document/io/phyloxml/PhyloXMLIterator.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/io/phyloxml/PhyloXMLReader.java -text
 main/src/info/bioinfweb/treegraph/document/io/phyloxml/package.html -text
 main/src/info/bioinfweb/treegraph/document/io/tgf/TGFFactory.java -text

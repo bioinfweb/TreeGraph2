@@ -26,7 +26,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
-import java.util.Vector;
 
 import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.treegraph.document.Document;
@@ -57,7 +56,7 @@ public class NewickReader extends TextStreamReader implements DocumentReader {
 	
 	private class NewickDocumentIterator extends AbstractDocumentIterator {
 		private InputStreamReader streamReader;
-		private NewickStringReader newickReader = new NewickStringReader(); 
+		private NewickStringReader newickStringReader = new NewickStringReader(); 
 		
 		
 		public NewickDocumentIterator(InputStreamReader reader, LoadLogger loadLogger,
@@ -70,13 +69,13 @@ public class NewickReader extends TextStreamReader implements DocumentReader {
 
 
 		@Override
-		public Document next() throws IOException {
+		protected Document readNext() throws Exception {
 			Document result = new Document();
-			result.setTree(newickReader.read(
+			result.setTree(newickStringReader.read(
 					readNextTree(streamReader), getInternalAdapter(), getBranchLengthsAdapter(), null, false));
 			return result;
 		}
-	}
+  }
 	
 	
 	/**
@@ -105,7 +104,7 @@ public class NewickReader extends TextStreamReader implements DocumentReader {
 			
 			Status status = Status.FREE;
 			while (code != -1) {
-				char c = (char)code;  //TODO Konvertierung nachsehen
+				char c = (char)code;
 				result.append(c);
 				switch (status) {
 				  case FREE:
@@ -133,7 +132,13 @@ public class NewickReader extends TextStreamReader implements DocumentReader {
 				}
 				code = reader.read();
 			}
-	  	return terminateNewick(result.toString());  // If end of file was reached without a terminal symbol, the sequence until than is returned.
+			String newick = result.toString().trim();
+			if (newick.equals("")) {
+				return null;  // null should be returned already here,  because the file could end with whitespaces
+			}
+			else {
+				return terminateNewick(newick);  // If end of file was reached without a terminal symbol, the sequence until than is returned.
+			}
 		}
 	}
 	
@@ -144,63 +149,7 @@ public class NewickReader extends TextStreamReader implements DocumentReader {
 		while (tree != null) {
 			result.add(tree);
 		}
-		return result.toArray(new String[result.size()]);
-		
-//		Vector<Integer> ends = new Vector<Integer>();
-//		ends.add(-1);
-//		
-//		Status status = Status.FREE;
-//		for (int i = 0; i < content.length(); i++) {
-//			switch (status) {
-//			  case FREE:
-//					switch (content.charAt(i)) {
-//					  case NewickStringChars.NAME_DELIMITER:
-//		  				status = Status.NAME;
-//		  				break;
-//					  case NewickStringChars.COMMENT_START:
-//		  				status = Status.COMMENT;
-//		  				break;
-//					  case NewickStringChars.TERMINAL_SYMBOL:
-//					  	ends.add(i);
-//					  	break;
-//					}
-//					break;
-//			  case NAME:
-//			  	if (content.charAt(i) == NewickStringChars.NAME_DELIMITER) {
-//			  		status = Status.FREE;
-//			  	}
-//			  	break;
-//			  case COMMENT:
-//			  	if (content.charAt(i) == NewickStringChars.COMMENT_END) {
-//			  		status = Status.FREE;
-//			  	}
-//			  	break;
-//			}
-//		}
-//		
-//		String[] result = new String[0];
-//		if (ends.size() == 0) {
-//			content = content.trim();
-//			if (!content.equals("")) {
-//				result = new String[1];
-//				result[0] = terminateNewick(content);
-//			}
-//		}
-//		else {
-//			String lastTree = content.substring(ends.lastElement() + 1).trim();
-//			int addend = 0;
-//			if (!lastTree.equals("")) {
-//				addend = 1;  // Letzten Eintrag als Newick mit fehlendem ";" behandeln
-//			}
-//			result = new String[ends.size() - 1 + addend];
-//			for (int i = 0; i < ends.size() - 1; i++) {
-//				result[i] = terminateNewick(content.substring(ends.get(i) + 1, ends.get(i + 1)).trim());
-//			}
-//			if (addend == 1) {
-//				result[result.length - 1] = terminateNewick(lastTree);  // Es könnte bei einem nicht abgeschlossenen Namen oder Kommentar bereits ein TERMINAL_SYMBOL enthalten sein. Damit im Fehlerdialog kein zweites ; angezeigt wird, prüft die Methode dies.
-//			}
-//		}
-//		return result;
+		return result.toArray(new String[result.size()]);		
 	}
 	
 	
@@ -210,7 +159,6 @@ public class NewickReader extends TextStreamReader implements DocumentReader {
 		
 		String[] parts = splitDocument(new InputStreamReader(new BufferedInputStream(stream)));
 
-		//
 	  String[] names = new String[parts.length];
 		for (int i = 0; i < names.length; i++) {
 			names[i] = "Tree " + i;

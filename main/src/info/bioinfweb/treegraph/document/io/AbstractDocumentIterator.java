@@ -19,21 +19,30 @@
 package info.bioinfweb.treegraph.document.io;
 
 
+import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.io.log.LoadLogger;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 
 
 
+/**
+ * Implements basic functionality to iterate over files (stream data) with multiple trees.
+ * 
+ * @author Ben St&ouml;ver
+ */
 public abstract class AbstractDocumentIterator implements DocumentIterator {
 	private LoadLogger loadLogger;
 	private NodeBranchDataAdapter internalAdapter;
 	private NodeBranchDataAdapter branchLengthsAdapter;
 	private boolean translateInternalNodes;
+	private Document nextDocument = null;
+	private boolean beforeFirst = true;
 	
 	
 	public AbstractDocumentIterator(LoadLogger loadLogger,
 			NodeBranchDataAdapter internalAdapter,
 			NodeBranchDataAdapter branchLengthsAdapter, boolean translateInternalNodes) {
+		
 		super();
 		this.loadLogger = loadLogger;
 		this.internalAdapter = internalAdapter;
@@ -59,5 +68,37 @@ public abstract class AbstractDocumentIterator implements DocumentIterator {
 
 	public boolean isTranslateInternalNodes() {
 		return translateInternalNodes;
+	}
+	
+	
+	private Document getNextDocument() throws Exception {
+		if (beforeFirst) {
+			nextDocument = readNext();
+			beforeFirst = false;
+		}
+		return nextDocument;
+	}
+	
+	
+	protected abstract Document readNext() throws Exception;
+
+	
+	@Override
+	public Document next() throws Exception {
+		Document result = getNextDocument();
+		nextDocument = readNext();
+		return result;
+	}
+
+
+	@Override
+	public boolean hasNext() throws Exception {
+		return getNextDocument() != null;
+	}
+
+
+	@Override
+	public Document peek() throws Exception {
+		return getNextDocument();
 	}
 }

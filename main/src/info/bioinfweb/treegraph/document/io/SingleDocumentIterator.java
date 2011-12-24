@@ -35,11 +35,22 @@ import info.bioinfweb.treegraph.document.Document;
 public class SingleDocumentIterator implements DocumentIterator {
 	private Document document;
 	
-	
 
 	public SingleDocumentIterator(Document document) {
 		super();
 		this.document = document;
+	}
+
+
+	@Override
+	public boolean hasNext() throws Exception {
+		return document != null;
+	}
+
+
+	@Override
+	public Document peek() throws Exception {
+		return document;
 	}
 
 
