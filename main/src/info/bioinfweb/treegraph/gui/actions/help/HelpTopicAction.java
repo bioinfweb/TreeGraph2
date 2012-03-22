@@ -20,13 +20,13 @@ package info.bioinfweb.treegraph.gui.actions.help;
 
 
 import info.bioinfweb.treegraph.Main;
-import info.bioinfweb.treegraph.gui.actions.TreeGraphAction;
+import info.webinsel.util.swing.ExtendedAbstractAction;
 
 import java.awt.event.ActionEvent;
 
 
 
-public class HelpTopicAction extends TreeGraphAction {
+public class HelpTopicAction extends ExtendedAbstractAction {
 	private int topic = -1;
 	
 	

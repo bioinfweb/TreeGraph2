@@ -25,7 +25,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.Action;
 
 import info.bioinfweb.treegraph.Main;
-import info.bioinfweb.treegraph.gui.actions.TreeGraphAction;
+import info.webinsel.util.swing.ExtendedAbstractAction;
 
 
 
@@ -33,7 +33,7 @@ import info.bioinfweb.treegraph.gui.actions.TreeGraphAction;
  * Navigates to the TreeGraph 2 homepage.
  * @author Ben St&ouml;ver
  */
-public class HomepageAction extends TreeGraphAction {
+public class HomepageAction extends ExtendedAbstractAction {
 	public HomepageAction() {
 		super();
 		

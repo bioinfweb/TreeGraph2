@@ -437,7 +437,6 @@ main/src/info/bioinfweb/treegraph/gui/CurrentDirectoryModel.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/ActionManagement.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/DocumentAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/EditDialogAction.java -text
-main/src/info/bioinfweb/treegraph/gui/actions/TreeGraphAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/edit/CalculateColumnAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/edit/ChangeLabelIDAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/edit/CollapseNodeAction.java -text

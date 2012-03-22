@@ -26,11 +26,11 @@ import java.beans.PropertyVetoException;
 import javax.swing.Action;
 import javax.swing.JInternalFrame;
 
-import info.bioinfweb.treegraph.gui.actions.TreeGraphAction;
+import info.webinsel.util.swing.ExtendedAbstractAction;
 
 
 
-public class SelectFrameAction extends TreeGraphAction {
+public class SelectFrameAction extends ExtendedAbstractAction {
   private JInternalFrame frame = null;
   
   

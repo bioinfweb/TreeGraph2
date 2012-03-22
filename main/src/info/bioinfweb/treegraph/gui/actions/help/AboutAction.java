@@ -24,13 +24,13 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.Action;
 
-import info.bioinfweb.treegraph.gui.actions.TreeGraphAction;
 import info.bioinfweb.treegraph.gui.dialogs.AboutDialog;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
+import info.webinsel.util.swing.ExtendedAbstractAction;
 
 
 
-public class AboutAction extends TreeGraphAction {
+public class AboutAction extends ExtendedAbstractAction {
 	private AboutDialog dialog = null;
 	
 	

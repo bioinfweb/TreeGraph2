@@ -27,6 +27,7 @@ import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeInternalFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
+import info.webinsel.util.swing.ExtendedAbstractAction;
 
 
 
@@ -35,7 +36,7 @@ import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
  * opened documents. All subclasses have access 
  * @author Ben St&ouml;ver
  */
-public abstract class DocumentAction extends TreeGraphAction {
+public abstract class DocumentAction extends ExtendedAbstractAction {
 	private MainFrame mainFrame = null;
 	
 	

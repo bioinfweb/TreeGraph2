@@ -19,8 +19,8 @@
 package info.bioinfweb.treegraph.gui.actions.window;
 
 
-import info.bioinfweb.treegraph.gui.actions.TreeGraphAction;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
+import info.webinsel.util.swing.ExtendedAbstractAction;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -29,7 +29,7 @@ import javax.swing.Action;
 
 
 
-public class CascadeAction extends TreeGraphAction {
+public class CascadeAction extends ExtendedAbstractAction {
 	public CascadeAction() {
 		super();
 		putValue(Action.NAME, "Cascade"); 
