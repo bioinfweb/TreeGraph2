@@ -20,17 +20,16 @@ package info.bioinfweb.treegraph.document.undo;
 
 
 import info.bioinfweb.treegraph.document.*;
+import info.webinsel.util.swing.AbstractDocumentEdit;
 
 import javax.swing.undo.CannotRedoException;
-import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoableEdit;
 
 
 
 
-public abstract class DocumentEdit implements UndoableEdit {
+public abstract class DocumentEdit extends AbstractDocumentEdit implements UndoableEdit {
 	protected Document document;
-	private boolean isSubedit = false;
 	
 		
 	public DocumentEdit(Document document) {
@@ -39,73 +38,16 @@ public abstract class DocumentEdit implements UndoableEdit {
 	}
 
 
-	public boolean getIsSubedit() {
-		return isSubedit;
-	}
-
-
-	/**
-	 * Indicates whether this edit is independent or part of another edit. The value of this property
-	 * determines if the document is informed if this edit was redone or undone. 
-	 * @param isSubedit
-	 * @since 2.0.44
-	 */
-	public void setIsSubedit(boolean isSubedit) {
-		this.isSubedit = isSubedit;
-	}
-
-
-	public boolean addEdit(UndoableEdit arg0) {
-		return false;
-	}
-
-	
-	public boolean canRedo() {
-		return true;
-	}
-
-	
-	public boolean canUndo() {
-		return true;
-	}
-
-	
-	public void die() {
-		// Grundimplementierung leer.
-	}
-
-	
-	public String getRedoPresentationName() {
-		return getPresentationName();
-	}
-
-	
-	public String getUndoPresentationName() {
-		return getPresentationName();
-	}
-
-	
-	public boolean isSignificant() {
-		return true;
-	}
-
-	
-	public boolean replaceEdit(UndoableEdit arg0) {
-		return false;
-	}
-
-
 	public void redo() throws CannotRedoException {
+		super.redo();
 		if (!getIsSubedit()) {
 			document.getTree().assignUniqueNames();
-			document.registerChange();
 		}
 	}
 
 
-	public void undo() throws CannotUndoException {
-		if (!getIsSubedit()) {
-			document.registerChange();
-		}
+	@Override
+	public void registerDocumentChange() {
+		document.registerChange();
 	}
 }
