@@ -204,7 +204,6 @@ public class TreeViewPanel extends JPanel implements DocumentListener, Scrollabl
 
 
 	public void paintPreview(Graphics2D g, double scale) {
-  	super.paintComponent(g);
   	((Graphics2D)g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, 
   			RenderingHints.VALUE_ANTIALIAS_ON);
 		PositionPaintFactory.getInstance().getPainter(painterType).paintTree(g, getDocument(), 
