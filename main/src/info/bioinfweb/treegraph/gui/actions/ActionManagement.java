@@ -19,12 +19,12 @@
 package info.bioinfweb.treegraph.gui.actions;
 
 
-import java.awt.Toolkit;
 import java.util.Iterator;
 import java.util.Vector;
 import javax.swing.Action;
+import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
-import javax.swing.KeyStroke;
+import javax.swing.undo.UndoableEdit;
 
 import info.bioinfweb.treegraph.document.*;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
@@ -40,8 +40,8 @@ import info.bioinfweb.treegraph.gui.actions.window.*;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeInternalFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
+import info.webinsel.util.swing.AbstractUndoActionManagement;
 import info.webinsel.util.swing.AccessibleUndoManager;
-import info.webinsel.util.swing.ActionHashMap;
 
 
 
@@ -49,7 +49,7 @@ import info.webinsel.util.swing.ActionHashMap;
  * This class organizes the action objects of TreeGraph.
  * @author Ben St&ouml;ver
  */
-public class ActionManagement extends ActionHashMap {
+public class ActionManagement extends AbstractUndoActionManagement {
 	private MainFrame mainFrame = null;
   private Vector<Action> popupActions = new Vector<Action>();
   private JPopupMenu popupMenu = new JPopupMenu();
@@ -222,48 +222,6 @@ public class ActionManagement extends ActionHashMap {
 	
 	
 	/**
-	 * Sets the contents undo and redo menu or disables them.
-	 * @since 2.0.23
-   */
-	private void editUndoRedoMenus() {
-		if (mainFrame.getActiveTreeFrame() != null) {
-			AccessibleUndoManager undoManager = 
-				  mainFrame.getActiveTreeFrame().getDocument().getUndoManager();
-			
-			mainFrame.getUndoMenu().setEnabled(undoManager.canUndo());
-			mainFrame.getUndoMenu().removeAll();
-			if (undoManager.canUndo()) {
-				UndoToAction action = new UndoToAction(mainFrame, undoManager.getUndoEdit(0));
-				action.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke('Z', 
-						Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-				mainFrame.getUndoMenu().add(action);
-				
-				for (int i = 1; i < undoManager.undoCount(); i++) {
-					mainFrame.getUndoMenu().add(new UndoToAction(mainFrame, undoManager.getUndoEdit(i)));
-				}
-			}
-
-			mainFrame.getRedoMenu().setEnabled(undoManager.canRedo());
-			mainFrame.getRedoMenu().removeAll();
-			if (undoManager.canRedo()) {
-				RedoToAction action = new RedoToAction(mainFrame, undoManager.getRedoEdit(0));
-				action.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke('Y', 
-						Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-				mainFrame.getRedoMenu().add(action);
-				
-				for (int i = 1; i < undoManager.redoCount(); i++) {
-					mainFrame.getRedoMenu().add(new RedoToAction(mainFrame, undoManager.getRedoEdit(i)));
-				}
-			}
-		}
-		else {
-			mainFrame.getUndoMenu().setEnabled(false);
-			mainFrame.getRedoMenu().setEnabled(false);
-		}
-	}
-	
-	
-	/**
 	 * Enables or disables all action objects by calling their 
 	 * <code>setEnabled(Document, TreeSelection)</code>-methods. Additionally the
 	 * undo and redo actions are enabled depending on the contents of the undo manager
@@ -284,8 +242,8 @@ public class ActionManagement extends ActionHashMap {
 		}
 		setActionStatusBySelection(document, selection, tableAdapter);
 		
-		editUndoRedoMenus();
 		if (frame != null) {
+			editUndoRedoMenus();
 			get("edit.undo").setEnabled(frame.getDocument().getUndoManager().canUndo());
 			get("edit.redo").setEnabled(frame.getDocument().getUndoManager().canRedo());
 	
@@ -299,9 +257,41 @@ public class ActionManagement extends ActionHashMap {
 		else {
 			get("edit.undo").setEnabled(false);
 			get("edit.redo").setEnabled(false);
+	  	mainFrame.getUndoMenu().setEnabled(false);
+  		mainFrame.getRedoMenu().setEnabled(false);
 		}
 	}
 	
+
+	@Override
+	protected AccessibleUndoManager getUndoManager() {
+		return mainFrame.getActiveTreeFrame().getDocument().getUndoManager();
+	}
+
+
+	@Override
+	protected JMenu getUndoMenu() {
+		return mainFrame.getUndoMenu();
+	}
+
+
+	@Override
+	protected JMenu getRedoMenu() {
+		return mainFrame.getRedoMenu();
+	}
+
+
+	@Override
+	protected Action createUndoAction(UndoableEdit edit) {
+		return new UndoToAction(mainFrame, edit);
+	}
+
+
+	@Override
+	protected Action createRedoAction(UndoableEdit edit) {
+		return new RedoToAction(mainFrame, edit);
+	}
+
 
 	public JPopupMenu getPopupMenu(PaintableElement selected) {
   	if (selected != null) {
