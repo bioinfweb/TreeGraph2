@@ -21,7 +21,6 @@ package info.bioinfweb.treegraph.gui.dialogs.editelement;
 
 import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.GraphicalLabel;
-import info.bioinfweb.treegraph.document.IDManager;
 import info.bioinfweb.treegraph.document.format.FormatUtils;
 import info.bioinfweb.treegraph.document.format.GraphicalLabelFormats;
 import info.bioinfweb.treegraph.document.undo.edit.InsertLabelsEdit;
@@ -34,7 +33,6 @@ import javax.swing.JPanel;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.border.TitledBorder;
 import java.awt.Font;
@@ -108,14 +106,14 @@ public abstract class NewGraphicalLabelsDialog extends EditDialog {
 	 */
 	protected JPanel getIDPanel() {
 		if (idPanel == null) {
-			GridBagConstraints gridBagConstraints = new GridBagConstraints();
-			gridBagConstraints.fill = GridBagConstraints.BOTH;
-			gridBagConstraints.weightx = 1.0;
 			idPanel = new JPanel();
 			idPanel.setLayout(new GridBagLayout());
 			idPanel.setBorder(BorderFactory.createTitledBorder(null, "Label ID", 
 					TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, 
 					new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
+			GridBagConstraints gridBagConstraints = new GridBagConstraints();
+			gridBagConstraints.fill = GridBagConstraints.BOTH;
+			gridBagConstraints.weightx = 1.0;
 			idPanel.add(getIDComboBox(), gridBagConstraints);
 		}
 		return idPanel;

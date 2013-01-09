@@ -485,6 +485,7 @@ main/src/info/bioinfweb/treegraph/gui/actions/file/ExportTableAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/file/ExportToGraphicAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/file/ExportToNewickNexusAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/file/ExportToPDFAction.java -text
+main/src/info/bioinfweb/treegraph/gui/actions/file/GenerateBayesMultiStateCommandsAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/actions/file/ImportBayesTraitsLogAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/actions/file/ImportTableAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/file/NewDocumentAction.java -text
@@ -588,6 +589,7 @@ main/src/info/bioinfweb/treegraph/gui/dialogs/io/NewickExceptionDialog.java -tex
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/OpenDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/TableSeparatorPanel.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/TreeSelectionDialog.java -text
+main/src/info/bioinfweb/treegraph/gui/dialogs/io/bayesmultistate/GenerateBayesMultiStateCommandsDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttographic/ExportToGraphicDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttographic/JPEGPrefPanel.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttographic/PreferencesPanel.java -text
@@ -603,6 +605,7 @@ main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/RecentlyUsedExpress
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/RenameIDDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdatainput/NewNodeBranchDataInput.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdatainput/NodeBranchDataInput.java -text
+main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdatainput/NodeBranchDataList.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdatainput/NodeDataComboBoxModel.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdatainput/NodeDataInputListener.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/package.html -text

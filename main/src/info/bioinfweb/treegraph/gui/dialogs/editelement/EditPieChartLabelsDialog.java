@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2011  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2013  Ben Stöver, Kai Müller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -19,13 +19,10 @@
 package info.bioinfweb.treegraph.gui.dialogs.editelement;
 
 
-import info.bioinfweb.treegraph.document.ConcretePaintableElement;
 import info.bioinfweb.treegraph.document.PieChartLabel;
 import info.bioinfweb.treegraph.document.undo.edit.PieChartLabelIDsEdit;
 
 import java.awt.Frame;
-import java.util.Iterator;
-import java.util.LinkedList;
 
 
 
@@ -52,11 +49,11 @@ public class EditPieChartLabelsDialog extends NewPieChartLabelsDialog {
 	protected boolean onExecute() {
 		PieChartLabel l = getSelection().getFirstElementOfType(PieChartLabel.class);
 		boolean result = (l != null);
-		if (result) {
-			getListIDComboBox().setIDs(getDocument());
-			getIDListModel().clear();
+		if (result) {		
+			getValuesPanel().setIDs(getDocument());
+			getValuesPanel().getListModel().clear();
 			for (int i = 0; i < l.valueCount(); i++) {
-				getIDListModel().addElement(l.getValueID(i));
+				getValuesPanel().getListModel().addElement(l.getValueID(i));
 			}
 		}
 		return result;
@@ -65,9 +62,9 @@ public class EditPieChartLabelsDialog extends NewPieChartLabelsDialog {
 
 	@Override
 	protected boolean apply() {
-		String[] ids = new String[getIDListModel().size()];
+		String[] ids = new String[getValuesPanel().getListModel().size()];
 		for (int i = 0; i < ids.length; i++) {
-			ids[i] = getIDListModel().get(i).toString();
+			ids[i] = getValuesPanel().getListModel().get(i).toString();
 		}
 
 		getDocument().executeEdit(new PieChartLabelIDsEdit(getDocument(), 
