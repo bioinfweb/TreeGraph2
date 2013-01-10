@@ -54,6 +54,7 @@ public class NodeBranchDataList extends JPanel {
 	private JButton replaceButton = null;
 	private JButton removeButton = null;
 	private JScrollPane idListScrollPane = null;
+	private JButton clearButton;
 
 	
 	public NodeBranchDataList() {
@@ -84,28 +85,28 @@ public class NodeBranchDataList extends JPanel {
 		listScrollPabeGBC.weightx = 1.0;
 		listScrollPabeGBC.weighty = 1.0;
 		listScrollPabeGBC.gridheight = 3;
-		listScrollPabeGBC.insets = new Insets(2, 2, 2, 2);
+		listScrollPabeGBC.insets = new Insets(2, 2, 2, 5);
 		listScrollPabeGBC.gridx = 1;
 		GridBagConstraints removeButtonGBC = new GridBagConstraints();
 		removeButtonGBC.gridx = 2;
-		removeButtonGBC.insets = new Insets(2, 2, 2, 2);
+		removeButtonGBC.insets = new Insets(2, 2, 5, 2);
 		removeButtonGBC.fill = GridBagConstraints.HORIZONTAL;
 		removeButtonGBC.gridy = 2;
 		GridBagConstraints replaceButtonGBC = new GridBagConstraints();
 		replaceButtonGBC.gridx = 2;
-		replaceButtonGBC.insets = new Insets(2, 2, 2, 2);
+		replaceButtonGBC.insets = new Insets(2, 2, 5, 2);
 		replaceButtonGBC.fill = GridBagConstraints.HORIZONTAL;
 		replaceButtonGBC.gridy = 1;
 		GridBagConstraints addButtonGBC = new GridBagConstraints();
 		addButtonGBC.gridx = 2;
-		addButtonGBC.insets = new Insets(2, 2, 2, 2);
+		addButtonGBC.insets = new Insets(2, 2, 5, 2);
 		addButtonGBC.fill = GridBagConstraints.HORIZONTAL;
 		addButtonGBC.gridy = 0;
 		GridBagConstraints listIDComboBoxGBC = new GridBagConstraints();
 		listIDComboBoxGBC.fill = GridBagConstraints.HORIZONTAL;
 		listIDComboBoxGBC.gridy = 0;
 		listIDComboBoxGBC.weightx = 1.0;
-		listIDComboBoxGBC.insets = new Insets(2, 2, 2, 2);
+		listIDComboBoxGBC.insets = new Insets(2, 2, 5, 5);
 		listIDComboBoxGBC.gridx = 1;
 		setLayout(new GridBagLayout());
 		add(getListIDComboBox(), listIDComboBoxGBC);
@@ -113,6 +114,12 @@ public class NodeBranchDataList extends JPanel {
 		add(getReplaceButton(), replaceButtonGBC);
 		add(getRemoveButton(), removeButtonGBC);
 		add(getIdListScrollPane(), listScrollPabeGBC);
+		GridBagConstraints gbc_clearButton = new GridBagConstraints();
+		gbc_clearButton.fill = GridBagConstraints.HORIZONTAL;
+		gbc_clearButton.anchor = GridBagConstraints.NORTH;
+		gbc_clearButton.gridx = 2;
+		gbc_clearButton.gridy = 3;
+		add(getClearButton(), gbc_clearButton);
 	}
 
 
@@ -164,10 +171,10 @@ public class NodeBranchDataList extends JPanel {
 			addButton = new JButton();
 			addButton.setText("Add");
 			addButton.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent e) {
-					getListModel().addElement(getListIDComboBox().getSelectedItem());
-				}
-			});
+						public void actionPerformed(java.awt.event.ActionEvent e) {
+							getListModel().addElement(getListIDComboBox().getSelectedItem());
+						}
+					});
 		}
 		return addButton;
 	}
@@ -183,10 +190,10 @@ public class NodeBranchDataList extends JPanel {
 			replaceButton = new JButton();
 			replaceButton.setText("Replace");
 			replaceButton.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent e) {
-					getListModel().set(getIDList().getSelectedIndex(), getListIDComboBox().getSelectedItem());
-				}
-			});
+						public void actionPerformed(java.awt.event.ActionEvent e) {
+							getListModel().set(getIDList().getSelectedIndex(), getListIDComboBox().getSelectedItem());
+						}
+					});
 		}
 		return replaceButton;
 	}
@@ -202,12 +209,25 @@ public class NodeBranchDataList extends JPanel {
 			removeButton = new JButton();
 			removeButton.setText("Remove");
 			removeButton.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent e) {
-					getListModel().remove(getIDList().getSelectedIndex());
-				}
-			});
+						public void actionPerformed(java.awt.event.ActionEvent e) {
+							getListModel().remove(getIDList().getSelectedIndex());
+						}
+					});
 		}
 		return removeButton;
+	}
+	
+	
+	private JButton getClearButton() {
+		if (clearButton == null) {
+			clearButton = new JButton("Clear");
+			clearButton.addActionListener(new java.awt.event.ActionListener() {
+						public void actionPerformed(java.awt.event.ActionEvent e) {
+							getListModel().clear();
+						}
+					});
+		}
+		return clearButton;
 	}
 
 

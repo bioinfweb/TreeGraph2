@@ -23,7 +23,7 @@ import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.gui.actions.EditDialogAction;
 import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
-import info.bioinfweb.treegraph.gui.dialogs.io.bayesmultistate.GenerateBayesMultiStateCommandsDialog;
+import info.bioinfweb.treegraph.gui.dialogs.io.ancestralstate.GenerateBayesMultiStateCommandsDialog;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 

@@ -16,28 +16,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.gui.dialogs.io.bayesmultistate;
+package info.bioinfweb.treegraph.gui.dialogs.io.ancestralstate;
 
 
 import java.awt.Frame;
 
 import javax.swing.BoxLayout;
-import javax.swing.DefaultListModel;
+import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 
 import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
+import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataList;
+
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import javax.swing.JTextField;
 import java.awt.Insets;
-import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.border.TitledBorder;
 import javax.swing.UIManager;
 import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
 
 
 
@@ -50,10 +50,10 @@ public class GenerateBayesMultiStateCommandsDialog extends EditDialog {
 	private JLabel lblOutputFolder;
 	private JTextField filePrefixTextField;
 	private JPanel nodesPanel;
-	private JRadioButton rdbtnAllNodesIn;
-	private JRadioButton rdbtnOnlySelectedNodes;
-	private JPanel charactersPpanel;
-	private JScrollPane scrollPane;
+	private ButtonGroup nodesButtonGroup = null;
+	private JRadioButton allNodesRadioButton;
+	private JRadioButton selectedNodesRadioButton;
+	private NodeBranchDataList charactersPanel;
 
 	
 	public GenerateBayesMultiStateCommandsDialog(Frame owner) {
@@ -84,7 +84,7 @@ public class GenerateBayesMultiStateCommandsDialog extends EditDialog {
 	 * @return void
 	 */
 	private void initialize() {
-		setTitle("Export node/branch data");
+		setTitle("Generate BayesTraits input files");
 		setContentPane(getJContentPane());
 		pack();
 	}
@@ -101,7 +101,7 @@ public class GenerateBayesMultiStateCommandsDialog extends EditDialog {
 			jContentPane.setLayout(new BoxLayout(getJContentPane(), BoxLayout.Y_AXIS));
 			jContentPane.add(getFilesPanel());
 			jContentPane.add(getNodesPanel());
-			jContentPane.add(getCharactersPpanel());
+			jContentPane.add(getCharactersPanel());
 			jContentPane.add(getButtonsPanel(), null);
 			getApplyButton().setVisible(false);
 		}
@@ -179,6 +179,8 @@ public class GenerateBayesMultiStateCommandsDialog extends EditDialog {
 	
 	private JPanel getNodesPanel() {
 		if (nodesPanel == null) {
+			getNodesButtonGroup();
+			
 			nodesPanel = new JPanel();
 			nodesPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Nodes to be reconstructed", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 			GridBagLayout gbl_nodesPanel = new GridBagLayout();
@@ -187,59 +189,54 @@ public class GenerateBayesMultiStateCommandsDialog extends EditDialog {
 			gbl_nodesPanel.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 			gbl_nodesPanel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 			nodesPanel.setLayout(gbl_nodesPanel);
-			GridBagConstraints gbc_rdbtnAllNodesIn = new GridBagConstraints();
-			gbc_rdbtnAllNodesIn.insets = new Insets(0, 0, 0, 5);
-			gbc_rdbtnAllNodesIn.gridx = 0;
-			gbc_rdbtnAllNodesIn.gridy = 0;
-			nodesPanel.add(getRdbtnAllNodesIn(), gbc_rdbtnAllNodesIn);
-			GridBagConstraints gbc_rdbtnOnlySelectedNodes = new GridBagConstraints();
-			gbc_rdbtnOnlySelectedNodes.gridx = 1;
-			gbc_rdbtnOnlySelectedNodes.gridy = 0;
-			nodesPanel.add(getRdbtnOnlySelectedNodes(), gbc_rdbtnOnlySelectedNodes);
+			
+			GridBagConstraints gbc_allNodesRadioButton = new GridBagConstraints();
+			gbc_allNodesRadioButton.insets = new Insets(0, 0, 0, 5);
+			gbc_allNodesRadioButton.gridx = 0;
+			gbc_allNodesRadioButton.gridy = 0;
+			nodesPanel.add(getAllNodesRadioButton(), gbc_allNodesRadioButton);
+
+			GridBagConstraints gbc_selectedNodesRadioButton = new GridBagConstraints();
+			gbc_selectedNodesRadioButton.gridx = 1;
+			gbc_selectedNodesRadioButton.gridy = 0;
+			nodesPanel.add(getSelectedNodesRadioButton(), gbc_selectedNodesRadioButton);
 		}
 		return nodesPanel;
 	}
 	
 	
-	private JRadioButton getRdbtnAllNodesIn() {
-		if (rdbtnAllNodesIn == null) {
-			rdbtnAllNodesIn = new JRadioButton("All nodes in the document");
-			rdbtnAllNodesIn.setSelected(true);
+	public ButtonGroup getNodesButtonGroup() {
+		if (nodesButtonGroup == null) {
+			nodesButtonGroup = new ButtonGroup();
+			nodesButtonGroup.add(getAllNodesRadioButton());
+			nodesButtonGroup.add(getSelectedNodesRadioButton());
 		}
-		return rdbtnAllNodesIn;
+		return nodesButtonGroup;
+	}
+
+
+	private JRadioButton getAllNodesRadioButton() {
+		if (allNodesRadioButton == null) {
+			allNodesRadioButton = new JRadioButton("All nodes in the document");
+			allNodesRadioButton.setSelected(true);
+		}
+		return allNodesRadioButton;
 	}
 	
 	
-	private JRadioButton getRdbtnOnlySelectedNodes() {
-		if (rdbtnOnlySelectedNodes == null) {
-			rdbtnOnlySelectedNodes = new JRadioButton("Only selected nodes");
+	private JRadioButton getSelectedNodesRadioButton() {
+		if (selectedNodesRadioButton == null) {
+			selectedNodesRadioButton = new JRadioButton("Only selected nodes");
 		}
-		return rdbtnOnlySelectedNodes;
+		return selectedNodesRadioButton;
 	}
 	
 	
-	private JPanel getCharactersPpanel() {
-		if (charactersPpanel == null) {
-			charactersPpanel = new JPanel();
-			charactersPpanel.setBorder(new TitledBorder(null, "Characters", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-			GridBagLayout gbl_charactersPpanel = new GridBagLayout();
-			gbl_charactersPpanel.columnWidths = new int[]{0, 0};
-			gbl_charactersPpanel.rowHeights = new int[]{0, 0};
-			gbl_charactersPpanel.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-			gbl_charactersPpanel.rowWeights = new double[]{1.0, Double.MIN_VALUE};
-			charactersPpanel.setLayout(gbl_charactersPpanel);
-			GridBagConstraints gbc_scrollPane = new GridBagConstraints();
-			gbc_scrollPane.fill = GridBagConstraints.BOTH;
-			gbc_scrollPane.gridx = 0;
-			gbc_scrollPane.gridy = 0;
-			charactersPpanel.add(getScrollPane(), gbc_scrollPane);
+	private NodeBranchDataList getCharactersPanel() {
+		if (charactersPanel == null) {
+			charactersPanel = new NodeBranchDataList();
+			charactersPanel.setBorder(new TitledBorder(null, "Characters", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		}
-		return charactersPpanel;
-	}
-	private JScrollPane getScrollPane() {
-		if (scrollPane == null) {
-			scrollPane = new JScrollPane();
-		}
-		return scrollPane;
+		return charactersPanel;
 	}
 }
