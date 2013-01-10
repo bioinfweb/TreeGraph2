@@ -47,8 +47,13 @@ public class GenerateBayesMultiStateCommandsAction extends EditDialogAction {
 	}
 
 
+	/**
+	 * Tests if at least one internal node in present in the document.
+	 * @see info.bioinfweb.treegraph.gui.actions.DocumentAction#setEnabled(info.bioinfweb.treegraph.document.Document, info.bioinfweb.treegraph.gui.treeframe.TreeSelection, info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter)
+	 */
 	@Override
 	public void setEnabled(Document document, TreeSelection selection, NodeBranchDataAdapter tableAdapter) {
-		setEnabled((document != null) && (!document.getTree().isEmpty()));  //TODO Macht eigentlich nur Sinn, wenn ein mindestens ein Elternknoten vorhanden ist.
+		setEnabled((document != null) && !document.getTree().isEmpty() && 
+				(document.getTree().getPaintStart().getChildren().size() >= 2));
 	}
 }

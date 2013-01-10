@@ -31,7 +31,8 @@ import javax.swing.ComboBoxModel;
 
 
 /**
- * Model for a cambo box displaying node/branch data.
+ * Model for a combo box displaying node/branch data.
+ * 
  * @author Ben St&ouml;ver
  */
 public class NodeDataComboBoxModel extends AbstractListModel implements ComboBoxModel {
@@ -40,7 +41,7 @@ public class NodeDataComboBoxModel extends AbstractListModel implements ComboBox
 	
 
 	/**
-   * Equvilent to a call of <code>setAdapters(tree, true, false, false)</code>.
+   * Equivalent to a call of <code>setAdapters(tree, true, false, false)</code>.
    * @param tree
    * @see info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeDataComboBoxModel#setAdapters(Tree, boolean, boolean)
    */

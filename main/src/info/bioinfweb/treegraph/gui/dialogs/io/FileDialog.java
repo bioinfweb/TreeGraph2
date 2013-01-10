@@ -34,6 +34,7 @@ import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
 
 /**
  * All dialogs that deal with files should be inherited from this class.
+ * 
  * @author Ben St&ouml;ver
  */
 public abstract class FileDialog extends EditDialog {
@@ -83,8 +84,8 @@ public abstract class FileDialog extends EditDialog {
 	 * @return
 	 */
 	protected abstract boolean onApply(File file);
-
-
+	
+	
 	@Override
 	protected boolean apply() {
 		if (getFileChooser().getUI() instanceof BasicFileChooserUI) {
@@ -93,13 +94,6 @@ public abstract class FileDialog extends EditDialog {
 		else {
 			getFileChooser().approveSelection();
 		}
-//		else {
-//			JOptionPane.showMessageDialog(MainFrame.getInstance(), "TreeGraph 2 could not " +
-//					"access necessary classes. This may be due to the java virtual machine you " +
-//					"are using. Please make sure that the selected file name is displayed in " +
-//					"file name text field or use the sun java virtual machine.", "Warning", 
-//					JOptionPane.WARNING_MESSAGE);
-//		}
     
 		File file = getSelectedFile(); 
 		if (file != null) {

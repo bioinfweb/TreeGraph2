@@ -41,3 +41,4 @@ Class-Path: lib/batik-anim.jar
             lib/ext-1.1.1.jar
             lib/jep-2.4.1.jar
             lib/UpdateCenterClient.jar
+            lib/l2fprod-common-directorychooser-7.3.jar

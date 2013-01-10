@@ -22,6 +22,7 @@ package info.bioinfweb.treegraph.gui.dialogs;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.IDManager;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataInput;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
@@ -29,7 +30,10 @@ import javax.swing.JComboBox;
 
 
 /**
- * Component used to select data IDs (for labels, hidden node/branch data).
+ * Component used to select data IDs (for labels, hidden node/branch data). (This component can only be used to
+ * choose from a list of IDs. If you want to choose a concrete node/branch data column, use {@link NodeBranchDataInput}
+ * instead.)
+ * 
  * @author Ben St&ouml;ver
  * @since 2.0.43
  */

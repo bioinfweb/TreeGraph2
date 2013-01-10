@@ -376,7 +376,7 @@ public class AboutDialog extends JDialog {
 					"or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for " +
 					"more details.</p>" +
 					
-  				"<p>The included Apache Batic Libraries are distributed under " +
+  				"<p>The included Apache Batic and l2fprod-common Libraries are distributed under " +
 					"Apache Public Licence (see Apache Public Licence tab).</p>" +
 					
 					"<p><b>The following libraries are used by TreeGraph 2:</b></p>" +

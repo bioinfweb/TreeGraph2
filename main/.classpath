@@ -38,5 +38,6 @@
 	<classpathentry kind="lib" path="include/lib/xml-apis-ext.jar"/>
 	<classpathentry kind="lib" path="include/lib/xml-apis.jar"/>
 	<classpathentry kind="lib" path="/_Lib/bin" sourcepath="/_Lib/src"/>
+	<classpathentry kind="lib" path="include/lib/l2fprod-common-directorychooser-7.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

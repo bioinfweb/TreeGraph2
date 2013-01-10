@@ -73,7 +73,7 @@ public class NodeBranchDataInput {
   
   
   /**
-   * Refeshs the selectable node data adapters.
+   * Refreshes the selectable node data adapters.
    * @param tree - the tree which contains the data
    */
   public void setAdapters(Tree tree) {
