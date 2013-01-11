@@ -35,6 +35,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListModel;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -49,17 +50,20 @@ import javax.swing.event.ListSelectionListener;
  */
 public class NodeBranchDataList extends JPanel {
 	private DataIDComboBox listIDComboBox = null;
-	private JList idList = null;
+	private JList<String> idList = null;
 	private JButton addButton = null;
 	private JButton replaceButton = null;
 	private JButton removeButton = null;
 	private JScrollPane idListScrollPane = null;
 	private JButton clearButton;
+	private JButton moveDownButton;
+	private JButton moveUpButton;
 
 	
 	public NodeBranchDataList() {
 	  super();
 	  initialize();
+	  setButtonStatus();
   }
 	
 	
@@ -68,15 +72,48 @@ public class NodeBranchDataList extends JPanel {
   }
 	
 	
-	public DefaultListModel getListModel() {
-		return (DefaultListModel)getIDList().getModel();
+	public boolean isEnabled() {
+		return getIDList().isEnabled();  // A button can't be used here, because setButtonStatus() would not work anymore than.
+  }
+
+
+	public void setEnabled(boolean flag) {
+	  getListIDComboBox().setEnabled(flag);
+	  getIDList().setEnabled(flag);
+	  setButtonStatus();
+  }
+	
+	
+	private void setButtonStatus() {
+		if (isEnabled()) {
+			boolean notEmpty = !getListModel().isEmpty();
+			getRemoveButton().setEnabled(notEmpty);
+			getClearButton().setEnabled(notEmpty);
+			getReplaceButton().setEnabled(notEmpty);
+		  getClearButton().setEnabled(notEmpty);
+		  getMoveUpButton().setEnabled(getIDList().getSelectedIndex() > 0);
+		  getMoveDownButton().setEnabled(getIDList().getSelectedIndex() < getListModel().size() - 1);
+		}
+		else {
+		  getAddButton().setEnabled(false);
+		  getRemoveButton().setEnabled(false);
+		  getReplaceButton().setEnabled(false);
+		  getClearButton().setEnabled(false);
+		  getMoveUpButton().setEnabled(false);
+		  getMoveDownButton().setEnabled(false);
+		}
+	}
+
+
+	public DefaultListModel<String> getListModel() {
+		return (DefaultListModel<String>)getIDList().getModel();
 	}
 	
 	
-	public void setListModel(DefaultListModel model) {
-		getIDList().setModel(model);
-	}
-	                                           
+	public ListSelectionModel getSelectionModel() {
+	  return idList.getSelectionModel();
+  }
+
 
 	private void initialize() {
 		GridBagConstraints listScrollPabeGBC = new GridBagConstraints();
@@ -84,8 +121,8 @@ public class NodeBranchDataList extends JPanel {
 		listScrollPabeGBC.gridy = 1;
 		listScrollPabeGBC.weightx = 1.0;
 		listScrollPabeGBC.weighty = 1.0;
-		listScrollPabeGBC.gridheight = 3;
-		listScrollPabeGBC.insets = new Insets(2, 2, 2, 5);
+		listScrollPabeGBC.gridheight = 5;
+		listScrollPabeGBC.insets = new Insets(2, 2, 5, 5);
 		listScrollPabeGBC.gridx = 1;
 		GridBagConstraints removeButtonGBC = new GridBagConstraints();
 		removeButtonGBC.gridx = 2;
@@ -115,11 +152,25 @@ public class NodeBranchDataList extends JPanel {
 		add(getRemoveButton(), removeButtonGBC);
 		add(getIdListScrollPane(), listScrollPabeGBC);
 		GridBagConstraints gbc_clearButton = new GridBagConstraints();
+		gbc_clearButton.insets = new Insets(0, 0, 5, 0);
 		gbc_clearButton.fill = GridBagConstraints.HORIZONTAL;
 		gbc_clearButton.anchor = GridBagConstraints.NORTH;
 		gbc_clearButton.gridx = 2;
 		gbc_clearButton.gridy = 3;
 		add(getClearButton(), gbc_clearButton);
+		GridBagConstraints gbc_moveUpButton = new GridBagConstraints();
+		gbc_moveUpButton.anchor = GridBagConstraints.NORTH;
+		gbc_moveUpButton.fill = GridBagConstraints.HORIZONTAL;
+		gbc_moveUpButton.insets = new Insets(0, 0, 5, 0);
+		gbc_moveUpButton.gridx = 2;
+		gbc_moveUpButton.gridy = 4;
+		add(getMoveUpButton(), gbc_moveUpButton);
+		GridBagConstraints gbc_moveDownButton = new GridBagConstraints();
+		gbc_moveDownButton.anchor = GridBagConstraints.NORTH;
+		gbc_moveDownButton.fill = GridBagConstraints.HORIZONTAL;
+		gbc_moveDownButton.gridx = 2;
+		gbc_moveDownButton.gridy = 5;
+		add(getMoveDownButton(), gbc_moveDownButton);
 	}
 
 
@@ -141,9 +192,14 @@ public class NodeBranchDataList extends JPanel {
 	 * 	
 	 * @return javax.swing.JList	
 	 */
-	protected JList getIDList() {
+	protected JList<String> getIDList() {
 		if (idList == null) {
-			idList = new JList(new DefaultListModel());
+			idList = new JList<String>(new DefaultListModel<String>());
+			idList.addListSelectionListener(new ListSelectionListener() {
+						public void valueChanged(ListSelectionEvent e) {
+						  setButtonStatus();
+						}
+					});
 			idList.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 						@Override
 						public void valueChanged(ListSelectionEvent e) {
@@ -231,6 +287,38 @@ public class NodeBranchDataList extends JPanel {
 	}
 
 
+	private JButton getMoveDownButton() {
+		if (moveDownButton == null) {
+			moveDownButton = new JButton("Move down");
+			moveDownButton.addActionListener(new java.awt.event.ActionListener() {
+						public void actionPerformed(java.awt.event.ActionEvent e) {
+							int index = getIDList().getSelectedIndex();
+							String id = getListModel().remove(index);
+							getListModel().add(index + 1, id);
+							getIDList().setSelectedIndex(index + 1);
+						}
+					});
+		}
+		return moveDownButton;
+	}
+	
+	
+	private JButton getMoveUpButton() {
+		if (moveUpButton == null) {
+			moveUpButton = new JButton("Move up");
+			moveUpButton.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+					int index = getIDList().getSelectedIndex();
+					String id = getListModel().remove(index);
+					getListModel().add(index - 1, id);
+					getIDList().setSelectedIndex(index - 1);
+				}
+			});
+		}
+		return moveUpButton;
+	}
+
+	
 	/**
 	 * This method initializes idListScrollPane	
 	 * 	

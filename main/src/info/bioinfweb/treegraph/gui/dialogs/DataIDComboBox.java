@@ -37,9 +37,9 @@ import javax.swing.JComboBox;
  * @author Ben St&ouml;ver
  * @since 2.0.43
  */
-public class DataIDComboBox extends JComboBox {
+public class DataIDComboBox extends JComboBox<String> {
 	public DataIDComboBox(boolean allowNewIDS) {
-		super(new DefaultComboBoxModel());
+		super(new DefaultComboBoxModel<String>());
 		setEditable(allowNewIDS);
 	}
 	
@@ -47,7 +47,7 @@ public class DataIDComboBox extends JComboBox {
 	public void setIDs(Document document) {
 		Node root = document.getTree().getPaintStart();
 		if (root != null) {
-			DefaultComboBoxModel model = getModel();
+			DefaultComboBoxModel<String> model = getModel();
 			model.removeAllElements();
 			String[] ids = IDManager.getIDs(document.getTree().getPaintStart());
 			for (int i = 0; i < ids.length; i++) {
@@ -58,7 +58,13 @@ public class DataIDComboBox extends JComboBox {
 
 
 	@Override
-	public DefaultComboBoxModel getModel() {
-		return (DefaultComboBoxModel)super.getModel();
+  public String getSelectedItem() {
+	  return (String)super.getSelectedItem();
+  }
+
+
+	@Override
+	public DefaultComboBoxModel<String> getModel() {
+		return (DefaultComboBoxModel<String>)super.getModel();
 	}
 }

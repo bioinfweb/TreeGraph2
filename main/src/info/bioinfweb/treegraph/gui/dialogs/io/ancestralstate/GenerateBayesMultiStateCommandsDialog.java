@@ -44,6 +44,7 @@ import com.l2fprod.common.swing.JDirectoryChooser;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JCheckBox;
 
 
 
@@ -61,7 +62,7 @@ public class GenerateBayesMultiStateCommandsDialog extends EditDialog {
 	private ButtonGroup nodesButtonGroup = null;
 	private JRadioButton allNodesRadioButton;
 	private JRadioButton selectedNodesRadioButton;
-	private NodeBranchDataList charactersPanel;
+	private NodeBranchDataList charactersColumnsPanel;
 	private JPanel nodeTypePanel;
 	private JRadioButton addNodeRadioButton;
 	private JRadioButton addMRCARadioButton;
@@ -71,6 +72,8 @@ public class GenerateBayesMultiStateCommandsDialog extends EditDialog {
 	private JLabel dependantCommandLabel;
 	private ButtonGroup commandTypeButtonGroup = null;
 	private NodeBranchDataInput commandTypeColumnInput = null;
+	private JPanel charactersPanel;
+	private JCheckBox chckbxGenerateCharactersFile;
 
 	
 	public GenerateBayesMultiStateCommandsDialog(Frame owner) {
@@ -83,7 +86,7 @@ public class GenerateBayesMultiStateCommandsDialog extends EditDialog {
 	
 	@Override
   protected boolean onExecute() {
-		getCharactersPanel().setIDs(getDocument());
+		getCharactersColumnsPanel().setIDs(getDocument());
 		getCommandTypeColumnInput().setAdapters(getDocument().getTree());
 	  return true;
   }
@@ -278,12 +281,11 @@ public class GenerateBayesMultiStateCommandsDialog extends EditDialog {
 	}
 	
 	
-	private NodeBranchDataList getCharactersPanel() {
-		if (charactersPanel == null) {
-			charactersPanel = new NodeBranchDataList();
-			charactersPanel.setBorder(new TitledBorder(null, "Characters", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+	private NodeBranchDataList getCharactersColumnsPanel() {
+		if (charactersColumnsPanel == null) {
+			charactersColumnsPanel = new NodeBranchDataList();
 		}
-		return charactersPanel;
+		return charactersColumnsPanel;
 	}
 	
 	
@@ -401,5 +403,37 @@ public class GenerateBayesMultiStateCommandsDialog extends EditDialog {
 			dependantCommandLabel = new JLabel("Choose dependant on the following node/branch data column");
 		}
 		return dependantCommandLabel;
+	}
+	private JPanel getCharactersPanel() {
+		if (charactersPanel == null) {
+			charactersPanel = new JPanel();
+			charactersPanel.setBorder(new TitledBorder(null, "Characters", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+			GridBagLayout gbl_charactersPanel = new GridBagLayout();
+			gbl_charactersPanel.columnWidths = new int[]{390, 0};
+			gbl_charactersPanel.rowHeights = new int[]{0, 191, 0};
+			gbl_charactersPanel.columnWeights = new double[]{0.0, Double.MIN_VALUE};
+			gbl_charactersPanel.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+			charactersPanel.setLayout(gbl_charactersPanel);
+			GridBagConstraints gbc_chckbxGenerateCharactersFile = new GridBagConstraints();
+			gbc_chckbxGenerateCharactersFile.anchor = GridBagConstraints.WEST;
+			gbc_chckbxGenerateCharactersFile.insets = new Insets(0, 0, 5, 0);
+			gbc_chckbxGenerateCharactersFile.gridx = 0;
+			gbc_chckbxGenerateCharactersFile.gridy = 0;
+			charactersPanel.add(getChckbxGenerateCharactersFile(), gbc_chckbxGenerateCharactersFile);
+			GridBagConstraints gbc_charactersColumnsPanel = new GridBagConstraints();
+			gbc_charactersColumnsPanel.fill = GridBagConstraints.BOTH;
+			gbc_charactersColumnsPanel.gridx = 0;
+			gbc_charactersColumnsPanel.gridy = 1;
+			charactersPanel.add(getCharactersColumnsPanel(), gbc_charactersColumnsPanel);
+		}
+		return charactersPanel;
+	}
+	
+	
+	private JCheckBox getChckbxGenerateCharactersFile() {
+		if (chckbxGenerateCharactersFile == null) {
+			chckbxGenerateCharactersFile = new JCheckBox("Generate characters file from node/branch data columns");
+		}
+		return chckbxGenerateCharactersFile;
 	}
 }

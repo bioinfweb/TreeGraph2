@@ -55,6 +55,9 @@ public class EditPieChartLabelsDialog extends NewPieChartLabelsDialog {
 			for (int i = 0; i < l.valueCount(); i++) {
 				getValuesPanel().getListModel().addElement(l.getValueID(i));
 			}
+			if (!getValuesPanel().getListModel().isEmpty()) {
+				getValuesPanel().getSelectionModel().setSelectionInterval(0, 0);
+			}
 		}
 		return result;
 	}
