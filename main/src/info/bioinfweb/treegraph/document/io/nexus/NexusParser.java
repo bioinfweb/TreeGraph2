@@ -97,7 +97,7 @@ public class NexusParser {
   
   
   /**
-   * Returns the index of the next occurence of <code>character</code> after <code>start</code>
+   * Returns the index of the next occurrence of <code>character</code> after <code>start</code>
    * which is not located inside a comment.
    * @param text - the text to be searched
    * @param start - the position to start searching
@@ -120,7 +120,7 @@ public class NexusParser {
   
   
   /**
-   * Returns the specified string without any comments (seperated by "[" and "]").
+   * Returns the specified string without any comments (separated by "[" and "]").
    * @param content
    * @return
    */
@@ -141,7 +141,7 @@ public class NexusParser {
   
   
   /**
-   * Searches for the first occurence of the given command.
+   * Searches for the first occurrence of the given command.
    * @param commands - the list if all commands
    * @param start - the command index to start the search
    * @param end - the command index to stop the search

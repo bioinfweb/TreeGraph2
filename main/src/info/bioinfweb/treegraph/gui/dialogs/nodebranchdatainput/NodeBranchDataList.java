@@ -113,6 +113,15 @@ public class NodeBranchDataList extends JPanel {
 	public ListSelectionModel getSelectionModel() {
 	  return idList.getSelectionModel();
   }
+	
+	
+	/**
+	 * Returns <code>true</code> if the combo box of this component contains IDs that can be added to the list.
+	 * (Note that you might have to call {@link #setIDs(Document)}) before calling this method.)
+	 */
+	public boolean containsIDsToAdd() {
+		return getListIDComboBox().getModel().getSize() > 0;
+	}
 
 
 	private void initialize() {

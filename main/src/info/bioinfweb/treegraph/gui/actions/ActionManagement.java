@@ -80,7 +80,7 @@ public class ActionManagement extends AbstractUndoActionManagement {
 		put("file.importTable", new ImportTableAction(mainFrame));
 		put("file.exportTable", new ExportTableAction(mainFrame));
 		put("file.applyNameTable", new ApplyNameTableAction(mainFrame));
-		put("file.generateBayesTraitsCommandFile", new GenerateBayesMultiStateCommandsAction(mainFrame));
+		put("file.generateBayesTraitsCommandFile", new GenerateBayesTraitsCommandsAction(mainFrame));
 		put("file.exit", new ExitAction(mainFrame));
 		
 		put("select.all", new SelectAllAction(mainFrame));
