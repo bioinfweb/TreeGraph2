@@ -23,8 +23,8 @@ import java.awt.GridBagConstraints;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
-import info.bioinfweb.treegraph.graphics.export.GraphicWriterHints;
 import info.bioinfweb.treegraph.graphics.export.tiff.TIFFWriter;
+import info.webinsel.util.collections.ParameterMap;
 
 
 
@@ -34,7 +34,7 @@ public class TIFFPrefPanel extends TransparentBgPrefPanel {
 	
 	
 	@Override
-	public void addHints(GraphicWriterHints hints) {
+	public void addHints(ParameterMap hints) {
 		super.addHints(hints);
 		hints.put(TIFFWriter.KEY_TIFF_COMPRESSION_METHOD, 
 				getCompressionMethodComboBox().getSelectedItem().toString());

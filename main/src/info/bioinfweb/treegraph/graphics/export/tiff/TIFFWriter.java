@@ -20,8 +20,8 @@ package info.bioinfweb.treegraph.graphics.export.tiff;
 
 
 import info.bioinfweb.treegraph.graphics.export.GraphicWriter;
-import info.bioinfweb.treegraph.graphics.export.GraphicWriterHints;
 import info.bioinfweb.treegraph.graphics.export.SVGTranscodeWriter;
+import info.webinsel.util.collections.ParameterMap;
 
 import org.apache.batik.transcoder.Transcoder;
 import org.apache.batik.transcoder.image.TIFFTranscoder;
@@ -39,7 +39,7 @@ public class TIFFWriter extends SVGTranscodeWriter implements GraphicWriter {
 
 
 	@Override
-	protected void addTranscodingHints(Transcoder transcoder, GraphicWriterHints writerHints) {
+	protected void addTranscodingHints(Transcoder transcoder, ParameterMap writerHints) {
 		super.addTranscodingHints(transcoder, writerHints);
 		transcoder.addTranscodingHint(TIFFTranscoder.KEY_COMPRESSION_METHOD, 
 				writerHints.getString(KEY_TIFF_COMPRESSION_METHOD, DEFAULT_COMPRESSION_METHOD));

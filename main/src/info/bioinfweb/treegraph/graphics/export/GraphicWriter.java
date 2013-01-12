@@ -24,6 +24,7 @@ import java.io.OutputStream;
 
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.graphics.positionpaint.TreePainter;
+import info.webinsel.util.collections.ParameterMap;
 
 
 
@@ -35,10 +36,10 @@ public interface GraphicWriter {
 	public static final String KEY_TRANSPARENT = "transparent";
 	
 	
-	public void write(Document document, TreePainter painter, GraphicWriterHints hints, 
+	public void write(Document document, TreePainter painter, ParameterMap hints, 
 			OutputStream stream);
 
 	
-  public void write(Document document, TreePainter painter, GraphicWriterHints hints,
+  public void write(Document document, TreePainter painter, ParameterMap hints,
   		File file);
 }

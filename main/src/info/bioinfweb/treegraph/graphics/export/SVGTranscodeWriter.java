@@ -24,6 +24,7 @@ import info.bioinfweb.treegraph.document.format.DistanceDimension;
 import info.bioinfweb.treegraph.graphics.positionpaint.PositionPaintFactory;
 import info.bioinfweb.treegraph.graphics.positionpaint.TreePainter;
 import info.bioinfweb.treegraph.gui.treeframe.TreeViewPanel;
+import info.webinsel.util.collections.ParameterMap;
 
 import java.io.BufferedOutputStream;
 import java.io.IOException;
@@ -72,7 +73,7 @@ public class SVGTranscodeWriter extends AbstractGraphicWriter implements Graphic
 	 * @param writerHints - the hints that were specified when the <code>write</code>-method of this
 	 *        writer was called
 	 */
-	protected void addTranscodingHints(Transcoder transcoder, GraphicWriterHints writerHints) {}
+	protected void addTranscodingHints(Transcoder transcoder, ParameterMap writerHints) {}
 	
 	
 	/**
@@ -98,9 +99,9 @@ public class SVGTranscodeWriter extends AbstractGraphicWriter implements Graphic
 	 * @param hints - the graphic writer hints to specify certain writing options
 	 * @param stream - the output stream to write the graphic to
 	 * 
-	 * @see info.bioinfweb.treegraph.graphics.export.GraphicWriter#write(info.bioinfweb.treegraph.document.Document, info.bioinfweb.treegraph.graphics.positionpaint.TreePainter, info.bioinfweb.treegraph.graphics.export.GraphicWriterHints, java.io.OutputStream)
+	 * @see info.bioinfweb.treegraph.graphics.export.GraphicWriter#write(info.bioinfweb.treegraph.document.Document, info.bioinfweb.treegraph.graphics.positionpaint.TreePainter, ParameterMap, java.io.OutputStream)
 	 */
-	public void write(Document document, TreePainter painter, GraphicWriterHints hints, 
+	public void write(Document document, TreePainter painter, ParameterMap hints, 
 			OutputStream stream) {
 		
 	  DistanceDimension paintDim = document.getTree().getPaintDimension(

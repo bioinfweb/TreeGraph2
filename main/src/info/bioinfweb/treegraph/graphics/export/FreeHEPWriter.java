@@ -25,6 +25,8 @@ import info.bioinfweb.treegraph.graphics.positionpaint.PositionPaintFactory;
 import info.bioinfweb.treegraph.graphics.positionpaint.TreePainter;
 import info.bioinfweb.treegraph.gui.treeframe.TreeViewPanel;
 import info.webinsel.util.Math2;
+import info.webinsel.util.collections.ParameterMap;
+
 import java.awt.Dimension;
 import java.awt.RenderingHints;
 import java.io.IOException;
@@ -41,7 +43,7 @@ public abstract class FreeHEPWriter extends AbstractGraphicWriter
 			OutputStream stream, Dimension dim);
 	
 	
-	public void write(Document document, TreePainter painter, GraphicWriterHints hints, 
+	public void write(Document document, TreePainter painter, ParameterMap hints, 
 			OutputStream stream) {
 		
 	  //TODO Diesen Abschnitt irgendwie in einen weiteren Vorfahren auslagern. (Wird in SVGTranscodeWriter auch verwendet.)

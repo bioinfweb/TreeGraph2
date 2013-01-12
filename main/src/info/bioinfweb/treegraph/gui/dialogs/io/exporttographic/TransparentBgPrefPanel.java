@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2011  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2013  Ben Stöver, Kai Müller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -20,7 +20,7 @@ package info.bioinfweb.treegraph.gui.dialogs.io.exporttographic;
 
 
 import info.bioinfweb.treegraph.graphics.export.GraphicWriter;
-import info.bioinfweb.treegraph.graphics.export.GraphicWriterHints;
+import info.webinsel.util.collections.ParameterMap;
 
 import java.awt.GridBagLayout;
 import javax.swing.JPanel;
@@ -45,7 +45,7 @@ public class TransparentBgPrefPanel extends JPanel implements PreferencesPanel {
 	}
 
 	
-	public void addHints(GraphicWriterHints hints) {
+	public void addHints(ParameterMap hints) {
 		hints.put(GraphicWriter.KEY_TRANSPARENT, 
 				new Boolean(getTransparentCheckBox().isSelected()));
 	}
@@ -81,6 +81,4 @@ public class TransparentBgPrefPanel extends JPanel implements PreferencesPanel {
 		}
 		return transparentCheckBox;
 	}
-
-
 }

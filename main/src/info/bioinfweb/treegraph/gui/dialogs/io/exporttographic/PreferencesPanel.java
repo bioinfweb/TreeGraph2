@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2011  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2013  Ben Stöver, Kai Müller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,7 @@
 package info.bioinfweb.treegraph.gui.dialogs.io.exporttographic;
 
 
-import info.bioinfweb.treegraph.graphics.export.GraphicWriterHints;
+import info.webinsel.util.collections.ParameterMap;
 
 
 
@@ -34,5 +34,5 @@ public interface PreferencesPanel {
    * contained in the particular implementation
    * @param hints - the map to add the hints to
    */
-  public void addHints(GraphicWriterHints hints);
+  public void addHints(ParameterMap hints);
 }

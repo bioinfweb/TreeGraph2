@@ -27,12 +27,13 @@ import info.bioinfweb.treegraph.document.io.ReadWriteFormat;
 import info.bioinfweb.treegraph.graphics.export.GraphicFormat;
 import info.bioinfweb.treegraph.graphics.export.GraphicWriter;
 import info.bioinfweb.treegraph.graphics.export.GraphicWriterFactory;
-import info.bioinfweb.treegraph.graphics.export.GraphicWriterHints;
 import info.bioinfweb.treegraph.graphics.positionpaint.PositionPaintFactory;
 import info.bioinfweb.treegraph.graphics.positionpaint.PositionPaintType;
 import info.bioinfweb.treegraph.gui.dialogs.ResolutionInput;
 import info.bioinfweb.treegraph.gui.treeframe.TreeViewPanel;
 import info.webinsel.util.CommandLineReader;
+import info.webinsel.util.collections.ParameterMap;
+
 import java.io.File;
 
 
@@ -81,7 +82,7 @@ public class ImageGenerator {
 	 * @param hints
 	 * @return
 	 */
-	private static float readDistance(String content, GraphicWriterHints hints) {
+	private static float readDistance(String content, ParameterMap hints) {
 		float value;
 		if (content.endsWith(UNIT_PX)) {
 			value = Float.parseFloat(content.substring(0, content.length() - UNIT_PX.length()));
@@ -118,7 +119,7 @@ public class ImageGenerator {
   			//TODO distancePerBranchLengthUnit lesen und ggf. berechnen 
   			PositionPaintFactory.getInstance().getPositioner(type).positionAll(document, 1f);
   			
-  			GraphicWriterHints hints = new GraphicWriterHints();
+  			ParameterMap hints = new ParameterMap();
   			float pixelsPerMillimeter = TreeViewPanel.PIXELS_PER_MM_100;
   			int pos = reader.contained(RESOLUTION_OPTION, 3);
   			if (pos != -1) {

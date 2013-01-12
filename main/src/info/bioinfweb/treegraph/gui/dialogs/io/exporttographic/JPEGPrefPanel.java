@@ -19,8 +19,8 @@
 package info.bioinfweb.treegraph.gui.dialogs.io.exporttographic;
 
 
-import info.bioinfweb.treegraph.graphics.export.GraphicWriterHints;
 import info.bioinfweb.treegraph.graphics.export.jpeg.JPEGWriter;
+import info.webinsel.util.collections.ParameterMap;
 
 import java.awt.GridBagLayout;
 import javax.swing.JPanel;
@@ -50,7 +50,7 @@ public class JPEGPrefPanel extends JPanel implements PreferencesPanel {
 	}
 
 
-	public void addHints(GraphicWriterHints hints) {
+	public void addHints(ParameterMap hints) {
 		hints.put(JPEGWriter.KEY_JPEG_QUALITY, 
 				new Float((float)getQualitySlider().getValue() / 100f));
 	}

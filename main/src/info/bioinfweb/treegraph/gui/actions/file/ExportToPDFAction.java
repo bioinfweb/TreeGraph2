@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2011  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2013  Ben Stöver, Kai Müller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -21,25 +21,22 @@ package info.bioinfweb.treegraph.gui.actions.file;
 
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 
 import javax.swing.Action;
 import javax.swing.JOptionPane;
-import javax.swing.KeyStroke;
 
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.graphics.export.GraphicFormat;
 import info.bioinfweb.treegraph.graphics.export.GraphicWriterFactory;
-import info.bioinfweb.treegraph.graphics.export.GraphicWriterHints;
 import info.bioinfweb.treegraph.graphics.positionpaint.PositionPaintFactory;
 import info.bioinfweb.treegraph.gui.actions.DocumentAction;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeInternalFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
+import info.webinsel.util.collections.ParameterMap;
 
 
 
@@ -63,7 +60,7 @@ public class ExportToPDFAction extends DocumentAction {
 				File file = File.createTempFile(FILE_PREFIX, FILE_SUFFIX);
 		  	GraphicWriterFactory.getInstance().getWriter(GraphicFormat.PDF).write(frame.getDocument(), 
 		  			PositionPaintFactory.getInstance().getPainter(frame.getTreeViewPanel().getPainterType()), 
-		  			new GraphicWriterHints(), file);
+		  			new ParameterMap(), file);
 	    		Desktop.getDesktop().open(file);
 			}
 			catch (IOException ex) {

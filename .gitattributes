@@ -378,7 +378,6 @@ main/src/info/bioinfweb/treegraph/graphics/export/GraphicFilter.java -text
 main/src/info/bioinfweb/treegraph/graphics/export/GraphicFormat.java -text
 main/src/info/bioinfweb/treegraph/graphics/export/GraphicWriter.java -text
 main/src/info/bioinfweb/treegraph/graphics/export/GraphicWriterFactory.java -text
-main/src/info/bioinfweb/treegraph/graphics/export/GraphicWriterHints.java -text
 main/src/info/bioinfweb/treegraph/graphics/export/GraphicsFactory.java -text
 main/src/info/bioinfweb/treegraph/graphics/export/SVGTranscodeWriter.java -text
 main/src/info/bioinfweb/treegraph/graphics/export/SingletonGraphicsFactory.java -text
