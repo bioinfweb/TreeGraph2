@@ -25,8 +25,7 @@ import java.io.OutputStreamWriter;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.io.AbstractDocumentWriter;
 import info.bioinfweb.treegraph.document.io.DocumentWriter;
-import info.bioinfweb.treegraph.document.nodebranchdata.BranchLengthAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
+import info.bioinfweb.treegraph.document.io.ReadWriteParameterMap;
 
 
 
@@ -35,22 +34,14 @@ import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
  * @author Ben St&ouml;ver
  */
 public class NewickWriter extends AbstractDocumentWriter implements DocumentWriter {
-	public void write(Document document, OutputStream stream,	NodeBranchDataAdapter internalAdapter, 
-			NodeBranchDataAdapter leafAdapter, NodeBranchDataAdapter branchLengthAdapter) throws Exception {
+	public void write(Document document, OutputStream stream,	ReadWriteParameterMap properties) throws Exception {
 		
 		OutputStreamWriter writer = new OutputStreamWriter(stream);
 		try {
-			writer.write(NewickStringWriter.write(document.getTree(), internalAdapter, 
-					leafAdapter, branchLengthAdapter));
+			writer.write(NewickStringWriter.write(document.getTree(), properties));
 		}
 		finally {
 			writer.close();
 		}
-	}
-
-	
-	public void write(Document document, OutputStream stream) throws Exception {
-		write(document, stream, DEFAULT_ADAPTER, DEFAULT_ADAPTER, 
-				BranchLengthAdapter.getSharedInstance());
 	}
 }

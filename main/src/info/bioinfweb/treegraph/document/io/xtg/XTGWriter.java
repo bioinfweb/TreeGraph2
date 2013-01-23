@@ -23,7 +23,7 @@ import info.bioinfweb.treegraph.document.*;
 import info.bioinfweb.treegraph.document.format.*;
 import info.bioinfweb.treegraph.document.io.AbstractDocumentWriter;
 import info.bioinfweb.treegraph.document.io.DocumentWriter;
-import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
+import info.bioinfweb.treegraph.document.io.ReadWriteParameterMap;
 import info.webinsel.util.io.XMLUtils;
 
 import java.awt.Color;
@@ -355,7 +355,7 @@ public class XTGWriter extends AbstractDocumentWriter implements XTGConstants, D
 	}
 	
 	
-	public void write(Document document, OutputStream stream) throws Exception {
+	public void write(Document document, OutputStream stream, ReadWriteParameterMap properties) throws Exception {
 		try {
 			writer = XMLOutputFactory.newInstance().createXMLStreamWriter(
 					stream, STREAM_ENCODING);
@@ -385,20 +385,5 @@ public class XTGWriter extends AbstractDocumentWriter implements XTGConstants, D
 		finally {
 			stream.close();
 		}
-	}
-
-
-	/**
-	 * A call of this method is identical with calling 
-	 * {@link #write(info.bioinfweb.treegraph.document.Document, java.io.OutputStream)}
-	 * because the XTG format supports writing any number of labels by default and there
-	 * is no need to replace internal node names by label values.
-	 *  
-	 * @see info.bioinfweb.treegraph.document.io.DocumentWriter#write(info.bioinfweb.treegraph.document.Document, java.io.OutputStream, NodeBranchDataAdapter, NodeBranchDataAdapter)
-	 */
-	public void write(Document document, OutputStream stream,	NodeBranchDataAdapter internalAdapter, 
-			NodeBranchDataAdapter leafAdapter, NodeBranchDataAdapter branchLengthAdapter) throws Exception {
-		
-		write(document, stream);
 	}
 }

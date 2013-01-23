@@ -225,6 +225,7 @@ main/src/info/bioinfweb/treegraph/document/io/DocumentWriter.java -text
 main/src/info/bioinfweb/treegraph/document/io/ReadWriteFactory.java -text
 main/src/info/bioinfweb/treegraph/document/io/ReadWriteFactoryException.java -text
 main/src/info/bioinfweb/treegraph/document/io/ReadWriteFormat.java -text
+main/src/info/bioinfweb/treegraph/document/io/ReadWriteParameterMap.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/io/SingleDocumentIterator.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/io/SingleReadWriteFactory.java -text
 main/src/info/bioinfweb/treegraph/document/io/SupportedFormatsFilter.java -text

@@ -20,7 +20,6 @@ package info.bioinfweb.treegraph.document.io;
 
 
 import info.bioinfweb.treegraph.document.Document;
-import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 
 import java.io.*;
@@ -28,20 +27,22 @@ import java.io.*;
 
 
 public abstract class AbstractDocumentWriter implements DocumentWriter {
-	public static final NodeNameAdapter DEFAULT_ADAPTER = new NodeNameAdapter();
-	
-	
   protected Document document = null;
   
   
 	public void write(Document document, File file) throws Exception {
-		write(document, new FileOutputStream(file));
+		write(document, new FileOutputStream(file), new ReadWriteParameterMap());
 	}
   
   
-	public void write(Document document, File file, NodeBranchDataAdapter internalAdapter, 
-			NodeBranchDataAdapter leafAdapter, NodeBranchDataAdapter branchLengthAdapter) throws Exception {
-		
-		write(document, new FileOutputStream(file), internalAdapter, leafAdapter, branchLengthAdapter);
-	}
+	@Override
+  public void write(Document document, OutputStream stream) throws Exception {
+		write(document, stream, new ReadWriteParameterMap());
+  }
+
+
+	@Override
+  public void write(Document document, File file, ReadWriteParameterMap properties) throws Exception {
+		write(document, new FileOutputStream(file), properties);
+  }
 }

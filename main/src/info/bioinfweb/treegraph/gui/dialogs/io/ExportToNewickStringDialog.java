@@ -23,6 +23,8 @@ import info.bioinfweb.treegraph.document.io.DocumentFilter;
 import info.bioinfweb.treegraph.document.io.DocumentWriter;
 import info.bioinfweb.treegraph.document.io.ReadWriteFactory;
 import info.bioinfweb.treegraph.document.io.ReadWriteFormat;
+import info.bioinfweb.treegraph.document.io.ReadWriteParameterMap;
+import info.bioinfweb.treegraph.document.io.nexus.NexusFactory;
 import info.bioinfweb.treegraph.document.io.nexus.NexusFilter;
 import info.bioinfweb.treegraph.document.io.xtg.XTGFilter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
@@ -127,8 +129,11 @@ public class ExportToNewickStringDialog extends FileDialog {
 			if (getBranchLengthCheckBox().isSelected()) {
 				branchLengthAdapter = getBranchLengthInput().getSelectedAdapter();
 			}
-			writer.write(getDocument(), file, getInternalInput().getSelectedAdapter(), 
-					getLeafInput().getSelectedAdapter(), branchLengthAdapter);
+			ReadWriteParameterMap properties = new ReadWriteParameterMap();
+			properties.put(NexusFactory.PARAM_INTERNAL_NODE_NAMES_ADAPTER, getInternalInput().getSelectedAdapter());
+			properties.put(NexusFactory.PARAM_LEAF_NODE_NAMES_ADAPTER, getLeafInput().getSelectedAdapter());
+			properties.put(NexusFactory.PARAM_BRANCH_LENGTH_ADAPTER, branchLengthAdapter);
+			writer.write(getDocument(), file, properties);
 			return true;
 		}
 		catch (Exception e) {

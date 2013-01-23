@@ -25,10 +25,8 @@ import java.io.OutputStreamWriter;
 
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.io.AbstractDocumentWriter;
+import info.bioinfweb.treegraph.document.io.ReadWriteParameterMap;
 import info.bioinfweb.treegraph.document.io.newick.NewickStringWriter;
-import info.bioinfweb.treegraph.document.nodebranchdata.BranchLengthAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 
 
 
@@ -38,25 +36,18 @@ public class NexusWriter extends AbstractDocumentWriter {
 	}
 	
 	
-	public void write(Document document, OutputStream stream, NodeBranchDataAdapter internalAdapter, 
-			NodeBranchDataAdapter leafAdapter, NodeBranchDataAdapter branchLengthAdapter) throws Exception {
+	public void write(Document document, OutputStream stream, ReadWriteParameterMap properties) throws Exception {
 		
 		OutputStreamWriter writer = new OutputStreamWriter(stream);
 		try {
 			writer.write(NexusParser.NAME_NEXUS.toUpperCase() + "\n");
 			writeCommand(writer, NexusParser.NAME_BLOCK_BEGIN + " " + NexusParser.NAME_TREES);
 			writer.write(NexusParser.TREE_COMMAND + " " + "tree1 = " + 
-					NewickStringWriter.write(document.getTree(), internalAdapter, leafAdapter, 
-							branchLengthAdapter) + "\n");
+					NewickStringWriter.write(document.getTree(), properties) + "\n");
 			writeCommand(writer, NexusParser.NAME_BLOCK_END);
 		}
 		finally {
 			writer.close();
 		}
 	}
-
-	
-	public void write(Document document, OutputStream stream) throws Exception {
-		write(document, stream, DEFAULT_ADAPTER, DEFAULT_ADAPTER, BranchLengthAdapter.getSharedInstance());
-  }
 }

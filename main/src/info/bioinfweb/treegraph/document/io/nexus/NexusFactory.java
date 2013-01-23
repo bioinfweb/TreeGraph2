@@ -27,6 +27,11 @@ import info.bioinfweb.treegraph.document.io.SingleReadWriteFactory;
 
 
 public class NexusFactory implements SingleReadWriteFactory {
+	public static final String PARAM_INTERNAL_NODE_NAMES_ADAPTER = "internalNodeNamesAdapter";
+	public static final String PARAM_LEAF_NODE_NAMES_ADAPTER = "leafNodeNamesAdapter";
+	public static final String PARAM_BRANCH_LENGTH_ADAPTER = "branchLengthAdapter";
+	
+	
 	public AbstractFilter getFilter() {
 		return new NexusFilter();
 	}
