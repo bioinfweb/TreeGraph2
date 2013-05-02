@@ -38,7 +38,9 @@ import info.bioinfweb.treegraph.document.io.TextStreamReader;
 import info.bioinfweb.treegraph.document.io.TreeSelector;
 import info.bioinfweb.treegraph.document.io.log.LoadLogger;
 import info.bioinfweb.treegraph.document.io.nexus.NexusParser;
+import info.bioinfweb.treegraph.document.nodebranchdata.BranchLengthAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 
 
 
@@ -154,66 +156,35 @@ public class NewickReader extends TextStreamReader implements DocumentReader {
 	}
 	
 	
-	public Document read(BufferedInputStream stream, LoadLogger loadLogger, NodeBranchDataAdapter internalAdapter, 
-			NodeBranchDataAdapter branchLengthsAdapter,	TreeSelector selector, 
-			boolean translateInternals) throws Exception {
-		
+	@Override
+  public Document readDocument(BufferedInputStream stream) throws Exception {
 		String[] parts = splitDocument(new InputStreamReader(stream));
 
 	  String[] names = new String[parts.length];
 		for (int i = 0; i < names.length; i++) {
 			names[i] = "Tree " + i;
 		}
-		Tree[] trees = NewickStringReader.read(parts, internalAdapter, branchLengthsAdapter, null, false);
-		//
+		Tree[] trees = NewickStringReader.read(
+				parts,
+				parameterMap.getNodeBranchDataAdapter(ReadWriteParameterMap.KEY_INTERNAL_NODE_NAMES_ADAPTER, 
+						NodeNameAdapter.getSharedInstance()),
+				parameterMap.getNodeBranchDataAdapter(ReadWriteParameterMap.KEY_INTERNAL_NODE_NAMES_ADAPTER, 
+						BranchLengthAdapter.getSharedInstance()),
+				null, false);
 		
 		Document result = new Document();
-		result.setTree(trees[selector.select(names, trees)]);
+		result.setTree(trees[parameterMap.getTreeSelector().select(names, trees)]);
 		return result;
 	}
 	
 	
-	public Document read(File file, LoadLogger loadLogger, NodeBranchDataAdapter internalAdapter, NodeBranchDataAdapter branchLengthsAdapter,
-			TreeSelector selector, boolean translateInternals) throws Exception {
-		
-		Document result = read(new FileInputStream(file), loadLogger, internalAdapter, branchLengthsAdapter, selector, 
-				translateInternals);
-		result.setDefaultName(result.getDefaultName().replaceAll(
-				Main.getInstance().getNameManager().getPrefix(), file.getName()));
-		return result;
-	}
-
-
-	@Override
-  public Document readDocument(BufferedInputStream stream) {
-	  // TODO Auto-generated method stub
-	  return null;
-  }
-
-
 	@Override
   public DocumentIterator createIterator(BufferedInputStream stream) {
-	  // TODO Auto-generated method stub
-	  return null;
+	  InputStreamReader reader = new InputStreamReader(new BufferedInputStream(stream));
+  	return new NewickDocumentIterator(reader, loadLogger,  
+  			parameterMap.getNodeBranchDataAdapter(ReadWriteParameterMap.KEY_INTERNAL_NODE_NAMES_ADAPTER, 
+						NodeNameAdapter.getSharedInstance()),
+				parameterMap.getNodeBranchDataAdapter(ReadWriteParameterMap.KEY_INTERNAL_NODE_NAMES_ADAPTER, 
+						BranchLengthAdapter.getSharedInstance()));
   }
-
-
-//	@Override
-//  public DocumentIterator readAll(InputStream stream,
-//          ReadWriteParameterMap properties) throws Exception {
-//
-//		InputStreamReader reader = new InputStreamReader(new BufferedInputStream(stream));
-//		return new NewickDocumentIterator(reader, loadLogger,  internalAdapter, branchLengthsAdapter);
-//  }
-//
-//
-//	@Override
-//	public DocumentIterator readAll(InputStream stream, LoadLogger loadLogger,
-//			NodeBranchDataAdapter internalAdapter,
-//			NodeBranchDataAdapter branchLengthsAdapter, boolean translateInternalNodes)
-//			throws Exception {
-//
-//		InputStreamReader reader = new InputStreamReader(new BufferedInputStream(stream));
-//		return new NewickDocumentIterator(reader, loadLogger, internalAdapter, branchLengthsAdapter);
-//	}
 }

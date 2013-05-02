@@ -19,6 +19,7 @@
 package info.bioinfweb.treegraph.document.io;
 
 
+import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.io.log.LoadLogger;
 import info.bioinfweb.treegraph.document.io.log.VoidLoadLogger;
@@ -45,6 +46,13 @@ public abstract class AbstractDocumentReader implements DocumentReader {
   protected Document document = null;
   
   
+  /**
+   * Creates a new instance of this class.
+   * 
+   * @param saveFileName - Specify <code>true</code> here, if XTG format can be written into the opened file.
+   *        If <code>false</code> is specified a unique default name will be generated according to the name of
+   *        the opened file.
+   */
   public AbstractDocumentReader(boolean saveFileName) {
 	  super();
 	  this.saveFileName = saveFileName;
@@ -113,6 +121,10 @@ public abstract class AbstractDocumentReader implements DocumentReader {
 		Document result = read(new FileInputStream(file), properties);
 		if (saveFileName) {
 			result.setFile(file);
+		}
+		else {
+			result.setDefaultName(result.getDefaultName().replaceAll(
+    			Main.getInstance().getNameManager().getPrefix(), file.getName()));
 		}
 		return result;
   }
