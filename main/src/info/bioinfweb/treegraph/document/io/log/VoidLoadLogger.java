@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2011  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2013 Ben Stöver, Kai Müller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -16,38 +16,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.document.io.nexus;
-
-
-import info.bioinfweb.treegraph.document.io.AbstractFilter;
-import info.bioinfweb.treegraph.document.io.DocumentReader;
-import info.bioinfweb.treegraph.document.io.DocumentWriter;
-import info.bioinfweb.treegraph.document.io.SingleReadWriteFactory;
+package info.bioinfweb.treegraph.document.io.log;
 
 
 
-public class NexusFactory implements SingleReadWriteFactory {
-	public AbstractFilter getFilter() {
-		return new NexusFilter();
-	}
-
-	
-	public DocumentReader getReader() {
-		return new NexusReader();
-	}
-	
-
-	public DocumentWriter getWriter() {
-		return new NexusWriter();
-	}
+/**
+ * This implementation of {@link LoadLogger} does not display or store the messages anywhere. It can be used
+ * as a default implementation, if no logger is specified.
+ * 
+ * @author Ben St&ouml;ver
+ */
+public class VoidLoadLogger implements LoadLogger {
+	@Override
+  public void addMessage(LoggerMessage message) {}
 
 	
-	public boolean hasReader() {
-		return true;
-	}
+	@Override
+  public void addMessage(String message) {}
 
 	
-	public boolean hasWriter() {
-		return true;
-	}
+	@Override
+  public void addMessage(String message, int helpCode) {}
+
+	
+	@Override
+  public void addWarning(String message) {}
+
+	
+	@Override
+  public void addWarning(String message, int helpCode) {}
 }

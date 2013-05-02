@@ -23,6 +23,7 @@ import info.bioinfweb.treegraph.document.*;
 import info.bioinfweb.treegraph.document.format.*;
 import info.bioinfweb.treegraph.document.io.AbstractDocumentReader;
 import info.bioinfweb.treegraph.document.io.DocumentIterator;
+import info.bioinfweb.treegraph.document.io.ReadWriteParameterMap;
 import info.bioinfweb.treegraph.document.io.SingleDocumentIterator;
 import info.bioinfweb.treegraph.document.io.TreeSelector;
 import info.bioinfweb.treegraph.document.io.log.LoadLogger;
@@ -32,7 +33,9 @@ import info.webinsel.util.io.FormatVersion;
 import info.webinsel.util.io.InvalidXSDPathException;
 import info.webinsel.util.io.XMLUtils;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.Locale;
@@ -60,7 +63,9 @@ public class XTGReader extends AbstractDocumentReader implements XTGConstants {
   private XMLEventReader reader;
   
   
-	public XTGReader() {}
+	public XTGReader() {
+		super(true);
+	}
 	
 	
 	private void readDistanceValueAttr(DistanceValue value, StartElement element, QName name) {
@@ -598,11 +603,8 @@ public class XTGReader extends AbstractDocumentReader implements XTGConstants {
 	}
   
   
-	public Document read(InputStream stream, LoadLogger loadLogger, NodeBranchDataAdapter internalAdapter, 
-			NodeBranchDataAdapter branchLengthsAdapter,	TreeSelector selector, 
-			boolean translateInternalNodes) throws Exception {
-		
-		this.loadLogger = loadLogger;
+	@Override
+	public Document readDocument(BufferedInputStream stream) throws Exception {
 		document = null;
 		reader = XMLInputFactory.newInstance().createXMLEventReader(stream);
 		
@@ -640,24 +642,7 @@ public class XTGReader extends AbstractDocumentReader implements XTGConstants {
 
 
 	@Override
-	public Document read(File file, LoadLogger loadLogger, NodeBranchDataAdapter internalAdapter, 
-			NodeBranchDataAdapter branchLengthsAdapter,	TreeSelector selector, 
-			boolean translateInternalNodes) throws Exception {
-		
-		// read(File file) also calls this method.
-		Document result = super.read(file, loadLogger, internalAdapter, branchLengthsAdapter, selector, 
-				translateInternalNodes);
-		result.setFile(file);
-		return result;
-	}
-
-
-	@Override
-	public DocumentIterator readAll(InputStream stream, LoadLogger loadLogger,
-			NodeBranchDataAdapter internalAdapter,
-			NodeBranchDataAdapter branchLengthsAdapter, boolean translateInternalNodes)
-			throws Exception {
-		
-		return new SingleDocumentIterator(read(stream, loadLogger, internalAdapter, branchLengthsAdapter));
-	}
+  public DocumentIterator createIterator(BufferedInputStream stream) throws Exception {
+		return new SingleDocumentIterator(read(stream));
+  }
 }

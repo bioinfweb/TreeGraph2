@@ -33,6 +33,7 @@ import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.io.AbstractDocumentIterator;
 import info.bioinfweb.treegraph.document.io.DocumentIterator;
 import info.bioinfweb.treegraph.document.io.DocumentReader;
+import info.bioinfweb.treegraph.document.io.ReadWriteParameterMap;
 import info.bioinfweb.treegraph.document.io.TextStreamReader;
 import info.bioinfweb.treegraph.document.io.TreeSelector;
 import info.bioinfweb.treegraph.document.io.log.LoadLogger;
@@ -153,11 +154,11 @@ public class NewickReader extends TextStreamReader implements DocumentReader {
 	}
 	
 	
-	public Document read(InputStream stream, LoadLogger loadLogger, NodeBranchDataAdapter internalAdapter, 
+	public Document read(BufferedInputStream stream, LoadLogger loadLogger, NodeBranchDataAdapter internalAdapter, 
 			NodeBranchDataAdapter branchLengthsAdapter,	TreeSelector selector, 
 			boolean translateInternals) throws Exception {
 		
-		String[] parts = splitDocument(new InputStreamReader(new BufferedInputStream(stream)));
+		String[] parts = splitDocument(new InputStreamReader(stream));
 
 	  String[] names = new String[parts.length];
 		for (int i = 0; i < names.length; i++) {
@@ -184,12 +185,35 @@ public class NewickReader extends TextStreamReader implements DocumentReader {
 
 
 	@Override
-	public DocumentIterator readAll(InputStream stream, LoadLogger loadLogger,
-			NodeBranchDataAdapter internalAdapter,
-			NodeBranchDataAdapter branchLengthsAdapter, boolean translateInternalNodes)
-			throws Exception {
+  public Document readDocument(BufferedInputStream stream) {
+	  // TODO Auto-generated method stub
+	  return null;
+  }
 
-		InputStreamReader reader = new InputStreamReader(new BufferedInputStream(stream));
-		return new NewickDocumentIterator(reader, loadLogger, internalAdapter, branchLengthsAdapter);
-	}
+
+	@Override
+  public DocumentIterator createIterator(BufferedInputStream stream) {
+	  // TODO Auto-generated method stub
+	  return null;
+  }
+
+
+//	@Override
+//  public DocumentIterator readAll(InputStream stream,
+//          ReadWriteParameterMap properties) throws Exception {
+//
+//		InputStreamReader reader = new InputStreamReader(new BufferedInputStream(stream));
+//		return new NewickDocumentIterator(reader, loadLogger,  internalAdapter, branchLengthsAdapter);
+//  }
+//
+//
+//	@Override
+//	public DocumentIterator readAll(InputStream stream, LoadLogger loadLogger,
+//			NodeBranchDataAdapter internalAdapter,
+//			NodeBranchDataAdapter branchLengthsAdapter, boolean translateInternalNodes)
+//			throws Exception {
+//
+//		InputStreamReader reader = new InputStreamReader(new BufferedInputStream(stream));
+//		return new NewickDocumentIterator(reader, loadLogger, internalAdapter, branchLengthsAdapter);
+//	}
 }

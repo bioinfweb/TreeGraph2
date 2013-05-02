@@ -235,6 +235,7 @@ main/src/info/bioinfweb/treegraph/document/io/log/AbstractLoadLogger.java -text
 main/src/info/bioinfweb/treegraph/document/io/log/LoadLogger.java -text
 main/src/info/bioinfweb/treegraph/document/io/log/LoggerMessage.java -text
 main/src/info/bioinfweb/treegraph/document/io/log/LoggerMessageType.java -text
+main/src/info/bioinfweb/treegraph/document/io/log/VoidLoadLogger.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/io/log/package.html -text
 main/src/info/bioinfweb/treegraph/document/io/newick/BranchLengthsScaler.java -text
 main/src/info/bioinfweb/treegraph/document/io/newick/CommentDataReader.java -text

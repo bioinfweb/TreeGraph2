@@ -20,8 +20,6 @@ package info.bioinfweb.treegraph.document.io;
 
 
 import info.bioinfweb.treegraph.document.Document;
-import info.bioinfweb.treegraph.document.io.log.LoadLogger;
-import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 
 import java.io.*;
 import java.util.Iterator;
@@ -34,36 +32,25 @@ import java.util.Iterator;
  * @author Ben St&ouml;ver
  */
 public interface DocumentReader {
-  public Document read(InputStream stream, LoadLogger loadLogger) throws Exception;
+  public Document read(InputStream stream) throws Exception;
   
-  public Document read(File file, LoadLogger loadLogger) throws Exception;
+  public Document read(File file) throws Exception;
   
-	public Document read(InputStream stream, LoadLogger loadLogger, NodeBranchDataAdapter internalAdapter, 
-			NodeBranchDataAdapter branchLengthsAdapter) throws Exception;
+	public Document read(InputStream stream, ReadWriteParameterMap properties) throws Exception;
 	
-	public Document read(File file, LoadLogger loadLogger, NodeBranchDataAdapter internalAdapter, 
-			NodeBranchDataAdapter branchLengthsAdapter) throws Exception;
+	public Document read(File file, ReadWriteParameterMap properties) throws Exception;
   
-	public Document read(InputStream stream, LoadLogger loadLogger, NodeBranchDataAdapter internalAdapter, 
-			NodeBranchDataAdapter branchLengthsAdapter, TreeSelector selector, 
-			boolean translateInternalNodes) throws Exception;
-	
-	public Document read(File file, LoadLogger loadLogger, NodeBranchDataAdapter internalAdapter, NodeBranchDataAdapter branchLengthsAdapter,
-			TreeSelector selector, boolean translateInternalNodes) throws Exception;
-	
 	/**
 	 * Implementations of this method should return an iterator that reads the next tree in <code>file</code>, if 
 	 * {@link Iterator#next()} is called. (The single trees must not be loaded at once, but should be loaded one by
 	 * one each time {@link Iterator#next()} is called.)
 	 */
-	public DocumentIterator readAll(InputStream stream, LoadLogger loadLogger, NodeBranchDataAdapter internalAdapter, NodeBranchDataAdapter branchLengthsAdapter,
-			boolean translateInternalNodes) throws Exception;
+	public DocumentIterator readAll(InputStream stream, ReadWriteParameterMap properties) throws Exception;
 
 	/**
 	 * Implementations of this method should return an iterator that reads the next tree in <code>file</code>, if 
 	 * {@link Iterator#next()} is called. (The single trees must not be loaded at once, but should be loaded one by
 	 * one each time {@link Iterator#next()} is called.)
 	 */
-	public DocumentIterator readAll(File file, LoadLogger loadLogger, NodeBranchDataAdapter internalAdapter, NodeBranchDataAdapter branchLengthsAdapter,
-			boolean translateInternalNodes) throws Exception;
+	public DocumentIterator readAll(File file, ReadWriteParameterMap properties) throws Exception;
 }

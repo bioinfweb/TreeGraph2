@@ -21,7 +21,6 @@ package info.bioinfweb.treegraph.document.io.newick;
 
 import info.bioinfweb.treegraph.document.*;
 import info.bioinfweb.treegraph.document.io.ReadWriteParameterMap;
-import info.bioinfweb.treegraph.document.io.nexus.NexusFactory;
 import info.bioinfweb.treegraph.document.io.nexus.NexusParser;
 import info.bioinfweb.treegraph.document.nodebranchdata.BranchLengthAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
@@ -111,9 +110,12 @@ public class NewickStringWriter extends NewickStringChars {
 	
 	public static String write(Tree tree, ReadWriteParameterMap properties) {
 		return write(tree, 
-	  		properties.getNodeBranchDataAdapter(NexusFactory.PARAM_INTERNAL_NODE_NAMES_ADAPTER, NodeNameAdapter.getSharedInstance()),
-			  properties.getNodeBranchDataAdapter(NexusFactory.PARAM_LEAF_NODE_NAMES_ADAPTER, NodeNameAdapter.getSharedInstance()),
-			  properties.getNodeBranchDataAdapter(NexusFactory.PARAM_BRANCH_LENGTH_ADAPTER, BranchLengthAdapter.getSharedInstance()));
+	  		properties.getNodeBranchDataAdapter(ReadWriteParameterMap.KEY_INTERNAL_NODE_NAMES_ADAPTER, 
+	  				NodeNameAdapter.getSharedInstance()),
+			  properties.getNodeBranchDataAdapter(ReadWriteParameterMap.KEY_LEAF_NODE_NAMES_ADAPTER, 
+			  		NodeNameAdapter.getSharedInstance()),
+			  properties.getNodeBranchDataAdapter(ReadWriteParameterMap.KEY_BRANCH_LENGTH_ADAPTER, 
+			  		BranchLengthAdapter.getSharedInstance()));
 	}
 	
 	

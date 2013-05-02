@@ -21,9 +21,8 @@ package info.bioinfweb.treegraph.document.io;
 
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.io.log.LoadLogger;
-import info.bioinfweb.treegraph.document.nodebranchdata.BranchLengthAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
+import info.bioinfweb.treegraph.document.io.log.VoidLoadLogger;
+import info.webinsel.util.collections.ParameterMap;
 import info.webinsel.util.io.XMLUtils;
 
 import java.io.*;
@@ -40,11 +39,19 @@ import javax.xml.stream.events.StartElement;
  * @author Ben St&ouml;ver
  */
 public abstract class AbstractDocumentReader implements DocumentReader {
+	private boolean saveFileName = false;
 	protected LoadLogger loadLogger = null;
+	protected ParameterMap parameterMap = null;
   protected Document document = null;
   
   
-  /**
+  public AbstractDocumentReader(boolean saveFileName) {
+	  super();
+	  this.saveFileName = saveFileName;
+  }
+
+
+	/**
    * Delegates to {@link #reachElementEnd(XMLEventReader, String)} where the name of the specified element is 
    * passed as <code>elementDescription</code>.
    * @param reader
@@ -72,51 +79,58 @@ public abstract class AbstractDocumentReader implements DocumentReader {
   	}
   }
   
+
+  private LoadLogger getLoadLogger(ParameterMap parameterMap) {
+  	return (LoadLogger)parameterMap.getObject(ReadWriteParameterMap.KEY_LOAD_LOGGER, new VoidLoadLogger());
+  }
   
-	public Document read(File file, LoadLogger loadLogger) throws Exception {
-		return read(file, loadLogger, NodeNameAdapter.getSharedInstance(), BranchLengthAdapter.getSharedInstance());
-	}
   
-  
-	public Document read(File file, LoadLogger loadLogger, NodeBranchDataAdapter internalAdapter, 
-			NodeBranchDataAdapter branchLengthsAdapter) throws Exception {
-		
-		return read(file, loadLogger, internalAdapter, branchLengthsAdapter, new DefaultTreeSelector(), false);
-	}
-
-
-	/**
-	 * If you want to implement file specific functionalities you should override this
-	 * method. It is called by all other <code>read</code>-methods with a file as parameter.
-	 * @see info.bioinfweb.treegraph.document.io.DocumentReader#read(java.io.File, NodeBranchDataAdapter, int)
-	 */
-	public Document read(File file, LoadLogger loadLogger, NodeBranchDataAdapter internalAdapter, NodeBranchDataAdapter branchLengthsAdapter,
-      TreeSelector selector, boolean translateInternalNodes) throws Exception {
-		
-		return read(new FileInputStream(file), loadLogger, internalAdapter, branchLengthsAdapter, selector, 
-				translateInternalNodes);
-	}
-
-
-	public Document read(InputStream stream, LoadLogger loadLogger, NodeBranchDataAdapter internalAdapter,
-			NodeBranchDataAdapter branchLengthsAdapter) throws Exception {
-				
-		return read(stream, loadLogger, internalAdapter, branchLengthsAdapter, new DefaultTreeSelector(), false);
-	}
-
-
-	public Document read(InputStream stream, LoadLogger loadLogger) throws Exception {
-		return read(stream, loadLogger, NodeNameAdapter.getSharedInstance(), BranchLengthAdapter.getSharedInstance(),
-				new DefaultTreeSelector(), false);
-	}
+	@Override
+  public Document read(InputStream stream) throws Exception {
+	  return read(stream, new ReadWriteParameterMap());
+  }
 
 
 	@Override
-	public DocumentIterator readAll(File file, LoadLogger loadLogger,
-			NodeBranchDataAdapter internalAdapter,
-			NodeBranchDataAdapter branchLengthsAdapter, boolean translateInternalNodes)
-			throws Exception {
+  public Document read(File file) throws Exception {
+	  return read(file, new ReadWriteParameterMap());
+  }
 
-		return readAll(new FileInputStream(file), loadLogger, internalAdapter, branchLengthsAdapter, translateInternalNodes);
+
+	@Override
+  public Document read(InputStream stream, ReadWriteParameterMap properties) throws Exception {
+		parameterMap = properties;
+		loadLogger = getLoadLogger(properties);
+		return readDocument(new BufferedInputStream(stream));
+  }
+	
+	
+	public abstract Document readDocument(BufferedInputStream stream) throws Exception;
+
+
+	@Override
+  public Document read(File file, ReadWriteParameterMap properties) throws Exception {
+		Document result = read(new FileInputStream(file), properties);
+		if (saveFileName) {
+			result.setFile(file);
+		}
+		return result;
+  }
+
+
+	public abstract DocumentIterator createIterator(BufferedInputStream stream) throws Exception;
+	
+	
+	@Override
+  public DocumentIterator readAll(InputStream stream, ReadWriteParameterMap properties) throws Exception {
+		parameterMap = properties;
+		loadLogger = getLoadLogger(properties);
+		return createIterator(new BufferedInputStream(stream));
+  }
+
+
+	@Override
+	public DocumentIterator readAll(File file, ReadWriteParameterMap properties) throws Exception {
+		return readAll(new FileInputStream(file), properties);
 	}
 }
