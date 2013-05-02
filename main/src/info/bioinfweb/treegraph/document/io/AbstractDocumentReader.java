@@ -41,7 +41,7 @@ import javax.xml.stream.events.StartElement;
 public abstract class AbstractDocumentReader implements DocumentReader {
 	private boolean saveFileName = false;
 	protected LoadLogger loadLogger = null;
-	protected ParameterMap parameterMap = null;
+	protected ReadWriteParameterMap parameterMap = null;
   protected Document document = null;
   
   

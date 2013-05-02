@@ -72,6 +72,17 @@ public class ReadWriteParameterMap extends ParameterMap {
 	}
 	
 	
+	public TreeSelector getTreeSelector() {
+		Object result = get(KEY_TREE_SELECTOR);
+		if (result instanceof TreeSelector) {
+			return (TreeSelector)result;
+		}
+		else {
+			return new DefaultTreeSelector();
+		}
+	}
+	
+	
 	public void putLoadLogger(LoadLogger logger) {
 		put(KEY_LOAD_LOGGER, logger);
 	}

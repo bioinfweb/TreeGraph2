@@ -28,15 +28,19 @@ import info.bioinfweb.treegraph.document.TextLabel;
 import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.format.GlobalFormats;
 import info.bioinfweb.treegraph.document.io.AbstractDocumentReader;
+import info.bioinfweb.treegraph.document.io.DefaultTreeSelector;
 import info.bioinfweb.treegraph.document.io.DocumentIterator;
+import info.bioinfweb.treegraph.document.io.ReadWriteParameterMap;
 import info.bioinfweb.treegraph.document.io.TreeSelector;
 import info.bioinfweb.treegraph.document.io.log.LoadLogger;
 import info.bioinfweb.treegraph.document.io.newick.BranchLengthsScaler;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.format.AutoPositionLabelsEdit;
+import info.webinsel.util.collections.ParameterMap;
 import info.webinsel.util.io.XMLUtils;
 
 import java.awt.Color;
+import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Vector;
@@ -61,7 +65,9 @@ public class PhyloXMLReader extends AbstractDocumentReader implements PhyloXMLCo
   private Vector<Tree> phylogenies = new Vector<Tree>();
   
   
-	public PhyloXMLReader() {}
+	public PhyloXMLReader() {
+		super(false);
+	}
 	
 	
 	private int readColorValue() throws XMLStreamException {
@@ -363,10 +369,8 @@ public class PhyloXMLReader extends AbstractDocumentReader implements PhyloXMLCo
   }
 	
 	
-	public Document read(InputStream stream, LoadLogger loadLogger, NodeBranchDataAdapter internalAdapter, 
-			NodeBranchDataAdapter branchLengthsAdapter,	TreeSelector selector, 
-			boolean translateInternalNodes) throws Exception {
-		
+	@Override
+  public Document readDocument(BufferedInputStream stream) throws Exception {
 		reader = XMLInputFactory.newInstance().createXMLEventReader(stream);
 		try {
 			XMLEvent event;
@@ -379,7 +383,7 @@ public class PhyloXMLReader extends AbstractDocumentReader implements PhyloXMLCo
 	        case XMLStreamConstants.END_DOCUMENT:
 	          reader.close();
 	          Tree[] trees = phylogenies.toArray(new Tree[phylogenies.size()]);
-	          Tree tree = trees[selector.select(names.toArray(new String[names.size()]), trees)];
+	          Tree tree = trees[parameterMap.getTreeSelector().select(names.toArray(new String[names.size()]), trees)];
 	          AutoPositionLabelsEdit.position(tree.getPaintStart());  // Label gleichm‰ﬂig anordnen
 	          document.setTree(tree);
 	          phylogenies.clear();
@@ -406,11 +410,7 @@ public class PhyloXMLReader extends AbstractDocumentReader implements PhyloXMLCo
 
 
 	@Override
-	public DocumentIterator readAll(InputStream stream, LoadLogger loadLogger,
-			NodeBranchDataAdapter internalAdapter,
-			NodeBranchDataAdapter branchLengthsAdapter, boolean translateInternalNodes)
-			throws Exception {
-
-		return null;
-	}
+  public DocumentIterator createIterator(BufferedInputStream stream) throws Exception {
+	  return null;
+  }
 }
