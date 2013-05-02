@@ -19,7 +19,7 @@
 package info.bioinfweb.treegraph.document.io.tgf;
 
 
-import java.io.InputStream;
+import java.io.BufferedInputStream;
 import java.util.HashMap;
 
 import info.bioinfweb.treegraph.document.Document;
@@ -30,9 +30,6 @@ import info.bioinfweb.treegraph.document.format.NodeFormats;
 import info.bioinfweb.treegraph.document.format.LabelFormats;
 import info.bioinfweb.treegraph.document.io.AbstractDocumentReader;
 import info.bioinfweb.treegraph.document.io.DocumentIterator;
-import info.bioinfweb.treegraph.document.io.TreeSelector;
-import info.bioinfweb.treegraph.document.io.log.LoadLogger;
-import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 
 
 
@@ -40,6 +37,11 @@ public class TGFReader extends AbstractDocumentReader {
 	private static final int SECOUND_LINE_POS = 100;
 	
 	
+	public TGFReader() {
+	  super(false);
+  }
+
+
 	private HashMap<String, LabelFormats> labelFormats = null;
 	private NodeFormats leafFormats = null;
 	private DistanceValue lineWidth = new DistanceValue();
@@ -73,25 +75,20 @@ public class TGFReader extends AbstractDocumentReader {
 	}
 	
 	
-	public Document read(InputStream stream, LoadLogger loadLogger, NodeBranchDataAdapter internalAdapter, 
-			NodeBranchDataAdapter branchLengthsAdapter,	TreeSelector selector, 
-			boolean translateInternalNodes) throws Exception {
-		
+	@Override
+  public Document readDocument(BufferedInputStream stream) throws Exception {
 		labelFormats = initLabelFormats();
 		leafFormats = new NodeFormats();
 		lineWidth.setInMillimeters(LineFormats.DEFAULT_LINE_WIDTH_IN_MM);
 		cornerRadius.setInMillimeters(CornerRadiusFormats.STD_EDGE_RADIUS_IN_MM);
 		
 		return null;
-	}
+  }
 
 
 	@Override
-	public DocumentIterator readAll(InputStream stream, LoadLogger loadLogger,
-			NodeBranchDataAdapter internalAdapter,
-			NodeBranchDataAdapter branchLengthsAdapter, boolean translateInternalNodes)
-			throws Exception {
-
-		return null;
-	}
+  public DocumentIterator createIterator(BufferedInputStream stream) throws Exception {
+	  // TODO Auto-generated method stub
+	  return null;
+  }	
 }
