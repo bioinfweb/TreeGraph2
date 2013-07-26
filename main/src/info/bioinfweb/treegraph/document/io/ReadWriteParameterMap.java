@@ -19,10 +19,10 @@
 package info.bioinfweb.treegraph.document.io;
 
 
-import info.bioinfweb.treegraph.document.io.log.LoadLogger;
-import info.bioinfweb.treegraph.document.io.log.VoidLoadLogger;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.webinsel.util.collections.ParameterMap;
+import info.webinsel.util.log.ApplicationLogger;
+import info.webinsel.util.log.VoidApplicationLogger;
 
 
 
@@ -55,19 +55,19 @@ public class ReadWriteParameterMap extends ParameterMap {
 	
 	
 	/**
-	 * Returns a stored {@link LoadLogger} object or a new instance of {@link VoidLoadLogger} if no appropriate
+	 * Returns a stored {@link ApplicationLogger} object or a new instance of {@link VoidApplicationLogger} if no appropriate
 	 * object is stored.
 	 * 
 	 * @param key - the key under which the result is stored
-	 * @return an appropriate object or a new instance of {@link VoidLoadLogger}
+	 * @return an appropriate object or a new instance of {@link VoidApplicationLogger}
 	 */
-	public LoadLogger getLoadLogger() {
+	public ApplicationLogger getLoadLogger() {
 		Object result = get(KEY_LOAD_LOGGER);
-		if (result instanceof LoadLogger) {
-			return (LoadLogger)result;
+		if (result instanceof ApplicationLogger) {
+			return (ApplicationLogger)result;
 		}
 		else {
-			return new VoidLoadLogger();
+			return new VoidApplicationLogger();
 		}
 	}
 	
@@ -83,7 +83,7 @@ public class ReadWriteParameterMap extends ParameterMap {
 	}
 	
 	
-	public void putLoadLogger(LoadLogger logger) {
+	public void putLoadLogger(ApplicationLogger logger) {
 		put(KEY_LOAD_LOGGER, logger);
 	}
 	

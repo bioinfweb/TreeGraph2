@@ -19,10 +19,10 @@
 package info.bioinfweb.treegraph.cmd;
 
 
-import info.bioinfweb.treegraph.document.io.log.AbstractLoadLogger;
-import info.bioinfweb.treegraph.document.io.log.LoadLogger;
-import info.bioinfweb.treegraph.document.io.log.LoggerMessage;
-import info.bioinfweb.treegraph.document.io.log.LoggerMessageType;
+import info.webinsel.util.log.AbstractApplicationLogger;
+import info.webinsel.util.log.ApplicationLogger;
+import info.webinsel.util.log.ApplicationLoggerMessage;
+import info.webinsel.util.log.ApplicationLoggerMessageType;
 
 
 
@@ -33,7 +33,7 @@ import info.bioinfweb.treegraph.document.io.log.LoggerMessageType;
  * @since 2.0.42
  * @author Ben St&ouml;ver
  */
-public class CmdLoadLogger extends AbstractLoadLogger implements LoadLogger {
+public class CmdLoadLogger extends AbstractApplicationLogger implements ApplicationLogger {
 	public static final String WARNING_PREFIX = "WARNING: ";
 	
 	private static CmdLoadLogger firstInstace = null;
@@ -51,8 +51,8 @@ public class CmdLoadLogger extends AbstractLoadLogger implements LoadLogger {
 	
 	
 	@Override
-	public void addMessage(LoggerMessage message) {
-		if (message.getType().equals(LoggerMessageType.WARNING)) {
+	public void addMessage(ApplicationLoggerMessage message) {
+		if (message.getType().equals(ApplicationLoggerMessageType.WARNING)) {
 			System.out.print(WARNING_PREFIX);
 		}
 		System.out.println(message.getMessage());

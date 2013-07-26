@@ -23,20 +23,13 @@ import info.bioinfweb.treegraph.document.*;
 import info.bioinfweb.treegraph.document.format.*;
 import info.bioinfweb.treegraph.document.io.AbstractDocumentReader;
 import info.bioinfweb.treegraph.document.io.DocumentIterator;
-import info.bioinfweb.treegraph.document.io.ReadWriteParameterMap;
 import info.bioinfweb.treegraph.document.io.SingleDocumentIterator;
-import info.bioinfweb.treegraph.document.io.TreeSelector;
-import info.bioinfweb.treegraph.document.io.log.LoadLogger;
-import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.webinsel.util.io.FormatVersion;
 import info.webinsel.util.io.InvalidXSDPathException;
 import info.webinsel.util.io.XMLUtils;
 
 import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.Locale;
 

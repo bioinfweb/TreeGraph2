@@ -20,8 +20,8 @@ package info.bioinfweb.treegraph.document.io;
 
 
 import info.bioinfweb.treegraph.document.Document;
-import info.bioinfweb.treegraph.document.io.log.LoadLogger;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
+import info.webinsel.util.log.ApplicationLogger;
 
 
 
@@ -31,7 +31,7 @@ import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
  * @author Ben St&ouml;ver
  */
 public abstract class AbstractDocumentIterator implements DocumentIterator {
-	private LoadLogger loadLogger;
+	private ApplicationLogger loadLogger;
 	private NodeBranchDataAdapter internalAdapter;
 	private NodeBranchDataAdapter branchLengthsAdapter;
 	private boolean translateInternalNodes;
@@ -39,7 +39,7 @@ public abstract class AbstractDocumentIterator implements DocumentIterator {
 	private boolean beforeFirst = true;
 	
 	
-	public AbstractDocumentIterator(LoadLogger loadLogger,
+	public AbstractDocumentIterator(ApplicationLogger loadLogger,
 			NodeBranchDataAdapter internalAdapter,
 			NodeBranchDataAdapter branchLengthsAdapter, boolean translateInternalNodes) {
 		
@@ -51,7 +51,7 @@ public abstract class AbstractDocumentIterator implements DocumentIterator {
 	}
 
 
-	public LoadLogger getLoadLogger() {
+	public ApplicationLogger getLoadLogger() {
 		return loadLogger;
 	}
 

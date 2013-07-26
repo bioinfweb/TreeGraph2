@@ -24,7 +24,7 @@ import java.util.Vector;
 import javax.swing.AbstractListModel;
 import javax.swing.ListModel;
 
-import info.bioinfweb.treegraph.document.io.log.LoggerMessage;
+import info.webinsel.util.log.ApplicationLoggerMessage;
 
 
 
@@ -35,7 +35,7 @@ import info.bioinfweb.treegraph.document.io.log.LoggerMessage;
  * @author Ben St&ouml;ver
  */
 public class MessagesListModel extends AbstractListModel implements ListModel {
-	private Vector<LoggerMessage> list = new Vector<LoggerMessage>();
+	private Vector<ApplicationLoggerMessage> list = new Vector<ApplicationLoggerMessage>();
 	
 
 	@Override
@@ -50,7 +50,7 @@ public class MessagesListModel extends AbstractListModel implements ListModel {
 	}
 
 
-	public void add(LoggerMessage e) {
+	public void add(ApplicationLoggerMessage e) {
     if (list.add(e)) {
     	fireIntervalAdded(this, getSize() - 1, getSize() - 1);
     }

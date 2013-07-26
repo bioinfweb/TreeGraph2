@@ -29,8 +29,8 @@ import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.io.DocumentIterator;
 import info.bioinfweb.treegraph.document.io.TextStreamReader;
 import info.bioinfweb.treegraph.document.io.TreeSelector;
-import info.bioinfweb.treegraph.document.io.log.LoadLogger;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
+import info.webinsel.util.log.ApplicationLogger;
 
 
 
@@ -50,7 +50,7 @@ public class NexusReader extends TextStreamReader {
 	}
 	
 	
-	public Document read(InputStream stream, LoadLogger loadLogger, NodeBranchDataAdapter internalAdapter, 
+	public Document read(InputStream stream, ApplicationLogger loadLogger, NodeBranchDataAdapter internalAdapter, 
 			NodeBranchDataAdapter branchLengthAdapter, TreeSelector selector, 
 			boolean translateInternalNodes) throws Exception {
 		
@@ -65,7 +65,7 @@ public class NexusReader extends TextStreamReader {
 	}
 	
 	
-	public Document read(File file, LoadLogger loadLogger, NodeBranchDataAdapter internalAdapter, 
+	public Document read(File file, ApplicationLogger loadLogger, NodeBranchDataAdapter internalAdapter, 
 			NodeBranchDataAdapter branchLengthAdapter, TreeSelector selector, 
 			boolean translateInternalNodes) throws Exception {
 		
@@ -78,7 +78,7 @@ public class NexusReader extends TextStreamReader {
 
 
 	@Override
-	public DocumentIterator readAll(InputStream stream, LoadLogger loadLogger,
+	public DocumentIterator readAll(InputStream stream, ApplicationLogger loadLogger,
 			NodeBranchDataAdapter internalAdapter,
 			NodeBranchDataAdapter branchLengthsAdapter, boolean translateInternalNodes)
 			throws Exception {

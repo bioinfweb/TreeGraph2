@@ -21,10 +21,10 @@ package info.bioinfweb.treegraph.document.io;
 
 import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.treegraph.document.Document;
-import info.bioinfweb.treegraph.document.io.log.LoadLogger;
-import info.bioinfweb.treegraph.document.io.log.VoidLoadLogger;
 import info.webinsel.util.collections.ParameterMap;
 import info.webinsel.util.io.XMLUtils;
+import info.webinsel.util.log.ApplicationLogger;
+import info.webinsel.util.log.VoidApplicationLogger;
 
 import java.io.*;
 
@@ -41,7 +41,7 @@ import javax.xml.stream.events.StartElement;
  */
 public abstract class AbstractDocumentReader implements DocumentReader {
 	private boolean saveFileName = false;
-	protected LoadLogger loadLogger = null;
+	protected ApplicationLogger loadLogger = null;
 	protected ReadWriteParameterMap parameterMap = null;
   protected Document document = null;
   
@@ -88,8 +88,8 @@ public abstract class AbstractDocumentReader implements DocumentReader {
   }
   
 
-  private LoadLogger getLoadLogger(ParameterMap parameterMap) {
-  	return (LoadLogger)parameterMap.getObject(ReadWriteParameterMap.KEY_LOAD_LOGGER, new VoidLoadLogger());
+  private ApplicationLogger getLoadLogger(ParameterMap parameterMap) {
+  	return (ApplicationLogger)parameterMap.getObject(ReadWriteParameterMap.KEY_LOAD_LOGGER, new VoidApplicationLogger());
   }
   
   

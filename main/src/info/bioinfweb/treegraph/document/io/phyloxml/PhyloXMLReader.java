@@ -28,21 +28,13 @@ import info.bioinfweb.treegraph.document.TextLabel;
 import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.format.GlobalFormats;
 import info.bioinfweb.treegraph.document.io.AbstractDocumentReader;
-import info.bioinfweb.treegraph.document.io.DefaultTreeSelector;
 import info.bioinfweb.treegraph.document.io.DocumentIterator;
-import info.bioinfweb.treegraph.document.io.ReadWriteParameterMap;
-import info.bioinfweb.treegraph.document.io.TreeSelector;
-import info.bioinfweb.treegraph.document.io.log.LoadLogger;
 import info.bioinfweb.treegraph.document.io.newick.BranchLengthsScaler;
-import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.format.AutoPositionLabelsEdit;
-import info.webinsel.util.collections.ParameterMap;
 import info.webinsel.util.io.XMLUtils;
 
 import java.awt.Color;
 import java.io.BufferedInputStream;
-import java.io.InputStream;
-import java.util.List;
 import java.util.Vector;
 
 import javax.xml.stream.XMLEventReader;

@@ -36,11 +36,11 @@ import info.bioinfweb.treegraph.document.io.DocumentReader;
 import info.bioinfweb.treegraph.document.io.ReadWriteParameterMap;
 import info.bioinfweb.treegraph.document.io.TextStreamReader;
 import info.bioinfweb.treegraph.document.io.TreeSelector;
-import info.bioinfweb.treegraph.document.io.log.LoadLogger;
 import info.bioinfweb.treegraph.document.io.nexus.NexusParser;
 import info.bioinfweb.treegraph.document.nodebranchdata.BranchLengthAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
+import info.webinsel.util.log.ApplicationLogger;
 
 
 
@@ -62,7 +62,7 @@ public class NewickReader extends TextStreamReader implements DocumentReader {
 		private NewickStringReader newickStringReader = new NewickStringReader(); 
 		
 		
-		public NewickDocumentIterator(InputStreamReader reader, LoadLogger loadLogger,
+		public NewickDocumentIterator(InputStreamReader reader, ApplicationLogger loadLogger,
 				NodeBranchDataAdapter internalAdapter,
 				NodeBranchDataAdapter branchLengthsAdapter) {
 			

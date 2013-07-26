@@ -20,10 +20,10 @@ package info.bioinfweb.treegraph.gui.dialogs.io.loadlogger;
 
 
 import info.bioinfweb.treegraph.document.io.DocumentReader;
-import info.bioinfweb.treegraph.document.io.log.AbstractLoadLogger;
-import info.bioinfweb.treegraph.document.io.log.LoadLogger;
-import info.bioinfweb.treegraph.document.io.log.LoggerMessage;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
+import info.webinsel.util.log.AbstractApplicationLogger;
+import info.webinsel.util.log.ApplicationLogger;
+import info.webinsel.util.log.ApplicationLoggerMessage;
 
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -50,15 +50,15 @@ import javax.swing.JList;
  * @since 2.0.42
  * @author Ben St&ouml;ver
  */
-public class LoadLoggerDialog extends JDialog implements LoadLogger {
+public class LoadLoggerDialog extends JDialog implements ApplicationLogger {
 	private static final long serialVersionUID = 1L;
 
 	private static LoadLoggerDialog firstInstance = null;
 	
 	
-	private LoadLogger logger = new AbstractLoadLogger() {
+	private ApplicationLogger logger = new AbstractApplicationLogger() {
 				@Override
-				public void addMessage(LoggerMessage message) {
+				public void addMessage(ApplicationLoggerMessage message) {
 					getMessageListModel().add(message);
 				}
 			};
@@ -93,7 +93,7 @@ public class LoadLoggerDialog extends JDialog implements LoadLogger {
 	}
 
 	
-	public void addMessage(LoggerMessage message) {
+	public void addMessage(ApplicationLoggerMessage message) {
 		logger.addMessage(message);
 	}
 
