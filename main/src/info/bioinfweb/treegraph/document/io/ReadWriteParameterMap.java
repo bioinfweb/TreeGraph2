@@ -20,15 +20,12 @@ package info.bioinfweb.treegraph.document.io;
 
 
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
-import info.webinsel.util.collections.ParameterMap;
-import info.webinsel.util.log.ApplicationLogger;
-import info.webinsel.util.log.VoidApplicationLogger;
+import info.webinsel.util.log.ApplicationLoggerParameterMap;
 
 
 
-public class ReadWriteParameterMap extends ParameterMap {
+public class ReadWriteParameterMap extends ApplicationLoggerParameterMap {
 	public static final String KEY_TREE_SELECTOR = "treeSelector";
-	public static final String KEY_LOAD_LOGGER = "loadLogger";
 	public static final String KEY_INTERNAL_NODE_NAMES_ADAPTER = "internalNodeNamesAdapter";
 	public static final String KEY_LEAF_NODE_NAMES_ADAPTER = "leafNodeNamesAdapter";
 	public static final String KEY_BRANCH_LENGTH_ADAPTER = "branchLengthAdapter";
@@ -54,24 +51,6 @@ public class ReadWriteParameterMap extends ParameterMap {
 	}
 	
 	
-	/**
-	 * Returns a stored {@link ApplicationLogger} object or a new instance of {@link VoidApplicationLogger} if no appropriate
-	 * object is stored.
-	 * 
-	 * @param key - the key under which the result is stored
-	 * @return an appropriate object or a new instance of {@link VoidApplicationLogger}
-	 */
-	public ApplicationLogger getLoadLogger() {
-		Object result = get(KEY_LOAD_LOGGER);
-		if (result instanceof ApplicationLogger) {
-			return (ApplicationLogger)result;
-		}
-		else {
-			return new VoidApplicationLogger();
-		}
-	}
-	
-	
 	public TreeSelector getTreeSelector() {
 		Object result = get(KEY_TREE_SELECTOR);
 		if (result instanceof TreeSelector) {
@@ -79,19 +58,6 @@ public class ReadWriteParameterMap extends ParameterMap {
 		}
 		else {
 			return new DefaultTreeSelector();
-		}
-	}
-	
-	
-	public void putLoadLogger(ApplicationLogger logger) {
-		put(KEY_LOAD_LOGGER, logger);
-	}
-	
-	
-	public void removeLoadLogger() {
-		Object value = get(KEY_LOAD_LOGGER);
-		if (value != null) {
-			remove(value);
 		}
 	}
 }

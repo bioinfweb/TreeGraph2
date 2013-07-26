@@ -20,14 +20,10 @@ package info.bioinfweb.treegraph.document.io.newick;
 
 
 import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
 
-import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.io.AbstractDocumentIterator;
@@ -35,7 +31,6 @@ import info.bioinfweb.treegraph.document.io.DocumentIterator;
 import info.bioinfweb.treegraph.document.io.DocumentReader;
 import info.bioinfweb.treegraph.document.io.ReadWriteParameterMap;
 import info.bioinfweb.treegraph.document.io.TextStreamReader;
-import info.bioinfweb.treegraph.document.io.TreeSelector;
 import info.bioinfweb.treegraph.document.io.nexus.NexusParser;
 import info.bioinfweb.treegraph.document.nodebranchdata.BranchLengthAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
