@@ -55,6 +55,12 @@ public class OpenAction extends EditDialogAction {
 	}
 
 
+	/**
+	 * This class overrides a{@code actionPerformed()} directly because it can also be executed if no
+	 * document is opened.
+	 * 
+	 * @see info.bioinfweb.treegraph.gui.actions.DocumentAction#actionPerformed(java.awt.event.ActionEvent)
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		onActionPerformed(e, null);

@@ -42,10 +42,20 @@ public class ExitAction extends DocumentAction {
 	}
 
 	
+	/**
+	 * This class overrides a{@code actionPerformed()} directly because it can also be executed if no
+	 * document is opened.
+	 * 
+	 * @see info.bioinfweb.treegraph.gui.actions.DocumentAction#actionPerformed(java.awt.event.ActionEvent)
+	 */
 	@Override
-	protected void onActionPerformed(ActionEvent e, TreeInternalFrame frame) {
+	public void actionPerformed(ActionEvent e) {
 		getMainFrame().close();
 	}
+
+
+	@Override
+	protected void onActionPerformed(ActionEvent e, TreeInternalFrame frame) {}
 
 	
 	@Override

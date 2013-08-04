@@ -51,14 +51,17 @@ public class NewDocumentAction extends DocumentAction implements Action {
 	
 	
 	@Override
-	protected void onActionPerformed(ActionEvent e, TreeInternalFrame frame) {
-		// nicht verwendet.
-	}
+	protected void onActionPerformed(ActionEvent e, TreeInternalFrame frame) {}  // unused
 
 
+	/**
+	 * This class overrides a{@code actionPerformed()} directly because it can also be executed if no
+	 * document is opend.
+	 * 
+	 * @see info.bioinfweb.treegraph.gui.actions.DocumentAction#actionPerformed(java.awt.event.ActionEvent)
+	 */
 	public void actionPerformed(ActionEvent e) {
 		Document d = new Document();
-		//d.setTree(NewickStringReader.read("((((A, B)K4, C)K3, D)K2, E)K1;"));
 		getMainFrame().addInternalFrame(d);
 	}
 }
