@@ -228,9 +228,7 @@ public class ActionManagement extends AbstractUndoActionManagement {
 	 * undo and redo actions are enabled depending on the contents of the undo manager
 	 * and the action that would switch to the current view mode is disabled (which
 	 * illustrated the current view mode to the user).
-	 * @see info.webinsel.util.swing.ActionHashMap#refreshActionStatus()
 	 */
-	@Override
 	public void refreshActionStatus() {
   	TreeInternalFrame frame = mainFrame.getActiveTreeFrame();
   	Document document = null;
