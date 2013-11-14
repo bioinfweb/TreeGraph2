@@ -211,7 +211,7 @@ public class OpenDialog extends FileDialog {
 			fileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
 			fileChooser.setControlButtonsAreShown(false);
 
-			if (fileChooser.getFileFilter() != null) {  // "Alle Datein"-Filter entfernen
+			if (fileChooser.getFileFilter() != null) {  // "Alle Dateien"-Filter entfernen
 				fileChooser.removeChoosableFileFilter(fileChooser.getFileFilter());
 			}
 			SupportedFormatsFilter supportedFormatsFilter = new SupportedFormatsFilter();

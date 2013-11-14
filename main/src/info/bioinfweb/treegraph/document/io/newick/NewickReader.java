@@ -146,6 +146,7 @@ public class NewickReader extends TextStreamReader implements DocumentReader {
 		String tree = readNextTree(reader);
 		while (tree != null) {
 			result.add(tree);
+			tree = readNextTree(reader);
 		}
 		return result.toArray(new String[result.size()]);		
 	}

@@ -63,7 +63,7 @@ public class NexusFilter extends AbstractFilter implements DocumentFilter {
 				try {
 					char[] firstChars = new char[NexusParser.NAME_NEXUS.length()];
 					int charsRead = reader.read(firstChars, 0, NexusParser.NAME_NEXUS.length());
-					if (charsRead == 6) {
+					if (charsRead == NexusParser.NAME_NEXUS.length()) {
 						for (int i = 0; i < firstChars.length; i++) {
 							if (Character.toLowerCase(firstChars[i]) != 
 								  Character.toLowerCase(NexusParser.NAME_NEXUS.charAt(i))) {
