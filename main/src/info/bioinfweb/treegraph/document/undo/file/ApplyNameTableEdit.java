@@ -123,7 +123,7 @@ public class ApplyNameTableEdit extends DocumentEdit {
 			pos = findDecimal(oldNames, value);
 		}
 		else {
-			savedValues.add(null);  // Muss erfolgen damit undo funktioniert.
+			savedValues.add(null);  // Make sure undo method finds the correct number of entries.
 		}
 		if (pos != -1) {
 			if (parseNumericValues && Math2.isDecimal(newNames.get(pos))) {
