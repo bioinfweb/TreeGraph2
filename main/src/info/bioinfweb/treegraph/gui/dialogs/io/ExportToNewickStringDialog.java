@@ -130,9 +130,9 @@ public class ExportToNewickStringDialog extends FileDialog {
 				branchLengthAdapter = getBranchLengthInput().getSelectedAdapter();
 			}
 			ReadWriteParameterMap properties = new ReadWriteParameterMap();
-			properties.put(NexusFactory.PARAM_INTERNAL_NODE_NAMES_ADAPTER, getInternalInput().getSelectedAdapter());
-			properties.put(NexusFactory.PARAM_LEAF_NODE_NAMES_ADAPTER, getLeafInput().getSelectedAdapter());
-			properties.put(NexusFactory.PARAM_BRANCH_LENGTH_ADAPTER, branchLengthAdapter);
+			properties.put(ReadWriteParameterMap.KEY_INTERNAL_NODE_NAMES_ADAPTER, getInternalInput().getSelectedAdapter());
+			properties.put(ReadWriteParameterMap.KEY_LEAF_NODE_NAMES_ADAPTER, getLeafInput().getSelectedAdapter());
+			properties.put(ReadWriteParameterMap.KEY_BRANCH_LENGTH_ADAPTER, branchLengthAdapter);
 			writer.write(getDocument(), file, properties);
 			return true;
 		}

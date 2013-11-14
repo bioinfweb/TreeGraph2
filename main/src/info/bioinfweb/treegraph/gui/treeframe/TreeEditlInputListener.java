@@ -19,11 +19,11 @@
 package info.bioinfweb.treegraph.gui.treeframe;
 
 
-import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.treegraph.document.*;
 import info.bioinfweb.treegraph.document.format.DistanceValue;
 import info.bioinfweb.treegraph.graphics.positionpaint.PositionPaintFactory;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
+import info.webinsel.util.SystemUtils;
 
 import java.awt.event.*;
 
@@ -45,9 +45,6 @@ class TreeEditlInputListener extends MouseAdapter
 	protected TreeViewPanel owner = null;
 	
 
-	private TreeEditlInputListener() {}
-	
-	
 	public TreeEditlInputListener(TreeViewPanel owner) {
 	  this.owner = owner;	
 	}
@@ -97,7 +94,7 @@ class TreeEditlInputListener extends MouseAdapter
 		else {
 			if (e.getButton() == MouseEvent.BUTTON3) {  //TODO Besser wäre auch eine plattformunabhängige Lösung über e.getPopupTrigger und mouseReleased + mousePressed
 				if (!owner.getSelection().contains(selected)) {
-					if ((e.isMetaDown() && Main.IS_MAC) || (e.isControlDown()&&  !Main.IS_MAC)) {
+					if ((e.isMetaDown() && SystemUtils.IS_OS_MAC) || (e.isControlDown()&&  !SystemUtils.IS_OS_MAC)) {
   	  			owner.getSelection().add(selected);
 					}
 					else {
@@ -107,7 +104,7 @@ class TreeEditlInputListener extends MouseAdapter
 				// sonst Markierung unverändert lassen
 			}
 			else if (e.getButton() == MouseEvent.BUTTON1) {
-				if ((e.isMetaDown() && Main.IS_MAC) || (e.isControlDown()&&  !Main.IS_MAC)) {
+				if ((e.isMetaDown() && SystemUtils.IS_OS_MAC) || (e.isControlDown()&&  !SystemUtils.IS_OS_MAC)) {
 					if (selected != null) {
 						if (owner.getSelection().contains(selected)) {
 							owner.getSelection().remove(selected);
@@ -135,7 +132,7 @@ class TreeEditlInputListener extends MouseAdapter
 
 	public void keyPressed(KeyEvent e) {
 		if (!owner.getSelection().isEmpty() && 
-				!((e.isMetaDown() && Main.IS_MAC) || (e.isControlDown()&&  !Main.IS_MAC))) {
+				!((e.isMetaDown() && SystemUtils.IS_OS_MAC) || (e.isControlDown()&&  !SystemUtils.IS_OS_MAC))) {
 			if (!e.isShiftDown()) {
 		  	if (owner.getSelection().first() instanceof Node) {
 		  		Node selected = (Node)owner.getSelection().first();
@@ -244,7 +241,7 @@ class TreeEditlInputListener extends MouseAdapter
 
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
-		if ((e.isMetaDown() && Main.IS_MAC) || (e.isControlDown()&&  !Main.IS_MAC)) {
+		if ((e.isMetaDown() && SystemUtils.IS_OS_MAC) || (e.isControlDown()&&  !SystemUtils.IS_OS_MAC)) {
 			owner.setZoom(owner.getZoom() - (float)e.getWheelRotation() * ZOOM_PER_CLICK);
 		}
 		else {

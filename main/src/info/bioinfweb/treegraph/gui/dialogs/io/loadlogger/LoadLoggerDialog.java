@@ -29,13 +29,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import java.awt.Frame;
 import javax.swing.BoxLayout;
-import javax.swing.BorderFactory;
-import javax.swing.border.TitledBorder;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Color;
 import javax.swing.JScrollPane;
 import java.awt.FlowLayout;
 import javax.swing.JButton;
@@ -118,6 +112,27 @@ public class LoadLoggerDialog extends JDialog implements ApplicationLogger {
 	}
 	
 	
+	@Override
+	public void addError(String message) {
+		logger.addError(message);
+	}
+
+
+	public void addError(String message, int helpCode) {
+		logger.addError(message, helpCode);
+	}
+
+
+	public void addError(Throwable throwable, boolean includeStackTrace) {
+		logger.addError(throwable, includeStackTrace);
+	}
+
+
+	public void addError(Throwable throwable, boolean includeStackTrace, int helpCode) {
+		logger.addError(throwable, includeStackTrace, helpCode);
+	}
+
+
 	public void clearMessages() {
 		getMessageListModel().clear();
 	}

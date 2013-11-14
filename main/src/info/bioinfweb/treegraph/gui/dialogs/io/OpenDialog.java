@@ -21,6 +21,7 @@ package info.bioinfweb.treegraph.gui.dialogs.io;
 
 import info.bioinfweb.treegraph.document.io.DocumentReader;
 import info.bioinfweb.treegraph.document.io.ReadWriteFactory;
+import info.bioinfweb.treegraph.document.io.ReadWriteParameterMap;
 import info.bioinfweb.treegraph.document.io.SupportedFormatsFilter;
 import info.bioinfweb.treegraph.document.io.newick.NewickException;
 import info.bioinfweb.treegraph.document.io.newick.NewickFilter;
@@ -104,11 +105,17 @@ public class OpenDialog extends FileDialog {
 				DocumentReader reader = ReadWriteFactory.getInstance().getReader(
 						getFileChooser().getSelectedFile());
 				if (reader != null) {
-					MainFrame.getInstance().addInternalFrame(reader.read(file, LoadLoggerDialog.getInstance(),					
-							getNodeNamesDataInput().getSelectedAdapter(),
-							getBranchLengthsDataInput().getSelectedAdapter(),
-							TreeSelectionDialog.getInstance(), 
-							getTranslateInternalNodesCheckBox().isSelected()));
+					ReadWriteParameterMap parameterMap = new ReadWriteParameterMap();
+					parameterMap.putApplicationLogger(LoadLoggerDialog.getInstance());
+					parameterMap.put(ReadWriteParameterMap.KEY_INTERNAL_NODE_NAMES_ADAPTER, 
+							getNodeNamesDataInput().getSelectedAdapter());
+					parameterMap.put(ReadWriteParameterMap.KEY_BRANCH_LENGTH_ADAPTER, 
+							getBranchLengthsDataInput().getSelectedAdapter());
+					parameterMap.put(ReadWriteParameterMap.KEY_TREE_SELECTOR, TreeSelectionDialog.getInstance());
+					parameterMap.put(ReadWriteParameterMap.KEY_TRANSLATE_INTERNAL_NODE_NAMES, 
+							getTranslateInternalNodesCheckBox().isSelected());
+					
+					MainFrame.getInstance().addInternalFrame(reader.read(file, parameterMap));
 					LoadLoggerDialog.getInstance().display();
 				}
 				else {

@@ -20,9 +20,11 @@ package info.bioinfweb.treegraph.gui.mainframe;
 
 
 import info.bioinfweb.treegraph.Main;
+import info.bioinfweb.treegraph.cmd.CmdLoadLogger;
 import info.bioinfweb.treegraph.document.*;
 import info.bioinfweb.treegraph.document.io.DocumentReader;
 import info.bioinfweb.treegraph.document.io.ReadWriteFactory;
+import info.bioinfweb.treegraph.document.io.ReadWriteParameterMap;
 import info.bioinfweb.treegraph.graphics.positionpaint.PositionPaintFactory;
 import info.bioinfweb.treegraph.graphics.positionpaint.PositionPaintType;
 import info.bioinfweb.treegraph.gui.actions.ActionManagement;
@@ -103,7 +105,9 @@ public class MainFrame extends JFrame implements Runnable {
 				DocumentReader reader = ReadWriteFactory.getInstance().getReader(file);
 				if (reader != null) {
 					try {
-						addInternalFrame(reader.read(file, LoadLoggerDialog.getInstance()));
+						ReadWriteParameterMap parameterMap = new ReadWriteParameterMap();
+						parameterMap.putApplicationLogger(LoadLoggerDialog.getInstance());
+						addInternalFrame(reader.read(file, parameterMap));
 						LoadLoggerDialog.getInstance().display();
 					}
 					catch (Exception e) {

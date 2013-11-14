@@ -31,6 +31,7 @@ main/include/lib/batik-swing.jar -text
 main/include/lib/batik-transcoder.jar -text
 main/include/lib/batik-util.jar -text
 main/include/lib/batik-xml.jar -text
+main/include/lib/commons-lang3-3.1.jar -text
 main/include/lib/ext-1.1.1.jar -text
 main/include/lib/freehep-base.jar -text
 main/include/lib/freehep-graphics2d.jar -text

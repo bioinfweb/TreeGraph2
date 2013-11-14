@@ -24,9 +24,8 @@ import info.bioinfweb.treegraph.document.IDManager;
 import info.bioinfweb.treegraph.document.io.DocumentReader;
 import info.bioinfweb.treegraph.document.io.ReadWriteFactory;
 import info.bioinfweb.treegraph.document.io.ReadWriteFormat;
+import info.bioinfweb.treegraph.document.io.ReadWriteParameterMap;
 import info.bioinfweb.treegraph.document.io.nexus.NexusFilter;
-import info.bioinfweb.treegraph.document.nodebranchdata.BranchLengthAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextElementDataAdapter;
 import info.bioinfweb.treegraph.document.undo.file.AddSupportValuesEdit;
 import info.bioinfweb.treegraph.document.undo.file.AddSupportValuesEdit.TargetType;
@@ -124,9 +123,12 @@ public class AddSupportValuesDialog extends FileDialog {
 			}
 			
 			try {
-				Document sourceDoc = reader.read(getFileChooser().getSelectedFile(), LoadLoggerDialog.getInstance(),
-						NodeNameAdapter.getSharedInstance(), BranchLengthAdapter.getSharedInstance(),
-						TreeSelectionDialog.getInstance(), getTranslateInternalsCheckBox().isSelected());
+				ReadWriteParameterMap parameterMap = new ReadWriteParameterMap();
+				parameterMap.putApplicationLogger(LoadLoggerDialog.getInstance());
+				parameterMap.put(ReadWriteParameterMap.KEY_TREE_SELECTOR, TreeSelectionDialog.getInstance());
+				parameterMap.put(ReadWriteParameterMap.KEY_TRANSLATE_INTERNAL_NODE_NAMES, 
+						getTranslateInternalsCheckBox().isSelected());
+				Document sourceDoc = reader.read(getFileChooser().getSelectedFile(), parameterMap);
 				
 				boolean rooted = sourceDoc.getTree().getFormats().getShowRooted();
 				if (rooted != getDocument().getTree().getFormats().getShowRooted()) {
