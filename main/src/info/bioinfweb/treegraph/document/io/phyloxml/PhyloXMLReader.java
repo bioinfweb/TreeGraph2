@@ -370,7 +370,7 @@ public class PhyloXMLReader extends AbstractDocumentReader implements PhyloXMLCo
 	      event = reader.nextEvent();
 	      switch (event.getEventType()) {
 	        case XMLStreamConstants.START_DOCUMENT:
-	          document = new Document();
+	          document = createEmptyDocument();
 	          break;
 	        case XMLStreamConstants.END_DOCUMENT:
 	          reader.close();

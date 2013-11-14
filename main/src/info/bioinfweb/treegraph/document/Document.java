@@ -100,7 +100,7 @@ public class Document extends SwingSaver
   	initSets();
   	getFileChooser().addChoosableFileFilter(new XTGFilter());
   	if (registerFileChooser) {
-  		CurrentDirectoryModel.getInstance().addFileChooser(getFileChooser());  // Wird bei TreeInterbalFrame.doDefaultCloseAction() wieder abgemeldet.
+  		CurrentDirectoryModel.getInstance().addFileChooser(getFileChooser());  // Wird bei TreeInternalFrame.doDefaultCloseAction() wieder abgemeldet.
   	}
   	setDefaultExtension(XTGFilter.EXTENSION);
   	addFileExtension(XTGFilter.XML_EXTENSION);

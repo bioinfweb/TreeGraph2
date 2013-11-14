@@ -58,7 +58,7 @@ public class NexusReader extends TextStreamReader {
 				parameterMap.getBoolean(ReadWriteParameterMap.KEY_TRANSLATE_INTERNAL_NODE_NAMES, true));
 		int treePos = parameterMap.getTreeSelector().select(nex.namesToArray(), trees);
 		
-		Document result = new Document();
+		Document result = createEmptyDocument();
 		result.setTree(trees[treePos]);
 		
 		return result;

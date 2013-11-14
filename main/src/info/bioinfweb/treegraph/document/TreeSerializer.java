@@ -223,7 +223,7 @@ public class TreeSerializer {
   /**
    * Returns an array of all legends which are completely anchored inside the subtree under 
    * <code>root</code>.
-   * @param tree - the tree that cotains the legends and <code>root</code>
+   * @param tree - the tree that contains the legends and <code>root</code>
    * @param root - the root node of the subtree
    * @throws IllegalArgumentException if <code>root</code> is not contained in <code>tree</code>.
    * @return an array of the legends (possibly with the length 0)

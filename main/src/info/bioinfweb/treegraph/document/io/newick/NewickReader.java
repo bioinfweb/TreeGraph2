@@ -68,7 +68,7 @@ public class NewickReader extends TextStreamReader implements DocumentReader {
 
 		@Override
 		protected Document readNext() throws Exception {
-			Document result = new Document();
+			Document result = createEmptyDocument();
 			result.setTree(newickStringReader.read(
 					readNextTree(streamReader), getInternalAdapter(), getBranchLengthsAdapter(), null, false));
 			return result;
@@ -168,7 +168,7 @@ public class NewickReader extends TextStreamReader implements DocumentReader {
 						BranchLengthAdapter.getSharedInstance()),
 				null, false);  // no translation table in available Newick format 
 		
-		Document result = new Document();
+		Document result = createEmptyDocument();
 		result.setTree(trees[parameterMap.getTreeSelector().select(names, trees)]);
 		return result;
 	}

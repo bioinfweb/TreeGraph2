@@ -30,6 +30,7 @@ public class ReadWriteParameterMap extends ApplicationLoggerParameterMap {
 	public static final String KEY_LEAF_NODE_NAMES_ADAPTER = "leafNodeNamesAdapter";
 	public static final String KEY_BRANCH_LENGTH_ADAPTER = "branchLengthAdapter";
 	public static final String KEY_TRANSLATE_INTERNAL_NODE_NAMES = "translateInternalNodeNames";
+	public static final String KEY_REGISTER_FILE_CHOOSER_OF_DOCUMENT = "registerFileChooser";
 	
 	
 	/**

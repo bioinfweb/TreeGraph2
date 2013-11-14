@@ -138,4 +138,13 @@ public abstract class AbstractDocumentReader implements DocumentReader {
 	public DocumentIterator readAll(File file, ReadWriteParameterMap properties) throws Exception {
 		return readAll(new FileInputStream(file), properties);
 	}
+	
+	
+	/**
+	 * Creates a new instance of {@link Document} according to the specified parameters.
+	 */
+	protected Document createEmptyDocument() {
+		return new Document(parameterMap.getBoolean(
+				ReadWriteParameterMap.KEY_REGISTER_FILE_CHOOSER_OF_DOCUMENT, true));
+	}
 }
