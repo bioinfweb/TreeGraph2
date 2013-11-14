@@ -19,18 +19,15 @@
 package info.bioinfweb.treegraph.document.io.nexus;
 
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
+import java.io.BufferedInputStream;
 
-import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.io.DocumentIterator;
+import info.bioinfweb.treegraph.document.io.ReadWriteParameterMap;
 import info.bioinfweb.treegraph.document.io.TextStreamReader;
-import info.bioinfweb.treegraph.document.io.TreeSelector;
-import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
-import info.webinsel.util.log.ApplicationLogger;
+import info.bioinfweb.treegraph.document.nodebranchdata.BranchLengthAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 
 
 
@@ -50,39 +47,27 @@ public class NexusReader extends TextStreamReader {
 	}
 	
 	
-	public Document read(InputStream stream, ApplicationLogger loadLogger, NodeBranchDataAdapter internalAdapter, 
-			NodeBranchDataAdapter branchLengthAdapter, TreeSelector selector, 
-			boolean translateInternalNodes) throws Exception {
-		
+	@Override
+	public Document readDocument(BufferedInputStream stream) throws Exception {
 		NexusDocument nex = NexusParser.parse(readStream(stream));
-		Tree[] trees = nex.createTrees(internalAdapter, branchLengthAdapter, translateInternalNodes);
-		int treePos = selector.select(nex.namesToArray(), trees);
+		Tree[] trees = nex.createTrees(
+				parameterMap.getNodeBranchDataAdapter(ReadWriteParameterMap.KEY_INTERNAL_NODE_NAMES_ADAPTER, 
+						NodeNameAdapter.getSharedInstance()),
+				parameterMap.getNodeBranchDataAdapter(ReadWriteParameterMap.KEY_BRANCH_LENGTH_ADAPTER, 
+						BranchLengthAdapter.getSharedInstance()),
+				parameterMap.getBoolean(ReadWriteParameterMap.KEY_TRANSLATE_INTERNAL_NODE_NAMES, true));
+		int treePos = parameterMap.getTreeSelector().select(nex.namesToArray(), trees);
 		
 		Document result = new Document();
 		result.setTree(trees[treePos]);
 		
 		return result;
 	}
-	
-	
-	public Document read(File file, ApplicationLogger loadLogger, NodeBranchDataAdapter internalAdapter, 
-			NodeBranchDataAdapter branchLengthAdapter, TreeSelector selector, 
-			boolean translateInternalNodes) throws Exception {
-		
-		Document result = read(new FileInputStream(file), loadLogger, internalAdapter, branchLengthAdapter, selector, 
-				translateInternalNodes);
-		result.setDefaultName(result.getDefaultName().replaceAll(
-				Main.getInstance().getNameManager().getPrefix(), file.getName()));
-		return result;
-	}
 
 
 	@Override
-	public DocumentIterator readAll(InputStream stream, ApplicationLogger loadLogger,
-			NodeBranchDataAdapter internalAdapter,
-			NodeBranchDataAdapter branchLengthsAdapter, boolean translateInternalNodes)
-			throws Exception {
-
+	public DocumentIterator createIterator(BufferedInputStream stream) throws Exception {
+		//TODO implement (e.g. create local NexusDocument iterator)
 		return null;
 	}
 }

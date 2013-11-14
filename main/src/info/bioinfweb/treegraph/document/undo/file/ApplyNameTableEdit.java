@@ -184,7 +184,7 @@ public class ApplyNameTableEdit extends DocumentEdit {
 	
   public static void loadNameTable(File file, Vector<String> oldNames, 
   		Vector<String> newNames, char separator) 
-  throws FileNotFoundException, IOException, InvalidFormatException {
+      throws FileNotFoundException, IOException, InvalidFormatException {
   	
   	loadNameTable(new FileInputStream(file), oldNames, newNames, separator);
   }
@@ -192,7 +192,7 @@ public class ApplyNameTableEdit extends DocumentEdit {
 	
 	public static void loadNameTable(InputStream stream, Vector<String> oldNames, 
 			Vector<String> newNames, char separator) 
-	throws IOException, InvalidFormatException {
+	    throws IOException, InvalidFormatException {
 		
 		String[][] table = TableReader.readTable(stream, separator);
 		

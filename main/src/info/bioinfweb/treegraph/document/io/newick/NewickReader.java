@@ -163,9 +163,9 @@ public class NewickReader extends TextStreamReader implements DocumentReader {
 				parts,
 				parameterMap.getNodeBranchDataAdapter(ReadWriteParameterMap.KEY_INTERNAL_NODE_NAMES_ADAPTER, 
 						NodeNameAdapter.getSharedInstance()),
-				parameterMap.getNodeBranchDataAdapter(ReadWriteParameterMap.KEY_INTERNAL_NODE_NAMES_ADAPTER, 
+				parameterMap.getNodeBranchDataAdapter(ReadWriteParameterMap.KEY_BRANCH_LENGTH_ADAPTER, 
 						BranchLengthAdapter.getSharedInstance()),
-				null, false);
+				null, false);  // no translation table in available Newick format 
 		
 		Document result = new Document();
 		result.setTree(trees[parameterMap.getTreeSelector().select(names, trees)]);
