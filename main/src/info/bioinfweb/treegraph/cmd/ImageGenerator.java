@@ -24,6 +24,7 @@ import info.bioinfweb.treegraph.document.format.DistanceDimension;
 import info.bioinfweb.treegraph.document.format.DistanceValue;
 import info.bioinfweb.treegraph.document.io.ReadWriteFactory;
 import info.bioinfweb.treegraph.document.io.ReadWriteFormat;
+import info.bioinfweb.treegraph.document.io.ReadWriteParameterMap;
 import info.bioinfweb.treegraph.graphics.export.GraphicFormat;
 import info.bioinfweb.treegraph.graphics.export.GraphicWriter;
 import info.bioinfweb.treegraph.graphics.export.GraphicWriterFactory;
@@ -109,8 +110,10 @@ public class ImageGenerator {
   	GraphicFormat format = gwf.formatByFileName(reader.getArg(2));
   	if (rwf.getFilter(ReadWriteFormat.XTG).validExtension(reader.getArg(1)) && (format != null)) {
   		try {
+				ReadWriteParameterMap parameterMap = new ReadWriteParameterMap();
+				parameterMap.putApplicationLogger(CmdLoadLogger.getInstance());
   			Document document = rwf.getReader(ReadWriteFormat.XTG).read(
-  					new File(reader.getArg(1)), CmdLoadLogger.getInstance());
+  					new File(reader.getArg(1)), parameterMap);
   			
         PositionPaintType type = PositionPaintType.RECT_CLAD;
   			if (reader.contained(PHYLOGRAM_OPTION, 3) != -1) {

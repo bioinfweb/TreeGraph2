@@ -26,6 +26,11 @@ import java.io.InputStream;
 
 
 public abstract class TextStreamReader extends AbstractDocumentReader {
+	public TextStreamReader() {
+		super(false);
+	}
+
+	
 	protected static String readStream(InputStream stream) throws IOException {
 		return TextReader.readText(stream);
 	}

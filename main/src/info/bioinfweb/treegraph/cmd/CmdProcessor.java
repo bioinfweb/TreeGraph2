@@ -34,7 +34,7 @@ import info.bioinfweb.treegraph.document.format.TextFormats;
 import info.bioinfweb.treegraph.document.io.DocumentReader;
 import info.bioinfweb.treegraph.document.io.ReadWriteFactory;
 import info.bioinfweb.treegraph.document.io.ReadWriteFormat;
-import info.bioinfweb.treegraph.document.nodebranchdata.BranchLengthAdapter;
+import info.bioinfweb.treegraph.document.io.ReadWriteParameterMap;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.webinsel.updatecenter.dataxchange.VersionList;
@@ -111,10 +111,12 @@ public class CmdProcessor {
 		try {
 			DocumentReader documentReader = ReadWriteFactory.getInstance().getReader(source);
 			if (reader != null) {
-				Document document = documentReader.read(source, CmdLoadLogger.getInstance(), 
-						new TextLabelAdapter(DEFAULT_LABEL_ID, 
-								new DecimalFormat(TextFormats.DEFAULT_DECIMAL_FORMAT_EXPR)), 
-						BranchLengthAdapter.getSharedInstance());
+				ReadWriteParameterMap parameterMap = new ReadWriteParameterMap();
+				parameterMap.putApplicationLogger(CmdLoadLogger.getInstance());
+				parameterMap.put(ReadWriteParameterMap.KEY_INTERNAL_NODE_NAMES_ADAPTER, 
+						new TextLabelAdapter(DEFAULT_LABEL_ID, new DecimalFormat(TextFormats.DEFAULT_DECIMAL_FORMAT_EXPR)));
+
+				Document document = documentReader.read(source, parameterMap);
 				readingComplete = true;
 				ReadWriteFormat format = null;
 				if (XTG_OPTION.equals(reader.getArg(2))) {
