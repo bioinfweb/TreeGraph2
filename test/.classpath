@@ -31,7 +31,6 @@
 	<classpathentry kind="lib" path="/TreeGraph/include/lib/freehep-graphics2d.jar"/>
 	<classpathentry kind="lib" path="/TreeGraph/include/lib/freehep-graphicsio-emf.jar"/>
 	<classpathentry kind="lib" path="/TreeGraph/include/lib/freehep-graphicsio.jar"/>
-	<classpathentry kind="lib" path="/TreeGraph/include/lib/jdom.jar"/>
 	<classpathentry kind="lib" path="/TreeGraph/include/lib/jep-2.4.1.jar"/>
 	<classpathentry kind="lib" path="/TreeGraph/include/lib/js.jar"/>
 	<classpathentry kind="lib" path="/TreeGraph/include/lib/l2fprod-common-directorychooser-7.3.jar"/>
@@ -42,5 +41,6 @@
 	<classpathentry kind="lib" path="/TreeGraph/include/lib/xerces_2_5_0.jar"/>
 	<classpathentry kind="lib" path="/TreeGraph/include/lib/xml-apis-ext.jar"/>
 	<classpathentry kind="lib" path="/TreeGraph/include/lib/xml-apis.jar"/>
+	<classpathentry kind="lib" path="/TreeGraph/include/lib/jdom.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
