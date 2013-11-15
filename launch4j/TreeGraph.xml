@@ -1,20 +1,22 @@
 <launch4jConfig>
   <dontWrapJar>true</dontWrapJar>
-  <headerType>0</headerType>
+  <headerType>gui</headerType>
   <jar>TreeGraph.jar</jar>
-  <outfile>Z:\BenStoever\Documents\Studium\SHK NEES\TreeGraph\Programm\TreeGraph.exe</outfile>
+  <outfile>TreeGraph.exe</outfile>
   <errTitle></errTitle>
-  <jarArgs></jarArgs>
+  <cmdLine></cmdLine>
   <chdir></chdir>
-  <customProcName>true</customProcName>
+  <priority>normal</priority>
+  <downloadUrl>http://java.com/download</downloadUrl>
+  <supportUrl></supportUrl>
   <stayAlive>true</stayAlive>
-  <icon>Z:\BenStoever\Documents\Studium\SHK NEES\TreeGraph\Programm\TreeGraph.ico</icon>
+  <manifest></manifest>
+  <icon>TreeGraph.ico</icon>
   <jre>
     <path></path>
+    <bundledJre64Bit>false</bundledJre64Bit>
     <minVersion>1.6.0</minVersion>
     <maxVersion></maxVersion>
-    <initialHeapSize>64</initialHeapSize>
-    <maxHeapSize>0</maxHeapSize>
-    <args></args>
+    <jdkPreference>preferJre</jdkPreference>
   </jre>
 </launch4jConfig>

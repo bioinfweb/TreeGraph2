@@ -1,6 +1,6 @@
 * text=auto !eol
+launch4j/TreeGraph.ico -text
 launch4j/TreeGraph.xml -text
-launch4j/TreeGraph2GB.xml -text
 main/.classpath -text
 main/.project -text
 main/.settings/org.eclipse.jdt.core.prefs -text
