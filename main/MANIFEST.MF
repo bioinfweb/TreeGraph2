@@ -25,6 +25,7 @@ Class-Path: lib/batik-anim.jar
             lib/xerces_2_5_0.jar
             lib/xml-apis.jar
             lib/xml-apis-ext.jar
+            lib/jdom.jar
             lib/BrowserLauncher2-1_3.jar
             lib/freehep-base.jar
             lib/freehep-graphics2d.jar
@@ -32,10 +33,6 @@ Class-Path: lib/batik-anim.jar
             lib/freehep-graphicsio-emf.jar
             lib/ErrorReporter.jar
             lib/info.webinsel.util.jar
-            lib/info.webinsel.util.appversion.jar
-            lib/info.webinsel.util.graphics.jar
-            lib/info.webinsel.util.io.jar
-            lib/info.webinsel.util.swing.jar
             lib/info.webinsel.wikihelp.client.jar
             lib/org.jdesktop.swingx.scrollpaneselector.jar
             lib/ext-1.1.1.jar

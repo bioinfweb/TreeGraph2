@@ -6,7 +6,6 @@ main/.project -text
 main/.settings/org.eclipse.jdt.core.prefs -text
 main/MANIFEST.MF -text
 main/include/TreeGraph.exe -text
-main/include/TreeGraph2GB.exe -text
 main/include/icons/Nexus.ico -text
 main/include/icons/TreeGraph.ico -text
 main/include/icons/XTG.ico -text
@@ -37,11 +36,7 @@ main/include/lib/freehep-base.jar -text
 main/include/lib/freehep-graphics2d.jar -text
 main/include/lib/freehep-graphicsio-emf.jar -text
 main/include/lib/freehep-graphicsio.jar -text
-main/include/lib/info.webinsel.util.appversion.jar -text
-main/include/lib/info.webinsel.util.graphics.jar -text
-main/include/lib/info.webinsel.util.io.jar -text
 main/include/lib/info.webinsel.util.jar -text
-main/include/lib/info.webinsel.util.swing.jar -text
 main/include/lib/info.webinsel.wikihelp.client.jar -text
 main/include/lib/jdom.jar -text
 main/include/lib/jep-2.4.1.jar -text
