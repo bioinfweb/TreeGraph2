@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2011  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2013  Ben Stöver, Kai Müller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -19,12 +19,13 @@
 package info.bioinfweb.treegraph.document;
 
 
-import info.webinsel.util.test.PrivateTester;
+import info.webinsel.util.junit.TestTools;
 
 import java.lang.reflect.Method;
 import java.util.Vector;
 
 import org.junit.* ;
+
 
 import static org.junit.Assert.* ;
 
@@ -35,17 +36,12 @@ import static org.junit.Assert.* ;
  * 
  * @author BenStoever
  */
-public class IDManagerTest extends PrivateTester {
+public class IDManagerTest {
 	public static final String TEXT_LABEL_ID = "Text";
 	public static final String ICON_LABEL_ID = "Icon";
 	public static final String PIE_CHART_LABEL_ID = "PieChart";
 	
 	
-  public IDManagerTest() {
-		super(IDManager.class);
-	}
-
-
 	private Tree createBasicTree(boolean secondLevel, boolean text, boolean icon, boolean pieChart) {
   	Tree result = new Tree();
   	result.setPaintStart(Node.getInstanceWithBranch());
@@ -133,7 +129,7 @@ public class IDManagerTest extends PrivateTester {
   
   @Test
   public void test_searchLabelIDsInLabelBlock_absent() {
-  	Method method = getPrivateMethod("searchLabelIDsInLabelBlock", Labels.class, boolean.class, Class.class, Vector.class);
+  	Method method = TestTools.getPrivateMethod(IDManager.class, "searchLabelIDsInLabelBlock", Labels.class, boolean.class, Class.class, Vector.class);
   	
   	Tree tree = createBasicTree(true, false, false, true);
   	Vector<String> list = new Vector<String>();
@@ -151,7 +147,7 @@ public class IDManagerTest extends PrivateTester {
   
   @Test
   public void test_searchLabelIDsInLabelBlock_present() {
-  	Method method = getPrivateMethod("searchLabelIDsInLabelBlock", Labels.class, boolean.class,  Class.class, Vector.class);
+  	Method method = TestTools.getPrivateMethod(IDManager.class, "searchLabelIDsInLabelBlock", Labels.class, boolean.class,  Class.class, Vector.class);
   	
   	Tree tree = createBasicTree(false, true, false, true);
   	Vector<String> list = new Vector<String>();
