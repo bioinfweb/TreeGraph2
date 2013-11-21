@@ -26,6 +26,7 @@ import java.util.Vector;
 /**
  * This class stores the path to an node from the root of the tree or a specified ancestor. It can be 
  * used to find equivalent nodes in different trees.
+ * 
  * @author Ben St&ouml;ver
  */
 public class TreePath {

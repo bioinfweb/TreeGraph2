@@ -26,10 +26,8 @@ import info.bioinfweb.treegraph.graphics.positionpaint.PositionPaintType;
 import info.webinsel.util.RandomValues;
 import java.util.EnumMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.TreeMap;
-import java.util.TreeSet;
-
-import org.lsmp.djep.vectorJep.function.ElementMultiply;
 
 
 
@@ -334,6 +332,7 @@ public class Tree {
 	/**
 	 * Tests if the subtree under <code>root</code> contains a node which would be 
 	 * able to return a decimal value to the given adapter.
+	 * 
 	 * @param adapter - the adapter to obtain the decimal value
 	 * @param root - the root of the subtree to be checked
 	 * @return <code>true</code> if at least one decimal value could be returned 
@@ -342,8 +341,9 @@ public class Tree {
 		if (adapter.isDecimal(root)) {
 			return true;
 		}
-		for (int i = 0; i < root.getChildren().size(); i++) {
-			if (containsDecimal(adapter, root.getChildren().get(i))) {
+		Iterator<Node> iterator = root.getChildren().iterator();
+		while (iterator.hasNext()) {
+			if (containsDecimal(adapter, iterator.next())) {
 				return true;
 			}
 		}
