@@ -35,7 +35,7 @@ public interface TreePainter {
 	 * @param document - the document to be painted
 	 * @param selection - a list of the selected elements
 	 * @param pixelsPerMm - the scale used for painting
-	 * @param transparent - determines weather the background should be filled in the background color of the document
+	 * @param transparent - determines whether the background should be filled in the background color of the document
 	 */
 	public void paintTree(Graphics2D g, Document document, TreeSelection selection, 
 			float pixelsPerMm, boolean transparent);
@@ -48,7 +48,7 @@ public interface TreePainter {
 	 * @param document - the document to be painted
 	 * @param selection - a list of the selected elements
 	 * @param pixelsPerMm - the scale used for painting
-	 * @param transparent - determines weather the background should be filled in the background color of the document
+	 * @param transparent - determines whether the background should be filled in the background color of the document
 	 */
 	public void paintTree(Graphics2D g, Rectangle visibleRect, Document document, TreeSelection selection, 
 			float pixelsPerMm, boolean transparent);

@@ -89,8 +89,9 @@ public class Tree {
   
   
 	/**
-	 * Tests if there are tree elements present. Note that it is not testet weather there
+	 * Tests if there are tree elements present. Note that it is not tested whether there
 	 * are legends present even if no tree elements are.
+	 * 
 	 * @return true if tree elements (minimal a root node) are present
 	 */
 	public boolean isEmpty() {
@@ -109,6 +110,7 @@ public class Tree {
   
   /**
    * Tests if the given element is present in the tree.
+   * 
    * @param element the element to search for
    * @return true, if the element is found
    */
@@ -121,6 +123,7 @@ public class Tree {
 	 * Returns the stored paint dimension (the size of the document) for the given painter 
 	 * ID. If none is stored an new empty instance of {@link DistanceDimension} is stored
 	 * for this ID and returned.
+	 * 
 	 * @param id - the painter ID 
 	 * @return the stored paint dimension
 	 */
@@ -138,7 +141,8 @@ public class Tree {
 	 * Generates a random unique name for a node which is currently not present in this 
 	 * tree. Currently a unique name is 10 characters long and consists of the following 
 	 * characters: <code>abcdefghijklmnopqrstuvwxyz01234567890</code>. This means that 
-	 * there are 27<sup>10</sup> &asymp; 2 &bull; 10<sup>14</sup> different possible names.  
+	 * there are 27<sup>10</sup> &asymp; 2 &bull; 10<sup>14</sup> different possible names.
+	 * 
 	 * @return the new unique name
 	 */
 	public String newUniqueName() {
@@ -153,6 +157,7 @@ public class Tree {
 	/**
 	 * Assigns unique names to all nodes in the subtree under root currently without one.<br>
 	 * This method is used by {@link info.webinsel.treegraph.document.Tree.assignUniqueNames()}.
+	 * 
 	 * @param root - the root node of the subtree
 	 */
 	private void assignUniqueNamesToSubtree(Node root) {
@@ -218,6 +223,7 @@ public class Tree {
 	 *   <li><code>Label</code>: The target node of the holding branch</li>
 	 *   <li><code>Legend</code>: <code>null</code></li>
 	 * </ul>
+	 * 
 	 * @param element - the element which linked node shall be returned
 	 * @return the linked node or null
 	 */
@@ -252,6 +258,7 @@ public class Tree {
 	/**
 	 * Tests is there are any branches without a defined length in the subtree under 
 	 * <code>root</code>.
+	 * 
 	 * @param root - the root node of the tree
 	 * @param needsRootLength - specifies whether the root node needs a defined branch length
 	 * @return <code>true</code>, if there a no lengths missing or <code>root</code> was 
@@ -264,8 +271,9 @@ public class Tree {
 				
 				return false;
 			}
-			for (int i = 0; i < root.getChildren().size(); i++) {
-				if (!hasAllBranchLengths(root.getChildren().get(i), true)) {
+			Iterator<Node> iterator = root.getChildren().iterator();
+			while (iterator.hasNext()) {
+				if (!hasAllBranchLengths(iterator.next(), true)) {
 					return false;
 				}
 			}
@@ -278,6 +286,7 @@ public class Tree {
 	 * Tests is there are any branches without a defined length in the tree. The root branch
 	 * only needs to have a length if it is displayed. Calling this method is equivalent to
 	 * <code>hasAllBranchLengths(getPaintStart(), getFormats().getShowRooted())</code>.
+	 * 
 	 * @return <code>true</code>, if there a no necessary lengths missing
 	 */
 	public boolean hasAllBranchLengths() {
@@ -288,7 +297,8 @@ public class Tree {
 	/**
 	 * Returns the longest path to a terminal in the subtree of <code>root</code>. All branch lengths of
 	 * the subtree under root must be defined except that of the root branch if 
-	 * <code>includeRootBranch</code> is <code>false</code>. 
+	 * <code>includeRootBranch</code> is <code>false</code>.
+	 * 
 	 * @param root - the root node of the tree
 	 * @param includeRootBranch - indicates whether the length of the afferent branch of the root node
 	 *        shall be included
@@ -298,8 +308,9 @@ public class Tree {
 	public static double longestPath(Node root, boolean includeRootBranch) {
 		if (hasAllBranchLengths(root, includeRootBranch)) {
 			double result = 0;
-			for (int i = 0; i < root.getChildren().size(); i++) {
-				result = Math.max(result, longestPath(root.getChildren().get(i), true));
+			Iterator<Node> iterator = root.getChildren().iterator();
+			while (iterator.hasNext()) {
+				result = Math.max(result, longestPath(iterator.next(), true));
 			}
 			if (includeRootBranch) {
 				result += root.getAfferentBranch().getLength();
@@ -315,7 +326,8 @@ public class Tree {
 	/**
 	 * Returns the longest path to a terminal in this tree. All branch lengths must be defined except 
 	 * that of the root branch if <code>getFormats().getShowRooted()</code> is <code>false</code>.
-	 * If this tree is empty 0 is returned. 
+	 * If this tree is empty 0 is returned.
+	 * 
 	 * @return the lengths in branch length units or <code>Double.NaN</code> if not all branch lengths 
 	 *         are defined
 	 */
@@ -352,8 +364,9 @@ public class Tree {
 	
 	
 	/**
-	 * Tests if the tree contains a node which would be able to return a decimal value 
+	 * Tests if the tree contains a node which would be able to return a decimal value
 	 * to the given adapter.
+	 * 
 	 * @param adapter - the adapter to obtain the decimal value
 	 * @return <code>true</code> if at least one decimal value could be returned 
 	 */

@@ -120,7 +120,7 @@
         </p>
         <p>
           The attribute <code>Text</code> can either contain the textual or the numeric value of the text element
-          represented by the XML element. <code>IsDecimal</code> defines weather the value of <code>Text</code>
+          represented by the XML element. <code>IsDecimal</code> defines whether the value of <code>Text</code>
           must be <code>float</code> or can be any textual value. If <code>IsDecimal</code> is <code>true</code>
           <code>DecimalFormat</code>, <code>LocaleLang</code>, <code>LocaleCountry</code> and 
           <code>LocaleVariant</code> define how this value will be formatted by the application. Note that although 
