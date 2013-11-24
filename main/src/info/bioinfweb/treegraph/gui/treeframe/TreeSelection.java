@@ -77,6 +77,7 @@ public class TreeSelection {
 	 * <code>true</code> no changes are reported to the registered listeners until it is set to 
 	 * <code>false</code> again. (The listeners are informed directly of the property is set back
 	 * to <code>false</code>.)
+	 * 
 	 * @param valueIsAdjusting - the new value of the property
 	 */
 	public void setValueIsAdjusting(boolean valueIsAdjusting) {

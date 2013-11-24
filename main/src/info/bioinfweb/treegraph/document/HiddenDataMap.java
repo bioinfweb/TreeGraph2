@@ -23,12 +23,11 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 
 
-public class HiddenDataMap {
+public class HiddenDataMap implements Map<String, TextElementData> {
   private HashMap<String, TextElementData> map = new HashMap<String, TextElementData>();
   private Node owner = null;
 
@@ -56,6 +55,7 @@ public class HiddenDataMap {
 	/* (non-Javadoc)
 	 * @see java.util.Map#clear()
 	 */
+	@Override
 	public void clear() {
 		map.clear();
 	}
@@ -64,6 +64,7 @@ public class HiddenDataMap {
 	/* (non-Javadoc)
 	 * @see java.util.Map#isEmpty()
 	 */
+	@Override
 	public boolean isEmpty() {
 		return map.isEmpty();
 	}
@@ -71,23 +72,54 @@ public class HiddenDataMap {
 	
 	/**
 	 * Adds a new entry to this map. Current entries with this ID attached to the same node are replaced. 
-	 * (This includes hidden data entries in other maps as well as labels.)
+	 * (This includes hidden data entries in other maps as well as labels.) In contrast to 
+	 * {@link #put(String, TextElementData)} which implements the {@link Map} interface, this method has the 
+	 * return type {@link Object} and returns any element that was previously associated with the specified ID.
 	 * 
-	 * @return the previous element which was attached to this node under this ID (This can
-	 *         either be a {@link TextElementData} object, if a hidden data entry was replaces or an 
-	 *         instance of a class inherited from {@link Label}), if a label with the specified ID was
-	 *         attached to the node attached to this map.        
+	 * @return the previous element which was attached to this node under this ID (This can either 
+	 *         be a {@link TextElementData} object, if a hidden data entry was replaced or an instance 
+	 *         of a class inherited from {@link Label}), if a label with the specified ID was attached 
+	 *         to the node attached to this map.
+   *         
+	 * @see #put(String, TextElementData)
 	 */
-	public Object put(String id, TextElementData value) {
+	public Object putForID(String id, TextElementData value) {
 		Object result = IDManager.removeElementWithID(getOwner(), id);
 		map.put(id, value);
 		return result;
 	}
 
 	
+	/**
+	 * Adds a new entry to this map. Current entries with this ID attached to the same node are replaced. 
+	 * (This includes hidden data entries in other maps as well as labels.)
+	 * 
+	 * @return the previous {@link TextElementData} element which was attached to this node under this ID 
+	 *         (This can either be a previous hidden data entry was replaced or the text of an {@link TextLabel}), 
+	 *         if a text label with the specified ID was attached to the node. If another type of label (containing
+	 *         no text was associated with the specified ID or nothing was stored for this ID, {@code null} is returned.        
+	 * 
+	 * @see #putForID(String, TextElementData)
+	 */
+	@Override
+	public TextElementData put(String id, TextElementData value) {
+		Object result = putForID(id, value);
+		if (result instanceof TextElementData) {
+			return (TextElementData)result;
+		}
+		else if (result instanceof TextElement) {  // return text of TextLabel
+			return ((TextElement)result).getData();
+		}
+		else {
+			return null;
+		}
+	}
+
+	
 	/* (non-Javadoc)
 	 * @see java.util.Map#size()
 	 */
+	@Override
 	public int size() {
 		return map.size();
 	}
@@ -96,6 +128,7 @@ public class HiddenDataMap {
 	/* (non-Javadoc)
 	 * @see java.util.Map#values()
 	 */
+	@Override
 	public Collection<TextElementData> values() {
 		return map.values();
 	}
@@ -109,6 +142,7 @@ public class HiddenDataMap {
 	/* (non-Javadoc)
 	 * @see java.util.Map#containsKey(java.lang.Object)
 	 */
+	@Override
 	public boolean containsKey(Object key) {
 		return map.containsKey(key);
 	}
@@ -117,6 +151,7 @@ public class HiddenDataMap {
 	/* (non-Javadoc)
 	 * @see java.util.Map#containsValue(java.lang.Object)
 	 */
+	@Override
 	public boolean containsValue(Object value) {
 		return map.containsValue(value);
 	}
@@ -125,6 +160,7 @@ public class HiddenDataMap {
 	/* (non-Javadoc)
 	 * @see java.util.Map#entrySet()
 	 */
+	@Override
 	public Set<Entry<String, TextElementData>> entrySet() {
 		return map.entrySet();
 	}
@@ -133,6 +169,7 @@ public class HiddenDataMap {
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
+	@Override
 	public boolean equals(Object other) {
 		return map.equals(other);
 	}
@@ -141,6 +178,7 @@ public class HiddenDataMap {
 	/* (non-Javadoc)
 	 * @see java.util.Map#get(java.lang.Object)
 	 */
+	@Override
 	public TextElementData get(Object key) {
 		return map.get(key);
 	}
@@ -149,6 +187,7 @@ public class HiddenDataMap {
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
+	@Override
 	public int hashCode() {
 		return map.hashCode();
 	}
@@ -157,6 +196,7 @@ public class HiddenDataMap {
 	/* (non-Javadoc)
 	 * @see java.util.Map#keySet()
 	 */
+	@Override
 	public Set<String> keySet() {
 		return map.keySet();
 	}
@@ -166,6 +206,7 @@ public class HiddenDataMap {
 	 * Adds all elements of the specified map to this map.
 	 * @since 2.0.48
 	 */
+	@Override
 	public void putAll(Map<? extends String, ? extends TextElementData> m) {
 		// This method cannot be delegated to map.putAll() because it would not remove labels and 
 		// elements from the other map of this node which have the same ID.
@@ -178,18 +219,10 @@ public class HiddenDataMap {
 	}
 
 
-	/**
-	 * Adds all elements of the specified map to this map.
-	 * @since 2.0.48
-	 */
-	public void putAll(HiddenDataMap m) {
-		putAll((Map)m);
-	}
-
-
 	/* (non-Javadoc)
 	 * @see java.util.Map#remove(java.lang.Object)
 	 */
+	@Override
 	public TextElementData remove(Object key) {
 		return map.remove(key);
 	}
@@ -198,6 +231,7 @@ public class HiddenDataMap {
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		return map.toString();
 	}
