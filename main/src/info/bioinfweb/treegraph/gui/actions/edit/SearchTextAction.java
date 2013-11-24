@@ -116,7 +116,7 @@ public class SearchTextAction extends DocumentAction {
 	@Override
 	protected void onActionPerformed(ActionEvent e, TreeInternalFrame frame) {
 		selection = frame.getTreeViewPanel().getSelection();
-		if (dialog.execute(frame.getDocument(), selection, null)) {
+		if (dialog.execute(frame.getDocument(), selection, frame.getSelectedAdapter())) {
 			selection.clear();
 			pattern = ReplaceInNodeDataEdit.generatePattern(
 					dialog.getText(),	dialog.caseSensitive(), dialog.wordsOnly());

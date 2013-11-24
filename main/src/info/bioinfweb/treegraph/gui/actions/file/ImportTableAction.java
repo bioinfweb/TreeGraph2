@@ -76,7 +76,8 @@ public class ImportTableAction extends DocumentAction {
 	
 	@Override
 	protected void onActionPerformed(ActionEvent e, TreeInternalFrame frame) {
-		if (getImportTableDialog().execute(null, null, null)) {
+		if (getImportTableDialog().execute(frame.getDocument(), frame.getTreeViewPanel().getSelection(), 
+						frame.getSelectedAdapter())) {
 			String path = getImportTableDialog().getSelectedFile().getAbsolutePath();
 			
 			try {

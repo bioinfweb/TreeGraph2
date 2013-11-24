@@ -143,6 +143,7 @@ public class AssignImportColumnsDialog extends OkCancelApplyWikiHelpDialog {
 		setHelpCode(24);
 		setTitle("Import table as node/branch data");
 		setSize(300, 200);
+		getApplyButton().setVisible(false);
 		setContentPane(getJContentPane());
 	}
 
