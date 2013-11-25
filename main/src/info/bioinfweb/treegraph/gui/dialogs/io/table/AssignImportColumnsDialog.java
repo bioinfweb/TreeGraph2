@@ -21,8 +21,11 @@ package info.bioinfweb.treegraph.gui.dialogs.io.table;
 
 import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.treegraph.document.Tree;
+import info.bioinfweb.treegraph.document.nodebranchdata.NewHiddenNodeDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.UniqueNameAdapter;
+import info.bioinfweb.treegraph.document.undo.file.importtable.ImportTableData;
+import info.bioinfweb.treegraph.document.undo.file.importtable.ImportTableParameters;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NewNodeBranchDataInput;
 import info.webinsel.wikihelp.client.OkCancelApplyWikiHelpDialog;
 import javax.swing.JPanel;
@@ -36,6 +39,12 @@ import java.awt.Insets;
 
 
 
+/**
+ * Dialog that prompts the user for the node/branch data columns that shall hold the contents of
+ * an imported table file. This dialog is displayed in a sequence after {@link SelectImportTableDialog}.
+ * 
+ * @author Ben St&ouml;ver
+ */
 public class AssignImportColumnsDialog extends OkCancelApplyWikiHelpDialog {
 	private static final long serialVersionUID = 1L;
 	private static final int USED_ROWS = 2;
@@ -47,7 +56,7 @@ public class AssignImportColumnsDialog extends OkCancelApplyWikiHelpDialog {
 	private JLabel idLabel = null;
 	private Vector<NewNodeBranchDataInput> inputs = new Vector<NewNodeBranchDataInput>();  //  @jve:decl-index=0:
 	private JLabel firstLineLabel = null;
-	private JLabel uniqueNamesLabel = null;
+	private JLabel keyColumnLabel = null;
 
 
 	/**
@@ -60,16 +69,16 @@ public class AssignImportColumnsDialog extends OkCancelApplyWikiHelpDialog {
 	}
 
 
-	private void createInputs(int count, Tree tree) {
+	private void createInputs(ImportTableParameters parameters, ImportTableData data, Tree tree) {
 		getImportPanel().removeAll();
 		inputs.clear();
 
-		GridBagConstraints uniqueNamesGBC = new GridBagConstraints();
-		uniqueNamesGBC.gridx = 1;
-		uniqueNamesGBC.anchor = GridBagConstraints.WEST;
-		uniqueNamesGBC.gridy = 1;
-		uniqueNamesLabel = new JLabel();
-		uniqueNamesLabel.setText("Unique node names");
+		GridBagConstraints keyColumnGBC = new GridBagConstraints();
+		keyColumnGBC.gridx = 1;
+		keyColumnGBC.anchor = GridBagConstraints.WEST;
+		keyColumnGBC.gridy = 1;
+		keyColumnLabel = new JLabel();
+		keyColumnLabel.setText(parameters.getKeyAdapter().toString());
 		GridBagConstraints firstLineGBC = new GridBagConstraints();
 		firstLineGBC.gridx = 0;
 		firstLineGBC.anchor = GridBagConstraints.EAST;
@@ -83,7 +92,7 @@ public class AssignImportColumnsDialog extends OkCancelApplyWikiHelpDialog {
 		idGBC.anchor = GridBagConstraints.WEST;
 		idGBC.insets = new Insets(0, 0, 8, 0);
 		idLabel = new JLabel();
-		idLabel.setText("ID:                ");  // Breite der Eingabefelder erhöhen.
+		idLabel.setText("ID:                ");  // increase widths of text fields
 		GridBagConstraints typeGBC = new GridBagConstraints();
 		typeGBC.gridx = 1;
 		typeGBC.anchor = GridBagConstraints.WEST;
@@ -94,9 +103,9 @@ public class AssignImportColumnsDialog extends OkCancelApplyWikiHelpDialog {
 		importPanel.add(typeLabel, typeGBC);
 		importPanel.add(idLabel, idGBC);
 		importPanel.add(firstLineLabel, firstLineGBC);
-		importPanel.add(uniqueNamesLabel, uniqueNamesGBC);
+		importPanel.add(keyColumnLabel, keyColumnGBC);
 
-		for (int i = 1; i < count; i++) {
+		for (int i = 1; i <= data.columnCount(); i++) {
 			GridBagConstraints labelGBC = new GridBagConstraints();
 			labelGBC.anchor = GridBagConstraints.EAST;
 			labelGBC.gridx = 0;
@@ -106,25 +115,25 @@ public class AssignImportColumnsDialog extends OkCancelApplyWikiHelpDialog {
 			getImportPanel().add(new JLabel("" + i + ")"), labelGBC);
 			NewNodeBranchDataInput input = new NewNodeBranchDataInput(getImportPanel(), 1, i + USED_ROWS - 1, true);
 			input.setAdapters(tree, false, true, true, false, true);
+			input.setSelectedAdapter(NewHiddenNodeDataAdapter.class);
+			if (data.containsHeadings()) {
+				input.setID(data.getHeading(i - 1));
+			}
 			inputs.add(input);
 		}
 		pack();
 	}
 	
 	
-	public NodeBranchDataAdapter[] execute(int count, Tree tree) {
-		createInputs(count, tree);
+	public void execute(ImportTableParameters parameters, ImportTableData data, Tree tree) {
+		createInputs(parameters, data, tree);
 		if (execute()) {
-			NodeBranchDataAdapter[] result = new NodeBranchDataAdapter[count];
-			result[0] = new UniqueNameAdapter();
-			for (int i = 1; i < result.length; i++) {
-				result[i] = inputs.get(i - 1).getSelectedAdapter();
+			NodeBranchDataAdapter[] adapters = new NodeBranchDataAdapter[data.columnCount()];
+			for (int i = 0; i < adapters.length; i++) {
+				adapters[i] = inputs.get(i).getSelectedAdapter();
 			}
-			return result;
+			parameters.setImportAdapters(adapters);
 		}
-		else {
-			return null;
-		}			
 	}
 	
 	

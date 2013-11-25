@@ -233,7 +233,7 @@ public class DocumentTableModel extends AbstractTableModel implements DocumentLi
 			
 			if (adapter.isDecimal(n) && Math2.isDecimal(str)) {
 				getDocument().executeEdit(new ChangeNumercalValueEdit(getDocument(), adapter, n, 
-						Double.parseDouble(str)));
+						Math2.parseDouble(str)));
 			}
 			else {
 				getDocument().executeEdit(new ChangeTextualValueEdit(getDocument(), adapter, n, str));

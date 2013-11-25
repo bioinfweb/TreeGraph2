@@ -39,41 +39,49 @@ public class BranchLengthAdapter extends AbstractNodeBranchDataAdapter
 	}
 	
 	
+	@Override
 	public boolean decimalOnly() {
 		return true;
 	}
 	
 
+	@Override
 	public boolean readOnly() {
 		return false;
 	}
 
 
+	@Override
 	public boolean isNewColumn() {
 		return false;
 	}
 
 
+	@Override
 	public boolean isDecimal(Node node) {
 		return node.getAfferentBranch().hasLength();
 	}
 
 
+	@Override
 	public boolean isEmpty(Node node) {
 		return !node.getAfferentBranch().hasLength();
 	}
 
 
-	public boolean isString(Node node) {
+	@Override
+  public boolean isString(Node node) {
 		return false;
 	}
 
 
+	@Override
 	public void setDecimal(Node node, double value) {
 		node.getAfferentBranch().setLength(value);
 	}
 
 
+	@Override
 	public String getText(Node node) {
 		Double decimal = getDecimal(node);
 		if (Double.isNaN(decimal)) {
@@ -85,6 +93,7 @@ public class BranchLengthAdapter extends AbstractNodeBranchDataAdapter
 	}
 
 	
+	@Override
 	public double getDecimal(Node node) throws NumberFormatException {
 		if (node.hasAfferentBranch()) {
 			if (node.getAfferentBranch().hasLength()) {
@@ -95,14 +104,7 @@ public class BranchLengthAdapter extends AbstractNodeBranchDataAdapter
 	}
 
 	
-	public void setDecimal(Node node, double value, int decimalPlaceCount) {
-		if (node.hasAfferentBranch()) {
-			node.getAfferentBranch().setLength(value);
-		}
-		throw new NodeBranchDataActionNotSupportedException();
-	}
-
-	
+	@Override
 	public void setText(Node node, String value) throws NumberFormatException, NodeBranchDataActionNotSupportedException {
 		if (node.hasAfferentBranch()) {
 			if ((value != null) && (!value.equals(""))) {
@@ -119,6 +121,7 @@ public class BranchLengthAdapter extends AbstractNodeBranchDataAdapter
 	}
 
 
+	@Override
 	public void delete(Node node) {
 		if (node.hasAfferentBranch()) {
 			node.getAfferentBranch().deleteLength();
@@ -126,11 +129,13 @@ public class BranchLengthAdapter extends AbstractNodeBranchDataAdapter
 	}
 
 
+	@Override
 	public Branch getDataElement(Node node) {
 		return node.getAfferentBranch();
 	}
 
 
+	@Override
 	public String toString() {
 		return "Branch lengths";
 	}

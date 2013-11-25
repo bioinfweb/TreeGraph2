@@ -26,9 +26,10 @@ import java.text.DecimalFormat;
 /**
  * This class is used to store data of tree elements which can either be a string or a
  * decimal value.
+ * 
  * @author Ben St&ouml;ver
  */
-public class TextElementData implements Cloneable {
+public class TextElementData implements Cloneable, Comparable<TextElementData> {
   private String text = null;
   private double decimal = Double.NaN;
   
@@ -213,4 +214,42 @@ public class TextElementData implements Cloneable {
 		result.assign(this);
 		return result;
 	}
+
+
+	/**
+	 * Sorts in the following order: Empty objects, textual values according to their order, numerical values 
+	 * according to their order 
+	 * 
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
+	@Override
+  public int compareTo(TextElementData other) {
+		if (isDecimal()) {
+			if (other.isDecimal()) {
+				return Double.compare(getDecimal(), other.getDecimal());
+			}
+			else {  // other is textual or empty
+				return 1;
+			}
+		}
+		else if (isString()) {
+			if (other.isDecimal()) {
+				return -1;
+			}
+			else if (other.isString()) {
+				return getText().compareTo(other.getText());
+			}
+			else {  // other is empty
+				return 1;
+			}
+		}
+		else {  // this object is empty
+			if (other.isEmpty()) {
+				return 0;
+			}
+			else {
+				return -1;
+			}
+		}
+  }
 }

@@ -21,6 +21,7 @@ package info.bioinfweb.treegraph.document.nodebranchdata;
 
 import info.bioinfweb.treegraph.document.ConcretePaintableElement;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.TextElementData;
 
 
 
@@ -44,6 +45,8 @@ public interface NodeBranchDataAdapter {
 	public double getDecimal(Node node); 
 	
 	public void setDecimal(Node node, double value);
+	
+	public void setTextElementData(Node node, TextElementData data);
 	
 	public void delete(Node node);
 	

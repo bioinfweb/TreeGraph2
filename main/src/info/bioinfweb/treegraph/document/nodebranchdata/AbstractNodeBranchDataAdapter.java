@@ -19,6 +19,10 @@
 package info.bioinfweb.treegraph.document.nodebranchdata;
 
 
+import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.TextElementData;
+
+
 
 /**
  * Implements a basic <code>equals()</code>-method for all node/branch data adapters.
@@ -32,6 +36,27 @@ public abstract class AbstractNodeBranchDataAdapter implements NodeBranchDataAda
 	 */
 	@Override
 	public boolean equals(Object other) {
-		return (other != null) && other.getClass().equals(getClass());  //TODO Liefert dieser Vergleich das richtige Ergebnis 
+		return (other != null) && other.getClass().equals(getClass());  //TODO Liefert dieser Vergleich das richtige Ergebnis? 
 	}
+
+	
+	@Override
+  public void setTextElementData(Node node, TextElementData data) {
+		if (!readOnly()) {
+			if (data.isDecimal()) {
+				try {
+					setDecimal(node, data.getDecimal());
+				}
+				catch (NumberFormatException e) {
+					delete(node);
+				}
+			}
+			else if (data.isString()) {
+				setText(node, data.getText());
+			}
+			else {  // empty
+				delete(node);
+			}
+		}
+  }
 }

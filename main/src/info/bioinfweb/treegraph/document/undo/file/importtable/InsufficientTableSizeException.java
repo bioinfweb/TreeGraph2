@@ -16,20 +16,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.gui.dialogs.io.table;
+package info.bioinfweb.treegraph.document.undo.file.importtable;
 
 
 
 /**
- * This interface should be implemented by all dialogs fetching user input that can be stored
- * in an {@link ImportTableParameters} object. 
+ * This exception is thrown, if a name table file contains too few columns or rows to be processed.
  * 
  * @author Ben St&ouml;ver
+ * @since 2.0.50
  */
-public interface ImportTableDialog {
-  /**
-   * Stores the parameters values entered by the user in the specified object. Values that are not fetched by
-   * the implementing dialog should remain unchanged. 
-   */
-  public void assignParameters(ImportTableParameters parameters);
+public class InsufficientTableSizeException extends ImportTableException {
+	public InsufficientTableSizeException(int columns, int rows) {
+	  super("The imported table only had " + columns + " columns and " + rows + " rows. It must at least have 2 columns and 1 row.");
+  }
 }

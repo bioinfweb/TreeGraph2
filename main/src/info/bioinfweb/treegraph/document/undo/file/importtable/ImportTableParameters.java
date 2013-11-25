@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.gui.dialogs.io.table;
+package info.bioinfweb.treegraph.document.undo.file.importtable;
 
 
 import java.io.File;
@@ -30,6 +30,7 @@ import info.bioinfweb.treegraph.gui.dialogs.io.TableSeparatorPanel;
  * Stores all user parameters for importing tables into node/branch data columns.
  * 
  * @author Ben St&ouml;ver
+ * @since 2.0.50
  */
 public class ImportTableParameters {
 	private File tableFile = null;

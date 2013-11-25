@@ -174,7 +174,7 @@ public class NexusParser {
   		return NAME_SEPARATOR_PATTERN.split(name)[1];  // Nur die Mitte zurückgeben
   	}
   	else {
-  		return name.replaceAll("_", " ");
+  		return name.replaceAll(Character.toString(NewickStringChars.FREE_NAME_BLANK), " ");
   	}
   }
   

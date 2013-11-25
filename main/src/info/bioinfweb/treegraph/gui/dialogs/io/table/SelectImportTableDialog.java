@@ -19,6 +19,7 @@
 package info.bioinfweb.treegraph.gui.dialogs.io.table;
 
 
+import info.bioinfweb.treegraph.document.undo.file.importtable.ImportTableParameters;
 import info.bioinfweb.treegraph.gui.dialogs.io.FileDialog;
 import info.bioinfweb.treegraph.gui.dialogs.io.TableSeparatorPanel;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataInput;
@@ -45,7 +46,13 @@ import javax.swing.SpinnerNumberModel;
 
 
 
-public class SelectImportTableDialog extends FileDialog implements ImportTableDialog {
+/**
+ * Dialog that prompts the user for a table file to be imported to node/branch data columns as well as
+ * several import options. This dialog is displayed in a sequence before {@link AssignImportColumnsDialog}.
+ * 
+ * @author Ben St&ouml;ver
+ */
+public class SelectImportTableDialog extends FileDialog {
 	private static final long serialVersionUID = 1L;
 
 	
@@ -77,7 +84,6 @@ public class SelectImportTableDialog extends FileDialog implements ImportTableDi
 	}
 	
 	
-	@Override
   public void assignParameters(ImportTableParameters parameters) {
 		parameters.setTableFile(getSelectedFile());
 		parameters.setColumnSeparator(getSeparatorPanel().getSeparator());
@@ -99,7 +105,7 @@ public class SelectImportTableDialog extends FileDialog implements ImportTableDi
 
 	@Override
 	protected boolean onExecute() {
-		getKeyColumnInput().setAdapters(getDocument().getTree(), true, true, false, false, false);
+		getKeyColumnInput().setAdapters(getDocument().getTree(), true, true, true, false, false);
 		return true;
 	}
 

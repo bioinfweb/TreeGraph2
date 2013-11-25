@@ -16,33 +16,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.document.undo.edit;
+package info.bioinfweb.treegraph.document.undo.file.importtable;
 
 
 
 /**
- * This exception is thrown if a name table file does not have two entries separated by
- * the specified <code>String</code> in a line.
+ * Base class for all exception that could occur during the import of a table from a text 
+ * file into node/branch data columns.
  * 
  * @author Ben St&ouml;ver
+ * @since 2.0.50
  */
-public class InvalidFormatException extends Exception {
-	public InvalidFormatException() {
-		super();
-	}
+public abstract class ImportTableException extends Exception {
+	public ImportTableException() {
+	  super();
+  }
 
 	
-	public InvalidFormatException(String message, Throwable cause) {
-		super(message, cause);
-	}
-	
-
-	public InvalidFormatException(String message) {
-		super(message);
-	}
-
-	
-	public InvalidFormatException(Throwable cause) {
-		super(cause);
-	}
+	public ImportTableException(String message) {
+	  super(message);
+  }
 }
