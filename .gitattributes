@@ -346,9 +346,9 @@ main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/DoubleVarar
 main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/IDFunction.java -text
 main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/UndefinedIDException.java -text
 main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/VarargFunction.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/treegraph/document/undo/file/AddSupportValuesEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/file/ApplyNameTableEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/file/ImportTableEdit.java -text
+main/src/info/bioinfweb/treegraph/document/undo/file/addsupportvalues/AddSupportValuesEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/file/addsupportvalues/LeafField.java -text
 main/src/info/bioinfweb/treegraph/document/undo/file/addsupportvalues/NodeInfo.java -text
 main/src/info/bioinfweb/treegraph/document/undo/format/AutoPositionLabelsEdit.java -text
@@ -587,7 +587,9 @@ main/src/info/bioinfweb/treegraph/gui/dialogs/io/loadlogger/MessagesListModel.ja
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/table/AssignImportColumnsDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/table/ExportNodeDataTableModel.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/table/ExportTableDialog.java -text
-main/src/info/bioinfweb/treegraph/gui/dialogs/io/table/ImportTableDialog.java -text
+main/src/info/bioinfweb/treegraph/gui/dialogs/io/table/ImportTableDialog.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/gui/dialogs/io/table/ImportTableParameters.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/gui/dialogs/io/table/SelectImportTableDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/CalculateColumnDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/CopyColumnDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/IntervalDialog.java -text

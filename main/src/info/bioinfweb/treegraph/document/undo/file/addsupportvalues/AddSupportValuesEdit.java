@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.document.undo.file;
+package info.bioinfweb.treegraph.document.undo.file.addsupportvalues;
 
 
 import java.text.DecimalFormat;
@@ -36,8 +36,6 @@ import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextElementDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;
 import info.bioinfweb.treegraph.document.undo.ComplexDocumentEdit;
-import info.bioinfweb.treegraph.document.undo.file.addsupportvalues.LeafField;
-import info.bioinfweb.treegraph.document.undo.file.addsupportvalues.NodeInfo;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 
 

@@ -33,7 +33,8 @@ import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.file.ImportTableEdit;
 import info.bioinfweb.treegraph.gui.actions.DocumentAction;
 import info.bioinfweb.treegraph.gui.dialogs.io.table.AssignImportColumnsDialog;
-import info.bioinfweb.treegraph.gui.dialogs.io.table.ImportTableDialog;
+import info.bioinfweb.treegraph.gui.dialogs.io.table.ImportTableParameters;
+import info.bioinfweb.treegraph.gui.dialogs.io.table.SelectImportTableDialog;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeInternalFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
@@ -46,7 +47,7 @@ import info.webinsel.util.io.TableReader;
  * @since 2.0.24
  */
 public class ImportTableAction extends DocumentAction {
-	private ImportTableDialog importTableDialog = null;
+	private SelectImportTableDialog importTableDialog = null;
 	private AssignImportColumnsDialog assignImportColumnsDialog = null;
 	
 	
@@ -58,9 +59,9 @@ public class ImportTableAction extends DocumentAction {
 	}
 	
 	
-	private ImportTableDialog getImportTableDialog() {
+	private SelectImportTableDialog getImportTableDialog() {
 		if (importTableDialog == null) {
-			importTableDialog = new ImportTableDialog(getMainFrame());
+			importTableDialog = new SelectImportTableDialog(getMainFrame());
 		}
 		return importTableDialog;
 	}	
@@ -78,17 +79,17 @@ public class ImportTableAction extends DocumentAction {
 	protected void onActionPerformed(ActionEvent e, TreeInternalFrame frame) {
 		if (getImportTableDialog().execute(frame.getDocument(), frame.getTreeViewPanel().getSelection(), 
 						frame.getSelectedAdapter())) {
-			String path = getImportTableDialog().getSelectedFile().getAbsolutePath();
+			ImportTableParameters parameters = new ImportTableParameters();
+			getImportTableDialog().assignParameters(parameters);
 			
 			try {
 				String[][] data = TableReader.readTable(
-						new FileInputStream(path), getImportTableDialog().getSeparator()); 
+						new FileInputStream(parameters.getTableFile()), parameters.getColumnSeparator()); 
 				if (data != null) {
 					NodeBranchDataAdapter[] adapters = 
-					  	getAssignImportColumnsDialog().execute(data.length, 
-					  			frame.getDocument().getTree());
+					  	getAssignImportColumnsDialog().execute(data.length, frame.getDocument().getTree());
 					if (adapters != null) {
-						frame.getDocument().executeEdit(new ImportTableEdit(frame.getDocument(), data, adapters));
+						//frame.getDocument().executeEdit(new ImportTableEdit(frame.getDocument(), data, adapters));
 					}
 				}
 				else {
@@ -96,13 +97,17 @@ public class ImportTableAction extends DocumentAction {
 				}
 			}
 			catch (FileNotFoundException ex) {
-				JOptionPane.showMessageDialog(MainFrame.getInstance(), "The path \"" + path + "\" is invalid.", "Error", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(MainFrame.getInstance(), "The path \"" + parameters.getTableFile().getAbsolutePath() + 
+								"\" is invalid.", "Error", JOptionPane.ERROR_MESSAGE);
 			}
 			catch (SecurityException ex) {
-				JOptionPane.showMessageDialog(MainFrame.getInstance(), "The permission for writing to the file \"" + path + "\" was denied.", "Error", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(MainFrame.getInstance(), "The permission for writing to the file \"" + 
+			      parameters.getTableFile().getAbsolutePath() + "\" was denied.", "Error", JOptionPane.ERROR_MESSAGE);
 			}
 			catch (IOException ex) {
-				JOptionPane.showMessageDialog(MainFrame.getInstance(), "The error \"" + ex.getMessage() + "\" occured when writing to the file \"" + path + "\".", "Error", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(MainFrame.getInstance(), "The error \"" + ex.getMessage() + 
+						"\" occured when writing to the file \"" + parameters.getTableFile().getAbsolutePath() + "\".", 
+						"Error", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}

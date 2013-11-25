@@ -38,14 +38,20 @@ import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
  */
 public class ImportTableEdit extends DocumentEdit {
   private String[][] data;
+  private NodeBranchDataAdapter keyColumn;
   private NodeBranchDataAdapter[] adapters;
   private NodeBranchDataBackup[] backups;
+  private int linesToSkip = 0;
   
   
-	public ImportTableEdit(Document document, String[][] data, NodeBranchDataAdapter[] adapters) {
+	public ImportTableEdit(Document document, String[][] data, NodeBranchDataAdapter keyColumn, 
+					NodeBranchDataAdapter[] adapters, int linesToSkip) {
+		
 		super(document);
 		this.data = data;
+		this.keyColumn = keyColumn;
 		this.adapters = adapters;
+		this.linesToSkip = linesToSkip;
 		backups = createBackups();
 	}
 	
@@ -58,6 +64,16 @@ public class ImportTableEdit extends DocumentEdit {
 		return result;
 	}
 
+	
+	/**
+	 * Returns a list that defines which line of the imported table corresponds to which node(s).
+	 */
+	private Node[][] createNodeList() {
+		Node[][] result = new Node[data.length - linesToSkip][];
+		
+		return result;
+  }
+	
 
   /**
    * @param adapters
@@ -65,13 +81,13 @@ public class ImportTableEdit extends DocumentEdit {
    * @return <code>true</code>, if all data has been imported, <code>false</code>, if
    *         one or more unique node name was not found in the current tree
    */
-  public boolean importData(NodeBranchDataAdapter[] adapters, String[][] data) {
+  private boolean importData() {
   	boolean allImported = true;
   	if (adapters.length == data.length) {
-			for (int row = 0; row < data[0].length; row++) {
-				Node node = document.getTree().getNodeByUniqueName(data[0][row]);
+			for (int row = linesToSkip; row < data[linesToSkip].length; row++) {
+				Node node = document.getTree().getNodeByUniqueName(data[0][row]);  //TODO nicht mehr uniqueNodeName verwenden
 				if (node != null) {
-	    		for (int col = 1; col < adapters.length; col++) {  // unique name überspringen
+	    		for (int col = 1; col < adapters.length; col++) {  // skip key column
 	    			if (!data[col][row].equals("")) {
 	    				try {
 		    				adapters[col].setDecimal(node, Double.parseDouble(data[col][row]));
@@ -96,7 +112,7 @@ public class ImportTableEdit extends DocumentEdit {
   
 	@Override
 	public void redo() throws CannotRedoException {
-		if (importData(adapters, data)) {
+		if (importData()) {
 			JOptionPane.showMessageDialog(MainFrame.getInstance(), 
 					"One or more entries of the table could not be imported because the \n" +
 					"current tree does not contain a node with the specified unique name,.", "Warning", 

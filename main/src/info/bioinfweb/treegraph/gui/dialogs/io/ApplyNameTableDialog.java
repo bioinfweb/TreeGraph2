@@ -73,6 +73,7 @@ public class ApplyNameTableDialog extends EditDialog {
 
 	/**
 	 * @param owner
+	 * @wbp.parser.constructor
 	 */
 	public ApplyNameTableDialog(Frame owner) {
 		super(owner);

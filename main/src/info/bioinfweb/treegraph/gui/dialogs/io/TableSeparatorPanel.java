@@ -43,7 +43,7 @@ import javax.swing.border.TitledBorder;
  */
 public class TableSeparatorPanel extends JPanel {
 	/** The default separeter which is not a tab. */
-	public static final String DEFAULT_SEPARATOR = ";";
+	public static final char DEFAULT_SEPARATOR = ';';
 	
 	
 	private JRadioButton tabRadioButton = null;
@@ -152,7 +152,7 @@ public class TableSeparatorPanel extends JPanel {
 	private JTextField getSeparatorTextField() {
 		if (separatorTextField == null) {
 			separatorTextField = new JTextField();
-			separatorTextField.setText(DEFAULT_SEPARATOR);
+			separatorTextField.setText(Character.toString(DEFAULT_SEPARATOR));
 			separatorTextField.setEnabled(false);
 		}
 		return separatorTextField;
