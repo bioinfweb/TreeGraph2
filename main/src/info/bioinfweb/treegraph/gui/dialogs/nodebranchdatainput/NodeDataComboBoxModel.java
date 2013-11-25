@@ -35,18 +35,21 @@ import javax.swing.ComboBoxModel;
  * 
  * @author Ben St&ouml;ver
  */
-public class NodeDataComboBoxModel extends AbstractListModel implements ComboBoxModel {
+public class NodeDataComboBoxModel extends AbstractListModel<NodeBranchDataAdapter> 
+    implements ComboBoxModel<NodeBranchDataAdapter> {
+	
 	private Vector<NodeBranchDataAdapter> adapters = new Vector<NodeBranchDataAdapter>();
 	private NodeBranchDataAdapter selected = null;
 	
 
 	/**
-   * Equivalent to a call of <code>setAdapters(tree, true, false, false)</code>.
+   * Equivalent to a call of <code>setAdapters(tree, false, true, false, false)</code>.
+   * 
    * @param tree
    * @see info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeDataComboBoxModel#setAdapters(Tree, boolean, boolean)
    */
   public void setAdapters(Tree tree) {
-  	setAdapters(tree, true, true, false, false);
+  	setAdapters(tree, false, true, true, false, false);
   }
   
   
@@ -64,7 +67,10 @@ public class NodeDataComboBoxModel extends AbstractListModel implements ComboBox
   
   
   /**
+   * Refreshes the selectable node data adapters.
+   * 
    * @param tree - the tree to obtain the IDs from (Can also be <code>null</code>.)
+   * @param uniqueNamesSelectable - determines whether the unique node names adapter can be selected
    * @param nodeNamesSelectable - determines whether the node names adapter can be selected
    * @param branchLengthSelectable - determines whether the branch length adapter can be
    *        selected
@@ -75,17 +81,20 @@ public class NodeDataComboBoxModel extends AbstractListModel implements ComboBox
    *        added. Note that the label ID has still to be set. This adapters are also added if 
    *        <code>decimalOnly</code> is <code>true</code>. 
    */
-  public void setAdapters(Tree tree, boolean nodeNamesSelectable, boolean branchLengthSelectable, 
-  		boolean decimalOnly, boolean newIDSelectable) {
+  public void setAdapters(Tree tree, boolean uniqueNamesSelectable, boolean nodeNamesSelectable, 
+  		boolean branchLengthSelectable,	boolean decimalOnly, boolean newIDSelectable) {
   	
   	adapters.clear();
   	fireIntervalRemoved(this, 0, 0);
   	
+  	if (uniqueNamesSelectable) {
+  		adapters.add(UniqueNameAdapter.getSharedInstance());
+  	}
   	if (nodeNamesSelectable) {
-  		adapters.add(new NodeNameAdapter());
+  		adapters.add(NodeNameAdapter.getSharedInstance());
   	}
 		if (branchLengthSelectable) {
-			adapters.add(new BranchLengthAdapter());
+			adapters.add(BranchLengthAdapter.getSharedInstance());
 		}
 		// More adapters can be added here.
 		
@@ -107,7 +116,7 @@ public class NodeDataComboBoxModel extends AbstractListModel implements ComboBox
 			}
 		}
 		
-		// Delete all adapters that can access not decimal value
+		// Delete all adapters for columns that contain no decimal value
 		if (decimalOnly && (tree != null)) {
 			for (int i = getSize() - 1; i >= 0; i--) {
 				if (!tree.containsDecimal(adapters.get(i))) {
@@ -130,6 +139,7 @@ public class NodeDataComboBoxModel extends AbstractListModel implements ComboBox
 	/**
 	 * Selects the adapter which is an instance (not instance of a subclass) of the 
 	 * given class.
+	 * 
 	 * @param adapterClass
 	 * @return <code>true</code>, if one adapter was selected, <code>false</code>, if 
 	 *         no adapter of the given class was found

@@ -89,7 +89,7 @@ public class ImportTableDialog extends FileDialog {
 
 	@Override
 	protected boolean onExecute() {
-		//getNodeIdentifierInput().setAdapters(getDocument().getTree());
+		getNodeIdentifierInput().setAdapters(getDocument().getTree());
 		return true;
 	}
 
@@ -209,26 +209,26 @@ public class ImportTableDialog extends FileDialog {
 			gbc_nodeIdentifierLabel.insets = new Insets(0, 0, 5, 5);
 			gbc_nodeIdentifierLabel.gridx = 0;
 			gbc_nodeIdentifierLabel.gridy = 1;
-			//nodeIdentificationPanel.add(getNodeIdentifierLabel(), gbc_nodeIdentifierLabel);
-			//nodeIdentifierInput = new NodeBranchDataInput(nodeIdentificationPanel, 1, 1);
+			nodeIdentificationPanel.add(getNodeIdentifierLabel(), gbc_nodeIdentifierLabel);
+			nodeIdentifierInput = new NodeBranchDataInput(nodeIdentificationPanel, 1, 1);
 			GridBagConstraints gbc_linesToSkipLabel = new GridBagConstraints();
 			gbc_linesToSkipLabel.anchor = GridBagConstraints.WEST;
 			gbc_linesToSkipLabel.insets = new Insets(0, 0, 5, 5);
 			gbc_linesToSkipLabel.gridx = 0;
 			gbc_linesToSkipLabel.gridy = 2;
-			//nodeIdentificationPanel.add(getLinesToSkipLabel(), gbc_linesToSkipLabel);
+			nodeIdentificationPanel.add(getLinesToSkipLabel(), gbc_linesToSkipLabel);
 			GridBagConstraints gbc_linesToSkipSpinner = new GridBagConstraints();
 			gbc_linesToSkipSpinner.fill = GridBagConstraints.HORIZONTAL;
 			gbc_linesToSkipSpinner.insets = new Insets(0, 0, 5, 0);
 			gbc_linesToSkipSpinner.gridx = 1;
 			gbc_linesToSkipSpinner.gridy = 2;
-			//nodeIdentificationPanel.add(getLinesToSkipSpinner(), gbc_linesToSkipSpinner);
+			nodeIdentificationPanel.add(getLinesToSkipSpinner(), gbc_linesToSkipSpinner);
 			GridBagConstraints gbc_columnHeadingsCheckBox = new GridBagConstraints();
 			gbc_columnHeadingsCheckBox.gridwidth = 2;
 			gbc_columnHeadingsCheckBox.anchor = GridBagConstraints.WEST;
 			gbc_columnHeadingsCheckBox.gridx = 0;
 			gbc_columnHeadingsCheckBox.gridy = 3;
-			//nodeIdentificationPanel.add(getColumnHeadingsCheckBox(), gbc_columnHeadingsCheckBox);
+			nodeIdentificationPanel.add(getColumnHeadingsCheckBox(), gbc_columnHeadingsCheckBox);
 		}
 		return nodeIdentificationPanel;
 	}
@@ -252,7 +252,7 @@ public class ImportTableDialog extends FileDialog {
 	
 	private JLabel getLinesToSkipLabel() {
 		if (linesToSkipLabel == null) {
-			linesToSkipLabel = new JLabel("Number of intial lines to skip:");
+			linesToSkipLabel = new JLabel("Number of lines to skip before heading or data:");
 		}
 		return linesToSkipLabel;
 	}

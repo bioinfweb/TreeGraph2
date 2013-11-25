@@ -34,6 +34,7 @@ import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
 import info.bioinfweb.treegraph.Main;
+import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeDataComboBoxModel;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.webinsel.wikihelp.client.WikiHelpOptionPane;
@@ -48,7 +49,7 @@ import info.webinsel.wikihelp.client.WikiHelpOptionPane;
 public abstract class FormatsByNodeBranchDataDialog extends SpecialFormatsDialog {
 	private int errorHelpCode;
 	
-	private JComboBox sourceComboBox = null;
+	private JComboBox<NodeBranchDataAdapter> sourceComboBox = null;
 	private JPanel sourcePanel = null;
 	
 	
@@ -78,7 +79,7 @@ public abstract class FormatsByNodeBranchDataDialog extends SpecialFormatsDialog
 	@Override
 	protected boolean onExecute() {
 		((NodeDataComboBoxModel)getSourceComboBox().getModel()).setAdapters(
-				getDocument().getTree(), true, true, true, false);
+				getDocument().getTree(), false, true, true, true, false);
 		
 		boolean result = getSourceComboBox().getModel().getSize() > 0; 
 		if (result) {
@@ -121,9 +122,9 @@ public abstract class FormatsByNodeBranchDataDialog extends SpecialFormatsDialog
 	 * 	
 	 * @return javax.swing.JComboBox	
 	 */
-	protected JComboBox getSourceComboBox() {
+	protected JComboBox<NodeBranchDataAdapter> getSourceComboBox() {
 		if (sourceComboBox == null) {
-			sourceComboBox = new JComboBox(new NodeDataComboBoxModel());
+			sourceComboBox = new JComboBox<NodeBranchDataAdapter>(new NodeDataComboBoxModel());
 		}
 		return sourceComboBox;
 	}

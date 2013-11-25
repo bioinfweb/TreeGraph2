@@ -87,9 +87,9 @@ public class ExportToNewickStringDialog extends FileDialog {
 			getFileChooser().setSelectedFile(new File(name));
 		}
 		
-		getInternalInput().setAdapters(getDocument().getTree(), true, true, false, false);
-		getLeafInput().setAdapters(getDocument().getTree(), true, true, false, false);
-		getBranchLengthInput().setAdapters(getDocument().getTree(), false, true, true, false);
+		getInternalInput().setAdapters(getDocument().getTree(), true, true, true, false, false);
+		getLeafInput().setAdapters(getDocument().getTree(), true, true, true, false, false);
+		getBranchLengthInput().setAdapters(getDocument().getTree(), false, false, true, true, false);
 		
 		boolean branchLength = getBranchLengthInput().getModel().getSize() > 0;
 		getBranchLengthCheckBox().setEnabled(branchLength);

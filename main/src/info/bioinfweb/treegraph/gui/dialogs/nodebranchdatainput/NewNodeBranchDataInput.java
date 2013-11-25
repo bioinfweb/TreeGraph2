@@ -66,7 +66,7 @@ public class NewNodeBranchDataInput extends NodeBranchDataInput {
 
 
 	@Override
-	protected JComboBox getComboBox() {
+	protected JComboBox<NodeBranchDataAdapter> getComboBox() {
 		if (comboBox == null) {
 			super.getComboBox().addItemListener(new ItemListener() {
 		 		  public void itemStateChanged(ItemEvent e) {

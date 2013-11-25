@@ -68,11 +68,11 @@ public class CopyColumnDialog extends EditDialog {
 	
 	@Override
 	protected boolean onExecute() {
-		getSrcInput().setAdapters(getDocument().getTree(), true, true, false, false);
+		getSrcInput().setAdapters(getDocument().getTree(), true, true, true, false, false);
 		if (getSelectedAdapter() != null) {
 			getSrcInput().setSelectedAdapter(getSelectedAdapter().getClass());
 		}
-		getDestInput().setAdapters(getDocument().getTree(), true, true, false, true);
+		getDestInput().setAdapters(getDocument().getTree(), false, true, true, false, true);
 		getDestInput().setSelectedAdapter(NewTextLabelAdapter.class);
 		
 		pack();  // An Länge der Namen anpassen.

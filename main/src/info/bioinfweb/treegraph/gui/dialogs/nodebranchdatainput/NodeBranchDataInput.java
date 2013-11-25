@@ -29,8 +29,13 @@ import javax.swing.JPanel;
 
 
 
+/**
+ * A GUI class used to let the user specify a node/branch data column. 
+ * 
+ * @author Ben St&ouml;ver
+ */
 public class NodeBranchDataInput {
-	protected JComboBox comboBox = null;
+	protected JComboBox<NodeBranchDataAdapter> comboBox = null;
 
 	
 	public NodeBranchDataInput(JPanel panel, int x, int y) {
@@ -50,9 +55,9 @@ public class NodeBranchDataInput {
 	}
 
 
-	protected JComboBox getComboBox() {
+	protected JComboBox<NodeBranchDataAdapter> getComboBox() {
 		if (comboBox == null) {
-			comboBox = new JComboBox(new NodeDataComboBoxModel());
+			comboBox = new JComboBox<NodeBranchDataAdapter>(new NodeDataComboBoxModel());
 		}
 		return comboBox;
 	}
@@ -74,6 +79,7 @@ public class NodeBranchDataInput {
   
   /**
    * Refreshes the selectable node data adapters.
+   * 
    * @param tree - the tree which contains the data
    */
   public void setAdapters(Tree tree) {
@@ -83,6 +89,7 @@ public class NodeBranchDataInput {
   
   /**
    * Refreshes the selectable node data adapters.
+   * 
    * @param tree - the tree to obtain the IDs from (can also be <code>null</code>)
    * @param nodeNamesSelectable - determines whether the node names adapter can be selected
    * @param branchLengthSelectable - determines whether the branch length adapter can be
@@ -94,17 +101,18 @@ public class NodeBranchDataInput {
    *        added. Note that the label ID has still to be set. This adapters are also added if 
    *        <code>decimalOnly</code> is <code>true</code>. 
    */
-  public void setAdapters(Tree tree, boolean nodeNamesSelectable, boolean branchLengthSelectable, 
-  		boolean decimalOnly, boolean newIDSelectable) {
+  public void setAdapters(Tree tree, boolean uniqueNamesSelectable, boolean nodeNamesSelectable, 
+  		boolean branchLengthSelectable,	boolean decimalOnly, boolean newIDSelectable) {
   	
-  	((NodeDataComboBoxModel)getComboBox().getModel()).setAdapters(tree, nodeNamesSelectable,
-  			branchLengthSelectable, decimalOnly, newIDSelectable);
+  	((NodeDataComboBoxModel)getComboBox().getModel()).setAdapters(tree, uniqueNamesSelectable,
+  			nodeNamesSelectable, branchLengthSelectable, decimalOnly, newIDSelectable);
   }
   
   
 	/**
 	 * Selects the adapter which is an instance (not instance of a subclass) of the 
 	 * given class.
+	 * 
 	 * @param adapterClass
 	 * @return <code>true</code>, if one adapter was selected, <code>false</code>, if 
 	 *         no adapter of the given class was found
@@ -118,6 +126,7 @@ public class NodeBranchDataInput {
 	/**
 	 * Selects the adapter which is an instance (not instance of a subclass) of same class as the 
 	 * given adapter and has the same ID (if it is an adapter for ID elements).
+	 * 
 	 * @param adapter
 	 * @return <code>true</code>, if one adapter was selected, <code>false</code>, if 
 	 *         no adapter of the given class (with the given ID) was found
@@ -129,6 +138,7 @@ public class NodeBranchDataInput {
 	
   /**
    * Returns the currently selected adapter.
+   * 
    * @return the selected adapter (not a copy of it)
    */
   public NodeBranchDataAdapter getSelectedAdapter() {
