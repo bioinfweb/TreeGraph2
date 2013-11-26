@@ -26,7 +26,7 @@ import info.bioinfweb.treegraph.document.TextElementData;
 
 
 
-public class NodeNameAdapter extends TextElementDataAdapter implements NodeBranchDataAdapter {
+public class NodeNameAdapter extends AbstractTextElementDataAdapter implements NodeBranchDataAdapter {
 	private static NodeNameAdapter sharedInstance = null;
 	
 	

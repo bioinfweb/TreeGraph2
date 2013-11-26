@@ -23,7 +23,7 @@ import javax.swing.undo.CannotRedoException;
 
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
-import info.bioinfweb.treegraph.document.nodebranchdata.TextElementDataAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.AbstractTextElementDataAdapter;
 import info.bioinfweb.treegraph.document.undo.NodeBranchDataEdit;
 
 
@@ -32,18 +32,18 @@ public class SetColumnTypeEdit extends NodeBranchDataEdit {
 	private boolean decimal;
 	
 	
-  public SetColumnTypeEdit(Document document, TextElementDataAdapter adapter, boolean decimal) {
+  public SetColumnTypeEdit(Document document, AbstractTextElementDataAdapter adapter, boolean decimal) {
 		super(document, adapter);
 		this.decimal = decimal;
 	}
 
   
-  private TextElementDataAdapter getAdapter() {
-  	return (TextElementDataAdapter)adapter;
+  private AbstractTextElementDataAdapter getAdapter() {
+  	return (AbstractTextElementDataAdapter)adapter;
   }
   
   
-	protected void setDataTypeInSubtree(Node root, TextElementDataAdapter adapter, 
+	protected void setDataTypeInSubtree(Node root, AbstractTextElementDataAdapter adapter, 
   		boolean decimal) {
   	
   	adapter.setType(root, decimal);

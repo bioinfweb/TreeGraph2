@@ -36,8 +36,6 @@ public class LabelLinePositionOperator extends AbstractLabelOperator implements 
 
 	@Override
 	protected void doApplyTo(ElementFormats format) {
-		System.out.println(linePosition + "doApplyTo");
 		((LabelFormats)format).setLinePosition(linePosition);
-		System.out.println(((LabelFormats)format).getLinePosition());
 	}
 }

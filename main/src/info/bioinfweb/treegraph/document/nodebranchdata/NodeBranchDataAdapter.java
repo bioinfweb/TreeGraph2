@@ -46,6 +46,14 @@ public interface NodeBranchDataAdapter {
 	
 	public void setDecimal(Node node, double value);
 	
+	/**
+	 * Implementing classes should return an instance of {@link TextElementData} here. This should not be
+	 * the same instance as the underlying data in contrast to {@link TextElementDataAdapter#getData(Node)}.
+	 * 
+	 * @param node - the node that carries the data
+	 */
+	public TextElementData toTextElementData(Node node);
+	
 	public void setTextElementData(Node node, TextElementData data);
 	
 	public void delete(Node node);

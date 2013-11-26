@@ -27,7 +27,7 @@ import info.bioinfweb.treegraph.document.Node;
  * Node data adapters that need to store an ID can be inherited from this abstract class.
  * @author Ben St&ouml;ver
  */
-public abstract class AbstractIDElementAdapter extends TextElementDataAdapter 
+public abstract class AbstractIDElementAdapter extends AbstractTextElementDataAdapter 
     implements IDElementAdapter {
 	
 	protected String id = "";

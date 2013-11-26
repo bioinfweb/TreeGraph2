@@ -34,7 +34,7 @@ import info.bioinfweb.treegraph.document.nodebranchdata.HiddenNodeDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.TextElementDataAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.AbstractTextElementDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.UniqueNameAdapter;
 import info.bioinfweb.treegraph.document.undo.edit.ChangeCellTypeEdit;
 import info.bioinfweb.treegraph.document.undo.edit.ChangeNumercalValueEdit;
@@ -239,8 +239,8 @@ public class DocumentTableModel extends AbstractTableModel implements DocumentLi
 				getDocument().executeEdit(new ChangeTextualValueEdit(getDocument(), adapter, n, str));
 			}
 		}
-		else if ((value instanceof Boolean) && (adapter instanceof TextElementDataAdapter)) {
-			getDocument().executeEdit(new ChangeCellTypeEdit(getDocument(), (TextElementDataAdapter)adapter, 
+		else if ((value instanceof Boolean) && (adapter instanceof AbstractTextElementDataAdapter)) {
+			getDocument().executeEdit(new ChangeCellTypeEdit(getDocument(), (AbstractTextElementDataAdapter)adapter, 
 					n, (Boolean)value));
 		}
 	}

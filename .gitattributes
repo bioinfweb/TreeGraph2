@@ -271,6 +271,7 @@ main/src/info/bioinfweb/treegraph/document/io/xtg/XTGWriter.java -text
 main/src/info/bioinfweb/treegraph/document/io/xtg/package.html -text
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/AbstractIDElementAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/AbstractNodeBranchDataAdapter.java -text
+main/src/info/bioinfweb/treegraph/document/nodebranchdata/AbstractTextElementDataAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/BranchLengthAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/HiddenBranchDataAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/HiddenDataAdapter.java -text
@@ -283,7 +284,7 @@ main/src/info/bioinfweb/treegraph/document/nodebranchdata/NewTextLabelAdapter.ja
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/NodeBranchDataActionNotSupportedException.java -text
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/NodeBranchDataAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/NodeNameAdapter.java -text
-main/src/info/bioinfweb/treegraph/document/nodebranchdata/TextElementDataAdapter.java -text
+main/src/info/bioinfweb/treegraph/document/nodebranchdata/TextElementDataAdapter.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/TextLabelAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/UniqueNameAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/package.html -text

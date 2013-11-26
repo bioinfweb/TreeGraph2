@@ -24,7 +24,7 @@ import javax.swing.undo.CannotUndoException;
 
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
-import info.bioinfweb.treegraph.document.nodebranchdata.TextElementDataAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.AbstractTextElementDataAdapter;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
 
 
@@ -37,12 +37,12 @@ import info.bioinfweb.treegraph.document.undo.DocumentEdit;
  * @since 2.0.45
  */
 public class ChangeCellTypeEdit extends DocumentEdit {
-  private TextElementDataAdapter adapter;
+  private AbstractTextElementDataAdapter adapter;
   private Node node;
   private boolean newValue;
   
   
-	public ChangeCellTypeEdit(Document document, TextElementDataAdapter adapter,
+	public ChangeCellTypeEdit(Document document, AbstractTextElementDataAdapter adapter,
 			Node node, boolean newValue) {
 		
 		super(document);

@@ -30,13 +30,10 @@ import javax.swing.undo.CannotUndoException;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextElementData;
-import info.bioinfweb.treegraph.document.Tree;
-import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
 import info.bioinfweb.treegraph.document.undo.NodeBranchDataBackup;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.webinsel.util.Math2;
-import info.webinsel.util.junit.TestTools;
 
 
 
@@ -73,8 +70,9 @@ public class ImportTableEdit extends DocumentEdit {
 
 	
 	private void addNodesByData(Collection<Node> result, Node root, TextElementData data) {
-    if (root.getData().equals(data) ||  // second condition is only evaluated if necessary
-    		ImportTableData.createEditedValue(root.getData().getText(), parameters).equals(data)) {
+		TextElementData rootData = parameters.getKeyAdapter().toTextElementData(root);
+    if (rootData.equals(data) ||  // second condition is only evaluated if necessary
+    		ImportTableData.createEditedValue(rootData.getText(), parameters).equals(data)) {
     	
     	result.add(root);
     }
@@ -94,27 +92,24 @@ public class ImportTableEdit extends DocumentEdit {
 	
 	
   /**
-   * @param adapters
-   * @param data
+   * Writes the imported table to the tree.
+   * 
    * @return <code>true</code>, if all data has been imported, <code>false</code>, if
    *         one or more unique node name was not found in the current tree
    */
   private boolean importData() {
   	boolean allImported = true;
-  	System.out.println("1: " + parameters.getImportAdapters().length + ", " +  data.columnCount());
   	if (parameters.getImportAdapters().length == data.columnCount()) {
   		Iterator<TextElementData> keyIterator = data.keySet().iterator();
   		while (keyIterator.hasNext()) {  // iterate over rows
   			TextElementData key = keyIterator.next();
-  			System.out.println("2: " + key);
 				Collection<Node> nodes = getNodesByData(key);
 				if (nodes.size() > 0) {
-					System.out.println(3);
 					int row = data.getRowByKey(key);
 					Iterator<Node> nodeIterator = nodes.iterator();
 					while (nodeIterator.hasNext()) {  // iterate over all nodes affected by the current row
+						Node currentNode = nodeIterator.next();
 						for (int column = 0; column < parameters.getImportAdapters().length; column++) {  // iterate over columns
-							Node currentNode = nodeIterator.next();
 							String value = data.getTableValue(column, row);
 							if (parameters.isParseNumbericValues() && Math2.isDecimal(value)) {
 								parameters.getImportAdapters()[column].setDecimal(currentNode, Math2.parseDouble(value));
@@ -133,17 +128,16 @@ public class ImportTableEdit extends DocumentEdit {
   	else {
   		throw new IllegalArgumentException("The number of adapters and columns do not match.");
   	}
-  	System.out.println(4);
   	return allImported;
   }
   
   
 	@Override
 	public void redo() throws CannotRedoException {
-		if (importData()) {
+		if (!importData()) {
 			JOptionPane.showMessageDialog(MainFrame.getInstance(), 
 					"One or more entries of the table could not be imported because the \n" +
-					"current tree does not contain a node with the specified unique name,.", "Warning", 
+					"current tree does not contain a node with the specified unique name.", "Warning", 
 					JOptionPane.WARNING_MESSAGE);
 		}
 		super.redo();

@@ -21,6 +21,7 @@ package info.bioinfweb.treegraph.document.nodebranchdata;
 
 import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.TextElementData;
 import info.webinsel.util.Math2;
 
 
@@ -133,6 +134,12 @@ public class BranchLengthAdapter extends AbstractNodeBranchDataAdapter
 	public Branch getDataElement(Node node) {
 		return node.getAfferentBranch();
 	}
+
+
+	@Override
+  public TextElementData toTextElementData(Node node) {
+	  return new TextElementData(getDecimal(node));
+  }
 
 
 	@Override

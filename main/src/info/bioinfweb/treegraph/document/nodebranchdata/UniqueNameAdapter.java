@@ -20,6 +20,7 @@ package info.bioinfweb.treegraph.document.nodebranchdata;
 
 
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.TextElementData;
 
 
 
@@ -93,6 +94,12 @@ public class UniqueNameAdapter extends AbstractNodeBranchDataAdapter implements 
 	public Node getDataElement(Node node) {
 		return node;
 	}
+
+
+	@Override
+  public TextElementData toTextElementData(Node node) {
+	  return new TextElementData(getText(node));
+  }
 
 
 	@Override

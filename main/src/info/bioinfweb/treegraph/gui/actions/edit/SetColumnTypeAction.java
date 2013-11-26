@@ -23,7 +23,7 @@ import java.awt.event.ActionEvent;
 
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.TextElementDataAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.AbstractTextElementDataAdapter;
 import info.bioinfweb.treegraph.document.undo.edit.SetColumnTypeEdit;
 import info.bioinfweb.treegraph.gui.actions.DocumentAction;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
@@ -50,12 +50,12 @@ public abstract class SetColumnTypeAction extends DocumentAction {
 	@Override
 	protected void onActionPerformed(ActionEvent e, TreeInternalFrame frame) {
 		frame.getDocument().executeEdit(new SetColumnTypeEdit(frame.getDocument(), 
-				(TextElementDataAdapter)frame.getSelectedAdapter(), decimal));
+				(AbstractTextElementDataAdapter)frame.getSelectedAdapter(), decimal));
 	}
 
 
 	@Override
 	public void setEnabled(Document document, TreeSelection selection, NodeBranchDataAdapter tableAdapter) {
-		setEnabled((tableAdapter != null) && (tableAdapter instanceof TextElementDataAdapter));
+		setEnabled((tableAdapter != null) && (tableAdapter instanceof AbstractTextElementDataAdapter));
 	}
 }

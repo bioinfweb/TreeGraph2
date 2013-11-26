@@ -33,6 +33,7 @@ import info.bioinfweb.treegraph.document.nodebranchdata.HiddenBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.HiddenNodeDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.AbstractTextElementDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextElementDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;
 import info.bioinfweb.treegraph.document.undo.ComplexDocumentEdit;
@@ -62,10 +63,10 @@ public class AddSupportValuesEdit extends ComplexDocumentEdit {
 	private NodeBranchDataAdapter sourceAdapter = null;
 	
 	/** The node/branch data column to write imported support values to */
-	private TextElementDataAdapter supportAdapter = null;
+	private AbstractTextElementDataAdapter supportAdapter = null;
 	
 	/** The node/branch data column to write imported conflict values to */
-	private TextElementDataAdapter conflictAdapter = null;
+	private AbstractTextElementDataAdapter conflictAdapter = null;
 	
 	private Vector<TextElementData> leafValues = new Vector<TextElementData>();
 	
@@ -377,7 +378,7 @@ public class AddSupportValuesEdit extends ComplexDocumentEdit {
 					}
 				}
 				else if (bestSourceNode.getAdditionalCount() == -1) {
-					System.out.println("-1 RETURNED");  // Dürfte nicht passieren. -> Testen! 
+					throw new InternalError("-1 RETURNED");  // Should not happen.
 				}
 				else {  // conflict found
 					double value = findHighestConflict(src.getTree().getPaintStart(), Double.NaN, targetRoot, bestSourceNode);
