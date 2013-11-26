@@ -118,7 +118,6 @@ public class AssignImportColumnsDialog extends OkCancelApplyWikiHelpDialog {
 			input.setAdapters(tree, false, true, true, false, true);
 			input.setSelectedAdapter(NewHiddenNodeDataAdapter.class);
 			if (data.containsHeadings()) {
-				System.out.println("Setting ID to " + data.getHeading(i - 1));
 				input.setID(data.getHeading(i - 1));
 			}
 			inputs.add(input);
