@@ -21,8 +21,8 @@ package info.bioinfweb.treegraph.document.undo.file.importtable;
 
 import java.io.File;
 import java.util.Iterator;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.Map;
+import java.util.TreeMap;
 
 import info.bioinfweb.treegraph.document.TextElementData;
 import info.webinsel.util.SystemUtils;
@@ -35,15 +35,15 @@ import static org.junit.Assert.* ;
 
 
 public class ImportTableDataTest {
-	private Set<TextElementData> createUniqueNamesKeySet() {
-		Set<TextElementData> result = new TreeSet<TextElementData>();
-		result.add(new TextElementData("1pi7kjb0dm"));
-		result.add(new TextElementData("tbsecbvo6k"));
-		result.add(new TextElementData("h2xfhl93eu"));
-		result.add(new TextElementData("xrqw8ac9bc"));
-		result.add(new TextElementData("s11ocm2f6o"));
-		result.add(new TextElementData("iowa01faj8"));
-		result.add(new TextElementData("fvp06elgwh"));
+	private Map<TextElementData, Integer> createUniqueNamesKeyMap() {
+		Map<TextElementData, Integer> result = new TreeMap<TextElementData, Integer>();
+		result.put(new TextElementData("1pi7kjb0dm"), 0);
+		result.put(new TextElementData("tbsecbvo6k"), 1);
+		result.put(new TextElementData("h2xfhl93eu"), 2);
+		result.put(new TextElementData("xrqw8ac9bc"), 3);
+		result.put(new TextElementData("s11ocm2f6o"), 4);
+		result.put(new TextElementData("iowa01faj8"), 5);
+		result.put(new TextElementData("fvp06elgwh"), 6);
 		return result;
 	}
 	
@@ -61,17 +61,28 @@ public class ImportTableDataTest {
   		final int rowCount = 7;
   		
   		ImportTableData data = new ImportTableData(parameters);
+  		
+  		// Test size:
   		assertEquals(columnCount, data.columnCount());
   		assertEquals(rowCount, data.rowCount());
   		
+  		// Test headings:
   		assertEquals(containsHeadings, data.containsHeadings());
   		if (containsHeadings) {
   			assertEquals("Data1", data.getHeading(0));
   			assertEquals("Data2", data.getHeading(1));
   		}
   		
-  		assertEquals(createUniqueNamesKeySet(), data.keySet());
+  		// Test keys:
+  		Map<TextElementData, Integer> keyMap = createUniqueNamesKeyMap();
+  		assertEquals(keyMap.keySet(), data.keySet());
+  		Iterator<TextElementData> keyIterator = keyMap.keySet().iterator();
+  		while (keyIterator.hasNext()) {
+  			TextElementData key = keyIterator.next();
+  			assertEquals((int)keyMap.get(key), data.getRowByKey(key));
+  		}
   		
+  		// Test contents:
   		for (int row = 0; row < rowCount; row++) {
 	      assertEquals("V0" + row, data.getTableValue(0, row));
       }
