@@ -710,6 +710,9 @@ test/data/importTable/TableUnique_headings_3skipped.txt -text svneol=unset#text/
 test/data/importTable/TableUnique_headings_noSkipped.txt -text svneol=unset#text/plain
 test/data/importTable/TableUnique_noHeadings_3skipped.txt -text svneol=unset#text/plain
 test/data/importTable/TableUnique_noHeadings_noSkipped.txt -text svneol=unset#text/plain
+test/data/importTable/TableUnique_noHeadings_noSkipped_diplicateKey.txt -text svneol=unset#text/plain
+test/data/importTable/TableUnique_noHeadings_noSkipped_emptyDataColumn.txt -text svneol=unset#text/plain
+test/data/importTable/TableUnique_noHeadings_noSkipped_noDataColumns.txt -text svneol=unset#text/plain
 test/lib/junit-4.9b1.jar -text
 test/src/info/bioinfweb/treegraph/document/IDManagerTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/LabelLineTest.java -text svneol=unset#text/plain

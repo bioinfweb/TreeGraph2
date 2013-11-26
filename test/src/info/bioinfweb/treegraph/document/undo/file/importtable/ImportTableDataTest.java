@@ -24,6 +24,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.xml.crypto.Data;
+
 import info.bioinfweb.treegraph.document.TextElementData;
 import info.webinsel.util.SystemUtils;
 
@@ -97,7 +99,7 @@ public class ImportTableDataTest {
 	
 	
   @Test
-  public void test_constructor__noHeadings_noSkipped() {
+  public void test_constructor_noHeadings_noSkipped() {
   	test_tableUnique("TableUnique_noHeadings_noSkipped.txt", false, 0);
   }
 	
@@ -118,4 +120,80 @@ public class ImportTableDataTest {
   public void test_constructor_headings_3skipped() {
   	test_tableUnique("TableUnique_headings_3skipped.txt", true, 3);
   }
+  
+  
+  @Test
+  public void test_constructor_diplucateKey() {
+  	ImportTableParameters parameters = new ImportTableParameters();
+  	parameters.setTableFile(new File("data" + SystemUtils.FILE_SEPARATOR + "importTable" + 
+  	    SystemUtils.FILE_SEPARATOR + "TableUnique_noHeadings_noSkipped_diplicateKey.txt"));
+  	parameters.setColumnSeparator('\t');
+  	parameters.setHeadingContained(false);
+  	parameters.setLinesToSkip(0);
+  	
+  	try {
+  		new ImportTableData(parameters);
+  		fail("DuplicateKeyException not thrown.");
+  	}
+  	catch (DuplicateKeyException e) {}  // expected program flow, nothing to do
+  	catch (Exception e) {
+  		e.printStackTrace();
+  		fail(e.getMessage());
+  	}
+  }	
+  
+  
+  @Test
+  public void test_constructor_insufficientTableSize() {
+  	ImportTableParameters parameters = new ImportTableParameters();
+  	parameters.setTableFile(new File("data" + SystemUtils.FILE_SEPARATOR + "importTable" + 
+  	    SystemUtils.FILE_SEPARATOR + "TableUnique_noHeadings_noSkipped_noDataColumns.txt"));
+  	parameters.setColumnSeparator('\t');
+  	parameters.setHeadingContained(false);
+  	parameters.setLinesToSkip(0);
+  	
+  	try {
+  		new ImportTableData(parameters);
+  		fail("InsufficientTableSizeException not thrown.");
+  	}
+  	catch (InsufficientTableSizeException e) {}  // expected program flow, nothing to do
+  	catch (Exception e) {
+  		e.printStackTrace();
+  		fail(e.getMessage());
+  	}
+  }	
+  
+  
+  @Test
+  public void test_constructor_emptyDataColumn() {
+  	ImportTableParameters parameters = new ImportTableParameters();
+  	parameters.setTableFile(new File("data" + SystemUtils.FILE_SEPARATOR + "importTable" + 
+  	    SystemUtils.FILE_SEPARATOR + "TableUnique_noHeadings_noSkipped_emptyDataColumn.txt"));
+  	parameters.setColumnSeparator('\t');
+  	parameters.setHeadingContained(false);
+  	parameters.setLinesToSkip(0);
+  	
+  	try {
+  		final int columnCount = 1;
+  		final int rowCount = 7;
+  		
+  		ImportTableData data = new ImportTableData(parameters);
+  		
+  		// Test size:
+  		assertEquals(columnCount, data.columnCount());
+  		assertEquals(rowCount, data.rowCount());
+  		
+  		// Test headings:
+  		assertFalse(data.containsHeadings());
+  		
+  		// Test contents:
+  		for (int row = 0; row < rowCount; row++) {
+	      assertEquals("", data.getTableValue(0, row));
+      }
+  	}
+  	catch (Exception e) {
+  		e.printStackTrace();
+  		fail(e.getMessage());
+  	}
+  }	
 }
