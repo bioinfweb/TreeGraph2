@@ -24,8 +24,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
-import javax.xml.crypto.Data;
-
 import info.bioinfweb.treegraph.document.TextElementData;
 import info.webinsel.util.SystemUtils;
 
