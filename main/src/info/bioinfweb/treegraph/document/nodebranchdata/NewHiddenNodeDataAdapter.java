@@ -32,6 +32,11 @@ public class NewHiddenNodeDataAdapter extends HiddenNodeDataAdapter
   }
   
   
+	public NewHiddenNodeDataAdapter(String id) {
+	  super(id);
+  }
+
+
 	@Override
 	public boolean isNewColumn() {
 		return true;

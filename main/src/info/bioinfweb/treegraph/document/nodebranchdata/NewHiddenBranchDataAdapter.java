@@ -32,6 +32,11 @@ public class NewHiddenBranchDataAdapter extends HiddenBranchDataAdapter
   }
 
 
+	public NewHiddenBranchDataAdapter(String id) {
+	  super(id);
+  }
+
+
 	@Override
 	public boolean isNewColumn() {
 		return true;

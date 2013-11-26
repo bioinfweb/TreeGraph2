@@ -35,6 +35,16 @@ public class NewTextLabelAdapter extends TextLabelAdapter
 	}
 
 	
+	public NewTextLabelAdapter(String labelID) {
+	  super(labelID, new DecimalFormat());
+  }
+
+
+	public NewTextLabelAdapter(String labelID, DecimalFormat decimalFormat) {
+	  super(labelID, decimalFormat);
+  }
+
+
 	@Override
 	public boolean isNewColumn() {
 		return true;
