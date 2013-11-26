@@ -588,12 +588,12 @@ main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttographic/PreferencesPane
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttographic/PreferencesPanelFactory.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttographic/TIFFPrefPanel.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttographic/TransparentBgPrefPanel.java -text
+main/src/info/bioinfweb/treegraph/gui/dialogs/io/importtable/AssignImportColumnsDialog.java -text
+main/src/info/bioinfweb/treegraph/gui/dialogs/io/importtable/ExportNodeDataTableModel.java -text
+main/src/info/bioinfweb/treegraph/gui/dialogs/io/importtable/ExportTableDialog.java -text
+main/src/info/bioinfweb/treegraph/gui/dialogs/io/importtable/SelectImportTableDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/loadlogger/LoadLoggerDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/loadlogger/MessagesListModel.java -text
-main/src/info/bioinfweb/treegraph/gui/dialogs/io/table/AssignImportColumnsDialog.java -text
-main/src/info/bioinfweb/treegraph/gui/dialogs/io/table/ExportNodeDataTableModel.java -text
-main/src/info/bioinfweb/treegraph/gui/dialogs/io/table/ExportTableDialog.java -text
-main/src/info/bioinfweb/treegraph/gui/dialogs/io/table/SelectImportTableDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/CalculateColumnDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/CopyColumnDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/IntervalDialog.java -text

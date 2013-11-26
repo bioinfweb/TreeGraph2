@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.gui.dialogs.io.table;
+package info.bioinfweb.treegraph.gui.dialogs.io.importtable;
 
 
 import info.bioinfweb.treegraph.document.undo.file.importtable.ImportTableParameters;
@@ -88,6 +88,7 @@ public class SelectImportTableDialog extends FileDialog {
 		parameters.setTableFile(getSelectedFile());
 		parameters.setColumnSeparator(getSeparatorPanel().getSeparator());
 		parameters.setLinesToSkip((Integer)getLinesToSkipSpinner().getValue());
+		parameters.setHeadingContained(getColumnHeadingsCheckBox().isSelected());
 		
 		parameters.setKeyAdapter(getKeyColumnInput().getSelectedAdapter());
 		parameters.setIgnoreWhitespace(getIgnoreWhitespaceCheckBox().isSelected());

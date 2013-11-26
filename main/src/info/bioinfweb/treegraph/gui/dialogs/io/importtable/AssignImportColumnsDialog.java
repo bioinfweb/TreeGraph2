@@ -16,26 +16,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.gui.dialogs.io.table;
+package info.bioinfweb.treegraph.gui.dialogs.io.importtable;
 
+
+import java.awt.Frame;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.util.Vector;
+
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.nodebranchdata.NewHiddenNodeDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.UniqueNameAdapter;
 import info.bioinfweb.treegraph.document.undo.file.importtable.ImportTableData;
 import info.bioinfweb.treegraph.document.undo.file.importtable.ImportTableParameters;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NewNodeBranchDataInput;
 import info.webinsel.wikihelp.client.OkCancelApplyWikiHelpDialog;
-import javax.swing.JPanel;
-import javax.swing.BoxLayout;
-import java.awt.GridBagLayout;
-import java.util.Vector;
-import javax.swing.JLabel;
-import java.awt.Frame;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
 
 
 
@@ -117,6 +118,7 @@ public class AssignImportColumnsDialog extends OkCancelApplyWikiHelpDialog {
 			input.setAdapters(tree, false, true, true, false, true);
 			input.setSelectedAdapter(NewHiddenNodeDataAdapter.class);
 			if (data.containsHeadings()) {
+				System.out.println("Setting ID to " + data.getHeading(i - 1));
 				input.setID(data.getHeading(i - 1));
 			}
 			inputs.add(input);
@@ -139,6 +141,7 @@ public class AssignImportColumnsDialog extends OkCancelApplyWikiHelpDialog {
 	
 	@Override
 	protected boolean apply() {
+		//TODO Auf überscheiben prüfen, wenn angegebene IDs bereits existieren und nachfragen
 		return true;
 	}
 
