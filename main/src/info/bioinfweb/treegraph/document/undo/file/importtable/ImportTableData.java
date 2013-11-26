@@ -66,7 +66,7 @@ public class ImportTableData {
 	  	rowOffset++;
 	  }
 	  
-	  if ((columnCount() >= 2) && (rowCount() >= 1)) {
+	  if ((columnCount() >= 1) && (rowCount() >= 1)) {
 	  	processKeyColumn(parameters);
 	  }
 	  else {
@@ -106,8 +106,8 @@ public class ImportTableData {
 	private void processKeyColumn(ImportTableParameters parameters) throws DuplicateKeyException {
 		keyToLineMap.clear();
 		DuplicateKeyException exception = null;
-		for (int line = 0; line < data.length; line++) {
-			TextElementData key = createEditedValue(data[line][0], parameters);
+		for (int row = 0; row < rowCount(); row++) {
+			TextElementData key = createEditedValue(data[0][row + rowOffset], parameters);
 			if (keyToLineMap.containsKey(key)) {  // Duplicate key value
 				if (exception == null) {
 					exception = new DuplicateKeyException();
@@ -115,7 +115,7 @@ public class ImportTableData {
 				exception.addKey(key.toString());
 			}
 			else {
-				keyToLineMap.put(key, line);
+				keyToLineMap.put(key, row);
 			}
     }
 		
@@ -148,22 +148,22 @@ public class ImportTableData {
 	 * @param row - the row index of the cell (starting with 0)
 	 */
 	public String getTableValue(int column, int row) {
-		if (Math2.isBetween(column, 1, columnCount() - 1) && Math2.isBetween(row, rowOffset, rowCount() - 1)) {
+		if (Math2.isBetween(column, 0, columnCount() - 1) && Math2.isBetween(row, 0, rowCount() - 1)) {
 			return data[column + 1][row + rowOffset];  // first column contains the unprocessed keys
 		}
 		else {
-			throw new IllegalArgumentException("Invalid column (" + column + ") or row (" + row + ") indices.");
+			throw new IllegalArgumentException("Invalid column " + column + " and/or invalid row " + row + ".");
 		}
 	}
 	
 	
 	public String getHeading(int column) {
 		if (containsHeadings()) {
-			if (Math2.isBetween(column, 1, columnCount() - 1)) {
+			if (Math2.isBetween(column, 0, columnCount() - 1)) {
 				return data[column + 1][rowOffset - 1];
 			}
 			else {
-				throw new IllegalArgumentException("Invalid column (" + column + ") index.");
+				throw new IllegalArgumentException("Invalid column index " + column + ".");
 			}
 		}
 		else {
@@ -179,7 +179,7 @@ public class ImportTableData {
 	
 	public int rowCount() {
 		if (data.length > 0) {
-			return data[0].length;
+			return data[0].length - rowOffset;
 		}
 		else {
 			return 0;

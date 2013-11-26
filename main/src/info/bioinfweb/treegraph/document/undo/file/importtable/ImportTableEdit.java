@@ -101,13 +101,15 @@ public class ImportTableEdit extends DocumentEdit {
    */
   private boolean importData() {
   	boolean allImported = true;
-  	System.out.println(parameters.getImportAdapters().length + ", " +  data.columnCount());
+  	System.out.println("1: " + parameters.getImportAdapters().length + ", " +  data.columnCount());
   	if (parameters.getImportAdapters().length == data.columnCount()) {
   		Iterator<TextElementData> keyIterator = data.keySet().iterator();
   		while (keyIterator.hasNext()) {  // iterate over rows
   			TextElementData key = keyIterator.next();
+  			System.out.println("2: " + key);
 				Collection<Node> nodes = getNodesByData(key);
 				if (nodes.size() > 0) {
+					System.out.println(3);
 					int row = data.getRowByKey(key);
 					Iterator<Node> nodeIterator = nodes.iterator();
 					while (nodeIterator.hasNext()) {  // iterate over all nodes affected by the current row
@@ -131,6 +133,7 @@ public class ImportTableEdit extends DocumentEdit {
   	else {
   		throw new IllegalArgumentException("The number of adapters and columns do not match.");
   	}
+  	System.out.println(4);
   	return allImported;
   }
   

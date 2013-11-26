@@ -34,7 +34,7 @@ import info.bioinfweb.treegraph.gui.dialogs.io.TableSeparatorPanel;
  */
 public class ImportTableParameters {
 	private File tableFile = null;
-	private char columnSeparator = TableSeparatorPanel.DEFAULT_SEPARATOR;
+	private char columnSeparator = '\t';
   private int linesToSkip = 0;
   private boolean headingContained = false;
   
