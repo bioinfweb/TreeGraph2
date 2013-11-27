@@ -106,7 +106,9 @@ public class ExportTableDialog extends EditDialog {
 		
 		boolean write = true;
 		if (file.exists()) {
-			write = (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(this, "The file \"" + getFileTextField().getText() + "\" already exists.\n Do you want to overwrite it?", "Warning", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE));
+			write = (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(this, "The file \"" + 
+		      getFileTextField().getText() + "\" already exists.\n Do you want to overwrite it?", "Warning", 
+		      JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE));
 		}
 		
 		if (write) {
@@ -302,7 +304,7 @@ public class ExportTableDialog extends EditDialog {
 	private JTable getTable() {
 		if (table == null) {
 			table = new JTable(new ExportNodeDataTableModel());
-			table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {  //TODO Muss zusätzlich auch ein Model-Listener her? Muss der Tastenstatus initielisiert werden?
+			table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 				  public void valueChanged(ListSelectionEvent e) {
 				  	setButtonStatus();
 				  }
