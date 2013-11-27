@@ -43,6 +43,7 @@ public class IDManager {
   /**
    * Adds all label IDs to the specified list. If one ID is present several times, it is 
    * only added once. Empty IDs ("") are not added. 
+   * 
    * @param labels
    * @param above
    * @param list
@@ -74,6 +75,7 @@ public class IDManager {
   
   /**
    * Lists all IDs of elements attached to the specified node.
+   * 
    * @param node - the node to be searched
    * @param list - the list to add found IDs to
    * @param labelClass - the type of labels to be searched
@@ -102,6 +104,7 @@ public class IDManager {
   
   /**
    * Lists all IDs of elements attached to the specified node or any of its subtrees. Each ID is contained only once.
+   * 
    * @param node - the node to be searched
    * @param list - the list to add found IDs to
    * @param labelClass - the type of labels to be searched
@@ -123,8 +126,8 @@ public class IDManager {
   
   
   /**
-   * Searches for all IDs (hidden data and label IDs) present in the subtree under 
-   * root.
+   * Searches for all IDs (hidden data and label IDs) present in the subtree under root.
+   * 
    * @param root - the root node of the subtree to be searched. 
    * @return a list of all IDs (every string is contained only once)
    */
@@ -136,7 +139,8 @@ public class IDManager {
   
   /**
    * Test whether the subtree under <code>root</code> contains at least one ID element (label or 
-   * hidden data)
+   * hidden data).
+   * 
    * @param root
    * @return <code>true</code> if an ID element was found
    */

@@ -20,8 +20,6 @@ package info.bioinfweb.treegraph.gui.dialogs.editelement;
 
 
 import info.bioinfweb.treegraph.document.Branch;
-import info.bioinfweb.treegraph.document.IDManager;
-import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextLabel;
 import info.bioinfweb.treegraph.document.format.FormatUtils;
 import info.bioinfweb.treegraph.document.undo.edit.InsertLabelEdit;
@@ -37,7 +35,6 @@ import java.awt.GridBagLayout;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
@@ -85,7 +82,7 @@ public class NewTextLabelDialog extends AbstractTextElementDialog {
 		else {
 			label.getData().setText(getValueTextField().getText());
 		}
-		if (getIDComboBox().getSelectedItem() == null) {
+		if ((getIDComboBox().getSelectedItem() == null) || (getIDComboBox().getSelectedItem().equals(""))) {
 			JOptionPane.showMessageDialog(this, "You have to specify an ID.", "Error", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}

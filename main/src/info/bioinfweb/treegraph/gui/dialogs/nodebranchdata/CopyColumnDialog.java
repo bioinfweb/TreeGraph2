@@ -22,7 +22,7 @@ package info.bioinfweb.treegraph.gui.dialogs.nodebranchdata;
 import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.treegraph.document.IDManager;
 import info.bioinfweb.treegraph.document.nodebranchdata.NewTextLabelAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.NewNodeDataAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.NewNodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.edit.CopyColumnEdit;
 import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
@@ -84,14 +84,14 @@ public class CopyColumnDialog extends EditDialog {
 	protected boolean apply() {
 		boolean result = !getDestAdapter().isNewColumn() || 
 		    !IDManager.idExistsInSubtree(getDocument().getTree().getPaintStart(), 
-				    ((NewNodeDataAdapter)getDestAdapter()).getID());
+				    ((NewNodeBranchDataAdapter)getDestAdapter()).getID());
 		if (result) {
 			getDocument().executeEdit(new CopyColumnEdit(getDocument(), getSrcAdapter(), getDestAdapter(), 
 					getIncludeLeafs()));
 		}
 		else {
 			WikiHelpOptionPane.showMessageDialog(this,	"There are already elements " +
-					"with the ID \"" + ((NewNodeDataAdapter)getDestAdapter()).getID() + "\" present.\n" +
+					"with the ID \"" + ((NewNodeBranchDataAdapter)getDestAdapter()).getID() + "\" present.\n" +
 					"Please choose another ID.",	"Invalid ID",	JOptionPane.ERROR_MESSAGE, 
 					Main.getInstance().getWikiHelp(), 30);
 		}

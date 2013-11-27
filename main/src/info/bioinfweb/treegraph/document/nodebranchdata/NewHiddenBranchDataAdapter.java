@@ -25,7 +25,7 @@ package info.bioinfweb.treegraph.document.nodebranchdata;
  * @author Ben St&ouml;ver
  */
 public class NewHiddenBranchDataAdapter extends HiddenBranchDataAdapter 
-    implements NewNodeDataAdapter {
+    implements NewNodeBranchDataAdapter {
 	
   public NewHiddenBranchDataAdapter() {
   	super("");

@@ -279,7 +279,7 @@ main/src/info/bioinfweb/treegraph/document/nodebranchdata/HiddenNodeDataAdapter.
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/IDElementAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/NewHiddenBranchDataAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/NewHiddenNodeDataAdapter.java -text
-main/src/info/bioinfweb/treegraph/document/nodebranchdata/NewNodeDataAdapter.java -text
+main/src/info/bioinfweb/treegraph/document/nodebranchdata/NewNodeBranchDataAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/NewTextLabelAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/NodeBranchDataActionNotSupportedException.java -text
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/NodeBranchDataAdapter.java -text

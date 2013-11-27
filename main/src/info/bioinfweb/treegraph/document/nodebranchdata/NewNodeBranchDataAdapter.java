@@ -21,11 +21,12 @@ package info.bioinfweb.treegraph.document.nodebranchdata;
 
 
 /**
- * This interface should be implemented by all node data adapters that create
+ * This interface should be implemented by all node/branch data adapters that create
  * a new node data column (e.g. a new group of labels).
+ * 
  * @author Ben St&ouml;ver
  */
-public interface NewNodeDataAdapter extends IDElementAdapter {
+public interface NewNodeBranchDataAdapter extends IDElementAdapter {
 	/**
 	 * Defines the ID of the node data column that is created by this node data
 	 * adapter.

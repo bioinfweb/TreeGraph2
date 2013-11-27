@@ -28,7 +28,7 @@ import java.text.DecimalFormat;
  * @author Ben St&ouml;ver
  */
 public class NewTextLabelAdapter extends TextLabelAdapter
-    implements NewNodeDataAdapter {
+    implements NewNodeBranchDataAdapter {
 	
 	public NewTextLabelAdapter() {
 		super("", new DecimalFormat());

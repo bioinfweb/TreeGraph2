@@ -19,7 +19,7 @@
 package info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput;
 
 
-import info.bioinfweb.treegraph.document.nodebranchdata.NewNodeDataAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.NewNodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 
 import java.awt.GridBagConstraints;
@@ -58,8 +58,8 @@ public class NewNodeBranchDataInput extends NodeBranchDataInput {
 	@Override
 	public NodeBranchDataAdapter getSelectedAdapter() {
 		NodeBranchDataAdapter result = super.getSelectedAdapter();
-		if (result instanceof NewNodeDataAdapter) {
-			((NewNodeDataAdapter)result).setID(getTextField().getText());
+		if (result instanceof NewNodeBranchDataAdapter) {
+			((NewNodeBranchDataAdapter)result).setID(getTextField().getText());
 		}
 		return result;
 	}
@@ -72,7 +72,7 @@ public class NewNodeBranchDataInput extends NodeBranchDataInput {
 		 		  public void itemStateChanged(ItemEvent e) {
 			      if (e.getStateChange() == ItemEvent.SELECTED) {
 			    	  NodeBranchDataAdapter adapter = (NodeBranchDataAdapter)e.getItem();
-			  	  	boolean selected =	(adapter instanceof NewNodeDataAdapter);
+			  	  	boolean selected =	(adapter instanceof NewNodeBranchDataAdapter);
 			  	  	getTextField().setEnabled(selected);
 			  	  	fireNewIDSelected(selected);
 			  	  }

@@ -23,15 +23,19 @@ import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import info.bioinfweb.treegraph.Main;
+import info.bioinfweb.treegraph.document.IDManager;
 import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.nodebranchdata.NewHiddenNodeDataAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.NewNodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.file.importtable.ImportTableData;
 import info.bioinfweb.treegraph.document.undo.file.importtable.ImportTableParameters;
@@ -51,6 +55,8 @@ public class AssignImportColumnsDialog extends OkCancelApplyWikiHelpDialog {
 	private static final int USED_ROWS = 2;
 	
 	
+	private Tree tree = null;
+	
 	private JPanel jContentPane = null;
 	private JPanel importPanel = null;
 	private JLabel typeLabel = null;
@@ -61,7 +67,8 @@ public class AssignImportColumnsDialog extends OkCancelApplyWikiHelpDialog {
 
 
 	/**
-	 * @param owner
+	 * Creates a new instance of this dialog.
+	 * @param owner - the parent window
 	 */
 	public AssignImportColumnsDialog(Frame owner) {
 		super(owner, true, Main.getInstance().getWikiHelp());
@@ -70,7 +77,7 @@ public class AssignImportColumnsDialog extends OkCancelApplyWikiHelpDialog {
 	}
 
 
-	private void createInputs(ImportTableParameters parameters, ImportTableData data, Tree tree) {
+	private void createInputs(ImportTableParameters parameters, ImportTableData data) {
 		getImportPanel().removeAll();
 		inputs.clear();
 
@@ -127,7 +134,8 @@ public class AssignImportColumnsDialog extends OkCancelApplyWikiHelpDialog {
 	
 	
 	public void execute(ImportTableParameters parameters, ImportTableData data, Tree tree) {
-		createInputs(parameters, data, tree);
+		this.tree = tree;
+		createInputs(parameters, data);
 		if (execute()) {
 			NodeBranchDataAdapter[] adapters = new NodeBranchDataAdapter[data.columnCount()];
 			for (int i = 0; i < adapters.length; i++) {
@@ -138,10 +146,43 @@ public class AssignImportColumnsDialog extends OkCancelApplyWikiHelpDialog {
 	}
 	
 	
+	/**
+	 * Tests if selected columns already exist as prompts the user to proceed.
+	 * 
+	 * @see info.webinsel.util.swing.OkCancelApplyDialog#apply()
+	 */
 	@Override
 	protected boolean apply() {
-		//TODO Auf überscheiben prüfen, wenn angegebene IDs bereits existieren und nachfragen
-		return true;
+		StringBuffer message = new StringBuffer();
+		message.append("The following node/branch data columns already exist in the tree:\n\n");
+		
+		boolean cancel = false;
+		Iterator<NewNodeBranchDataInput> iterator = inputs.iterator();
+		while (iterator.hasNext()) {
+			NodeBranchDataAdapter adapter = iterator.next().getSelectedAdapter();
+			boolean columnExists; 
+			if (adapter instanceof NewNodeBranchDataAdapter) {
+				columnExists = IDManager.idExistsInSubtree(tree.getPaintStart(), ((NewNodeBranchDataAdapter)adapter).getID());
+				if (columnExists) {
+					message.append("Node/branch data with the ID \"");
+					message.append(((NewNodeBranchDataAdapter)adapter).getID());
+					message.append("\"\n");
+				}
+			}
+			else {
+				message.append(adapter.toString());
+				message.append('\n');
+				columnExists = true;
+			}
+			cancel = cancel || columnExists;
+		}
+		message.append("\n\nDo you want to possibly overwrite entries in these columns?\n");
+		message.append("(If no node currently containing data is contained in the key column of the table, no data will be overwritten.)");
+		
+		if (cancel) {
+			cancel = (JOptionPane.showConfirmDialog(this, message, "Warning", JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION);
+		}
+		return !cancel;
 	}
 
 
