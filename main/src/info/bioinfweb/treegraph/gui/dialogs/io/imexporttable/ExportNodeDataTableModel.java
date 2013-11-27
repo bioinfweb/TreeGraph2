@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.gui.dialogs.io.importtable;
+package info.bioinfweb.treegraph.gui.dialogs.io.imexporttable;
 
 
 import info.bioinfweb.treegraph.document.Node;
@@ -47,7 +47,6 @@ public class ExportNodeDataTableModel extends AbstractTableModel {
 	
 	public ExportNodeDataTableModel() {
 		super();
-		add(new UniqueNameAdapter());
 	}
 
 
@@ -67,7 +66,7 @@ public class ExportNodeDataTableModel extends AbstractTableModel {
 
 
 	public NodeBranchDataAdapter set(int index, NodeBranchDataAdapter adapter) {
-		if ((index >= 1) && (index < size())) {
+		if ((index >= 0) && (index < size())) {
 			NodeBranchDataAdapter result = adapters.set(index, adapter);
 			if (result != null) {
 				fireTableRowsUpdated(index, index);
@@ -81,7 +80,7 @@ public class ExportNodeDataTableModel extends AbstractTableModel {
 
 
 	public NodeBranchDataAdapter remove(int index) {
-		if ((index >= 1) && (index < size())) {
+		if ((index >= 0) && (index < size())) {
 			NodeBranchDataAdapter result = adapters.remove(index);
 			if (result != null) {
 				fireTableRowsDeleted(index, index);
@@ -96,13 +95,12 @@ public class ExportNodeDataTableModel extends AbstractTableModel {
 
 	public void clear() {
 		adapters.clear();
-		add(new UniqueNameAdapter());
 		fireTableStructureChanged();
 	}
 	
 	
 	public void moveUp(int index) {
-		if ((index >= 2) && (index < size())) {
+		if ((index >= 1) && (index < size())) {
 			NodeBranchDataAdapter save = get(index - 1);
 			set(index - 1, get(index));
 			set(index, save);
@@ -115,7 +113,7 @@ public class ExportNodeDataTableModel extends AbstractTableModel {
 
 
 	public void moveDown(int index) {
-		if ((index >= 1) && (index < size() - 1)) {
+		if ((index >= 0) && (index < size() - 1)) {
 			NodeBranchDataAdapter save = get(index + 1);
 			set(index + 1, get(index));
 			set(index, save);

@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.gui.dialogs.io.importtable;
+package info.bioinfweb.treegraph.gui.dialogs.io.imexporttable;
 
 
 import info.bioinfweb.treegraph.gui.CurrentDirectoryModel;
@@ -94,7 +94,7 @@ public class ExportTableDialog extends EditDialog {
 	
 	@Override
 	protected boolean onExecute() {
-		getNodeDataInput().setAdapters(getDocument().getTree());
+		getNodeDataInput().setAdapters(getDocument().getTree(), true, true, true, false, false);
 		setButtonStatus();
 		return true;
 	}
@@ -143,16 +143,14 @@ public class ExportTableDialog extends EditDialog {
 	
 	
 	private void setButtonStatus() {
-  	boolean enabled = getTableModel().size() > 1;
-  	boolean enableRowAction = enabled && (getTable().getSelectedRow() > 0);
-  	getReplaceButton().setEnabled(enableRowAction);
-  	getRemoveButton().setEnabled(enableRowAction);
+  	boolean enabled = getTableModel().size() > 0;
+  	getReplaceButton().setEnabled(enabled);
+  	getRemoveButton().setEnabled(enabled);
   	getClearButton().setEnabled(enabled);
 
-  	enabled = getTableModel().size() > 2;
-  	getUpButton().setEnabled(enabled && (getTable().getSelectedRow() > 1));
+  	enabled = getTableModel().size() >= 2;
+  	getUpButton().setEnabled(enabled && (getTable().getSelectedRow() > 0));
   	getDownButton().setEnabled(enabled &&	
-  			(getTable().getSelectedRow() > 0) &&
   			(getTable().getSelectedRow() < getTableModel().size() - 1));
 	}
 	
@@ -175,7 +173,7 @@ public class ExportTableDialog extends EditDialog {
 
 
 	private NodeBranchDataInput getNodeDataInput() {
-		getNodeDataPanel();  // ggf. erzeugen
+		getNodeDataPanel();  // make sure instance exists
 		return nodeDataInput;
 	}
 	
@@ -221,7 +219,9 @@ public class ExportTableDialog extends EditDialog {
 			buttonsGBC.gridy = 0;
 			nodeDataPanel = new JPanel();
 			nodeDataPanel.setLayout(new GridBagLayout());
-			nodeDataPanel.setBorder(BorderFactory.createTitledBorder(null, "Columns to export", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
+			nodeDataPanel.setBorder(BorderFactory.createTitledBorder(null, "Columns to export", 
+					TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Dialog", Font.BOLD, 12), 
+					new Color(51, 51, 51)));
 			nodeDataInput = new NodeBranchDataInput(nodeDataPanel, 0, 0);
 			nodeDataPanel.add(getTableScrollPane(), tableGBC);
 			nodeDataPanel.add(getNodeDataButtonsPanel(), buttonsGBC);
@@ -365,9 +365,7 @@ public class ExportTableDialog extends EditDialog {
 			removeButton.setText("Remove");
 			removeButton.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
-					if (getTable().getSelectedRow() > 0) {
-						getTableModel().remove(getTable().getSelectedRow());
-					}
+					getTableModel().remove(getTable().getSelectedRow());
 				}
 			});
 		}
