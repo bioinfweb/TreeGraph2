@@ -52,6 +52,11 @@ import javax.swing.JRadioButton;
 
 
 
+/**
+ * Dialog used to export node/branch data columns to a table stored in a text file.
+ * 
+ * @author Ben St&ouml;ver
+ */
 public class ExportTableDialog extends EditDialog {
 	public static final String EXPORT_FILE_EXT = "txt";
 	
@@ -305,10 +310,10 @@ public class ExportTableDialog extends EditDialog {
 		if (table == null) {
 			table = new JTable(new ExportNodeDataTableModel());
 			table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-				  public void valueChanged(ListSelectionEvent e) {
-				  	setButtonStatus();
-				  }
-			  });
+					  public void valueChanged(ListSelectionEvent e) {
+					  	setButtonStatus();
+					  }
+				  });
 		}
 		return table;
 	}
@@ -324,13 +329,13 @@ public class ExportTableDialog extends EditDialog {
 			addButton = new JButton();
 			addButton.setText("Add");
 			addButton.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent e) {
-					getTableModel().add(getNodeDataInput().getSelectedAdapter());
-					
-					int sel = getTableModel().size() - 1;
-					getTable().getSelectionModel().setSelectionInterval(sel, sel);
-				}
-			});
+						public void actionPerformed(java.awt.event.ActionEvent e) {
+							getTableModel().add(getNodeDataInput().getSelectedAdapter());
+							
+							int sel = getTableModel().size() - 1;
+							getTable().getSelectionModel().setSelectionInterval(sel, sel);
+						}
+					});
 		}
 		return addButton;
 	}
@@ -346,11 +351,11 @@ public class ExportTableDialog extends EditDialog {
 			replaceButton = new JButton();
 			replaceButton.setText("Replace");
 			replaceButton.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent e) {
-					getTableModel().set(getTable().getSelectedRow(), 
-							getNodeDataInput().getSelectedAdapter());
-				}
-			});
+						public void actionPerformed(java.awt.event.ActionEvent e) {
+							getTableModel().set(getTable().getSelectedRow(), 
+									getNodeDataInput().getSelectedAdapter());
+						}
+					});
 		}
 		return replaceButton;
 	}
@@ -366,10 +371,10 @@ public class ExportTableDialog extends EditDialog {
 			removeButton = new JButton();
 			removeButton.setText("Remove");
 			removeButton.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent e) {
-					getTableModel().remove(getTable().getSelectedRow());
-				}
-			});
+						public void actionPerformed(java.awt.event.ActionEvent e) {
+							getTableModel().remove(getTable().getSelectedRow());
+						}
+					});
 		}
 		return removeButton;
 	}
@@ -385,10 +390,10 @@ public class ExportTableDialog extends EditDialog {
 			clearButton = new JButton();
 			clearButton.setText("Clear");
 			clearButton.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent e) {
-					getTableModel().clear();
-				}
-			});
+						public void actionPerformed(java.awt.event.ActionEvent e) {
+							getTableModel().clear();
+						}
+					});
 		}
 		return clearButton;
 	}
@@ -404,13 +409,13 @@ public class ExportTableDialog extends EditDialog {
 			upButton = new JButton();
 			upButton.setText("Move up");
 			upButton.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent e) {
-					int selRow = getTable().getSelectedRow();
-					getTableModel().moveUp(selRow);
-					getTable().getSelectionModel().setSelectionInterval(
-							selRow - 1, selRow - 1);
-				}
-			});
+						public void actionPerformed(java.awt.event.ActionEvent e) {
+							int selRow = getTable().getSelectedRow();
+							getTableModel().moveUp(selRow);
+							getTable().getSelectionModel().setSelectionInterval(
+									selRow - 1, selRow - 1);
+						}
+					});
 		}
 		return upButton;
 	}
@@ -426,13 +431,13 @@ public class ExportTableDialog extends EditDialog {
 			downButton = new JButton();
 			downButton.setText("Move down");
 			downButton.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent e) {
-					int selRow = getTable().getSelectedRow();
-					getTableModel().moveDown(getTable().getSelectedRow());
-					getTable().getSelectionModel().setSelectionInterval(
-							selRow + 1, selRow + 1);
-				}
-			});
+						public void actionPerformed(java.awt.event.ActionEvent e) {
+							int selRow = getTable().getSelectedRow();
+							getTableModel().moveDown(getTable().getSelectedRow());
+							getTable().getSelectionModel().setSelectionInterval(
+									selRow + 1, selRow + 1);
+						}
+					});
 		}
 		return downButton;
 	}
@@ -488,17 +493,17 @@ public class ExportTableDialog extends EditDialog {
 			fileButton = new JButton();
 			fileButton.setText("...");
 			fileButton.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent e) {
-					getFileChooser().setSelectedFile(new File(getFileTextField().getText()));
-					if (JFileChooser.APPROVE_OPTION == getFileChooser().showSaveDialog(MainFrame.getInstance())) {
-						String path = getFileChooser().getSelectedFile().getAbsolutePath();
-						if (!path.endsWith("." + EXPORT_FILE_EXT)) {
-							path += "." + EXPORT_FILE_EXT;
+						public void actionPerformed(java.awt.event.ActionEvent e) {
+							getFileChooser().setSelectedFile(new File(getFileTextField().getText()));
+							if (JFileChooser.APPROVE_OPTION == getFileChooser().showSaveDialog(MainFrame.getInstance())) {
+								String path = getFileChooser().getSelectedFile().getAbsolutePath();
+								if (!path.endsWith("." + EXPORT_FILE_EXT)) {
+									path += "." + EXPORT_FILE_EXT;
+								}
+								getFileTextField().setText(path);
+							}
 						}
-						getFileTextField().setText(path);
-					}
-				}
-			});
+					});
 		}
 		return fileButton;
 	}
