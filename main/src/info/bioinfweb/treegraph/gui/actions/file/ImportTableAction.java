@@ -20,6 +20,7 @@ package info.bioinfweb.treegraph.gui.actions.file;
 
 
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -27,6 +28,7 @@ import java.util.Iterator;
 
 import javax.swing.Action;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.TextElementData;
@@ -68,6 +70,7 @@ public class ImportTableAction extends DocumentAction {
 		super(mainFrame);
 		putValue(Action.NAME, "Import table as node/branch data..."); 
 	  putValue(Action.MNEMONIC_KEY, KeyEvent.VK_I);
+		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F9, InputEvent.SHIFT_MASK));
 	}
 	
 	

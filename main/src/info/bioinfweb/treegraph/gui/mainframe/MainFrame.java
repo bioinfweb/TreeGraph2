@@ -338,7 +338,6 @@ public class MainFrame extends JFrame implements Runnable {
 			fileMenu.add(getActionManagement().get("file.close"));
 			fileMenu.addSeparator();
 			fileMenu.add(getActionManagement().get("file.addSupportValues"));
-			fileMenu.add(getActionManagement().get("file.applyNameTable"));
 			fileMenu.add(getActionManagement().get("file.importTable"));
 			fileMenu.addSeparator();
 			fileMenu.add(getActionManagement().get("file.exportGraphic"));

@@ -347,7 +347,6 @@ main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/DoubleVarar
 main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/IDFunction.java -text
 main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/UndefinedIDException.java -text
 main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/VarargFunction.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/treegraph/document/undo/file/ApplyNameTableEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/file/addsupportvalues/AddSupportValuesEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/file/addsupportvalues/LeafField.java -text
 main/src/info/bioinfweb/treegraph/document/undo/file/addsupportvalues/NodeInfo.java -text
@@ -475,7 +474,6 @@ main/src/info/bioinfweb/treegraph/gui/actions/edit/UndoAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/edit/UndoRedoToAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/edit/UndoToAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/file/AddSupportValuesAction.java -text
-main/src/info/bioinfweb/treegraph/gui/actions/file/ApplyNameTableAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/file/CloseAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/file/ExitAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/file/ExportTableAction.java -text
@@ -574,7 +572,6 @@ main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/piecolor/PieColorCe
 main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/piecolor/PieColorIcon.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/piecolor/PieColorListEntry.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/AddSupportValuesDialog.java -text
-main/src/info/bioinfweb/treegraph/gui/dialogs/io/ApplyNameTableDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/ExportToNewickStringDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/FileDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/NewickExceptionDialog.java -text
