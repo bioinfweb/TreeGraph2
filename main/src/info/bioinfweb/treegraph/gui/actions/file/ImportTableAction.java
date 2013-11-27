@@ -21,18 +21,15 @@ package info.bioinfweb.treegraph.gui.actions.file;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Vector;
 
 import javax.swing.Action;
 import javax.swing.JOptionPane;
 
 import info.bioinfweb.treegraph.document.Document;
-import info.bioinfweb.treegraph.document.io.newick.NewickStringChars;
+import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.file.importtable.DuplicateKeyException;
 import info.bioinfweb.treegraph.document.undo.file.importtable.ImportTableData;
@@ -45,8 +42,6 @@ import info.bioinfweb.treegraph.gui.dialogs.io.importtable.SelectImportTableDial
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeInternalFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
-import info.webinsel.util.SystemUtils;
-import info.webinsel.util.io.TableReader;
 
 
 
@@ -57,6 +52,13 @@ import info.webinsel.util.io.TableReader;
  * @since 2.0.24
  */
 public class ImportTableAction extends DocumentAction {
+	public static final int MISSING_KEY_OUTPUT_CHARS_PER_LINE = 100;	
+	public static final int MAX_MISSING_KEY_OUTPUT_LINES = 10;
+	public static final String PARAMETER_MESSAGE = 
+			"Note that the parameter setting (e.g. whitespace treatment, case sensitivity)\n" +
+			"influences if two entries are considered equal.)";
+	
+	
 	private SelectImportTableDialog importTableDialog = null;
 	private AssignImportColumnsDialog assignImportColumnsDialog = null;
 	
@@ -85,10 +87,39 @@ public class ImportTableAction extends DocumentAction {
 	}	
 
 	
+	private String createKeyList(Iterator<String> iterator) {
+		StringBuffer result = new StringBuffer((MAX_MISSING_KEY_OUTPUT_LINES + 1) * MISSING_KEY_OUTPUT_CHARS_PER_LINE);  // one line more because single lines might be longer than MISSING_KEY_OUTPUT_CHARS_PER_LINE if keys overlap 
+		int charCount = 0;
+		int lineCount = 0;
+		while (iterator.hasNext() && (lineCount < MAX_MISSING_KEY_OUTPUT_LINES)) {
+			String key = iterator.next().toString();
+			result.append("\"");
+			result.append(key);
+			result.append("\"");
+			charCount += key.length();
+			if (iterator.hasNext()) {
+				if (charCount >= MISSING_KEY_OUTPUT_CHARS_PER_LINE) {
+					result.append("\n");
+					charCount = 0;
+					lineCount++;
+				}
+				else {
+					result.append(", ");
+				}
+			}
+		}
+		if (iterator.hasNext()) {
+			result.append("... (More missing keys not shown here.)");
+		}
+		return result.toString();
+	}
+	
+	
 	@Override
 	protected void onActionPerformed(ActionEvent e, TreeInternalFrame frame) {
 		if (getImportTableDialog().execute(frame.getDocument(), frame.getTreeViewPanel().getSelection(), 
-						frame.getSelectedAdapter())) {
+				frame.getSelectedAdapter())) {
+			
 			ImportTableParameters parameters = new ImportTableParameters();
 			getImportTableDialog().assignParameters(parameters);
 			
@@ -97,7 +128,15 @@ public class ImportTableAction extends DocumentAction {
 				if (data != null) {
 					getAssignImportColumnsDialog().execute(parameters, data, frame.getDocument().getTree());
 					if (parameters.getImportAdapters() != null) {
-						frame.getDocument().executeEdit(new ImportTableEdit(frame.getDocument(), parameters, data));
+						ImportTableEdit edit = new ImportTableEdit(frame.getDocument(), parameters, data);
+						frame.getDocument().executeEdit(edit);
+						if (!edit.isAllKeysFound()) {
+							JOptionPane.showMessageDialog(MainFrame.getInstance(),
+									"The following entries in the key column of the table could not be found in the specified\n" + 
+							    "node/branch data column of the tree:\n\n" + createKeyList(edit.getKeysNotInTree().iterator()) + "\n\n" +
+							    "The cells in the according lines have not been imported.\n(" + PARAMETER_MESSAGE + ")", 
+							    "Warning", JOptionPane.WARNING_MESSAGE);
+						}
 					}
 				}
 			}
@@ -115,17 +154,10 @@ public class ImportTableAction extends DocumentAction {
 						"Error", JOptionPane.ERROR_MESSAGE);
 			}
 			catch (DuplicateKeyException ex) {
-				StringBuffer message = new StringBuffer();
-				message.append("The first column of the imported table file (keys to identify nodes) contained the\n");
-				message.append("follwing entries multiple times:\n\n");
-				Iterator<String> iterator = ex.getKeys().iterator();
-				while (iterator.hasNext()) {
-					message.append(iterator.next());
-					message.append('\n');
-				}
-				message.append("Note that the parameter setting (e.g. whitespace treatment, case sensitivity)\n");
-				message.append("influences if two entries are consideres equal.)");
-				JOptionPane.showMessageDialog(MainFrame.getInstance(), message, "Error", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(MainFrame.getInstance(),
+						"The first column of the imported table file (keys to identify nodes) contained the\n" +
+				    "follwing entries multiple times:\n\n" + createKeyList(ex.getKeys().iterator()) + "\n\n" +
+						PARAMETER_MESSAGE, "Error", JOptionPane.ERROR_MESSAGE);
 			}
 			catch (InsufficientTableSizeException ex) {
 				JOptionPane.showMessageDialog(MainFrame.getInstance(), ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

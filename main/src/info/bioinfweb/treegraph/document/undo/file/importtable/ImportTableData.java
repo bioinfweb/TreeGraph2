@@ -80,26 +80,31 @@ public class ImportTableData {
 	 * in {@code parameters}.
 	 */
 	public static TextElementData createEditedValue(String text, ImportTableParameters parameters) {
-		TextElementData result = new TextElementData(text);
-		if (parameters.isParseNumbericValues()) {
-			try {
-				result.setDecimal(Math2.parseDouble(result.getText()));
-			}
-			catch (NumberFormatException e) {}  // nothing to do
+		if (text.equals("")) {
+			return new TextElementData();  // return empty instance because the if the the TextElementData instance used to call this method was also empty
 		}
-
-		if (!result.isEmpty()) {
-			if (parameters.isIgnoreWhitespace()) {
-				result.setText(result.getText().trim());
+		else {
+			TextElementData result = new TextElementData(text);
+			if (parameters.isParseNumbericValues()) {  
+				try {
+					result.setDecimal(Math2.parseDouble(result.getText()));
+				}
+				catch (NumberFormatException e) {}  // nothing to do
 			}
-			if (parameters.isCaseSensitive()) {
-				result.setText(result.getText().toLowerCase());
+	
+			if (result.isString()) {  // Not the case if the parsing above was successful.
+				if (parameters.isIgnoreWhitespace()) {
+					result.setText(result.getText().trim());
+				}
+				if (!parameters.isCaseSensitive()) {
+					result.setText(result.getText().toLowerCase());
+				}
+				if (!parameters.isDistinguishSpaceUnderscore()) {
+					result.setText(result.getText().replaceAll(Character.toString(NewickStringChars.FREE_NAME_BLANK), " "));
+				}
 			}
-			if (parameters.isDistinguishSpaceUnderscore()) {
-				result.setText(result.getText().replaceAll(Character.toString(NewickStringChars.FREE_NAME_BLANK), " "));
-			}
+			return result;
 		}
-		return result;
 	}
 	
 	
@@ -153,6 +158,16 @@ public class ImportTableData {
 		}
 		else {
 			throw new IllegalArgumentException("Invalid column " + column + " and/or invalid row " + row + ".");
+		}
+	}
+	
+	
+	public String getUnprocessedKey(int row) {
+		if (Math2.isBetween(row, 0, rowCount() - 1)) {
+			return data[0][row + rowOffset];  // first column contains the unprocessed keys
+		}
+		else {
+			throw new IllegalArgumentException("Invalid invalid row index " + row + ".");
 		}
 	}
 	

@@ -159,8 +159,9 @@ public class TextElementData implements Cloneable, Comparable<TextElementData> {
 
 
 	/**
-	 * Returns either the stored string, the decimal value as a sting or <code>null</code> 
+	 * Returns either the stored string, the decimal value as a sting or an empty string 
 	 * if the object is empty.
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override

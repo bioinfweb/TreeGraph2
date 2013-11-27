@@ -21,9 +21,10 @@ package info.bioinfweb.treegraph.document.undo.file.importtable;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.Vector;
 
-import javax.swing.JOptionPane;
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 
@@ -32,7 +33,6 @@ import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
 import info.bioinfweb.treegraph.document.undo.NodeBranchDataBackup;
-import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.webinsel.util.Math2;
 
 
@@ -49,10 +49,10 @@ public class ImportTableEdit extends DocumentEdit {
   private ImportTableParameters parameters;
   private ImportTableData data;
   private NodeBranchDataBackup[] backups;
+  private Set<String> keysNotInTree = new TreeSet<String>();
   
   
 	public ImportTableEdit(Document document, ImportTableParameters parameters, ImportTableData data) {
-		
 		super(document);
 		this.parameters = parameters;
 		this.data = data;
@@ -60,6 +60,24 @@ public class ImportTableEdit extends DocumentEdit {
 	}
 	
 	
+	/**
+	 * Returns {@code false}, if the imported table contained a key that was not found in the tree under 
+	 * the specified parameters, {@code true} otherwise. 
+	 */
+	public boolean isAllKeysFound() {
+		return keysNotInTree.isEmpty();
+	}
+
+
+	/**
+	 * Returns a collection of keys found in the table that were not contained in the specified node/branch 
+	 * data column of the tree under the specified parameters.
+	 */
+	public Set<String> getKeysNotInTree() {
+		return keysNotInTree;
+	}
+
+
 	private NodeBranchDataBackup[] createBackups() {
 		NodeBranchDataBackup[] result = new NodeBranchDataBackup[parameters.getImportAdapters().length];
 		for (int i = 0; i < result.length; i++) {
@@ -72,7 +90,7 @@ public class ImportTableEdit extends DocumentEdit {
 	private void addNodesByData(Collection<Node> result, Node root, TextElementData data) {
 		TextElementData rootData = parameters.getKeyAdapter().toTextElementData(root);
     if (rootData.equals(data) ||  // second condition is only evaluated if necessary
-    		ImportTableData.createEditedValue(rootData.getText(), parameters).equals(data)) {
+    		ImportTableData.createEditedValue(rootData.toString(), parameters).equals(data)) {
     	
     	result.add(root);
     }
@@ -93,12 +111,9 @@ public class ImportTableEdit extends DocumentEdit {
 	
   /**
    * Writes the imported table to the tree.
-   * 
-   * @return <code>true</code>, if all data has been imported, <code>false</code>, if
-   *         one or more unique node name was not found in the current tree
    */
-  private boolean importData() {
-  	boolean allImported = true;
+  private void importData() {
+  	keysNotInTree.clear();
   	if (parameters.getImportAdapters().length == data.columnCount()) {
   		Iterator<TextElementData> keyIterator = data.keySet().iterator();
   		while (keyIterator.hasNext()) {  // iterate over rows
@@ -121,25 +136,19 @@ public class ImportTableEdit extends DocumentEdit {
 					}
 				}
 				else {
-					allImported = false;
+					keysNotInTree.add(data.getUnprocessedKey(data.getRowByKey(key)));
 				}
   		}
   	}
   	else {
   		throw new IllegalArgumentException("The number of adapters and columns do not match.");
   	}
-  	return allImported;
   }
   
   
 	@Override
 	public void redo() throws CannotRedoException {
-		if (!importData()) {
-			JOptionPane.showMessageDialog(MainFrame.getInstance(), 
-					"One or more entries of the table could not be imported because the \n" +
-					"current tree does not contain a node with the specified unique name.", "Warning", 
-					JOptionPane.WARNING_MESSAGE);
-		}
+		importData();
 		super.redo();
 	}
 
