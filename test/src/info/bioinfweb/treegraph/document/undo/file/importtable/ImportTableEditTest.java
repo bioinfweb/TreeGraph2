@@ -20,12 +20,14 @@ package info.bioinfweb.treegraph.document.undo.file.importtable;
 
 
 import info.bioinfweb.treegraph.document.Document;
+import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextLabel;
 import info.bioinfweb.treegraph.document.io.ReadWriteFactory;
 import info.bioinfweb.treegraph.document.io.ReadWriteFormat;
 import info.bioinfweb.treegraph.document.nodebranchdata.NewHiddenNodeDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NewTextLabelAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.UniqueNameAdapter;
 import info.webinsel.util.SystemUtils;
 
@@ -37,9 +39,10 @@ import org.junit.* ;
 import static org.junit.Assert.* ;
 
 
+
 public class ImportTableEditTest {
   @Test
-  public void test_redo_noHeadin() {
+  public void test_redo_uniqueNoHeading() {
   	final String fileName = "TableUnique_noHeadings_noSkipped.txt";
   	final boolean containsHeadings = false;
   	final int linesToSkip = 0;
@@ -62,8 +65,10 @@ public class ImportTableEditTest {
   		ImportTableData data = new ImportTableData(parameters);
   	  Document document = ReadWriteFactory.getInstance().getReader(ReadWriteFormat.XTG).read(
   	  		new File("data" + SystemUtils.FILE_SEPARATOR + "importTable" + SystemUtils.FILE_SEPARATOR + "Tree.xtg"));
-  	  document.executeEdit(new ImportTableEdit(document, parameters, data));
+  	  ImportTableEdit edit = new ImportTableEdit(document, parameters, data);
+  	  document.executeEdit(edit);
   	  
+  	  assertTrue(edit.isAllKeysFound());
   	  assertEquals("V00", document.getTree().getNodeByUniqueName("1pi7kjb0dm").getHiddenDataMap().get(id1).getText());
   	  assertEquals("V01", document.getTree().getNodeByUniqueName("tbsecbvo6k").getHiddenDataMap().get(id1).getText());
   	  assertEquals("V02", document.getTree().getNodeByUniqueName("h2xfhl93eu").getHiddenDataMap().get(id1).getText());
@@ -77,6 +82,151 @@ public class ImportTableEditTest {
   	  assertEquals("V14",	((TextLabel)document.getTree().getNodeByUniqueName("s11ocm2f6o").getAfferentBranch().
   	  	  getLabels().get(id2)).getData().getText());
   	}
+  	catch (Exception e) {
+  		e.printStackTrace();
+  		fail(e.getMessage());
+  	}
+  }
+  
+  
+  private void test_NodeNames(String treeFile, String tableFile, boolean ignoreWhitespace, boolean parseNumbers, 
+  		boolean distinguishSpaceUnderscore, boolean caseSensitive) {
+  	
+  	final boolean containsHeadings = false;
+  	final int linesToSkip = 0;
+  	final String id1 = "HND";
+  	final String id2 = "Label";
+  	
+  	ImportTableParameters parameters = new ImportTableParameters();
+  	parameters.setTableFile(new File("data" + SystemUtils.FILE_SEPARATOR + "importTable" + 
+  	    SystemUtils.FILE_SEPARATOR + tableFile));
+  	parameters.setColumnSeparator('\t');
+  	parameters.setHeadingContained(containsHeadings);
+  	parameters.setLinesToSkip(linesToSkip);
+  	parameters.setKeyAdapter(NodeNameAdapter.getSharedInstance());
+  	parameters.setImportAdapters(
+  			new NodeBranchDataAdapter[]{new NewHiddenNodeDataAdapter(id1), new NewTextLabelAdapter(id2)});
+  	parameters.setParseNumbericValues(parseNumbers);
+  	parameters.setIgnoreWhitespace(ignoreWhitespace);
+  	parameters.setDistinguishSpaceUnderscore(distinguishSpaceUnderscore);
+  	parameters.setCaseSensitive(caseSensitive);
+  	
+  	try {
+  		ImportTableData data = new ImportTableData(parameters);
+  	  Document document = ReadWriteFactory.getInstance().getReader(ReadWriteFormat.XTG).read(
+  	  		new File("data" + SystemUtils.FILE_SEPARATOR + "importTable" + SystemUtils.FILE_SEPARATOR + treeFile));
+  	  ImportTableEdit edit = new ImportTableEdit(document, parameters, data);
+  	  document.executeEdit(edit);
+  	  
+  	  assertTrue(edit.isAllKeysFound());
+      Node node = document.getTree().getPaintStart().getChildren().get(1);  // D
+  	  assertEquals("L4", node.getHiddenDataMap().get(id1).getText());
+  	  node = node.getParent().getChildren().get(0).getChildren().get(1);  // C
+  	  assertEquals("L3", node.getHiddenDataMap().get(id1).getText());
+  	  assertEquals("LL3", ((TextLabel)node.getAfferentBranch().getLabels().get(id2)).getData().getText());
+  	  node = node.getParent().getChildren().get(0).getChildren().get(1);  // B
+  	  assertEquals("L2", node.getHiddenDataMap().get(id1).getText());
+  	  node = node.getParent().getChildren().get(0);  // A
+  	  assertEquals("L1", node.getHiddenDataMap().get(id1).getText());
+  	}
+  	catch (Exception e) {
+  		e.printStackTrace();
+  		fail(e.getMessage());
+  	}
+  }
+  
+  
+  @Test
+  public void test_redo_nodeNames() {
+  	test_NodeNames("Tree.xtg", "TableNodeNames.txt", false, false, true, true);
+  }
+  
+  
+  /**
+   * Tests the options {@code ignoreWhitespace, distinguishSpaceUnderscore} and {@code caseSensitive}.
+   */
+  @Test
+  public void test_redo_nodeNames_tableOptions() {
+  	test_NodeNames("Tree.xtg", "TableNodeNames_options.txt", true, true, false, false);
+  }
+  
+  
+  /**
+   * Tests the options {@code ignoreWhitespace, distinguishSpaceUnderscore} and {@code caseSensitive}.
+   */
+  @Test
+  public void test_redo_nodeNames_treeOptions() {
+  	test_NodeNames("Tree_options.xtg", "TableNodeNames.txt", true, true, false, false);
+  }
+  
+  
+  /**
+   * Tests the option {@code parseNumericValues}.
+   * Decimal values shall not be parsed, because the won't be unique anymore than.
+   */
+  @Test
+  public void test_redo_nodeNames_numbersAsText() {
+  	test_NodeNames("Tree_numbersAsText.xtg", "TableNodeNames_numbersAsText.txt", false, false, true, true);
+  }
+  
+  
+  @Test
+  public void test_redo_nodeNames_numbersAsDecimal() {
+  	final String id = "ID";
+  	ImportTableParameters parameters = new ImportTableParameters();
+  	parameters.setTableFile(new File("data" + SystemUtils.FILE_SEPARATOR + "importTable" + 
+  	    SystemUtils.FILE_SEPARATOR + "TableNodeNames_numbersAsDec.txt"));
+  	parameters.setColumnSeparator('\t');
+  	parameters.setHeadingContained(false);
+  	parameters.setLinesToSkip(0);
+  	parameters.setKeyAdapter(NodeNameAdapter.getSharedInstance());
+  	parameters.setImportAdapters(new NodeBranchDataAdapter[]{new NewHiddenNodeDataAdapter(id)});
+  	parameters.setParseNumbericValues(true);
+  	
+  	try {
+  		ImportTableData data = new ImportTableData(parameters);
+  	  Document document = ReadWriteFactory.getInstance().getReader(ReadWriteFormat.XTG).read(
+  	  		new File("data" + SystemUtils.FILE_SEPARATOR + "importTable" + SystemUtils.FILE_SEPARATOR + "Tree_numbersAsText.xtg"));
+  	  ImportTableEdit edit = new ImportTableEdit(document, parameters, data);
+  	  document.executeEdit(edit);
+
+  	  assertTrue(edit.isAllKeysFound());
+      Node node = document.getTree().getPaintStart().getChildren().get(1);  // 2.1
+  	  assertTrue(node.getHiddenDataMap().isEmpty());
+  	  node = node.getParent().getChildren().get(0).getChildren().get(1);  // 2.0
+  	  assertEquals("L2", node.getHiddenDataMap().get(id).getText());
+  	  node = node.getParent().getChildren().get(0).getChildren().get(1);  // 2
+  	  assertEquals("L2", node.getHiddenDataMap().get(id).getText());
+  	  node = node.getParent().getChildren().get(0);  // 1
+  	  assertEquals("L1", node.getHiddenDataMap().get(id).getText());
+  	}
+  	catch (Exception e) {
+  		e.printStackTrace();
+  		fail(e.getMessage());
+  	}
+  }
+  
+  
+  @Test
+  public void test_redo_nodeNames_numbersAsTextException() {
+  	ImportTableParameters parameters = new ImportTableParameters();
+  	parameters.setTableFile(new File("data" + SystemUtils.FILE_SEPARATOR + "importTable" + 
+  	    SystemUtils.FILE_SEPARATOR + "TableNodeNames_numbersAsText.txt"));
+  	parameters.setColumnSeparator('\t');
+  	parameters.setHeadingContained(false);
+  	parameters.setLinesToSkip(0);
+  	parameters.setKeyAdapter(NodeNameAdapter.getSharedInstance());
+  	parameters.setParseNumbericValues(true);
+  	
+  	try {
+  		ImportTableData data = new ImportTableData(parameters);
+  	  Document document = ReadWriteFactory.getInstance().getReader(ReadWriteFormat.XTG).read(
+  	  		new File("data" + SystemUtils.FILE_SEPARATOR + "importTable" + SystemUtils.FILE_SEPARATOR + "Tree_numbersAsText.xtg"));
+  	  ImportTableEdit edit = new ImportTableEdit(document, parameters, data);
+  	  document.executeEdit(edit);
+    	fail("DuplicateKeyException not thrown.");
+  	}
+  	catch (DuplicateKeyException e) {}  // expected program flow, nothing to do
   	catch (Exception e) {
   		e.printStackTrace();
   		fail(e.getMessage());

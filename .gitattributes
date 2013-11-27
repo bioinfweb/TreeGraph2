@@ -706,6 +706,10 @@ main/xsd/1.2.xsd -text
 test/.classpath -text svneol=unset#text/plain
 test/.project -text svneol=unset#text/plain
 test/.settings/org.eclipse.jdt.core.prefs -text svneol=unset#text/plain
+test/data/importTable/TableNodeNames.txt -text svneol=unset#text/plain
+test/data/importTable/TableNodeNames_numbersAsDec.txt -text svneol=unset#text/plain
+test/data/importTable/TableNodeNames_numbersAsText.txt -text svneol=unset#text/plain
+test/data/importTable/TableNodeNames_options.txt -text svneol=unset#text/plain
 test/data/importTable/TableUnique_headings_3skipped.txt -text svneol=unset#text/plain
 test/data/importTable/TableUnique_headings_noSkipped.txt -text svneol=unset#text/plain
 test/data/importTable/TableUnique_noHeadings_3skipped.txt -text svneol=unset#text/plain
@@ -714,6 +718,8 @@ test/data/importTable/TableUnique_noHeadings_noSkipped_diplicateKey.txt -text sv
 test/data/importTable/TableUnique_noHeadings_noSkipped_emptyDataColumn.txt -text svneol=unset#text/plain
 test/data/importTable/TableUnique_noHeadings_noSkipped_noDataColumns.txt -text svneol=unset#text/plain
 test/data/importTable/Tree.xtg -text
+test/data/importTable/Tree_numbersAsText.xtg -text
+test/data/importTable/Tree_options.xtg -text
 test/lib/junit-4.9b1.jar -text
 test/src/info/bioinfweb/treegraph/document/IDManagerTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/LabelLineTest.java -text svneol=unset#text/plain
