@@ -58,7 +58,7 @@ public class ImportTableEditTest {
   	parameters.setKeyAdapter(UniqueNameAdapter.getSharedInstance());
   	parameters.setImportAdapters(
   			new NodeBranchDataAdapter[]{new NewHiddenNodeDataAdapter(id1), new NewTextLabelAdapter(id2)});
-  	parameters.setParseNumbericValues(false);
+  	parameters.setParseNumericValues(false);
   	parameters.setIgnoreWhitespace(true);
   	
   	try {
@@ -106,7 +106,7 @@ public class ImportTableEditTest {
   	parameters.setKeyAdapter(NodeNameAdapter.getSharedInstance());
   	parameters.setImportAdapters(
   			new NodeBranchDataAdapter[]{new NewHiddenNodeDataAdapter(id1), new NewTextLabelAdapter(id2)});
-  	parameters.setParseNumbericValues(parseNumbers);
+  	parameters.setParseNumericValues(parseNumbers);
   	parameters.setIgnoreWhitespace(ignoreWhitespace);
   	parameters.setDistinguishSpaceUnderscore(distinguishSpaceUnderscore);
   	parameters.setCaseSensitive(caseSensitive);
@@ -181,7 +181,7 @@ public class ImportTableEditTest {
   	parameters.setLinesToSkip(0);
   	parameters.setKeyAdapter(NodeNameAdapter.getSharedInstance());
   	parameters.setImportAdapters(new NodeBranchDataAdapter[]{new NewHiddenNodeDataAdapter(id)});
-  	parameters.setParseNumbericValues(true);
+  	parameters.setParseNumericValues(true);
   	
   	try {
   		ImportTableData data = new ImportTableData(parameters);
@@ -216,7 +216,7 @@ public class ImportTableEditTest {
   	parameters.setHeadingContained(false);
   	parameters.setLinesToSkip(0);
   	parameters.setKeyAdapter(NodeNameAdapter.getSharedInstance());
-  	parameters.setParseNumbericValues(true);
+  	parameters.setParseNumericValues(true);
   	
   	try {
   		ImportTableData data = new ImportTableData(parameters);
