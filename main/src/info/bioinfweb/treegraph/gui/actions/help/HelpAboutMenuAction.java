@@ -26,11 +26,13 @@ import javax.swing.Action;
 
 
 /**
+ * Displays the page of the help system that describes all entries of the help system.
+ * 
  * @author Ben St&ouml;ver
  */
 public class HelpAboutMenuAction extends HelpTopicAction {
 	public HelpAboutMenuAction() {
-		super(57);
+		super(64);
 		putValue(Action.NAME, "Help about this main menu"); 
 	  putValue(Action.MNEMONIC_KEY, KeyEvent.VK_H);
 		putValue(Action.SHORT_DESCRIPTION, "Help about this main menu"); 

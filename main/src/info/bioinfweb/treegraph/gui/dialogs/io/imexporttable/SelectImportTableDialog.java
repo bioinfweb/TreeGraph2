@@ -117,6 +117,7 @@ public class SelectImportTableDialog extends FileDialog {
 	 * @return void
 	 */
 	private void initialize() {
+		setHelpCode(65);
 		setTitle("Import table as node/branch data");
 		setContentPane(getJContentPane());
 		pack();
@@ -338,7 +339,7 @@ public class SelectImportTableDialog extends FileDialog {
 	
 	private JCheckBox getIgnoreWhitespaceCheckBox() {
 		if (ignoreWhitespaceCheckBox == null) {
-			ignoreWhitespaceCheckBox = new JCheckBox("Ignore leading and trailing whitespace");
+			ignoreWhitespaceCheckBox = new JCheckBox("Ignore leading and trailing white space");
 			ignoreWhitespaceCheckBox.setSelected(true);
 		}
 		return ignoreWhitespaceCheckBox;

@@ -91,7 +91,7 @@ public class ExportTableDialog extends EditDialog {
 	 */
 	public ExportTableDialog(Frame owner) {
 		super(owner);
-		setHelpCode(18);
+		setHelpCode(67);
 		initialize();
 		setLocationRelativeTo(owner);
 	}
