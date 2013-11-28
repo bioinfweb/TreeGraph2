@@ -85,7 +85,7 @@ public class ImportTableData {
 		}
 		else {
 			TextElementData result = new TextElementData(text);
-			if (parameters.isParseNumbericValues()) {  
+			if (parameters.isParseNumericValues()) {  
 				try {
 					result.setDecimal(Math2.parseDouble(result.getText()));
 				}

@@ -126,7 +126,7 @@ public class ImportTableEdit extends DocumentEdit {
 						Node currentNode = nodeIterator.next();
 						for (int column = 0; column < parameters.getImportAdapters().length; column++) {  // iterate over columns
 							String value = data.getTableValue(column, row);
-							if (parameters.isParseNumbericValues() && Math2.isDecimal(value)) {
+							if (parameters.isParseNumericValues() && Math2.isDecimal(value)) {
 								parameters.getImportAdapters()[column].setDecimal(currentNode, Math2.parseDouble(value));
 							}
 							else {

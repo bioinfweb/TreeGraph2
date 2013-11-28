@@ -94,7 +94,7 @@ public class SelectImportTableDialog extends FileDialog {
 		parameters.setIgnoreWhitespace(getIgnoreWhitespaceCheckBox().isSelected());
 		parameters.setDistinguishSpaceUnderscore(getDistinguishSpaceUnderscoreCheckBox().isSelected());
 		parameters.setCaseSensitive(getCaseCheckBox().isSelected());
-		parameters.setParseNumbericValues(getParseNumericValuesCheckBox().isSelected());
+		parameters.setParseNumericValues(getParseNumericValuesCheckBox().isSelected());
   }
 
 

@@ -22,7 +22,6 @@ package info.bioinfweb.treegraph.document.undo.file.importtable;
 import java.io.File;
 
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
-import info.bioinfweb.treegraph.gui.dialogs.io.TableSeparatorPanel;
 
 
 
@@ -42,7 +41,7 @@ public class ImportTableParameters {
   private boolean ignoreWhitespace = true;
   private boolean distinguishSpaceUnderscore = false;
   private boolean caseSensitive = false;
-  private boolean parseNumbericValues = true;
+  private boolean parseNumericValues = true;
   
   private NodeBranchDataAdapter[] importAdapters = new NodeBranchDataAdapter[0];
 
@@ -127,13 +126,13 @@ public class ImportTableParameters {
 	}
 
 
-	public boolean isParseNumbericValues() {
-		return parseNumbericValues;
+	public boolean isParseNumericValues() {
+		return parseNumericValues;
 	}
 
 
-	public void setParseNumbericValues(boolean parseNumbericValues) {
-		this.parseNumbericValues = parseNumbericValues;
+	public void setParseNumericValues(boolean parseNumbericValues) {
+		this.parseNumericValues = parseNumbericValues;
 	}
 
 
