@@ -31,7 +31,6 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 import info.bioinfweb.treegraph.document.Document;
-import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.file.importtable.DuplicateKeyException;
 import info.bioinfweb.treegraph.document.undo.file.importtable.ImportTableData;
@@ -130,7 +129,7 @@ public class ImportTableAction extends DocumentAction {
 				ImportTableData data = new ImportTableData(parameters);
 				if (data != null) {
 					getAssignImportColumnsDialog().execute(parameters, data, frame.getDocument().getTree());
-					if (parameters.getImportAdapters() != null) {
+					if ((parameters.getImportAdapters() != null) && (parameters.getImportAdapters().length > 0)) {  // parameters.getImportAdapters().length == 0, if the user canceled in the second dialog
 						ImportTableEdit edit = new ImportTableEdit(frame.getDocument(), parameters, data);
 						frame.getDocument().executeEdit(edit);
 						if (!edit.isAllKeysFound()) {
