@@ -170,8 +170,7 @@ public class ImportTableEditTest {
   }
   
   
-  @Test
-  public void test_redo_nodeNames_numbersAsDecimal() {
+  private void testNodeNamesNumbersAsDecimal(String treeName) {
   	final String id = "ID";
   	ImportTableParameters parameters = new ImportTableParameters();
   	parameters.setTableFile(new File("data" + SystemUtils.FILE_SEPARATOR + "importTable" + 
@@ -186,7 +185,7 @@ public class ImportTableEditTest {
   	try {
   		ImportTableData data = new ImportTableData(parameters);
   	  Document document = ReadWriteFactory.getInstance().getReader(ReadWriteFormat.XTG).read(
-  	  		new File("data" + SystemUtils.FILE_SEPARATOR + "importTable" + SystemUtils.FILE_SEPARATOR + "Tree_numbersAsText.xtg"));
+  	  		new File("data" + SystemUtils.FILE_SEPARATOR + "importTable" + SystemUtils.FILE_SEPARATOR + treeName));
   	  ImportTableEdit edit = new ImportTableEdit(document, parameters, data);
   	  document.executeEdit(edit);
 
@@ -208,10 +207,21 @@ public class ImportTableEditTest {
   
   
   @Test
-  public void test_redo_nodeNames_numbersAsTextException() {
+  public void test_redo_nodeNames_numbersAsDecimal() {
+  	testNodeNamesNumbersAsDecimal("Tree_numbersAsText.xtg");
+  }
+  
+  
+  @Test
+  public void test_redo_nodeNames_numbersAsDecimalGerman() {
+  	testNodeNamesNumbersAsDecimal("Tree_numbersAsText_german.xtg");
+  }
+  
+  
+  private void testNodeNamesNumbersAsTextException(String tableName) {
   	ImportTableParameters parameters = new ImportTableParameters();
   	parameters.setTableFile(new File("data" + SystemUtils.FILE_SEPARATOR + "importTable" + 
-  	    SystemUtils.FILE_SEPARATOR + "TableNodeNames_numbersAsText.txt"));
+  	    SystemUtils.FILE_SEPARATOR + tableName));
   	parameters.setColumnSeparator('\t');
   	parameters.setHeadingContained(false);
   	parameters.setLinesToSkip(0);
@@ -231,5 +241,17 @@ public class ImportTableEditTest {
   		e.printStackTrace();
   		fail(e.getMessage());
   	}
+  }
+  
+
+  @Test
+  public void test_redo_nodeNames_numbersAsDecException() {
+  	testNodeNamesNumbersAsTextException("TableNodeNames_numbersAsText.txt");
+  }
+  
+
+  @Test
+  public void test_redo_nodeNames_numbersAsDecGermanException() {
+  	testNodeNamesNumbersAsTextException("TableNodeNames_numbersAsText_german.txt");
   }
 }
