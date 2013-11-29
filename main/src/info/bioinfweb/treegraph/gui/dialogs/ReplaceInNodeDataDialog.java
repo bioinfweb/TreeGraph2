@@ -42,15 +42,22 @@ import java.awt.Font;
 import java.awt.Color;
 import javax.swing.JRadioButton;
 import javax.swing.JCheckBox;
+import java.awt.Insets;
+import javax.swing.UIManager;
 
 
 
+/**
+ * Dialog used to find and replace text in a node/branch data column.
+ * 
+ * @author Ben St&ouml;ver
+ */
 public class ReplaceInNodeDataDialog extends EditDialog {
 	private static final long serialVersionUID = 1L;
 	private JPanel jContentPane = null;
 	private JPanel replacePanel = null;
 	private JLabel nodeDataLabel = null;
-	private JComboBox adapterComboBox = null;
+	private JComboBox<NodeBranchDataAdapter> adapterComboBox = null;
 	private JLabel replaceLabel = null;
 	private JTextField replaceTextField = null;
 	private JPanel positionPanel = null;
@@ -66,6 +73,7 @@ public class ReplaceInNodeDataDialog extends EditDialog {
 	
 	/**
 	 * @param owner
+	 * @wbp.parser.constructor
 	 */
 	public ReplaceInNodeDataDialog(Frame owner) {
 		super(owner);
@@ -158,23 +166,14 @@ public class ReplaceInNodeDataDialog extends EditDialog {
 	 */
 	private JPanel getReplacePanel() {
 		if (replacePanel == null) {
-			GridBagConstraints gridBagConstraints5 = new GridBagConstraints();
-			gridBagConstraints5.fill = GridBagConstraints.HORIZONTAL;
-			gridBagConstraints5.gridy = 2;
-			gridBagConstraints5.weightx = 1.0;
-			gridBagConstraints5.gridx = 1;
-			GridBagConstraints gridBagConstraints3 = new GridBagConstraints();
-			gridBagConstraints3.gridx = 0;
-			gridBagConstraints3.anchor = GridBagConstraints.WEST;
-			gridBagConstraints3.gridy = 2;
-			replaceLabel = new JLabel();
-			replaceLabel.setText("Text to insert: ");
 			GridBagConstraints gridBagConstraints1 = new GridBagConstraints();
+			gridBagConstraints1.insets = new Insets(5, 0, 5, 0);
 			gridBagConstraints1.fill = GridBagConstraints.HORIZONTAL;
 			gridBagConstraints1.gridy = 0;
 			gridBagConstraints1.weightx = 1.0;
 			gridBagConstraints1.gridx = 1;
 			GridBagConstraints gridBagConstraints = new GridBagConstraints();
+			gridBagConstraints.insets = new Insets(0, 5, 5, 5);
 			gridBagConstraints.gridx = 0;
 			gridBagConstraints.anchor = GridBagConstraints.WEST;
 			gridBagConstraints.gridy = 0;
@@ -184,7 +183,20 @@ public class ReplaceInNodeDataDialog extends EditDialog {
 			replacePanel.setLayout(new GridBagLayout());
 			replacePanel.add(nodeDataLabel, gridBagConstraints);
 			replacePanel.add(getAdapterComboBox(), gridBagConstraints1);
+			GridBagConstraints gridBagConstraints3 = new GridBagConstraints();
+			gridBagConstraints3.insets = new Insets(0, 5, 5, 5);
+			gridBagConstraints3.gridx = 0;
+			gridBagConstraints3.anchor = GridBagConstraints.WEST;
+			gridBagConstraints3.gridy = 1;
+			replaceLabel = new JLabel();
+			replaceLabel.setText("Text to insert: ");
 			replacePanel.add(replaceLabel, gridBagConstraints3);
+			GridBagConstraints gridBagConstraints5 = new GridBagConstraints();
+			gridBagConstraints5.insets = new Insets(0, 0, 5, 0);
+			gridBagConstraints5.fill = GridBagConstraints.HORIZONTAL;
+			gridBagConstraints5.gridy = 1;
+			gridBagConstraints5.weightx = 1.0;
+			gridBagConstraints5.gridx = 1;
 			replacePanel.add(getReplaceTextField(), gridBagConstraints5);
 		}
 		return replacePanel;
@@ -196,9 +208,9 @@ public class ReplaceInNodeDataDialog extends EditDialog {
 	 * 	
 	 * @return javax.swing.JComboBox	
 	 */
-	private JComboBox getAdapterComboBox() {
+	private JComboBox<NodeBranchDataAdapter> getAdapterComboBox() {
 		if (adapterComboBox == null) {
-			adapterComboBox = new JComboBox(new NodeDataComboBoxModel());
+			adapterComboBox = new JComboBox<NodeBranchDataAdapter>(new NodeDataComboBoxModel());
 		}
 		return adapterComboBox;
 	}
@@ -224,20 +236,20 @@ public class ReplaceInNodeDataDialog extends EditDialog {
 	 */
 	private JPanel getPositionPanel() {
 		if (positionPanel == null) {
-			GridBagConstraints gridBagConstraints4 = new GridBagConstraints();
-			gridBagConstraints4.gridx = 1;
-			gridBagConstraints4.anchor = GridBagConstraints.WEST;
-			gridBagConstraints4.gridy = 5;
 			GridBagConstraints gridBagConstraints2 = new GridBagConstraints();
+			gridBagConstraints2.insets = new Insets(0, 0, 5, 5);
 			gridBagConstraints2.gridx = 1;
 			gridBagConstraints2.anchor = GridBagConstraints.WEST;
 			gridBagConstraints2.gridy = 4;
 			GridBagConstraints gridBagConstraints10 = new GridBagConstraints();
+			gridBagConstraints10.gridwidth = 2;
+			gridBagConstraints10.insets = new Insets(0, 0, 5, 5);
 			gridBagConstraints10.fill = GridBagConstraints.HORIZONTAL;
 			gridBagConstraints10.gridy = 3;
 			gridBagConstraints10.weightx = 1.0;
 			gridBagConstraints10.gridx = 1;
 			GridBagConstraints gridBagConstraints9 = new GridBagConstraints();
+			gridBagConstraints9.insets = new Insets(0, 0, 5, 0);
 			gridBagConstraints9.gridx = 1;
 			gridBagConstraints9.gridwidth = 2;
 			gridBagConstraints9.anchor = GridBagConstraints.WEST;
@@ -245,28 +257,36 @@ public class ReplaceInNodeDataDialog extends EditDialog {
 			replaceTextLabel = new JLabel();
 			replaceTextLabel.setText("Replace the following text");
 			GridBagConstraints gridBagConstraints8 = new GridBagConstraints();
+			gridBagConstraints8.insets = new Insets(0, 0, 5, 0);
 			gridBagConstraints8.gridx = 0;
 			gridBagConstraints8.anchor = GridBagConstraints.WEST;
 			gridBagConstraints8.gridy = 2;
 			GridBagConstraints gridBagConstraints7 = new GridBagConstraints();
+			gridBagConstraints7.insets = new Insets(0, 0, 5, 5);
 			gridBagConstraints7.gridx = 0;
 			gridBagConstraints7.anchor = GridBagConstraints.WEST;
-			gridBagConstraints7.gridwidth = 2;
+			gridBagConstraints7.gridwidth = 3;
 			gridBagConstraints7.gridy = 1;
 			GridBagConstraints gridBagConstraints6 = new GridBagConstraints();
+			gridBagConstraints6.insets = new Insets(0, 0, 5, 5);
 			gridBagConstraints6.gridx = 0;
 			gridBagConstraints6.anchor = GridBagConstraints.WEST;
-			gridBagConstraints6.gridwidth = 2;
+			gridBagConstraints6.gridwidth = 3;
 			gridBagConstraints6.gridy = 0;
 			positionPanel = new JPanel();
 			positionPanel.setLayout(new GridBagLayout());
-			positionPanel.setBorder(BorderFactory.createTitledBorder(null, "Insert position/ replacement:", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
+			positionPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Insert position/ replacement:", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(51, 51, 51)));
 			positionPanel.add(getBeginningRadioButton(), gridBagConstraints6);
 			positionPanel.add(getEndRadioButton(), gridBagConstraints7);
 			positionPanel.add(getReplaceRadioButton(), gridBagConstraints8);
 			positionPanel.add(replaceTextLabel, gridBagConstraints9);
 			positionPanel.add(getFindTextField(), gridBagConstraints10);
 			positionPanel.add(getCaseSensitiveCheckBox(), gridBagConstraints2);
+			GridBagConstraints gridBagConstraints4 = new GridBagConstraints();
+			gridBagConstraints4.insets = new Insets(0, 0, 5, 0);
+			gridBagConstraints4.gridx = 2;
+			gridBagConstraints4.anchor = GridBagConstraints.WEST;
+			gridBagConstraints4.gridy = 4;
 			positionPanel.add(getWordsOnlyCheckBox(), gridBagConstraints4);
 		}
 		return positionPanel;
