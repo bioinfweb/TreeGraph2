@@ -70,14 +70,22 @@ public abstract class FileDialog extends EditDialog {
 	
 	/**
 	 * Override this method if you e.g. want to add a default extension. (Note that this method
-	 * could also return <code>null</code> if no file is selected.)
-	 * @return the selected file or <code>null</code>
+	 * could also return {@code null} if no file is selected.)
+	 * 
+	 * @return the selected file or {@code null}
 	 */
 	protected File getSelectedFile() {
 		return getFileChooser().getSelectedFile();
 	}
 	
 	
+	@Override
+  public boolean execute() {
+  	getFileChooser().rescanCurrentDirectory();  // Make sure changes in the folder since its last display are shown.
+	  return super.execute();
+  }
+
+
 	/**
 	 * This method is called in the implementation of apply if an valid file was selected.
 	 * @param file - the file selected by the user
