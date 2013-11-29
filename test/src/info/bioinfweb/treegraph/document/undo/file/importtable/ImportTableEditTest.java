@@ -254,4 +254,46 @@ public class ImportTableEditTest {
   public void test_redo_nodeNames_numbersAsDecGermanException() {
   	testNodeNamesNumbersAsTextException("TableNodeNames_numbersAsText_german.txt");
   }
+  
+  
+  @Test
+  public void test__redo_replaceNodeNames() {
+  	final boolean containsHeadings = false;
+  	final int linesToSkip = 0;
+  	
+  	ImportTableParameters parameters = new ImportTableParameters();
+  	parameters.setTableFile(new File("data" + SystemUtils.FILE_SEPARATOR + "importTable" + 
+  	    SystemUtils.FILE_SEPARATOR + "TableNodeNames_replace.txt"));
+  	parameters.setColumnSeparator('\t');
+  	parameters.setHeadingContained(containsHeadings);
+  	parameters.setLinesToSkip(linesToSkip);
+  	parameters.setKeyAdapter(NodeNameAdapter.getSharedInstance());
+  	parameters.setImportAdapters(new NodeBranchDataAdapter[]{NodeNameAdapter.getSharedInstance()});
+  	parameters.setParseNumericValues(false);
+  	parameters.setIgnoreWhitespace(false);
+  	parameters.setDistinguishSpaceUnderscore(true);
+  	parameters.setCaseSensitive(true);
+  	
+  	try {
+  		ImportTableData data = new ImportTableData(parameters);
+  	  Document document = ReadWriteFactory.getInstance().getReader(ReadWriteFormat.XTG).read(
+  	  		new File("data" + SystemUtils.FILE_SEPARATOR + "importTable" + SystemUtils.FILE_SEPARATOR + "Tree.xtg"));
+  	  ImportTableEdit edit = new ImportTableEdit(document, parameters, data);
+  	  document.executeEdit(edit);
+  	  
+  	  assertTrue(edit.isAllKeysFound());
+      Node node = document.getTree().getPaintStart().getChildren().get(1);  // D
+  	  assertEquals("Node 4", node.getData().getText());
+  	  node = node.getParent().getChildren().get(0).getChildren().get(1);  // C
+  	  assertEquals("Node 3", node.getData().getText());
+  	  node = node.getParent().getChildren().get(0).getChildren().get(1);  // B
+  	  assertEquals("Node 2", node.getData().getText());
+  	  node = node.getParent().getChildren().get(0);  // A
+  	  assertEquals("Node 1", node.getData().getText());
+  	}
+  	catch (Exception e) {
+  		e.printStackTrace();
+  		fail(e.getMessage());
+  	}
+  }
 }

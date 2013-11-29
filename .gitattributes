@@ -709,6 +709,7 @@ test/data/importTable/TableNodeNames_numbersAsDec.txt -text svneol=unset#text/pl
 test/data/importTable/TableNodeNames_numbersAsText.txt -text svneol=unset#text/plain
 test/data/importTable/TableNodeNames_numbersAsText_german.txt -text svneol=unset#text/plain
 test/data/importTable/TableNodeNames_options.txt -text svneol=unset#text/plain
+test/data/importTable/TableNodeNames_replace.txt -text svneol=unset#text/plain
 test/data/importTable/TableUnique_headings_3skipped.txt -text svneol=unset#text/plain
 test/data/importTable/TableUnique_headings_noSkipped.txt -text svneol=unset#text/plain
 test/data/importTable/TableUnique_noHeadings_3skipped.txt -text svneol=unset#text/plain
