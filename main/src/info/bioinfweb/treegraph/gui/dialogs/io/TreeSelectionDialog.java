@@ -216,7 +216,7 @@ public class TreeSelectionDialog extends OkCancelApplyWikiHelpDialog
 	 */
 	private TreeViewPanel getTreeViewPanel() {
 		if (treeViewPanel == null) {
-			treeViewPanel = new TreeViewPanel(new Document());
+			treeViewPanel = new TreeViewPanel(new Document(false));  // This document does not need to register its file chooser, because it will never be used.
 		}
 		return treeViewPanel;
 	}

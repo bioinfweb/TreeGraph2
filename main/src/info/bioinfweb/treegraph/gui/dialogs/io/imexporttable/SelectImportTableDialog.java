@@ -59,7 +59,7 @@ public class SelectImportTableDialog extends FileDialog {
 	private JPanel jContentPane = null;
 	private JPanel filePanel = null;
 	private TableSeparatorPanel separatorPanel = null;
-	private JFileChooser fileChooser = null;
+	private JFileChooser fileChooser;  //  This field must not be set to anything (e.g. null) because the initialization performed by the super constructor (FileDialog) would be overwritten than.
 	private JPanel nodeIdentificationPanel;
 	private JLabel separatorLabel;
 	private JLabel nodeIdentifierLabel;

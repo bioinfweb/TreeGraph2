@@ -55,7 +55,7 @@ public class ExportToNewickStringDialog extends FileDialog {
 	
 	
 	private JPanel jContentPane = null;
-	private JFileChooser fileChooser = null;
+	private JFileChooser fileChooser;  //  This field must not be set to anything (e.g. null) because the initialization performed by the super constructor (FileDialog) would be overwritten than.
 	private NexusFilter nexusFilter = null;
 	private JPanel nodeDataPanel = null;
 	private NodeBranchDataInput internalInput = null;

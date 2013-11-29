@@ -49,7 +49,7 @@ import info.webinsel.util.swing.SwingSaver;
  * paradigm used in the user-interface of TreeGraph 2.
  * 
  * @author Ben St&ouml;ver
- */
+ */ 
 public class Document extends SwingSaver 
     implements ChangeMonitorable, Savable, SwingSavable {
 	
@@ -100,7 +100,7 @@ public class Document extends SwingSaver
   	initSets();
   	getFileChooser().addChoosableFileFilter(new XTGFilter());
   	if (registerFileChooser) {
-  		CurrentDirectoryModel.getInstance().addFileChooser(getFileChooser());  // Wird bei TreeInternalFrame.doDefaultCloseAction() wieder abgemeldet.
+  		CurrentDirectoryModel.getInstance().addFileChooser(getFileChooser());  // Is removed again in TreeInternalFrame.doDefaultCloseAction().
   	}
   	setDefaultExtension(XTGFilter.EXTENSION);
   	addFileExtension(XTGFilter.XML_EXTENSION);

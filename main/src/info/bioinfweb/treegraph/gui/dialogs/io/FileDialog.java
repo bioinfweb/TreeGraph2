@@ -91,9 +91,7 @@ public abstract class FileDialog extends EditDialog {
 		if (getFileChooser().getUI() instanceof BasicFileChooserUI) {
       ((BasicFileChooserUI)getFileChooser().getUI()).getApproveSelectionAction().actionPerformed(null);  // Needed to apply the entered text
 		}
-		else {
-			getFileChooser().approveSelection();
-		}
+		getFileChooser().approveSelection();
     
 		File file = getSelectedFile(); 
 		if (file != null) {

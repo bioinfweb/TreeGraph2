@@ -29,6 +29,7 @@ import info.bioinfweb.treegraph.document.io.nexus.NexusFilter;
 import info.bioinfweb.treegraph.document.io.xtg.XTGFilter;
 import info.bioinfweb.treegraph.document.nodebranchdata.BranchLengthAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NewTextLabelAdapter;
+import info.bioinfweb.treegraph.gui.CurrentDirectoryModel;
 import info.bioinfweb.treegraph.gui.dialogs.io.loadlogger.LoadLoggerDialog;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NewNodeBranchDataInput;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
@@ -36,11 +37,13 @@ import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import javax.swing.JPanel;
 import java.awt.Frame;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import java.awt.GridBagLayout;
 import javax.swing.BorderFactory;
 import javax.swing.border.TitledBorder;
+
 import java.awt.Font;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
@@ -60,16 +63,16 @@ public class OpenDialog extends FileDialog {
 	
 	private JPanel jContentPane = null;
 	private JPanel fileChooserPanel = null;
-	private JFileChooser fileChooser = null;
+	private JFileChooser fileChooser;  //  This field must not be set to anything (e.g. null) because the initialization performed by the super constructor (FileDialog) would be overwritten than.
 	private JPanel internalNodesPanel = null;
 	private NewNodeBranchDataInput nodeNamesDataInput = null;
 	private NewNodeBranchDataInput branchLengthsDataInput = null;
 	private JCheckBox translateInternalNodesCheckBox = null;
 	private JPanel branchLengthsPanel = null;
 	
-	private XTGFilter xtgFilter = null;  //  @jve:decl-index=0:
-	private NexusFilter nexusFilter = null;  //  @jve:decl-index=0:
-	private NewickFilter newickFilter = null;  //  @jve:decl-index=0:
+	private XTGFilter xtgFilter = null;
+	private NexusFilter nexusFilter = null;
+	private NewickFilter newickFilter = null;
 	private NewickExceptionDialog newickExceptionDialog = null;
 
 

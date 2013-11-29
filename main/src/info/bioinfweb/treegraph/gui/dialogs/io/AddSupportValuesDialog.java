@@ -62,7 +62,7 @@ public class AddSupportValuesDialog extends FileDialog {
 	
 	private JPanel jContentPane = null;
 	private JPanel fileChooserPanel = null;
-	private JFileChooser fileChooser = null;
+	private JFileChooser fileChooser;  //  This field must not be set to anything (e.g. null) because the initialization performed by the super constructor (FileDialog) would be overwritten than.
 	private JPanel idNamePanel = null;
 	private JTextField idNameTextField = null;
 	private NodeBranchDataInput terminalDataInput = null;

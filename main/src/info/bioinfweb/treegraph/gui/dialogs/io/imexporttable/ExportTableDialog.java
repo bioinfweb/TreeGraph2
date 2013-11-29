@@ -514,7 +514,7 @@ public class ExportTableDialog extends EditDialog {
 			fileChooser = new JFileChooser();
 			fileChooser.setFileFilter(new FileNameExtensionFilter(
 	        "Text files", EXPORT_FILE_EXT));
-			CurrentDirectoryModel.getInstance().addFileChooser(fileChooser);
+			CurrentDirectoryModel.getInstance().addFileChooser(fileChooser);  //TODO Necessary because this dialog does not inherit from FileDialog
 		}
 		return fileChooser;
 	}
