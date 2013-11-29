@@ -37,6 +37,7 @@ import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.nodebranchdata.NewHiddenNodeDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NewNodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.VoidNodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.file.importtable.ImportTableData;
 import info.bioinfweb.treegraph.document.undo.file.importtable.ImportTableParameters;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NewNodeBranchDataInput;
@@ -113,6 +114,7 @@ public class AssignImportColumnsDialog extends OkCancelApplyWikiHelpDialog {
 		importPanel.add(firstLineLabel, firstLineGBC);
 		importPanel.add(keyColumnLabel, keyColumnGBC);
 
+		final VoidNodeBranchDataAdapter noImportAdapter = new VoidNodeBranchDataAdapter("Do not import this column");
 		for (int i = 1; i <= data.columnCount(); i++) {
 			GridBagConstraints labelGBC = new GridBagConstraints();
 			labelGBC.anchor = GridBagConstraints.EAST;
@@ -123,6 +125,7 @@ public class AssignImportColumnsDialog extends OkCancelApplyWikiHelpDialog {
 			getImportPanel().add(new JLabel("" + i + ")"), labelGBC);
 			NewNodeBranchDataInput input = new NewNodeBranchDataInput(getImportPanel(), 1, i + USED_ROWS - 1, true);
 			input.setAdapters(tree, false, true, true, false, true);
+			input.getModel().addAdapter(0, noImportAdapter);
 			input.setSelectedAdapter(NewHiddenNodeDataAdapter.class);
 			if (data.containsHeadings()) {
 				input.setID(data.getHeading(i - 1));
@@ -160,21 +163,23 @@ public class AssignImportColumnsDialog extends OkCancelApplyWikiHelpDialog {
 		Iterator<NewNodeBranchDataInput> iterator = inputs.iterator();
 		while (iterator.hasNext()) {
 			NodeBranchDataAdapter adapter = iterator.next().getSelectedAdapter();
-			boolean columnExists; 
-			if (adapter instanceof NewNodeBranchDataAdapter) {
-				columnExists = IDManager.idExistsInSubtree(tree.getPaintStart(), ((NewNodeBranchDataAdapter)adapter).getID());
-				if (columnExists) {
-					message.append("Node/branch data with the ID \"");
-					message.append(((NewNodeBranchDataAdapter)adapter).getID());
-					message.append("\"\n");
+			if (!(adapter instanceof VoidNodeBranchDataAdapter)) {
+				boolean columnExists; 
+				if (adapter instanceof NewNodeBranchDataAdapter) {
+					columnExists = IDManager.idExistsInSubtree(tree.getPaintStart(), ((NewNodeBranchDataAdapter)adapter).getID());
+					if (columnExists) {
+						message.append("Node/branch data with the ID \"");
+						message.append(((NewNodeBranchDataAdapter)adapter).getID());
+						message.append("\"\n");
+					}
 				}
+				else {
+					message.append(adapter.toString());
+					message.append('\n');
+					columnExists = true;
+				}
+				cancel = cancel || columnExists;
 			}
-			else {
-				message.append(adapter.toString());
-				message.append('\n');
-				columnExists = true;
-			}
-			cancel = cancel || columnExists;
 		}
 		message.append("\n\nDo you want to possibly overwrite entries in these columns?\n");
 		message.append("(If no node currently containing data is contained in the key column of the table, no data will be overwritten.)");

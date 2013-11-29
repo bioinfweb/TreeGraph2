@@ -24,6 +24,7 @@ import info.bioinfweb.treegraph.document.TextLabel;
 import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.nodebranchdata.*;
 
+import java.util.Collection;
 import java.util.Vector;
 import javax.swing.AbstractListModel;
 import javax.swing.ComboBoxModel;
@@ -137,10 +138,47 @@ public class NodeDataComboBoxModel extends AbstractListModel<NodeBranchDataAdapt
   
   
 	/**
+	 * Inserts the specified node/branch data adapter instance at the specified position. Note that this method
+	 * is only for special tasks an in general {@link #setAdapters(Tree, boolean, boolean, boolean, boolean, boolean)}
+	 * should be used.
+	 * 
+	 * @param index - the index of the new adapter
+	 * @param adapter - the new adapter instance.
+	 * 
+	 * @see #setAdapters(Tree)
+	 * @see #setAdapters(Tree, boolean, boolean, boolean, boolean, boolean)
+	 * @see #setOnlyNewAdapters()
+	 * @see #addAdapter(NodeBranchDataAdapter)
+	 */
+	public void addAdapter(int index, NodeBranchDataAdapter adapter) {
+	  adapters.add(index, adapter);
+  }
+
+
+	/**
+	 * Appends the specified node/branch data adapter instance at the end of the list. Note that this method
+	 * is only for special tasks an in general {@link #setAdapters(Tree, boolean, boolean, boolean, boolean, boolean)}
+	 * should be used.
+	 * 
+	 * @param index - the index of the new adapter
+	 * @param adapter - the new adapter instance.
+	 * @return {@code true} (as specified by {@link Collection#add(Object)})
+	 * 
+	 * @see #setAdapters(Tree)
+	 * @see #setAdapters(Tree, boolean, boolean, boolean, boolean, boolean)
+	 * @see #setOnlyNewAdapters()
+	 * @see #addAdapter(int, NodeBranchDataAdapter)
+	 */
+	public boolean addAdapter(NodeBranchDataAdapter adapter) {
+	  return adapters.add(adapter);
+  }
+
+
+	/**
 	 * Selects the adapter which is an instance (not instance of a subclass) of the 
 	 * given class.
 	 * 
-	 * @param adapterClass
+	 * @param adapterClass - the class used to identify the adapter to be selected
 	 * @return <code>true</code>, if one adapter was selected, <code>false</code>, if 
 	 *         no adapter of the given class was found
 	 */

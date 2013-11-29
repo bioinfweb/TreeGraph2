@@ -25,6 +25,11 @@ import info.bioinfweb.treegraph.document.TextElementData;
 
 
 
+/**
+ * This interface allows to access all data attached to nodes and branches in a standardized way.
+ * 
+ * @author Ben St&ouml;ver
+ */
 public interface NodeBranchDataAdapter {
 	public boolean readOnly();
 	
