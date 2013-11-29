@@ -359,7 +359,7 @@ public class AboutDialog extends JDialog {
 					"<p>Development: <a href='http://bioinfweb.info/People/Stoever'>Ben St&ouml;ver</a> &amp; " +
 					    "<a href='http://bioinfweb.info/People/Mueller'>Kai M&uuml;ller</a><br />" +
 					"Homepage: <a href='http://treegraph.bioinfweb.info/'>treegraph.bioinfweb.info</a><br />" +
-					"Copyright 2007-2011 Ben St&ouml;ver &amp; Kai M&uuml;ller</p>" +
+					"Copyright 2007-2013 Ben St&ouml;ver &amp; Kai M&uuml;ller</p>" +
 					
 					"<p><b>Publication:</b><br /> St&ouml;ver B C, M&uuml;ller K F: " +
 					    "<a href='http://www.biomedcentral.com/1471-2105/11/7'>TreeGraph 2: Combining and " +
