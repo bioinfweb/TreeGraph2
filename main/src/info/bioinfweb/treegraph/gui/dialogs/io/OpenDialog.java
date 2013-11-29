@@ -29,7 +29,6 @@ import info.bioinfweb.treegraph.document.io.nexus.NexusFilter;
 import info.bioinfweb.treegraph.document.io.xtg.XTGFilter;
 import info.bioinfweb.treegraph.document.nodebranchdata.BranchLengthAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NewTextLabelAdapter;
-import info.bioinfweb.treegraph.gui.CurrentDirectoryModel;
 import info.bioinfweb.treegraph.gui.dialogs.io.loadlogger.LoadLoggerDialog;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NewNodeBranchDataInput;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
@@ -37,7 +36,6 @@ import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import javax.swing.JPanel;
 import java.awt.Frame;
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import java.awt.GridBagLayout;
@@ -70,9 +68,9 @@ public class OpenDialog extends FileDialog {
 	private JCheckBox translateInternalNodesCheckBox = null;
 	private JPanel branchLengthsPanel = null;
 	
-	private XTGFilter xtgFilter = null;
-	private NexusFilter nexusFilter = null;
-	private NewickFilter newickFilter = null;
+	private XTGFilter xtgFilter;  //  This field must not be set to anything (e.g. null). See above.
+	private NexusFilter nexusFilter;  //  This field must not be set to anything (e.g. null). See above.
+	private NewickFilter newickFilter;  //  This field must not be set to anything (e.g. null). See above.
 	private NewickExceptionDialog newickExceptionDialog = null;
 
 

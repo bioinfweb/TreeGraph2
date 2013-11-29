@@ -20,13 +20,13 @@ package info.bioinfweb.treegraph.gui.mainframe;
 
 
 import info.bioinfweb.treegraph.Main;
-import info.bioinfweb.treegraph.cmd.CmdLoadLogger;
 import info.bioinfweb.treegraph.document.*;
 import info.bioinfweb.treegraph.document.io.DocumentReader;
 import info.bioinfweb.treegraph.document.io.ReadWriteFactory;
 import info.bioinfweb.treegraph.document.io.ReadWriteParameterMap;
 import info.bioinfweb.treegraph.graphics.positionpaint.PositionPaintFactory;
 import info.bioinfweb.treegraph.graphics.positionpaint.PositionPaintType;
+import info.bioinfweb.treegraph.gui.CurrentDirectoryModel;
 import info.bioinfweb.treegraph.gui.actions.ActionManagement;
 import info.bioinfweb.treegraph.gui.actions.window.SelectFrameAction;
 import info.bioinfweb.treegraph.gui.dialogs.io.loadlogger.LoadLoggerDialog;
@@ -108,6 +108,7 @@ public class MainFrame extends JFrame implements Runnable {
 						ReadWriteParameterMap parameterMap = new ReadWriteParameterMap();
 						parameterMap.putApplicationLogger(LoadLoggerDialog.getInstance());
 						addInternalFrame(reader.read(file, parameterMap));
+						CurrentDirectoryModel.getInstance().setCurrentDirectory(file.getParentFile());
 						LoadLoggerDialog.getInstance().display();
 					}
 					catch (Exception e) {

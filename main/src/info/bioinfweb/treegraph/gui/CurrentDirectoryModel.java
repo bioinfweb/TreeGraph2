@@ -21,8 +21,6 @@ package info.bioinfweb.treegraph.gui;
 
 import java.io.File;
 
-import javax.swing.JFileChooser;
-
 import info.bioinfweb.treegraph.Main;
 import info.webinsel.util.swing.FileChooserDirModel;
 
