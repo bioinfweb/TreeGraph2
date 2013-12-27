@@ -32,14 +32,13 @@ import info.bioinfweb.treegraph.document.format.operate.LabelMarginTopOperator;
 import info.bioinfweb.treegraph.gui.dialogs.MarginInput;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 import info.webinsel.util.Math2;
-import info.webinsel.util.StringUtils;
+import info.webinsel.util.text.StringUtils;
 import info.webinsel.util.swing.SwingChangeMonitor;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.text.DecimalFormat;
 import java.util.List;
 
 import javax.swing.BorderFactory;
