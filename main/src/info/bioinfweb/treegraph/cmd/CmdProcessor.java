@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2013  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2014  Ben Stöver, Kai Müller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -110,7 +110,7 @@ public class CmdProcessor {
 		boolean readingComplete = false;
 		try {
 			DocumentReader documentReader = ReadWriteFactory.getInstance().getReader(source);
-			if (reader != null) {
+			if (reader != null) {  //TODO Muss das documentReader heißen?
 				ReadWriteParameterMap parameterMap = new ReadWriteParameterMap();
 				parameterMap.putApplicationLogger(CmdLoadLogger.getInstance());
 				parameterMap.put(ReadWriteParameterMap.KEY_INTERNAL_NODE_NAMES_ADAPTER, 
