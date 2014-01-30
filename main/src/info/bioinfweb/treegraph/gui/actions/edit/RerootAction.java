@@ -21,7 +21,6 @@ package info.bioinfweb.treegraph.gui.actions.edit;
 
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.Action;
@@ -38,6 +37,11 @@ import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 
 
 
+/**
+ * Action object the reroot the current tree at that branch the user has selected.
+ * 
+ * @author Ben St&ouml;ver
+ */
 public class RerootAction extends DocumentAction {
 	public RerootAction(MainFrame mainFrame) {
 		super(mainFrame);
@@ -57,13 +61,12 @@ public class RerootAction extends DocumentAction {
 	
 	@Override
 	public void setEnabled(Document document, TreeSelection selection, NodeBranchDataAdapter tableAdapter) {
-		// Neuwurzeln würde an den obersten beiden Ebenen zu keiner Veränderung führen.
 		boolean enabled = oneElementSelected(selection) && selection.containsType(Branch.class);
 		if (enabled) {
 			Branch b = ((Branch)selection.first());
-			enabled = b.getTargetNode().hasParent();
-			if (enabled) {
-				enabled = b.getTargetNode().getParent().hasParent();
+			enabled = b.getTargetNode().hasParent();  // rerooting at the root does not make sense
+			if (enabled) {  // rerooting directly under the root only makes sense if there are more than two subnodes under the root
+				enabled = (b.getTargetNode().getParent().getChildren().size() > 2) || b.getTargetNode().getParent().hasParent();
 			}
 		}
 		setEnabled(enabled);

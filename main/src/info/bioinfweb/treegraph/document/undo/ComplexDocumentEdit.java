@@ -35,7 +35,7 @@ import info.bioinfweb.treegraph.document.TreePath;
  * but override the abstract method {@link #performRedo()}.<br>
  * This class makes a copy of the old tree in the document before calling <code>performRedo()</code>
  * so all classes implementing {@link #performRedo()} have to translate references to elements of
- * the old tree by using the {@link #findEquivilant(Node)} or {@link #findEquivilant(Branch)}-methods.
+ * the old tree by using the {@link #findEquivilant(Node)} or {@link #findEquivalent(Branch)}-methods.
  * 
  * @author Ben St&ouml;ver
  */
@@ -71,7 +71,7 @@ public abstract class ComplexDocumentEdit extends DocumentEdit {
 	 * @param old - the branch in the old tree
 	 * @return the branch in the new tree
 	 */
-	protected Branch findEquivilant(Branch old) {
+	protected Branch findEquivalent(Branch old) {
 		return new TreePath(old.getTargetNode()).findNode(newRoot).getAfferentBranch();
 	}
 
