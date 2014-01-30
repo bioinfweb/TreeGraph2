@@ -87,6 +87,7 @@ public class PhylogramPositioner extends RectangularCladogramPositioner {
 
 	/**
 	 * This method is overwritten to ensure that no corner radius in painted.
+	 * 
 	 * @see info.bioinfweb.treegraph.graphics.positionpaint.RectangularCladogramPositioner#calculateCornerRadiusShift(info.bioinfweb.treegraph.document.Node, float)
 	 */
 	@Override
