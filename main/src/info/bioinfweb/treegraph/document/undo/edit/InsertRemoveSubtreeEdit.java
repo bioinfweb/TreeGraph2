@@ -24,6 +24,11 @@ import info.bioinfweb.treegraph.document.undo.SaveLegendsEdit;
 
 
 
+/**
+ * Allows the user to inserts or remove a subtree to or from a document.
+ * 
+ * @author Ben St&ouml;ver
+ */
 public abstract class InsertRemoveSubtreeEdit extends SaveLegendsEdit {
 	protected Node parent;
 	protected Node root;
@@ -31,7 +36,9 @@ public abstract class InsertRemoveSubtreeEdit extends SaveLegendsEdit {
 	
 	
 	/**
-	 * @param document
+	 * Creates a new instance of this class.
+	 * 
+	 * @param document - the document the specified elements are contained in
 	 * @param parent - the parent node of the root node of the subtree to be deleted
 	 * @param root - the root node of the subtree to be deleted
 	 * @param index - the index of the root node in the child list of its parent node

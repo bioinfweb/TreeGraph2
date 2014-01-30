@@ -21,7 +21,6 @@ package info.bioinfweb.treegraph.gui.actions.edit;
 
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.util.Iterator;
 
@@ -30,7 +29,6 @@ import javax.swing.KeyStroke;
 
 import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.treegraph.document.Branch;
-import info.bioinfweb.treegraph.document.ConcretePaintableElement;
 import info.bioinfweb.treegraph.document.ContrastManager;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Label;
@@ -145,7 +143,7 @@ public class PasteAction extends DocumentAction {
 				if (contrastManager.ensureContrast(frame.getDocument(), legend)) {
 					Node anchor2 = null;
 					if (frame.getTreeViewPanel().getSelection().size() > 1) {
-						Iterator<ConcretePaintableElement> iterator = 
+						Iterator<PaintableElement> iterator = 
 							  frame.getTreeViewPanel().getSelection().iterator();
 						iterator.next();  // Erstes überspringen
 						anchor2 = (Node)iterator.next();

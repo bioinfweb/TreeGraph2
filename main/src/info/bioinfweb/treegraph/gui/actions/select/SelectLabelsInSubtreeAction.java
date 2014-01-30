@@ -25,15 +25,14 @@ import java.util.Iterator;
 
 import javax.swing.Action;
 
-import info.bioinfweb.treegraph.document.ConcretePaintableElement;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Label;
 import info.bioinfweb.treegraph.document.Legend;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.PaintableElement;
 import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.TreeSerializer;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
-import info.bioinfweb.treegraph.gui.actions.DocumentAction;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeInternalFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
@@ -61,9 +60,9 @@ public class SelectLabelsInSubtreeAction extends AbstractSelectionAction {
 	protected void performSelection(ActionEvent e, TreeInternalFrame frame,
 			TreeSelection selection) {
 		
-		Iterator<ConcretePaintableElement> iterator = selection.iterator();
+		Iterator<PaintableElement> iterator = selection.iterator();
 		while (iterator.hasNext()) {
-			ConcretePaintableElement element = iterator.next();
+			PaintableElement element = iterator.next();
 			Node root = Tree.getLinkedNode(element);
 			if (root != null) {
 				Label[] subelements = 

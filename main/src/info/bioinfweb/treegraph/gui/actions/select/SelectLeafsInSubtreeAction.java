@@ -19,9 +19,9 @@
 package info.bioinfweb.treegraph.gui.actions.select;
 
 
-import info.bioinfweb.treegraph.document.ConcretePaintableElement;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.PaintableElement;
 import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.TreeElement;
 import info.bioinfweb.treegraph.document.TreeSerializer;
@@ -32,6 +32,7 @@ import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.swing.Action;
@@ -57,9 +58,11 @@ public class SelectLeafsInSubtreeAction extends AbstractSelectionAction {
 	protected void performSelection(ActionEvent e, TreeInternalFrame frame,
 			TreeSelection selection) {
 
-		Iterator<ConcretePaintableElement> iterator = selection.iterator();
+		ArrayList<PaintableElement> selectionCopy = new ArrayList<PaintableElement>(selection.size());  // Copy selection to avoid a ConcurrentModificationException when adding new elements in the loop.
+		selectionCopy.addAll(selection);
+		Iterator<PaintableElement> iterator = selectionCopy.iterator();
 		while (iterator.hasNext()) {
-			ConcretePaintableElement element = iterator.next();
+			PaintableElement element = iterator.next();
 			Node root = Tree.getLinkedNode(element);
 			if (root != null) {
 				Node[] subelements = TreeSerializer.getElementsInSubtree(root, true, Node.class);

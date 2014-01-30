@@ -24,17 +24,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.util.Iterator;
-import java.util.LinkedList;
 
 import javax.swing.Action;
 import javax.swing.KeyStroke;
 
 import info.bioinfweb.treegraph.document.Branch;
-import info.bioinfweb.treegraph.document.ConcretePaintableElement;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Label;
 import info.bioinfweb.treegraph.document.Legend;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.PaintableElement;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.format.ReanchorLegendEdit;
 import info.bioinfweb.treegraph.gui.actions.DocumentAction;
@@ -70,8 +69,8 @@ public class ReanchorLegendAction extends DocumentAction{
 		Node upperAnchor = selection.getFirstElementOfType(Node.class);
 		String lowerAnchorName = null;
 		if (selection.size() == 3) {  // Zwei Knoten, eine Legende
-			Iterator<ConcretePaintableElement> iterator = selection.iterator();
-			ConcretePaintableElement element = iterator.next();
+			Iterator<PaintableElement> iterator = selection.iterator();
+			PaintableElement element = iterator.next();
 			while ((element != null) && (lowerAnchorName == null)) {
 				if ((element instanceof Node) && (element != upperAnchor)) {
 					lowerAnchorName = ((Node)element).getUniqueName();

@@ -26,11 +26,11 @@ import java.util.LinkedList;
 
 import javax.swing.Action;
 
-import info.bioinfweb.treegraph.document.ConcretePaintableElement;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Legend;
 import info.bioinfweb.treegraph.document.Legends;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.PaintableElement;
 import info.bioinfweb.treegraph.document.TreeSerializer;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
@@ -52,13 +52,13 @@ public class SelectTypeInDocumentAction extends AbstractSelectionAction {
 			TreeSelection selection) {
 
 		Node root = frame.getDocument().getTree().getPaintStart();
-		LinkedList<ConcretePaintableElement> list = new LinkedList<ConcretePaintableElement>();
-		Iterator<ConcretePaintableElement> iterator = selection.iterator();
+		LinkedList<PaintableElement> list = new LinkedList<PaintableElement>();
+		Iterator<PaintableElement> iterator = selection.iterator();
 		while (iterator.hasNext()) {
-			ConcretePaintableElement element = iterator.next();
+			PaintableElement element = iterator.next();
 			if (root != null) {
-				ConcretePaintableElement[] subelements = TreeSerializer.getElementsInSubtree(
-						root, false, element.getClass(), new ConcretePaintableElement[0]);
+				PaintableElement[] subelements = TreeSerializer.getElementsInSubtree(
+						root, false, element.getClass(), new PaintableElement[0]);
 				
 				for (int j = 0; j < subelements.length; j++) {
 					list.add(subelements[j]);

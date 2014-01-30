@@ -114,7 +114,7 @@ public class Tree {
    * @param element the element to search for
    * @return true, if the element is found
    */
-  public boolean contains(ConcretePaintableElement element) {
+  public boolean contains(PaintableElement element) {
   	return elementSet.contains(element);
   }
   

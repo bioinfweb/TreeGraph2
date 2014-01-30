@@ -19,7 +19,7 @@
 package info.bioinfweb.treegraph.gui.treeframe;
 
 
-import info.bioinfweb.treegraph.document.ConcretePaintableElement;
+import info.bioinfweb.treegraph.document.PaintableElement;
 import info.bioinfweb.treegraph.document.Label;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.PaintableElement;
@@ -29,7 +29,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.TreeSet;
 import java.util.Vector;
 
 
@@ -39,9 +38,9 @@ import java.util.Vector;
  * 
  * @author Ben St&ouml;ver
  */
-public class TreeSelection {
+public class TreeSelection implements Collection<PaintableElement> {
 	private TreeViewPanel owner = null;
-	private HashSet<ConcretePaintableElement> elements = new HashSet<ConcretePaintableElement>();
+	private HashSet<PaintableElement> elements = new HashSet<PaintableElement>();
 	private boolean valueIsAdjusting = false;
 
 
@@ -51,19 +50,56 @@ public class TreeSelection {
 	}
 	
 	
-	public ConcretePaintableElement first() {
+	private void fireSelectionChanged() {
+		if (!valueIsAdjusting) {
+			owner.fireSelectionChanged();
+		}
+	}
+	
+	
+	public PaintableElement first() {
 		return elements.iterator().next();
 	}
 
 
-	public Iterator<ConcretePaintableElement> iterator() {
+	@Override
+	public Iterator<PaintableElement> iterator() {
 		return elements.iterator();
 	}
 
 
+	@Override
 	public <T> T[] toArray(T[] arr) {
 		return elements.toArray(arr);
 	}
+
+
+	@Override
+  public Object[] toArray() {
+	  return elements.toArray();
+  }
+
+
+	@Override
+  public boolean containsAll(Collection<?> c) {
+	  return elements.containsAll(c);
+  }
+
+
+	@Override
+  public boolean removeAll(Collection<?> c) {
+	  boolean result = elements.removeAll(c);
+	  fireSelectionChanged();
+	  return result;
+  }
+
+
+	@Override
+  public boolean retainAll(Collection<?> c) {
+		boolean result = elements.retainAll(c);
+	  fireSelectionChanged();
+	  return result;
+  }
 
 
 	public boolean getValueIsAdjusting() {
@@ -93,7 +129,7 @@ public class TreeSelection {
 	 * @param element - the element to select or <code>nil</code> if no element should be#
 	 *        selected
 	 */
-	public void set(ConcretePaintableElement element) {
+	public void set(PaintableElement element) {
 		if ((element == null) || owner.getDocument().getTree().contains(element)) {
 			elements.clear();
 			
@@ -113,15 +149,18 @@ public class TreeSelection {
 	}
 	
 	
-	public void add(ConcretePaintableElement element) {
+	@Override
+	public boolean add(PaintableElement element) {
 		if ((element != null) && owner.getDocument().getTree().contains(element)) {
+			boolean result = true;
 			if (!contains(element)) {  // kein Element doppelt hinzufg.
-				elements.add(element);
+				result = elements.add(element) && result;
 				if (!valueIsAdjusting) {
 					owner.scrollElementToVisible(element);
 					owner.fireSelectionChanged();
 				}
 			}
+			return result;
 		}
 		else {
 			throw new IllegalArgumentException("An element can only be added to the selection if it is contained in the associated tree and not nil.");
@@ -129,7 +168,8 @@ public class TreeSelection {
 	}
 	
 	
-	public boolean addAll(Collection<? extends ConcretePaintableElement> collection) {
+	@Override
+	public boolean addAll(Collection<? extends PaintableElement> collection) {
 		boolean result = elements.addAll(collection);
 		if (result && !valueIsAdjusting) {
 			owner.scrollElementToVisible(collection.iterator().next());
@@ -139,16 +179,20 @@ public class TreeSelection {
 	}
 
 
-	public void remove(ConcretePaintableElement element) {
+	@Override
+	public boolean remove(Object element) {
 		if (element != null) {
-			elements.remove(element);
-			if (!valueIsAdjusting) {
-				owner.fireSelectionChanged();
-			}
+			boolean result = elements.remove(element);
+			fireSelectionChanged();
+			return result;
+		}
+		else {
+			return false;
 		}
 	}
 	
 	
+	@Override
 	public void clear() {
 		set(null);
 	}
@@ -158,17 +202,20 @@ public class TreeSelection {
 	 * Returns the number of selected elements.
 	 * @see #elementCount(Class)
 	 */
+	@Override
 	public int size() {
 		return elements.size();
 	}
 
 
+	@Override
 	public boolean isEmpty() {
 		return elements.isEmpty();
 	}
 
 
-	public boolean contains(ConcretePaintableElement element) {
+	@Override
+	public boolean contains(Object element) {
 		return elements.contains(element);
 	}
 	
@@ -181,7 +228,7 @@ public class TreeSelection {
 	 * @see #isEmpty()
 	 */
 	public boolean containsType(Class<? extends PaintableElement> elementClass) {
-		Iterator<ConcretePaintableElement> iterator = iterator();
+		Iterator<PaintableElement> iterator = iterator();
 		while (iterator.hasNext()) {
 			if (elementClass.isInstance(iterator.next())) {
 				return true;
@@ -198,7 +245,7 @@ public class TreeSelection {
 	 * @since 2.0.43
 	 */
 	public boolean containsOnlyType(Class<? extends PaintableElement> elementClass) {
-		Iterator<ConcretePaintableElement> iterator = iterator();
+		Iterator<PaintableElement> iterator = iterator();
 		while (iterator.hasNext()) {
 			if (!elementClass.isInstance(iterator.next())) {
 				return false;
@@ -216,9 +263,9 @@ public class TreeSelection {
 	 * @since 2.0.43
 	 */
 	public <T extends PaintableElement> T getFirstElementOfType(Class<T> elementClass) {
-		Iterator<ConcretePaintableElement> iterator = iterator();
+		Iterator<PaintableElement> iterator = iterator();
 		while (iterator.hasNext()) {
-			ConcretePaintableElement element = iterator.next(); 
+			PaintableElement element = iterator.next(); 
 			if (elementClass.isInstance(element)) {
 				return (T)element;
 			}
@@ -228,9 +275,9 @@ public class TreeSelection {
 	
 	
   public Node getFirstLeaf() {
-		Iterator<ConcretePaintableElement> iterator = iterator();
+		Iterator<PaintableElement> iterator = iterator();
 		while (iterator.hasNext()) {
-			ConcretePaintableElement element = iterator.next();
+			PaintableElement element = iterator.next();
 			if ((element instanceof Node) && ((Node)element).isLeaf()) {
 				return (Node)element;
 			}
@@ -249,9 +296,9 @@ public class TreeSelection {
 	public <T extends PaintableElement> T[] getAllElementsOfType(Class<T> elementClass) {
 		LinkedList<PaintableElement> list = new LinkedList<PaintableElement>();
 		
-		Iterator<ConcretePaintableElement> iterator = iterator();
+		Iterator<PaintableElement> iterator = iterator();
 		while (iterator.hasNext()) {
-			ConcretePaintableElement element = iterator.next();
+			PaintableElement element = iterator.next();
 			if (elementClass.isInstance(element)) {
 				list.add(element);
 			}
@@ -288,7 +335,7 @@ public class TreeSelection {
 	public int elementCount(Class<? extends PaintableElement> elementClass) {
 		int result = 0;
 		
-		Iterator<ConcretePaintableElement> iterator = iterator();
+		Iterator<PaintableElement> iterator = iterator();
 		while (iterator.hasNext()) {
 			if (elementClass.isInstance(iterator.next())) {
 				result++;

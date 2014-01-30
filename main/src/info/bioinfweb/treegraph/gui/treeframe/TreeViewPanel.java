@@ -217,7 +217,7 @@ public class TreeViewPanel extends JPanel implements DocumentListener, Scrollabl
 	public void changeHappened(DocumentChangeEvent e) {
 		getSelection().setValueIsAdjusting(true);
 		try {
-			Iterator<ConcretePaintableElement> iterator = getSelection().iterator();
+			Iterator<PaintableElement> iterator = getSelection().iterator();
 			while (iterator.hasNext()) {
 				if (!document.getTree().contains(iterator.next())) {  // Das markierte Element könnte entfernt worden sein.
 					iterator.remove();

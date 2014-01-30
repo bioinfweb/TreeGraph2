@@ -21,17 +21,16 @@ package info.bioinfweb.treegraph.gui.actions.edit;
 
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.util.Iterator;
 
 import javax.swing.Action;
 import javax.swing.KeyStroke;
 
-import info.bioinfweb.treegraph.document.ConcretePaintableElement;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Legend;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.PaintableElement;
 import info.bioinfweb.treegraph.document.format.FormatUtils;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.edit.InsertLegendEdit;
@@ -62,7 +61,7 @@ public class NewLegendAction extends DocumentAction {
 	@Override
 	protected void onActionPerformed(ActionEvent e, TreeInternalFrame frame) {
 		TreeSelection selection = frame.getTreeViewPanel().getSelection();
-		Iterator<ConcretePaintableElement> iterator = selection.iterator();
+		Iterator<PaintableElement> iterator = selection.iterator();
 		Node upperAnchor = (Node)iterator.next();
 		Node lowerAnchor = null;
 		if (selection.size() == 2) {
