@@ -186,10 +186,12 @@ public class Tree {
 	public void updateElementSet() {
 		elementSet.clear();
 		
-		ConcretePaintableElement[] elements = 
-			  TreeSerializer.getElementsInSubtree(getPaintStart(), false, ConcretePaintableElement.class);
-		for (int i = 0; i < elements.length; i++) {
-			elementSet.add(elements[i]);
+		if (!isEmpty()) {  // Avoid NullPointerException in getElementsInSubtree() if root is null.
+			ConcretePaintableElement[] elements = 
+				  TreeSerializer.getElementsInSubtree(getPaintStart(), false, ConcretePaintableElement.class);
+			for (int i = 0; i < elements.length; i++) {
+				elementSet.add(elements[i]);
+			}
 		}
 		
 		for (int i = 0; i < getLegends().size(); i++) {
