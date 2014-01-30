@@ -109,22 +109,21 @@ public class Main extends ProgramMainClass {
 
 
 	private void customizeSpashScreen() {
-		//TODO Warum funktioniert das nicht?
 		SplashScreen splash = SplashScreen.getSplashScreen();
 		if (splash != null) {
 			Graphics2D g = (Graphics2D)splash.createGraphics();
 			if (g != null) {
-				Dimension size = splash.getSize();
+				Dimension size = splash.getSize();			
 				g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 				g.setComposite(AlphaComposite.Clear);
 				g.setPaintMode();
 				
 				FontMetrics fm = g.getFontMetrics();
 				String text = getVersion().toString();
+  			g.setColor(Color.BLACK);
 				g.drawString(text, (int)size.getWidth() - fm.stringWidth(text) - SPLASH_SCREEN_BORDER,
-						(int)size.getHeight() - fm.getHeight() - SPLASH_SCREEN_BORDER);
+						(int)size.getHeight() - SPLASH_SCREEN_BORDER);
 				splash.update();
-				//System.out.println(((int)size.getHeight() - fm.getHeight() - SPLASH_SCREEN_BORDER) + " " + ((int)size.getWidth() - fm.stringWidth(text) - SPLASH_SCREEN_BORDER));
 			}
 		}
 	}
