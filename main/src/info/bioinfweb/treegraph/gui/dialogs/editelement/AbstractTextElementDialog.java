@@ -103,8 +103,13 @@ public abstract class AbstractTextElementDialog extends EditDialog {
 	protected void updatePreview() {
 		String text = getValueTextField().getText();
 		if (getDecimalCheckBox().isSelected()) {
-			text = textElement.getFormats().getDecimalFormat().format(
-					Math2.parseDouble(getValueTextField().getText()));
+			try {
+				text = textElement.getFormats().getDecimalFormat().format(
+  					Math2.parseDouble(getValueTextField().getText()));
+			}
+			catch (NumberFormatException e) {  // Unclear how this exception can ever happen, but it was send in the error report 20140023_180142_7740879257708879519.xml.
+				text = "ERROR: " + e.getMessage();
+			}
 		}
 		if (text.equals("")) {
 			text = " ";  // Vermeiden, dass Panel an Höhe verliert.
