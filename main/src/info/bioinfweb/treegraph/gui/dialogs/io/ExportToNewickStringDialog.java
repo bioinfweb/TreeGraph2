@@ -24,10 +24,12 @@ import info.bioinfweb.treegraph.document.io.DocumentWriter;
 import info.bioinfweb.treegraph.document.io.ReadWriteFactory;
 import info.bioinfweb.treegraph.document.io.ReadWriteFormat;
 import info.bioinfweb.treegraph.document.io.ReadWriteParameterMap;
-import info.bioinfweb.treegraph.document.io.nexus.NexusFactory;
 import info.bioinfweb.treegraph.document.io.nexus.NexusFilter;
 import info.bioinfweb.treegraph.document.io.xtg.XTGFilter;
+import info.bioinfweb.treegraph.document.nodebranchdata.HiddenDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataInput;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 
@@ -56,7 +58,7 @@ public class ExportToNewickStringDialog extends FileDialog {
 	
 	private JPanel jContentPane = null;
 	private JFileChooser fileChooser;  //  This field must not be set to anything (e.g. null) because the initialization performed by the super constructor (FileDialog) would be overwritten than.
-	private NexusFilter nexusFilter = null;
+	private NexusFilter nexusFilter;  //  This field must not be set to anything (e.g. null).
 	private JPanel nodeDataPanel = null;
 	private NodeBranchDataInput internalInput = null;
 	private NodeBranchDataInput leafInput = null;
@@ -88,7 +90,13 @@ public class ExportToNewickStringDialog extends FileDialog {
 		}
 		
 		getInternalInput().setAdapters(getDocument().getTree(), true, true, true, false, false);
+		if (!getInternalInput().setSelectedAdapter(TextLabelAdapter.class)) {
+			if (!getInternalInput().setSelectedAdapter(HiddenDataAdapter.class)) {
+				getInternalInput().setSelectedAdapter(NodeNameAdapter.class);
+			}
+		}
 		getLeafInput().setAdapters(getDocument().getTree(), true, true, true, false, false);
+		getLeafInput().setSelectedAdapter(NodeNameAdapter.class);
 		getBranchLengthInput().setAdapters(getDocument().getTree(), false, false, true, true, false);
 		
 		boolean branchLength = getBranchLengthInput().getModel().getSize() > 0;

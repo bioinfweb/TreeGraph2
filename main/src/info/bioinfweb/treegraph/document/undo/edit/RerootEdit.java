@@ -23,8 +23,6 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import org.lsmp.djep.vectorJep.function.GetDiagonal;
-
 import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Document;
