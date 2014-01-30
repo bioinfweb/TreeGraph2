@@ -20,6 +20,7 @@ package info.bioinfweb.treegraph.graphics.export;
 
 
 import java.io.File;
+import java.io.IOException;
 import java.io.OutputStream;
 
 import info.bioinfweb.treegraph.document.Document;
@@ -36,10 +37,8 @@ public interface GraphicWriter {
 	public static final String KEY_TRANSPARENT = "transparent";
 	
 	
-	public void write(Document document, TreePainter painter, ParameterMap hints, 
-			OutputStream stream);
+	public void write(Document document, TreePainter painter, ParameterMap hints, OutputStream stream) throws IOException;
 
 	
-  public void write(Document document, TreePainter painter, ParameterMap hints,
-  		File file);
+  public void write(Document document, TreePainter painter, ParameterMap hints,	File file)  throws IOException;
 }

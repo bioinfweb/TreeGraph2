@@ -61,7 +61,7 @@ public class ExportToPDFAction extends DocumentAction {
 		  	GraphicWriterFactory.getInstance().getWriter(GraphicFormat.PDF).write(frame.getDocument(), 
 		  			PositionPaintFactory.getInstance().getPainter(frame.getTreeViewPanel().getPainterType()), 
 		  			new ParameterMap(), file);
-	    		Desktop.getDesktop().open(file);
+	    	Desktop.getDesktop().open(file);
 			}
 			catch (IOException ex) {
 				JOptionPane.showMessageDialog(MainFrame.getInstance(), "The error \"" + ex.getMessage() + 

@@ -25,21 +25,19 @@ import info.webinsel.util.collections.ParameterMap;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 
 
 public abstract class AbstractGraphicWriter implements GraphicWriter {
-	public void write(Document document, TreePainter painter, ParameterMap hints,
-      File file) {
+	public void write(Document document, TreePainter painter, ParameterMap hints, File file) throws IOException {
 		
+		FileOutputStream stream = new FileOutputStream(file);
 		try {
-			FileOutputStream stream = new FileOutputStream(file);
 			write(document, painter, hints, stream);
-			stream.close();
 		}
-		catch (Exception e) {
-			e.printStackTrace();
-			throw new InternalError();
+		finally {
+			stream.close();
 		}
   }
 }

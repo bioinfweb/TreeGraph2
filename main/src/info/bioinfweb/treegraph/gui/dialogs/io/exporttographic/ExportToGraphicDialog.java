@@ -291,6 +291,11 @@ public class ExportToGraphicDialog extends FileDialog {
     					"Commands not supported",JOptionPane.ERROR_MESSAGE);
       	}
 			}
+      catch (IOException ex) {
+      	JOptionPane.showMessageDialog(this, "The excpeption \"" + ex.getMessage() + 
+      			"\" occurred when trying to write to the file \"" + file.getAbsolutePath() + "\".", "Error", 
+      			JOptionPane.ERROR_MESSAGE);
+      }
 			catch (OutOfMemoryError ex) {
 				WikiHelpOptionPane.showMessageDialog(MainFrame.getInstance(), 
 						"There is not enough memory avialable.\n" + 
