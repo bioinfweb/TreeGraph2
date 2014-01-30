@@ -24,8 +24,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.Action;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
+import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
@@ -34,6 +36,7 @@ import info.bioinfweb.treegraph.gui.actions.DocumentAction;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeInternalFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
+import info.webinsel.wikihelp.client.WikiHelpOptionPane;
 
 
 
@@ -54,8 +57,12 @@ public class RerootAction extends DocumentAction {
 
 	@Override
 	protected void onActionPerformed(ActionEvent e, TreeInternalFrame frame) {
-		frame.getDocument().executeEdit(new RerootEdit(frame.getDocument(), 
-				(Branch)frame.getTreeViewPanel().getSelection().first()));
+		RerootEdit edit = new RerootEdit(frame.getDocument(), (Branch)frame.getTreeViewPanel().getSelection().first());
+		frame.getDocument().executeEdit(edit);
+		if (edit.hasWarnings()) {
+			WikiHelpOptionPane.showMessageDialog(MainFrame.getInstance(), edit.getWarningText(), "Reroot",	
+					JOptionPane.WARNING_MESSAGE, Main.getInstance().getWikiHelp(), 27);
+		}
 	}
 
 	

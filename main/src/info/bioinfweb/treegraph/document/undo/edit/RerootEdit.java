@@ -21,16 +21,12 @@ package info.bioinfweb.treegraph.document.undo.edit;
 
 import java.util.List;
 
-import javax.swing.JOptionPane;
-
-import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Label;
 import info.bioinfweb.treegraph.document.Labels;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.undo.ComplexDocumentEdit;
-import info.webinsel.wikihelp.client.WikiHelpOptionPane;
 
 
 
@@ -44,6 +40,7 @@ public class RerootEdit extends ComplexDocumentEdit {
 	
 	
   private Branch rootingPoint = null;
+  private String warningText = null;
   
   
 	public RerootEdit(Document document, Branch rootingPoint) {
@@ -77,7 +74,7 @@ public class RerootEdit extends ComplexDocumentEdit {
 	}
 	
 
-	private void showWarnings(boolean rootNodeDeleted) {
+	private void setWarnings(boolean rootNodeDeleted) {
 		Node root = document.getTree().getPaintStart();
 		String msg = "";
 		
@@ -110,7 +107,7 @@ public class RerootEdit extends ComplexDocumentEdit {
 			Branch b1 = root.getChildren().get(0).getAfferentBranch(); 
 			Branch b2 = root.getChildren().get(1).getAfferentBranch(); 
 			if (b1.getLabels().containsSameID(b2.getLabels())) {
-				msg += "- The two child branches of the root contained labels with the same ID. " +
+				msg += "- The two child branches of the root contained one or more labels with the same ID(s). " +
 						"One element of each ID has been deleted.\n";
 			}
 			if (b1.getHiddenDataMap().containsSameID(b2.getHiddenDataMap())) {
@@ -121,10 +118,22 @@ public class RerootEdit extends ComplexDocumentEdit {
 		
 		// Output:
 		if (!"".equals(msg)) {
-			WikiHelpOptionPane.showMessageDialog(null, "Rerooting produced warnings:\n\n" + 
-					msg + "\nYou can use the undo-function to restore lost data.", "Reroot",	
-					JOptionPane.WARNING_MESSAGE, Main.getInstance().getWikiHelp(), 27);
+			warningText = "Rerooting produced warnings:\n\n" + msg + "\nYou can use the undo-function to restore lost data.";
 		}
+	}
+	
+	
+	/**
+	 * Returns a warning text, if the last call of {@link #redo()} produced warnings.
+	 * @return the warning text or {@code null} if no warning occurred
+	 */
+	public String getWarningText() {
+		return warningText;
+	}
+
+  
+	public boolean hasWarnings() {
+		return warningText != null;
 	}
 	
 	
@@ -160,7 +169,7 @@ public class RerootEdit extends ComplexDocumentEdit {
 			// Save node data:
 			List<Node> children = document.getTree().getPaintStart().getChildren();
 			boolean collapseFormerRoot = (children.size() == 2);
-			showWarnings(collapseFormerRoot);
+			setWarnings(collapseFormerRoot);
 			if (collapseFormerRoot) {
 				if (children.get(0).containedInSubtree(position)) {  // Je nach Position der neuen Wurzel wird später der eine oder der andere Knoten gelöscht.
 					copyBranchData(children.get(0).getAfferentBranch(), children.get(1).getAfferentBranch());
