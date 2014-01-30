@@ -72,7 +72,7 @@ public class PhylogramPositioner extends RectangularCladogramPositioner {
 		  		return ((branchLength + nodeWidth) * rescalingFactorX - nodeWidth) - nodeWidth;
 		  	}
 		  	else {
-		  		return branchLength * rescalingFactorX; 
+		  		return branchLength * rescalingFactorX;  // Leave space to display labels if they use more space than the branch.
 		  	}
 			}
 			else {

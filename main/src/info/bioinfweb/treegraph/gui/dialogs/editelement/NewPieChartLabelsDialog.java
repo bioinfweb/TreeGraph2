@@ -21,31 +21,22 @@ package info.bioinfweb.treegraph.gui.dialogs.editelement;
 
 import info.bioinfweb.treegraph.document.GraphicalLabel;
 import info.bioinfweb.treegraph.document.PieChartLabel;
-import info.bioinfweb.treegraph.gui.dialogs.DataIDComboBox;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataList;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Frame;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
 
 
 
 /**
- * Dialog used to create new pie chart labels.   
+ * Dialog used to create new pie chart labels.
+ * 
  * @author Ben St&ouml;ver
  * @since 2.0.43
  * @see PieChartLabel

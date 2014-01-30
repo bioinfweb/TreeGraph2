@@ -317,8 +317,10 @@ public class RectangularCladogramPainter implements TreePainter {
 	
 	private void paintSubtree(Node root) {
 		if (subtreeVisible(root)) {
-			if (root.hasAfferentBranch() && (root.hasParent() || document.getTree().getFormats().getShowRooted())) {
-				paintBranch(root.getAfferentBranch());
+			if (root.hasAfferentBranch()) {
+				if ((root.hasParent() || document.getTree().getFormats().getShowRooted())) {
+					paintBranch(root.getAfferentBranch());
+				}
 				paintLabelBlock(root.getAfferentBranch().getLabels(), true);
 				paintLabelBlock(root.getAfferentBranch().getLabels(), false);
 			}

@@ -145,7 +145,7 @@ public class RectangularCladogramPositioner implements TreePositioner {
 	/**
 	 * Returns the maximum width of all lines of labels above and below the branch. 
 	 */
-	private float labelBlockWidth(Labels labels) {
+	protected float labelBlockWidth(Labels labels) {
 		float result = 0;
 		for (int lineNo = 0; lineNo < labels.lineCount(true); lineNo++) {
 			result = Math.max(result, labelLineWidth(labels, true, lineNo));
@@ -724,9 +724,21 @@ public class RectangularCladogramPositioner implements TreePositioner {
   
   
   /**
+   * The returned value is the additional space that is necessary left of the tree, if either the root branch is invisible,
+   * but carries labels or if the branch is shorter than the space its labels consume. (The latter is only relevant for
+   * {@link PhylogramPositioner}, but is already implemented here automatically.)
+   */
+  private float invisibleRootBranchOffset() {
+		Branch rootBranch = document.getTree().getPaintStart().getAfferentBranch();
+	  return Math.max(0f, labelBlockWidth(rootBranch.getLabels()) - rootBranch.getPosition(type).getWidth().getInMillimeters());
+  }
+  
+  
+  /**
    * Moves the tree down by the legends overlay on the top and calculates the new document 
    * height including the possible overlay of the legends. Additionaly the tree is moves
-   * to the left according to the document margin.
+   * to the left according to the document margin and the return value of {@link #invisibleRootBranchOffset()}.
+   * 
    * @return the new overall height of the document (without document margin)
    */
   private float moveForLegends() {
@@ -741,7 +753,7 @@ public class RectangularCladogramPositioner implements TreePositioner {
 			bottom = Math.max(bottom, pd.getBottomInMillimeters());
 		}
   	float dTop = m.getTop().getInMillimeters() - top;
-  	moveAll(document.getTree().getFormats().getDocumentMargin().getLeft().getInMillimeters(), dTop);
+  	moveAll(document.getTree().getFormats().getDocumentMargin().getLeft().getInMillimeters() + invisibleRootBranchOffset(), dTop);
   	
   	NodePositionData pd = document.getTree().getPaintStart().getPosition(type);
   	float treeHeight = pd.getHeightAbove() + pd.getHeightBelow();
@@ -766,6 +778,7 @@ public class RectangularCladogramPositioner implements TreePositioner {
 	    		document.getTree().getFormats().getDocumentMargin().getTop().getInMillimeters());  // Schritt2(Zeichenausgangspunkt, gesamtbreite1, DocumentMargin.Top);
 	    if (rootBranch != null) {
 	    	rootBranch.getPosition(type).getLeft().setInMillimeters(0f);  // Baum wird nachher um DocumentMargin verschoben
+	    	//TODO use width of possible labels instead of branch widths if they are longer
 	    }
 	    overallWidth = rescaleSubtree(document.getTree().getPaintStart(), 0);
 	    
