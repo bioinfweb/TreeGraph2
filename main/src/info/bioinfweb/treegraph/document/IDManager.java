@@ -24,6 +24,7 @@ import info.webinsel.util.RandomValues;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 
@@ -348,12 +349,34 @@ public class IDManager {
   	}
   }
   
-  
-  public static String newID(Vector<String> ids) {
+  /**
+   * Creates a new random ID
+   * @param ids - the list of IDs that are already present
+   * @return the new ID
+   */
+  public static String newID(List<String> ids) {
   	String result;
   	do {
   		result = RandomValues.randChars(RAND_CHARS, RAND_LENGTH);
   	} while (ids.contains(result));
+  	return result;
+  }
+  
+  
+  /**
+   * Creates a new ID based on <code>id</code>. (Example: If "ABC" would be specified as <code>id</code> and
+   * is already present in <code>ids</code>, "ABC1" is tried, than "ABC2" and so on.)
+   * @param id - the proposed ID
+   * @param ids - the list of currently present IDs
+   * @return a new ID not present in <code>ids</code> starting with of euqal to the value of <code>id</code>
+   */
+  public static String newID(String id, List<String> ids) {
+  	String result = id;
+  	int index = 1;
+  	while (ids.contains(id)) {
+  		result = id + index;
+  		index++;
+  	}
   	return result;
   }
   

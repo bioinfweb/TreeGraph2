@@ -32,6 +32,11 @@ import javax.swing.JTextField;
 
 
 
+/**
+ * Allows the user to specify a node/branch data column including new label or hidden node/branch data columns.
+ * 
+ * @author Ben St&ouml;ver
+ */ 
 public class NewNodeBranchDataInput extends NodeBranchDataInput {
 	private JTextField textField = null;
 	private Vector<NodeDataInputListener> inputListeners = new Vector<NodeDataInputListener>();
