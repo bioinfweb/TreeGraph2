@@ -64,6 +64,7 @@ public class LeafField {
 	/**
 	 * Compares this field or its complement to another. Note that both fields have be of the 
 	 * same size.
+	 * 
 	 * @param other - the leaf field to be compared
 	 * @param complement - defines whether the original of this field or its complement shall be compared
 	 * @return 0 if exactly the same leafs are contained in both fields, 

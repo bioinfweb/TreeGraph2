@@ -49,7 +49,29 @@ public class RerootEdit extends ComplexDocumentEdit {
 	}
 	
 	
-  private void copyLabels(Labels source, Labels target) {
+	/**
+	 * Constructor to be called by {@link RerootByLeafSetEdit} which does not specify a rooting point.
+	 * Calling classes must make sure that they specify a rooting point using {@link #setRootingPoint(Branch)}
+	 * before the first call if {@link #performRedo()}.
+	 * 
+	 * @param document - the document that contains the tree to be rerooted 
+	 */
+	protected RerootEdit(Document document) {
+		super(document);
+	}
+	
+	
+  public Branch getRootingPoint() {
+		return rootingPoint;
+	}
+
+
+	protected void setRootingPoint(Branch rootingPoint) {
+		this.rootingPoint = rootingPoint;
+	}
+
+
+	private void copyLabels(Labels source, Labels target) {
   	Label labels[] = source.toLabelArray();
   	for (int i = 0; i < labels.length; i++) {
 			target.add(labels[i].clone());
@@ -171,7 +193,7 @@ public class RerootEdit extends ComplexDocumentEdit {
 			boolean collapseFormerRoot = (children.size() == 2);
 			setWarnings(collapseFormerRoot);
 			if (collapseFormerRoot) {
-				if (children.get(0).containedInSubtree(position)) {  // Je nach Position der neuen Wurzel wird später der eine oder der andere Knoten gelöscht.
+				if (children.get(0).containedInSubtree(position)) {  // Depending on the position of the new root the one or the other child will be deleted in the end.
 					copyBranchData(children.get(0).getAfferentBranch(), children.get(1).getAfferentBranch());
 				}
 				else {
@@ -179,7 +201,7 @@ public class RerootEdit extends ComplexDocumentEdit {
 				}				
 			}
 			
-			// Strukturänderungen:
+			// Structural changes:
 			Node current = Node.getInstanceWithBranch();
 			document.getTree().setPaintStart(current);
 			parent.getChildren().remove(position.getTargetNode());
@@ -205,13 +227,13 @@ public class RerootEdit extends ComplexDocumentEdit {
 			}
 			separareRootBranchLength();
 			
-			// Ggf. überschüssegen inneren Knoten löschen und Daten verschieben:
+			// Delete remaining internal node, if necessary:
 			if (collapseFormerRoot) {
 				parent = current.getParent();
 				parent.getChildren().remove(current);
 				parent.getChildren().add(current.getChildren().get(0));
 				current.getChildren().get(0).setParent(parent);
-				// current ist nun nicht mehr Teil des Baums
+				// current is now no longer part of the tree
 			}
 		}
 	}
