@@ -20,14 +20,11 @@ package info.bioinfweb.treegraph.document.undo.file.addsupportvalues;
 
 
 import java.text.DecimalFormat;
-import java.util.List;
-import java.util.Vector;
 
 import javax.swing.JOptionPane;
 
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
-import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.nodebranchdata.BranchLengthAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.HiddenBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.HiddenNodeDataAdapter;
@@ -36,28 +33,22 @@ import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.AbstractTextElementDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextElementDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;
-import info.bioinfweb.treegraph.document.undo.ComplexDocumentEdit;
+import info.bioinfweb.treegraph.document.undo.file.AbstractSupportValueEdit;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 
 
 
-public class AddSupportValuesEdit extends ComplexDocumentEdit {
+public class AddSupportValuesEdit extends AbstractSupportValueEdit {
 	public static final String SUPPORT_NAME = "Support";
 	public static final String CONFLICT_NAME = "Conflict";
 	public static final DecimalFormat SUPPORT_DECIMAL_FORMAT = 
 		  new DecimalFormat("#.#######");
 	public static final DecimalFormat CONFLICT_DECIMAL_FORMAT =
 		  new DecimalFormat("[#.#######];[-#.#######]");
-	public static final String KEY_LEAF_REFERENCE = 
-		  AddSupportValuesEdit.class.getName() + ".LeafList";
-	public static final int MAX_TERMINAL_ERROR_COUNT = 10;
-	public static final NodeNameAdapter SOURCE_LEAFS_ADAPTER = NodeNameAdapter.getSharedInstance(); 
 	
 	
-	private Document src = null;
-	
-	/** The column that contains the terminal identifiers in the target document (usually nodes names) */
-	private TextElementDataAdapter targetLeafsAdapter = null;
+	public Document src = null ; 
+
 	
 	/** The node/branch data to be imported (node names or branch lengths) */
 	private NodeBranchDataAdapter sourceAdapter = null;
@@ -68,11 +59,6 @@ public class AddSupportValuesEdit extends ComplexDocumentEdit {
 	/** The node/branch data column to write imported conflict values to */
 	private AbstractTextElementDataAdapter conflictAdapter = null;
 	
-	private Vector<TextElementData> leafValues = new Vector<TextElementData>();
-	
-	private boolean processRooted;
-	
-
 	public enum TargetType {
 		LABEL, HIDDEN_NODE_DATA, HIDDEN_BRANCH_DATA;
 	}
@@ -82,9 +68,8 @@ public class AddSupportValuesEdit extends ComplexDocumentEdit {
 			TextElementDataAdapter terminalsAdapter, TargetType targetType, String idPrefix,
 			NodeBranchDataAdapter sourceAdapter, boolean processRooted) {
 		
-		super(document);
+		super(document, terminalsAdapter, processRooted);
 		this.src = src;
-		this.targetLeafsAdapter = terminalsAdapter; 	//TODO Prüfen, ob terminalsAdapter nur Decimals als innere Knoten enthält
 		this.sourceAdapter = sourceAdapter;
 		this.processRooted = processRooted;
 		
@@ -167,11 +152,12 @@ public class AddSupportValuesEdit extends ComplexDocumentEdit {
 	
 	@Override
 	protected void performRedo() {
-		addLeafList(leafValues, document.getTree().getPaintStart(), targetLeafsAdapter);  // Source und target sollten das selbe Ergebnis liefern.
-    String errorMsg = compareLeafs();
+	
+    String errorMsg = compareLeafs(src);
     if (errorMsg == null) {  // The terminal nodes of both trees are identical.
+ 
   		addLeafFields(src.getTree().getPaintStart(), SOURCE_LEAFS_ADAPTER);
-      addLeafFields(document.getTree().getPaintStart(), targetLeafsAdapter);
+  		addLeafFields(document.getTree().getPaintStart(), targetLeafsAdapter);
   		processSubtree(document.getTree().getPaintStart());
     }
     else {
@@ -181,117 +167,7 @@ public class AddSupportValuesEdit extends ComplexDocumentEdit {
 	}
 	
 	
-	/**
-	 * Fills the specified list with the values of all leafs under <code>root</code>. 
-	 * @param list
-	 * @param root
-	 * @param adapter
-	 */
-	private void addLeafList(List<TextElementData> list, Node root, TextElementDataAdapter adapter) {
-		if (root.isLeaf()) {
-			list.add(adapter.getData(root));
-		}
-		else {
-			for (int i = 0; i < root.getChildren().size(); i++) {
-				addLeafList(list, root.getChildren().get(i), adapter);
-			}
-		}
-	}
-	
-	
-	/**
-	 * Checks if both the loaded and the imported tree contain exactly the same terminals.
-	 * @return an error message, if the terminal nodes are not identical or <code>null</code> if they are
-	 */
-	private String compareLeafs() {
-		Vector<TextElementData> sourceLeafValues = new Vector<TextElementData>();
-		addLeafList(sourceLeafValues, src.getTree().getPaintStart(), SOURCE_LEAFS_ADAPTER);
-		if (leafValues.size() != sourceLeafValues.size()) {
-			return "The selected tree has different number of terminals than " +
-				"the opened document. No support values were added.";
-		}
-		else {
-			String errorMsg = "";
-			int errorCount = 0;
-			for (int i = 0; i < sourceLeafValues.size(); i++) {
-				if (getLeafIndex(sourceLeafValues.get(i)) == -1) {
-					if (errorCount < MAX_TERMINAL_ERROR_COUNT) {
-						if (!errorMsg.equals("")) {
-							errorMsg += ",\n";
-						}
-						errorMsg += "\"" + sourceLeafValues.get(i) + "\"";
-					}
-					errorCount++;
-				}
-			}
-			if (errorMsg.equals("")) {
-				return null;
-			}
-			errorMsg = "The selected tree contains the following terminals which are " +
-					"not present in the opened document:\n\n" + errorMsg;
-			if (errorCount > MAX_TERMINAL_ERROR_COUNT) {
-				errorMsg += ", ...\n(" + (errorCount - MAX_TERMINAL_ERROR_COUNT) + " more)";
-			}
-			return errorMsg + "\n\nNo support values were added.";
-		}
-	}
-	
-	
-	/**
-	 * Returns the leaf field attribute of <code>node</code> if it has one attached. If not an according object
-	 * is created first and than returned.
-	 * @param node - the node from which the leaf field attribute shall be returned or created. 
-	 */
-	private LeafField getLeafField(Node node) {
-		if (node.getAttributeMap().get(KEY_LEAF_REFERENCE) == null) {
-			int size = leafValues.size();
-			if (processRooted) {
-				size++;
-			}
-			LeafField field = new LeafField(size);
-			node.getAttributeMap().put(KEY_LEAF_REFERENCE, field);
-		}
-		return (LeafField)node.getAttributeMap().get(KEY_LEAF_REFERENCE);
-	}
-	
-	
-	private int getLeafIndex(TextElementData value) {
-		int pos = 0;
-		while ((pos < leafValues.size()) && !value.equals(leafValues.get(pos))) {
-			pos++;
-		}
-		if (pos < leafValues.size()) {
-			return pos;
-		}
-		else {
-			return -1;
-		}
-	}
-	
-	
-	/**
-	 * Adds a boolean field which indicates the leafs located under <code>root</code> to
-	 * the attribute map of <code>root</code>.
-	 * @param root - the root of the subtree
-	 */
-	private void addLeafFields(Node root, TextElementDataAdapter adapter) {
-		if (!root.isLeaf()) {
-			LeafField field = getLeafField(root);
-			for (int i = 0; i < root.getChildren().size(); i++) {
-				Node child = root.getChildren().get(i);
-				addLeafFields(child, adapter);
-				if (child.isLeaf()) {
-					field.setChild(getLeafIndex(adapter.getData(child)), true);
-				}
-				else {
-					field.addField(getLeafField(child));
-				}
-			}
-		}
-	}
-	
-	
-  private NodeInfo findSourceNodeWithAllLeafs(Node sourceRoot, LeafField targetLeafs) {
+	private NodeInfo findSourceNodeWithAllLeafs(Node sourceRoot, LeafField targetLeafs) {
 		int additionalCount = targetLeafs.compareTo(getLeafField(sourceRoot), false);
 		boolean downwards = additionalCount != -1;
 		if (!downwards) {

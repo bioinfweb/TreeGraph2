@@ -68,10 +68,19 @@ public class NewickReader extends TextStreamReader implements DocumentReader {
 
 		@Override
 		protected Document readNext() throws Exception {
-			Document result = createEmptyDocument();
-			result.setTree(newickStringReader.read(
-					readNextTree(streamReader), getInternalAdapter(), getBranchLengthsAdapter(), null, false));
-			return result;
+			String tree = readNextTree(streamReader);
+			if (tree != null) {
+				Document result = createEmptyDocument();
+				result.setTree(newickStringReader.read(
+						tree, 
+						getParameterMap().getNodeBranchDataAdapter(ReadWriteParameterMap.KEY_INTERNAL_NODE_NAMES_ADAPTER, null),  // Default value is null because a values has to be specified in the constructor.  
+						getParameterMap().getNodeBranchDataAdapter(ReadWriteParameterMap.KEY_BRANCH_LENGTH_ADAPTER, null),  // Default value is null because a values has to be specified in the constructor.  
+						null, false));
+			  return result;
+			}
+			else {
+				return null;
+			}
 		}
   }
 	

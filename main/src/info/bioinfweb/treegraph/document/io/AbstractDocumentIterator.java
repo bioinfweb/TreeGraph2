@@ -31,10 +31,7 @@ import info.webinsel.util.log.ApplicationLogger;
  * @author Ben St&ouml;ver
  */
 public abstract class AbstractDocumentIterator implements DocumentIterator {
-	private ApplicationLogger loadLogger;
-	private NodeBranchDataAdapter internalAdapter;
-	private NodeBranchDataAdapter branchLengthsAdapter;
-	private boolean translateInternalNodes;
+	private ReadWriteParameterMap parameterMap;
 	private Document nextDocument = null;
 	private boolean beforeFirst = true;
 	
@@ -44,33 +41,20 @@ public abstract class AbstractDocumentIterator implements DocumentIterator {
 			NodeBranchDataAdapter branchLengthsAdapter, boolean translateInternalNodes) {
 		
 		super();
-		this.loadLogger = loadLogger;
-		this.internalAdapter = internalAdapter;
-		this.branchLengthsAdapter = branchLengthsAdapter;
-		this.translateInternalNodes = translateInternalNodes;
+		
+		parameterMap = new ReadWriteParameterMap();
+		parameterMap.putApplicationLogger(loadLogger);
+		parameterMap.put(ReadWriteParameterMap.KEY_INTERNAL_NODE_NAMES_ADAPTER,	internalAdapter);
+		parameterMap.put(ReadWriteParameterMap.KEY_BRANCH_LENGTH_ADAPTER,	branchLengthsAdapter);
+		parameterMap.put(ReadWriteParameterMap.KEY_TRANSLATE_INTERNAL_NODE_NAMES,	translateInternalNodes);
 	}
 
 
-	public ApplicationLogger getLoadLogger() {
-		return loadLogger;
+	public ReadWriteParameterMap getParameterMap() {
+		return parameterMap;
 	}
 
 
-	public NodeBranchDataAdapter getInternalAdapter() {
-		return internalAdapter;
-	}
-
-
-	public NodeBranchDataAdapter getBranchLengthsAdapter() {
-		return branchLengthsAdapter;
-	}
-
-
-	public boolean isTranslateInternalNodes() {
-		return translateInternalNodes;
-	}
-	
-	
 	private Document getNextDocument() throws Exception {
 		if (beforeFirst) {
 			nextDocument = readNext();

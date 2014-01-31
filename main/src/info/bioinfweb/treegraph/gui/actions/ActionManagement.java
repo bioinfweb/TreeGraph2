@@ -77,6 +77,7 @@ public class ActionManagement extends AbstractUndoActionManagement {
 		put("file.exportPDF", new ExportToPDFAction(mainFrame));
 		put("file.exportNewickNexus", new ExportToNewickNexusAction(mainFrame));
 		put("file.addSupportValues", new AddSupportValuesAction(mainFrame));
+		put("file.nodeFrequency", new NodeSupportAction(mainFrame));
 		put("file.importTable", new ImportTableAction(mainFrame));
 		put("file.exportTable", new ExportTableAction(mainFrame));
 		put("file.generateBayesTraitsCommandFile", new GenerateBayesTraitsCommandsAction(mainFrame));

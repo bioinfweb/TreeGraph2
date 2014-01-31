@@ -19,36 +19,57 @@
 package info.bioinfweb.treegraph.document.undo.file.addsupportvalues;
 
 
+import info.webinsel.util.Math2;
+
+
 
 /**
  * @author Ben St&ouml;ver
  * @since 2.0.33
  */
 public class LeafField {
-	private boolean [] field;
+	private int[] field;
+	private int size;
 
 	
 	public LeafField(int size) {
 		super();
-		field = new boolean[size];
+		
+		field = new int[Math2.divAbove(size, Integer.SIZE)];
+		this.size = size; 
 		for (int i = 0; i < field.length; i++) {
-			field[i] = false;
+			field[i] = 0;
 		}
 	}
 	
 	
+	@Override
+	public int hashCode() {
+		int result = 0;
+		for (int i = 0; i < field.length; i++) {
+			result += field[i];
+		}
+		return result;
+	}
+
+
 	public boolean isChild(int pos) {
-		return field[pos];
+		return (field[pos / Integer.SIZE] & Math2.intPow(2, pos % Integer.SIZE)) != 0; 
 	}
 	
 	
 	public void setChild(int pos, boolean value) {
-		field[pos] = value; 
+		if (value){
+			field[pos / Integer.SIZE] = field[pos / Integer.SIZE] | Math2.intPow(2, pos % Integer.SIZE);
+		}
+		else {
+			field[pos / Integer.SIZE] = field[pos / Integer.SIZE] & ~Math2.intPow(2, pos % Integer.SIZE);
+	}
 	}
 	
 	
 	public int size() {
-		return field.length;
+		return size;
 	}
 	
 	
@@ -72,7 +93,7 @@ public class LeafField {
 	 *         complement of this field is tested before -1 is returned)
 	 *         or a value greater than 0 if the other field contains more leafs than this one including 
 	 *         all leafs contained here. (The return value than indicated the additional number of leafs 
-	 *         contained in the other fiels.)  
+	 *         contained in the other fields.)  
 	 */
 	public int compareTo(LeafField other, boolean complement) {
 		int additionalCount = 0;
@@ -123,8 +144,8 @@ public class LeafField {
 
 	public LeafField complement() {
 		LeafField result = new LeafField(size());
-		for (int i = 0; i < size(); i++) {
-			result.setChild(i, !isChild(i));
+		for(int i = 0 ; i < field.length; i++ ){
+			result.field[i] = ~field[i];
 		}
 		return result;
 	}
@@ -155,20 +176,38 @@ public class LeafField {
 	}
 
 
+//	@Override
+//	public boolean equals(Object other) {
+//		if (other instanceof LeafField) {
+//			LeafField otherField = (LeafField)other;
+//			if (otherField.size() == size()) {
+//				if (size() > 0) {
+//					boolean compareResult = isChild(0) == otherField.isChild(0);
+//					for (int i = 0; i < size(); i++) {
+//						if ((isChild(i) == otherField.isChild(i)) != compareResult) {
+//							return false;
+//						}
+//					}
+//				}
+//				return true;
+//			}
+//		}
+//		return false;
+//	}
+	
 	@Override
 	public boolean equals(Object other) {
 		if (other instanceof LeafField) {
 			LeafField otherField = (LeafField)other;
 			if (otherField.size() == size()) {
 				if (size() > 0) {
-					boolean compareResult = isChild(0) == otherField.isChild(0);
-					for (int i = 0; i < size(); i++) {
-						if ((isChild(i) == otherField.isChild(i)) != compareResult) {
+					for (int i = 0; i < field.length; i++){
+					 if (field[i] != otherField.field[i]){
 							return false;
-						}
+					 	}
 					}
+				  return true;
 				}
-				return true;
 			}
 		}
 		return false;
