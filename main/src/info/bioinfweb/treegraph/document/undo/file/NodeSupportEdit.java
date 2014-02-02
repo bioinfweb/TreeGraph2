@@ -11,18 +11,24 @@ import info.bioinfweb.treegraph.document.io.DocumentIterator;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextElementDataAdapter;
-import info.bioinfweb.treegraph.document.undo.file.addsupportvalues.LeafField;
+import info.bioinfweb.treegraph.document.undo.topologicalcalculation.AbstractTopologicalCalculationEdit;
+import info.bioinfweb.treegraph.document.undo.topologicalcalculation.LeafSet;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 
 
-public class NodeSupportEdit extends AbstractSupportValueEdit {
 
+/**
+ * Implements calculating node frequencies from a set of tree topologies. 
+ * 
+ * @author Ben St&ouml;ver
+ */
+public class NodeSupportEdit extends AbstractTopologicalCalculationEdit {
 	private double treeCounter = 0; 
 	private double normalisationBorder = 0;
 	private DocumentIterator documentIterator = null; 
 	private NodeBranchDataAdapter supportValuesAdapter = null;
 	private TextElementDataAdapter sourceLeafsAdapter = NodeNameAdapter.getSharedInstance();
-	private HashMap<LeafField, Node> hashMap = new HashMap<LeafField, Node>();
+	private HashMap<LeafSet, Node> hashMap = new HashMap<LeafSet, Node>();
 	
 	
 	public NodeSupportEdit(Document document, TextElementDataAdapter terminalsAdapter, 
@@ -33,7 +39,6 @@ public class NodeSupportEdit extends AbstractSupportValueEdit {
 		this.supportValuesAdapter = supportValuesAdapter;
 		this.documentIterator = documentIterator; 
 		this.normalisationBorder = normalisationBorder;
-	
 	}
 	
 	
@@ -45,7 +50,7 @@ public class NodeSupportEdit extends AbstractSupportValueEdit {
 	
 	@Override
 	protected void performRedo() {
-		 addLeafFields(document.getTree().getPaintStart(), targetLeafsAdapter);	
+		 addLeafSets(document.getTree().getPaintStart(), targetLeafsAdapter);	
 		 creatHashmap(document.getTree().getPaintStart());
 		 initialiseSupportValues(document.getTree().getPaintStart());
 		 try {
@@ -91,7 +96,7 @@ public class NodeSupportEdit extends AbstractSupportValueEdit {
 	
 	public void creatHashmap (Node root){
 		if (!root.isLeaf()) {
-			LeafField field = getLeafField(root);
+			LeafSet field = getLeafSet(root);
 			hashMap.put(field, root);
 			for (int i = 0; i < root.getChildren().size(); i++) {
 				Node child = root.getChildren().get(i);	
@@ -109,17 +114,17 @@ public class NodeSupportEdit extends AbstractSupportValueEdit {
 	
 	private void countSimilarNodes(Node root) {
 		System.out.println("Count similar nodes");
-		addLeafFields(root, sourceLeafsAdapter);
+		addLeafSets(root, sourceLeafsAdapter);
 
 		if (!root.isLeaf()) {
-			Node corresponding = hashMap.get(getLeafField(root));
+			Node corresponding = hashMap.get(getLeafSet(root));
 			System.out.println("" + corresponding + " " + hashMap.size());
 			
 			if (corresponding != null) {
 				counter(corresponding);
 			}
 			else {
-				corresponding = hashMap.get(getLeafField(root).complement());
+				corresponding = hashMap.get(getLeafSet(root).complement());
 				if (corresponding != null){
 					counter(corresponding);
 				}

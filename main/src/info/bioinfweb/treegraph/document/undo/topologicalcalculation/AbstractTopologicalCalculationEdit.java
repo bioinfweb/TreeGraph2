@@ -1,33 +1,38 @@
-package info.bioinfweb.treegraph.document.undo.file;
+package info.bioinfweb.treegraph.document.undo.topologicalcalculation;
 
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextElementData;
+import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.TextElementDataAdapter;
 import info.bioinfweb.treegraph.document.undo.ComplexDocumentEdit;
-import info.bioinfweb.treegraph.document.undo.file.addsupportvalues.LeafField;
 
 
 
-public abstract class AbstractSupportValueEdit extends ComplexDocumentEdit {
-	public static final String KEY_LEAF_REFERENCE = AbstractSupportValueEdit.class.getName() + ".LeafList";
+/**
+ * Implements basic functionalities for all edits that depend on calculations based on the tree topology
+ * and therefore need the tree nodes to be decorated with information in their subtrees. 
+ * 
+ * @author Ben St&ouml;ver
+ */
+public abstract class AbstractTopologicalCalculationEdit extends ComplexDocumentEdit {
+	public static final String KEY_LEAF_REFERENCE = AbstractTopologicalCalculationEdit.class.getName() + ".LeafList";
 	public static final int MAX_TERMINAL_ERROR_COUNT = 10;
 	public static final NodeNameAdapter SOURCE_LEAFS_ADAPTER = NodeNameAdapter.getSharedInstance();
-	protected Vector<TextElementData> leafValues = new Vector<TextElementData>();
+	protected List<TextElementData> leafValues = new Vector<TextElementData>();
 	protected boolean processRooted;
-
 	
 	/** The column that contains the terminal identifiers in the target document (usually nodes names) */
-	protected TextElementDataAdapter targetLeafsAdapter = null;
+	protected NodeBranchDataAdapter targetLeafsAdapter = null;
 	
 	
-	public AbstractSupportValueEdit(Document document,
-			TextElementDataAdapter targetLeafsAdapter, boolean processRooted) {
+	public AbstractTopologicalCalculationEdit(Document document,
+			NodeBranchDataAdapter targetLeafsAdapter, boolean processRooted) {
 	
 		super(document);
 		this.processRooted = processRooted;
@@ -37,24 +42,28 @@ public abstract class AbstractSupportValueEdit extends ComplexDocumentEdit {
 
 	
 	/**
-	 * Fills the specified list with the values of all leafs under <code>root</code>. 
+	 * Fills the specified list with the values of all leafs under <code>root</code>.
+	 * 
 	 * @param list
 	 * @param root
 	 * @param adapter
 	 */
-	protected void addLeafList(List<TextElementData> list, Node root, TextElementDataAdapter adapter) {
+	protected void addLeafList(List<TextElementData> list, Node root, NodeBranchDataAdapter adapter) {
 		if (root.isLeaf()) {
-			list.add(adapter.getData(root));
+			list.add(adapter.toTextElementData(root));
 		}
 		else {
-			for (int i = 0; i < root.getChildren().size(); i++) {
-				addLeafList(list, root.getChildren().get(i), adapter);
+			Iterator<Node> iterator = root.getChildren().iterator();
+			while (iterator.hasNext()) {
+				addLeafList(list, iterator.next(), adapter);
 			}
 		}
 	}
 
+	
 	/**
 	 * Checks if both the loaded and the imported tree contain exactly the same terminals.
+	 * 
 	 * @return an error message, if the terminal nodes are not identical or <code>null</code> if they are
 	 */
 	protected String compareLeafs(Document src) {
@@ -90,57 +99,56 @@ public abstract class AbstractSupportValueEdit extends ComplexDocumentEdit {
 		}
 	}
 
+
 	/**
 	 * Returns the leaf field attribute of <code>node</code> if it has one attached. If not an according object
 	 * is created first and than returned.
+	 * 
 	 * @param node - the node from which the leaf field attribute shall be returned or created. 
 	 */
-	protected LeafField getLeafField(Node node) {
+	protected LeafSet getLeafSet(Node node) {
 		if (node.getAttributeMap().get(KEY_LEAF_REFERENCE) == null) {
 			int size = leafValues.size();
 			if (processRooted) {
 				size++;
 			}
-			LeafField field = new LeafField(size);
+			LeafSet field = new LeafSet(size);
 			node.getAttributeMap().put(KEY_LEAF_REFERENCE, field);
 		}
-		return (LeafField)node.getAttributeMap().get(KEY_LEAF_REFERENCE);
+		return (LeafSet)node.getAttributeMap().get(KEY_LEAF_REFERENCE);
 	}
 
 	
-	private int getLeafIndex(TextElementData value) {
-		int pos = 0;
-		while ((pos < leafValues.size()) && !value.equals(leafValues.get(pos))) {
-			pos++;
-		}
-		if (pos < leafValues.size()) {
-			return pos;
-		}
-		else {
-			return -1;
-		}
+	protected int getLeafIndex(TextElementData value) {
+		return leafValues.indexOf(value);
 	}
+	
+	
+	protected int getLeafCount() {
+		return leafValues.size();
+	}
+	
 
 	/**
-	 * Adds a boolean field which indicates the leafs located under <code>root</code> to
-	 * the attribute map of <code>root</code>.
+	 * Adds a boolean set which indicates the leafs located under <code>root</code> to
+	 * the attribute map of <code>root</code>.`
+	 * 
 	 * @param root - the root of the subtree
 	 */
-	protected void addLeafFields(Node root, TextElementDataAdapter adapter) {
+	protected void addLeafSets(Node root, NodeBranchDataAdapter adapter) {
 		if (!root.isLeaf()) {
-			LeafField field = getLeafField(root);
+			LeafSet field = getLeafSet(root);
 			
 			for (int i = 0; i < root.getChildren().size(); i++) {
 				Node child = root.getChildren().get(i);
-				addLeafFields(child, adapter);
+				addLeafSets(child, adapter);
 				if (child.isLeaf()) {
-					field.setChild(getLeafIndex(adapter.getData(child)), true);
+					field.setChild(getLeafIndex(adapter.toTextElementData(child)), true);
 				}
 				else {
-					field.addField(getLeafField(child));
+					field.addField(getLeafSet(child));
 				}
 			}
 		}
 	}
-	
 }

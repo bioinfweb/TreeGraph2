@@ -15,6 +15,11 @@ import javax.swing.Action;
 
 
 
+/**
+ * Allows the user to calculate node frequencies from a set of tree topologies. 
+ * 
+ * @author Ben St&ouml;ver
+ */
 public class NodeSupportAction extends EditDialogAction {
 	public NodeSupportAction(MainFrame mainFrame) {
 		super(mainFrame);

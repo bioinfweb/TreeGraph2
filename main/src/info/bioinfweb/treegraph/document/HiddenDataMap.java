@@ -34,6 +34,7 @@ public class HiddenDataMap implements Map<String, TextElementData> {
   
 	/**
 	 * Creates a new hidden data map.
+	 * 
 	 * @param owner - the node this map (or its branch) is attached to
 	 * @since 2.0.48
 	 */
@@ -44,7 +45,8 @@ public class HiddenDataMap implements Map<String, TextElementData> {
 
 
 	/**
-	 * Returns the node this map (or its branch) is attached to
+	 * Returns the node this map (or its branch) is attached to.
+	 * 
 	 * @since 2.0.48
 	 */
 	public Node getOwner() {
@@ -84,7 +86,10 @@ public class HiddenDataMap implements Map<String, TextElementData> {
 	 * @see #put(String, TextElementData)
 	 */
 	public Object putForID(String id, TextElementData value) {
-		Object result = IDManager.removeElementWithID(getOwner(), id);
+		Object result = null;
+		if (getOwner() != null) {
+			result = IDManager.removeElementWithID(getOwner(), id);
+		}
 		map.put(id, value);
 		return result;
 	}
@@ -204,6 +209,7 @@ public class HiddenDataMap implements Map<String, TextElementData> {
 
 	/**
 	 * Adds all elements of the specified map to this map.
+	 * 
 	 * @since 2.0.48
 	 */
 	@Override
@@ -240,6 +246,7 @@ public class HiddenDataMap implements Map<String, TextElementData> {
 	/**
 	 * Tests if the specified map contains one or more IDs that are also contained in this 
 	 * map.
+	 * 
 	 * @param other
 	 * @return
 	 */
@@ -257,6 +264,7 @@ public class HiddenDataMap implements Map<String, TextElementData> {
 	/**
 	 * Clears the current contents of the map and fills it with copies of the contents
 	 * of the given map.
+	 * 
 	 * @param other - the source map for the contents to be assigned
 	 */
 	public void assign(HiddenDataMap other) {

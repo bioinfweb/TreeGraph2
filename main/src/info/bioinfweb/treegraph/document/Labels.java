@@ -113,7 +113,10 @@ public class Labels implements Cloneable {
 	 *         specified ID was attached to the node attached to this map.        
 	 */
 	public Object add(Label label) {
-		Object result = IDManager.removeElementWithID(getHoldingBranch().getTargetNode(), label.getID());
+		Object result = null;
+		if (getHoldingBranch() != null) {
+			result = IDManager.removeElementWithID(getHoldingBranch().getTargetNode(), label.getID());
+		}
 		
 		label.setLabels(this);
 		LabelFormats f = label.getFormats();
@@ -471,7 +474,7 @@ public class Labels implements Cloneable {
 	 */
 	@Override
 	public Labels clone() {
-		Labels result = new Labels(getHoldingBranch());
+		Labels result = new Labels(null);    // getHoldingBranch() must not be specified here, because this leads to the deletion of ID elements while they are copied.
 		cloneLabelBlock(true, result);
 		cloneLabelBlock(false, result);
 		return result;

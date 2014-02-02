@@ -102,7 +102,7 @@ public class RerootEdit extends ComplexDocumentEdit {
 		
 		// Root node warnings:
 		if (rootNodeDeleted) {
-			if (!root.getData().isEmpty()) {
+			if (!root.getData().isEmpty() && !"".equals(root.getData().getText())) {
 				msg += "- The former root node (which has been deleted) contained the node name \"" + 
 			      root.getData().toString() + "\".\n";
 			}

@@ -108,17 +108,17 @@ public class Branch extends ConcretePaintableElement
 	 * Clones this <code>Branch</code> including its <code>Labels</code>-object with the 
 	 * included <code>Label</code>s. The connected <code>Node</code>s are the same objects
 	 * as in the original <code>Branch</code>.
+	 * 
 	 * @return the copy of this object 
 	 */
 	@Override
 	public Branch clone() {
-		Branch result = new Branch(getTargetNode());
+		Branch result = new Branch(null);  // getTargetNode() must not be specified here, because this leads to the deletion of ID elements while they are copied.
 		result.setLength(getLength());
 		result.labels = getLabels().clone();
 		result.labels.setHoldingBranch(result);
 		result.getHiddenDataMap().assign(getHiddenDataMap());
 		result.setFormats(getFormats().clone());
-		
 		return result;
 	}
 }

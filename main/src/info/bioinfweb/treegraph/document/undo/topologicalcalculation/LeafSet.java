@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.document.undo.file.addsupportvalues;
+package info.bioinfweb.treegraph.document.undo.topologicalcalculation;
 
 
 import info.webinsel.util.Math2;
@@ -27,12 +27,12 @@ import info.webinsel.util.Math2;
  * @author Ben St&ouml;ver
  * @since 2.0.33
  */
-public class LeafField {
+public class LeafSet {
 	private int[] field;
 	private int size;
 
 	
-	public LeafField(int size) {
+	public LeafSet(int size) {
 		super();
 		
 		field = new int[Math2.divAbove(size, Integer.SIZE)];
@@ -64,7 +64,7 @@ public class LeafField {
 		}
 		else {
 			field[pos / Integer.SIZE] = field[pos / Integer.SIZE] & ~Math2.intPow(2, pos % Integer.SIZE);
-	}
+	  }
 	}
 	
 	
@@ -73,7 +73,18 @@ public class LeafField {
 	}
 	
 	
-	public void addField(LeafField other) {
+	public int childCount() {
+		int result = 0;
+		for (int pos = 0; pos < size(); pos++) {
+	    if (isChild(pos)) {
+	    	result++;
+	    }
+    }
+		return result;
+	}
+
+
+	public void addField(LeafSet other) {
 		for (int i = 0; i < other.size(); i++) {
 			if (other.isChild(i)) {
 				setChild(i, true);
@@ -95,7 +106,7 @@ public class LeafField {
 	 *         all leafs contained here. (The return value than indicated the additional number of leafs 
 	 *         contained in the other fields.)  
 	 */
-	public int compareTo(LeafField other, boolean complement) {
+	public int compareTo(LeafSet other, boolean complement) {
 		int additionalCount = 0;
 		for (int i = 0; i < size(); i++) {
 			boolean isChildHere = isChild(i);
@@ -122,11 +133,12 @@ public class LeafField {
 	 * field  does not contain and this field (or its complement) contains at least one terminal less than
 	 * the specified field. (Tests whether this field (or its complement) is in the subtree of the 
 	 * specified field.)
+	 * 
 	 * @param other
 	 * @param complement
 	 * @return
 	 */
-	public boolean inSubtreeOf(LeafField other, boolean complement) {
+	public boolean inSubtreeOf(LeafSet other, boolean complement) {
 		boolean oneLess = false;
 		for (int i = 0; i < size(); i++) {
 			boolean isChildHere = isChild(i);
@@ -142,8 +154,8 @@ public class LeafField {
 	}
 
 
-	public LeafField complement() {
-		LeafField result = new LeafField(size());
+	public LeafSet complement() {
+		LeafSet result = new LeafSet(size());
 		for(int i = 0 ; i < field.length; i++ ){
 			result.field[i] = ~field[i];
 		}
@@ -153,12 +165,13 @@ public class LeafField {
 	
 	/**
 	 * Tests if this field (or its complement) contains at least one element from the specified field and
-	 * at least one which is not contained in <code>other</code>. 
+	 * at least one which is not contained in <code>other</code>.
+	 * 
 	 * @param other
 	 * @param complement
 	 * @return
 	 */
-	public boolean containsAnyAndOther(LeafField other, boolean complement) {
+	public boolean containsAnyAndOther(LeafSet other, boolean complement) {
 		boolean containsOther = false;
 		boolean containsAny = false;
 		for (int i = 0; i < size(); i++) {
@@ -174,31 +187,37 @@ public class LeafField {
 		}
 		return false;
 	}
-
-
-//	@Override
-//	public boolean equals(Object other) {
-//		if (other instanceof LeafField) {
-//			LeafField otherField = (LeafField)other;
-//			if (otherField.size() == size()) {
-//				if (size() > 0) {
-//					boolean compareResult = isChild(0) == otherField.isChild(0);
-//					for (int i = 0; i < size(); i++) {
-//						if ((isChild(i) == otherField.isChild(i)) != compareResult) {
-//							return false;
-//						}
-//					}
-//				}
-//				return true;
-//			}
-//		}
-//		return false;
-//	}
 	
+	
+	/**
+	 * Returns {@code true} if all terminals contained in {@code subset} are also contained in this set.
+	 * The complement of any of these sets is not tested.
+	 * 
+	 * @param subset - the other set to be compared
+	 * @return {@code true} if this set contains at least all children that are contained in {@code other},
+	 *         {@code false} if {@code subset} contains at least one child that is not contained in this set.
+	 * @throws IllegalArgumentException - if the other set differs in size from this set.
+	 */
+	public boolean containsAll(LeafSet subset) {
+		if (subset.size() == size()) {
+			for (int i = 0; i < field.length; i++) {
+		    if ((field[i] & subset.field[i]) != subset.field[i]) {
+		    	return false;
+		    }
+	    }
+			return true;
+		}
+		else {
+			throw new IllegalArgumentException("The other set has a different size than this set. " +
+					"Comparing sets of different sizes is not allowed.");
+		}
+	}
+
+
 	@Override
 	public boolean equals(Object other) {
-		if (other instanceof LeafField) {
-			LeafField otherField = (LeafField)other;
+		if (other instanceof LeafSet) {
+			LeafSet otherField = (LeafSet)other;
 			if (otherField.size() == size()) {
 				if (size() > 0) {
 					for (int i = 0; i < field.length; i++){

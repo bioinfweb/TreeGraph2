@@ -83,8 +83,8 @@ public abstract class ComplexDocumentEdit extends DocumentEdit {
 	public void redo() throws CannotRedoException {
 		document.getTree().setPaintStart(newRoot);
   	if (!firstRedone) {
-			performRedo();  //Kann nicht schon in Konstruktor aufgerufen werden.
-			newRoot = document.getTree().getPaintStart();  // Falls Wurzel in perfom redo verändert wurde.
+			performRedo();  // Can't be called in the constructor already
+			newRoot = document.getTree().getPaintStart();  // In case the root changed in performRedo()
 			firstRedone = true;
 		}
 		super.redo();

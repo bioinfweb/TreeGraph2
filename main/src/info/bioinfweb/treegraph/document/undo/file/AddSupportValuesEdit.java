@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.document.undo.file.addsupportvalues;
+package info.bioinfweb.treegraph.document.undo.file;
 
 
 import java.text.DecimalFormat;
@@ -33,12 +33,14 @@ import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.AbstractTextElementDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextElementDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;
-import info.bioinfweb.treegraph.document.undo.file.AbstractSupportValueEdit;
+import info.bioinfweb.treegraph.document.undo.topologicalcalculation.AbstractTopologicalCalculationEdit;
+import info.bioinfweb.treegraph.document.undo.topologicalcalculation.LeafSet;
+import info.bioinfweb.treegraph.document.undo.topologicalcalculation.NodeInfo;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 
 
 
-public class AddSupportValuesEdit extends AbstractSupportValueEdit {
+public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
 	public static final String SUPPORT_NAME = "Support";
 	public static final String CONFLICT_NAME = "Conflict";
 	public static final DecimalFormat SUPPORT_DECIMAL_FORMAT = 
@@ -152,12 +154,10 @@ public class AddSupportValuesEdit extends AbstractSupportValueEdit {
 	
 	@Override
 	protected void performRedo() {
-	
     String errorMsg = compareLeafs(src);
     if (errorMsg == null) {  // The terminal nodes of both trees are identical.
- 
-  		addLeafFields(src.getTree().getPaintStart(), SOURCE_LEAFS_ADAPTER);
-  		addLeafFields(document.getTree().getPaintStart(), targetLeafsAdapter);
+  		addLeafSets(src.getTree().getPaintStart(), SOURCE_LEAFS_ADAPTER);
+  		addLeafSets(document.getTree().getPaintStart(), targetLeafsAdapter);
   		processSubtree(document.getTree().getPaintStart());
     }
     else {
@@ -167,11 +167,11 @@ public class AddSupportValuesEdit extends AbstractSupportValueEdit {
 	}
 	
 	
-	private NodeInfo findSourceNodeWithAllLeafs(Node sourceRoot, LeafField targetLeafs) {
-		int additionalCount = targetLeafs.compareTo(getLeafField(sourceRoot), false);
+	private NodeInfo findSourceNodeWithAllLeafs(Node sourceRoot, LeafSet targetLeafs) {
+		int additionalCount = targetLeafs.compareTo(getLeafSet(sourceRoot), false);
 		boolean downwards = additionalCount != -1;
 		if (!downwards) {
-			additionalCount = targetLeafs.compareTo(getLeafField(sourceRoot), true);
+			additionalCount = targetLeafs.compareTo(getLeafSet(sourceRoot), true);
 		}
   	NodeInfo result = new NodeInfo(sourceRoot, additionalCount, downwards);
 		for (int i = 0; i < sourceRoot.getChildren().size(); i++) {
@@ -204,10 +204,10 @@ public class AddSupportValuesEdit extends AbstractSupportValueEdit {
 	 * @return the node with the highest support value found (in the source document)
 	 */
 	private double findHighestConflict(Node root, double highest, Node targetNode, NodeInfo info) {
-		if ((getLeafField(root).containsAnyAndOther(getLeafField(targetNode), false) &&
-				 getLeafField(root).inSubtreeOf(getLeafField(info.getNode()), false))
-				|| (getLeafField(root).containsAnyAndOther(getLeafField(targetNode), true) &&
-						getLeafField(root).inSubtreeOf(getLeafField(info.getNode()), true))) {
+		if ((getLeafSet(root).containsAnyAndOther(getLeafSet(targetNode), false) &&
+				 getLeafSet(root).inSubtreeOf(getLeafSet(info.getNode()), false))
+				|| (getLeafSet(root).containsAnyAndOther(getLeafSet(targetNode), true) &&
+						getLeafSet(root).inSubtreeOf(getLeafSet(info.getNode()), true))) {
 			
 			double value = getSupportValue(root);
 			if (!Double.isNaN(value)) {
@@ -247,7 +247,7 @@ public class AddSupportValuesEdit extends AbstractSupportValueEdit {
 					(targetRoot.getParent().getChildren().size() == 2) && targetRoot.isLast())) {  // Verhindern, dass ungewurzelte Bäume mehrmals Werte für semantisch gleichen Ast erhalten.
 				
 				NodeInfo bestSourceNode = findSourceNodeWithAllLeafs(src.getTree().getPaintStart(), 
-						getLeafField(targetRoot));
+						getLeafSet(targetRoot));
 				if (bestSourceNode.getAdditionalCount() == 0) {  // support found
 					if (sourceAdapter.isDecimal(bestSourceNode.getNode())) {  // wenn dort ein Wert existiert
 	  				supportAdapter.setDecimal(targetRoot, sourceAdapter.getDecimal(bestSourceNode.getNode()));  // String-Werte können nicht auftreten

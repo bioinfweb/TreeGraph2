@@ -19,6 +19,7 @@
 package info.bioinfweb.treegraph.gui.treeframe;
 
 
+import java.util.List;
 import java.util.Vector;
 
 import info.bioinfweb.treegraph.document.ConcretePaintableElement;
@@ -42,7 +43,6 @@ import info.bioinfweb.treegraph.document.undo.edit.ChangeTextualValueEdit;
 import info.webinsel.util.Math2;
 
 import javax.swing.JTable;
-import javax.swing.event.ChangeEvent;
 import javax.swing.table.AbstractTableModel;
 
 
@@ -119,7 +119,7 @@ public class DocumentTableModel extends AbstractTableModel implements DocumentLi
 		adapters.add(new NodeNameAdapter());
 		adapters.add(new BranchLengthAdapter());
 
-		Vector<String> ids = IDManager.getLabelIDVectorFromSubtree(root, TextLabel.class);
+		List<String> ids = IDManager.getLabelIDVectorFromSubtree(root, TextLabel.class);
 		for (int i = 0; i < ids.size(); i++) {
 			adapters.add(new TextLabelAdapter(ids.get(i), 
 					((TextLabel)IDManager.getFirstLabel(root, TextLabel.class, ids.get(i))).getFormats().getDecimalFormat()));

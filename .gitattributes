@@ -350,11 +350,8 @@ main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/DoubleVarar
 main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/IDFunction.java -text
 main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/UndefinedIDException.java -text
 main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/VarargFunction.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/treegraph/document/undo/file/AbstractSupportValueEdit.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/file/AddSupportValuesEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/file/NodeSupportEdit.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/treegraph/document/undo/file/addsupportvalues/AddSupportValuesEdit.java -text
-main/src/info/bioinfweb/treegraph/document/undo/file/addsupportvalues/LeafField.java -text
-main/src/info/bioinfweb/treegraph/document/undo/file/addsupportvalues/NodeInfo.java -text
 main/src/info/bioinfweb/treegraph/document/undo/file/importtable/DuplicateKeyException.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/file/importtable/ImportTableData.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/file/importtable/ImportTableEdit.java -text
@@ -374,6 +371,9 @@ main/src/info/bioinfweb/treegraph/document/undo/format/ScaleDistanceValuesEdit.j
 main/src/info/bioinfweb/treegraph/document/undo/format/ShowHideScaleBarEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/format/ShowRootedEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/package.html -text
+main/src/info/bioinfweb/treegraph/document/undo/topologicalcalculation/AbstractTopologicalCalculationEdit.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/topologicalcalculation/LeafSet.java -text
+main/src/info/bioinfweb/treegraph/document/undo/topologicalcalculation/NodeInfo.java -text
 main/src/info/bioinfweb/treegraph/graphics/export/AbstractGraphicWriter.java -text
 main/src/info/bioinfweb/treegraph/graphics/export/FreeHEPWriter.java -text
 main/src/info/bioinfweb/treegraph/graphics/export/GraphicFilter.java -text
