@@ -710,6 +710,7 @@ main/xsd/1.2.xsd -text
 test/.classpath -text svneol=unset#text/plain
 test/.project -text svneol=unset#text/plain
 test/.settings/org.eclipse.jdt.core.prefs -text svneol=unset#text/plain
+test/data/RerootByLeafs.xtg -text
 test/data/importTable/TableNodeNames.txt -text svneol=unset#text/plain
 test/data/importTable/TableNodeNames_numbersAsDec.txt -text svneol=unset#text/plain
 test/data/importTable/TableNodeNames_numbersAsText.txt -text svneol=unset#text/plain
@@ -731,6 +732,7 @@ test/lib/junit-4.9b1.jar -text
 test/src/info/bioinfweb/treegraph/document/IDManagerTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/LabelLineTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/LabelsTest.java -text svneol=unset#text/plain
-test/src/info/bioinfweb/treegraph/document/undo/file/addsupportvalues/LeafFieldTest.java -text svneol=unset#text/plain
+test/src/info/bioinfweb/treegraph/document/undo/edit/RerootByLeafSetEditTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/undo/file/importtable/ImportTableDataTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/undo/file/importtable/ImportTableEditTest.java -text svneol=unset#text/plain
+test/src/info/bioinfweb/treegraph/document/undo/topologicalcalculation/LeafSetTest.java -text svneol=unset#text/plain
