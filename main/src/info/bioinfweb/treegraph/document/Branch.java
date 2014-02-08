@@ -121,4 +121,15 @@ public class Branch extends ConcretePaintableElement
 		result.setFormats(getFormats().clone());
 		return result;
 	}
+
+
+	@Override
+  public String toString() {
+		if (getLinkedNode() != null) {
+			return "Branch on node " + getLinkedNode().getUniqueName();
+		}
+		else {
+			return super.toString();
+		}
+  }
 }

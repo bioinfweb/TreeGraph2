@@ -26,6 +26,7 @@ import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Label;
 import info.bioinfweb.treegraph.document.Labels;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.undo.ComplexDocumentEdit;
 
 
@@ -71,7 +72,7 @@ public class RerootEdit extends ComplexDocumentEdit {
 	}
 
 
-	private void copyLabels(Labels source, Labels target) {
+	private static void copyLabels(Labels source, Labels target) {
   	Label labels[] = source.toLabelArray();
   	for (int i = 0; i < labels.length; i++) {
 			target.add(labels[i].clone());
@@ -79,7 +80,7 @@ public class RerootEdit extends ComplexDocumentEdit {
   }
   
   
-	private void copyBranchData(Branch source, Branch target) {
+	private static void copyBranchData(Branch source, Branch target) {
 		// Merge branch data:
 		target.getHiddenDataMap().putAll(source.getHiddenDataMap());  // Copying is only helpful, if the two branches contain elements with different IDs. All other elements are overwritten. 
 		copyLabels(source.getLabels(), target.getLabels());
@@ -96,8 +97,7 @@ public class RerootEdit extends ComplexDocumentEdit {
 	}
 	
 
-	private void setWarnings(boolean rootNodeDeleted) {
-		Node root = document.getTree().getPaintStart();
+	private static String createWarningMessage(Node root, boolean rootNodeDeleted) {
 		String msg = "";
 		
 		// Root node warnings:
@@ -140,7 +140,10 @@ public class RerootEdit extends ComplexDocumentEdit {
 		
 		// Output:
 		if (!"".equals(msg)) {
-			warningText = "Rerooting produced warnings:\n\n" + msg + "\nYou can use the undo-function to restore lost data.";
+			return "Rerooting produced warnings:\n\n" + msg + "\nYou can use the undo-function to restore lost data.";
+		}
+		else {
+			return null;
 		}
 	}
 	
@@ -163,8 +166,8 @@ public class RerootEdit extends ComplexDocumentEdit {
 	 * If the branch that was selected as the rooting point has a branch length, than this value
 	 * is equally separated on both branches leading from the new root to the two subtrees.
 	 */
-	private void separareRootBranchLength() {
-		List<Node> nodes = document.getTree().getPaintStart().getChildren();
+	private static void separateRootBranchLength(Tree tree) {
+		List<Node> nodes = tree.getPaintStart().getChildren();
 		if (nodes.size() != 2) {
 			throw new InternalError("Unexpected tree topology after rerooting.");
 		}
@@ -179,19 +182,20 @@ public class RerootEdit extends ComplexDocumentEdit {
 			if (!Double.isNaN(halfLength)) {
 				nodes.get(0).getAfferentBranch().setLength(halfLength);
 				nodes.get(1).getAfferentBranch().setLength(halfLength);
-				document.getTree().getPaintStart().getAfferentBranch().setLength(0.0);  // Make sure the new root has a defined branch length if the child branches do.
+				tree.getPaintStart().getAfferentBranch().setLength(0.0);  // Make sure the new root has a defined branch length if the child branches do.
 			}
 		}
 	}
 	
 	
-	private void reroot(Branch position) {
+	public static String reroot(Tree tree, Branch position) {
+		String result = null;
 		Node parent = position.getTargetNode().getParent();
 		if (parent != null) {  // Otherwise rerooting would not change anything.
 			// Save node data:
-			List<Node> children = document.getTree().getPaintStart().getChildren();
+			List<Node> children = tree.getPaintStart().getChildren();
 			boolean collapseFormerRoot = (children.size() == 2);
-			setWarnings(collapseFormerRoot);
+			result = createWarningMessage(tree.getPaintStart(), collapseFormerRoot);
 			if (collapseFormerRoot) {
 				if (children.get(0).containedInSubtree(position)) {  // Depending on the position of the new root the one or the other child will be deleted in the end.
 					copyBranchData(children.get(0).getAfferentBranch(), children.get(1).getAfferentBranch());
@@ -203,7 +207,7 @@ public class RerootEdit extends ComplexDocumentEdit {
 			
 			// Structural changes:
 			Node current = Node.getInstanceWithBranch();
-			document.getTree().setPaintStart(current);
+			tree.setPaintStart(current);
 			parent.getChildren().remove(position.getTargetNode());
 			current.getChildren().add(position.getTargetNode());
 			position.getTargetNode().setParent(current);
@@ -225,7 +229,7 @@ public class RerootEdit extends ComplexDocumentEdit {
 				current.getChildren().remove(last);
 				current.setParent(last);
 			}
-			separareRootBranchLength();
+			separateRootBranchLength(tree);
 			
 			// Delete remaining internal node, if necessary:
 			if (collapseFormerRoot) {
@@ -236,12 +240,13 @@ public class RerootEdit extends ComplexDocumentEdit {
 				// current is now no longer part of the tree
 			}
 		}
+		return result;
 	}
 	
 	
 	@Override
 	protected void performRedo() {
-		reroot(rootingPoint);
+		warningText = reroot(document.getTree(), rootingPoint);
 	}
 
 

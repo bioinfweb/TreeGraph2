@@ -21,9 +21,11 @@ import info.bioinfweb.treegraph.document.undo.ComplexDocumentEdit;
  * @author Ben St&ouml;ver
  */
 public abstract class AbstractTopologicalCalculationEdit extends ComplexDocumentEdit {
-	public static final String KEY_LEAF_REFERENCE = AbstractTopologicalCalculationEdit.class.getName() + ".LeafList";
+	public static final String KEY_LEAF_REFERENCE = AbstractTopologicalCalculationEdit.class.getName() + ".LeafSet";
 	public static final int MAX_TERMINAL_ERROR_COUNT = 10;
 	public static final NodeNameAdapter SOURCE_LEAFS_ADAPTER = NodeNameAdapter.getSharedInstance();
+	
+	
 	protected List<TextElementData> leafValues = new Vector<TextElementData>();
 	protected boolean processRooted;
 	

@@ -386,6 +386,7 @@ public class MainFrame extends JFrame implements Runnable {
 			editMenu.add(getActionManagement().get("edit.ladderizeUp"));
 			editMenu.add(getActionManagement().get("edit.ladderizeDown"));
 			editMenu.add(getActionManagement().get("edit.reroot"));
+			editMenu.add(getActionManagement().get("edit.rerootByLeafSet"));
 			editMenu.addSeparator();
 			editMenu.add(getActionManagement().get("edit.deleteSubelements"));
 			editMenu.add(getActionManagement().get("edit.collapseNode"));

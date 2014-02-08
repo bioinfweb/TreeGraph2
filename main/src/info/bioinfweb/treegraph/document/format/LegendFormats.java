@@ -30,21 +30,21 @@ import java.awt.*;
 public class LegendFormats extends ConcreteTextFormats 
     implements ElementFormats, LineFormats, TextFormats, CornerRadiusFormats, Cloneable {
 	
-	public static final TextOrientation STD_ORIENTATION = TextOrientation.HORIZONTAL;
-	public static final LegendStyle STD_LEGEND_STYLE = LegendStyle.BRACKET;
+	public static final TextOrientation DEFAULT_ORIENTATION = TextOrientation.HORIZONTAL;
+	public static final LegendStyle DEFAULT_LEGEND_STYLE = LegendStyle.BRACKET;
 	public static final float DEFAULT_SPACING_IN_MM = 1f;
-	public static final int STD_POSITION = 0;
+	public static final int DEFAULT_POSITION = 0;
 	
 	
 	private Legend owner = null;
-	private TextOrientation orientation = STD_ORIENTATION;
-	private LegendStyle legendStyle = STD_LEGEND_STYLE;
+	private TextOrientation orientation = DEFAULT_ORIENTATION;
+	private LegendStyle legendStyle = DEFAULT_LEGEND_STYLE;
 	private Color lineColor = LineFormats.DEFAULT_LINE_COLOR;
 	private DistanceValue lineWidth = new DistanceValue(LineFormats.DEFAULT_LINE_WIDTH_IN_MM);
 	private DistanceValue cornerRadius = new DistanceValue(CornerRadiusFormats.STD_EDGE_RADIUS_IN_MM);
 	private Margin margin = new Margin(1f, 0f, 1f, 0f);
 	private DistanceValue spacing = new DistanceValue(DEFAULT_SPACING_IN_MM);
-	private int position = STD_POSITION;
+	private int position = DEFAULT_POSITION;
 	private DistanceValue minTreeDistance = new DistanceValue(0f);
   private String[] anchorNames = new String[2];
 	

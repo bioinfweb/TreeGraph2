@@ -22,7 +22,6 @@ package info.bioinfweb.treegraph.gui.treeframe;
 import info.bioinfweb.treegraph.document.PaintableElement;
 import info.bioinfweb.treegraph.document.Label;
 import info.bioinfweb.treegraph.document.Node;
-import info.bioinfweb.treegraph.document.PaintableElement;
 
 import java.lang.reflect.Array;
 import java.util.Collection;
@@ -240,6 +239,7 @@ public class TreeSelection implements Collection<PaintableElement> {
 	
 	/**
 	 * Tests if only elements of the specified type are selected.
+	 * 
 	 * @param elementClass - defines the element type
 	 * @return <code>true</code> if no other elements are selected
 	 * @since 2.0.43
@@ -252,6 +252,24 @@ public class TreeSelection implements Collection<PaintableElement> {
 			}
 		}
 		return true;
+	}
+	
+	
+	/**
+	 * Checks if the selection contains only terminal nodes.
+	 * 
+	 * @return {@code true} if only terminal nodes (leafs) are selected, {@code false otherwise}.
+	 * @since 2.0.52
+	 */
+	public boolean containsOnlyLeafNodes() {
+		Iterator<PaintableElement> iterator = iterator();
+		while (iterator.hasNext()) {
+			PaintableElement element = iterator.next();
+			if (!((element instanceof Node) && ((Node)element).isLeaf())) {
+				return false;
+			}
+		}
+  	return true;
 	}
 	
 	

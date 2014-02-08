@@ -41,7 +41,7 @@ import info.webinsel.wikihelp.client.WikiHelpOptionPane;
 
 
 /**
- * Action object the reroot the current tree at that branch the user has selected.
+ * Action object that reroots the current tree at that branch the user has selected.
  * 
  * @author Ben St&ouml;ver
  */
@@ -51,7 +51,7 @@ public class RerootAction extends DocumentAction {
 		putValue(Action.NAME, "Root here"); 
 	  putValue(Action.MNEMONIC_KEY, KeyEvent.VK_H);
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke('R', 
-				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));  // The same key as for RerootByLeafSetAction, but both actions should never be enabled at the same time.
 	}
 
 

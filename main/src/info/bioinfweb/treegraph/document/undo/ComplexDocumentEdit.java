@@ -49,6 +49,7 @@ public abstract class ComplexDocumentEdit extends DocumentEdit {
 		super(document);
 		oldRoot = document.getTree().getPaintStart();
 		newRoot = oldRoot.cloneWithSubtree(true);  // Unique names are copied as well.
+		// Legends do not have to be copied since they are anchored by unique node names.
 	}
 	
 	
@@ -59,7 +60,7 @@ public abstract class ComplexDocumentEdit extends DocumentEdit {
 	 * @param old - the node in the old tree
 	 * @return the node in the new tree
 	 */
-	protected Node findEquivilant(Node old) {
+	public Node findEquivilant(Node old) {
 		return new TreePath(old).findNode(newRoot);
 	}
 
@@ -71,7 +72,7 @@ public abstract class ComplexDocumentEdit extends DocumentEdit {
 	 * @param old - the branch in the old tree
 	 * @return the branch in the new tree
 	 */
-	protected Branch findEquivalent(Branch old) {
+	public Branch findEquivalent(Branch old) {
 		return new TreePath(old.getTargetNode()).findNode(newRoot).getAfferentBranch();
 	}
 

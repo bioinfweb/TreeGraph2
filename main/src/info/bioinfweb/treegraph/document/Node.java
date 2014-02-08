@@ -416,4 +416,11 @@ public class Node extends AbstractTextElement
 		}
 		return result;
 	}
+
+
+	@Override
+  public String toString() {
+		String result = super.toString();
+	  return result.substring(0, result.length() - 1) + ", uniqueName=" + getUniqueName() + "]";
+  }
 }

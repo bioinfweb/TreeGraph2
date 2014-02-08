@@ -27,6 +27,7 @@ import info.bioinfweb.treegraph.document.undo.topologicalcalculation.AbstractTop
 import info.bioinfweb.treegraph.document.undo.topologicalcalculation.LeafSet;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -37,7 +38,13 @@ import java.util.List;
 
 /**
  * Document edit that reroots the tree at the root branch of the smallest subtree containing all
- * specified leaf nodes.
+ * specified leaf nodes. If there is more than one smallest subtree one of the is selected and 
+ * the root branches of the others can be accessed by {@link #getAlternativeRootingPoints()}.
+ * <p>
+ * Note that is depends on the ordering of elements in {@link HashSet}) which if the alternatives
+ * is used. Since that ordering is non-deterministic it might change which subtree is selected
+ * in several calls of this edit. Additionally is might depend on the order of the specified leaf
+ * nodes.
  * 
  * @author Ben St&ouml;ver
  */
@@ -49,10 +56,11 @@ public class RerootByLeafSetEdit extends AbstractTopologicalCalculationEdit {
 	}
 	
 	
-	private RerootEdit rerootEdit;
+	private Branch rootingPoint;
 	private List<Node> leafs;
 	private LeafSet selectedLeafs;
 	private HashSet<Node> nodesOnPath = new HashSet<Node>();
+	private String warningText = null;
 	private Collection<Branch> alternativeRootingPoints = new ArrayList<Branch>(8);  // Initialized with 8, since there will never be many.
 	
 	
@@ -67,12 +75,28 @@ public class RerootByLeafSetEdit extends AbstractTopologicalCalculationEdit {
 	public RerootByLeafSetEdit(Document document, List<Node> leafs) {
 		super(document, UniqueNameAdapter.getSharedInstance(), false);
 		this.leafs = leafs;  // Since leafs are only compared by their unique names, it is not necessary to call findEquivalent() here.
-		rerootEdit = new RerootEdit(document, calculateRootingPoint());
+		rootingPoint = calculateRootingPoint();
 		nodesOnPath = null;  // Save memory, since this set will not be needed anymore after calculateRootingPoint() is finished.
 	}
 	
 	
-	private void createSelectedLeafsFiels() {
+	/**
+	 * Creates a new instance of this class.
+	 * 
+	 * @param document - the document that contains the tree to be rerooted 
+	 * @param leafs - an array of leaf nodes contained in {@code document} that shall all be contained in one 
+	 *        of the subtrees of the future root
+	 * @throws IllegalArgumentException - if one or more of the specified nodes is not a leaf 
+	 */
+	public RerootByLeafSetEdit(Document document, Node[] leafs) {
+		super(document, UniqueNameAdapter.getSharedInstance(), false);
+		this.leafs = Arrays.asList(leafs);  // Since leafs are only compared by their unique names, it is not necessary to call findEquivalent() here.
+		rootingPoint = calculateRootingPoint();
+		nodesOnPath = null;  // Save memory, since this set will not be needed anymore after calculateRootingPoint() is finished.
+	}
+	
+	
+	private void createSelectedLeafsSet() {
 		selectedLeafs = new LeafSet(getLeafCount());
 		Iterator<Node> iterator = leafs.iterator();
 		while (iterator.hasNext()) {
@@ -132,9 +156,12 @@ public class RerootByLeafSetEdit extends AbstractTopologicalCalculationEdit {
 	}
 
 
+	/**
+	 * Searches for a branch in the tree where the new root shall be located.
+	 */
 	private Branch calculateRootingPoint() {
 		addLeafSets(document.getTree().getPaintStart(), UniqueNameAdapter.getSharedInstance());
-		createSelectedLeafsFiels();
+		createSelectedLeafsSet();
 		
 		// Mark paths:
 		Iterator<Node> iterator = leafs.iterator();
@@ -160,6 +187,7 @@ public class RerootByLeafSetEdit extends AbstractTopologicalCalculationEdit {
 				alternativeRootingPoints.clear();
 				result = subtrees.first;
 				alternativeRootingPoints.addAll(subtrees.alternatives);
+				maxLeafCount = subtrees.leafCount;
 			}
 			else if (subtrees.leafCount == maxLeafCount) {
 				alternativeRootingPoints.add(subtrees.first);
@@ -167,9 +195,7 @@ public class RerootByLeafSetEdit extends AbstractTopologicalCalculationEdit {
 			}
 		}
 		
-//		System.out.println(result.getTargetNode().getUniqueName());
-//		System.out.println(result.getHiddenDataMap());
-		return result;
+		return result;  // The resulting branch is located in the old tree of ComplexDocumentEdit
 	}
 	
 	
@@ -178,6 +204,20 @@ public class RerootByLeafSetEdit extends AbstractTopologicalCalculationEdit {
 	}
 
 
+	/**
+	 * Returns a warning text, if the last call of {@link #redo()} produced warnings.
+	 * @return the warning text or {@code null} if no warning occurred
+	 */
+	public String getWarningText() {
+		return warningText;
+	}
+
+  
+	public boolean hasWarnings() {
+		return warningText != null;
+	}
+	
+	
 	@Override
 	public String getPresentationName() {
 		return "Reroot tree by leaf (taxon) set";
@@ -186,6 +226,6 @@ public class RerootByLeafSetEdit extends AbstractTopologicalCalculationEdit {
 
 	@Override
   protected void performRedo() {
-		rerootEdit.performRedo();
+		warningText = RerootEdit.reroot(document.getTree(), rootingPoint);
   }
 }

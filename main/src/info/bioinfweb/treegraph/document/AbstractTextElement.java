@@ -49,7 +49,7 @@ public abstract class AbstractTextElement extends ConcretePaintableElement imple
   
 	@Override
 	public String toString() {
-		return this.getClass().getName() + "[data = " + getData() + "]";
+		return this.getClass().getName() + "[data=" + getData() + "]";
 	}
 	
 	

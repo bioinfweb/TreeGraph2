@@ -470,6 +470,7 @@ main/src/info/bioinfweb/treegraph/gui/actions/edit/RedoToAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/edit/RenameDataIDAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/edit/ReplaceInNodeDataAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/edit/RerootAction.java -text
+main/src/info/bioinfweb/treegraph/gui/actions/edit/RerootByLeafSetAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/actions/edit/SearchTextAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/edit/SeparateBranchAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/edit/SetColumnToDecimalAction.java -text
