@@ -58,7 +58,7 @@ public class CollapseNodeEdit extends SaveLegendsEdit implements WarningEdit {
 			newAnchor = node.getParent();
 		}
 		else {
-			newAnchor = node.getChildren().get(0);  // Es muss und kann in diesem Fall nur einen Kindknoten geben.
+			newAnchor = node.getChildren().get(0);  // There can only be one child node in this case.
 		}
 
 		for (int i = 0; i < legends.size(); i++) {

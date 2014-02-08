@@ -195,7 +195,7 @@ public class RerootByLeafSetEdit extends AbstractTopologicalCalculationEdit {
 			}
 		}
 		
-		return result;  // The resulting branch is located in the old tree of ComplexDocumentEdit
+		return findEquivalent(result);
 	}
 	
 	
