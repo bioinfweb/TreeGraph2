@@ -33,11 +33,9 @@ public class DeleteSubelementsEdit extends SaveLegendsEdit {
   private Node[] subnodes;
 	
 	
-	public DeleteSubelementsEdit(Document document, Node root, boolean showWarnings) {
+	public DeleteSubelementsEdit(Document document, Node root) {
 		super(document);
 		this.root = root;
-		setShowWarnings(showWarnings);
-		setHelpTopic(28);
 
 		subnodes = new Node[root.getChildren().size()];
 		for (int i = 0; i < root.getChildren().size(); i++) {
@@ -51,7 +49,6 @@ public class DeleteSubelementsEdit extends SaveLegendsEdit {
 		saveLegends();
 		editSubtreeLegends(root);
 		root.getChildren().clear();
-		showWarningDialog();
 		super.redo();
 	}
 

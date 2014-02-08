@@ -34,24 +34,23 @@ import info.bioinfweb.treegraph.document.Legend;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
-import info.bioinfweb.treegraph.document.undo.WarningEdit;
+import info.bioinfweb.treegraph.document.undo.WarningMessageEdit;
 
 
 
 /**
  * Removes all elements currently selected. <code>RemoveSubtreeEdit</code>, 
- * <code>RemoveLabelEdit</code> and <code>RemoveLegendEdit</code> are used internally. 
+ * <code>RemoveLabelEdit</code> and <code>RemoveLegendEdit</code> are used internally.
+ *  
  * @author Ben St&ouml;ver
  */
-public class DeleteEdit extends DocumentEdit implements WarningEdit {
+public class DeleteEdit extends DocumentEdit implements WarningMessageEdit {
   private HashSet<ConcretePaintableElement> elements; 
   private Vector<DocumentEdit> edits = new Vector<DocumentEdit>();
-  private boolean showWarnings = true;
   
   
-	public DeleteEdit(Document document, ConcretePaintableElement[] elements, boolean showWarnings) {
+	public DeleteEdit(Document document, ConcretePaintableElement[] elements) {
 		super(document);
-		this.showWarnings = showWarnings;
 		this.elements = new HashSet<ConcretePaintableElement>();
 		for (int i = 0; i < elements.length; i++) {
 			this.elements.add(elements[i]);
@@ -62,14 +61,32 @@ public class DeleteEdit extends DocumentEdit implements WarningEdit {
 	}
   
  
-	public boolean getShowWarnings() {
-		return showWarnings;
-	}
+	/**
+	 * Returns the warning text of the first subedit which is an instance of {@link RemoveSubtreeEdit},
+	 * which contains a warning message or {@code null}, if there is no such subedit.
+	 *
+	 * @return a warning message that should be displayed to the user or {@code null} if no warnings occurred.
+	 */
+	@Override
+  public String getWarningText() {
+		Iterator<DocumentEdit> iterator = edits.iterator();
+		while (iterator.hasNext()) {
+			DocumentEdit edit = iterator.next();
+			if (edit instanceof RemoveSubtreeEdit) {
+				RemoveSubtreeEdit removeSubtreeEdit = (RemoveSubtreeEdit)edit;
+				if (removeSubtreeEdit.hasWarnings()) {
+					return removeSubtreeEdit.getWarningText();
+				}
+			}
+		}
+	  return null;
+  }
 
 
-	public void setShowWarnings(boolean showWarnings) {
-		this.showWarnings = showWarnings;
-	}
+	@Override
+  public boolean hasWarnings() {
+	  return getWarningText() != null;
+  }
 
 
 	private boolean containsParent(Node node) {
@@ -114,7 +131,7 @@ public class DeleteEdit extends DocumentEdit implements WarningEdit {
 							((Node)element));
 				}
 				edit = new RemoveSubtreeEdit(document, ((Node)element).getParent(), 
-						((Node)element), index, getShowWarnings());
+						((Node)element), index);
 			}
 			else if (element instanceof Label) {
 				edit = new RemoveLabelEdit(document, ((Label)element), 

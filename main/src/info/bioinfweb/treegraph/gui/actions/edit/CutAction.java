@@ -21,19 +21,26 @@ package info.bioinfweb.treegraph.gui.actions.edit;
 
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.Action;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
+import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.treegraph.document.ConcretePaintableElement;
 import info.bioinfweb.treegraph.document.undo.edit.CutEdit;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeInternalFrame;
+import info.webinsel.wikihelp.client.WikiHelpOptionPane;
 
 
 
+/**
+ * Cuts a leaf node, subtree, label or legend from the document to the clipboard. 
+ * 
+ * @author Ben St&ouml;ver
+ */
 public class CutAction extends CopyElementAction {
 	public CutAction(MainFrame mainFrame) {
 		super(mainFrame);
@@ -49,7 +56,12 @@ public class CutAction extends CopyElementAction {
 	@Override
 	protected void onActionPerformed(ActionEvent e, TreeInternalFrame frame) {
 		super.onActionPerformed(e, frame);
-		frame.getDocument().executeEdit(new CutEdit(frame.getDocument(), 
-				frame.getTreeViewPanel().getSelection().toArray(new ConcretePaintableElement[0])));
+		CutEdit edit = new CutEdit(frame.getDocument(), 
+						frame.getTreeViewPanel().getSelection().toArray(new ConcretePaintableElement[0]));
+		frame.getDocument().executeEdit(edit);
+		if (edit.hasWarnings()) {
+			WikiHelpOptionPane.showMessageDialog(MainFrame.getInstance(), edit.getWarningText(), "Legend(s) affected",	
+					JOptionPane.WARNING_MESSAGE, Main.getInstance().getWikiHelp(), 69);
+		}
 	}
 }

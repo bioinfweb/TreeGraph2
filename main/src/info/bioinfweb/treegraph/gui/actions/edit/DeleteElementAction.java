@@ -19,6 +19,7 @@
 package info.bioinfweb.treegraph.gui.actions.edit;
 
 
+import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.treegraph.document.ConcretePaintableElement;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.ScaleBar;
@@ -28,14 +29,21 @@ import info.bioinfweb.treegraph.gui.actions.DocumentAction;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeInternalFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
+import info.webinsel.wikihelp.client.WikiHelpOptionPane;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.Action;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 
 
+/**
+ * Allows the user to remove a leaf node, a subtree, any type of label or a legend from the document.
+ * 
+ * @author Ben St&ouml;ver
+ */
 public class DeleteElementAction extends DocumentAction {
 	public DeleteElementAction(MainFrame mainFrame) {
 		super(mainFrame);
@@ -56,7 +64,12 @@ public class DeleteElementAction extends DocumentAction {
 
 	@Override
 	protected void onActionPerformed(ActionEvent e, TreeInternalFrame frame) {
-		frame.getDocument().executeEdit(new DeleteEdit(frame.getDocument(), 
-				frame.getTreeViewPanel().getSelection().toArray(new ConcretePaintableElement[0]), true));
+		DeleteEdit edit = new DeleteEdit(frame.getDocument(), 
+						frame.getTreeViewPanel().getSelection().toArray(new ConcretePaintableElement[0]));
+		frame.getDocument().executeEdit(edit);
+		if (edit.hasWarnings()) {
+			WikiHelpOptionPane.showMessageDialog(MainFrame.getInstance(), edit.getWarningText(), "Legend(s) affected",	
+							JOptionPane.WARNING_MESSAGE, Main.getInstance().getWikiHelp(), 26);
+		}
 	}
 }

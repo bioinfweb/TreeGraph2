@@ -23,6 +23,7 @@ import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.nodebranchdata.UniqueNameAdapter;
+import info.bioinfweb.treegraph.document.undo.WarningMessageEdit;
 import info.bioinfweb.treegraph.document.undo.topologicalcalculation.AbstractTopologicalCalculationEdit;
 import info.bioinfweb.treegraph.document.undo.topologicalcalculation.LeafSet;
 
@@ -48,7 +49,7 @@ import java.util.List;
  * 
  * @author Ben St&ouml;ver
  */
-public class RerootByLeafSetEdit extends AbstractTopologicalCalculationEdit {
+public class RerootByLeafSetEdit extends AbstractTopologicalCalculationEdit implements WarningMessageEdit {
 	private static class BranchingSubtreesResult {
 		public Branch first; 
 		public List<Branch> alternatives = new ArrayList<Branch>(4);

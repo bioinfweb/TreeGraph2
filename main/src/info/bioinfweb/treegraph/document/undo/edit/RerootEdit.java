@@ -28,6 +28,7 @@ import info.bioinfweb.treegraph.document.Labels;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.undo.ComplexDocumentEdit;
+import info.bioinfweb.treegraph.document.undo.WarningMessageEdit;
 
 
 
@@ -36,7 +37,7 @@ import info.bioinfweb.treegraph.document.undo.ComplexDocumentEdit;
  * 
  * @author Ben St&ouml;ver
  */
-public class RerootEdit extends ComplexDocumentEdit {
+public class RerootEdit extends ComplexDocumentEdit implements WarningMessageEdit {
 	public static final int DIALOG_HELP_TOPIC = 24;
 	
 	

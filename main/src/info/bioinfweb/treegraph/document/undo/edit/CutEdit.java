@@ -25,13 +25,14 @@ import info.bioinfweb.treegraph.document.Document;
 
 
 /**
- * The impelemention of this edit is the same as it is at <code>DeleteEdit</code>. The
- * copying is done by the action-object, becuase the copying does not have to be redone. 
+ * The implementation of this edit is the same as it is at <code>DeleteEdit</code>. The
+ * copying is done by the action-object, because the copying does not have to be redone.
+ *  
  * @author Ben St&ouml;ver
  */
 public class CutEdit extends DeleteEdit {
 	public CutEdit(Document document, ConcretePaintableElement[] elements) {
-		super(document, elements, true);  //TODO evtl. gelöschte Legenden mitkopieren und dann keine Warnung mehr ausgeben?
+		super(document, elements);
 	}
 
 	

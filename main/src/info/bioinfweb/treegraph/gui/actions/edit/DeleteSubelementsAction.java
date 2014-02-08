@@ -18,8 +18,9 @@
  */
 package info.bioinfweb.treegraph.gui.actions.edit;
 
+
+import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.treegraph.document.Document;
-import info.bioinfweb.treegraph.document.Label;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.edit.DeleteSubelementsEdit;
@@ -27,6 +28,7 @@ import info.bioinfweb.treegraph.gui.actions.DocumentAction;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeInternalFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
+import info.webinsel.wikihelp.client.WikiHelpOptionPane;
 
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -34,6 +36,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.Action;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 
@@ -62,7 +65,12 @@ public class DeleteSubelementsAction extends DocumentAction {
 
 	@Override
 	protected void onActionPerformed(ActionEvent e, TreeInternalFrame frame) {
-		frame.getDocument().executeEdit(new DeleteSubelementsEdit(frame.getDocument(), 
-				(Node)frame.getTreeViewPanel().getSelection().first(), true));
+		DeleteSubelementsEdit edit = new DeleteSubelementsEdit(frame.getDocument(), 
+						(Node)frame.getTreeViewPanel().getSelection().first());
+		frame.getDocument().executeEdit(edit);
+		if (edit.hasWarnings()) {
+			WikiHelpOptionPane.showMessageDialog(MainFrame.getInstance(), edit.getWarningText(), "Legend(s) affected",	
+					JOptionPane.WARNING_MESSAGE, Main.getInstance().getWikiHelp(), 28);
+		}
 	}
 }

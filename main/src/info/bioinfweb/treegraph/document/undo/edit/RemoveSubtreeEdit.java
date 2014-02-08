@@ -20,25 +20,31 @@ package info.bioinfweb.treegraph.document.undo.edit;
 
 
 import info.bioinfweb.treegraph.document.*;
-import info.bioinfweb.treegraph.document.undo.WarningEdit;
+import info.bioinfweb.treegraph.document.undo.WarningMessageEdit;
 
 import javax.swing.undo.*;
 
 
 
-public class RemoveSubtreeEdit extends InsertRemoveSubtreeEdit implements WarningEdit {
+/**
+ * Removes a subtree with all of its contents from the document. Legends that are anchored only
+ * inside this subtree are removed as well. Legends that have only one anchor in the subtree
+ * are anchored at a new node.
+ * <p>
+ * Should the parent node of the deleted subtree root have less than two child nodes after
+ * the operation, that node is additionally collapsed using {@link CollapseNodeEdit}.
+ * 
+ * @author Ben St&ouml;ver
+ */
+public class RemoveSubtreeEdit extends InsertRemoveSubtreeEdit implements WarningMessageEdit {
 	private CollapseNodeEdit collapseNodeEdit = null;
 	private boolean collapseDone = false;
 	
 	
-	public RemoveSubtreeEdit(Document document, Node parent, Node root, int index, 
-			boolean showWarnings) {
-		
+	public RemoveSubtreeEdit(Document document, Node parent, Node root, int index) {		
 		super(document, parent, root, index);
-		setShowWarnings(showWarnings);
-		setHelpTopic(26);
-		if (parent != null) {
-			collapseNodeEdit = new CollapseNodeEdit(document, parent, false);
+		if ((parent != null) && parent.getChildren().size() <= 2) {
+			collapseNodeEdit = new CollapseNodeEdit(document, parent);
 		}
 	}
 	
@@ -71,8 +77,6 @@ public class RemoveSubtreeEdit extends InsertRemoveSubtreeEdit implements Warnin
 			collapseNodeEdit.redo();
 			collapseDone = true;
 		}
-		showWarningDialog();
-		
 		super.redo();
 	}
 

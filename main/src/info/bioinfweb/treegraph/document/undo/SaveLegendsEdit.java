@@ -36,14 +36,13 @@ import info.webinsel.wikihelp.client.WikiHelpOptionPane;
  * legends. It offers the methods <code>saveLegends()</code> which can be called from the 
  * <code>redo()</code>-method and <code>restoreLegends()</code> which can be called from the 
  * <code>undo()</code>-method.
+ * 
  * @author Ben St&ouml;ver
  */
-public abstract class SaveLegendsEdit extends DocumentEdit implements WarningEdit {
+public abstract class SaveLegendsEdit extends DocumentEdit implements WarningMessageEdit {
 	private Legend[] legendsSave = null;
   private boolean legendsReanchored = false;
   private boolean legendsRemoved = false;
-  private boolean showWarnings = false;
-  private int helpTopic = 0;
 	
 	
 	public SaveLegendsEdit(Document document) {
@@ -100,56 +99,37 @@ public abstract class SaveLegendsEdit extends DocumentEdit implements WarningEdi
 	}
 
 
-	public boolean getShowWarnings() {
-		return showWarnings;
-	}
-
-
-	public void setShowWarnings(boolean showWarnings) {
-		this.showWarnings = showWarnings;
-	}
-	
-	
-  protected int getHelpTopic() {
-		return helpTopic;
-	}
-
-
-	protected void setHelpTopic(int helpTopic) {
-		this.helpTopic = helpTopic;
-	}
-
-
-	protected String getWarningsMessages() {
+	@Override
+  public String getWarningText() {
 		String msg = "";
 		if (getLegendsRemoved()) {
-			msg += "- One or more legends that were only anchored inside the removed subtree were removed as well.\n";
+			msg += "- One or more legend(s) that were only anchored inside the removed subtree were removed as well.\n";
 		}
 		if (getLegendsReanchored()) {
-			msg += "- One or more legends that were anchored inside the removed subtree were reanchored.\n";
+			msg += "- One or more legend(s) that were anchored inside the removed subtree were reanchored.\n";
 		}
-		return msg;
+		if ("".equals(msg)) {
+			return null;
+		}
+		else {
+			return "This process produced warnings:\n\n" + msg + "\nYou can use the undo-function to restore lost or changed data.";
+		}
   }
-	
-	
-	protected void showWarningDialog() {
-		if (getShowWarnings()) {
-			String msg = getWarningsMessages();
-			if (!"".equals(msg)) {
-				WikiHelpOptionPane.showMessageDialog(null, "This process produced warnings:\n\n" + msg + 
-						"\nYou can use the undo-function to restore lost or changed data.", "Warning", 
-						JOptionPane.WARNING_MESSAGE, Main.getInstance().getWikiHelp(), helpTopic);
-			}
-		}
-	}
-	
-	
+
+
+	@Override
+  public boolean hasWarnings() {
+	  return getLegendsRemoved() || getLegendsReanchored();
+  }
+
+
 	/**
 	 * This method can be used to adopt the legends of a document prior to deleting a subtree.
 	 * If all anchors of a legend are contained in the deleted subtree, the legend is 
 	 * deleted as well. If only one of the anchors is in the deleted subtree this anchor is
 	 * deleted but the other remains unchanged (if necessary the former second anchor becomes the 
 	 * first) and the legend is left in the document.
+	 * 
 	 * @param root - the root node of the subtree that will be deleted later
 	 */
 	protected void editSubtreeLegends(Node root) {
@@ -161,7 +141,7 @@ public abstract class SaveLegendsEdit extends DocumentEdit implements WarningEdi
 			boolean secondIn = root.containedInSubtree(secondAnchor);
 			if ((firstIn && secondIn) || (firstIn && (secondAnchor == null))) {
 				legends.remove(l);
-				i--;  // Index hat sich durch das Löschen verschoben.
+				i--;  // Index was shifted by delete operation.
 				setLegendsRemoved(true);
 			}
 			else if (secondIn) {

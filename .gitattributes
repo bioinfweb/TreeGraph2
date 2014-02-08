@@ -300,7 +300,7 @@ main/src/info/bioinfweb/treegraph/document/undo/DocumentEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/NodeBranchDataBackup.java -text
 main/src/info/bioinfweb/treegraph/document/undo/NodeBranchDataEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/SaveLegendsEdit.java -text
-main/src/info/bioinfweb/treegraph/document/undo/WarningEdit.java -text
+main/src/info/bioinfweb/treegraph/document/undo/WarningMessageEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/edit/BranchLengthEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/edit/CalculateColumnEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/edit/ChangeCellTypeEdit.java -text

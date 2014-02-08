@@ -31,19 +31,23 @@ import info.bioinfweb.treegraph.document.Legend;
 import info.bioinfweb.treegraph.document.Legends;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.undo.SaveLegendsEdit;
-import info.bioinfweb.treegraph.document.undo.WarningEdit;
+import info.bioinfweb.treegraph.document.undo.WarningMessageEdit;
 import info.webinsel.wikihelp.client.WikiHelpOptionPane;
 
 
 
-public class CollapseNodeEdit extends SaveLegendsEdit implements WarningEdit {
+/**
+ * Adds all children of a node to its parent node and than remove that node from the document.
+ * 
+ * @author Ben St&ouml;ver
+ */
+public class CollapseNodeEdit extends SaveLegendsEdit implements WarningMessageEdit {
   private Node node = null;
   private int index = 0;
 
   
-	public CollapseNodeEdit(Document document, Node node, boolean showWarnings) {
+	public CollapseNodeEdit(Document document, Node node) {
 		super(document);
-		setShowWarnings(showWarnings);
 		this.node = node;
 		if (node.hasParent()) {
 			index = node.getParent().getChildren().indexOf(node); 
@@ -72,11 +76,6 @@ public class CollapseNodeEdit extends SaveLegendsEdit implements WarningEdit {
 				l.getFormats().setAnchor(1, newAnchor);
 				setLegendsReanchored(true);
 			}
-		}
-		
-		if (getShowWarnings() && getLegendsReanchored()) {
-			WikiHelpOptionPane.showMessageDialog(null, "One or more legends had to be reanchord", 
-					"Legends reanchored", JOptionPane.WARNING_MESSAGE, Main.getInstance().getWikiHelp(), 25);
 		}
 	}
 

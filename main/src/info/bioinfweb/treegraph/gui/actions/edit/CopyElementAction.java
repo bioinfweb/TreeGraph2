@@ -80,6 +80,6 @@ public class CopyElementAction extends DocumentAction {
 		}
 		//TODO ScaleBar kopieren (in ein anderes Dokument)
 		
-		MainFrame.getInstance().getActionManagement().refreshActionStatus();  // Paste könnte gerade möglich geworden sein.
+		MainFrame.getInstance().getActionManagement().refreshActionStatus();  // Paste could have been enabled.
 	}
 }

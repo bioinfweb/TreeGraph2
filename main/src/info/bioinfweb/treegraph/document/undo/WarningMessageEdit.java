@@ -20,8 +20,22 @@ package info.bioinfweb.treegraph.document.undo;
 
 
 
-public interface WarningEdit {
-  public boolean getShowWarnings();
+/**
+ * This interface should be implemented by all edit classes that could produce warning
+ * messages.
+ * <p>
+ * Note that edit classes should never output warning messages directly
+ * to the user. Instead action objects or other calling classes the display the messages
+ * provided by the methods of this interface.
+ * 
+ * @author Ben St&ouml;ver
+ */
+public interface WarningMessageEdit {
+	/**
+	 * Returns a warning text, if the last call of {@link #redo()} produced warnings.
+	 * @return the warning text or {@code null} if no warning occurred
+	 */
+	public String getWarningText();
   
-  public void setShowWarnings(boolean showWarnings);
+	public boolean hasWarnings();
 }
