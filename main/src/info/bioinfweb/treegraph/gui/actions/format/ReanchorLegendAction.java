@@ -70,12 +70,11 @@ public class ReanchorLegendAction extends DocumentAction{
 		String lowerAnchorName = null;
 		if (selection.size() == 3) {  // Zwei Knoten, eine Legende
 			Iterator<PaintableElement> iterator = selection.iterator();
-			PaintableElement element = iterator.next();
-			while ((element != null) && (lowerAnchorName == null)) {
+			while (iterator.hasNext() && (lowerAnchorName == null)) {
+				PaintableElement element = iterator.next();
 				if ((element instanceof Node) && (element != upperAnchor)) {
 					lowerAnchorName = ((Node)element).getUniqueName();
 				}
-				element = iterator.next();
 			}
 		}
 		

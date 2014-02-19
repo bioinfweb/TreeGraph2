@@ -523,7 +523,6 @@ public class XTGReader extends AbstractDocumentReader implements XTGConstants {
         if (element.getName().getLocalPart().equals(TAG_NODE)) {
         	document.getTree().setPaintStart(readSubtree(element));
         	document.getTree().assignUniqueNames();  // If nodes without an unique name were present.
-        	document.getTree().updateElementSet();
         }
         else if (element.getName().getLocalPart().equals(TAG_SCALE_BAR)) {
         	readScaleBar(element, document.getTree().getScaleBar());
@@ -537,6 +536,7 @@ public class XTGReader extends AbstractDocumentReader implements XTGConstants {
       }
       event = reader.nextEvent();
     }
+  	document.getTree().updateElementSet();
   }
 	
 	

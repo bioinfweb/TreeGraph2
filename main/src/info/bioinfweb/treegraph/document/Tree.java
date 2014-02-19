@@ -55,7 +55,7 @@ public class Tree {
 	private EnumMap<PositionPaintType, DistanceDimension> paintDimensions = new EnumMap<PositionPaintType, DistanceDimension>(PositionPaintType.class);
   private GlobalFormats formats = new GlobalFormats();
   private TreeMap<String, Node> uniqueNameMap = new TreeMap<String, Node>();
-  private HashSet<ConcretePaintableElement> elementSet = new HashSet<ConcretePaintableElement>();
+  private HashSet<PaintableElement> elementSet = new HashSet<PaintableElement>();
 	
 	
 	public Node getPaintStart() {
@@ -187,8 +187,8 @@ public class Tree {
 		elementSet.clear();
 		
 		if (!isEmpty()) {  // Avoid NullPointerException in getElementsInSubtree() if root is null.
-			ConcretePaintableElement[] elements = 
-				  TreeSerializer.getElementsInSubtree(getPaintStart(), false, ConcretePaintableElement.class);
+			PaintableElement[] elements = 
+				  TreeSerializer.getElementsInSubtree(getPaintStart(), false, PaintableElement.class);
 			for (int i = 0; i < elements.length; i++) {
 				elementSet.add(elements[i]);
 			}

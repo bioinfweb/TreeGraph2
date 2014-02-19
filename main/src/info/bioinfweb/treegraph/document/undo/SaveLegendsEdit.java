@@ -19,15 +19,12 @@
 package info.bioinfweb.treegraph.document.undo;
 
 
-import javax.swing.JOptionPane;
 import javax.swing.undo.CannotUndoException;
 
-import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Legend;
 import info.bioinfweb.treegraph.document.Legends;
 import info.bioinfweb.treegraph.document.Node;
-import info.webinsel.wikihelp.client.WikiHelpOptionPane;
 
 
 

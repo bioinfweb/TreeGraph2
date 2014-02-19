@@ -30,12 +30,13 @@ import info.bioinfweb.treegraph.document.TreePath;
 
 
 /**
- * This class is the ancestor to all edits that are too complex to have an own <code>undo()</code>
- * method. Descendant classes do not specify a <code>redo()</code>- and an <code>undo()</code>-method 
- * but override the abstract method {@link #performRedo()}.<br>
- * This class makes a copy of the old tree in the document before calling <code>performRedo()</code>
+ * This class is the ancestor to all edits that are too complex to have an own {@link #undo()}
+ * method. Descendant classes do not specify a {@link #redo()} and an {@link #undo()} method 
+ * but override the abstract method {@link #performRedo()}.
+ * <p>
+ * This class creates a copy of the old tree in the document before calling {@link #performRedo()}
  * so all classes implementing {@link #performRedo()} have to translate references to elements of
- * the old tree by using the {@link #findEquivilant(Node)} or {@link #findEquivalent(Branch)}-methods.
+ * the old tree by using the {@link #findEquivilant(Node)} or {@link #findEquivalent(Branch)} methods.
  * 
  * @author Ben St&ouml;ver
  */
@@ -50,6 +51,7 @@ public abstract class ComplexDocumentEdit extends DocumentEdit {
 		oldRoot = document.getTree().getPaintStart();
 		newRoot = oldRoot.cloneWithSubtree(true);  // Unique names are copied as well.
 		// Legends do not have to be copied since they are anchored by unique node names.
+		//TODO A legend could be anchored on a deleted node!
 	}
 	
 	
