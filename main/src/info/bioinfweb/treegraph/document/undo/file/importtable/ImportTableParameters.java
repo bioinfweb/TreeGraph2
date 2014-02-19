@@ -38,7 +38,7 @@ public class ImportTableParameters {
   private boolean headingContained = false;
   
   private NodeBranchDataAdapter keyAdapter = null;
-  private boolean ignoreWhitespace = true;
+  private boolean ignoreWhitespace = false;
   private boolean distinguishSpaceUnderscore = false;
   private boolean caseSensitive = false;
   private boolean parseNumericValues = true;

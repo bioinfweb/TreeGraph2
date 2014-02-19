@@ -340,7 +340,7 @@ public class SelectImportTableDialog extends FileDialog {
 	private JCheckBox getIgnoreWhitespaceCheckBox() {
 		if (ignoreWhitespaceCheckBox == null) {
 			ignoreWhitespaceCheckBox = new JCheckBox("Ignore leading and trailing white space");
-			ignoreWhitespaceCheckBox.setSelected(true);
+			ignoreWhitespaceCheckBox.setSelected(false);
 		}
 		return ignoreWhitespaceCheckBox;
 	}
