@@ -40,14 +40,12 @@ public abstract class DocumentEdit extends AbstractDocumentEdit implements Undoa
 
 	public void redo() throws CannotRedoException {
 		super.redo();
-		if (!getIsSubedit()) {
-			document.getTree().assignUniqueNames();
-		}
 	}
 
 
 	@Override
 	public void registerDocumentChange() {
+  	document.getTree().assignUniqueNames();  // Must be called to update the uniqueNameMap. There not necessarily nodes without unique names present, but the content of the map might not match the current tree.
 		document.registerChange();
 	}
 }

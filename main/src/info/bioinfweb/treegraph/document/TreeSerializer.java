@@ -125,7 +125,8 @@ public class TreeSerializer {
   /**
    * Returns an array of tree elements in the subtree under <code>root</code>
    * Calling this method is equivalent to 
-   * <code>getElementsInSubtree(root, leafsOnly, elementClass, (T[])Array.newInstance(elementClass, 0))</code>. 
+   * <code>getElementsInSubtree(root, leafsOnly, elementClass, (T[])Array.newInstance(elementClass, 0))</code>.
+   * 
    * @param <T> - the type of the array to be returned
    * @param node - the node to which the returned elements are connected
    * @param c - the class defining which elements should be returned
