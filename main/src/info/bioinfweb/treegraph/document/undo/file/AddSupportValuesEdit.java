@@ -117,15 +117,16 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
 	/**
 	 * Returns a new instance of <code>AddSupportValuesEdit</code> or <code>null</code>
 	 * if the given source document contains internal node names that are not decimal.
+	 * 
 	 * @param document - the document to add the support values to
-	 * @param src - the document to obtain the support values frim
+	 * @param src - the document to obtain the support values from
 	 * @param terminalsAdapter - the adapter to obtain the terminal names from the target
 	 *        document
 	 * @param targetType - the type of node data to store the new support values
 	 * @param idPrefix - the prefix of the IDs that will be given to the new support 
 	 *        (and conflict values)
 	 * @param importNodeNames - If <code>true</code> the internal node names are imported as
-	 *        support valus, otherwise the internal branch lengths are used.
+	 *        support values, otherwise the internal branch lengths are used.
 	 * @param processRooted - defines whether the two specified trees shall be merged rooted or not 
 	 *        (no matter if the specified documents are rooted or not)
 	 * @return a new instance of <code>AddSupportValuesEdit</code> or <code>null</code>
@@ -236,22 +237,44 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
 	}
 
 	
+	private boolean checkOtherPaintStartBranch(Node sourceNode) {
+		return !processRooted &&  // no root node between the two branches 
+				sourceNode.hasParent() && !sourceNode.getParent().hasParent() &&  // the source node is attached to the paint start   
+				(sourceNode.getParent().getChildren().size() == 2);  // no polytomy at the paint start
+	}
+	
+	
 	/**
 	 * Finds the support or conflict values in the source document.
+	 * 
 	 * @param targetRoot - the root of the subtree to add support values to (a node of the 
 	 *        target document)
 	 */
 	private void processSubtree(Node targetRoot) {
 		if (!targetRoot.isLeaf()) {
 			if (!(targetRoot.hasParent() && !targetRoot.getParent().hasParent() && !processRooted && 
-					(targetRoot.getParent().getChildren().size() == 2) && targetRoot.isLast())) {  // Verhindern, dass ungewurzelte Bäume mehrmals Werte für semantisch gleichen Ast erhalten.
+					(targetRoot.getParent().getChildren().size() == 2) && targetRoot.isLast())) {  // Check if the current node is linked to the paint start which does not represent a root and the other linked branch already carries the same support value.
 				
 				NodeInfo bestSourceNode = findSourceNodeWithAllLeafs(src.getTree().getPaintStart(), 
 						getLeafSet(targetRoot));
 				if (bestSourceNode.getAdditionalCount() == 0) {  // support found
-					if (sourceAdapter.isDecimal(bestSourceNode.getNode())) {  // wenn dort ein Wert existiert
-	  				supportAdapter.setDecimal(targetRoot, sourceAdapter.getDecimal(bestSourceNode.getNode()));  // String-Werte können nicht auftreten
+  				if (targetRoot.getUniqueName().equals("34h2pqbu3p")) {
+  					System.out.println("  4");
+  				}
+
+  				if (sourceAdapter.isDecimal(bestSourceNode.getNode())) {  // wenn dort ein Wert existiert
+	  				supportAdapter.setDecimal(targetRoot, sourceAdapter.getDecimal(bestSourceNode.getNode()));  // Only decimal values can appear here.
 					}
+  				else if (checkOtherPaintStartBranch(bestSourceNode.getNode())) {
+						int index = 1;
+						if (bestSourceNode.getNode().isLast()) {
+							index = 0;
+						}
+						Node other = bestSourceNode.getNode().getParent().getChildren().get(index);
+						if (sourceAdapter.isDecimal(other)) {
+		  				supportAdapter.setDecimal(targetRoot, sourceAdapter.getDecimal(other));  // Only decimal values can appear here.
+						}
+  				}
 				}
 				else if (bestSourceNode.getAdditionalCount() == -1) {
 					throw new InternalError("-1 RETURNED");  // Should not happen.

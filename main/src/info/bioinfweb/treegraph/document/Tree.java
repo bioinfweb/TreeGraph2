@@ -176,7 +176,6 @@ public class Tree {
 	 * Assigns unique names to all nodes in the tree currently without one.
 	 */
 	public void assignUniqueNames() {
-		System.out.println("assignUniqueNames");
 		uniqueNameMap.clear();
 		if (getPaintStart() != null) {
 			assignUniqueNamesToSubtree(getPaintStart());

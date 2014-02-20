@@ -57,7 +57,6 @@ public class NodeSupportEdit extends AbstractTopologicalCalculationEdit {
 			 Document result = documentIterator.next();
 			 while (result != null) {
 				 treeCounter++; 
-				 System.out.println("* " + result);
 				 countSimilarNodes(result.getTree().getPaintStart());
 				 result = documentIterator.next();
 			}

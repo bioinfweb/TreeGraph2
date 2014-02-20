@@ -90,7 +90,6 @@ public abstract class ComplexDocumentEdit extends DocumentEdit {
 			newRoot = document.getTree().getPaintStart();  // In case the root changed in performRedo()
 			firstRedone = true;
 		}
-  	System.out.println("before super.redo()");
 		super.redo();
 	}
 

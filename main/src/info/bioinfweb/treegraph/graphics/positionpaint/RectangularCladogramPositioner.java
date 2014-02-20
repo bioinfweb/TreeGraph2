@@ -484,10 +484,8 @@ public class RectangularCladogramPositioner implements TreePositioner {
 					lowerAnchor.getLowestChild());
 			float result = 0;
 			for (int i = 0; i < leafs.length; i++) {
-				System.out.println("  " + leafs[i].getData().toString());
 				result = Math.max(result, leafs[i].getPosition(type).getRightInMillimeters());
 			}
-			System.out.println(f.getOwner().getData().toString() + " " + result);
 			return result;
 		}
 		else {
@@ -764,7 +762,6 @@ public class RectangularCladogramPositioner implements TreePositioner {
 	
 	
 	public void positionAll(Document document, float rescalingFactorX) {
-		System.out.println("starting positioning");
 		this.document = document;
 		this.rescalingFactorX = rescalingFactorX;
 		maxLeafWidth = 0;
