@@ -163,7 +163,7 @@ public class TreeViewPanel extends JPanel implements DocumentListener, Scrollabl
 	
 	
 	public void fireSelectionChanged() {
-		repaint();  //TODO Ist das nötig?
+		repaint();
 		MainFrame.getInstance().getActionManagement().refreshActionStatus();  //TODO besser: MainFrame als Listener registrieren 
 		for (int i = 0; i < treeViewListeners.size(); i++) {
 			treeViewListeners.get(i).selectionChanged(new ChangeEvent(this));

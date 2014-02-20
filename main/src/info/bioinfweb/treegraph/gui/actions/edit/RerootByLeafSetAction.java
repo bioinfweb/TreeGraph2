@@ -67,6 +67,7 @@ public class RerootByLeafSetAction extends DocumentAction {
 
 		if (!edit.getAlternativeRootingPoints().isEmpty()) {
 			selection.clear();
+			selection.addAll(edit.getAlternativeRootingPoints());
 			WikiHelpOptionPane.showMessageDialog(MainFrame.getInstance(), 
 					"More than one smallest subtree containing all the specified terminal nodes was found.\n" +
 					"The alternative rooting positions have been selected in the document. Use the \"Root here\" function\n" +

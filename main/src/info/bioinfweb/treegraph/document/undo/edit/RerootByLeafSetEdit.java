@@ -156,6 +156,16 @@ public class RerootByLeafSetEdit extends AbstractTopologicalCalculationEdit impl
 		return result;
 	}
 
+	
+	private void findEquivalentAlternativeRootingPoints() {
+		ArrayList<Branch> copy = new ArrayList<Branch>(alternativeRootingPoints);
+		alternativeRootingPoints.clear();
+		Iterator<Branch> iterator = copy.iterator();
+		while (iterator.hasNext()) {
+			alternativeRootingPoints.add(findEquivalent(iterator.next()));
+		}
+	}
+	
 
 	/**
 	 * Searches for a branch in the tree where the new root shall be located.
@@ -196,6 +206,7 @@ public class RerootByLeafSetEdit extends AbstractTopologicalCalculationEdit impl
 			}
 		}
 		
+		findEquivalentAlternativeRootingPoints();
 		return findEquivalent(result);
 	}
 	
