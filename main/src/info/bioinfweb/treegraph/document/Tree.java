@@ -233,7 +233,7 @@ public class Tree {
 	
 	
 	public static Node getFirstNodeInSubtreeByData(Node root, NodeBranchDataAdapter adapter, TextElementData data) {
-		if (data.equals(root.getData())) {
+		if (data.equals(adapter.toTextElementData(root))) {
 			return root;
 		}
 		else {

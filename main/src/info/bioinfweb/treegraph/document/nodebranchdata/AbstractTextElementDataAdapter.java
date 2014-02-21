@@ -42,7 +42,13 @@ public abstract class AbstractTextElementDataAdapter extends AbstractNodeBranchD
   
   @Override
   public TextElementData toTextElementData(Node node) {
-	  return getData(node).clone();
+  	TextElementData data = getData(node);
+  	if (data != null) {
+  		return data.clone();
+  	}
+  	else {
+  		return new TextElementData();  // Return empty instance if e.g. no label is present on this node.
+  	}
   }
 
 
