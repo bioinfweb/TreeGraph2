@@ -20,6 +20,7 @@ package info.bioinfweb.treegraph.document;
 
 
 import info.bioinfweb.treegraph.document.io.xtg.XTGReader;
+import info.bioinfweb.treegraph.document.nodebranchdata.BranchLengthAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;
 import info.webinsel.util.SystemUtils;
@@ -58,5 +59,11 @@ public class TreeTest {
   	TextLabelAdapter labelAdapter = new TextLabelAdapter("Label", new DecimalFormat());
   	assertEquals("thfuyevs93", tree.getFirstNodeByData(labelAdapter, "Text").getUniqueName());
   	assertEquals("wxon0b0cj4", tree.getFirstNodeByData(labelAdapter, 24.5).getUniqueName());
+
+  	assertNull(tree.getFirstNodeByData(NodeNameAdapter.getSharedInstance(), "NotInTree"));
+  	assertNull(tree.getFirstNodeByData(NodeNameAdapter.getSharedInstance(), ""));
+  	
+  	assertNull(tree.getFirstNodeByData(BranchLengthAdapter.getSharedInstance(), 18.0));
+  	assertNull(tree.getFirstNodeByData(BranchLengthAdapter.getSharedInstance(), 0.0));
   }
 }
