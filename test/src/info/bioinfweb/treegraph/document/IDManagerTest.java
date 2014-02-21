@@ -22,6 +22,7 @@ package info.bioinfweb.treegraph.document;
 import info.webinsel.util.junit.TestTools;
 
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Vector;
 
 import org.junit.* ;
@@ -129,7 +130,8 @@ public class IDManagerTest {
   
   @Test
   public void test_searchLabelIDsInLabelBlock_absent() {
-  	Method method = TestTools.getPrivateMethod(IDManager.class, "searchLabelIDsInLabelBlock", Labels.class, boolean.class, Class.class, Vector.class);
+  	Method method = TestTools.getPrivateMethod(IDManager.class, "searchLabelIDsInLabelBlock", 
+  					Labels.class, boolean.class, Class.class, List.class);
   	
   	Tree tree = createBasicTree(true, false, false, true);
   	Vector<String> list = new Vector<String>();
@@ -147,7 +149,8 @@ public class IDManagerTest {
   
   @Test
   public void test_searchLabelIDsInLabelBlock_present() {
-  	Method method = TestTools.getPrivateMethod(IDManager.class, "searchLabelIDsInLabelBlock", Labels.class, boolean.class,  Class.class, Vector.class);
+  	Method method = TestTools.getPrivateMethod(IDManager.class, "searchLabelIDsInLabelBlock", 
+  					Labels.class, boolean.class,  Class.class, List.class);
   	
   	Tree tree = createBasicTree(false, true, false, true);
   	Vector<String> list = new Vector<String>();
