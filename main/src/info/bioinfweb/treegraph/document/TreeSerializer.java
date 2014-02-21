@@ -31,7 +31,6 @@ import java.util.Vector;
  */
 public class TreeSerializer {
 	private static void addLabelBlock(Vector<PaintableElement> list, Labels labels, boolean above) {
-		
 		for (int lineNo = 0; lineNo < labels.lineCount(above); lineNo++) {
 			for (int lineIndex = 0; lineIndex < labels.labelCount(above, lineNo); lineIndex++) {
 				list.add(labels.get(above, lineNo, lineIndex));

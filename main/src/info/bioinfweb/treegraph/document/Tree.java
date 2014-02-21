@@ -202,7 +202,8 @@ public class Tree {
 	
 	
 	/**
-	 * Searches for a node with the given unique name in this tree. 
+	 * Searches for a node with the given unique name in this tree.
+	 * 
 	 * @param uniqueName - the searched unique name
 	 * @return the node with the unique name or null if no node is found
 	 */
@@ -212,6 +213,38 @@ public class Tree {
 		}
 		else {
 			return uniqueNameMap.get(uniqueName);
+		}
+	}
+	
+	
+	public Node getFirstNodeByData(NodeBranchDataAdapter adapter, double value) {
+		return getFirstNodeByData(adapter, new TextElementData(value));
+	}
+	
+	
+	public Node getFirstNodeByData(NodeBranchDataAdapter adapter, String value) {
+		return getFirstNodeByData(adapter, new TextElementData(value));
+	}
+	
+	
+	public Node getFirstNodeByData(NodeBranchDataAdapter adapter, TextElementData data) {
+		return getFirstNodeInSubtreeByData(getPaintStart(), adapter, data);
+	}
+	
+	
+	public static Node getFirstNodeInSubtreeByData(Node root, NodeBranchDataAdapter adapter, TextElementData data) {
+		if (data.equals(root.getData())) {
+			return root;
+		}
+		else {
+			Iterator<Node> iterator = root.getChildren().iterator();
+			while (iterator.hasNext()) {
+				Node result = getFirstNodeInSubtreeByData(iterator.next(), adapter, data);
+				if (result != null) {
+					return result;
+				}
+			}
+			return null;
 		}
 	}
 	
