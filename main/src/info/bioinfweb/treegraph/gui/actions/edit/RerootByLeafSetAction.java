@@ -18,13 +18,12 @@
  */
 package info.bioinfweb.treegraph.gui.actions.edit;
 
+
 import info.bioinfweb.treegraph.Main;
-import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.edit.RerootByLeafSetEdit;
-import info.bioinfweb.treegraph.document.undo.edit.RerootEdit;
 import info.bioinfweb.treegraph.gui.actions.DocumentAction;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeInternalFrame;
@@ -34,8 +33,6 @@ import info.webinsel.wikihelp.client.WikiHelpOptionPane;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.Action;
 import javax.swing.JOptionPane;
@@ -65,6 +62,10 @@ public class RerootByLeafSetAction extends DocumentAction {
 		RerootByLeafSetEdit edit = new RerootByLeafSetEdit(frame.getDocument(), selection.toArray(new Node[selection.size()]));
 		frame.getDocument().executeEdit(edit);
 
+		if (edit.hasWarnings()) {
+			WikiHelpOptionPane.showMessageDialog(MainFrame.getInstance(), edit.getWarningText(), "Reroot",	
+					JOptionPane.WARNING_MESSAGE, Main.getInstance().getWikiHelp(), 70);
+		}
 		if (!edit.getAlternativeRootingPoints().isEmpty()) {
 			selection.clear();
 			selection.addAll(edit.getAlternativeRootingPoints());
