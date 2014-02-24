@@ -134,7 +134,7 @@ public class RerootByLeafSetEdit extends AbstractTopologicalCalculationEdit impl
 	private BranchingSubtreesResult largestBranchingSubtrees(Node root) {
 		BranchingSubtreesResult result = new BranchingSubtreesResult();
 		if (root.hasParent() && !nodesOnPath.contains(root.getParent())) {
-			result.alternatives.add(root.getAfferentBranch());
+			result.first = root.getAfferentBranch();
 			result.leafCount = getLeafSet(root).complement().childCount();
 		}
 		
@@ -171,42 +171,51 @@ public class RerootByLeafSetEdit extends AbstractTopologicalCalculationEdit impl
 	 * Searches for a branch in the tree where the new root shall be located.
 	 */
 	private Branch calculateRootingPoint() {
-		addLeafSets(document.getTree().getPaintStart(), UniqueNameAdapter.getSharedInstance());
-		createSelectedLeafsSet();
-		
-		// Mark paths:
-		Iterator<Node> iterator = leafs.iterator();
-		while (iterator.hasNext()) {
-			Node leaf = iterator.next();
-			if (leaf.isLeaf()) {
-				markPath(leaf);
-			}
-			else {
-				throw new IllegalArgumentException("The specified node with the unique name " + 
-			      leaf.getUniqueName() + " is not a leaf.");
-			}
-		}
-		
-		// Find largest subtree that branches from the marked paths:
-		alternativeRootingPoints.clear();  // Currently unnecessary since this method is only called once.
 		Branch result = null;
-		int maxLeafCount = 0;  // Should be higher than the initial value of subtrees.leafCount.
-		iterator = nodesOnPath.iterator();
-		while (iterator.hasNext()) {
-			BranchingSubtreesResult subtrees = largestBranchingSubtrees(iterator.next());
-			if (subtrees.leafCount > maxLeafCount) {
-				alternativeRootingPoints.clear();
-				result = subtrees.first;
-				alternativeRootingPoints.addAll(subtrees.alternatives);
-				maxLeafCount = subtrees.leafCount;
+		if (leafs.size() > 1) {
+			addLeafSets(document.getTree().getPaintStart(), UniqueNameAdapter.getSharedInstance());
+			createSelectedLeafsSet();
+			
+			// Mark paths:
+			Iterator<Node> iterator = leafs.iterator();
+			while (iterator.hasNext()) {
+				Node leaf = iterator.next();
+				if (leaf.isLeaf()) {
+					markPath(leaf);
+				}
+				else {
+					throw new IllegalArgumentException("The specified node with the unique name " + 
+				      leaf.getUniqueName() + " is not a leaf.");
+				}
 			}
-			else if (subtrees.leafCount == maxLeafCount) {
-				alternativeRootingPoints.add(subtrees.first);
-				alternativeRootingPoints.addAll(subtrees.alternatives);
+			
+			// Find largest subtree that branches from the marked paths:
+			alternativeRootingPoints.clear();  // Currently unnecessary since this method is only called once.
+			int maxLeafCount = 0;  // Should be higher than the initial value of subtrees.leafCount.
+			iterator = nodesOnPath.iterator();
+			while (iterator.hasNext()) {
+				BranchingSubtreesResult subtrees = largestBranchingSubtrees(iterator.next());
+				if (subtrees.leafCount > maxLeafCount) {
+					alternativeRootingPoints.clear();
+					result = subtrees.first;
+					alternativeRootingPoints.addAll(subtrees.alternatives);
+					maxLeafCount = subtrees.leafCount;
+				}
+				else if (subtrees.leafCount == maxLeafCount) {
+					alternativeRootingPoints.add(subtrees.first);
+					alternativeRootingPoints.addAll(subtrees.alternatives);
+				}
 			}
+			
+			findEquivalentAlternativeRootingPoints();
 		}
-		
-		findEquivalentAlternativeRootingPoints();
+		else if (leafs.size() == 1) {
+			alternativeRootingPoints.clear();  // Currently unnecessary since this method is only called once.
+			result = leafs.get(0).getAfferentBranch();
+		}
+		else {  // leafs is empty
+			throw new IllegalArgumentException("At least one leaf node needs to be specified to define the new root.");
+		}
 		return findEquivalent(result);
 	}
 	
