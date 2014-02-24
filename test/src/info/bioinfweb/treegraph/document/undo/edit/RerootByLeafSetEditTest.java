@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2013  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2014  Ben Stöver, Kai Müller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -48,7 +48,7 @@ public class RerootByLeafSetEditTest {
 	
 	
   @Test
-  public void test_redo() {
+  public void test_redo_distantNodes() {
   	Document document = createDocument();
   	List<Node> leafs = new ArrayList<Node>(2);
   	leafs.add(document.getTree().getNodeByUniqueName("624i1qcsfd"));
@@ -63,5 +63,41 @@ public class RerootByLeafSetEditTest {
   			|| rootChildren.get(1).getAfferentBranch().getHiddenDataMap().containsKey(newRootID));  	
   	assertEquals(1, edit.getAlternativeRootingPoints().size());
   	assertTrue(edit.getAlternativeRootingPoints().iterator().next().getHiddenDataMap().containsKey(newRootID));
+  }
+	
+	
+  @Test
+  public void test_redo_closeNodes() {
+  	Document document = createDocument();
+  	List<Node> leafs = new ArrayList<Node>(2);
+  	leafs.add(document.getTree().getNodeByUniqueName("bh0q07axdt"));
+  	leafs.add(document.getTree().getNodeByUniqueName("624i1qcsfd"));
+
+  	RerootByLeafSetEdit edit = new RerootByLeafSetEdit(document, leafs);
+  	document.executeEdit(edit);
+  	
+  	final String newRootName = "ztkxbqbhnl";
+  	List<Node> rootChildren = document.getTree().getPaintStart().getChildren();
+  	assertTrue(rootChildren.get(0).getUniqueName().equals(newRootName)
+  			|| rootChildren.get(1).getUniqueName().equals(newRootName));  	
+  	assertEquals(0, edit.getAlternativeRootingPoints().size());
+  }
+	
+	
+  @Test
+  public void test_redo_singleNode() {
+  	final String uniqueName = "bh0q07axdt";
+
+  	Document document = createDocument();
+  	List<Node> leafs = new ArrayList<Node>(2);
+  	leafs.add(document.getTree().getNodeByUniqueName(uniqueName));
+
+  	RerootByLeafSetEdit edit = new RerootByLeafSetEdit(document, leafs);
+  	document.executeEdit(edit);
+  	
+  	List<Node> rootChildren = document.getTree().getPaintStart().getChildren();
+  	assertTrue(rootChildren.get(0).getUniqueName().equals(uniqueName)
+  			|| rootChildren.get(1).getUniqueName().equals(uniqueName));  	
+  	assertEquals(0, edit.getAlternativeRootingPoints().size());
   }
 }
