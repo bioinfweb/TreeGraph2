@@ -32,7 +32,8 @@ import javax.swing.undo.CannotUndoException;
 
 
 /**
- * This edit changes applies the specified formats to the specified document elements. 
+ * This edit changes applies the specified formats of the specified document elements. 
+ * 
  * @author Ben St&ouml;ver
  */
 public class OperatorsEdit extends DocumentEdit {

@@ -81,6 +81,7 @@ public class PieChartLabel extends GraphicalLabel implements LineElement {
 	/**
 	 * Returns the value of the data column for the ID with the specified index. (The value is not normalized to 
 	 * 100 % or 2 Pi)
+	 * 
 	 * @param index - the index of the ID to be used
 	 * @return the numeric value or {@link Double#NaN} if no data with this ID is available at the specified node
 	 *         or a textual value is stored
@@ -132,7 +133,7 @@ public class PieChartLabel extends GraphicalLabel implements LineElement {
 
 	
 	@Override
-	public void setFormats(ElementFormats format) {
+	public void setFormats(ElementFormats formats) {
 		((PieChartLabelFormats)formats).setOwner(this);
 		this.formats = (PieChartLabelFormats)formats;
 		reinsert();
