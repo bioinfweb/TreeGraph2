@@ -24,6 +24,7 @@ import info.bioinfweb.treegraph.document.*;
 import info.bioinfweb.treegraph.document.io.DocumentReader;
 import info.bioinfweb.treegraph.document.io.ReadWriteFactory;
 import info.bioinfweb.treegraph.document.io.ReadWriteParameterMap;
+import info.bioinfweb.treegraph.document.nodebranchdata.NewTextLabelAdapter;
 import info.bioinfweb.treegraph.graphics.positionpaint.PositionPaintFactory;
 import info.bioinfweb.treegraph.graphics.positionpaint.PositionPaintType;
 import info.bioinfweb.treegraph.gui.CurrentDirectoryModel;
@@ -37,6 +38,7 @@ import java.awt.image.BufferedImage;
 import java.beans.PropertyVetoException;
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Vector;
 
@@ -107,6 +109,8 @@ public class MainFrame extends JFrame implements Runnable {
 					try {
 						ReadWriteParameterMap parameterMap = new ReadWriteParameterMap();
 						parameterMap.putApplicationLogger(LoadLoggerDialog.getInstance());
+						parameterMap.put(ReadWriteParameterMap.KEY_INTERNAL_NODE_NAMES_ADAPTER, 
+								new NewTextLabelAdapter("internalNodeNames", new DecimalFormat()));
 						addInternalFrame(reader.read(file, parameterMap));
 						CurrentDirectoryModel.getInstance().setCurrentDirectory(file.getParentFile());
 						LoadLoggerDialog.getInstance().display();
