@@ -56,8 +56,8 @@ public class ImportTableAction extends DocumentAction {
 	public static final int MISSING_KEY_OUTPUT_CHARS_PER_LINE = 100;	
 	public static final int MAX_MISSING_KEY_OUTPUT_LINES = 10;
 	public static final String PARAMETER_MESSAGE = 
-			"Note that the parameter setting (e.g. whitespace treatment, case sensitivity)\n" +
-			"influences if two entries are considered equal.)";
+			"Note that the parameter settings (e.g. whitespace treatment, case sensitivity)\n" +
+			"influences if two entries are considered equal.";
 	
 	
 	private SelectImportTableDialog importTableDialog = null;
@@ -89,7 +89,7 @@ public class ImportTableAction extends DocumentAction {
 	}	
 
 	
-	private String createKeyList(Iterator<String> iterator) {
+	public static String createKeyList(Iterator<String> iterator) {
 		StringBuffer result = new StringBuffer((MAX_MISSING_KEY_OUTPUT_LINES + 1) * MISSING_KEY_OUTPUT_CHARS_PER_LINE);  // one line more because single lines might be longer than MISSING_KEY_OUTPUT_CHARS_PER_LINE if keys overlap 
 		int charCount = 0;
 		int lineCount = 0;
@@ -132,11 +132,8 @@ public class ImportTableAction extends DocumentAction {
 					if ((parameters.getImportAdapters() != null) && (parameters.getImportAdapters().length > 0)) {  // parameters.getImportAdapters().length == 0, if the user canceled in the second dialog
 						ImportTableEdit edit = new ImportTableEdit(frame.getDocument(), parameters, data);
 						frame.getDocument().executeEdit(edit);
-						if (!edit.isAllKeysFound()) {
-							JOptionPane.showMessageDialog(MainFrame.getInstance(),
-									"The following entries in the key column of the table could not be found in the specified\n" + 
-							    "node/branch data column of the tree:\n\n" + createKeyList(edit.getKeysNotInTree().iterator()) + "\n\n" +
-							    "The cells in the according lines have not been imported.\n(" + PARAMETER_MESSAGE + ")", 
+						if (edit.hasWarnings()) {
+							JOptionPane.showMessageDialog(MainFrame.getInstance(), edit.getWarningText(), 
 							    "Warning", JOptionPane.WARNING_MESSAGE);
 						}
 					}

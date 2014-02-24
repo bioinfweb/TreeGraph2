@@ -182,7 +182,7 @@ public class AssignImportColumnsDialog extends OkCancelApplyWikiHelpDialog {
 			}
 		}
 		message.append("\n\nDo you want to possibly overwrite entries in these columns?\n");
-		message.append("(If no node currently containing data is contained in the key column of the table, no data will be overwritten.)");
+		message.append("(Only data of nodes referenced by the key column, could be overwritten.)");
 		
 		if (cancel) {
 			cancel = (JOptionPane.showConfirmDialog(this, message, "Warning", JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION);

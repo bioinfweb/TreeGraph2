@@ -33,6 +33,8 @@ import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
 import info.bioinfweb.treegraph.document.undo.NodeBranchDataBackup;
+import info.bioinfweb.treegraph.document.undo.WarningMessageEdit;
+import info.bioinfweb.treegraph.gui.actions.file.ImportTableAction;
 import info.webinsel.util.Math2;
 
 
@@ -45,7 +47,7 @@ import info.webinsel.util.Math2;
  * @author Ben St&ouml;ver
  * @since 2.0.24
  */
-public class ImportTableEdit extends DocumentEdit {
+public class ImportTableEdit extends DocumentEdit implements WarningMessageEdit {
   private ImportTableParameters parameters;
   private ImportTableData data;
   private NodeBranchDataBackup[] backups;
@@ -76,6 +78,20 @@ public class ImportTableEdit extends DocumentEdit {
 	public Set<String> getKeysNotInTree() {
 		return keysNotInTree;
 	}
+
+
+	@Override
+  public String getWarningText() {
+	  return "The following entries in the key column of the table could not be found in the specified\n" + 
+		    "node/branch data column of the tree:\n\n" + ImportTableAction.createKeyList(getKeysNotInTree().iterator()) + "\n\n" +
+		    "The cells in the according lines have not been imported.\n(" + ImportTableAction.PARAMETER_MESSAGE + ")";
+  }
+
+
+	@Override
+  public boolean hasWarnings() {
+	  return !isAllKeysFound();
+  }
 
 
 	private NodeBranchDataBackup[] createBackups() {
