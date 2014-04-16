@@ -19,7 +19,7 @@
 package info.bioinfweb.treegraph.document.undo.topologicalcalculation;
 
 
-import info.webinsel.util.Math2;
+import info.bioinfweb.commons.Math2;
 
 
 

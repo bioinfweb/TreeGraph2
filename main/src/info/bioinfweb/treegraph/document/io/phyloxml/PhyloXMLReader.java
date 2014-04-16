@@ -31,7 +31,7 @@ import info.bioinfweb.treegraph.document.io.AbstractDocumentReader;
 import info.bioinfweb.treegraph.document.io.DocumentIterator;
 import info.bioinfweb.treegraph.document.io.newick.BranchLengthsScaler;
 import info.bioinfweb.treegraph.document.undo.format.AutoPositionLabelsEdit;
-import info.webinsel.util.io.XMLUtils;
+import info.bioinfweb.commons.io.XMLUtils;
 
 import java.awt.Color;
 import java.io.BufferedInputStream;

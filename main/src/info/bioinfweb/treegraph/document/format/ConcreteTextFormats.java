@@ -19,7 +19,7 @@
 package info.bioinfweb.treegraph.document.format;
 
 
-import info.webinsel.util.graphics.FontCalculator;
+import info.bioinfweb.commons.graphics.FontCalculator;
 import java.awt.*;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;

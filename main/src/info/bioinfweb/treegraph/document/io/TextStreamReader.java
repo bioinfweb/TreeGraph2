@@ -19,7 +19,7 @@
 package info.bioinfweb.treegraph.document.io;
 
 
-import info.webinsel.util.io.TextReader;
+import info.bioinfweb.commons.io.TextReader;
 import java.io.IOException;
 import java.io.InputStream;
 

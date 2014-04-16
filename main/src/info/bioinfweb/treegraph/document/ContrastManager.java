@@ -21,7 +21,7 @@ package info.bioinfweb.treegraph.document;
 
 import info.bioinfweb.treegraph.document.format.FormatUtils;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
-import info.webinsel.util.graphics.GraphicsUtils;
+import info.bioinfweb.commons.graphics.GraphicsUtils;
 
 import java.awt.Color;
 

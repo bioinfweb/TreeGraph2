@@ -19,7 +19,7 @@
 package info.bioinfweb.treegraph.document.io;
 
 
-import info.webinsel.util.io.XMLUtils;
+import info.bioinfweb.commons.io.XMLUtils;
 
 import java.io.File;
 import java.io.IOException;

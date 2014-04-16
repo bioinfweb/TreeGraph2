@@ -26,8 +26,8 @@ import java.util.TreeMap;
 
 import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.io.newick.NewickStringChars;
-import info.webinsel.util.Math2;
-import info.webinsel.util.io.TableReader;
+import info.bioinfweb.commons.Math2;
+import info.bioinfweb.commons.io.TableReader;
 
 
 

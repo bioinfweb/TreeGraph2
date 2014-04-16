@@ -28,7 +28,7 @@ import info.bioinfweb.treegraph.document.format.operate.MinSpaceAboveOperator;
 import info.bioinfweb.treegraph.document.format.operate.MinSpaceBelowOperator;
 import info.bioinfweb.treegraph.gui.dialogs.DistanceValueInput;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
-import info.webinsel.util.ChangeMonitor;
+import info.bioinfweb.commons.ChangeMonitor;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;

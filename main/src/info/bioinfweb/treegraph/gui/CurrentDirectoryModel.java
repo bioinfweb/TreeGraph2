@@ -22,7 +22,7 @@ package info.bioinfweb.treegraph.gui;
 import java.io.File;
 
 import info.bioinfweb.treegraph.Main;
-import info.webinsel.util.swing.FileChooserDirModel;
+import info.bioinfweb.commons.swing.FileChooserDirModel;
 
 
 

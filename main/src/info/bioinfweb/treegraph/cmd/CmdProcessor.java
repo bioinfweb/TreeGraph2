@@ -39,9 +39,9 @@ import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.webinsel.updatecenter.dataxchange.VersionList;
 import info.webinsel.updatecenter.dataxchange.VersionListXMLReader;
-import info.webinsel.util.CommandLineReader;
-import info.webinsel.util.Math2;
-import info.webinsel.util.appversion.ApplicationVersion;
+import info.bioinfweb.commons.CommandLineReader;
+import info.bioinfweb.commons.Math2;
+import info.bioinfweb.commons.appversion.ApplicationVersion;
 
 
 

@@ -19,7 +19,7 @@
 package info.bioinfweb.treegraph.document.format;
 
 
-import info.webinsel.util.*;
+import info.bioinfweb.commons.*;
 
 
 

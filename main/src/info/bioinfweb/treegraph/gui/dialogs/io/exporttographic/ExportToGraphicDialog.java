@@ -37,8 +37,8 @@ import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeInternalFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 import info.bioinfweb.treegraph.gui.treeframe.TreeViewPanel;
-import info.webinsel.util.Math2;
-import info.webinsel.util.collections.ParameterMap;
+import info.bioinfweb.commons.Math2;
+import info.bioinfweb.commons.collections.ParameterMap;
 import info.webinsel.wikihelp.client.WikiHelpOptionPane;
 
 import java.beans.PropertyChangeEvent;

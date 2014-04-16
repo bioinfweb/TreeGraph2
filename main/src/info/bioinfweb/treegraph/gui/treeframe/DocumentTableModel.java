@@ -40,7 +40,7 @@ import info.bioinfweb.treegraph.document.nodebranchdata.UniqueNameAdapter;
 import info.bioinfweb.treegraph.document.undo.edit.ChangeCellTypeEdit;
 import info.bioinfweb.treegraph.document.undo.edit.ChangeNumercalValueEdit;
 import info.bioinfweb.treegraph.document.undo.edit.ChangeTextualValueEdit;
-import info.webinsel.util.Math2;
+import info.bioinfweb.commons.Math2;
 
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;

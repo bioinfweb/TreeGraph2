@@ -24,7 +24,7 @@ import info.bioinfweb.treegraph.document.format.*;
 import info.bioinfweb.treegraph.document.io.AbstractDocumentWriter;
 import info.bioinfweb.treegraph.document.io.DocumentWriter;
 import info.bioinfweb.treegraph.document.io.ReadWriteParameterMap;
-import info.webinsel.util.io.XMLUtils;
+import info.bioinfweb.commons.io.XMLUtils;
 
 import java.awt.Color;
 import java.io.OutputStream;

@@ -23,7 +23,7 @@ import info.bioinfweb.treegraph.document.*;
 import info.bioinfweb.treegraph.document.format.DistanceValue;
 import info.bioinfweb.treegraph.graphics.positionpaint.PositionPaintFactory;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
-import info.webinsel.util.SystemUtils;
+import info.bioinfweb.commons.SystemUtils;
 
 import java.awt.event.*;
 

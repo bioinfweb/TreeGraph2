@@ -26,7 +26,7 @@ import java.beans.PropertyVetoException;
 import javax.swing.Action;
 import javax.swing.JInternalFrame;
 
-import info.webinsel.util.swing.ExtendedAbstractAction;
+import info.bioinfweb.commons.swing.ExtendedAbstractAction;
 
 
 

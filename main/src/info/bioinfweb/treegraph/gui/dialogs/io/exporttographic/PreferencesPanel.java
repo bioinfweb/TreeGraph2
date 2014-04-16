@@ -19,7 +19,7 @@
 package info.bioinfweb.treegraph.gui.dialogs.io.exporttographic;
 
 
-import info.webinsel.util.collections.ParameterMap;
+import info.bioinfweb.commons.collections.ParameterMap;
 
 
 

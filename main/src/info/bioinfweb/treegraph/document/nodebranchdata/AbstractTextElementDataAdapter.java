@@ -23,7 +23,7 @@ import java.text.DecimalFormat;
 
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextElementData;
-import info.webinsel.util.Math2;
+import info.bioinfweb.commons.Math2;
 
 
 

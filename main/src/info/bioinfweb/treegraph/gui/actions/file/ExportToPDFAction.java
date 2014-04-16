@@ -36,7 +36,7 @@ import info.bioinfweb.treegraph.gui.actions.DocumentAction;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeInternalFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
-import info.webinsel.util.collections.ParameterMap;
+import info.bioinfweb.commons.collections.ParameterMap;
 
 
 

@@ -23,7 +23,7 @@ import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.format.BranchFormats;
 import info.bioinfweb.treegraph.document.format.ScaleBarFormats;
-import info.webinsel.util.Math2;
+import info.bioinfweb.commons.Math2;
 
 
 

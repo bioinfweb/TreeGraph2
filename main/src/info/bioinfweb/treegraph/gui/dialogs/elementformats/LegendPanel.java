@@ -35,7 +35,7 @@ import info.bioinfweb.treegraph.document.format.operate.TextOrientationOperator;
 import info.bioinfweb.treegraph.gui.dialogs.DistanceValueInput;
 import info.bioinfweb.treegraph.gui.dialogs.MarginInput;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
-import info.webinsel.util.swing.SwingChangeMonitor;
+import info.bioinfweb.commons.swing.SwingChangeMonitor;
 
 import java.awt.Color;
 import java.awt.Font;

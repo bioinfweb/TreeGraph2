@@ -23,7 +23,7 @@ import info.bioinfweb.treegraph.document.format.DistanceDimension;
 import info.bioinfweb.treegraph.document.format.DistanceValue;
 import info.bioinfweb.treegraph.gui.treeframe.TreeViewPanel;
 import info.bioinfweb.treegraph.gui.treeframe.TreeViewPanelListener;
-import info.webinsel.util.Math2;
+import info.bioinfweb.commons.Math2;
 import java.awt.BasicStroke;
 import java.awt.Dimension;
 import java.awt.FontMetrics;

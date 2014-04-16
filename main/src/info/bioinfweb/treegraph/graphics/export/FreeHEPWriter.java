@@ -24,8 +24,8 @@ import info.bioinfweb.treegraph.document.format.DistanceDimension;
 import info.bioinfweb.treegraph.graphics.positionpaint.PositionPaintFactory;
 import info.bioinfweb.treegraph.graphics.positionpaint.TreePainter;
 import info.bioinfweb.treegraph.gui.treeframe.TreeViewPanel;
-import info.webinsel.util.Math2;
-import info.webinsel.util.collections.ParameterMap;
+import info.bioinfweb.commons.Math2;
+import info.bioinfweb.commons.collections.ParameterMap;
 
 import java.awt.Dimension;
 import java.awt.RenderingHints;

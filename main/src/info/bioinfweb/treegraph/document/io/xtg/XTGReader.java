@@ -25,9 +25,9 @@ import info.bioinfweb.treegraph.document.io.AbstractDocumentReader;
 import info.bioinfweb.treegraph.document.io.DocumentIterator;
 import info.bioinfweb.treegraph.document.io.SingleDocumentIterator;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
-import info.webinsel.util.io.FormatVersion;
-import info.webinsel.util.io.InvalidXSDPathException;
-import info.webinsel.util.io.XMLUtils;
+import info.bioinfweb.commons.io.FormatVersion;
+import info.bioinfweb.commons.io.InvalidXSDPathException;
+import info.bioinfweb.commons.io.XMLUtils;
 
 import java.io.BufferedInputStream;
 import java.text.DecimalFormat;

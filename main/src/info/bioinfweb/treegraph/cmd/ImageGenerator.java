@@ -32,8 +32,8 @@ import info.bioinfweb.treegraph.graphics.positionpaint.PositionPaintFactory;
 import info.bioinfweb.treegraph.graphics.positionpaint.PositionPaintType;
 import info.bioinfweb.treegraph.gui.dialogs.ResolutionInput;
 import info.bioinfweb.treegraph.gui.treeframe.TreeViewPanel;
-import info.webinsel.util.CommandLineReader;
-import info.webinsel.util.collections.ParameterMap;
+import info.bioinfweb.commons.CommandLineReader;
+import info.bioinfweb.commons.collections.ParameterMap;
 
 import java.io.File;
 

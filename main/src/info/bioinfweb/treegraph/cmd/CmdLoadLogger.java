@@ -19,10 +19,10 @@
 package info.bioinfweb.treegraph.cmd;
 
 
-import info.webinsel.util.log.AbstractApplicationLogger;
-import info.webinsel.util.log.ApplicationLogger;
-import info.webinsel.util.log.ApplicationLoggerMessage;
-import info.webinsel.util.log.ApplicationLoggerMessageType;
+import info.bioinfweb.commons.log.AbstractApplicationLogger;
+import info.bioinfweb.commons.log.ApplicationLogger;
+import info.bioinfweb.commons.log.ApplicationLoggerMessage;
+import info.bioinfweb.commons.log.ApplicationLoggerMessageType;
 
 
 

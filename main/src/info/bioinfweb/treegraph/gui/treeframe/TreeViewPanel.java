@@ -25,8 +25,8 @@ import info.bioinfweb.treegraph.document.format.DistanceValue;
 import info.bioinfweb.treegraph.graphics.positionpaint.PositionPaintFactory;
 import info.bioinfweb.treegraph.graphics.positionpaint.PositionPaintType;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
-import info.webinsel.util.graphics.GraphicsUtils;
-import info.webinsel.util.swing.scrollpaneselector.ScrollPaneSelectable;
+import info.bioinfweb.commons.graphics.GraphicsUtils;
+import info.bioinfweb.commons.swing.scrollpaneselector.ScrollPaneSelectable;
 
 import java.util.*;
 

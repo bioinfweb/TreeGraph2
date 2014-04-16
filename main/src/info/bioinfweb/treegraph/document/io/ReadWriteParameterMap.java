@@ -20,7 +20,7 @@ package info.bioinfweb.treegraph.document.io;
 
 
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
-import info.webinsel.util.log.ApplicationLoggerParameterMap;
+import info.bioinfweb.commons.log.ApplicationLoggerParameterMap;
 
 
 

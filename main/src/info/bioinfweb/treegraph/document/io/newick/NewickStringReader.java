@@ -24,7 +24,7 @@ import info.bioinfweb.treegraph.document.io.nexus.TranslTable;
 import info.bioinfweb.treegraph.document.nodebranchdata.BranchLengthAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
-import info.webinsel.util.Math2;
+import info.bioinfweb.commons.Math2;
 
 import java.util.*;
 

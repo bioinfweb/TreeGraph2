@@ -20,7 +20,7 @@ package info.bioinfweb.treegraph.document.undo;
 
 
 import info.bioinfweb.treegraph.document.*;
-import info.webinsel.util.swing.AbstractDocumentEdit;
+import info.bioinfweb.commons.swing.AbstractDocumentEdit;
 
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.UndoableEdit;

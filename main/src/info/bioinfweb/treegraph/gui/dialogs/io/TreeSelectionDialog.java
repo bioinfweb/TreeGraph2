@@ -25,7 +25,7 @@ import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.io.TreeSelector;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeViewPanel;
-import info.webinsel.util.text.StringUtils;
+import info.bioinfweb.commons.text.StringUtils;
 import info.webinsel.wikihelp.client.OkCancelApplyWikiHelpDialog;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;

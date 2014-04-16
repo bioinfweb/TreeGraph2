@@ -19,7 +19,7 @@
 package info.bioinfweb.treegraph.gui.dialogs;
 
 
-import info.webinsel.util.swing.DecimalInput;
+import info.bioinfweb.commons.swing.DecimalInput;
 import java.awt.GridBagConstraints;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;

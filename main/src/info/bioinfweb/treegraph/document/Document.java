@@ -31,11 +31,11 @@ import info.bioinfweb.treegraph.document.undo.*;
 import info.bioinfweb.treegraph.graphics.positionpaint.*;
 import info.bioinfweb.treegraph.gui.*;
 import info.bioinfweb.treegraph.gui.treeframe.TreeInternalFrame;
-import info.webinsel.util.*;
-import info.webinsel.util.io.*;
-import info.webinsel.util.swing.AccessibleUndoManager;
-import info.webinsel.util.swing.SwingSavable;
-import info.webinsel.util.swing.SwingSaver;
+import info.bioinfweb.commons.*;
+import info.bioinfweb.commons.io.*;
+import info.bioinfweb.commons.swing.AccessibleUndoManager;
+import info.bioinfweb.commons.swing.SwingSavable;
+import info.bioinfweb.commons.swing.SwingSaver;
 
 
 

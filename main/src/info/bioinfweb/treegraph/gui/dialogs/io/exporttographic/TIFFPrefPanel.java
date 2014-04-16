@@ -24,7 +24,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
 import info.bioinfweb.treegraph.graphics.export.tiff.TIFFWriter;
-import info.webinsel.util.collections.ParameterMap;
+import info.bioinfweb.commons.collections.ParameterMap;
 
 
 

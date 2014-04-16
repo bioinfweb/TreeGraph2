@@ -25,7 +25,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.Action;
 
 import info.bioinfweb.treegraph.Main;
-import info.webinsel.util.swing.ExtendedAbstractAction;
+import info.bioinfweb.commons.swing.ExtendedAbstractAction;
 
 
 

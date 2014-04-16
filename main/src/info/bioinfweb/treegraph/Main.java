@@ -28,14 +28,13 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.SplashScreen;
 
+import info.bioinfweb.commons.ProgramMainClass;
+import info.bioinfweb.commons.appversion.ApplicationType;
+import info.bioinfweb.commons.appversion.ApplicationVersion;
+import info.bioinfweb.commons.io.DefaultNameManager;
 import info.bioinfweb.treegraph.cmd.CmdProcessor;
 import info.bioinfweb.treegraph.document.clipboard.TreeClipboard;
 import info.webinsel.errorreport.swing.SwingErrorReporter;
-import info.webinsel.util.CommandLineReader;
-import info.webinsel.util.ProgramMainClass;
-import info.webinsel.util.appversion.ApplicationType;
-import info.webinsel.util.appversion.ApplicationVersion;
-import info.webinsel.util.io.DefaultNameManager;
 import info.webinsel.wikihelp.client.SwingErrorHandler;
 import info.webinsel.wikihelp.client.WikiHelp;
 

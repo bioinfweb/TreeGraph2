@@ -21,7 +21,7 @@ package info.bioinfweb.treegraph.graphics.export.jpeg;
 
 import info.bioinfweb.treegraph.graphics.export.GraphicWriter;
 import info.bioinfweb.treegraph.graphics.export.SVGTranscodeWriter;
-import info.webinsel.util.collections.ParameterMap;
+import info.bioinfweb.commons.collections.ParameterMap;
 
 import org.apache.batik.transcoder.Transcoder;
 import org.apache.batik.transcoder.image.JPEGTranscoder;

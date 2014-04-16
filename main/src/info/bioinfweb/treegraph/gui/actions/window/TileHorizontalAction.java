@@ -20,7 +20,7 @@ package info.bioinfweb.treegraph.gui.actions.window;
 
 
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
-import info.webinsel.util.swing.ExtendedAbstractAction;
+import info.bioinfweb.commons.swing.ExtendedAbstractAction;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;

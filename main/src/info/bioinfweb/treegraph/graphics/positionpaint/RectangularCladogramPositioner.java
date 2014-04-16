@@ -24,8 +24,8 @@ import info.bioinfweb.treegraph.document.format.*;
 import info.bioinfweb.treegraph.document.position.LegendPositionData;
 import info.bioinfweb.treegraph.document.position.NodePositionData;
 import info.bioinfweb.treegraph.document.position.PositionData;
-import info.webinsel.util.*;
-import info.webinsel.util.graphics.*;
+import info.bioinfweb.commons.*;
+import info.bioinfweb.commons.graphics.*;
 
 
 

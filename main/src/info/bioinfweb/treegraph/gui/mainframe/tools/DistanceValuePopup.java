@@ -20,8 +20,8 @@ package info.bioinfweb.treegraph.gui.mainframe.tools;
 
 
 import info.bioinfweb.treegraph.gui.dialogs.DistanceValueInput;
-import info.webinsel.util.swing.RelativeRangeModel;
-import info.webinsel.util.swing.ToolBarPopup;
+import info.bioinfweb.commons.swing.RelativeRangeModel;
+import info.bioinfweb.commons.swing.ToolBarPopup;
 
 import javax.swing.JPanel;
 import java.awt.Frame;

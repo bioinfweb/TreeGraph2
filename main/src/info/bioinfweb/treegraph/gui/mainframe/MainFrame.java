@@ -32,7 +32,7 @@ import info.bioinfweb.treegraph.gui.actions.ActionManagement;
 import info.bioinfweb.treegraph.gui.actions.window.SelectFrameAction;
 import info.bioinfweb.treegraph.gui.dialogs.io.loadlogger.LoadLoggerDialog;
 import info.bioinfweb.treegraph.gui.treeframe.TreeInternalFrame;
-import info.webinsel.util.swing.ExtendedDesktopPane;
+import info.bioinfweb.commons.swing.ExtendedDesktopPane;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyVetoException;

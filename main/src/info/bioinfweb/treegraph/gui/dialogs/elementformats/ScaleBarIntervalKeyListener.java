@@ -21,7 +21,7 @@ package info.bioinfweb.treegraph.gui.dialogs.elementformats;
 
 import info.bioinfweb.treegraph.document.format.ScaleBarFormats;
 import info.bioinfweb.treegraph.document.format.ScaleValue;
-import info.webinsel.util.swing.DecimalInput;
+import info.bioinfweb.commons.swing.DecimalInput;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;

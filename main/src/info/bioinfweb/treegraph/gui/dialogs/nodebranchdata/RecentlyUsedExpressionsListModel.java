@@ -19,8 +19,8 @@
 package info.bioinfweb.treegraph.gui.dialogs.nodebranchdata;
 
 
+import info.bioinfweb.commons.io.IOUtils;
 import info.bioinfweb.treegraph.Main;
-import info.webinsel.util.io.IOUtils;
 
 import java.io.BufferedReader;
 import java.io.File;

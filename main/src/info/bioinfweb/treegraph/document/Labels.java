@@ -20,7 +20,7 @@ package info.bioinfweb.treegraph.document;
 
 
 import info.bioinfweb.treegraph.document.format.*;
-import info.webinsel.util.Math2;
+import info.bioinfweb.commons.Math2;
 
 import java.util.*;
 

@@ -5,7 +5,7 @@ import java.io.File;
 
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
-import info.webinsel.util.log.ApplicationLogger;
+import info.bioinfweb.commons.log.ApplicationLogger;
 
 
 /**

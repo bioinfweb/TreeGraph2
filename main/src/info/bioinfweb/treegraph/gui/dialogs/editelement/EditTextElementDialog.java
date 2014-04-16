@@ -22,7 +22,7 @@ package info.bioinfweb.treegraph.gui.dialogs.editelement;
 import info.bioinfweb.treegraph.document.TextElement;
 import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.undo.edit.TextElementEdit;
-import info.webinsel.util.Math2;
+import info.bioinfweb.commons.Math2;
 import javax.swing.JPanel;
 import java.awt.Frame;
 import javax.swing.BoxLayout;

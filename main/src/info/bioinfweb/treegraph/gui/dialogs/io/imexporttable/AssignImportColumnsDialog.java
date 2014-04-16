@@ -152,7 +152,7 @@ public class AssignImportColumnsDialog extends OkCancelApplyWikiHelpDialog {
 	/**
 	 * Tests if selected columns already exist as prompts the user to proceed.
 	 * 
-	 * @see info.webinsel.util.swing.OkCancelApplyDialog#apply()
+	 * @see info.bioinfweb.commons.swing.OkCancelApplyDialog#apply()
 	 */
 	@Override
 	protected boolean apply() {

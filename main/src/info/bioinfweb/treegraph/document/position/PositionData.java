@@ -20,7 +20,7 @@ package info.bioinfweb.treegraph.document.position;
 
 
 import info.bioinfweb.treegraph.document.format.DistanceValue;
-import info.webinsel.util.Math2;
+import info.bioinfweb.commons.Math2;
 import java.awt.Rectangle;
 
 

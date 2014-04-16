@@ -23,7 +23,7 @@ import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.format.adapters.distance.DistanceAdapter;
 import info.bioinfweb.treegraph.document.undo.format.ScaleDistanceValuesEdit;
-import info.webinsel.util.swing.DecimalInput;
+import info.bioinfweb.commons.swing.DecimalInput;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;

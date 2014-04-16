@@ -23,7 +23,7 @@ import info.bioinfweb.treegraph.document.format.DistanceDimension;
 import info.bioinfweb.treegraph.document.format.GlobalFormats;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.graphics.positionpaint.PositionPaintType;
-import info.webinsel.util.RandomValues;
+import info.bioinfweb.commons.RandomValues;
 import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.Iterator;

@@ -20,7 +20,7 @@ package info.bioinfweb.treegraph.gui.dialogs;
 
 
 import info.bioinfweb.treegraph.Main;
-import info.webinsel.util.io.TextReader;
+import info.bioinfweb.commons.io.TextReader;
 import javax.swing.JPanel;
 
 import java.awt.Desktop;

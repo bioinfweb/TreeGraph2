@@ -24,7 +24,7 @@ import java.util.Vector;
 import javax.swing.AbstractListModel;
 import javax.swing.ListModel;
 
-import info.webinsel.util.log.ApplicationLoggerMessage;
+import info.bioinfweb.commons.log.ApplicationLoggerMessage;
 
 
 

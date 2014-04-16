@@ -24,7 +24,7 @@ import info.bioinfweb.treegraph.document.IDManager;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.undo.edit.RenameDataIDEdit;
 import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
-import info.webinsel.util.Math2;
+import info.bioinfweb.commons.Math2;
 
 import javax.swing.JPanel;
 import java.awt.Frame;

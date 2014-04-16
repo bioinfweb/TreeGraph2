@@ -25,7 +25,7 @@ import info.bioinfweb.treegraph.document.format.FormatUtils;
 import info.bioinfweb.treegraph.document.undo.edit.InsertLabelEdit;
 import info.bioinfweb.treegraph.gui.dialogs.CollidingIDsDialog;
 import info.bioinfweb.treegraph.gui.dialogs.DataIDComboBox;
-import info.webinsel.util.Math2;
+import info.bioinfweb.commons.Math2;
 
 import java.awt.Color;
 import java.awt.Font;

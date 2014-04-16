@@ -22,7 +22,7 @@ package info.bioinfweb.treegraph.gui.dialogs.editelement;
 import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.undo.edit.BranchLengthEdit;
 import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
-import info.webinsel.util.swing.DecimalInput;
+import info.bioinfweb.commons.swing.DecimalInput;
 
 import javax.swing.JPanel;
 import java.awt.Frame;

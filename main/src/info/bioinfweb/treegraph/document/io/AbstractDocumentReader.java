@@ -21,8 +21,8 @@ package info.bioinfweb.treegraph.document.io;
 
 import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.treegraph.document.Document;
-import info.webinsel.util.io.XMLUtils;
-import info.webinsel.util.log.ApplicationLogger;
+import info.bioinfweb.commons.io.XMLUtils;
+import info.bioinfweb.commons.log.ApplicationLogger;
 
 import java.io.*;
 

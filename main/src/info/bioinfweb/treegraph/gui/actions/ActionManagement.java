@@ -40,8 +40,8 @@ import info.bioinfweb.treegraph.gui.actions.window.*;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeInternalFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
-import info.webinsel.util.swing.AbstractUndoActionManagement;
-import info.webinsel.util.swing.AccessibleUndoManager;
+import info.bioinfweb.commons.swing.AbstractUndoActionManagement;
+import info.bioinfweb.commons.swing.AccessibleUndoManager;
 
 
 

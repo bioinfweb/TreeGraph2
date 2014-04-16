@@ -19,7 +19,7 @@
 package info.bioinfweb.treegraph.document.io.xtg;
 
 
-import info.webinsel.util.io.FormatVersion;
+import info.bioinfweb.commons.io.FormatVersion;
 
 import javax.xml.namespace.QName;
 

@@ -21,7 +21,7 @@ package info.bioinfweb.treegraph.graphics.export;
 
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.graphics.positionpaint.TreePainter;
-import info.webinsel.util.collections.ParameterMap;
+import info.bioinfweb.commons.collections.ParameterMap;
 
 import java.io.File;
 import java.io.FileOutputStream;

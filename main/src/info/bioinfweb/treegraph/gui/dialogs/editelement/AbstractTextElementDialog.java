@@ -36,7 +36,7 @@ import javax.swing.border.TitledBorder;
 
 import info.bioinfweb.treegraph.document.TextElement;
 import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
-import info.webinsel.util.Math2;
+import info.bioinfweb.commons.Math2;
 
 
 

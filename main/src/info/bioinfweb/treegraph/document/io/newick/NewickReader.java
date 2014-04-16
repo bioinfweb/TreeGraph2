@@ -35,7 +35,7 @@ import info.bioinfweb.treegraph.document.io.nexus.NexusParser;
 import info.bioinfweb.treegraph.document.nodebranchdata.BranchLengthAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
-import info.webinsel.util.log.ApplicationLogger;
+import info.bioinfweb.commons.log.ApplicationLogger;
 
 
 

@@ -23,7 +23,7 @@ import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Legend;
 import info.bioinfweb.treegraph.document.Legends;
 import info.bioinfweb.treegraph.document.Node;
-import info.webinsel.util.graphics.GraphicsUtils;
+import info.bioinfweb.commons.graphics.GraphicsUtils;
 
 import java.awt.Color;
 

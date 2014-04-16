@@ -25,7 +25,7 @@ import info.bioinfweb.treegraph.document.TextElement;
 import info.bioinfweb.treegraph.document.format.operate.FormatOperator;
 import info.bioinfweb.treegraph.document.format.operate.TextColorOperator;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
-import info.webinsel.util.swing.SwingChangeMonitor;
+import info.bioinfweb.commons.swing.SwingChangeMonitor;
 import javax.swing.JColorChooser;
 
 

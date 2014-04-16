@@ -19,7 +19,7 @@
 package info.bioinfweb.treegraph.document;
 
 
-import info.webinsel.util.RandomValues;
+import info.bioinfweb.commons.RandomValues;
 
 import java.util.Collections;
 import java.util.Comparator;

@@ -20,7 +20,7 @@ package info.bioinfweb.treegraph.gui.dialogs.io.exporttographic;
 
 
 import info.bioinfweb.treegraph.graphics.export.jpeg.JPEGWriter;
-import info.webinsel.util.collections.ParameterMap;
+import info.bioinfweb.commons.collections.ParameterMap;
 
 import java.awt.GridBagLayout;
 import javax.swing.JPanel;

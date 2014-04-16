@@ -29,7 +29,7 @@ import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataInput;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataList;
-import info.webinsel.util.swing.JHTMLLabel;
+import info.bioinfweb.commons.swing.JHTMLLabel;
 
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;

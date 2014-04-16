@@ -21,9 +21,9 @@ package info.bioinfweb.treegraph.gui.dialogs.io.loadlogger;
 
 import info.bioinfweb.treegraph.document.io.DocumentReader;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
-import info.webinsel.util.log.AbstractApplicationLogger;
-import info.webinsel.util.log.ApplicationLogger;
-import info.webinsel.util.log.ApplicationLoggerMessage;
+import info.bioinfweb.commons.log.AbstractApplicationLogger;
+import info.bioinfweb.commons.log.ApplicationLogger;
+import info.bioinfweb.commons.log.ApplicationLoggerMessage;
 
 import javax.swing.JDialog;
 import javax.swing.JPanel;

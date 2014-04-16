@@ -31,9 +31,9 @@ import info.bioinfweb.treegraph.document.format.operate.LabelMarginRightOperator
 import info.bioinfweb.treegraph.document.format.operate.LabelMarginTopOperator;
 import info.bioinfweb.treegraph.gui.dialogs.MarginInput;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
-import info.webinsel.util.Math2;
-import info.webinsel.util.text.StringUtils;
-import info.webinsel.util.swing.SwingChangeMonitor;
+import info.bioinfweb.commons.Math2;
+import info.bioinfweb.commons.text.StringUtils;
+import info.bioinfweb.commons.swing.SwingChangeMonitor;
 
 import java.awt.Color;
 import java.awt.Font;
