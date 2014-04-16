@@ -24,7 +24,7 @@ import java.util.List;
 
 import info.bioinfweb.treegraph.document.format.ElementFormats;
 import info.bioinfweb.treegraph.document.format.LabelFormats;
-import info.webinsel.util.junit.TestTools;
+import info.bioinfweb.commons.junit.TestTools;
 
 import org.junit.* ;
 

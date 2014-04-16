@@ -26,7 +26,7 @@ import java.util.List;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.io.xtg.XTGReader;
-import info.webinsel.util.SystemUtils;
+import info.bioinfweb.commons.SystemUtils;
 
 import org.junit.* ;
 

@@ -23,7 +23,7 @@ import info.bioinfweb.treegraph.document.io.xtg.XTGReader;
 import info.bioinfweb.treegraph.document.nodebranchdata.BranchLengthAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;
-import info.webinsel.util.SystemUtils;
+import info.bioinfweb.commons.SystemUtils;
 
 import java.io.File;
 import java.text.DecimalFormat;

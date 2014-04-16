@@ -25,7 +25,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import info.bioinfweb.treegraph.document.TextElementData;
-import info.webinsel.util.SystemUtils;
+import info.bioinfweb.commons.SystemUtils;
 
 import org.junit.* ;
 
