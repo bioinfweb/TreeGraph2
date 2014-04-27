@@ -30,7 +30,7 @@ import info.bioinfweb.treegraph.document.format.operate.TextStyleOperator;
 import info.bioinfweb.treegraph.gui.dialogs.DistanceValueInput;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 import info.bioinfweb.treegraph.gui.treeframe.TreeViewPanel;
-import info.bioinfweb.commons.ChangeMonitor;
+import info.bioinfweb.commons.changemonitor.ChangeMonitor;
 import info.bioinfweb.commons.swing.SwingChangeMonitor;
 import java.awt.GridBagLayout;
 import javax.swing.JPanel;

@@ -44,7 +44,7 @@ import info.bioinfweb.treegraph.gui.dialogs.DistanceValueInput;
 import info.bioinfweb.treegraph.gui.dialogs.elementformats.piecolor.PieColorCellRenderer;
 import info.bioinfweb.treegraph.gui.dialogs.elementformats.piecolor.PieColorListEntry;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
-import info.bioinfweb.commons.ChangeMonitor;
+import info.bioinfweb.commons.changemonitor.ChangeMonitor;
 import info.bioinfweb.commons.swing.SwingChangeMonitor;
 
 import javax.swing.BorderFactory;

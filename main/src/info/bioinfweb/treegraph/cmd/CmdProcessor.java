@@ -37,8 +37,9 @@ import info.bioinfweb.treegraph.document.io.ReadWriteFormat;
 import info.bioinfweb.treegraph.document.io.ReadWriteParameterMap;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
-import info.webinsel.updatecenter.dataxchange.VersionList;
-import info.webinsel.updatecenter.dataxchange.VersionListXMLReader;
+import info.bioinfweb.updatecenter.dataxchange.VersionListXMLReader;
+import info.bioinfweb.updatecenter.dataxchange.beans.ApplicationVersionInfo;
+import info.bioinfweb.updatecenter.dataxchange.beans.ListInfo;
 import info.bioinfweb.commons.CommandLineReader;
 import info.bioinfweb.commons.Math2;
 import info.bioinfweb.commons.appversion.ApplicationVersion;
@@ -71,8 +72,8 @@ public class CmdProcessor {
 		try {
 			String lastChecked = Main.getInstance().getPreferences().get(LAST_VERSION_CHECK_PREF_KEY, null);
 			if ((lastChecked == null) || (Math2.parseDouble(lastChecked) + VERSION_CHECK_INTERVAL <= System.currentTimeMillis())) {
-				VersionList list = new VersionListXMLReader().read(new URL(Main.LATEST_VERSION_URL).openStream());
-				ApplicationVersion remoteVersion = list.getEntries().get(0).getVersion();
+				ListInfo<ApplicationVersionInfo> list = new VersionListXMLReader().read(new URL(Main.LATEST_VERSION_URL).openStream());
+				ApplicationVersion remoteVersion = list.getEntries().get(0);
 				if (Main.getInstance().getVersion().getBuildNumber() < remoteVersion.getBuildNumber()) {
 					if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(null, 
 							"There is a newer version of TreeGraph 2 available for download.\n" +

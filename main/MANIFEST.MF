@@ -1,42 +1,42 @@
 Manifest-Version: 1.0
 Main-Class: info.bioinfweb.treegraph.Main
 SplashScreen-Image: resources/Splash.png
-Class-Path: lib/batik-anim.jar
-            lib/batik-awt-util.jar
-            lib/batik-bridge.jar
-            lib/batik-codec.jar
-            lib/batik-css.jar
-            lib/batik-dom.jar
-            lib/batik-ext.jar
-            lib/batik-extension.jar
-            lib/batik-gui-util.jar
-            lib/batik-gvt.jar
-            lib/batik-parser.jar
-            lib/batik-script.jar 
-            lib/batik-svg-dom.jar
-            lib/batik-svggen.jar
-            lib/batik-swing.jar
-            lib/batik-transcoder.jar
-            lib/batik-util.jar
-            lib/batik-xml.jar
-            lib/js.jar
-            lib/pdf-transcoder.jar
-            lib/xalan-2.6.0.jar
-            lib/xerces_2_5_0.jar
-            lib/xml-apis.jar
-            lib/xml-apis-ext.jar
-            lib/jdom.jar
+Class-Path: lib/batik/batik-anim.jar
+            lib/batik/batik-awt-util.jar
+            lib/batik/batik-bridge.jar
+            lib/batik/batik-codec.jar
+            lib/batik/batik-css.jar
+            lib/batik/batik-dom.jar
+            lib/batik/batik-ext.jar
+            lib/batik/batik-extension.jar
+            lib/batik/batik-gui-util.jar
+            lib/batik/batik-gvt.jar
+            lib/batik/batik-parser.jar
+            lib/batik/batik-script.jar 
+            lib/batik/batik-svg-dom.jar
+            lib/batik/batik-svggen.jar
+            lib/batik/batik-swing.jar
+            lib/batik/batik-transcoder.jar
+            lib/batik/batik-util.jar
+            lib/batik/batik-xml.jar
+            lib/batik/js.jar
+            lib/batik/pdf-transcoder.jar
+            lib/batik/xalan-2.6.0.jar
+            lib/batik/xerces_2_5_0.jar
+            lib/batik/xml-apis.jar
+            lib/batik/xml-apis-ext.jar
+            lib/errorReporter/ErrorReporter.jar
+            lib/errorReporter/jdom-2.0.5.jar
+            lib/errorReporter/jaxen-1.1.6.jar
             lib/BrowserLauncher2-1_3.jar
+            lib/commons-lang3-3.1.jar
             lib/freehep-base.jar
             lib/freehep-graphics2d.jar
             lib/freehep-graphicsio.jar
             lib/freehep-graphicsio-emf.jar
-            lib/ErrorReporter.jar
-            lib/info.webinsel.util.jar
             lib/info.webinsel.wikihelp.client.jar
             lib/org.jdesktop.swingx.scrollpaneselector.jar
             lib/ext-1.1.1.jar
             lib/jep-2.4.1.jar
-            lib/UpdateCenterClient.jar
-            lib/commons-lang3-3.1.jar
+            lib/UpdateCenterShared.jar
             lib/l2fprod-common-directorychooser-7.3.jar

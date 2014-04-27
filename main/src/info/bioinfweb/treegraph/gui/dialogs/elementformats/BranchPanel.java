@@ -19,6 +19,7 @@
 package info.bioinfweb.treegraph.gui.dialogs.elementformats;
 
 
+import info.bioinfweb.commons.changemonitor.ChangeMonitor;
 import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.format.BranchFormats;
 import info.bioinfweb.treegraph.document.format.operate.ConstantWidthOperator;
@@ -28,7 +29,6 @@ import info.bioinfweb.treegraph.document.format.operate.MinSpaceAboveOperator;
 import info.bioinfweb.treegraph.document.format.operate.MinSpaceBelowOperator;
 import info.bioinfweb.treegraph.gui.dialogs.DistanceValueInput;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
-import info.bioinfweb.commons.ChangeMonitor;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;

@@ -10,44 +10,58 @@ main/include/icons/Nexus.ico -text
 main/include/icons/TreeGraph.ico -text
 main/include/icons/XTG.ico -text
 main/include/lib/BrowserLauncher2-1_3.jar -text
-main/include/lib/ErrorReporter.jar -text
-main/include/lib/UpdateCenterClient.jar -text
-main/include/lib/batik-anim.jar -text
-main/include/lib/batik-awt-util.jar -text
-main/include/lib/batik-bridge.jar -text
-main/include/lib/batik-codec.jar -text
-main/include/lib/batik-css.jar -text
-main/include/lib/batik-dom.jar -text
-main/include/lib/batik-ext.jar -text
-main/include/lib/batik-extension.jar -text
-main/include/lib/batik-gui-util.jar -text
-main/include/lib/batik-gvt.jar -text
-main/include/lib/batik-parser.jar -text
-main/include/lib/batik-script.jar -text
-main/include/lib/batik-svg-dom.jar -text
-main/include/lib/batik-svggen.jar -text
-main/include/lib/batik-swing.jar -text
-main/include/lib/batik-transcoder.jar -text
-main/include/lib/batik-util.jar -text
-main/include/lib/batik-xml.jar -text
+main/include/lib/UpdateCenterShared.jar -text
+main/include/lib/batik/LICENSE.dom-documentation.txt -text svneol=unset#text/plain
+main/include/lib/batik/LICENSE.dom-software.txt -text svneol=unset#text/plain
+main/include/lib/batik/LICENSE.js.txt -text svneol=unset#text/plain
+main/include/lib/batik/LICENSE.pdf-transcoder.txt -text svneol=unset#text/plain
+main/include/lib/batik/LICENSE.sax.txt -text svneol=unset#text/plain
+main/include/lib/batik/LICENSE.xalan-2.6.0.txt -text svneol=unset#text/plain
+main/include/lib/batik/LICENSE.xerces_2_5_0.txt -text svneol=unset#text/plain
+main/include/lib/batik/README.js.txt -text svneol=unset#text/plain
+main/include/lib/batik/README.pdf-transcoder.txt -text svneol=unset#text/plain
+main/include/lib/batik/README.xalan-2.6.0.txt -text svneol=unset#text/plain
+main/include/lib/batik/README.xerces_2_5_0.txt -text svneol=unset#text/plain
+main/include/lib/batik/README.xml-apis-ext.txt -text svneol=unset#text/plain
+main/include/lib/batik/README.xml-apis.txt -text svneol=unset#text/plain
+main/include/lib/batik/Squiggle.icns -text
+main/include/lib/batik/batik-anim.jar -text
+main/include/lib/batik/batik-awt-util.jar -text
+main/include/lib/batik/batik-bridge.jar -text
+main/include/lib/batik/batik-codec.jar -text
+main/include/lib/batik/batik-css.jar -text
+main/include/lib/batik/batik-dom.jar -text
+main/include/lib/batik/batik-ext.jar -text
+main/include/lib/batik/batik-extension.jar -text
+main/include/lib/batik/batik-gui-util.jar -text
+main/include/lib/batik/batik-gvt.jar -text
+main/include/lib/batik/batik-parser.jar -text
+main/include/lib/batik/batik-script.jar -text
+main/include/lib/batik/batik-svg-dom.jar -text
+main/include/lib/batik/batik-svggen.jar -text
+main/include/lib/batik/batik-swing.jar -text
+main/include/lib/batik/batik-transcoder.jar -text
+main/include/lib/batik/batik-util.jar -text
+main/include/lib/batik/batik-xml.jar -text
+main/include/lib/batik/js.jar -text
+main/include/lib/batik/pdf-transcoder.jar -text
+main/include/lib/batik/xalan-2.6.0.jar -text
+main/include/lib/batik/xerces_2_5_0.jar -text
+main/include/lib/batik/xml-apis-ext.jar -text
+main/include/lib/batik/xml-apis.jar -text
 main/include/lib/commons-lang3-3.1.jar -text
+main/include/lib/errorReporter/ErrorReporter.jar -text
+main/include/lib/errorReporter/jaxen-1.1.6.LICENSE.txt -text svneol=unset#text/plain
+main/include/lib/errorReporter/jaxen-1.1.6.jar -text
+main/include/lib/errorReporter/jdom-2.0.5.jar -text
 main/include/lib/ext-1.1.1.jar -text
 main/include/lib/freehep-base.jar -text
 main/include/lib/freehep-graphics2d.jar -text
 main/include/lib/freehep-graphicsio-emf.jar -text
 main/include/lib/freehep-graphicsio.jar -text
-main/include/lib/info.webinsel.util.jar -text
-main/include/lib/info.webinsel.wikihelp.client.jar -text
-main/include/lib/jdom.jar -text
 main/include/lib/jep-2.4.1.jar -text
-main/include/lib/js.jar -text
 main/include/lib/l2fprod-common-directorychooser-7.3.jar -text
 main/include/lib/org.jdesktop.swingx.scrollpaneselector.jar -text
-main/include/lib/pdf-transcoder.jar -text
-main/include/lib/xalan-2.6.0.jar -text
-main/include/lib/xerces_2_5_0.jar -text
-main/include/lib/xml-apis-ext.jar -text
-main/include/lib/xml-apis.jar -text
 main/src/config/RecentlyUsedExpressions.txt -text
 main/src/info/bioinfweb/treegraph/AWTExceptionHandler.java -text
 main/src/info/bioinfweb/treegraph/Main.java -text
