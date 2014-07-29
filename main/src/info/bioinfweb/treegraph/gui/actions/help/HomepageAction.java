@@ -37,7 +37,7 @@ public class HomepageAction extends ExtendedAbstractAction {
 	public HomepageAction() {
 		super();
 		
-		putValue(Action.NAME, "TreeGraph 2 Homepage"); 
+		putValue(Action.NAME, "TreeGraph 2 website"); 
 	  putValue(Action.MNEMONIC_KEY, KeyEvent.VK_T);
 	  loadSymbols("TreeGraph");
 	}

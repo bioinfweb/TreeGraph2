@@ -21,23 +21,20 @@ package info.bioinfweb.treegraph.document.undo.edit;
 
 import java.util.List;
 
-import javax.swing.JOptionPane;
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 
-import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Legend;
 import info.bioinfweb.treegraph.document.Legends;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.undo.SaveLegendsEdit;
 import info.bioinfweb.treegraph.document.undo.WarningMessageEdit;
-import info.webinsel.wikihelp.client.WikiHelpOptionPane;
 
 
 
 /**
- * Adds all children of a node to its parent node and than remove that node from the document.
+ * Adds all children of a node to its parent node and than removes that node from the document.
  * 
  * @author Ben St&ouml;ver
  */
@@ -99,7 +96,7 @@ public class CollapseNodeEdit extends SaveLegendsEdit implements WarningMessageE
 			document.getTree().setPaintStart(node.getChildren().get(0));
 		}
 		else {
-			throw new IllegalArgumentException("The root node can only be collapsed if is " +
+			throw new IllegalArgumentException("The root node can only be collapsed if it contains " +
 					"exactly one subnode.");
 		}
 		
