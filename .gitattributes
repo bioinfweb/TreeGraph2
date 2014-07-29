@@ -11,6 +11,7 @@ main/include/icons/TreeGraph.ico -text
 main/include/icons/XTG.ico -text
 main/include/lib/BrowserLauncher2-1_3.jar -text
 main/include/lib/UpdateCenterShared.jar -text
+main/include/lib/WikiHelp.jar -text
 main/include/lib/batik/LICENSE.dom-documentation.txt -text svneol=unset#text/plain
 main/include/lib/batik/LICENSE.dom-software.txt -text svneol=unset#text/plain
 main/include/lib/batik/LICENSE.js.txt -text svneol=unset#text/plain
@@ -49,6 +50,8 @@ main/include/lib/batik/xalan-2.6.0.jar -text
 main/include/lib/batik/xerces_2_5_0.jar -text
 main/include/lib/batik/xml-apis-ext.jar -text
 main/include/lib/batik/xml-apis.jar -text
+main/include/lib/bioinfweb.commons.core.jar -text
+main/include/lib/bioinfweb.commons.swing.jar -text
 main/include/lib/commons-lang3-3.1.jar -text
 main/include/lib/errorReporter/ErrorReporter.jar -text
 main/include/lib/errorReporter/jaxen-1.1.6.LICENSE.txt -text svneol=unset#text/plain
