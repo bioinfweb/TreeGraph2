@@ -24,6 +24,7 @@ import java.util.List;
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 
+import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Legend;
 import info.bioinfweb.treegraph.document.Legends;
@@ -77,6 +78,14 @@ public class CollapseNodeEdit extends SaveLegendsEdit implements WarningMessageE
 	}
 
 
+	private void editBranchLength(Branch childBranch, double factor) {
+		Branch formerParentBranch = node.getAfferentBranch();
+		if (formerParentBranch.hasLength() && childBranch.hasLength()) {
+			childBranch.setLength(childBranch.getLength() + formerParentBranch.getLength() * factor);
+		}
+	}
+	
+	
 	@Override
 	public void redo() throws CannotRedoException {
 		saveLegends();
@@ -84,16 +93,20 @@ public class CollapseNodeEdit extends SaveLegendsEdit implements WarningMessageE
 		
 		Node parent = node.getParent();
 		if (parent != null) {
+			int insertIndex = parent.getChildren().indexOf(node); 
 			for (int i = 0; i < node.getChildren().size(); i++) {
 				Node child = node.getChildren().get(i);
 				child.setParent(parent);
-				parent.getChildren().add(child);  // Kinder bleiben auch mit Node verknüpft.
+				editBranchLength(child.getAfferentBranch(), 1);  // +1 to add parent length
+				parent.getChildren().add(insertIndex + i, child);  // Kinder bleiben auch mit Node verknüpft.
 			}
 			parent.getChildren().remove(node);
 		}
 		else if (node.getChildren().size() == 1) {
 			node.getChildren().get(0).setParent(null);
-			document.getTree().setPaintStart(node.getChildren().get(0));
+			Node child = node.getChildren().get(0);
+			document.getTree().setPaintStart(child);
+			editBranchLength(child.getAfferentBranch(), 1);  // +1 to add parent length
 		}
 		else {
 			throw new IllegalArgumentException("The root node can only be collapsed if it contains " +
@@ -115,12 +128,15 @@ public class CollapseNodeEdit extends SaveLegendsEdit implements WarningMessageE
 				if (node.hasParent()) {
 					parentChildren.remove(node.getChildren().get(i));
 				}
+				editBranchLength(child.getAfferentBranch(), -1);  // -1 to subtract parent length
 			}
 			parentChildren.add(index, node);
 		}
 		else {
-			node.getChildren().get(0).setParent(node);
+			Node child = node.getChildren().get(0); 
+			child.setParent(node);
 			document.getTree().setPaintStart(node);
+			editBranchLength(child.getAfferentBranch(), -1);  // -1 to subtract parent length
 		}
 		
 		restoreLegends();
