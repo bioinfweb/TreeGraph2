@@ -321,6 +321,7 @@ public class RectangularCladogramPositioner implements TreePositioner {
 	/**
 	 * Returns the space between the right of the node and the real position of the node line
 	 * dependant of the y position.
+	 * 
 	 * @param node 
 	 * @param y - the absolute y position (not relative to the top of the node)
 	 * @return the length in x (between 0 and cornerRadius)
@@ -351,6 +352,7 @@ public class RectangularCladogramPositioner implements TreePositioner {
 	/**
 	 * Positions the subtree under root. (Widths ans heights must have been calculated 
 	 * already.)
+	 * 
 	 * @param root - the root of the subtree to position
 	 * @param overallWidth
 	 * @param y0 - the start of the subtree on y

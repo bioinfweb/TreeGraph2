@@ -232,10 +232,10 @@ public class RectangularCladogramPainter implements TreePainter {
 		Stroke oldStroke = g.getStroke();
 		PositionData pd = n.getPosition(type);
 		
-		// Senkrechte Linie zeichnen:
+		// Draw vertical line:
 		float width = n.getFormats().getLineWidth().getInPixels(pixelsPerMillimeter);
 		float left = pd.getLeft().getInPixels(pixelsPerMillimeter) + 0.5f * width;  // angegeben Koordinaten befinden sich in der Mitte einer Linie
-		float dY = 0;
+		float dY = -0.5f * width;
 		float cornerRadius = Math.min(n.getFormats().getCornerRadius().getInPixels(pixelsPerMillimeter), pd.getWidth().getInPixels(pixelsPerMillimeter) - width);
 		if (cornerRadius > 0) {
 		  dY = width + cornerRadius;
@@ -263,12 +263,19 @@ public class RectangularCladogramPainter implements TreePainter {
 			g.draw(path);
 		}
 		else {
-			float upperChildWidth =
-				n.getChildren().get(0).getAfferentBranch().getFormats().getLineWidth().getInPixels(pixelsPerMillimeter);  // Zwei Unterknoten muss es geben, sonst wären PaintLeaf oder PaintPointNode aufgerufen worden.
-			float lowerChildWidth =
-				n.getChildren().get(n.getChildren().size() - 1).getAfferentBranch().getFormats().getLineWidth().getInPixels(pixelsPerMillimeter);
-  		g.draw(new Line2D.Float(left, top - 0.5f * upperChildWidth, 
-  				left, top + height + 0.5f * lowerChildWidth));
+			float upperHeightDiff = 0;
+			float lowerHeightDiff = 0;
+			BranchFormats formats = n.getChildren().get(0).getAfferentBranch().getFormats(); 
+			if (formats.isConstantWidth()) {
+				upperHeightDiff = 0.5f * (formats.getLineWidth().getInPixels(pixelsPerMillimeter) - 
+						n.getFormats().getLineWidth().getInPixels(pixelsPerMillimeter));
+			}
+			formats = n.getChildren().get(n.getChildren().size() - 1).getAfferentBranch().getFormats(); 
+			if (formats.isConstantWidth()) {
+				lowerHeightDiff = 0.5f * (formats.getLineWidth().getInPixels(pixelsPerMillimeter) - 
+						n.getFormats().getLineWidth().getInPixels(pixelsPerMillimeter));
+			}
+  		g.draw(new Line2D.Float(left, top - upperHeightDiff, left, top + height + lowerHeightDiff));
 		}
 		g.setStroke(oldStroke);
 		
