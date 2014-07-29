@@ -29,36 +29,49 @@ import info.bioinfweb.treegraph.document.undo.DocumentEdit;
 
 
 
+/**
+ * Splits a branch in the document into a parent and a child branch. If the branch has a defined length, the two new
+ * branches get the half of that length each.
+ * 
+ * @author Ben St&ouml;ver
+ */
 public class SeparateBranchEdit extends DocumentEdit {
-  private Branch branch;
-  private Node node = Node.getInstanceWithBranch();
+  private Branch branchToSplit;
+  private Node insertedNode = Node.getInstanceWithBranch();
   private int index;
   
   
 	public SeparateBranchEdit(Document document, Branch branch) {
 		super(document);
-		this.branch = branch;
+		this.branchToSplit = branch;
 		
-		node.getFormats().assign(branch.getTargetNode().getFormats());
-		node.getAfferentBranch().getFormats().assign(branch.getFormats());
+		insertedNode.getFormats().assign(branch.getTargetNode().getFormats());
+		insertedNode.getAfferentBranch().getFormats().assign(branch.getFormats());
+		if (branchToSplit.hasLength()) {
+			insertedNode.getAfferentBranch().setLength(0.5 * branchToSplit.getLength());
+		}
 	}
 
 
 	@Override
 	public void redo() throws CannotRedoException {
-		if (branch.getTargetNode().hasParent()) {
-			Node parent = branch.getTargetNode().getParent();
-			index = parent.getChildren().indexOf(branch.getTargetNode());
+		if (branchToSplit.getTargetNode().hasParent()) {
+			Node parent = branchToSplit.getTargetNode().getParent();
+			index = parent.getChildren().indexOf(branchToSplit.getTargetNode());
 			parent.getChildren().remove(index);
-			branch.getTargetNode().setParent(node);
-			node.getChildren().add(branch.getTargetNode());
-			node.setParent(parent);
-			parent.getChildren().add(index, node);
+			branchToSplit.getTargetNode().setParent(insertedNode);
+			insertedNode.getChildren().add(branchToSplit.getTargetNode());
+			insertedNode.setParent(parent);
+			parent.getChildren().add(index, insertedNode);
 		}
 		else {
-			document.getTree().setPaintStart(node);
-			branch.getTargetNode().setParent(node);
-			node.getChildren().add(branch.getTargetNode());
+			document.getTree().setPaintStart(insertedNode);
+			branchToSplit.getTargetNode().setParent(insertedNode);
+			insertedNode.getChildren().add(branchToSplit.getTargetNode());
+		}
+		
+		if (branchToSplit.hasLength()) {
+			branchToSplit.setLength(0.5 * branchToSplit.getLength());
 		}
 		super.redo();
 	}
@@ -66,16 +79,20 @@ public class SeparateBranchEdit extends DocumentEdit {
 
 	@Override
 	public void undo() throws CannotUndoException {
-		node.getChildren().remove(branch.getTargetNode());
-		if (node.hasParent()) {
-			Node parent = node.getParent();
-			parent.getChildren().remove(node);
-			branch.getTargetNode().setParent(parent);
-			parent.getChildren().add(index, branch.getTargetNode());
+		insertedNode.getChildren().remove(branchToSplit.getTargetNode());
+		if (insertedNode.hasParent()) {
+			Node parent = insertedNode.getParent();
+			parent.getChildren().remove(insertedNode);
+			branchToSplit.getTargetNode().setParent(parent);
+			parent.getChildren().add(index, branchToSplit.getTargetNode());
 		}
 		else {
-			branch.getTargetNode().setParent(null);
-			document.getTree().setPaintStart(branch.getTargetNode());
+			branchToSplit.getTargetNode().setParent(null);
+			document.getTree().setPaintStart(branchToSplit.getTargetNode());
+		}
+
+		if (branchToSplit.hasLength()) {
+			branchToSplit.setLength(2.0 * branchToSplit.getLength());
 		}
 		super.undo();
 	}
