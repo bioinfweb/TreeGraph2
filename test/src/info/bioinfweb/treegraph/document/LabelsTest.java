@@ -22,9 +22,7 @@ package info.bioinfweb.treegraph.document;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import info.bioinfweb.treegraph.document.format.ElementFormats;
-import info.bioinfweb.treegraph.document.format.LabelFormats;
-import info.bioinfweb.commons.junit.TestTools;
+import info.bioinfweb.commons.testing.TestTools;
 
 import org.junit.* ;
 

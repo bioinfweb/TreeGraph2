@@ -19,7 +19,7 @@
 package info.bioinfweb.treegraph.document;
 
 
-import info.bioinfweb.commons.junit.TestTools;
+import info.bioinfweb.commons.testing.TestTools;
 
 import java.lang.reflect.Method;
 import java.util.List;
