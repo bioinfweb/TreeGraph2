@@ -132,6 +132,8 @@ public class Main extends ProgramMainClass {
 	private void startApplication(String[] args) {
 		Thread.setDefaultUncaughtExceptionHandler(getErrorReporter());
 		System.setProperty("sun.awt.exception.handler", AWTExceptionHandler.class.getName());  // May not work in future Java versions.
+		System.setProperty("com.apple.mrj.application.apple.menu.about.name", "TreeGraph 2");  // Does not work.
+		System.setProperty("apple.laf.useScreenMenuBar", "true");
 		
 		customizeSpashScreen();
 		cmdProcessor.process(new CommandLineReader(args));
