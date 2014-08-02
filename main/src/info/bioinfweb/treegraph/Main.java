@@ -36,7 +36,6 @@ import info.bioinfweb.commons.io.DefaultNameManager;
 import info.bioinfweb.errorreport.swing.SwingErrorReporter;
 import info.bioinfweb.treegraph.cmd.CmdProcessor;
 import info.bioinfweb.treegraph.document.clipboard.TreeClipboard;
-import info.webinsel.wikihelp.client.SwingErrorHandler;
 import info.webinsel.wikihelp.client.WikiHelp;
 
 
@@ -63,7 +62,7 @@ public class Main extends ProgramMainClass {
 	private static Main firstInstance = null;
 
 	private SwingErrorReporter errorReporter;
-	private WikiHelp wikiHelp = new WikiHelp(WIKI_URL, new SwingErrorHandler(WIKI_URL));
+	private WikiHelp wikiHelp = new WikiHelp(WIKI_URL);
 	private TreeClipboard clipboard = new TreeClipboard();
 	private CmdProcessor cmdProcessor = new CmdProcessor();
 	private DefaultNameManager nameManager = new DefaultNameManager("NewTree");
