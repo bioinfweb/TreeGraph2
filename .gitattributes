@@ -9,7 +9,6 @@ main/include/TreeGraph.exe -text
 main/include/icons/Nexus.ico -text
 main/include/icons/TreeGraph.ico -text
 main/include/icons/XTG.ico -text
-main/include/lib/BrowserLauncher2-1_3.jar -text
 main/include/lib/UpdateCenterShared.jar -text
 main/include/lib/WikiHelp.jar -text
 main/include/lib/batik/LICENSE.dom-documentation.txt -text svneol=unset#text/plain

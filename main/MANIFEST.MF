@@ -30,7 +30,6 @@ Class-Path: lib/bioinfweb.commons.core.jar
             lib/errorReporter/ErrorReporter.jar
             lib/errorReporter/jdom-2.0.5.jar
             lib/errorReporter/jaxen-1.1.6.jar
-            lib/BrowserLauncher2-1_3.jar
             lib/commons-lang3-3.1.jar
             lib/freehep-base.jar
             lib/freehep-graphics2d.jar
