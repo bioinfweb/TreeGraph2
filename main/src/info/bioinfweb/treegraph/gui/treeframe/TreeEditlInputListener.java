@@ -104,7 +104,7 @@ class TreeEditlInputListener extends MouseAdapter
 				// sonst Markierung unverändert lassen
 			}
 			else if (e.getButton() == MouseEvent.BUTTON1) {
-				if ((e.isMetaDown() && SystemUtils.IS_OS_MAC) || (e.isControlDown()&&  !SystemUtils.IS_OS_MAC)) {
+				if ((e.isMetaDown() && SystemUtils.IS_OS_MAC) || (e.isControlDown() &&  !SystemUtils.IS_OS_MAC)) {
 					if (selected != null) {
 						if (owner.getSelection().contains(selected)) {
 							owner.getSelection().remove(selected);

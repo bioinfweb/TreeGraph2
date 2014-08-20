@@ -44,8 +44,9 @@ import javax.swing.event.ChangeEvent;
 
 /**
  * Shows the tree saved in the associated document in a swing GUI.
- * This class acts as the view-element in the MVC-paradigm, while the model is a 
- * <code>Document</code>-class.
+ * <p>
+ * This class acts as the view-element in the MVC-paradigm, while the model is a {@code Document}-class.
+ * 
  * @author Ben St&ouml;ver
  */
 public class TreeViewPanel extends JPanel implements DocumentListener, Scrollable, ScrollPaneSelectable {
@@ -70,6 +71,7 @@ public class TreeViewPanel extends JPanel implements DocumentListener, Scrollabl
 	/**
 	 * Creates a new swing-panel which shows the tree contained in document.
 	 * This class registers itself as a view at the given document.
+	 * 
 	 * @param document the document to show
 	 */
 	public TreeViewPanel(Document document) {
@@ -92,6 +94,7 @@ public class TreeViewPanel extends JPanel implements DocumentListener, Scrollabl
 
 	/**
 	 * Returns the currently associated document.
+	 * 
 	 * @return the currently associated document
 	 */
 	public Document getDocument() {
@@ -102,7 +105,8 @@ public class TreeViewPanel extends JPanel implements DocumentListener, Scrollabl
 	/**
 	 * Sets this view to a new model and repaints the element using the data of the 
 	 * new document. This view is automatically unregistered at the old and registered at 
-	 * the new document. 
+	 * the new document.
+	 * 
 	 * @param document the model to associate with
 	 */
 	public void setDocument(Document document) {
@@ -261,6 +265,7 @@ public class TreeViewPanel extends JPanel implements DocumentListener, Scrollabl
 	/**
 	 * This method is overwritten to show the internal node names or label IDs as tooltip 
 	 * text.
+	 * 
 	 * @param e - the <code>MouseEvent</code> that lead to the call of this method
 	 * @see javax.swing.JComponent#getToolTipText(java.awt.event.MouseEvent)
 	 */

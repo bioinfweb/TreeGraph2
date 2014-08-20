@@ -71,7 +71,7 @@ public class TreeInternalFrame extends JInternalFrame {
 	
 	
 	/**
-	 * This is the xxx default constructor
+	 * Creates a new instance of this class.
 	 */
 	public TreeInternalFrame(Document document) {
 		super("", true, true, true);
