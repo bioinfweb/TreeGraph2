@@ -132,7 +132,7 @@ class TreeEditlInputListener extends MouseAdapter
 
 	public void keyPressed(KeyEvent e) {
 		if (!owner.getSelection().isEmpty() && 
-				!((e.isMetaDown() && SystemUtils.IS_OS_MAC) || (e.isControlDown()&&  !SystemUtils.IS_OS_MAC))) {
+				!((e.isMetaDown() && SystemUtils.IS_OS_MAC) || (e.isControlDown() && !SystemUtils.IS_OS_MAC))) {
 			if (!e.isShiftDown()) {
 		  	if (owner.getSelection().first() instanceof Node) {
 		  		Node selected = (Node)owner.getSelection().first();

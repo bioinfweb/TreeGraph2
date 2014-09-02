@@ -43,6 +43,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridBagLayout;
 import java.awt.Rectangle;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 
@@ -225,7 +226,7 @@ public class TreeInternalFrame extends JInternalFrame {
 			ExtendedScrollPaneSelector.installScrollPaneSelector(treeScrollPane);
 			treeScrollPane.setCorner(JScrollPane.UPPER_RIGHT_CORNER, new HelpButton(44));
 			
-			treeScrollPane.addMouseListener(new java.awt.event.MouseAdapter() {
+			treeScrollPane.addMouseListener(new MouseAdapter() {
 						@Override
 						public void mousePressed(java.awt.event.MouseEvent e) {
 							// Weitergeben mit Koordinaten (0|0) zum Deselektieren:
@@ -235,7 +236,7 @@ public class TreeInternalFrame extends JInternalFrame {
 						}
 					});
 			
-			treeScrollPane.addMouseWheelListener(new java.awt.event.MouseAdapter() {
+			treeScrollPane.addMouseWheelListener(new MouseAdapter() {
 						@Override
 						public void mouseWheelMoved(MouseWheelEvent e) {
 							if (e.isControlDown()) {  // Darf nicht immer erfolgen, da auch zurückgeleitet wird.

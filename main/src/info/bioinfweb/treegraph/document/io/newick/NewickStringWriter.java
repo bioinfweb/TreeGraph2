@@ -115,7 +115,7 @@ public class NewickStringWriter extends NewickStringChars {
 			  properties.getNodeBranchDataAdapter(ReadWriteParameterMap.KEY_LEAF_NODE_NAMES_ADAPTER, 
 			  		NodeNameAdapter.getSharedInstance()),
 			  properties.getNodeBranchDataAdapter(ReadWriteParameterMap.KEY_BRANCH_LENGTH_ADAPTER, 
-			  		BranchLengthAdapter.getSharedInstance()));
+					  null));  // Do not specify BranchLengthAdapter.getSharedInstance() here, because exporting without branch length must be possible.
 	}
 	
 	

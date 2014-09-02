@@ -58,6 +58,7 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 	public static final String MAX_FUNC = "max";
 	public static final String SUM_FUNC = "sum";
 	public static final String PRODUCT_FUNC = "product";
+	//public static final String SUBSTRING_FUNC = "product";
 	
 	
   private String expression;
