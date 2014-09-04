@@ -49,7 +49,7 @@ public class NewickStringWriter extends NewickStringChars {
 	}
 	
 	
-	private static String formatName(Node node, NodeBranchDataAdapter adapter, NodeNameFormat nodeNameFormat) {
+	private static String formatName(Node node, NodeBranchDataAdapter adapter, boolean spacesAsUnderscore) {
 		String name = "";
     if (adapter.isDecimal(node)) {
     	name = "" + adapter.getDecimal(node);
@@ -62,23 +62,20 @@ public class NewickStringWriter extends NewickStringChars {
 			return name;
 		}
 		else {
-			if (NodeNameFormat.SPACES_AS_UNDERSCRORE.equals(nodeNameFormat)) {
-				return name.replaceAll(" ", "_");
+			String editedName = name.replaceAll(" ", "_"); 
+			if (spacesAsUnderscore && isFreeName(editedName)) { 
+				return editedName;
 			}
-			else {
-				char nameDelimiter = '\'';
-				if (NodeNameFormat.DOUBLE_QUOTATION_MARK.equals(nodeNameFormat)) {
-					nameDelimiter = '"';
-				}
+			else {  // Spaces are not replaced of other characters that make quotations necessary are present.
 				StringBuffer result = new StringBuffer(name.length() * 2);
-				result.append(nameDelimiter);
+				result.append(NAME_DELIMITER);
 				for (int i = 0; i < name.length(); i++) {
-					if (name.charAt(i) == nameDelimiter) {
-						result.append(nameDelimiter);  // Second time 
+					if (name.charAt(i) == NAME_DELIMITER) {
+						result.append(NAME_DELIMITER);  // Second time 
 					}
 					result.append(name.charAt(i));
 				}
-				result.append(nameDelimiter);
+				result.append(NAME_DELIMITER);
 				return result.toString();
 			}
 		}
@@ -86,7 +83,7 @@ public class NewickStringWriter extends NewickStringChars {
 	
 	
 	private static String writeSubtree(Node root, NodeBranchDataAdapter internalAdapter, 
-  		NodeBranchDataAdapter leafAdapter, NodeBranchDataAdapter branchLengthAdapter, NodeNameFormat nodeNameFormat) {
+  		NodeBranchDataAdapter leafAdapter, NodeBranchDataAdapter branchLengthAdapter, boolean spacesAsUnderscore) {
 		
 		String result = "";
 		
@@ -96,20 +93,20 @@ public class NewickStringWriter extends NewickStringChars {
 			int size = root.getChildren().size();
 			for (int i = 0; i < size - 1; i++) {
 				result += writeSubtree(root.getChildren().get(i), internalAdapter, leafAdapter, 
-						branchLengthAdapter, nodeNameFormat);
+						branchLengthAdapter, spacesAsUnderscore);
 				result += ELEMENT_SEPERATOR + " ";
 			}
 			result += writeSubtree(root.getChildren().get(size - 1), internalAdapter, leafAdapter, 
-					branchLengthAdapter, nodeNameFormat);
+					branchLengthAdapter, spacesAsUnderscore);
 			result += SUBTREE_END;
 		}
 		
 		// Write node name:
 		if (root.isLeaf()) {
-			result += formatName(root, leafAdapter, nodeNameFormat);
+			result += formatName(root, leafAdapter, spacesAsUnderscore);
 		}
 		else {
-			result += formatName(root, internalAdapter, nodeNameFormat);
+			result += formatName(root, internalAdapter, spacesAsUnderscore);
 		}
 		
 		// Astlänge schreiben:
@@ -129,12 +126,12 @@ public class NewickStringWriter extends NewickStringChars {
 			  		NodeNameAdapter.getSharedInstance()),
 			  properties.getNodeBranchDataAdapter(ReadWriteParameterMap.KEY_BRANCH_LENGTH_ADAPTER, 
 					  null),  // Do not specify BranchLengthAdapter.getSharedInstance() here, because exporting without branch length must be possible.
-			  		properties.getNodeNameFormat(ReadWriteParameterMap.KEY_NODE_NAME_FORMAT, NodeNameFormat.SINGLE_QUATATION_MARK));
+			  properties.getBoolean(ReadWriteParameterMap.KEY_SPACES_AS_UNDERSCORE, false));
 	}
 	
 	
   public static String write(Tree tree, NodeBranchDataAdapter internalAdapter, 
-  		NodeBranchDataAdapter leafAdapter, NodeBranchDataAdapter branchLengthAdapter, NodeNameFormat nodeNameFormat) {
+  		NodeBranchDataAdapter leafAdapter, NodeBranchDataAdapter branchLengthAdapter, boolean spacesAsUnderscore) {
   	
   	String result;
   	if (tree.getFormats().getShowRooted()) {
@@ -151,7 +148,7 @@ public class NewickStringWriter extends NewickStringChars {
   	}
   	else {
   		result += writeSubtree((Node)tree.getPaintStart(), internalAdapter, leafAdapter, 
-  				branchLengthAdapter, nodeNameFormat) + TERMINAL_SYMBOL;
+  				branchLengthAdapter, spacesAsUnderscore) + TERMINAL_SYMBOL;
   	}
   	return result;
   }

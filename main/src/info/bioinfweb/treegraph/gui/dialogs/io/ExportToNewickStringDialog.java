@@ -24,7 +24,6 @@ import info.bioinfweb.treegraph.document.io.DocumentWriter;
 import info.bioinfweb.treegraph.document.io.ReadWriteFactory;
 import info.bioinfweb.treegraph.document.io.ReadWriteFormat;
 import info.bioinfweb.treegraph.document.io.ReadWriteParameterMap;
-import info.bioinfweb.treegraph.document.io.newick.NodeNameFormat;
 import info.bioinfweb.treegraph.document.io.nexus.NexusFilter;
 import info.bioinfweb.treegraph.document.io.xtg.XTGFilter;
 import info.bioinfweb.treegraph.document.nodebranchdata.HiddenDataAdapter;
@@ -71,7 +70,6 @@ public class ExportToNewickStringDialog extends FileDialog {
 	private JCheckBox branchLengthCheckBox = null;
 	private JPanel nodeNameFormatPanel;
 	private JRadioButton singleQuotationRadioButton;
-	private JRadioButton doubleQuotationRadioButton;
 	private JRadioButton spacesAsUnderscoresRadioButton;
 	private final ButtonGroup nodeNameFormatButtonGroup = new ButtonGroup();
 
@@ -130,19 +128,6 @@ public class ExportToNewickStringDialog extends FileDialog {
 	}
 
 	
-	private NodeNameFormat getNodeNameFormat() {
-		if (getSingleQuotationRadioButton().isSelected()) {
-			return NodeNameFormat.SINGLE_QUATATION_MARK;
-		}
-		else if (getDoubleQuotationRadioButton().isSelected()) {
-			return NodeNameFormat.DOUBLE_QUOTATION_MARK;
-		}
-		else {
-			return NodeNameFormat.SPACES_AS_UNDERSCRORE;
-		}
-	}
-	
-
 	@Override
 	protected boolean onApply(File file) {
 		DocumentWriter writer;
@@ -159,7 +144,7 @@ public class ExportToNewickStringDialog extends FileDialog {
 				branchLengthAdapter = getBranchLengthInput().getSelectedAdapter();
 			}
 			ReadWriteParameterMap properties = new ReadWriteParameterMap();
-			properties.put(ReadWriteParameterMap.KEY_NODE_NAME_FORMAT, getNodeNameFormat());
+			properties.put(ReadWriteParameterMap.KEY_SPACES_AS_UNDERSCORE, getSpacesAsUnderscoresRadioButton().isSelected());
 			properties.put(ReadWriteParameterMap.KEY_INTERNAL_NODE_NAMES_ADAPTER, getInternalInput().getSelectedAdapter());
 			properties.put(ReadWriteParameterMap.KEY_LEAF_NODE_NAMES_ADAPTER, getLeafInput().getSelectedAdapter());
 			properties.put(ReadWriteParameterMap.KEY_BRANCH_LENGTH_ADAPTER, branchLengthAdapter);
@@ -323,16 +308,11 @@ public class ExportToNewickStringDialog extends FileDialog {
 			gbc_singleQuotationRadioButton.gridx = 0;
 			gbc_singleQuotationRadioButton.gridy = 0;
 			nodeNameFormatPanel.add(getSingleQuotationRadioButton(), gbc_singleQuotationRadioButton);
-			GridBagConstraints gbc_doubleQuotationRadioButton = new GridBagConstraints();
-			gbc_doubleQuotationRadioButton.weightx = 1.0;
-			gbc_doubleQuotationRadioButton.insets = new Insets(0, 0, 0, 5);
-			gbc_doubleQuotationRadioButton.gridx = 1;
-			gbc_doubleQuotationRadioButton.gridy = 0;
-			nodeNameFormatPanel.add(getDoubleQuotationRadioButton(), gbc_doubleQuotationRadioButton);
 			GridBagConstraints gbc_spacesAsUnderscoresRadioButton = new GridBagConstraints();
+			gbc_spacesAsUnderscoresRadioButton.insets = new Insets(0, 0, 0, 5);
 			gbc_spacesAsUnderscoresRadioButton.anchor = GridBagConstraints.EAST;
 			gbc_spacesAsUnderscoresRadioButton.weightx = 1.0;
-			gbc_spacesAsUnderscoresRadioButton.gridx = 2;
+			gbc_spacesAsUnderscoresRadioButton.gridx = 1;
 			gbc_spacesAsUnderscoresRadioButton.gridy = 0;
 			nodeNameFormatPanel.add(getSpacesAsUnderscoresRadioButton(), gbc_spacesAsUnderscoresRadioButton);
 		}
@@ -342,7 +322,7 @@ public class ExportToNewickStringDialog extends FileDialog {
 	
 	private JRadioButton getSingleQuotationRadioButton() {
 		if (singleQuotationRadioButton == null) {
-			singleQuotationRadioButton = new JRadioButton("Single quotation marks (')");
+			singleQuotationRadioButton = new JRadioButton("Quotation marks if necessary");
 			nodeNameFormatButtonGroup.add(singleQuotationRadioButton);
 			singleQuotationRadioButton.setSelected(true);
 		}
@@ -350,18 +330,9 @@ public class ExportToNewickStringDialog extends FileDialog {
 	}
 	
 	
-	private JRadioButton getDoubleQuotationRadioButton() {
-		if (doubleQuotationRadioButton == null) {
-			doubleQuotationRadioButton = new JRadioButton("Double quotation marks (\")");
-			nodeNameFormatButtonGroup.add(doubleQuotationRadioButton);
-		}
-		return doubleQuotationRadioButton;
-	}
-	
-	
 	private JRadioButton getSpacesAsUnderscoresRadioButton() {
 		if (spacesAsUnderscoresRadioButton == null) {
-			spacesAsUnderscoresRadioButton = new JRadioButton("Spaces as underscores");
+			spacesAsUnderscoresRadioButton = new JRadioButton("Spaces as underscores (No underscores in names possible)");
 			nodeNameFormatButtonGroup.add(spacesAsUnderscoresRadioButton);
 		}
 		return spacesAsUnderscoresRadioButton;
