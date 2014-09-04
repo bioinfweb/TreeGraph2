@@ -256,6 +256,7 @@ main/src/info/bioinfweb/treegraph/document/io/newick/NewickStringReader.java -te
 main/src/info/bioinfweb/treegraph/document/io/newick/NewickStringWriter.java -text
 main/src/info/bioinfweb/treegraph/document/io/newick/NewickToken.java -text
 main/src/info/bioinfweb/treegraph/document/io/newick/NewickWriter.java -text
+main/src/info/bioinfweb/treegraph/document/io/newick/NodeNameFormat.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/io/newick/TokenType.java -text
 main/src/info/bioinfweb/treegraph/document/io/newick/package.html -text
 main/src/info/bioinfweb/treegraph/document/io/nexus/NexusCommand.java -text

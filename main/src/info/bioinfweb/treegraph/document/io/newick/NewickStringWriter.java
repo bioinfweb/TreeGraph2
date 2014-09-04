@@ -22,7 +22,6 @@ package info.bioinfweb.treegraph.document.io.newick;
 import info.bioinfweb.treegraph.document.*;
 import info.bioinfweb.treegraph.document.io.ReadWriteParameterMap;
 import info.bioinfweb.treegraph.document.io.nexus.NexusParser;
-import info.bioinfweb.treegraph.document.nodebranchdata.BranchLengthAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 
@@ -32,6 +31,9 @@ public class NewickStringWriter extends NewickStringChars {
 	private static boolean isFreeName(String name) {
 		if (name.length() == 0) {
 			return true;
+		}
+		else if (name.contains("_")) {
+			return false;  // Always put in quotation marks to distinguish between space and underscore.
 		}
 		else if (isFreeNameFirstChar(name.charAt(0))) {
 			for (int i = 1; i < name.length(); i++) {
@@ -47,7 +49,7 @@ public class NewickStringWriter extends NewickStringChars {
 	}
 	
 	
-	private static String formatName(Node node, NodeBranchDataAdapter adapter) {
+	private static String formatName(Node node, NodeBranchDataAdapter adapter, NodeNameFormat nodeNameFormat) {
 		String name = "";
     if (adapter.isDecimal(node)) {
     	name = "" + adapter.getDecimal(node);
@@ -60,20 +62,31 @@ public class NewickStringWriter extends NewickStringChars {
 			return name;
 		}
 		else {
-			String result = "" + NAME_DELIMITER;
-			for (int i = 0; i < name.length(); i++) {
-				if (name.charAt(i) == NAME_DELIMITER) {
-					result += NAME_DELIMITER;  // zweites mal 
-				}
-				result += name.charAt(i);
+			if (NodeNameFormat.SPACES_AS_UNDERSCRORE.equals(nodeNameFormat)) {
+				return name.replaceAll(" ", "_");
 			}
-			return result + NAME_DELIMITER;
+			else {
+				char nameDelimiter = '\'';
+				if (NodeNameFormat.DOUBLE_QUOTATION_MARK.equals(nodeNameFormat)) {
+					nameDelimiter = '"';
+				}
+				StringBuffer result = new StringBuffer(name.length() * 2);
+				result.append(nameDelimiter);
+				for (int i = 0; i < name.length(); i++) {
+					if (name.charAt(i) == nameDelimiter) {
+						result.append(nameDelimiter);  // Second time 
+					}
+					result.append(name.charAt(i));
+				}
+				result.append(nameDelimiter);
+				return result.toString();
+			}
 		}
 	}
 	
 	
 	private static String writeSubtree(Node root, NodeBranchDataAdapter internalAdapter, 
-  		NodeBranchDataAdapter leafAdapter, NodeBranchDataAdapter branchLengthAdapter) {
+  		NodeBranchDataAdapter leafAdapter, NodeBranchDataAdapter branchLengthAdapter, NodeNameFormat nodeNameFormat) {
 		
 		String result = "";
 		
@@ -83,20 +96,20 @@ public class NewickStringWriter extends NewickStringChars {
 			int size = root.getChildren().size();
 			for (int i = 0; i < size - 1; i++) {
 				result += writeSubtree(root.getChildren().get(i), internalAdapter, leafAdapter, 
-						branchLengthAdapter);
+						branchLengthAdapter, nodeNameFormat);
 				result += ELEMENT_SEPERATOR + " ";
 			}
 			result += writeSubtree(root.getChildren().get(size - 1), internalAdapter, leafAdapter, 
-					branchLengthAdapter);
+					branchLengthAdapter, nodeNameFormat);
 			result += SUBTREE_END;
 		}
 		
 		// Write node name:
 		if (root.isLeaf()) {
-			result += formatName(root, leafAdapter);
+			result += formatName(root, leafAdapter, nodeNameFormat);
 		}
 		else {
-			result += formatName(root, internalAdapter);
+			result += formatName(root, internalAdapter, nodeNameFormat);
 		}
 		
 		// Astlänge schreiben:
@@ -115,12 +128,13 @@ public class NewickStringWriter extends NewickStringChars {
 			  properties.getNodeBranchDataAdapter(ReadWriteParameterMap.KEY_LEAF_NODE_NAMES_ADAPTER, 
 			  		NodeNameAdapter.getSharedInstance()),
 			  properties.getNodeBranchDataAdapter(ReadWriteParameterMap.KEY_BRANCH_LENGTH_ADAPTER, 
-					  null));  // Do not specify BranchLengthAdapter.getSharedInstance() here, because exporting without branch length must be possible.
+					  null),  // Do not specify BranchLengthAdapter.getSharedInstance() here, because exporting without branch length must be possible.
+			  		properties.getNodeNameFormat(ReadWriteParameterMap.KEY_NODE_NAME_FORMAT, NodeNameFormat.SINGLE_QUATATION_MARK));
 	}
 	
 	
   public static String write(Tree tree, NodeBranchDataAdapter internalAdapter, 
-  		NodeBranchDataAdapter leafAdapter, NodeBranchDataAdapter branchLengthAdapter) {
+  		NodeBranchDataAdapter leafAdapter, NodeBranchDataAdapter branchLengthAdapter, NodeNameFormat nodeNameFormat) {
   	
   	String result;
   	if (tree.getFormats().getShowRooted()) {
@@ -137,7 +151,7 @@ public class NewickStringWriter extends NewickStringChars {
   	}
   	else {
   		result += writeSubtree((Node)tree.getPaintStart(), internalAdapter, leafAdapter, 
-  				branchLengthAdapter) + TERMINAL_SYMBOL;
+  				branchLengthAdapter, nodeNameFormat) + TERMINAL_SYMBOL;
   	}
   	return result;
   }

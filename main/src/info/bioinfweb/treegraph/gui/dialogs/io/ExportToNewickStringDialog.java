@@ -24,6 +24,7 @@ import info.bioinfweb.treegraph.document.io.DocumentWriter;
 import info.bioinfweb.treegraph.document.io.ReadWriteFactory;
 import info.bioinfweb.treegraph.document.io.ReadWriteFormat;
 import info.bioinfweb.treegraph.document.io.ReadWriteParameterMap;
+import info.bioinfweb.treegraph.document.io.newick.NodeNameFormat;
 import info.bioinfweb.treegraph.document.io.nexus.NexusFilter;
 import info.bioinfweb.treegraph.document.io.xtg.XTGFilter;
 import info.bioinfweb.treegraph.document.nodebranchdata.HiddenDataAdapter;
@@ -49,6 +50,8 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import javax.swing.JCheckBox;
 import java.awt.Insets;
+import javax.swing.JRadioButton;
+import javax.swing.ButtonGroup;
 
 
 
@@ -66,6 +69,11 @@ public class ExportToNewickStringDialog extends FileDialog {
 	private JLabel internalLabel = null;
 	private JLabel leafLabel = null;
 	private JCheckBox branchLengthCheckBox = null;
+	private JPanel nodeNameFormatPanel;
+	private JRadioButton singleQuotationRadioButton;
+	private JRadioButton doubleQuotationRadioButton;
+	private JRadioButton spacesAsUnderscoresRadioButton;
+	private final ButtonGroup nodeNameFormatButtonGroup = new ButtonGroup();
 
 
 	/**
@@ -121,6 +129,19 @@ public class ExportToNewickStringDialog extends FileDialog {
 		return result;
 	}
 
+	
+	private NodeNameFormat getNodeNameFormat() {
+		if (getSingleQuotationRadioButton().isSelected()) {
+			return NodeNameFormat.SINGLE_QUATATION_MARK;
+		}
+		else if (getDoubleQuotationRadioButton().isSelected()) {
+			return NodeNameFormat.DOUBLE_QUOTATION_MARK;
+		}
+		else {
+			return NodeNameFormat.SPACES_AS_UNDERSCRORE;
+		}
+	}
+	
 
 	@Override
 	protected boolean onApply(File file) {
@@ -138,6 +159,7 @@ public class ExportToNewickStringDialog extends FileDialog {
 				branchLengthAdapter = getBranchLengthInput().getSelectedAdapter();
 			}
 			ReadWriteParameterMap properties = new ReadWriteParameterMap();
+			properties.put(ReadWriteParameterMap.KEY_NODE_NAME_FORMAT, getNodeNameFormat());
 			properties.put(ReadWriteParameterMap.KEY_INTERNAL_NODE_NAMES_ADAPTER, getInternalInput().getSelectedAdapter());
 			properties.put(ReadWriteParameterMap.KEY_LEAF_NODE_NAMES_ADAPTER, getLeafInput().getSelectedAdapter());
 			properties.put(ReadWriteParameterMap.KEY_BRANCH_LENGTH_ADAPTER, branchLengthAdapter);
@@ -176,6 +198,7 @@ public class ExportToNewickStringDialog extends FileDialog {
 			jContentPane = new JPanel();
 			jContentPane.setLayout(new BoxLayout(getJContentPane(), BoxLayout.Y_AXIS));
 			jContentPane.add(getFileChooser(), null);
+			jContentPane.add(getNodeNameFormatPanel());
 			jContentPane.add(getNodeDataPanel(), null);
 			getApplyButton().setVisible(false);
 			getOkButton().setText("Export");
@@ -282,5 +305,65 @@ public class ExportToNewickStringDialog extends FileDialog {
 					});
 		}
 		return branchLengthCheckBox;
+	}
+	private JPanel getNodeNameFormatPanel() {
+		if (nodeNameFormatPanel == null) {
+			nodeNameFormatPanel = new JPanel();
+			nodeNameFormatPanel.setBorder(new TitledBorder(null, "Node name format", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+			GridBagLayout gbl_nodeNameFormatPanel = new GridBagLayout();
+			gbl_nodeNameFormatPanel.columnWidths = new int[]{0, 0, 0, 0};
+			gbl_nodeNameFormatPanel.rowHeights = new int[]{0, 0};
+			gbl_nodeNameFormatPanel.columnWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
+			gbl_nodeNameFormatPanel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+			nodeNameFormatPanel.setLayout(gbl_nodeNameFormatPanel);
+			GridBagConstraints gbc_singleQuotationRadioButton = new GridBagConstraints();
+			gbc_singleQuotationRadioButton.weightx = 1.0;
+			gbc_singleQuotationRadioButton.fill = GridBagConstraints.HORIZONTAL;
+			gbc_singleQuotationRadioButton.insets = new Insets(0, 0, 0, 5);
+			gbc_singleQuotationRadioButton.gridx = 0;
+			gbc_singleQuotationRadioButton.gridy = 0;
+			nodeNameFormatPanel.add(getSingleQuotationRadioButton(), gbc_singleQuotationRadioButton);
+			GridBagConstraints gbc_doubleQuotationRadioButton = new GridBagConstraints();
+			gbc_doubleQuotationRadioButton.weightx = 1.0;
+			gbc_doubleQuotationRadioButton.insets = new Insets(0, 0, 0, 5);
+			gbc_doubleQuotationRadioButton.gridx = 1;
+			gbc_doubleQuotationRadioButton.gridy = 0;
+			nodeNameFormatPanel.add(getDoubleQuotationRadioButton(), gbc_doubleQuotationRadioButton);
+			GridBagConstraints gbc_spacesAsUnderscoresRadioButton = new GridBagConstraints();
+			gbc_spacesAsUnderscoresRadioButton.anchor = GridBagConstraints.EAST;
+			gbc_spacesAsUnderscoresRadioButton.weightx = 1.0;
+			gbc_spacesAsUnderscoresRadioButton.gridx = 2;
+			gbc_spacesAsUnderscoresRadioButton.gridy = 0;
+			nodeNameFormatPanel.add(getSpacesAsUnderscoresRadioButton(), gbc_spacesAsUnderscoresRadioButton);
+		}
+		return nodeNameFormatPanel;
+	}
+	
+	
+	private JRadioButton getSingleQuotationRadioButton() {
+		if (singleQuotationRadioButton == null) {
+			singleQuotationRadioButton = new JRadioButton("Single quotation marks (')");
+			nodeNameFormatButtonGroup.add(singleQuotationRadioButton);
+			singleQuotationRadioButton.setSelected(true);
+		}
+		return singleQuotationRadioButton;
+	}
+	
+	
+	private JRadioButton getDoubleQuotationRadioButton() {
+		if (doubleQuotationRadioButton == null) {
+			doubleQuotationRadioButton = new JRadioButton("Double quotation marks (\")");
+			nodeNameFormatButtonGroup.add(doubleQuotationRadioButton);
+		}
+		return doubleQuotationRadioButton;
+	}
+	
+	
+	private JRadioButton getSpacesAsUnderscoresRadioButton() {
+		if (spacesAsUnderscoresRadioButton == null) {
+			spacesAsUnderscoresRadioButton = new JRadioButton("Spaces as underscores");
+			nodeNameFormatButtonGroup.add(spacesAsUnderscoresRadioButton);
+		}
+		return spacesAsUnderscoresRadioButton;
 	}
 }

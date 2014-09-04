@@ -19,6 +19,7 @@
 package info.bioinfweb.treegraph.document.io;
 
 
+import info.bioinfweb.treegraph.document.io.newick.NodeNameFormat;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.commons.log.ApplicationLoggerParameterMap;
 
@@ -26,11 +27,31 @@ import info.bioinfweb.commons.log.ApplicationLoggerParameterMap;
 
 public class ReadWriteParameterMap extends ApplicationLoggerParameterMap {
 	public static final String KEY_TREE_SELECTOR = "treeSelector";
+	public static final String KEY_NODE_NAME_FORMAT = "nodeNameFormat";
 	public static final String KEY_INTERNAL_NODE_NAMES_ADAPTER = "internalNodeNamesAdapter";
 	public static final String KEY_LEAF_NODE_NAMES_ADAPTER = "leafNodeNamesAdapter";
 	public static final String KEY_BRANCH_LENGTH_ADAPTER = "branchLengthAdapter";
 	public static final String KEY_TRANSLATE_INTERNAL_NODE_NAMES = "translateInternalNodeNames";
 	public static final String KEY_REGISTER_FILE_CHOOSER_OF_DOCUMENT = "registerFileChooser";
+	
+	
+	/**
+	 * Checks if a {@link NodeNameFormat} object is stored under the specified key. If the stored object has 
+	 * another type or no object is found, <code>defaultValue</code> is returned.
+	 * 
+	 * @param key - the key under which the result is stored
+	 * @param defaultValue - the value to be returned, if no appropriate object is found
+	 * @return an appropriate object or <code>defaultValue</code>
+	 */
+	public NodeNameFormat getNodeNameFormat(String key, NodeNameFormat defaultValue) {
+		Object result = get(key);
+		if (result instanceof NodeNameFormat) {
+			return (NodeNameFormat)result;
+		}
+		else {
+			return defaultValue;
+		}
+	}
 	
 	
 	/**
