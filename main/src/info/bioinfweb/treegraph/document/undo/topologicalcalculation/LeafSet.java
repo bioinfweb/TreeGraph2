@@ -24,6 +24,9 @@ import info.bioinfweb.commons.Math2;
 
 
 /**
+ * Used to store which leaf nodes of a tree are contained in a certain subtree. Internally a compressed boolean field 
+ * is used to store a value for each leaf node index. 
+ * 
  * @author Ben St&ouml;ver
  * @since 2.0.33
  */

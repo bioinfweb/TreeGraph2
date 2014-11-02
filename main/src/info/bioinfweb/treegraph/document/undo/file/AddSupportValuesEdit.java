@@ -258,11 +258,7 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
 				NodeInfo bestSourceNode = findSourceNodeWithAllLeafs(src.getTree().getPaintStart(), 
 						getLeafSet(targetRoot));
 				if (bestSourceNode.getAdditionalCount() == 0) {  // support found
-  				if (targetRoot.getUniqueName().equals("34h2pqbu3p")) {
-  					System.out.println("  4");
-  				}
-
-  				if (sourceAdapter.isDecimal(bestSourceNode.getNode())) {  // wenn dort ein Wert existiert
+  				if (sourceAdapter.isDecimal(bestSourceNode.getNode())) {  // if no value exists there
 	  				supportAdapter.setDecimal(targetRoot, sourceAdapter.getDecimal(bestSourceNode.getNode()));  // Only decimal values can appear here.
 					}
   				else if (checkOtherPaintStartBranch(bestSourceNode.getNode())) {

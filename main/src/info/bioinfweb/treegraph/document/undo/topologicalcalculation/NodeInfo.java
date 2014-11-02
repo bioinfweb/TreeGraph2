@@ -24,6 +24,8 @@ import info.bioinfweb.treegraph.document.Node;
 
 
 /**
+ * Bean class that stores information about the similarity of a subtree under a node to a subtree in another document.
+ * 
  * @author Ben St&ouml;ver
  * @since 2.0.33
  */
