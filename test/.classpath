@@ -4,7 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="lib" path="/_Lib/bin" sourcepath="/_Lib/src"/>
 	<classpathentry kind="lib" path="lib/junit-4.9b1.jar"/>
-	<classpathentry kind="lib" path="/TreeGraph2/include/lib/BrowserLauncher2-1_3.jar"/>
 	<classpathentry kind="lib" path="/TreeGraph2/include/lib/commons-lang3-3.1.jar"/>
 	<classpathentry kind="lib" path="/TreeGraph2/include/lib/ext-1.1.1.jar"/>
 	<classpathentry kind="lib" path="/TreeGraph2/include/lib/freehep-base.jar"/>
