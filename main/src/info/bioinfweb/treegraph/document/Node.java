@@ -365,8 +365,8 @@ public class Node extends AbstractTextElement
 	public Node getLinkedNode() {
 		return this;
 	}
-
-
+	
+	
 	/**
 	 * Returns a deep copy of this node not including the subtrees. 
 	 * The attribute map and the unique names are not copied. Calling this method is
@@ -403,7 +403,7 @@ public class Node extends AbstractTextElement
 	/**
 	 * Clones this object and all objects in this subtree and its afferent branch. The 
 	 * parent node will be set to <code>null</code>.
-	 * @param keepUniqueNames - defines wheather the copied nodes should have the same 
+	 * @param keepUniqueNames - defines whether the copied nodes should have the same 
 	 * unique names as the originals.
 	 * @return the root of the cloned tree
 	 */
