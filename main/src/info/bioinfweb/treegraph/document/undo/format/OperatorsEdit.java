@@ -32,7 +32,7 @@ import javax.swing.undo.CannotUndoException;
 
 
 /**
- * This edit changes applies the specified formats of the specified document elements. 
+ * This edit applies the specified formats of the according document elements. 
  * 
  * @author Ben St&ouml;ver
  */
