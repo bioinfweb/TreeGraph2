@@ -194,9 +194,8 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
 	
 
 	/**
-	 * This method is the recursive part called by <code>findHighestConflict</code>.
-	 * The only difference between the two is that this method can return the support 
-	 * value of root itself as <code>findHighestConflict</code> does not.
+	 * This method is the recursive part called by {@code findHighestConflict}. The only difference between 
+	 * the two is that this method can return the support value of root itself as {@code findHighestConflict} does not.
 	 * 
 	 * @param root - the root of the subtree to be searched (a node in the source document)
 	 * @param highest - the initial support value
