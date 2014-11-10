@@ -36,6 +36,7 @@ import info.bioinfweb.treegraph.document.undo.WarningMessageEdit;
 
 /**
  * Adds all children of a node to its parent node and than removes that node from the document.
+ * The branch length of the collapsed branch is added to all child branches, if they have a defined length.
  * 
  * @author Ben St&ouml;ver
  */
@@ -65,12 +66,11 @@ public class CollapseNodeEdit extends SaveLegendsEdit implements WarningMessageE
 
 		for (int i = 0; i < legends.size(); i++) {
 			Legend l = legends.get(i);
-			Node secondAnhcor = l.getFormats().getAnchor(1);
 			if (l.getFormats().getAnchor(0) == node) {
 				l.getFormats().setAnchor(0, newAnchor);
 				setLegendsReanchored(true);
 			}
-			else if (secondAnhcor == node) {
+			else if (l.getFormats().getAnchor(1) == node) {
 				l.getFormats().setAnchor(1, newAnchor);
 				setLegendsReanchored(true);
 			}

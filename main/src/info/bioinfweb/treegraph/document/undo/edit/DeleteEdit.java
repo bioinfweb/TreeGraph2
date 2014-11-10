@@ -22,9 +22,6 @@ package info.bioinfweb.treegraph.document.undo.edit;
 
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Vector;
-import javax.swing.undo.CannotRedoException;
-import javax.swing.undo.CannotUndoException;
 
 import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.ConcretePaintableElement;
@@ -33,6 +30,7 @@ import info.bioinfweb.treegraph.document.Label;
 import info.bioinfweb.treegraph.document.Legend;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.Tree;
+import info.bioinfweb.treegraph.document.undo.ComposedDocumentEdit;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
 import info.bioinfweb.treegraph.document.undo.WarningMessageEdit;
 
@@ -44,9 +42,8 @@ import info.bioinfweb.treegraph.document.undo.WarningMessageEdit;
  *  
  * @author Ben St&ouml;ver
  */
-public class DeleteEdit extends DocumentEdit implements WarningMessageEdit {
+public class DeleteEdit extends ComposedDocumentEdit implements WarningMessageEdit {
   private HashSet<ConcretePaintableElement> elements; 
-  private Vector<DocumentEdit> edits = new Vector<DocumentEdit>();
   
   
 	public DeleteEdit(Document document, ConcretePaintableElement[] elements) {
@@ -69,7 +66,7 @@ public class DeleteEdit extends DocumentEdit implements WarningMessageEdit {
 	 */
 	@Override
   public String getWarningText() {
-		Iterator<DocumentEdit> iterator = edits.iterator();
+		Iterator<DocumentEdit> iterator = getEdits().iterator();
 		while (iterator.hasNext()) {
 			DocumentEdit edit = iterator.next();
 			if (edit instanceof RemoveSubtreeEdit) {
@@ -143,27 +140,9 @@ public class DeleteEdit extends DocumentEdit implements WarningMessageEdit {
 			
 			if (edit != null) {
 				edit.setIsSubedit(true);
-				edits.add(edit);
+				getEdits().add(edit);
 			}
 		}
-	}
-
-
-	@Override
-	public void redo() throws CannotRedoException {
-		for (int i = 0; i < edits.size(); i++) {
-			edits.get(i).redo();
-		}
-		super.redo();
-	}
-
-
-	@Override
-	public void undo() throws CannotUndoException {
-		for (int i = edits.size() - 1; i >= 0; i--) {
-			edits.get(i).undo();
-		}
-		super.undo();
 	}
 
 

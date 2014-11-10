@@ -312,6 +312,7 @@ main/src/info/bioinfweb/treegraph/document/position/NodePositionData.java -text
 main/src/info/bioinfweb/treegraph/document/position/PositionData.java -text
 main/src/info/bioinfweb/treegraph/document/position/package.html -text
 main/src/info/bioinfweb/treegraph/document/undo/ComplexDocumentEdit.java -text
+main/src/info/bioinfweb/treegraph/document/undo/ComposedDocumentEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/DocumentEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/NodeBranchDataBackup.java -text
 main/src/info/bioinfweb/treegraph/document/undo/NodeBranchDataEdit.java -text
