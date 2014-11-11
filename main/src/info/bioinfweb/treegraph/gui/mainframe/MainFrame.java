@@ -33,6 +33,7 @@ import info.bioinfweb.treegraph.gui.actions.window.SelectFrameAction;
 import info.bioinfweb.treegraph.gui.dialogs.io.loadlogger.LoadLoggerDialog;
 import info.bioinfweb.treegraph.gui.treeframe.TreeInternalFrame;
 import info.bioinfweb.commons.swing.ExtendedDesktopPane;
+
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyVetoException;
@@ -44,6 +45,7 @@ import java.util.Vector;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
 import java.awt.BorderLayout;
 
 import javax.swing.ImageIcon;
@@ -394,6 +396,7 @@ public class MainFrame extends JFrame implements Runnable {
 			editMenu.addSeparator();
 			editMenu.add(getActionManagement().get("edit.deleteSubelements"));
 			editMenu.add(getActionManagement().get("edit.collapseNode"));
+			editMenu.add(getActionManagement().get("edit.collapseNodesBySupport"));
 			editMenu.add(getActionManagement().get("edit.separateBranch"));
 		}
 		return editMenu;

@@ -37,6 +37,7 @@ import java.awt.Color;
 
 /**
  * Implementation of the scale branch lengths dialog.
+ * 
  * @author Ben St&ouml;ver
  * @since 2.0.23
  */

@@ -100,10 +100,10 @@ public abstract class SaveLegendsEdit extends DocumentEdit implements WarningMes
   public String getWarningText() {
 		String msg = "";
 		if (getLegendsRemoved()) {
-			msg += "- One or more legend(s) that were only anchored inside the removed subtree were removed as well.\n";
+			msg += "- One or more legend(s) that were only anchored inside the affected subtree were removed.\n";
 		}
 		if (getLegendsReanchored()) {
-			msg += "- One or more legend(s) that were anchored inside the removed subtree were reanchored.\n";
+			msg += "- One or more legend(s) that were anchored inside the affected subtree were reanchored.\n";
 		}
 		if ("".equals(msg)) {
 			return null;

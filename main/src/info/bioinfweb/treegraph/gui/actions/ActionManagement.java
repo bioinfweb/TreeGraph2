@@ -19,8 +19,10 @@
 package info.bioinfweb.treegraph.gui.actions;
 
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
+
 import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
@@ -64,7 +66,7 @@ public class ActionManagement extends AbstractUndoActionManagement {
 	
 	
 	/**
-	 * All <code>Action</code> objects used in TreeGraph 2 are added to the <code>HashMap</code>
+	 * All {@link Action} objects used in TreeGraph 2 are added to the {@link HashMap}
 	 * in this method. New actions should be added here as well.
 	 */
 	protected void fillMap() {
@@ -118,6 +120,7 @@ public class ActionManagement extends AbstractUndoActionManagement {
 		put("edit.moveSubtreeDown", new MoveSubtreeDownAction(mainFrame));
 		put("edit.deleteSubelements", new DeleteSubelementsAction(mainFrame));
 		put("edit.collapseNode", new CollapseNodeAction(mainFrame));
+		put("edit.collapseNodesBySupport", new CollapseNodesBySupportAction(mainFrame));
 		put("edit.separateBranch", new SeparateBranchAction(mainFrame));
 		put("edit.ladderizeUp", new LadderizeUpAction(mainFrame));
 		put("edit.ladderizeDown", new LadderizeDownAction(mainFrame));
@@ -197,6 +200,7 @@ public class ActionManagement extends AbstractUndoActionManagement {
 		popupActions.add(null);
 		popupActions.add(get("edit.deleteSubelements"));
 		popupActions.add(get("edit.collapseNode"));
+		popupActions.add(get("edit.collapseNodesBySupport"));
 		popupActions.add(get("edit.separateBranch"));
 		popupActions.add(null);
 		popupActions.add(get("edit.editText"));

@@ -326,6 +326,7 @@ main/src/info/bioinfweb/treegraph/document/undo/edit/ChangeLabelIDEdit.java -tex
 main/src/info/bioinfweb/treegraph/document/undo/edit/ChangeNumercalValueEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/edit/ChangeTextualValueEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/edit/CollapseNodeEdit.java -text
+main/src/info/bioinfweb/treegraph/document/undo/edit/CollapseNodesBySupportEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/edit/CopyColumnEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/edit/CutEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/edit/DeleteColumnEdit.java -text
@@ -459,6 +460,7 @@ main/src/info/bioinfweb/treegraph/gui/actions/EditDialogAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/edit/CalculateColumnAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/edit/ChangeLabelIDAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/edit/CollapseNodeAction.java -text
+main/src/info/bioinfweb/treegraph/gui/actions/edit/CollapseNodesBySupportAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/actions/edit/CopyAllLabelsAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/edit/CopyColumnAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/edit/CopyElementAction.java -text
@@ -555,6 +557,7 @@ main/src/info/bioinfweb/treegraph/gui/actions/window/SelectFrameAction.java -tex
 main/src/info/bioinfweb/treegraph/gui/actions/window/TileHorizontalAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/window/TileVerticalAction.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/AboutDialog.java -text
+main/src/info/bioinfweb/treegraph/gui/dialogs/CollapseNodesBySupportDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/CollidingIDsDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/DataIDComboBox.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/DecimalUnitInput.java -text
