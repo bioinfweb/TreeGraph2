@@ -149,11 +149,13 @@ public class CollapseNodesBySupportDialog extends EditDialog {
 	
 	
 	private double getThreshold() {
-		double result = Double.NaN;
+		double result;
 		try {
 			result = Math2.parseDouble(getThresholdTextField().getText());
 		}
-		catch (NumberFormatException e) {}  // Nothing to do
+		catch (NumberFormatException e) {
+			result = Double.NaN;
+		}
 		return result;
 	}
 	
