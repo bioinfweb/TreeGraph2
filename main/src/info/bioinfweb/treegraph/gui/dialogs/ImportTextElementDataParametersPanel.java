@@ -49,7 +49,17 @@ public class ImportTextElementDataParametersPanel extends JPanel {
 	}
 	
 	
-  public void assignParameters(ImportTextElementDataParameters parameters) {
+  @Override
+  public void setEnabled(boolean flag) {
+	  super.setEnabled(flag);
+	  getIgnoreWhitespaceCheckBox().setEnabled(flag);
+	  getCaseCheckBox().setEnabled(flag);
+	  getDistinguishSpaceUnderscoreCheckBox().setEnabled(flag);
+	  getParseNumericValuesCheckBox().setEnabled(flag);
+  }
+
+
+	public void assignParameters(ImportTextElementDataParameters parameters) {
 		parameters.setIgnoreWhitespace(getIgnoreWhitespaceCheckBox().isSelected());
 		parameters.setDistinguishSpaceUnderscore(getDistinguishSpaceUnderscoreCheckBox().isSelected());
 		parameters.setCaseSensitive(getCaseCheckBox().isSelected());

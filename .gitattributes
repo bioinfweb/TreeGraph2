@@ -497,6 +497,7 @@ main/src/info/bioinfweb/treegraph/gui/actions/edit/SeparateBranchAction.java -te
 main/src/info/bioinfweb/treegraph/gui/actions/edit/SetColumnToDecimalAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/edit/SetColumnToTextAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/edit/SetColumnTypeAction.java -text
+main/src/info/bioinfweb/treegraph/gui/actions/edit/SortLeafsAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/actions/edit/UndoAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/edit/UndoRedoToAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/edit/UndoToAction.java -text
@@ -568,10 +569,12 @@ main/src/info/bioinfweb/treegraph/gui/dialogs/EditDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/GlobalFormatsDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/ImportTextElementDataParametersPanel.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/MarginInput.java -text
+main/src/info/bioinfweb/treegraph/gui/dialogs/OpenedDocumentsComboBoxModel.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/ReplaceInNodeDataDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/ResolutionInput.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/ScaleBranchLengthsDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/SearchTextDialog.java -text
+main/src/info/bioinfweb/treegraph/gui/dialogs/SortLeafsDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/editelement/AbstractTextElementDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/editelement/ChangeIDDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/editelement/EditBranchLengthDialog.java -text

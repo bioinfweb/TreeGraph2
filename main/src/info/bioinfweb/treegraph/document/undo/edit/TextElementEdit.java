@@ -27,6 +27,11 @@ import javax.swing.undo.*;
 
 
 
+/**
+ * Edit object that change the contents of a {@link TextElement}.
+ * 
+ * @author Ben St&ouml;ver
+ */
 public class TextElementEdit extends DocumentEdit {
 	private TextElement element;
 	private TextElementData oldData;
