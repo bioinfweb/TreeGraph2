@@ -24,6 +24,7 @@ import info.bioinfweb.treegraph.document.undo.file.importtable.ImportTableParame
 import info.bioinfweb.treegraph.gui.dialogs.ImportTextElementDataParametersPanel;
 import info.bioinfweb.treegraph.gui.dialogs.io.FileDialog;
 import info.bioinfweb.treegraph.gui.dialogs.io.TableSeparatorPanel;
+import info.bioinfweb.treegraph.gui.dialogs.io.TextFileFilter;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataInput;
 
 import javax.swing.JPanel;
@@ -80,7 +81,7 @@ public class SelectImportTableDialog extends FileDialog {
 	 * @param owner
 	 */
 	public SelectImportTableDialog(Frame owner) {
-		super(owner,FileDialog.Option.FILE_MUST_EXEST);
+		super(owner, FileDialog.Option.FILE_MUST_EXEST);
 		initialize();
 		setLocationRelativeTo(owner);
 	}
@@ -129,17 +130,7 @@ public class SelectImportTableDialog extends FileDialog {
 			fileChooser = new JFileChooser();
 			fileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
 			fileChooser.setControlButtonsAreShown(false);
-			FileFilter textFiler = new FileFilter() {
-				public boolean accept(File file) {
-					return file.getAbsolutePath().endsWith(".txt") || file.isDirectory();
-				}
-			
-				
-				@Override
-				public String getDescription() {
-					return "Text files (*.txt)";
-				}
-      };
+			FileFilter textFiler = new TextFileFilter();
 			fileChooser.addChoosableFileFilter(textFiler);
 			fileChooser.setFileFilter(textFiler);
 		}

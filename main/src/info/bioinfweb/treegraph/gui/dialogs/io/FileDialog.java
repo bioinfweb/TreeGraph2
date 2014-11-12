@@ -33,7 +33,7 @@ import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
 
 
 /**
- * All dialogs that deal with files should be inherited from this class.
+ * All dialogs that deals with files should be inherited from this class.
  * 
  * @author Ben St&ouml;ver
  */

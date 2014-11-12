@@ -84,7 +84,9 @@ public class AddSupportValuesDialog extends FileDialog {
 
 
 	/**
-	 * @param owner
+	 * Creates a new instance of this class.
+	 * 
+	 * @param owner - the parent frame
 	 */
 	public AddSupportValuesDialog(Frame owner) {
 		super(owner, FileDialog.Option.FILE_MUST_EXEST);
