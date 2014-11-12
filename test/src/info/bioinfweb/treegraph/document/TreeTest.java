@@ -53,17 +53,17 @@ public class TreeTest {
   	Document document = createDocument();
   	Tree tree = document.getTree();
   	
-  	assertEquals("c81wbd5x0g", tree.getFirstNodeByData(NodeNameAdapter.getSharedInstance(), "A").getUniqueName());
-  	assertEquals("thfuyevs93", tree.getFirstNodeByData(NodeNameAdapter.getSharedInstance(), 2.43).getUniqueName());
+  	assertEquals("c81wbd5x0g", tree.getFirstNodeByData(NodeNameAdapter.getSharedInstance(), "A", false).getUniqueName());
+  	assertEquals("thfuyevs93", tree.getFirstNodeByData(NodeNameAdapter.getSharedInstance(), 2.43, false).getUniqueName());
   	
   	TextLabelAdapter labelAdapter = new TextLabelAdapter("Label", new DecimalFormat());
-  	assertEquals("thfuyevs93", tree.getFirstNodeByData(labelAdapter, "Text").getUniqueName());
-  	assertEquals("wxon0b0cj4", tree.getFirstNodeByData(labelAdapter, 24.5).getUniqueName());
+  	assertEquals("thfuyevs93", tree.getFirstNodeByData(labelAdapter, "Text", false).getUniqueName());
+  	assertEquals("wxon0b0cj4", tree.getFirstNodeByData(labelAdapter, 24.5, false).getUniqueName());
 
-  	assertNull(tree.getFirstNodeByData(NodeNameAdapter.getSharedInstance(), "NotInTree"));
-  	assertNull(tree.getFirstNodeByData(NodeNameAdapter.getSharedInstance(), ""));
+  	assertNull(tree.getFirstNodeByData(NodeNameAdapter.getSharedInstance(), "NotInTree", false));
+  	assertNull(tree.getFirstNodeByData(NodeNameAdapter.getSharedInstance(), "", false));
   	
-  	assertNull(tree.getFirstNodeByData(BranchLengthAdapter.getSharedInstance(), 18.0));
-  	assertNull(tree.getFirstNodeByData(BranchLengthAdapter.getSharedInstance(), 0.0));
+  	assertNull(tree.getFirstNodeByData(BranchLengthAdapter.getSharedInstance(), 18.0, false));
+  	assertNull(tree.getFirstNodeByData(BranchLengthAdapter.getSharedInstance(), 0.0, false));
   }
 }
