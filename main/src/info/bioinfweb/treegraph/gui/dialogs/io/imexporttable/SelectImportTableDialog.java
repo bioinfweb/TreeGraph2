@@ -19,7 +19,9 @@
 package info.bioinfweb.treegraph.gui.dialogs.io.imexporttable;
 
 
+import info.bioinfweb.treegraph.document.undo.ImportTextElementDataParameters;
 import info.bioinfweb.treegraph.document.undo.file.importtable.ImportTableParameters;
+import info.bioinfweb.treegraph.gui.dialogs.ImportTextElementDataParametersPanel;
 import info.bioinfweb.treegraph.gui.dialogs.io.FileDialog;
 import info.bioinfweb.treegraph.gui.dialogs.io.TableSeparatorPanel;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataInput;
@@ -36,9 +38,12 @@ import java.awt.Font;
 import java.awt.Color;
 import java.io.File;
 import java.awt.GridBagLayout;
+
 import javax.swing.JLabel;
+
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+
 import javax.swing.UIManager;
 import javax.swing.JCheckBox;
 import javax.swing.JSpinner;
@@ -68,10 +73,7 @@ public class SelectImportTableDialog extends FileDialog {
 	private JSpinner linesToSkipSpinner;
 	private NodeBranchDataInput keyColumnInput;
 	private JPanel keyColumnPanel;
-	private JCheckBox ignoreWhitespaceCheckBox;
-	private JCheckBox caseCheckBox;
-	private JCheckBox distinguishSpaceUnderscoreCheckBox;
-	private JCheckBox parseNumericValuesCheckBox;
+	private ImportTextElementDataParametersPanel textElementDataParametersPanel;
 
 
 	/**
@@ -91,10 +93,7 @@ public class SelectImportTableDialog extends FileDialog {
 		parameters.setHeadingContained(getColumnHeadingsCheckBox().isSelected());
 		
 		parameters.setKeyAdapter(getKeyColumnInput().getSelectedAdapter());
-		parameters.setIgnoreWhitespace(getIgnoreWhitespaceCheckBox().isSelected());
-		parameters.setDistinguishSpaceUnderscore(getDistinguishSpaceUnderscoreCheckBox().isSelected());
-		parameters.setCaseSensitive(getCaseCheckBox().isSelected());
-		parameters.setParseNumericValues(getParseNumericValuesCheckBox().isSelected());
+		getTextElementDataParametersPanel().assignParameters(parameters);
   }
 
 
@@ -300,73 +299,32 @@ public class SelectImportTableDialog extends FileDialog {
 		if (keyColumnPanel == null) {
 			keyColumnPanel = new JPanel();
 			keyColumnPanel.setBorder(new TitledBorder(null, "Key column", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-			keyColumnPanel.setLayout(new GridBagLayout());
+			GridBagLayout gbl_keyColumnPanel = new GridBagLayout();
+			gbl_keyColumnPanel.rowWeights = new double[]{0.0, 1.0};
+			gbl_keyColumnPanel.columnWeights = new double[]{0.0, 1.0};
+			keyColumnPanel.setLayout(gbl_keyColumnPanel);
 			keyColumnInput = new NodeBranchDataInput(keyColumnPanel, 1, 0);
 			GridBagConstraints gbc_nodeIdentifierLabel = new GridBagConstraints();
 			gbc_nodeIdentifierLabel.anchor = GridBagConstraints.WEST;
-			gbc_nodeIdentifierLabel.insets = new Insets(0, 0, 5, 5);
+			gbc_nodeIdentifierLabel.insets = new Insets(0, 0, 5, 0);
 			gbc_nodeIdentifierLabel.gridx = 0;
 			gbc_nodeIdentifierLabel.gridy = 0;
-			keyColumnPanel.add(getNodeIdentifierLabel(), gbc_nodeIdentifierLabel);
-			GridBagConstraints whitespaceCheckbox = new GridBagConstraints();
-			whitespaceCheckbox.insets = new Insets(0, 0, 5, 5);
-			whitespaceCheckbox.anchor = GridBagConstraints.WEST;
-			whitespaceCheckbox.gridx = 0;
-			whitespaceCheckbox.gridy = 1;
-			keyColumnPanel.add(getIgnoreWhitespaceCheckBox(), whitespaceCheckbox);
-			GridBagConstraints spaceUnderscoreCheckbox = new GridBagConstraints();
-			spaceUnderscoreCheckbox.anchor = GridBagConstraints.WEST;
-			spaceUnderscoreCheckbox.insets = new Insets(0, 0, 5, 0);
-			spaceUnderscoreCheckbox.gridx = 1;
-			spaceUnderscoreCheckbox.gridy = 1;
-			keyColumnPanel.add(getDistinguishSpaceUnderscoreCheckBox(), spaceUnderscoreCheckbox);
-			GridBagConstraints caseCheckbox = new GridBagConstraints();
-			caseCheckbox.insets = new Insets(0, 0, 0, 5);
-			caseCheckbox.anchor = GridBagConstraints.WEST;
-			caseCheckbox.gridx = 0;
-			caseCheckbox.gridy = 2;
-			keyColumnPanel.add(getCaseCheckBox(), caseCheckbox);
-			GridBagConstraints parseNumericValuesCheckbox = new GridBagConstraints();
-			parseNumericValuesCheckbox.anchor = GridBagConstraints.WEST;
-			parseNumericValuesCheckbox.gridx = 1;
-			parseNumericValuesCheckbox.gridy = 2;
-			keyColumnPanel.add(getParseNumericValuesCheckBox(), parseNumericValuesCheckbox);
-			
+			keyColumnPanel.add(getNodeIdentifierLabel(), gbc_nodeIdentifierLabel);			
+			GridBagConstraints gbc_textElementDataParametersPanel = new GridBagConstraints();
+			gbc_textElementDataParametersPanel.gridwidth = 2;
+			gbc_textElementDataParametersPanel.fill = GridBagConstraints.BOTH;
+			gbc_textElementDataParametersPanel.gridx = 0;
+			gbc_textElementDataParametersPanel.gridy = 1;
+			keyColumnPanel.add(getTextElementDataParametersPanel(), gbc_textElementDataParametersPanel);
   	}
 		return keyColumnPanel;
 	}
 	
 	
-	private JCheckBox getIgnoreWhitespaceCheckBox() {
-		if (ignoreWhitespaceCheckBox == null) {
-			ignoreWhitespaceCheckBox = new JCheckBox("Ignore leading and trailing white space");
-			ignoreWhitespaceCheckBox.setSelected(false);
+	private ImportTextElementDataParametersPanel getTextElementDataParametersPanel() {
+		if (textElementDataParametersPanel == null) {
+			textElementDataParametersPanel = new ImportTextElementDataParametersPanel();
 		}
-		return ignoreWhitespaceCheckBox;
-	}
-	
-	
-	private JCheckBox getCaseCheckBox() {
-		if (caseCheckBox == null) {
-			caseCheckBox = new JCheckBox("Case sensitive");
-		}
-		return caseCheckBox;
-	}
-	
-	
-	private JCheckBox getDistinguishSpaceUnderscoreCheckBox() {
-		if (distinguishSpaceUnderscoreCheckBox == null) {
-			distinguishSpaceUnderscoreCheckBox = new JCheckBox("Distinguish between space (\" \") and underscore (\"_\")");
-		}
-		return distinguishSpaceUnderscoreCheckBox;
-	}
-	
-	
-	private JCheckBox getParseNumericValuesCheckBox() {
-		if (parseNumericValuesCheckBox == null) {
-			parseNumericValuesCheckBox = new JCheckBox("Parse numeric values if possible");
-			parseNumericValuesCheckBox.setSelected(true);
-		}
-		return parseNumericValuesCheckBox;
+		return textElementDataParametersPanel;
 	}
 }

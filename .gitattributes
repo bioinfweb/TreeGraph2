@@ -314,6 +314,7 @@ main/src/info/bioinfweb/treegraph/document/position/package.html -text
 main/src/info/bioinfweb/treegraph/document/undo/ComplexDocumentEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/ComposedDocumentEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/DocumentEdit.java -text
+main/src/info/bioinfweb/treegraph/document/undo/ImportTextElementDataParameters.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/NodeBranchDataBackup.java -text
 main/src/info/bioinfweb/treegraph/document/undo/NodeBranchDataEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/SaveLegendsEdit.java -text
@@ -565,6 +566,7 @@ main/src/info/bioinfweb/treegraph/gui/dialogs/DecimalUnitInput.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/DistanceValueInput.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/EditDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/GlobalFormatsDialog.java -text
+main/src/info/bioinfweb/treegraph/gui/dialogs/ImportTextElementDataParametersPanel.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/MarginInput.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/ReplaceInNodeDataDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/ResolutionInput.java -text

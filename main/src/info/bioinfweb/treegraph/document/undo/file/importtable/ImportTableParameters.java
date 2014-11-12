@@ -22,6 +22,7 @@ package info.bioinfweb.treegraph.document.undo.file.importtable;
 import java.io.File;
 
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
+import info.bioinfweb.treegraph.document.undo.ImportTextElementDataParameters;
 
 
 
@@ -31,18 +32,13 @@ import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
  * @author Ben St&ouml;ver
  * @since 2.0.50
  */
-public class ImportTableParameters {
+public class ImportTableParameters extends ImportTextElementDataParameters {
 	private File tableFile = null;
 	private char columnSeparator = '\t';
   private int linesToSkip = 0;
   private boolean headingContained = false;
   
   private NodeBranchDataAdapter keyAdapter = null;
-  private boolean ignoreWhitespace = false;
-  private boolean distinguishSpaceUnderscore = false;
-  private boolean caseSensitive = false;
-  private boolean parseNumericValues = true;
-  
   private NodeBranchDataAdapter[] importAdapters = new NodeBranchDataAdapter[0];
 
   
@@ -93,46 +89,6 @@ public class ImportTableParameters {
 
 	public void setKeyAdapter(NodeBranchDataAdapter keyAdapter) {
 		this.keyAdapter = keyAdapter;
-	}
-
-
-	public boolean isIgnoreWhitespace() {
-		return ignoreWhitespace;
-	}
-
-
-	public void setIgnoreWhitespace(boolean ignoreWhitespace) {
-		this.ignoreWhitespace = ignoreWhitespace;
-	}
-
-
-	public boolean isDistinguishSpaceUnderscore() {
-		return distinguishSpaceUnderscore;
-	}
-
-
-	public void setDistinguishSpaceUnderscore(boolean distinguishSpaceUnderscore) {
-		this.distinguishSpaceUnderscore = distinguishSpaceUnderscore;
-	}
-
-
-	public boolean isCaseSensitive() {
-		return caseSensitive;
-	}
-
-
-	public void setCaseSensitive(boolean caseSensitive) {
-		this.caseSensitive = caseSensitive;
-	}
-
-
-	public boolean isParseNumericValues() {
-		return parseNumericValues;
-	}
-
-
-	public void setParseNumericValues(boolean parseNumbericValues) {
-		this.parseNumericValues = parseNumbericValues;
 	}
 
 
