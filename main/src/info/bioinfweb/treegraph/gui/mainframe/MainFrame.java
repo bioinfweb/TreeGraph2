@@ -40,6 +40,7 @@ import java.beans.PropertyVetoException;
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
@@ -175,9 +176,10 @@ public class MainFrame extends JFrame implements Runnable {
   
   
 	/**
-	 * Returns the currently avctive Frame where a tree is displayed.
+	 * Returns the currently active Frame where a tree is displayed.
+	 * 
 	 * @return the tree or null of no frame is active or the active frame is 
-	 * not of type <code>TreeInternalFrame</code>.
+	 *         not of type {@link TreeInternalFrame}
 	 */
 	public TreeInternalFrame getActiveTreeFrame() {
 		if ((getDesktopPane().getSelectedFrame() != null) && (getDesktopPane().getSelectedFrame() instanceof TreeInternalFrame)) {
@@ -186,6 +188,32 @@ public class MainFrame extends JFrame implements Runnable {
 		else {
 			return null;
 		}
+	}
+	
+	
+	/**
+	 * Returns an iterator over all currently available tree frames. (There is one tree frame for each currently opened 
+	 * document.)
+	 * 
+	 * @return an iterator over all tree frames
+	 * @since 2.2.0
+	 */
+	public Iterator<TreeInternalFrame> treeFrameIterator() {
+		final JInternalFrame[] frames = getDesktopPane().getAllFrames();
+		return new Iterator<TreeInternalFrame>() {
+					private int pos = 0; 
+					
+					@Override
+		      public boolean hasNext() {
+			      return pos < frames.length;
+		      }
+		
+					@Override
+		      public TreeInternalFrame next() {
+						pos++;
+			      return (TreeInternalFrame)frames[pos - 1];
+		      }
+				};
 	}
 
 	
