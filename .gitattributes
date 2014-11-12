@@ -362,6 +362,7 @@ main/src/info/bioinfweb/treegraph/document/undo/edit/RerootEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/edit/RescaleNodeDataEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/edit/SeparateBranchEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/edit/SetColumnTypeEdit.java -text
+main/src/info/bioinfweb/treegraph/document/undo/edit/SortLeafsEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/edit/TextElementEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/AbstractFunction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/DoubleVarargFunction.java -text svneol=unset#text/plain

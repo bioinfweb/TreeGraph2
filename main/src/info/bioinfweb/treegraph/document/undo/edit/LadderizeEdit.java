@@ -30,6 +30,7 @@ import info.bioinfweb.treegraph.document.undo.ComplexDocumentEdit;
 
 /**
  * This class ladderized a subtree. This operation cannot be undone.
+ * 
  * @author Ben St&ouml;ver
  */
 public class LadderizeEdit extends ComplexDocumentEdit {
@@ -46,7 +47,7 @@ public class LadderizeEdit extends ComplexDocumentEdit {
 
 	private void ladderize(Node root, boolean down) {
   	if (!root.isLeaf()) {
-  		NodeLadderizeComparable[] subtrees = NodeLadderizeComparable.encloseSubnodes(root, down);
+  		NodeLadderizeComparable[] subtrees = NodeLadderizeComparable.incloseSubnodes(root, down);
   		root.getChildren().clear();
   		Arrays.sort(subtrees);
   		NodeLadderizeComparable.addToNode(subtrees, root);

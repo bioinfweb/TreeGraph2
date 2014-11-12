@@ -1,0 +1,278 @@
+/*
+ * TreeGraph 2 - A feature rich editor for phylogenetic trees
+ * Copyright (C) 2007-2014  Ben Stöver, Kai Müller
+ * <http://treegraph.bioinfweb.info/>
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+package info.bioinfweb.treegraph.document.undo.edit;
+
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+import javax.swing.undo.CannotRedoException;
+import javax.swing.undo.CannotUndoException;
+
+import info.bioinfweb.commons.Math2;
+import info.bioinfweb.treegraph.document.Document;
+import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.TextElementData;
+import info.bioinfweb.treegraph.document.TreeSerializer;
+import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
+import info.bioinfweb.treegraph.document.undo.DocumentEdit;
+import info.bioinfweb.treegraph.document.undo.WarningMessageEdit;
+
+
+
+/**
+ * Sorts the leafs in the specified subtree as close as possible to the specified order. Leaf nodes that are not 
+ * found in the order list are positioned at the end.
+ * 
+ * @author Ben St&ouml;ver
+ * @since 2.2.0
+ */
+public class SortLeafsEdit extends DocumentEdit implements WarningMessageEdit {
+	private static class SortInfo {
+		public int indexSum = 0;
+		public int nodeCount = 0;
+		
+		public void add(SortInfo other) {
+			indexSum += other.indexSum;
+			nodeCount += other.nodeCount;
+		}
+		
+		public double averageIndex() {
+			return (double)indexSum / (double)nodeCount;
+		}
+	}
+	
+	
+	private static class NodeComparator implements Comparator<Node> {
+		@Override
+    public int compare(Node n1, Node n2) {
+	    return (int)Math.signum((Double)n1.getAttributeMap().get(ATTRIBUTE_ID) - (Double)n2.getAttributeMap().get(ATTRIBUTE_ID));
+    }
+	}
+	
+	
+	public static final int MAX_WARNING_ELEMENTS = 8;
+	public static final String ATTRIBUTE_ID = SortLeafsEdit.class.getCanonicalName() + "_averageIndex";
+	
+	private static final NodeComparator NODE_COMPARATOR = new NodeComparator();
+	
+	
+	private Node root;
+	private List<Node> newOrder;
+	private List<Node> oldOrder;
+	private NodeBranchDataAdapter leafAdapter;
+	private List<TextElementData> unlinkedOrderValues = new ArrayList<TextElementData>();
+	private List<TextElementData> unlinkedTreeValues = new ArrayList<TextElementData>();
+
+	
+	/**
+	 * Creates a new instance of this class.
+	 * 
+	 * @param document - the document where the leafs shall be sorted
+	 * @param newOrder - the new order of the leaf nodes (Should contain most of the values the document contains on 
+	 *        its leafs in the specified node/branch data column.)
+	 * @param leafAdapter - the node/branch data column used to combine the document leaf nodes with the specified 
+	 *        order elements
+	 */
+	public SortLeafsEdit(Document document, Node root, List<TextElementData> newOrder, NodeBranchDataAdapter leafAdapter) {
+	  super(document);
+	  this.root = root;
+	  this.leafAdapter = leafAdapter;
+	  
+	  saveNewOrder(newOrder);
+		oldOrder = TreeSerializer.getElementsInSubtreeAsList(root, true, Node.class);
+  }
+
+	
+	private void saveNewOrder(List<TextElementData> order) {
+		newOrder = new ArrayList<Node>();
+		for (TextElementData data : order) {
+			Node node = document.getTree().getFirstNodeByData(leafAdapter, data, true);
+			if (node != null) {
+				newOrder.add(node);
+			}
+			else {
+				unlinkedOrderValues.add(data);
+			}
+    }
+	}
+	
+	
+	private SortInfo sortLeafs(Node root, List<Node> order) {
+		SortInfo result = new SortInfo();
+		if (root.isLeaf()) {
+			if (order.contains(root)) {
+				result.nodeCount = 1;
+				result.indexSum = order.indexOf(root);
+			}
+			else {
+				unlinkedTreeValues.add(root.getData());
+				return null;
+			}
+		}
+		else {
+			for (Node child : root.getChildren()) {
+		    SortInfo childInfo = sortLeafs(child, order);
+		    if (childInfo != null) {
+			    child.getAttributeMap().put(ATTRIBUTE_ID, childInfo.averageIndex());
+			    result.add(childInfo);
+		    }
+		    else {
+			    child.getAttributeMap().put(ATTRIBUTE_ID, Double.MAX_VALUE);  // Position nodes with undefined order at the end.
+		    }
+	    }
+			
+			Collections.sort(root.getChildren(), NODE_COMPARATOR);
+		}
+		return result;
+	}
+	
+
+	@Override
+  public void redo() throws CannotRedoException {
+		unlinkedTreeValues.clear();
+	  sortLeafs(root, newOrder);
+	  super.redo();
+  }
+
+	
+	@Override
+  public void undo() throws CannotUndoException {
+		unlinkedTreeValues.clear();
+	  sortLeafs(root, oldOrder);
+	  super.undo();
+  }
+
+	
+	@Override
+  public String getPresentationName() {
+	  return "Sort leafs";
+  }
+
+
+	private void addListToWarningText(List<TextElementData> list, StringBuffer buffer) {
+		int length = Math.min(MAX_WARNING_ELEMENTS, list.size());
+		for (int i = 0; i < list.size(); i++) {
+      buffer.append("- \"" + list.get(i).toString() + "\"\n");
+    }
+		if (list.size() > MAX_WARNING_ELEMENTS) {
+			buffer.append((list.size() - length) + " more...");
+		}
+	}
+	
+	
+	@Override
+  public String getWarningText() {
+		if (hasWarnings()) {
+			StringBuffer buffer = new StringBuffer();
+			buffer.append("The leaf elements of the tree and the elements in the order list were not identical:\n\n");
+			
+			if (!unlinkedOrderValues.isEmpty()) {
+				buffer.append("The following elements from the order list (loaded list or other tree document) have not been ");
+				buffer.append("found in the tree:\n\n");
+				addListToWarningText(unlinkedOrderValues, buffer);
+				buffer.append("\n\n");
+			}
+			
+			if (!unlinkedTreeValues.isEmpty()) {
+				buffer.append("The following elements from the tree have not been found in the order list:\n\n");
+				addListToWarningText(unlinkedOrderValues, buffer);
+				buffer.append("\nThese elements have been positioned as the last elements in their subtree.");
+			}
+
+			return buffer.toString();
+		}
+		else {
+			return null;
+		}
+  }
+
+
+	@Override
+  public boolean hasWarnings() {
+	  return !unlinkedOrderValues.isEmpty() || !unlinkedTreeValues.isEmpty();
+  }
+	
+	
+	/**
+	 * Reads a list of values to order the leafs of a tree from a text file where each value is contained in one line.
+	 * 
+	 * @param file - the file to be loaded
+	 * @param parseNumericValues - Specify {@code true} here if each value shall be parsed to a numeric value of possible, 
+	 *        {@code false} otherwise. 
+	 * @return a list containing the loaded values in the order they were stored in the file
+	 * @throws IOException if an IO exception occurs while trying to read from the specified file
+	 */
+	public static List<TextElementData> orderFromTextFile(File file, boolean parseNumericValues) throws IOException {
+		List<TextElementData> result = new ArrayList<TextElementData>();
+		BufferedReader reader = new BufferedReader(new FileReader(file));
+		try {
+			String line = reader.readLine();
+			while (line != null) {
+				// Read value:
+				double decimal = Double.NaN;
+				if (parseNumericValues) {
+					try {
+						decimal = Math2.parseDouble(line);
+					}
+					catch (NumberFormatException e) {}  // Nothing to do.
+				}
+				
+				// Add value to list:
+				TextElementData data;
+				if (Double.isNaN(decimal)) {
+					 data = new TextElementData(line);
+				}
+				else {
+					data = new TextElementData(decimal);
+				}
+				result.add(data);
+				
+				line = reader.readLine();
+			}
+		}
+		finally {
+			reader.close();
+		}
+		return result;
+	}
+	
+	
+	/**
+	 * Creates a list of values to order the leafs of a tree from another tree document.
+	 * 
+	 * @param document - the document to read the order from
+	 * @param adapter - the node/branch data adapter to be used to obtain a value from a leaf node
+	 * @return a list containing the values of the leafs nodes of the specified document from top to bottom
+	 */
+	public static List<TextElementData> orderFromDocument(Document document, NodeBranchDataAdapter adapter) {
+		List<Node> leafs = TreeSerializer.getElementsInSubtreeAsList(document.getTree().getPaintStart(), true, Node.class);
+		List<TextElementData> result = new ArrayList<TextElementData>(leafs.size());
+		for (Node node : leafs) {
+	    result.add(adapter.toTextElementData(node));
+    }
+		return result;
+	}
+}

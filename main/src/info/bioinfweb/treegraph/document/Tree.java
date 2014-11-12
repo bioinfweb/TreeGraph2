@@ -217,29 +217,31 @@ public class Tree {
 	}
 	
 	
-	public Node getFirstNodeByData(NodeBranchDataAdapter adapter, double value) {
-		return getFirstNodeByData(adapter, new TextElementData(value));
+	public Node getFirstNodeByData(NodeBranchDataAdapter adapter, double value, boolean leafsOnly) {
+		return getFirstNodeByData(adapter, new TextElementData(value), leafsOnly);
 	}
 	
 	
-	public Node getFirstNodeByData(NodeBranchDataAdapter adapter, String value) {
-		return getFirstNodeByData(adapter, new TextElementData(value));
+	public Node getFirstNodeByData(NodeBranchDataAdapter adapter, String value, boolean leafsOnly) {
+		return getFirstNodeByData(adapter, new TextElementData(value), leafsOnly);
 	}
 	
 	
-	public Node getFirstNodeByData(NodeBranchDataAdapter adapter, TextElementData data) {
-		return getFirstNodeInSubtreeByData(getPaintStart(), adapter, data);
+	public Node getFirstNodeByData(NodeBranchDataAdapter adapter, TextElementData data, boolean leafsOnly) {
+		return getFirstNodeInSubtreeByData(getPaintStart(), adapter, data, leafsOnly);
 	}
 	
 	
-	public static Node getFirstNodeInSubtreeByData(Node root, NodeBranchDataAdapter adapter, TextElementData data) {
-		if (data.equals(adapter.toTextElementData(root))) {
+	public static Node getFirstNodeInSubtreeByData(Node root, NodeBranchDataAdapter adapter, TextElementData data, 
+			boolean leafsOnly) {
+		
+		if ((!leafsOnly || root.isLeaf()) && data.equals(adapter.toTextElementData(root))) {
 			return root;
 		}
 		else {
 			Iterator<Node> iterator = root.getChildren().iterator();
 			while (iterator.hasNext()) {
-				Node result = getFirstNodeInSubtreeByData(iterator.next(), adapter, data);
+				Node result = getFirstNodeInSubtreeByData(iterator.next(), adapter, data, leafsOnly);
 				if (result != null) {
 					return result;
 				}

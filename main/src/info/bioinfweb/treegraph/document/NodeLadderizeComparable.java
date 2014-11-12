@@ -24,8 +24,9 @@ import java.util.Vector;
 
 
 /**
- * This class is a wrapper class for <code>Node</code>-objects that allowws them to be
+ * This class is a wrapper class for <code>Node</code>-objects that allows them to be
  * compared by their number of terminal subnodes. It is used to ladderize a tree.
+ * 
  * @author Ben St&ouml;ver
  */
 public class NodeLadderizeComparable implements Comparable<NodeLadderizeComparable>{
@@ -56,6 +57,7 @@ public class NodeLadderizeComparable implements Comparable<NodeLadderizeComparab
 	/**
 	 * Compares which node has more (or less) nodes in its subtree. Note that
 	 * {@link countNodes()} has to be called first.
+	 * 
 	 * @param other - an other NodeLadderizeComparable that should be compared
 	 * @see info.bioinfweb.treegraph.document.Node#getChildCount()
 	 * @see info.bioinfweb.treegraph.document.NodeLadderizeComparable#countNodes()
@@ -70,13 +72,14 @@ public class NodeLadderizeComparable implements Comparable<NodeLadderizeComparab
 	
 	
 	/**
-	 * Encloses all direct subelements of <code>root</code> with a <code>NodeLadderizeComparable</code>-
+	 * Incloses all direct subelements of {@code root} with a {@link NodeLadderizeComparable}
 	 * object and adds this objects to an array that is returned.
+	 * 
 	 * @param root - the parent element of the subelements to enclose
 	 * @param ladderizeDown - whether the elements will be ladderized down
 	 * @return the array of <code>NodeLadderizeComparable</code>-objects
 	 */
-	public static NodeLadderizeComparable[] encloseSubnodes(Node root, boolean ladderizeDown) {
+	public static NodeLadderizeComparable[] incloseSubnodes(Node root, boolean ladderizeDown) {
 		Vector<NodeLadderizeComparable> list = new Vector<NodeLadderizeComparable>();
 		for (int i = 0; i < root.getChildren().size(); i++) {
 			list.add(new NodeLadderizeComparable(root.getChildren().get(i), ladderizeDown));
@@ -87,6 +90,7 @@ public class NodeLadderizeComparable implements Comparable<NodeLadderizeComparab
 	
 	/**
 	 * This method is used to reinsert sorted elements in the a subtree.
+	 * 
 	 * @param elements - the elements to insert
 	 * @param root - the future parent element of the elements to insert
 	 */
@@ -99,7 +103,8 @@ public class NodeLadderizeComparable implements Comparable<NodeLadderizeComparab
 	
 	/**
 	 * Sets all the <code>childCount</code> values of the contained <code>Node</code>-objects.
-	 * This methode is used to perform ladderization.
+	 * This method is used to perform ladderization.
+	 * 
 	 * @return the count of nodes in the subtree under <code>root</code>
 	 * @see info.bioinfweb.treegraph.document.Node#getChildCount()
 	 * @see info.bioinfweb.treegraph.document.undo.edit.LadderizeEdit
