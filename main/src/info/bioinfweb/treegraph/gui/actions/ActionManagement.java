@@ -124,6 +124,7 @@ public class ActionManagement extends AbstractUndoActionManagement {
 		put("edit.separateBranch", new SeparateBranchAction(mainFrame));
 		put("edit.ladderizeUp", new LadderizeUpAction(mainFrame));
 		put("edit.ladderizeDown", new LadderizeDownAction(mainFrame));
+		put("edit.sortLeafs", new SortLeafsAction(mainFrame));
 		put("edit.reroot", new RerootAction(mainFrame));
 		put("edit.rerootByLeafSet", new RerootByLeafSetAction(mainFrame));
 		put("edit.editText", new EditTextElementAction(mainFrame));
@@ -195,6 +196,7 @@ public class ActionManagement extends AbstractUndoActionManagement {
 		popupActions.add(get("edit.moveSubtreeDown"));
 		popupActions.add(get("edit.ladderizeUp"));
 		popupActions.add(get("edit.ladderizeDown"));
+		popupActions.add(get("edit.sortLeafs"));
 		popupActions.add(get("edit.reroot"));
 		popupActions.add(get("edit.rerootByLeafSet"));
 		popupActions.add(null);

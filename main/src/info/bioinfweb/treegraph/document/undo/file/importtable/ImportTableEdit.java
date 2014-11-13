@@ -106,7 +106,7 @@ public class ImportTableEdit extends DocumentEdit implements WarningMessageEdit 
 	private void addNodesByData(Collection<Node> result, Node root, TextElementData data) {
 		TextElementData rootData = parameters.getKeyAdapter().toTextElementData(root);
     if (rootData.equals(data) ||  // second condition is only evaluated if necessary
-    		ImportTableData.createEditedValue(rootData.toString(), parameters).equals(data)) {
+    		parameters.createEditedValue(rootData.toString()).equals(data)) {
     	
     	result.add(root);
     }

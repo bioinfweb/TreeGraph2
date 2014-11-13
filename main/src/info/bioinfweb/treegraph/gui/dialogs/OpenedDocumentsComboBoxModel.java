@@ -54,4 +54,10 @@ public class OpenedDocumentsComboBoxModel extends DefaultComboBoxModel<Document>
 			addElement(iterator.next().getDocument());
 		}
 	}
+
+
+	@Override
+  public Document getSelectedItem() {
+	  return (Document)super.getSelectedItem();
+  }
 }

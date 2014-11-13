@@ -18,6 +18,10 @@
  */
 package info.bioinfweb.treegraph.document.undo;
 
+import info.bioinfweb.commons.Math2;
+import info.bioinfweb.treegraph.document.TextElementData;
+import info.bioinfweb.treegraph.document.io.newick.NewickStringChars;
+
 
 
 /**
@@ -71,4 +75,37 @@ public class ImportTextElementDataParameters {
 	public void setParseNumericValues(boolean parseNumbericValues) {
 		this.parseNumericValues = parseNumbericValues;
 	}  
+	
+	
+	/**
+	 * Creates a {@link TextElementData} object from the specified string according the specifications
+	 * in {@code parameters}.
+	 */
+	public TextElementData createEditedValue(String text) {
+		if (text.equals("")) {
+			return new TextElementData();  // return empty instance because the if the the TextElementData instance used to call this method was also empty
+		}
+		else {
+			TextElementData result = new TextElementData(text);
+			if (isParseNumericValues()) {  
+				try {
+					result.setDecimal(Math2.parseDouble(result.getText()));
+				}
+				catch (NumberFormatException e) {}  // nothing to do
+			}
+	
+			if (result.isString()) {  // Not the case if the parsing above was successful.
+				if (isIgnoreWhitespace()) {
+					result.setText(result.getText().trim());
+				}
+				if (!isCaseSensitive()) {
+					result.setText(result.getText().toLowerCase());
+				}
+				if (!isDistinguishSpaceUnderscore()) {
+					result.setText(result.getText().replaceAll(Character.toString(NewickStringChars.FREE_NAME_BLANK), " "));
+				}
+			}
+			return result;
+		}
+	}
 }

@@ -19,13 +19,21 @@
 package info.bioinfweb.treegraph.gui.dialogs;
 
 
+import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Document;
+import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.nodebranchdata.HiddenDataAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;
 import info.bioinfweb.treegraph.document.undo.ImportTextElementDataParameters;
 import info.bioinfweb.treegraph.document.undo.edit.SortLeafsEdit;
+import info.bioinfweb.treegraph.gui.CurrentDirectoryModel;
 import info.bioinfweb.treegraph.gui.actions.edit.SortLeafsAction;
+import info.bioinfweb.treegraph.gui.dialogs.io.TextFileFilter;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataInput;
+import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeDataComboBoxModel;
 
 import java.awt.Dimension;
 import java.awt.Frame;
@@ -36,17 +44,27 @@ import java.awt.Insets;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.ButtonGroup;
-import javax.swing.JLabel;
 
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 import java.io.File;
+import java.io.IOException;
+import java.util.List;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+import javax.swing.JLabel;
+import javax.swing.UIManager;
+
+import java.awt.Color;
 
 
 
@@ -59,7 +77,6 @@ import java.io.File;
 public class SortLeafsDialog extends EditDialog {
 	private JPanel jContentPane = null;
 	private JPanel leafAdapterPanel = null;
-	private NodeBranchDataInput adapterInput = null;
 	private JPanel openedDocumentPanel;
 	private JRadioButton openedDocumentRadioButton;
 	private JRadioButton textFileRadioButton;
@@ -68,8 +85,9 @@ public class SortLeafsDialog extends EditDialog {
 	private JButton chooseTextFileButton;
 	private final ButtonGroup orderSourceButtonGroup = new ButtonGroup();
 	private ImportTextElementDataParametersPanel textElementDataParametersPanel;
-	private JPanel orderSourcePanel;
-	private JPanel textFilePanel;
+	private JFileChooser fileChooser = null;
+	private JComboBox<NodeBranchDataAdapter> sourceAdapterComboBox;
+	private JComboBox<NodeBranchDataAdapter> targetAdapterComboBox;
 
 	
 	/**
@@ -83,8 +101,22 @@ public class SortLeafsDialog extends EditDialog {
   }
 
 	
+	private void updateSourceAdapters() {
+		if (getOpenedDocumentsComboBoxModel().getSelectedItem() != null) {
+			getSourceAdapterModel().setAdapters(getOpenedDocumentsComboBoxModel().getSelectedItem().getTree(), 
+					true, true, true, false, false);
+			getSourceAdapterModel().setSelectedAdapter(NodeNameAdapter.class);
+		}
+		else {
+			getSourceAdapterModel().clear();
+		}
+	}
+	
+	
 	@Override
   protected boolean onExecute() {
+		setLocationRelativeTo(getOwner());
+
 		// Refresh opened documents:
 		getOpenedDocumentsComboBoxModel().refreshDocuments();
 		getOpenedDocumentsComboBoxModel().removeElement(getDocument());
@@ -95,23 +127,33 @@ public class SortLeafsDialog extends EditDialog {
 			getTextFileRadioButton().setSelected(true);
 		}
 		getOpenedDocumentRadioButton().setEnabled(otherDocumentsOpen);
+		getSourceAdapterComboBox().setEnabled(otherDocumentsOpen);
 		
 		// Refresh adapters:
-		adapterInput.setAdapters(getDocument().getTree(), true, true, true, false, false);
-		if (!adapterInput.setSelectedAdapter(TextLabelAdapter.class)) {
-			adapterInput.setSelectedAdapter(HiddenDataAdapter.class);
-		}
+		getTargetAdapterModel().setAdapters(getDocument().getTree(), true, true, true, false, false);
+		getTargetAdapterModel().setSelectedAdapter(NodeNameAdapter.class);
+		updateSourceAdapters();
+		
 	  return true;
   }
 
 	
 	@Override
   protected boolean apply() {
+		ImportTextElementDataParameters parameters = new ImportTextElementDataParameters();
+		getTextElementDataParametersPanel().assignParameters(parameters);
+		List<TextElementData> newOrder = null;
+		
 		if (getTextFileRadioButton().isSelected()) {
 			File file = new File(getTextFileField().getText());
 			if (file.exists()) {
-				ImportTextElementDataParameters parameters = new ImportTextElementDataParameters();
-				getTextElementDataParametersPanel().assignParameters(parameters);
+				try {
+					newOrder = SortLeafsEdit.orderFromTextFile(file, parameters);
+				}
+				catch (IOException e) {
+					JOptionPane.showMessageDialog(this, "The error \"" + e.toString() + "\" ocurred when trying to read the file \"" + 
+							file.getAbsolutePath() + "\".",	"IO error", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 			else {
 				JOptionPane.showMessageDialog(this, "The file \"" + file.getAbsolutePath() + "\" could not be found.", 
@@ -119,20 +161,33 @@ public class SortLeafsDialog extends EditDialog {
 			}
 		}
 		else {  // Order from other document
-			
+			newOrder = SortLeafsEdit.orderFromDocument(getOpenedDocumentsComboBoxModel().getSelectedItem(), 
+					getSourceAdapterModel().getSelectedItem(), parameters);
 		}
 		
-		
-		
-//		if (!Double.isNaN(threshold)) {
-//			return true;
-//		}
-//		else {
-//			JOptionPane.showMessageDialog(this, "The threshold value \"" + getThresholdTextField().getText() +
-//							"\" is invalid. Please specify a valid numerical value.", "Invalid threshold", JOptionPane.ERROR_MESSAGE);
-//			return false;
-//		}
-		return false;
+		if (newOrder != null) {
+			Node root = getSelection().getFirstElementOfType(Node.class);
+			if (root == null) {
+				Branch branch = getSelection().getFirstElementOfType(Branch.class);
+				if (branch != null) {
+					root = branch.getTargetNode();
+				}
+				else {
+					root = getDocument().getTree().getPaintStart();
+				}
+			}
+			
+			SortLeafsEdit edit = new SortLeafsEdit(getDocument(), root,	newOrder, getTargetAdapterModel().getSelectedItem(), parameters);
+			getDocument().executeEdit(edit);
+			
+			if (edit.hasWarnings()) {
+				JOptionPane.showMessageDialog(this, edit.getWarningText(), "Warning", JOptionPane.WARNING_MESSAGE);
+			}
+			return true;
+		}
+		else {
+			return false;
+		}
   }
 	
 	
@@ -141,7 +196,7 @@ public class SortLeafsDialog extends EditDialog {
 		
 		getTextFileField().setEnabled(textFileOptionEnabled);
 		getChooseTextFileButton().setEnabled(textFileOptionEnabled);
-		getTextElementDataParametersPanel().setEnabled(textFileOptionEnabled);
+		getTextElementDataParametersPanel().getParseNumericValuesCheckBox().setEnabled(textFileOptionEnabled);
 		
 		getOpenedDocumentComboBox().setEnabled(!textFileOptionEnabled);
 	}
@@ -170,9 +225,10 @@ public class SortLeafsDialog extends EditDialog {
 		if (jContentPane == null) {
 			jContentPane = new JPanel();
 			jContentPane.setLayout(new BoxLayout(getJContentPane(), BoxLayout.Y_AXIS));
-			jContentPane.add(getOrderSourcePanel());
+			jContentPane.add(getOpenedDocumentPanel());
 			
 			jContentPane.add(getLeafAdapterPanel());
+			jContentPane.add(getTextElementDataParametersPanel());
 			jContentPane.add(getButtonsPanel());
 		}
 		return jContentPane;
@@ -182,30 +238,57 @@ public class SortLeafsDialog extends EditDialog {
 	private JPanel getOpenedDocumentPanel() {
 		if (openedDocumentPanel == null) {
 			openedDocumentPanel = new JPanel();
-			openedDocumentPanel.setBorder(null);
+			openedDocumentPanel.setBorder(new TitledBorder(null, "Source for new leaf order", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 			GridBagLayout gbl_openedDocumentPanel = new GridBagLayout();
-			gbl_openedDocumentPanel.columnWidths = new int[]{0, 0, 0, 0};
-			gbl_openedDocumentPanel.columnWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
+			gbl_openedDocumentPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0};
+			gbl_openedDocumentPanel.columnWidths = new int[]{0, 0, 0};
+			gbl_openedDocumentPanel.columnWeights = new double[]{0.0, 1.0, 0.0};
 			openedDocumentPanel.setLayout(gbl_openedDocumentPanel);
+			GridBagConstraints gbc_textFileRadioButton = new GridBagConstraints();
+			gbc_textFileRadioButton.anchor = GridBagConstraints.WEST;
+			gbc_textFileRadioButton.insets = new Insets(0, 0, 5, 5);
+			gbc_textFileRadioButton.gridx = 0;
+			gbc_textFileRadioButton.gridy = 0;
+			openedDocumentPanel.add(getTextFileRadioButton(), gbc_textFileRadioButton);
+			GridBagConstraints gbc_textFileField = new GridBagConstraints();
+			gbc_textFileField.fill = GridBagConstraints.HORIZONTAL;
+			gbc_textFileField.insets = new Insets(0, 0, 5, 5);
+			gbc_textFileField.gridx = 1;
+			gbc_textFileField.gridy = 0;
+			openedDocumentPanel.add(getTextFileField(), gbc_textFileField);
+			GridBagConstraints gbc_chooseTextFileButton = new GridBagConstraints();
+			gbc_chooseTextFileButton.insets = new Insets(0, 0, 5, 0);
+			gbc_chooseTextFileButton.gridx = 2;
+			gbc_chooseTextFileButton.gridy = 0;
+			openedDocumentPanel.add(getChooseTextFileButton(), gbc_chooseTextFileButton);
 			GridBagConstraints gbc_openedDocumentRadioButton = new GridBagConstraints();
 			gbc_openedDocumentRadioButton.insets = new Insets(0, 0, 5, 5);
 			gbc_openedDocumentRadioButton.anchor = GridBagConstraints.WEST;
 			gbc_openedDocumentRadioButton.gridx = 0;
-			gbc_openedDocumentRadioButton.gridy = 0;
+			gbc_openedDocumentRadioButton.gridy = 1;
 			openedDocumentPanel.add(getOpenedDocumentRadioButton(), gbc_openedDocumentRadioButton);
-			GridBagConstraints gbc_lblOpenedDocument = new GridBagConstraints();
-			gbc_lblOpenedDocument.insets = new Insets(0, 0, 5, 5);
-			gbc_lblOpenedDocument.anchor = GridBagConstraints.WEST;
-			gbc_lblOpenedDocument.gridx = 1;
-			gbc_lblOpenedDocument.gridy = 0;
-			openedDocumentPanel.add(new JLabel("Opened document"), gbc_lblOpenedDocument);
 			GridBagConstraints gbc_openedDocumentComboBox = new GridBagConstraints();
+			gbc_openedDocumentComboBox.gridwidth = 2;
 			gbc_openedDocumentComboBox.weightx = 1.0;
-			gbc_openedDocumentComboBox.insets = new Insets(0, 0, 5, 3);
+			gbc_openedDocumentComboBox.insets = new Insets(0, 0, 5, 0);
 			gbc_openedDocumentComboBox.fill = GridBagConstraints.HORIZONTAL;
-			gbc_openedDocumentComboBox.gridx = 2;
-			gbc_openedDocumentComboBox.gridy = 0;
+			gbc_openedDocumentComboBox.gridx = 1;
+			gbc_openedDocumentComboBox.gridy = 1;
 			openedDocumentPanel.add(getOpenedDocumentComboBox(), gbc_openedDocumentComboBox);
+			GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
+			gbc_lblNewLabel.gridwidth = 2;
+			gbc_lblNewLabel.anchor = GridBagConstraints.WEST;
+			gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
+			gbc_lblNewLabel.gridx = 1;
+			gbc_lblNewLabel.gridy = 2;
+			openedDocumentPanel.add(new JLabel("Node/branch data column to load order values from: "), gbc_lblNewLabel);
+			GridBagConstraints gbc_sourceAdapterComboBox = new GridBagConstraints();
+			gbc_sourceAdapterComboBox.gridwidth = 2;
+			gbc_sourceAdapterComboBox.insets = new Insets(0, 0, 5, 0);
+			gbc_sourceAdapterComboBox.fill = GridBagConstraints.HORIZONTAL;
+			gbc_sourceAdapterComboBox.gridx = 1;
+			gbc_sourceAdapterComboBox.gridy = 3;
+			openedDocumentPanel.add(getSourceAdapterComboBox(), gbc_sourceAdapterComboBox);
 		}
 		return openedDocumentPanel;
 	}
@@ -214,12 +297,15 @@ public class SortLeafsDialog extends EditDialog {
 	private JPanel getLeafAdapterPanel() {
 		if (leafAdapterPanel == null) {
 			leafAdapterPanel = new JPanel();
-			leafAdapterPanel.setBorder(new TitledBorder(null, "Node/branch data column used to identify leaf nodes", 
-							TitledBorder.LEADING, TitledBorder.TOP, null, null));
+			leafAdapterPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Node/branch data column used to identify leaf nodes to be sorted", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 			GridBagLayout gbl_leafAdapterPanel = new GridBagLayout();
+			gbl_leafAdapterPanel.columnWeights = new double[]{1.0};
 			leafAdapterPanel.setLayout(gbl_leafAdapterPanel);
-			
-			adapterInput = new NodeBranchDataInput(leafAdapterPanel, 0, 0);
+			GridBagConstraints gbc_targetAdapterComboBox = new GridBagConstraints();
+			gbc_targetAdapterComboBox.fill = GridBagConstraints.HORIZONTAL;
+			gbc_targetAdapterComboBox.gridx = 0;
+			gbc_targetAdapterComboBox.gridy = 0;
+			leafAdapterPanel.add(getTargetAdapterComboBox(), gbc_targetAdapterComboBox);
 		}
 		return leafAdapterPanel;
 	}
@@ -227,7 +313,7 @@ public class SortLeafsDialog extends EditDialog {
 	
 	private JRadioButton getOpenedDocumentRadioButton() {
 		if (openedDocumentRadioButton == null) {
-			openedDocumentRadioButton = new JRadioButton("");
+			openedDocumentRadioButton = new JRadioButton("Opened document");
 			orderSourceButtonGroup.add(openedDocumentRadioButton);
 		}
 		return openedDocumentRadioButton;
@@ -236,7 +322,7 @@ public class SortLeafsDialog extends EditDialog {
 	
 	private JRadioButton getTextFileRadioButton() {
 		if (textFileRadioButton == null) {
-			textFileRadioButton = new JRadioButton("");
+			textFileRadioButton = new JRadioButton("Text file");
 			textFileRadioButton.addItemListener(new ItemListener() {
 						public void itemStateChanged(ItemEvent e) {
 							enableDisableOptionalElements();  
@@ -262,6 +348,13 @@ public class SortLeafsDialog extends EditDialog {
 	private JComboBox<Document> getOpenedDocumentComboBox() {
 		if (openedDocumentComboBox == null) {
 			openedDocumentComboBox = new JComboBox<Document>(new OpenedDocumentsComboBoxModel());
+			openedDocumentComboBox.addItemListener(new ItemListener() {
+						public void itemStateChanged(ItemEvent e) {
+							if (e.getStateChange() == ItemEvent.SELECTED) {
+								updateSourceAdapters();
+							}
+						}
+					});
 		}
 		return openedDocumentComboBox;
 	}
@@ -272,9 +365,29 @@ public class SortLeafsDialog extends EditDialog {
 	}
 	
 	
+	private JFileChooser getFileChooser() {
+		if (fileChooser == null) {
+			fileChooser = new JFileChooser();
+			fileChooser.setAcceptAllFileFilterUsed(true);
+			FileFilter textFiler = new TextFileFilter();
+			fileChooser.addChoosableFileFilter(textFiler);
+			fileChooser.setFileFilter(textFiler);
+			CurrentDirectoryModel.getInstance().addFileChooser(fileChooser);
+		}
+		return fileChooser;
+	}
+	
+	
 	private JButton getChooseTextFileButton() {
 		if (chooseTextFileButton == null) {
 			chooseTextFileButton = new JButton("...");
+			chooseTextFileButton.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							if (getFileChooser().showOpenDialog(chooseTextFileButton) == JFileChooser.APPROVE_OPTION) {
+								getTextFileField().setText(getFileChooser().getSelectedFile().getAbsolutePath());
+							}
+						}
+					});
 		}
 		return chooseTextFileButton;
 	}
@@ -283,61 +396,35 @@ public class SortLeafsDialog extends EditDialog {
 	private ImportTextElementDataParametersPanel getTextElementDataParametersPanel() {
 		if (textElementDataParametersPanel == null) {
 			textElementDataParametersPanel = new ImportTextElementDataParametersPanel();
+			textElementDataParametersPanel.setBorder(new TitledBorder(null, "Compare options", TitledBorder.LEADING, 
+							TitledBorder.TOP, null, null));
 		}
 		return textElementDataParametersPanel;
 	}
 	
 	
-	private JPanel getOrderSourcePanel() {
-		if (orderSourcePanel == null) {
-			orderSourcePanel = new JPanel();
-			orderSourcePanel.setBorder(new TitledBorder(null, "Source for new leaf order", TitledBorder.LEADING, 
-							TitledBorder.TOP, null, null));
-			orderSourcePanel.setLayout(new BoxLayout(orderSourcePanel, BoxLayout.Y_AXIS));
-			orderSourcePanel.add(getTextFilePanel());
-			orderSourcePanel.add(getOpenedDocumentPanel());
+	private JComboBox<NodeBranchDataAdapter> getSourceAdapterComboBox() {
+		if (sourceAdapterComboBox == null) {
+			sourceAdapterComboBox = new JComboBox<NodeBranchDataAdapter>(new NodeDataComboBoxModel());
 		}
-		return orderSourcePanel;
+		return sourceAdapterComboBox;
 	}
 	
 	
-	private JPanel getTextFilePanel() {
-		if (textFilePanel == null) {
-			textFilePanel = new JPanel();
-			GridBagLayout gbl_textFilePanel = new GridBagLayout();
-			gbl_textFilePanel.columnWidths = new int[]{0, 0, 0, 0, 0};
-			gbl_textFilePanel.rowHeights = new int[]{0, 0};
-			gbl_textFilePanel.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
-			gbl_textFilePanel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
-			textFilePanel.setLayout(gbl_textFilePanel);
-			GridBagConstraints gbc_textFileRadioButton = new GridBagConstraints();
-			gbc_textFileRadioButton.insets = new Insets(0, 0, 0, 5);
-			gbc_textFileRadioButton.gridx = 0;
-			gbc_textFileRadioButton.gridy = 0;
-			textFilePanel.add(getTextFileRadioButton(), gbc_textFileRadioButton);
-			GridBagConstraints gbc_lblTextFile = new GridBagConstraints();
-			gbc_lblTextFile.insets = new Insets(0, 0, 0, 5);
-			gbc_lblTextFile.gridx = 1;
-			gbc_lblTextFile.gridy = 0;
-			textFilePanel.add(new JLabel("Text file"), gbc_lblTextFile);
-			GridBagConstraints gbc_textFileField = new GridBagConstraints();
-			gbc_textFileField.fill = GridBagConstraints.HORIZONTAL;
-			gbc_textFileField.insets = new Insets(0, 0, 0, 5);
-			gbc_textFileField.gridx = 2;
-			gbc_textFileField.gridy = 0;
-			textFilePanel.add(getTextFileField(), gbc_textFileField);
-			GridBagConstraints gbc_chooseTextFileButton = new GridBagConstraints();
-			gbc_chooseTextFileButton.insets = new Insets(0, 0, 0, 5);
-			gbc_chooseTextFileButton.gridx = 3;
-			gbc_chooseTextFileButton.gridy = 0;
-			textFilePanel.add(getChooseTextFileButton(), gbc_chooseTextFileButton);
-			GridBagConstraints gbc_textElementDataParametersPanel = new GridBagConstraints();
-			gbc_textElementDataParametersPanel.gridwidth = 3;
-			gbc_textElementDataParametersPanel.fill = GridBagConstraints.HORIZONTAL;
-			gbc_textElementDataParametersPanel.gridx = 1;
-			gbc_textElementDataParametersPanel.gridy = 1;
-			textFilePanel.add(getTextElementDataParametersPanel(), gbc_textElementDataParametersPanel);
+	private NodeDataComboBoxModel getSourceAdapterModel() {
+		return (NodeDataComboBoxModel)getSourceAdapterComboBox().getModel();
+	}
+	
+	
+	private JComboBox<NodeBranchDataAdapter> getTargetAdapterComboBox() {
+		if (targetAdapterComboBox == null) {
+			targetAdapterComboBox = new JComboBox<NodeBranchDataAdapter>(new NodeDataComboBoxModel());
 		}
-		return textFilePanel;
+		return targetAdapterComboBox;
+	}
+
+	
+	private NodeDataComboBoxModel getTargetAdapterModel() {
+		return (NodeDataComboBoxModel)getTargetAdapterComboBox().getModel();
 	}
 }

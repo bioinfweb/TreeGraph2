@@ -19,11 +19,15 @@
 package info.bioinfweb.treegraph.gui.actions.edit;
 
 
+import javax.swing.Action;
+
+import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.gui.actions.EditDialogAction;
 import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
+import info.bioinfweb.treegraph.gui.dialogs.SortLeafsDialog;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 
@@ -32,19 +36,21 @@ import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 public class SortLeafsAction extends EditDialogAction {
 	public SortLeafsAction(MainFrame mainFrame) {
 	  super(mainFrame);
-	  // TODO Auto-generated constructor stub
+		putValue(Action.NAME, "Sort terminal nodes..."); 
+	  //putValue(Action.MNEMONIC_KEY, KeyEvent.VK_O);  //TODO Possibly define unique key
   }
 
 	
 	@Override
   public EditDialog createDialog() {
-	  // TODO Auto-generated method stub
-	  return null;
+	  return new SortLeafsDialog(getMainFrame());
   }
 
 	
 	@Override
   public void setEnabled(Document document, TreeSelection selection, NodeBranchDataAdapter tableAdapter) {
-		setEnabled(selection.isEmpty() || (oneElementSelected(selection) && selection.containsType(Node.class)));
+		setEnabled((selection != null) && 
+				(selection.isEmpty() || (oneElementSelected(selection) && 
+						(selection.containsType(Node.class) || selection.containsType(Branch.class)))));
   }
 }

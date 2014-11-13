@@ -104,7 +104,7 @@ public class ImportTextElementDataParametersPanel extends JPanel {
 	}
 
 	
-	private JCheckBox getIgnoreWhitespaceCheckBox() {
+	public JCheckBox getIgnoreWhitespaceCheckBox() {
 		if (ignoreWhitespaceCheckBox == null) {
 			ignoreWhitespaceCheckBox = new JCheckBox("Ignore leading and trailing white space");
 			ignoreWhitespaceCheckBox.setSelected(false);
@@ -113,7 +113,7 @@ public class ImportTextElementDataParametersPanel extends JPanel {
 	}
 	
 	
-	private JCheckBox getCaseCheckBox() {
+	public JCheckBox getCaseCheckBox() {
 		if (caseCheckBox == null) {
 			caseCheckBox = new JCheckBox("Case sensitive");
 		}
@@ -121,7 +121,7 @@ public class ImportTextElementDataParametersPanel extends JPanel {
 	}
 	
 	
-	private JCheckBox getDistinguishSpaceUnderscoreCheckBox() {
+	public JCheckBox getDistinguishSpaceUnderscoreCheckBox() {
 		if (distinguishSpaceUnderscoreCheckBox == null) {
 			distinguishSpaceUnderscoreCheckBox = new JCheckBox("Distinguish between space (\" \") and underscore (\"_\")");
 		}
@@ -129,7 +129,7 @@ public class ImportTextElementDataParametersPanel extends JPanel {
 	}
 	
 	
-	private JCheckBox getParseNumericValuesCheckBox() {
+	public JCheckBox getParseNumericValuesCheckBox() {
 		if (parseNumericValuesCheckBox == null) {
 			parseNumericValuesCheckBox = new JCheckBox("Parse numeric values if possible");
 			parseNumericValuesCheckBox.setSelected(true);

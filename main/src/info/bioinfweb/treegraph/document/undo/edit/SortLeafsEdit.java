@@ -31,13 +31,13 @@ import java.util.List;
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 
-import info.bioinfweb.commons.Math2;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.TreeSerializer;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
+import info.bioinfweb.treegraph.document.undo.ImportTextElementDataParameters;
 import info.bioinfweb.treegraph.document.undo.WarningMessageEdit;
 
 
@@ -83,6 +83,7 @@ public class SortLeafsEdit extends DocumentEdit implements WarningMessageEdit {
 	private List<Node> newOrder;
 	private List<Node> oldOrder;
 	private NodeBranchDataAdapter leafAdapter;
+	private ImportTextElementDataParameters parameters;
 	private List<TextElementData> unlinkedOrderValues = new ArrayList<TextElementData>();
 	private List<TextElementData> unlinkedTreeValues = new ArrayList<TextElementData>();
 
@@ -96,10 +97,13 @@ public class SortLeafsEdit extends DocumentEdit implements WarningMessageEdit {
 	 * @param leafAdapter - the node/branch data column used to combine the document leaf nodes with the specified 
 	 *        order elements
 	 */
-	public SortLeafsEdit(Document document, Node root, List<TextElementData> newOrder, NodeBranchDataAdapter leafAdapter) {
+	public SortLeafsEdit(Document document, Node root, List<TextElementData> newOrder, NodeBranchDataAdapter leafAdapter,
+					ImportTextElementDataParameters parameters) {
+		
 	  super(document);
 	  this.root = root;
 	  this.leafAdapter = leafAdapter;
+	  this.parameters = parameters;
 	  
 	  saveNewOrder(newOrder);
 		oldOrder = TreeSerializer.getElementsInSubtreeAsList(root, true, Node.class);
@@ -109,7 +113,7 @@ public class SortLeafsEdit extends DocumentEdit implements WarningMessageEdit {
 	private void saveNewOrder(List<TextElementData> order) {
 		newOrder = new ArrayList<Node>();
 		for (TextElementData data : order) {
-			Node node = document.getTree().getFirstNodeByData(leafAdapter, data, true);
+			Node node = document.getTree().getFirstNodeByData(leafAdapter, data, true, parameters);
 			if (node != null) {
 				newOrder.add(node);
 			}
@@ -220,36 +224,19 @@ public class SortLeafsEdit extends DocumentEdit implements WarningMessageEdit {
 	 * Reads a list of values to order the leafs of a tree from a text file where each value is contained in one line.
 	 * 
 	 * @param file - the file to be loaded
-	 * @param parseNumericValues - Specify {@code true} here if each value shall be parsed to a numeric value of possible, 
-	 *        {@code false} otherwise. 
+	 * @param parameters - the parameter object specifying how to parse the single values for comparison 
 	 * @return a list containing the loaded values in the order they were stored in the file
 	 * @throws IOException if an IO exception occurs while trying to read from the specified file
 	 */
-	public static List<TextElementData> orderFromTextFile(File file, boolean parseNumericValues) throws IOException {
+	public static List<TextElementData> orderFromTextFile(File file, ImportTextElementDataParameters parameters) 
+			throws IOException {
+		
 		List<TextElementData> result = new ArrayList<TextElementData>();
 		BufferedReader reader = new BufferedReader(new FileReader(file));
 		try {
 			String line = reader.readLine();
 			while (line != null) {
-				// Read value:
-				double decimal = Double.NaN;
-				if (parseNumericValues) {
-					try {
-						decimal = Math2.parseDouble(line);
-					}
-					catch (NumberFormatException e) {}  // Nothing to do.
-				}
-				
-				// Add value to list:
-				TextElementData data;
-				if (Double.isNaN(decimal)) {
-					 data = new TextElementData(line);
-				}
-				else {
-					data = new TextElementData(decimal);
-				}
-				result.add(data);
-				
+				result.add(parameters.createEditedValue(line));
 				line = reader.readLine();
 			}
 		}
@@ -265,13 +252,16 @@ public class SortLeafsEdit extends DocumentEdit implements WarningMessageEdit {
 	 * 
 	 * @param document - the document to read the order from
 	 * @param adapter - the node/branch data adapter to be used to obtain a value from a leaf node
+	 * @param parameters - the parameter object specifying how to parse the single values for comparison 
 	 * @return a list containing the values of the leafs nodes of the specified document from top to bottom
 	 */
-	public static List<TextElementData> orderFromDocument(Document document, NodeBranchDataAdapter adapter) {
+	public static List<TextElementData> orderFromDocument(Document document, NodeBranchDataAdapter adapter,
+			ImportTextElementDataParameters parameters) {
+		
 		List<Node> leafs = TreeSerializer.getElementsInSubtreeAsList(document.getTree().getPaintStart(), true, Node.class);
 		List<TextElementData> result = new ArrayList<TextElementData>(leafs.size());
 		for (Node node : leafs) {
-	    result.add(adapter.toTextElementData(node));
+	    result.add(parameters.createEditedValue(adapter.toTextElementData(node).toString()));
     }
 		return result;
 	}

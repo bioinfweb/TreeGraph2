@@ -21,6 +21,7 @@ package info.bioinfweb.treegraph.document;
 
 import java.io.*;
 import java.util.*;
+
 import javax.swing.JOptionPane;
 
 import info.bioinfweb.treegraph.Main;
@@ -271,4 +272,10 @@ public class Document extends SwingSaver
 			JOptionPane.showMessageDialog(null, "The error \"" + e.getMessage() + "\" occured when writing to the file \"" + file.getAbsolutePath() + "\"", "Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
+
+
+	@Override
+  public String toString() {
+	  return getDefaultNameOrPath();
+  }
 }

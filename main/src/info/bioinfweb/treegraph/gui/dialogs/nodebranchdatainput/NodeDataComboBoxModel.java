@@ -84,9 +84,8 @@ public class NodeDataComboBoxModel extends AbstractListModel<NodeBranchDataAdapt
    */
   public void setAdapters(Tree tree, boolean uniqueNamesSelectable, boolean nodeNamesSelectable, 
   		boolean branchLengthSelectable,	boolean decimalOnly, boolean newIDSelectable) {
-  	
-  	adapters.clear();
-  	fireIntervalRemoved(this, 0, 0);
+
+  	clear();
   	
   	if (uniqueNamesSelectable) {
   		adapters.add(UniqueNameAdapter.getSharedInstance());
@@ -152,6 +151,7 @@ public class NodeDataComboBoxModel extends AbstractListModel<NodeBranchDataAdapt
 	 */
 	public void addAdapter(int index, NodeBranchDataAdapter adapter) {
 	  adapters.add(index, adapter);
+	  fireIntervalAdded(this, index, index);
   }
 
 
@@ -170,7 +170,15 @@ public class NodeDataComboBoxModel extends AbstractListModel<NodeBranchDataAdapt
 	 * @see #addAdapter(int, NodeBranchDataAdapter)
 	 */
 	public boolean addAdapter(NodeBranchDataAdapter adapter) {
-	  return adapters.add(adapter);
+		boolean result = adapters.add(adapter);
+		fireIntervalAdded(this, getSize() - 1, getSize() - 1);
+		return result;
+  }
+
+
+	public void clear() {
+  	adapters.clear();
+  	fireIntervalRemoved(this, 0, 0);
   }
 
 

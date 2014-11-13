@@ -22,8 +22,10 @@ package info.bioinfweb.treegraph.document;
 import info.bioinfweb.treegraph.document.format.DistanceDimension;
 import info.bioinfweb.treegraph.document.format.GlobalFormats;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
+import info.bioinfweb.treegraph.document.undo.ImportTextElementDataParameters;
 import info.bioinfweb.treegraph.graphics.positionpaint.PositionPaintType;
 import info.bioinfweb.commons.RandomValues;
+
 import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -217,31 +219,79 @@ public class Tree {
 	}
 	
 	
-	public Node getFirstNodeByData(NodeBranchDataAdapter adapter, double value, boolean leafsOnly) {
-		return getFirstNodeByData(adapter, new TextElementData(value), leafsOnly);
-	}
-	
-	
-	public Node getFirstNodeByData(NodeBranchDataAdapter adapter, String value, boolean leafsOnly) {
-		return getFirstNodeByData(adapter, new TextElementData(value), leafsOnly);
-	}
-	
-	
-	public Node getFirstNodeByData(NodeBranchDataAdapter adapter, TextElementData data, boolean leafsOnly) {
-		return getFirstNodeInSubtreeByData(getPaintStart(), adapter, data, leafsOnly);
-	}
-	
-	
-	public static Node getFirstNodeInSubtreeByData(Node root, NodeBranchDataAdapter adapter, TextElementData data, 
-			boolean leafsOnly) {
+	/**
+	 * Searches this tree for an element that contains the same value as {@code value} in the specified node/branch data column.
+	 * 
+	 * @param adapter - the node/branch data adapter specifying the column to be compared
+	 * @param value - the sought-after value
+	 * @param leafsOnly - Specify {@code true} here if only terminal node shall be checked, {@code false} otherwise.
+	 * @param parameters - the compare parameter object (If {@code null} is specified here only direct matches are found.)
+	 * @return the node containing the sought-after value or {@code null} if no according node has been found.
+	 */
+	public Node getFirstNodeByData(NodeBranchDataAdapter adapter, double value, boolean leafsOnly, 
+			ImportTextElementDataParameters parameters) {
 		
-		if ((!leafsOnly || root.isLeaf()) && data.equals(adapter.toTextElementData(root))) {
+		return getFirstNodeByData(adapter, new TextElementData(value), leafsOnly, parameters);
+	}
+	
+	
+	/**
+	 * Searches this tree for an element that contains the same value as {@code value} in the specified node/branch data column.
+	 * 
+	 * @param adapter - the node/branch data adapter specifying the column to be compared
+	 * @param value - the sought-after value
+	 * @param leafsOnly - Specify {@code true} here if only terminal node shall be checked, {@code false} otherwise.
+	 * @param parameters - the compare parameter object (If {@code null} is specified here only direct matches are found.)
+	 * @return the node containing the sought-after value or {@code null} if no according node has been found.
+	 */
+	public Node getFirstNodeByData(NodeBranchDataAdapter adapter, String value, boolean leafsOnly,
+			ImportTextElementDataParameters parameters) {
+				
+		return getFirstNodeByData(adapter, new TextElementData(value), leafsOnly, parameters);
+	}
+	
+	
+	/**
+	 * Searches this tree for an element that contains the same value as {@code data} in the specified node/branch data column.
+	 * 
+	 * @param adapter - the node/branch data adapter specifying the column to be compared
+	 * @param data - the sought-after value
+	 * @param leafsOnly - Specify {@code true} here if only terminal node shall be checked, {@code false} otherwise.
+	 * @param parameters - the compare parameter object (If {@code null} is specified here only direct matches are found.)
+	 * @return the node containing the sought-after value or {@code null} if no according node has been found.
+	 */
+	public Node getFirstNodeByData(NodeBranchDataAdapter adapter, TextElementData data, boolean leafsOnly,
+			ImportTextElementDataParameters parameters) {
+			
+		return getFirstNodeInSubtreeByData(getPaintStart(), adapter, data, leafsOnly, parameters);
+	}
+	
+	
+	/**
+	 * Searches an element that contains the same value as {@code data} in the specified node/branch data column
+	 * in the subtree under {@code root}.
+	 * 
+	 * @param root - the root of the subtree to be searched
+	 * @param adapter - the node/branch data adapter specifying the column to be compared
+	 * @param data - the sought-after value
+	 * @param leafsOnly - Specify {@code true} here if only terminal node shall be checked, {@code false} otherwise.
+	 * @param parameters - the compare parameter object (If {@code null} is specified here only direct matches are found.)
+	 * @return the node containing the sought-after value or {@code null} if no according node has been found.
+	 */
+	public static Node getFirstNodeInSubtreeByData(Node root, NodeBranchDataAdapter adapter, TextElementData data, 
+			boolean leafsOnly, ImportTextElementDataParameters parameters) {
+		
+		TextElementData rootData = adapter.toTextElementData(root);
+		if ((!leafsOnly || root.isLeaf()) && (data.equals(rootData) ||  // First tries to compare without creating new objects
+				((parameters != null) && 
+						parameters.createEditedValue(data.toString()).equals(parameters.createEditedValue(rootData.toString()))))) {
+			
 			return root;
 		}
 		else {
 			Iterator<Node> iterator = root.getChildren().iterator();
 			while (iterator.hasNext()) {
-				Node result = getFirstNodeInSubtreeByData(iterator.next(), adapter, data, leafsOnly);
+				Node result = getFirstNodeInSubtreeByData(iterator.next(), adapter, data, leafsOnly, parameters);
 				if (result != null) {
 					return result;
 				}
@@ -252,13 +302,12 @@ public class Tree {
 	
 	
 	/**
-	 * Returns the linked node to the given element. The result differs by the type of
-	 * <code>PaintableElement</code> as follows:
+	 * Returns the linked node to the given element. The result differs by the type of {@link PaintableElement} as follows:
 	 * <ul>
-	 *   <li><code>Node</code>: The node itself</li>
-	 *   <li><code>Branch</code>: The target node of this branch</li>
-	 *   <li><code>Label</code>: The target node of the holding branch</li>
-	 *   <li><code>Legend</code>: <code>null</code></li>
+	 *   <li>{@link Node}: The node itself</li>
+	 *   <li>{@link Branch}: The target node of this branch</li>
+	 *   <li>{@link Label}: The target node of the holding branch</li>
+	 *   <li>{@link Legend}: {@code null}</li>
 	 * </ul>
 	 * 
 	 * @param element - the element which linked node shall be returned

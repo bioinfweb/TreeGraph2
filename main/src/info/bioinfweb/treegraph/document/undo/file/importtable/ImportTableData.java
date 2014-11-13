@@ -26,6 +26,7 @@ import java.util.TreeMap;
 
 import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.io.newick.NewickStringChars;
+import info.bioinfweb.treegraph.document.undo.ImportTextElementDataParameters;
 import info.bioinfweb.commons.Math2;
 import info.bioinfweb.commons.io.TableReader;
 
@@ -75,44 +76,11 @@ public class ImportTableData {
   }
 	
 	
-	/**
-	 * Creates a {@link TextElementData} object from the specified string according the specifications
-	 * in {@code parameters}.
-	 */
-	public static TextElementData createEditedValue(String text, ImportTableParameters parameters) {
-		if (text.equals("")) {
-			return new TextElementData();  // return empty instance because the if the the TextElementData instance used to call this method was also empty
-		}
-		else {
-			TextElementData result = new TextElementData(text);
-			if (parameters.isParseNumericValues()) {  
-				try {
-					result.setDecimal(Math2.parseDouble(result.getText()));
-				}
-				catch (NumberFormatException e) {}  // nothing to do
-			}
-	
-			if (result.isString()) {  // Not the case if the parsing above was successful.
-				if (parameters.isIgnoreWhitespace()) {
-					result.setText(result.getText().trim());
-				}
-				if (!parameters.isCaseSensitive()) {
-					result.setText(result.getText().toLowerCase());
-				}
-				if (!parameters.isDistinguishSpaceUnderscore()) {
-					result.setText(result.getText().replaceAll(Character.toString(NewickStringChars.FREE_NAME_BLANK), " "));
-				}
-			}
-			return result;
-		}
-	}
-	
-	
 	private void processKeyColumn(ImportTableParameters parameters) throws DuplicateKeyException {
 		keyToLineMap.clear();
 		DuplicateKeyException exception = null;
 		for (int row = 0; row < rowCount(); row++) {
-			TextElementData key = createEditedValue(data[0][row + rowOffset], parameters);
+			TextElementData key = parameters.createEditedValue(data[0][row + rowOffset]);
 			if (keyToLineMap.containsKey(key)) {  // Duplicate key value
 				if (exception == null) {
 					exception = new DuplicateKeyException();
