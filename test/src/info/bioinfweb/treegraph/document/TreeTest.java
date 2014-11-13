@@ -23,13 +23,13 @@ import info.bioinfweb.treegraph.document.io.xtg.XTGReader;
 import info.bioinfweb.treegraph.document.nodebranchdata.BranchLengthAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;
+import info.bioinfweb.treegraph.document.undo.ImportTextElementDataParameters;
 import info.bioinfweb.commons.SystemUtils;
 
 import java.io.File;
 import java.text.DecimalFormat;
 
 import org.junit.* ;
-
 
 import static org.junit.Assert.* ;
 
@@ -53,17 +53,22 @@ public class TreeTest {
   	Document document = createDocument();
   	Tree tree = document.getTree();
   	
-  	assertEquals("c81wbd5x0g", tree.getFirstNodeByData(NodeNameAdapter.getSharedInstance(), "A", false).getUniqueName());
-  	assertEquals("thfuyevs93", tree.getFirstNodeByData(NodeNameAdapter.getSharedInstance(), 2.43, false).getUniqueName());
+  	assertEquals("c81wbd5x0g", tree.getFirstNodeByData(NodeNameAdapter.getSharedInstance(), "A", false, null).getUniqueName());
+  	assertEquals("thfuyevs93", tree.getFirstNodeByData(NodeNameAdapter.getSharedInstance(), 2.43, false, null).getUniqueName());
   	
   	TextLabelAdapter labelAdapter = new TextLabelAdapter("Label", new DecimalFormat());
-  	assertEquals("thfuyevs93", tree.getFirstNodeByData(labelAdapter, "Text", false).getUniqueName());
-  	assertEquals("wxon0b0cj4", tree.getFirstNodeByData(labelAdapter, 24.5, false).getUniqueName());
+  	assertEquals("thfuyevs93", tree.getFirstNodeByData(labelAdapter, "Text", false, null).getUniqueName());
+  	assertEquals("wxon0b0cj4", tree.getFirstNodeByData(labelAdapter, 24.5, false, null).getUniqueName());
+  	assertNull(tree.getFirstNodeByData(labelAdapter, "24.5", false, null));
 
-  	assertNull(tree.getFirstNodeByData(NodeNameAdapter.getSharedInstance(), "NotInTree", false));
-  	assertNull(tree.getFirstNodeByData(NodeNameAdapter.getSharedInstance(), "", false));
+  	ImportTextElementDataParameters parameters = new ImportTextElementDataParameters();
+  	assertEquals("thfuyevs93", tree.getFirstNodeByData(labelAdapter, "Text", false, parameters).getUniqueName());
+  	assertEquals("wxon0b0cj4", tree.getFirstNodeByData(labelAdapter, "24.5", false, parameters).getUniqueName());
+
+  	assertNull(tree.getFirstNodeByData(NodeNameAdapter.getSharedInstance(), "NotInTree", false, null));
+  	assertNull(tree.getFirstNodeByData(NodeNameAdapter.getSharedInstance(), "", false, null));
   	
-  	assertNull(tree.getFirstNodeByData(BranchLengthAdapter.getSharedInstance(), 18.0, false));
-  	assertNull(tree.getFirstNodeByData(BranchLengthAdapter.getSharedInstance(), 0.0, false));
+  	assertNull(tree.getFirstNodeByData(BranchLengthAdapter.getSharedInstance(), 18.0, false, null));
+  	assertNull(tree.getFirstNodeByData(BranchLengthAdapter.getSharedInstance(), 0.0, false, null));
   }
 }

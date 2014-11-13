@@ -27,6 +27,7 @@ import info.bioinfweb.treegraph.document.TreeSerializer;
 import info.bioinfweb.treegraph.document.io.xtg.XTGReader;
 import info.bioinfweb.treegraph.document.io.xtg.XTGWriter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
+import info.bioinfweb.treegraph.document.undo.ImportTextElementDataParameters;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -38,10 +39,17 @@ import static org.junit.Assert.* ;
 
 
 
+/**
+ * Tests {@link SortLeafsEdit}.
+ * 
+ * @author Ben St&ouml;ver
+ * @since 2.2.0
+ */
 public class SortLeafsEditTest {
 	private Document createDocument() {
 		try {
-			return new XTGReader().read(new File("data" + SystemUtils.FILE_SEPARATOR + "SortLeafs.xtg"));
+			return new XTGReader().read(new File("data" + SystemUtils.FILE_SEPARATOR + "sortLeafs" + SystemUtils.FILE_SEPARATOR + 
+					"SortLeafs.xtg"));
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -58,7 +66,8 @@ public class SortLeafsEditTest {
 	 */
 	private void writeTree(Document document) {
   	try {
-  		new XTGWriter().write(document, new File("data" + SystemUtils.FILE_SEPARATOR + "SortLeafsOut.xtg"));
+  		new XTGWriter().write(document, new File("data" + SystemUtils.FILE_SEPARATOR + "sortLeafs" + 
+  				SystemUtils.FILE_SEPARATOR + "SortLeafsOut.xtg"));
   	}
   	catch (Exception e) {
   		e.printStackTrace();
@@ -85,7 +94,7 @@ public class SortLeafsEditTest {
   	
   	Document document = createDocument();
   	SortLeafsEdit edit = new SortLeafsEdit(document, document.getTree().getPaintStart(), order, 
-  			NodeNameAdapter.getSharedInstance());
+  			NodeNameAdapter.getSharedInstance(), new ImportTextElementDataParameters());
   	document.executeEdit(edit);
   	
   	List<Node> leafs = TreeSerializer.getElementsInSubtreeAsList(document.getTree().getPaintStart(), true, Node.class);
@@ -114,7 +123,7 @@ public class SortLeafsEditTest {
   	
   	Document document = createDocument();
   	SortLeafsEdit edit = new SortLeafsEdit(document, document.getTree().getPaintStart(), order, 
-  			NodeNameAdapter.getSharedInstance());
+  			NodeNameAdapter.getSharedInstance(), new ImportTextElementDataParameters());
   	document.executeEdit(edit);
   	
   	List<Node> leafs = TreeSerializer.getElementsInSubtreeAsList(document.getTree().getPaintStart(), true, Node.class);
@@ -145,7 +154,7 @@ public class SortLeafsEditTest {
   	
   	Document document = createDocument();
   	SortLeafsEdit edit = new SortLeafsEdit(document, document.getTree().getPaintStart(), order, 
-  			NodeNameAdapter.getSharedInstance());
+  			NodeNameAdapter.getSharedInstance(), new ImportTextElementDataParameters());
   	document.executeEdit(edit);
   	
   	List<Node> leafs = TreeSerializer.getElementsInSubtreeAsList(document.getTree().getPaintStart(), true, Node.class);

@@ -739,7 +739,6 @@ test/.classpath -text svneol=unset#text/plain
 test/.project -text svneol=unset#text/plain
 test/.settings/org.eclipse.jdt.core.prefs -text svneol=unset#text/plain
 test/data/RerootByLeafs.xtg -text
-test/data/SortLeafs.xtg -text
 test/data/getFirstNodeByData.xtg -text
 test/data/importTable/TableNodeNames.txt -text svneol=unset#text/plain
 test/data/importTable/TableNodeNames_numbersAsDec.txt -text svneol=unset#text/plain
@@ -758,6 +757,11 @@ test/data/importTable/Tree.xtg -text
 test/data/importTable/Tree_numbersAsText.xtg -text
 test/data/importTable/Tree_numbersAsText_german.xtg -text
 test/data/importTable/Tree_options.xtg -text
+test/data/sortLeafs/ConflictingOrderingChanged.txt -text svneol=unset#text/plain
+test/data/sortLeafs/ConflictingOrderingUnchanged.txt -text svneol=unset#text/plain
+test/data/sortLeafs/DistinctOrdering.txt -text svneol=unset#text/plain
+test/data/sortLeafs/DistinctOrderingAdditionalElement.txt -text svneol=unset#text/plain
+test/data/sortLeafs/SortLeafs.xtg -text
 test/lib/junit-4.9b1.jar -text
 test/src/info/bioinfweb/treegraph/document/IDManagerTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/LabelLineTest.java -text svneol=unset#text/plain
