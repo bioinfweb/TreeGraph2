@@ -23,16 +23,13 @@ import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextElementData;
-import info.bioinfweb.treegraph.document.nodebranchdata.HiddenDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;
 import info.bioinfweb.treegraph.document.undo.ImportTextElementDataParameters;
 import info.bioinfweb.treegraph.document.undo.edit.SortLeafsEdit;
 import info.bioinfweb.treegraph.gui.CurrentDirectoryModel;
 import info.bioinfweb.treegraph.gui.actions.edit.SortLeafsAction;
 import info.bioinfweb.treegraph.gui.dialogs.io.TextFileFilter;
-import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataInput;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeDataComboBoxModel;
 
 import java.awt.Dimension;
@@ -166,18 +163,8 @@ public class SortLeafsDialog extends EditDialog {
 		}
 		
 		if (newOrder != null) {
-			Node root = getSelection().getFirstElementOfType(Node.class);
-			if (root == null) {
-				Branch branch = getSelection().getFirstElementOfType(Branch.class);
-				if (branch != null) {
-					root = branch.getTargetNode();
-				}
-				else {
-					root = getDocument().getTree().getPaintStart();
-				}
-			}
-			
-			SortLeafsEdit edit = new SortLeafsEdit(getDocument(), root,	newOrder, getTargetAdapterModel().getSelectedItem(), parameters);
+			SortLeafsEdit edit = new SortLeafsEdit(getDocument(), getSelection().getFirstNodeBranchOrRoot(), newOrder, 
+					getTargetAdapterModel().getSelectedItem(), parameters);
 			getDocument().executeEdit(edit);
 			
 			if (edit.hasWarnings()) {
@@ -210,7 +197,7 @@ public class SortLeafsDialog extends EditDialog {
 	private void initialize() {
 		setHelpCode(73);  //TODO Link this ID to concrete Wiki page (ID is already registered)
 		setMinimumSize(new Dimension(400, 150));
-		setTitle("Sort leaf nodes");
+		setTitle("Sort terminal nodes");
 		setContentPane(getJContentPane());
 		pack();
 	}

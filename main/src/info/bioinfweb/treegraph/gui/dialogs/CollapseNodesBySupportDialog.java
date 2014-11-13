@@ -22,11 +22,11 @@ package info.bioinfweb.treegraph.gui.dialogs;
 import info.bioinfweb.commons.Math2;
 import info.bioinfweb.commons.text.StringUtils;
 import info.bioinfweb.treegraph.Main;
+import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.nodebranchdata.HiddenDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;
 import info.bioinfweb.treegraph.document.undo.edit.CollapseNodesBySupportEdit;
-import info.bioinfweb.treegraph.document.undo.format.ScaleBranchLengthsEdit;
 import info.bioinfweb.treegraph.gui.actions.edit.CollapseNodesBySupportAction;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataInput;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
@@ -34,20 +34,15 @@ import info.webinsel.wikihelp.client.WikiHelpOptionPane;
 
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 
 import javax.swing.BoxLayout;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
-import java.awt.GridBagLayout;
-
 import javax.swing.JLabel;
-
-import java.awt.GridBagConstraints;
-
 import javax.swing.JFormattedTextField;
-
-import java.awt.Insets;
 
 
 
@@ -174,8 +169,8 @@ public class CollapseNodesBySupportDialog extends EditDialog {
   protected boolean apply() {
 		double threshold = getThreshold();
 		if (!Double.isNaN(threshold)) {
-			CollapseNodesBySupportEdit edit = new CollapseNodesBySupportEdit(getDocument(), 
-							getSelection().getFirstElementOfType(Node.class), adapterInput.getSelectedAdapter(), threshold); 
+			CollapseNodesBySupportEdit edit = new CollapseNodesBySupportEdit(getDocument(),	
+					getSelection().getFirstNodeBranchOrRoot(), adapterInput.getSelectedAdapter(), threshold); 
 			getDocument().executeEdit(edit);
 			
 			if (edit.hasWarnings()) {

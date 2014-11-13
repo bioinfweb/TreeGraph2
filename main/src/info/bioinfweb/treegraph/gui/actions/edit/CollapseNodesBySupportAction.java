@@ -21,6 +21,7 @@ package info.bioinfweb.treegraph.gui.actions.edit;
 
 import javax.swing.Action;
 
+import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
@@ -55,12 +56,8 @@ public class CollapseNodesBySupportAction extends EditDialogAction {
 
 	@Override
 	public void setEnabled(Document document, TreeSelection selection, NodeBranchDataAdapter tableAdapter) {
-		boolean oneNodeSelected = oneElementSelected(selection) && (selection.containsType(Node.class));
-		Node node = null;
-		if (oneNodeSelected) {
-			node = (Node)selection.first();
-		}
-		setEnabled(oneNodeSelected && (node.hasParent() || (node.getChildren().size() == 1)) 
-				&& !node.isLeaf());
+		setEnabled((selection != null) && 
+						(selection.isEmpty() || (oneElementSelected(selection) && 
+								(selection.containsType(Node.class) || selection.containsType(Branch.class)))));
 	}
 }

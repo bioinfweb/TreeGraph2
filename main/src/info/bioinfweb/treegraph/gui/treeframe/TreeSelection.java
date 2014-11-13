@@ -19,6 +19,7 @@
 package info.bioinfweb.treegraph.gui.treeframe;
 
 
+import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.PaintableElement;
 import info.bioinfweb.treegraph.document.Label;
 import info.bioinfweb.treegraph.document.Node;
@@ -289,6 +290,21 @@ public class TreeSelection implements Collection<PaintableElement> {
 			}
 		}
   	return null;
+	}
+	
+	
+	public Node getFirstNodeBranchOrRoot() {
+		Node root = getFirstElementOfType(Node.class);
+		if (root == null) {
+			Branch branch = getFirstElementOfType(Branch.class);
+			if (branch != null) {
+				root = branch.getTargetNode();
+			}
+			else {
+				root = owner.getDocument().getTree().getPaintStart();
+			}
+		}
+		return root;
 	}
 	
 	
