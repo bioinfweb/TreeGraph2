@@ -43,7 +43,7 @@ import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 public class CollapseNodesBySupportAction extends EditDialogAction {
 	public CollapseNodesBySupportAction (MainFrame mainFrame) {
 		super(mainFrame);
-		putValue(Action.NAME, "Collapse nodes in subtree by support value..."); 
+		putValue(Action.NAME, "Collapse nodes by support..."); 
 	  //putValue(Action.MNEMONIC_KEY, KeyEvent.VK_O);  //TODO Possibly define unique key
 	}
 
@@ -56,7 +56,7 @@ public class CollapseNodesBySupportAction extends EditDialogAction {
 
 	@Override
 	public void setEnabled(Document document, TreeSelection selection, NodeBranchDataAdapter tableAdapter) {
-		setEnabled((selection != null) && 
+		setEnabled((document != null) && !document.getTree().isEmpty() && (selection != null) && 
 						(selection.isEmpty() || (oneElementSelected(selection) && 
 								(selection.containsType(Node.class) || selection.containsType(Branch.class)))));
 	}

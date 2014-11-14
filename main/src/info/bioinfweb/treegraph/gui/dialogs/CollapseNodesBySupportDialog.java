@@ -158,10 +158,19 @@ public class CollapseNodesBySupportDialog extends EditDialog {
 	@Override
   protected boolean onExecute() {
 		adapterInput.setAdapters(getDocument().getTree(), false, true, true, true, false);
-		if (!adapterInput.setSelectedAdapter(TextLabelAdapter.class)) {
-			adapterInput.setSelectedAdapter(HiddenDataAdapter.class);
+		if (adapterInput.getModel().getSize() > 0) {
+			if (!adapterInput.setSelectedAdapter(TextLabelAdapter.class)) {
+				adapterInput.setSelectedAdapter(HiddenDataAdapter.class);
+			}
+		  return true;
 		}
-	  return true;
+		else {
+			JOptionPane.showMessageDialog(getOwner(), 
+					"There are no node/branch data columns containing numerical values (e.g. text labels, hidden branch data, ...)\n" +
+					"in this tree. Therefore this feature is currently not available.", "Option not available", 
+					JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
   }
 
 	

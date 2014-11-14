@@ -115,7 +115,7 @@ public class SortLeafsDialog extends EditDialog {
 		setLocationRelativeTo(getOwner());
 
 		// Refresh opened documents:
-		getOpenedDocumentsComboBoxModel().refreshDocuments();
+		getOpenedDocumentsComboBoxModel().refreshDocuments(false);
 		getOpenedDocumentsComboBoxModel().removeElement(getDocument());
 
 		// Disable opened document option if no other documents are opened:

@@ -47,11 +47,14 @@ public class OpenedDocumentsComboBoxModel extends DefaultComboBoxModel<Document>
 	/**
 	 * Refreshes the contents of this model to contain all currently opened documents.
 	 */
-	public void refreshDocuments() {
+	public void refreshDocuments(boolean allowEmptyDocuments) {
 		removeAllElements();
 		Iterator<TreeInternalFrame> iterator = MainFrame.getInstance().treeFrameIterator();
 		while (iterator.hasNext()) {
-			addElement(iterator.next().getDocument());
+			Document document = iterator.next().getDocument();
+			if (allowEmptyDocuments || !document.getTree().isEmpty()) {
+				addElement(document);
+			}
 		}
 	}
 
