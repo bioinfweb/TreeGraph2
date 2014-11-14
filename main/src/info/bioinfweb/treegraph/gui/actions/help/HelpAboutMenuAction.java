@@ -32,7 +32,7 @@ import javax.swing.Action;
  */
 public class HelpAboutMenuAction extends HelpTopicAction {
 	public HelpAboutMenuAction() {
-		super(64);
+		super(74);
 		putValue(Action.NAME, "Help about this main menu"); 
 	  putValue(Action.MNEMONIC_KEY, KeyEvent.VK_H);
 		putValue(Action.SHORT_DESCRIPTION, "Help about this main menu"); 

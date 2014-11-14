@@ -20,13 +20,17 @@ package info.bioinfweb.treegraph.gui.actions.help;
 
 
 import java.awt.Toolkit;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.Action;
 import javax.swing.KeyStroke;
 
 
 
+/**
+ * Displays the main page of the TreeGraph 2 help.
+ * 
+ * @author Ben St&ouml;ver
+ */
 public class HelpMainPageAction extends HelpTopicAction {
 	public HelpMainPageAction() {
 		super(1);
