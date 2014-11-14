@@ -167,7 +167,7 @@ public class CollapseNodesBySupportDialog extends EditDialog {
 		else {
 			JOptionPane.showMessageDialog(getOwner(), 
 					"There are no node/branch data columns containing numerical values (e.g. text labels, hidden branch data, ...)\n" +
-					"in this tree. Therefore this feature is currently not available.", "Option not available", 
+					"in this tree. Therefore this feature is currently not available.", "Feature currently not available", 
 					JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
