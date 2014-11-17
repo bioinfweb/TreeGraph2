@@ -104,13 +104,13 @@ public class CommentDataReader {
 							String[] values = parts[1].substring(1, parts[1].length() - 1).split(
 									"" + VALUE_SEPARATOR_SYMBOL);
 							for (int j = 0; j < values.length; j++) {
-								node.getHiddenDataMap().put(parts[0] + INDEX_START_SYMBOL + j + INDEX_END_SYMBOL,
+								node.getAfferentBranch().getHiddenDataMap().put(parts[0] + INDEX_START_SYMBOL + j + INDEX_END_SYMBOL,
 										readTextElementData(values[j].trim()));
 							}
 						}
 					}
 					else {
-						node.getHiddenDataMap().put(parts[0],	readTextElementData(parts[1]));
+						node.getAfferentBranch().getHiddenDataMap().put(parts[0],	readTextElementData(parts[1]));
 					}
 				}
 				

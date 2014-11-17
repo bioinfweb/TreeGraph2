@@ -121,7 +121,7 @@ public class CollapseNodesBySupportEdit extends ComposedDocumentEdit implements 
 					"node/branch data column. (Make sure that all relevant values are marked as decimal values and not as strings.)\n";
 		}
 		if (getNodeBranchDataMissing()) {
-			msg += "- One or more node(sin the affected subtree did not carry any value in the specified node/branch data column.\n";
+			msg += "- One or more node(s) in the affected subtree did not carry any value in the specified node/branch data column.\n";
 		}
 		if (getLegendsReanchored()) {
 			msg += "- One or more legend(s) that were anchored inside the affected subtree were reanchored.\n";
