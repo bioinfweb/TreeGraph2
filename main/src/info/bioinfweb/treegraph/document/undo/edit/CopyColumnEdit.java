@@ -31,6 +31,7 @@ import info.bioinfweb.treegraph.document.undo.NodeBranchDataEdit;
 /**
  * Copies a node/branch data column. The inherited field <code>adapter</code> is used as the source 
  * adapter here.
+ * 
  * @author Ben St&ouml;ver
  * @since 2.0.24
  */

@@ -28,7 +28,8 @@ import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 
 /**
  * Can be used as a superclass for edits which change a node/branch data column. Implements 
- * restoring the previous values of that column. 
+ * restoring the previous values of that column.
+ * 
  * @author Ben St&ouml;ver
  * @since 2.0.24
  */

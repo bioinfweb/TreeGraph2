@@ -57,7 +57,7 @@ import java.awt.event.MouseWheelEvent;
 public class TreeInternalFrame extends JInternalFrame {
 	public static final double TREE_WIDTH_RATIO = 0.5;
 	public static final int DATA_COLUMN_WIDTH = 135;  //  @jve:decl-index=0:
-	public static final int DECIMAL_COLUMN_WIDTH = 25;  //  @jve:decl-index=0:
+	public static final int DECIMAL_COLUMN_WIDTH = 35;  //  @jve:decl-index=0:
 	
 	
 	private Document document = null;
