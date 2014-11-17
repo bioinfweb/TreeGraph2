@@ -25,11 +25,10 @@ import java.text.DecimalFormat;
 
 /**
  * Creates a new group of labels.
+ * 
  * @author Ben St&ouml;ver
  */
-public class NewTextLabelAdapter extends TextLabelAdapter
-    implements NewNodeBranchDataAdapter {
-	
+public class NewTextLabelAdapter extends TextLabelAdapter implements NewNodeBranchDataAdapter {
 	public NewTextLabelAdapter() {
 		super("", new DecimalFormat());
 	}
