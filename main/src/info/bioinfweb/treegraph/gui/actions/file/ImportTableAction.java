@@ -140,8 +140,8 @@ public class ImportTableAction extends DocumentAction {
 				}
 			}
 			catch (FileNotFoundException ex) {
-				JOptionPane.showMessageDialog(MainFrame.getInstance(), "The path \"" + parameters.getTableFile().getAbsolutePath() + 
-						"\" is invalid.", "Error", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(MainFrame.getInstance(), "The file \"" + parameters.getTableFile().getAbsolutePath() + 
+						"\" was not found.", "Error", JOptionPane.ERROR_MESSAGE);
 			}
 			catch (SecurityException ex) {
 				JOptionPane.showMessageDialog(MainFrame.getInstance(), "The permission for writing to the file \"" + 

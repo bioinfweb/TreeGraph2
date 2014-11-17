@@ -32,6 +32,5 @@ import java.awt.Color;
 public interface ColorAdapter {
   public void setColor(Color color, Node node);
   
-  
   public Color getColor(Node node);
 }
