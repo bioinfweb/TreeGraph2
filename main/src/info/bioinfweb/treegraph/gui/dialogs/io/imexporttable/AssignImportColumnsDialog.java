@@ -34,7 +34,7 @@ import javax.swing.JPanel;
 import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.treegraph.document.IDManager;
 import info.bioinfweb.treegraph.document.Tree;
-import info.bioinfweb.treegraph.document.nodebranchdata.NewHiddenNodeDataAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.NewHiddenBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NewNodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.VoidNodeBranchDataAdapter;
@@ -126,7 +126,7 @@ public class AssignImportColumnsDialog extends OkCancelApplyWikiHelpDialog {
 			NewNodeBranchDataInput input = new NewNodeBranchDataInput(getImportPanel(), 1, i + USED_ROWS - 1, true);
 			input.setAdapters(tree, false, true, true, false, true);
 			input.getModel().addAdapter(0, noImportAdapter);
-			input.setSelectedAdapter(NewHiddenNodeDataAdapter.class);
+			input.setSelectedAdapter(NewHiddenBranchDataAdapter.class);
 			if (data.containsHeadings()) {
 				input.setID(data.getHeading(i - 1));
 			}
