@@ -25,19 +25,14 @@ import info.bioinfweb.commons.log.ApplicationLogger;
 import info.bioinfweb.commons.log.ApplicationLoggerMessage;
 import info.bioinfweb.commons.log.JTextAreaApplicationLogger;
 
-import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.FlowLayout;
 
 import javax.swing.JDialog;
 import javax.swing.JPanel;
-import javax.swing.BoxLayout;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
-import javax.swing.event.HyperlinkListener;
-import javax.swing.event.HyperlinkEvent.EventType;
 import javax.swing.JTextArea;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -55,21 +50,6 @@ import java.awt.Insets;
 public class LoadLoggerDialog extends JDialog implements ApplicationLogger {
 	private static final long serialVersionUID = 1L;
 	
-	public final HyperlinkListener HYPERLINK_LISTENER = 		
-		  new javax.swing.event.HyperlinkListener() {
-					public void hyperlinkUpdate(javax.swing.event.HyperlinkEvent e) {
-						if (e.getEventType().equals(EventType.ACTIVATED)) {
-							try {
-								Desktop.getDesktop().browse(e.getURL().toURI());
-							}
-							catch (Exception ex) {
-								JOptionPane.showMessageDialog(getOwner(), 
-										"An error occurred when trying open the selected link.", 
-										"Navigation failed,", JOptionPane.ERROR_MESSAGE);
-							}
-						}
-					}
-				};		
 	private static LoadLoggerDialog firstInstance = null;
 	
 	
