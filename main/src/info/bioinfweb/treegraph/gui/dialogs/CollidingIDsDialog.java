@@ -8,10 +8,15 @@ import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.webinsel.wikihelp.client.OkCancelApplyWikiHelpDialog;
 
 import javax.swing.JPanel;
+
 import java.awt.Frame;
+
 import javax.swing.BoxLayout;
+
 import java.awt.GridBagLayout;
+
 import javax.swing.JLabel;
+
 import java.awt.GridBagConstraints;
 
 import javax.swing.ButtonGroup;
@@ -21,6 +26,7 @@ import javax.swing.JRadioButton;
 
 import org.apache.batik.ext.swing.JAffineTransformChooser.Dialog;
 
+import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.Insets;
 
@@ -77,9 +83,9 @@ public class CollidingIDsDialog extends OkCancelApplyWikiHelpDialog {
 	 * @return void
 	 */
 	private void initialize() {
-		this.setTitle("Conflicting IDs");
-		this.setBounds(new Rectangle(0, 0, 400, 250));
-		this.setContentPane(getJContentPane());
+		setTitle("Conflicting IDs");
+		setContentPane(getJContentPane());
+		setSize(450, 280);
 		getRadioGroup();
 		getCancelButton().setVisible(false);
 		getApplyButton().setVisible(false);
@@ -126,9 +132,9 @@ public class CollidingIDsDialog extends OkCancelApplyWikiHelpDialog {
 	public String checkConflicts(Branch[] selection, String id){
 		if (IDManager.idConflict(id, selection)){
 			CollidingIDsDialog dialog = CollidingIDsDialog.getInstance();
-			if (!dialog.promt(id,selection)){
+			if (!dialog.promt(id, selection)){
 				for (int i = 0; i < selection.length; i++) {
-					if (IDManager.idExistsOnNode(selection[i].getTargetNode(),id)){
+					if (IDManager.idExistsOnNode(selection[i].getTargetNode(), id)){
 						IDManager.renameID(id, dialog.getPresentLabelID(), selection[i].getTargetNode());
 					}
 				}
@@ -139,11 +145,12 @@ public class CollidingIDsDialog extends OkCancelApplyWikiHelpDialog {
 	}
 	
 	
-	public boolean promt(String id, Branch[] selection){
+	public boolean promt(String id, Branch[] selection) {
 		this.selection = selection;
 		this.initialNewID = id;
 		getNewIDTextField().setText(id);
-		getPresentIDTextField().setText(id); 
+		getPresentIDTextField().setText(id);
+		setLocationRelativeTo(getOwner());
 		execute();
 		return overwriteRadioButton.isSelected();
 	}
@@ -211,18 +218,21 @@ public class CollidingIDsDialog extends OkCancelApplyWikiHelpDialog {
 			overwriteLabel = new JLabel();
 			overwriteLabel.setText("<html><body>Overwrite</html></body>");
 			GridBagConstraints gridBagConstraints15 = new GridBagConstraints();
+			gridBagConstraints15.insets = new Insets(0, 3, 0, 0);
 			gridBagConstraints15.gridx = 0;
 			gridBagConstraints15.gridy = 2;
 			GridBagConstraints gridBagConstraints14 = new GridBagConstraints();
 			gridBagConstraints14.gridx = 0;
-			gridBagConstraints14.insets = new Insets(0, 0, 6, 0);
+			gridBagConstraints14.insets = new Insets(0, 3, 6, 0);
 			gridBagConstraints14.gridy = 1;
 			GridBagConstraints gridBagConstraints13 = new GridBagConstraints();
+			gridBagConstraints13.insets = new Insets(0, 0, 0, 3);
 			gridBagConstraints13.fill = GridBagConstraints.BOTH;
 			gridBagConstraints13.gridy = 4;
 			gridBagConstraints13.weightx = 1.0;
 			gridBagConstraints13.gridx = 2;
 			GridBagConstraints gridBagConstraints9 = new GridBagConstraints();
+			gridBagConstraints9.insets = new Insets(0, 0, 0, 3);
 			gridBagConstraints9.fill = GridBagConstraints.BOTH;
 			gridBagConstraints9.gridy = 3;
 			gridBagConstraints9.weightx = 1.0;
@@ -242,13 +252,14 @@ public class CollidingIDsDialog extends OkCancelApplyWikiHelpDialog {
 			changeID2Label.setText("New ID for old Label: ");
 			changeID2Label.setEnabled(true);
 			GridBagConstraints gridBagConstraints = new GridBagConstraints();
+			gridBagConstraints.anchor = GridBagConstraints.NORTH;
 			gridBagConstraints.gridx = 0;
 			gridBagConstraints.weightx = 1.0;
 			gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
 			gridBagConstraints.gridwidth = 0;
 			gridBagConstraints.ipady = 0;
 			gridBagConstraints.weighty = 0.0;
-			gridBagConstraints.insets = new Insets(0, 0, 16, 0);
+			gridBagConstraints.insets = new Insets(3, 3, 16, 3);
 			gridBagConstraints.gridy = 0;
 			messageLabel = new JLabel();
 			messageLabel.setText("<html><body>An element (label, hidden node/brnach data) with the IDs you selected already exists on this branch. Select \"Overwrite\" if you want to delete the element currently present or select \"Change IDs\" to renome one or both of the conflicting IDs.</body></html>");

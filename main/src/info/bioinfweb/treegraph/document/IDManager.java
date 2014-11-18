@@ -513,7 +513,7 @@ public class IDManager {
    * @return <code>true</code>, if any element was found
    */
   public static boolean idExistsOnNode(Node node, String id) {
-  	return getIDVectorFromSubtree(node).contains(id);
+  	return getIDVectorFromNode(node).contains(id);
   }
 
 
