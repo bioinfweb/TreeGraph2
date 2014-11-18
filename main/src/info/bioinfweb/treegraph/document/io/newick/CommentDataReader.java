@@ -43,7 +43,8 @@ public class CommentDataReader {
 	public static final char INDEX_START_SYMBOL = '[';
 	public static final char INDEX_END_SYMBOL = ']';
 	
-	public static final String DEFAULT_COLUMN_NAME_PREFIX = "unnamedHotComment";
+	public static final String DEFAULT_BRANCH_COLUMN_NAME = "unnamedBranchHotComment";
+	public static final String DEFAULT_NODE_COLUMN_NAME = "unnamedNodeHotComment";
 	
 	
 	private TextElementData readTextElementData(String text) {
@@ -98,7 +99,7 @@ public class CommentDataReader {
 	}
 	
 	
-	public void read(String comment, Node node) {
+	public void read(String comment, Node node, boolean isOnNode) {
 		if (comment.startsWith("" + START_SYMBOL)) {
 			int start = 1;
 			int end = findAllocationEnd(comment, start);
@@ -130,7 +131,11 @@ public class CommentDataReader {
 		}
 		else if (comment.length() > 0) {  // Read unformatted comment
 			HiddenDataMap map =	node.getAfferentBranch().getHiddenDataMap();
-			map.put(DEFAULT_COLUMN_NAME_PREFIX, readTextElementData(comment));
+			String name = DEFAULT_BRANCH_COLUMN_NAME;
+			if (isOnNode) {
+				name = DEFAULT_NODE_COLUMN_NAME;
+			}
+			map.put(name, readTextElementData(comment));
 		}
 	}
 }

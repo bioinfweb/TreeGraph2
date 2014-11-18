@@ -113,9 +113,9 @@ public class NewickStringReader extends NewickStringChars {
   }
  	
  	
- 	private void readHotComment(String comment, Node node) {
+ 	private void readHotComment(String comment, Node node, boolean isOnNode) {
   	try {
-  		commentDataReader.read(comment, node);
+  		commentDataReader.read(comment, node, isOnNode);
   		hiddenDataAdded = !node.getAfferentBranch().getHiddenDataMap().isEmpty();
   	}
   	catch (Exception e) {}  // comment was not of the expected format
@@ -126,7 +126,7 @@ public class NewickStringReader extends NewickStringChars {
   	if (tokens.get(end).getType().equals(TokenType.LENGTH)) {
   		Node result = readSubtree(start, end - 1);
   		branchLengthsAdapter.setDecimal(result, tokens.get(end).getLength());
-  		readHotComment(tokens.get(end).getComment(), root);
+  		readHotComment(tokens.get(end).getComment(), root, false);
   		return result;
   	}
   	else {
@@ -156,7 +156,7 @@ public class NewickStringReader extends NewickStringChars {
   private void readName(int previousEnd, int end,	Node root, NodeBranchDataAdapter adapter, 
   		TranslTable translTable) throws NewickException {
 
-  	readHotComment(tokens.get(end).getComment(), root);
+  	readHotComment(tokens.get(end).getComment(), root, true);
   	
   	if (previousEnd == end - 1) {
   		if (tokens.get(end).getType().equals(TokenType.NAME)) {
