@@ -384,7 +384,6 @@ public class AboutDialog extends JDialog {
 					  "<li>Apache Batik SVG Toolkit (<a href='http://xmlgraphics.apache.org/batik/'>http://xmlgraphics.apache.org/batik/</a>)</li>" +
 					  "<li>FreeHEP Java Libraries (<a href='http://java.freehep.org/'>http://java.freehep.org/</a>)</li>" +
 					  "<li>Java Math Expression Parser (<a href='http://sourceforge.net/projects/jep/'>http://sourceforge.net/projects/jep/</a>)</li>" +
-					  "<li>Browser Launcher (<a href='http://browserlaunch2.sourceforge.net/'>http://browserlaunch2.sourceforge.net/</a>)</li>" +
 					  "<li>Tango Desktop Project (<a href='http://tango.freedesktop.org/'>http://tango.freedesktop.org/</a>)</li>" +
 					"</ul>" +
 					"<p>See <a href='http://treegraph.bioinfweb.info/Development/Libraries'>here</a> for more information." +
