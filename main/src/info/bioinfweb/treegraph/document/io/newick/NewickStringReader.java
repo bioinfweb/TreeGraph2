@@ -103,7 +103,7 @@ public class NewickStringReader extends NewickStringChars {
 			else {
 				if (tokens.get(pos).getType().equals(TokenType.SUBTREE_START)) {
 					pos = searchSubtreeEnd(pos + 1, end);
-					if (pos == -1) {  // Sonst würde diese Rekursionsebene die Suche wieder von neum beginnen.
+					if (pos == -1) {  // otherwise the search would start again on the same recursion level
 						return -1;
 					}
 				}
@@ -113,10 +113,20 @@ public class NewickStringReader extends NewickStringChars {
   }
  	
  	
+ 	private void readHotComment(String comment, Node node) {
+  	try {
+  		commentDataReader.read(comment, node);
+  		hiddenDataAdded = !node.getAfferentBranch().getHiddenDataMap().isEmpty();
+  	}
+  	catch (Exception e) {}  // comment was not of the expected format
+ 	}
+ 	
+  
   private Node readBranch(int start, int end, Node root) throws NewickException {
   	if (tokens.get(end).getType().equals(TokenType.LENGTH)) {
   		Node result = readSubtree(start, end - 1);
   		branchLengthsAdapter.setDecimal(result, tokens.get(end).getLength());
+  		readHotComment(tokens.get(end).getComment(), root);
   		return result;
   	}
   	else {
@@ -142,15 +152,11 @@ public class NewickStringReader extends NewickStringChars {
   	}
   }
   
-  
+ 	
   private void readName(int previousEnd, int end,	Node root, NodeBranchDataAdapter adapter, 
   		TranslTable translTable) throws NewickException {
 
-  	try {
-  		commentDataReader.read(tokens.get(end).getComment(), root);
-  		hiddenDataAdded = !root.getHiddenDataMap().isEmpty();
-  	}
-  	catch (Exception e) {}  // comment was not of the expected format
+  	readHotComment(tokens.get(end).getComment(), root);
   	
   	if (previousEnd == end - 1) {
   		if (tokens.get(end).getType().equals(TokenType.NAME)) {
@@ -278,8 +284,9 @@ public class NewickStringReader extends NewickStringChars {
    * Returns whether hidden data has been read from commetns in the newick string (e.g. from BEAST)
    * during the last call of 
    * {@link NewickStringReader#read(String, NodeBranchDataAdapter, NodeBranchDataAdapter, TranslTable, boolean)}
-   * or one of its convenience methods.  
-   * @return
+   * or one of its convenience methods.
+   * 
+   * @return {@code true} if hidden data columns have been added, {@code false} otherwise.
    */
   public boolean getHiddenDataAdded() {
 		return hiddenDataAdded;

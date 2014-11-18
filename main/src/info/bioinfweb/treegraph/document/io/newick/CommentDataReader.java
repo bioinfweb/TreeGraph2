@@ -19,6 +19,8 @@
 package info.bioinfweb.treegraph.document.io.newick;
 
 
+import info.bioinfweb.commons.log.ApplicationLogger;
+import info.bioinfweb.treegraph.document.HiddenDataMap;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextElementData;
 
@@ -36,17 +38,25 @@ public class CommentDataReader {
 	public static final char FIELD_START_SYMBOL = '{';
   public static final char FIELD_END_SYMBOL = '}';
 	public static final char VALUE_SEPARATOR_SYMBOL = ',';
+	public static final char STRING_DELIMITER = '"';
 	
 	public static final char INDEX_START_SYMBOL = '[';
 	public static final char INDEX_END_SYMBOL = ']';
 	
+	public static final String DEFAULT_COLUMN_NAME_PREFIX = "unnamedHotComment";
+	
 	
 	private TextElementData readTextElementData(String text) {
-		try {
-			return new TextElementData(Double.parseDouble(text));
+		if (text.startsWith(Character.toString(STRING_DELIMITER)) && text.endsWith(Character.toString(STRING_DELIMITER))) {
+			return new TextElementData(text.substring(1, text.length() - 1));  // Values like "100" should also be read as a string.
 		}
-		catch (NumberFormatException e) {
-			return new TextElementData(text);
+		else {
+			try {
+				return new TextElementData(Double.parseDouble(text));
+			}
+			catch (NumberFormatException e) {
+				return new TextElementData(text);
+			}
 		}
 	}
 	
@@ -117,6 +127,10 @@ public class CommentDataReader {
 				start = end + 1;
 				end = findAllocationEnd(comment, start);
 			}
+		}
+		else if (comment.length() > 0) {  // Read unformatted comment
+			HiddenDataMap map =	node.getAfferentBranch().getHiddenDataMap();
+			map.put(DEFAULT_COLUMN_NAME_PREFIX, readTextElementData(comment));
 		}
 	}
 }
