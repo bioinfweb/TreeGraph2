@@ -21,19 +21,27 @@ package info.bioinfweb.treegraph.gui.dialogs.io.loadlogger;
 
 import info.bioinfweb.treegraph.document.io.DocumentReader;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
-import info.bioinfweb.commons.log.AbstractApplicationLogger;
 import info.bioinfweb.commons.log.ApplicationLogger;
 import info.bioinfweb.commons.log.ApplicationLoggerMessage;
+import info.bioinfweb.commons.log.JTextAreaApplicationLogger;
+
+import java.awt.Desktop;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.FlowLayout;
 
 import javax.swing.JDialog;
 import javax.swing.JPanel;
-import java.awt.Frame;
 import javax.swing.BoxLayout;
-
 import javax.swing.JScrollPane;
-import java.awt.FlowLayout;
 import javax.swing.JButton;
-import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.event.HyperlinkListener;
+import javax.swing.event.HyperlinkEvent.EventType;
+import javax.swing.JTextArea;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 
 
 
@@ -46,22 +54,31 @@ import javax.swing.JList;
  */
 public class LoadLoggerDialog extends JDialog implements ApplicationLogger {
 	private static final long serialVersionUID = 1L;
-
+	
+	public final HyperlinkListener HYPERLINK_LISTENER = 		
+		  new javax.swing.event.HyperlinkListener() {
+					public void hyperlinkUpdate(javax.swing.event.HyperlinkEvent e) {
+						if (e.getEventType().equals(EventType.ACTIVATED)) {
+							try {
+								Desktop.getDesktop().browse(e.getURL().toURI());
+							}
+							catch (Exception ex) {
+								JOptionPane.showMessageDialog(getOwner(), 
+										"An error occurred when trying open the selected link.", 
+										"Navigation failed,", JOptionPane.ERROR_MESSAGE);
+							}
+						}
+					}
+				};		
 	private static LoadLoggerDialog firstInstance = null;
 	
 	
-	private ApplicationLogger logger = new AbstractApplicationLogger() {
-				@Override
-				public void addMessage(ApplicationLoggerMessage message) {
-					getMessageListModel().add(message);
-				}
-			};
-	
+	private ApplicationLogger logger = null;
 	private JPanel jContentPane = null;
 	private JScrollPane messagesScrollPane = null;
 	private JPanel buttonsPanel = null;
 	private JButton closeButton = null;
-	private JList messageList = null;
+	private JTextArea textArea;
 
 	
 	/**
@@ -88,54 +105,54 @@ public class LoadLoggerDialog extends JDialog implements ApplicationLogger {
 
 	
 	public void addMessage(ApplicationLoggerMessage message) {
-		logger.addMessage(message);
+		getLogger().addMessage(message);
 	}
 
 
 	public void addMessage(String message, int helpCode) {
-		logger.addMessage(message, helpCode);
+		getLogger().addMessage(message, helpCode);
 	}
 
 
 	public void addMessage(String message) {
-		logger.addMessage(message);
+		getLogger().addMessage(message);
 	}
 
 
 	public void addWarning(String message, int helpCode) {
-		logger.addWarning(message, helpCode);
+		getLogger().addWarning(message, helpCode);
 	}
 
 
 	public void addWarning(String message) {
-		logger.addWarning(message);
+		getLogger().addWarning(message);
 	}
 	
 	
 	@Override
 	public void addError(String message) {
-		logger.addError(message);
+		getLogger().addError(message);
 	}
 
 
 	public void addError(String message, int helpCode) {
-		logger.addError(message, helpCode);
+		getLogger().addError(message, helpCode);
 	}
 
 
 	public void addError(Throwable throwable, boolean includeStackTrace) {
-		logger.addError(throwable, includeStackTrace);
+		getLogger().addError(throwable, includeStackTrace);
 	}
 
 
 	public void addError(Throwable throwable, boolean includeStackTrace, int helpCode) {
-		logger.addError(throwable, includeStackTrace, helpCode);
+		getLogger().addError(throwable, includeStackTrace, helpCode);
 	}
 
 
 	public void clearMessages() {
-		getMessageListModel().clear();
-	}
+		getTextArea().setText("");
+	}	
 	
 	
 	/**
@@ -143,8 +160,8 @@ public class LoadLoggerDialog extends JDialog implements ApplicationLogger {
 	 * The message list is cleared after the dialog is closed.
 	 */
 	public void display() {
-		if (getMessageListModel().getSize() > 0) {
-			pack();
+		if (getTextArea().getText().length() > 0) {
+			//pack();
 			setLocationRelativeTo(getOwner());
 			setVisible(true);
 		}
@@ -158,6 +175,7 @@ public class LoadLoggerDialog extends JDialog implements ApplicationLogger {
 	 */
 	private void initialize() {
 		setTitle("File opened with messages");
+		setSize(new Dimension(600, 400));
 		setContentPane(getJContentPane());
 	}
 
@@ -170,9 +188,24 @@ public class LoadLoggerDialog extends JDialog implements ApplicationLogger {
 	private JPanel getJContentPane() {
 		if (jContentPane == null) {
 			jContentPane = new JPanel();
-			jContentPane.setLayout(new BoxLayout(getJContentPane(), BoxLayout.Y_AXIS));
-			jContentPane.add(getMessagesScrollPane(), null);
-			jContentPane.add(getButtonsPanel(), null);
+			GridBagLayout gbl_jContentPane = new GridBagLayout();
+			gbl_jContentPane.columnWeights = new double[]{0.0, Double.MIN_VALUE};
+			gbl_jContentPane.rowWeights = new double[]{1.0, 0.0, Double.MIN_VALUE};
+			jContentPane.setLayout(gbl_jContentPane);
+			GridBagConstraints gbc_messagesScrollPane = new GridBagConstraints();
+			gbc_messagesScrollPane.weighty = 1.0;
+			gbc_messagesScrollPane.weightx = 1.0;
+			gbc_messagesScrollPane.fill = GridBagConstraints.BOTH;
+			gbc_messagesScrollPane.insets = new Insets(0, 0, 5, 0);
+			gbc_messagesScrollPane.gridx = 0;
+			gbc_messagesScrollPane.gridy = 0;
+			jContentPane.add(getMessagesScrollPane(), gbc_messagesScrollPane);
+			GridBagConstraints gbc_buttonsPanel = new GridBagConstraints();
+			gbc_buttonsPanel.anchor = GridBagConstraints.SOUTH;
+			gbc_buttonsPanel.fill = GridBagConstraints.HORIZONTAL;
+			gbc_buttonsPanel.gridx = 0;
+			gbc_buttonsPanel.gridy = 1;
+			jContentPane.add(getButtonsPanel(), gbc_buttonsPanel);
 		}
 		return jContentPane;
 	}
@@ -186,7 +219,7 @@ public class LoadLoggerDialog extends JDialog implements ApplicationLogger {
 	private JScrollPane getMessagesScrollPane() {
 		if (messagesScrollPane == null) {
 			messagesScrollPane = new JScrollPane();
-			messagesScrollPane.setViewportView(getMessageList());
+			messagesScrollPane.setViewportView(getTextArea());
 		}
 		return messagesScrollPane;
 	}
@@ -219,33 +252,30 @@ public class LoadLoggerDialog extends JDialog implements ApplicationLogger {
 			closeButton.setText("Close");
 			closeButton.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
-					getMessageListModel().clear();  // List shall be empty so that the dialog can be reused.
+					clearMessages();  // List shall be empty so that the dialog can be reused.
 					setVisible(false);
 				}
 			});
 		}
 		return closeButton;
 	}
-
-
-	/**
-	 * This method initializes messageList	
-	 * 	
-	 * @return javax.swing.JList	
-	 */
-	private JList getMessageList() {
-		if (messageList == null) {
-			messageList = new JList(new MessagesListModel());
+	
+	
+	public ApplicationLogger getLogger() {
+		if (logger == null) {
+			logger = new JTextAreaApplicationLogger(getTextArea());
 		}
-		return messageList;
+		return logger;
 	}
 	
 	
-	/**
-	 * Returns the model of {@link #getMessageList()}.
-	 * @return
-	 */
-	private MessagesListModel getMessageListModel() {
-		return (MessagesListModel)getMessageList().getModel();
+	private JTextArea getTextArea() {
+		if (textArea == null) {
+			textArea = new JTextArea();
+			textArea.setWrapStyleWord(true);
+			textArea.setLineWrap(true);
+			textArea.setEditable(false);
+		}
+		return textArea;
 	}
 }
