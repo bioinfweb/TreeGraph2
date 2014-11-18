@@ -30,6 +30,7 @@ import info.bioinfweb.treegraph.document.format.GlobalFormats;
 import info.bioinfweb.treegraph.document.io.AbstractDocumentReader;
 import info.bioinfweb.treegraph.document.io.DocumentIterator;
 import info.bioinfweb.treegraph.document.io.newick.BranchLengthsScaler;
+import info.bioinfweb.treegraph.document.io.newick.NewickTreeList;
 import info.bioinfweb.treegraph.document.undo.format.AutoPositionLabelsEdit;
 import info.bioinfweb.commons.io.XMLUtils;
 
@@ -374,8 +375,7 @@ public class PhyloXMLReader extends AbstractDocumentReader implements PhyloXMLCo
 	          break;
 	        case XMLStreamConstants.END_DOCUMENT:
 	          reader.close();
-	          Tree[] trees = phylogenies.toArray(new Tree[phylogenies.size()]);
-	          Tree tree = trees[parameterMap.getTreeSelector().select(names.toArray(new String[names.size()]), trees)];
+	          Tree tree = phylogenies.get(parameterMap.getTreeSelector().select(names.toArray(new String[names.size()]), phylogenies));
 	          AutoPositionLabelsEdit.position(tree.getPaintStart());  // Label gleichm‰ﬂig anordnen
 	          document.setTree(tree);
 	          phylogenies.clear();

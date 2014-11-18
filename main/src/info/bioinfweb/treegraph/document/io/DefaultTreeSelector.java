@@ -19,17 +19,19 @@
 package info.bioinfweb.treegraph.document.io;
 
 
+import java.util.List;
+
 import info.bioinfweb.treegraph.document.Tree;
 
 
 
 /**
- * This <code>TreeSelector</code> always selects the first tree.
+ * This {@code TreeSelector} always selects the first tree.
  * 
  * @author Ben St&ouml;ver
  */
 public class DefaultTreeSelector implements TreeSelector {
-	public int select(String[] names, Tree[] trees) {
+	public int select(String[] names, List<Tree> trees) {
 		return 0;
 	}
 }

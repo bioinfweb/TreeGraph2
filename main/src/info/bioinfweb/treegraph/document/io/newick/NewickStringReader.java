@@ -323,16 +323,18 @@ public class NewickStringReader extends NewickStringChars {
   }
   
   
-  public static Tree[] read(final String[] newick, NodeBranchDataAdapter internalAdapter, 
+  public static NewickTreeList read(final String[] newick, NodeBranchDataAdapter internalAdapter, 
   		NodeBranchDataAdapter branchLengthsAdapter, TranslTable translTable, 
   		boolean translateInternals) throws NewickException {
 
-		Tree[] result = new Tree[newick.length];
+		Tree[] trees = new Tree[newick.length];
+		boolean[] hiddenDataAdded = new boolean[newick.length];
+		NewickStringReader reader = NewickStringReader.getSharedInstance(); 
 		for (int i = 0; i < newick.length; i++) {
-			result[i] = NewickStringReader.getSharedInstance().read(newick[i], internalAdapter, 
+			trees[i] = reader.read(newick[i], internalAdapter, 
 					branchLengthsAdapter, translTable, translateInternals);
+			hiddenDataAdded[i] = reader.getHiddenDataAdded();
 		}
-		return result;	
-  	
+		return new NewickTreeList(trees, hiddenDataAdded);  	
   }
 }

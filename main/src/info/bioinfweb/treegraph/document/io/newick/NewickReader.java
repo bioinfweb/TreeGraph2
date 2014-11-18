@@ -24,6 +24,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
 
+import javax.swing.JOptionPane;
+
+import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.io.AbstractDocumentIterator;
@@ -35,7 +38,9 @@ import info.bioinfweb.treegraph.document.io.nexus.NexusParser;
 import info.bioinfweb.treegraph.document.nodebranchdata.BranchLengthAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
+import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.commons.log.ApplicationLogger;
+import info.webinsel.wikihelp.client.WikiHelpOptionPane;
 
 
 
@@ -161,6 +166,19 @@ public class NewickReader extends TextStreamReader implements DocumentReader {
 	}
 	
 	
+	public static void displayHiddenDataMessage(ApplicationLogger logger, int helpCode) {
+		logger.addMessage("The imported Newick string contained comments inside the tree " +
+						"definitions which have been imported as hidden branch data column(s). You can select \"Edit\" -> \"Node/branch data\" " +
+						"-> \"Copy column...\" from the main menu if you want to store the imported data in another type of node/branch data " +
+						"column instead.", helpCode);
+//		WikiHelpOptionPane.showMessageDialog(MainFrame.getInstance(), 
+//				"The imported Newick string contained comments inside the tree definitions which have been imported\n" +
+//				"as hidden branch data column(s). You can select \"Edit\" -> \"Node/branch data\" -> \"Copy column...\" from the\n" +
+//				"main menu if you want to store the imported data in another type of node/branch data column instead.", 
+//				"Additional columns imported", JOptionPane.INFORMATION_MESSAGE, Main.getInstance().getWikiHelp(), helpCode);
+	}
+	
+	
 	@Override
   public Document readDocument(BufferedInputStream stream) throws Exception {
 		String[] parts = splitDocument(new InputStreamReader(stream));
@@ -169,7 +187,7 @@ public class NewickReader extends TextStreamReader implements DocumentReader {
 		for (int i = 0; i < names.length; i++) {
 			names[i] = "Tree " + i;
 		}
-		Tree[] trees = NewickStringReader.read(
+		NewickTreeList trees = NewickStringReader.read(
 				parts,
 				parameterMap.getNodeBranchDataAdapter(ReadWriteParameterMap.KEY_INTERNAL_NODE_NAMES_ADAPTER, 
 						NodeNameAdapter.getSharedInstance()),
@@ -178,7 +196,12 @@ public class NewickReader extends TextStreamReader implements DocumentReader {
 				null, false);  // no translation table in available Newick format 
 		
 		Document result = createEmptyDocument();
-		result.setTree(trees[parameterMap.getTreeSelector().select(names, trees)]);
+		int index = parameterMap.getTreeSelector().select(names, trees.treesAsList());
+		result.setTree(trees.getTree(index));
+		
+		if (trees.getHiddenDataAdded(index)) {
+			displayHiddenDataMessage(parameterMap.getApplicationLogger(), 75);
+		}
 		return result;
 	}
 	

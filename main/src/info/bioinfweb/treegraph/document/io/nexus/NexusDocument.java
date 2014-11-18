@@ -21,6 +21,7 @@ package info.bioinfweb.treegraph.document.io.nexus;
 
 import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.io.newick.NewickStringReader;
+import info.bioinfweb.treegraph.document.io.newick.NewickTreeList;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 
 import java.util.List;
@@ -72,12 +73,13 @@ public class NexusDocument {
 	
 	/**
 	 * Creates a {@link Tree} object from each stored Newick string.
+	 * 
 	 * @param internalAdapter
 	 * @param branchLengthsAdapter
 	 * @param translateInternals
 	 * @return an array containing all {@link Tree}-objects
 	 */
-	public Tree[] createTrees(NodeBranchDataAdapter internalAdapter, 
+	public NewickTreeList createTrees(NodeBranchDataAdapter internalAdapter, 
   		NodeBranchDataAdapter branchLengthsAdapter, boolean translateInternals) {
 		
 		return NewickStringReader.read(treesToArray(), internalAdapter, 

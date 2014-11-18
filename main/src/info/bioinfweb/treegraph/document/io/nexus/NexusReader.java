@@ -26,6 +26,8 @@ import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.io.DocumentIterator;
 import info.bioinfweb.treegraph.document.io.ReadWriteParameterMap;
 import info.bioinfweb.treegraph.document.io.TextStreamReader;
+import info.bioinfweb.treegraph.document.io.newick.NewickReader;
+import info.bioinfweb.treegraph.document.io.newick.NewickTreeList;
 import info.bioinfweb.treegraph.document.nodebranchdata.BranchLengthAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 
@@ -50,17 +52,20 @@ public class NexusReader extends TextStreamReader {
 	@Override
 	public Document readDocument(BufferedInputStream stream) throws Exception {
 		NexusDocument nex = NexusParser.parse(readStream(stream));
-		Tree[] trees = nex.createTrees(
+		NewickTreeList trees = nex.createTrees(
 				parameterMap.getNodeBranchDataAdapter(ReadWriteParameterMap.KEY_INTERNAL_NODE_NAMES_ADAPTER, 
 						NodeNameAdapter.getSharedInstance()),
 				parameterMap.getNodeBranchDataAdapter(ReadWriteParameterMap.KEY_BRANCH_LENGTH_ADAPTER, 
 						BranchLengthAdapter.getSharedInstance()),
 				parameterMap.getBoolean(ReadWriteParameterMap.KEY_TRANSLATE_INTERNAL_NODE_NAMES, true));
-		int treePos = parameterMap.getTreeSelector().select(nex.namesToArray(), trees);
+		int treePos = parameterMap.getTreeSelector().select(nex.namesToArray(), trees.treesAsList());
 		
 		Document result = createEmptyDocument();
-		result.setTree(trees[treePos]);
+		result.setTree(trees.getTree(treePos));
 		
+		if (trees.getHiddenDataAdded(treePos)) {
+			NewickReader.displayHiddenDataMessage(parameterMap.getApplicationLogger(), 76);
+		}
 		return result;
 	}
 

@@ -27,9 +27,12 @@ import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeViewPanel;
 import info.bioinfweb.commons.text.StringUtils;
 import info.webinsel.wikihelp.client.OkCancelApplyWikiHelpDialog;
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+
 import java.awt.*;
+import java.util.List;
 
 
 
@@ -40,7 +43,7 @@ public class TreeSelectionDialog extends OkCancelApplyWikiHelpDialog
 	
 	
 	private static TreeSelectionDialog firstInstance = null;
-	private Tree[] trees = null;
+	private List<Tree> trees = null;
 	private int currentTree = -1;
 	
 	private JPanel jContentPane = null;
@@ -75,8 +78,8 @@ public class TreeSelectionDialog extends OkCancelApplyWikiHelpDialog
 	}
 	
 	
-	public int select(String[] names, Tree[] trees) {
-		if (trees.length > 1) {
+	public int select(String[] names, List<Tree> trees) {
+		if (trees.size() > 1) {
 			currentTree = -1;
 			this.trees = trees;
 			
@@ -166,7 +169,7 @@ public class TreeSelectionDialog extends OkCancelApplyWikiHelpDialog
 				public void itemStateChanged(java.awt.event.ItemEvent e) {
 					if (currentTree != getSelctedIndex()) {
 						currentTree = getSelctedIndex();
-						getTreeViewPanel().getDocument().setTree(trees[getSelctedIndex()]);
+						getTreeViewPanel().getDocument().setTree(trees.get(getSelctedIndex()));
 					}
 				}
 			});

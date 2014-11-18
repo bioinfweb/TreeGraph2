@@ -19,6 +19,8 @@
 package info.bioinfweb.treegraph.document.io;
 
 
+import java.util.List;
+
 import info.bioinfweb.treegraph.document.Tree;
 
 
@@ -30,5 +32,5 @@ import info.bioinfweb.treegraph.document.Tree;
  * @author Ben St&ouml;ver
  */
 public interface TreeSelector {
-  public int select(String[] names, Tree[] trees);
+  public int select(String[] names, List<Tree> trees);
 }
