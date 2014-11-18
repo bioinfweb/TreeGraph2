@@ -362,7 +362,7 @@ public class AboutDialog extends JDialog {
 					"Copyright 2007-2014 Ben St&ouml;ver &amp; Kai M&uuml;ller. All rights reserved.</p>" +
 					
 					"<p><b>Publication:</b><br /> St&ouml;ver B C, M&uuml;ller K F: " +
-					    "<a href='http://www.biomedcentral.com/1471-2105/11/7'>TreeGraph 2: Combining and " +
+					    "<a href='http://dx.doi.org/10.1186/1471-2105-11-7'>TreeGraph 2: Combining and " +
 					    "visualizing evidence from different phylogenetic analyses.</a> " +
 					    "<i>BMC Bioinformatics</i> 2010, <b>11</b>:7</p>" +
 					
