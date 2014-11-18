@@ -51,7 +51,7 @@ public class NodeSupportEdit extends AbstractTopologicalCalculationEdit {
 	@Override
 	protected void performRedo() {
 		 addLeafSets(document.getTree().getPaintStart(), targetLeafsAdapter);	
-		 creatHashmap(document.getTree().getPaintStart());
+		 createHashmap(document.getTree().getPaintStart());
 		 initialiseSupportValues(document.getTree().getPaintStart());
 		 try {
 			 Document result = documentIterator.next();
@@ -93,13 +93,13 @@ public class NodeSupportEdit extends AbstractTopologicalCalculationEdit {
 	}
 	
 	
-	public void creatHashmap (Node root){
+	public void createHashmap (Node root){
 		if (!root.isLeaf()) {
 			LeafSet field = getLeafSet(root);
 			hashMap.put(field, root);
 			for (int i = 0; i < root.getChildren().size(); i++) {
 				Node child = root.getChildren().get(i);	
-				creatHashmap(child);
+				createHashmap(child);
 			}
 		}
 	}
