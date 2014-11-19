@@ -189,6 +189,22 @@ public class RerootEdit extends ComplexDocumentEdit implements WarningMessageEdi
 	}
 	
 	
+	private static Node createNewRoot(Node rootingPoint) {
+		Node result = Node.getInstanceWithBranch();
+		result.getFormats().assign(rootingPoint.getFormats());
+		result.getFormats().assignLineFormats(rootingPoint.getAfferentBranch().getFormats());  // Use line formats from branch and not from (not directly linked) node.
+		result.getAfferentBranch().getFormats().assign(rootingPoint.getAfferentBranch().getFormats());
+		return result;
+	}
+	
+	
+	private static Branch createNewBranchUnderRoot(Node targetNode) {
+		Branch result = new Branch(targetNode);
+		result.getFormats().assign(targetNode.getAfferentBranch().getFormats());
+		return result;
+	}
+	
+	
 	public static String reroot(Tree tree, Branch position) {
 		String result = null;
 		Node parent = position.getTargetNode().getParent();
@@ -207,13 +223,13 @@ public class RerootEdit extends ComplexDocumentEdit implements WarningMessageEdi
 			}
 			
 			// Structural changes:
-			Node current = Node.getInstanceWithBranch();
+			Node current = createNewRoot(position.getTargetNode());
 			tree.setPaintStart(current);
 			parent.getChildren().remove(position.getTargetNode());
 			current.getChildren().add(position.getTargetNode());
 			position.getTargetNode().setParent(current);
 			position = parent.getAfferentBranch();
-			parent.setAfferentBranch(new Branch(parent));
+			parent.setAfferentBranch(createNewBranchUnderRoot(parent));
 			current.getChildren().add(0, parent);  // Conserve order of terminal nodes
 			Node last = current;
 			current = parent;

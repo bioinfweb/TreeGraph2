@@ -247,8 +247,8 @@ public class HiddenDataMap implements Map<String, TextElementData> {
 	 * Tests if the specified map contains one or more IDs that are also contained in this 
 	 * map.
 	 * 
-	 * @param other
-	 * @return
+	 * @param other - the other hidden data map to be compared
+	 * @return {@code true} if at least one element with the same ID was found in each map, {@code false} otherwise.
 	 */
 	public boolean containsSameID(HiddenDataMap other) {
 		Iterator<String> iterator = idIterator();
