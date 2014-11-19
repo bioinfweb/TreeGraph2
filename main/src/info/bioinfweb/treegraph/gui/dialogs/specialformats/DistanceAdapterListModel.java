@@ -93,6 +93,9 @@ public class DistanceAdapterListModel extends AbstractListModel implements ListM
 		for (int i = 0; i < ids.length; i++) {
 			adapters.add(new LabelHeightAdapter(ids[i]));
 		}
+		for (int i = 0; i < ids.length; i++) {
+			adapters.add(new LabelLineWidthAdapter(ids[i]));
+		}
 		
 		ids = IDManager.getLabelIDs(root, Label.class);
 		for (int i = 0; i < ids.length; i++) {

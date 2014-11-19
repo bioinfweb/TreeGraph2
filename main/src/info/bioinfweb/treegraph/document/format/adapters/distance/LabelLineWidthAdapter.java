@@ -25,23 +25,25 @@ import info.bioinfweb.treegraph.document.format.GraphicalLabelFormats;
 
 
 /**
+ * Format adapter for editing the line width of graphical labels. 
+ * 
  * @author Ben St&ouml;ver
- * @since 2.0.25
+ * @since 2.3.0
  */
-public class LabelHeightAdapter extends AbstractGraphicalLabelDistanceAdapter implements DistanceAdapter {
-	public LabelHeightAdapter(String id) {
+public class LabelLineWidthAdapter extends AbstractGraphicalLabelDistanceAdapter {
+	public LabelLineWidthAdapter(String id) {
 		super(id);
 	}
 
 
 	@Override
-	protected DistanceValue getGraphicalLabelDistanceValue(GraphicalLabelFormats formats) {
-		return formats.getHeight();
-	}
+  protected DistanceValue getGraphicalLabelDistanceValue(GraphicalLabelFormats formats) {
+	  return formats.getLineWidth();
+  }
 
 
 	@Override
 	public String toString() {
-		return toString("Label heights");
+		return toString("Label line widths");
 	}
 }

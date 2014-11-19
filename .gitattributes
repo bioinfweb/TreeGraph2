@@ -148,6 +148,7 @@ main/src/info/bioinfweb/treegraph/document/format/adapters/distance/BranchSpaceB
 main/src/info/bioinfweb/treegraph/document/format/adapters/distance/CornerRadiusAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/format/adapters/distance/DistanceAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/format/adapters/distance/LabelHeightAdapter.java -text
+main/src/info/bioinfweb/treegraph/document/format/adapters/distance/LabelLineWidthAdapter.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/format/adapters/distance/LabelMarginBottomAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/format/adapters/distance/LabelMarginLeftAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/format/adapters/distance/LabelMarginRightAdapter.java -text
