@@ -24,7 +24,6 @@ import info.bioinfweb.commons.io.XMLUtils;
 import java.io.File;
 import java.io.IOException;
 
-import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
 

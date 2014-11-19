@@ -20,7 +20,6 @@ package info.bioinfweb.treegraph.document.io;
 
 
 import info.bioinfweb.treegraph.document.Document;
-import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 
 import java.io.*;
 
