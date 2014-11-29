@@ -246,13 +246,17 @@ public class TreeSelection implements Collection<PaintableElement> {
 	 * @since 2.0.43
 	 */
 	public boolean containsOnlyType(Class<? extends PaintableElement> elementClass) {
+		boolean containsType = false;
 		Iterator<PaintableElement> iterator = iterator();
 		while (iterator.hasNext()) {
-			if (!elementClass.isInstance(iterator.next())) {
+			if (elementClass.isInstance(iterator.next())) {
+				containsType = true;
+			}
+			else {
 				return false;
 			}
 		}
-		return true;
+		return containsType;
 	}
 	
 	
