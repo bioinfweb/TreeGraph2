@@ -19,22 +19,29 @@
 package info.bioinfweb.treegraph.gui.dialogs.nodebranchdata;
 
 
+import info.bioinfweb.treegraph.document.nodebranchdata.NewHiddenBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.edit.CalculateColumnEdit;
 import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NewNodeBranchDataInput;
 
 import javax.swing.JPanel;
+
 import java.awt.Dimension;
 import java.awt.Frame;
+
 import javax.swing.BoxLayout;
 import javax.swing.JOptionPane;
+
 import java.awt.GridBagLayout;
+
 import javax.swing.BorderFactory;
 import javax.swing.border.TitledBorder;
+
 import java.awt.Font;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.io.IOException;
+
 import javax.swing.JTextField;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
@@ -76,6 +83,7 @@ public class CalculateColumnDialog extends EditDialog {
 	@Override
 	protected boolean onExecute() {
 		getColumnInput().setAdapters(getDocument().getTree(), false, true, true, false, true);
+		getColumnInput().setSelectedAdapter(NewHiddenBranchDataAdapter.class);
 		if (getSelectedAdapter() != null) {
 			getColumnInput().setSelectedAdapter(getSelectedAdapter());  // Ist ein readOnly-Adapter ausgewählt, ändert sich nichts
 		}
