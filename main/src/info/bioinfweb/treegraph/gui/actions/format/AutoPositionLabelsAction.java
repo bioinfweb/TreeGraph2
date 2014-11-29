@@ -21,12 +21,20 @@ package info.bioinfweb.treegraph.gui.actions.format;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.Action;
+import javax.swing.JOptionPane;
 
 import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Document;
+import info.bioinfweb.treegraph.document.IDManager;
+import info.bioinfweb.treegraph.document.Label;
+import info.bioinfweb.treegraph.document.TreeSerializer;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
+import info.bioinfweb.treegraph.document.undo.file.AddSupportValuesEdit;
 import info.bioinfweb.treegraph.document.undo.format.AutoPositionLabelsEdit;
 import info.bioinfweb.treegraph.gui.actions.DocumentAction;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
@@ -45,14 +53,54 @@ public class AutoPositionLabelsAction extends DocumentAction {
 	
 	@Override
 	public void setEnabled(Document document, TreeSelection selection, NodeBranchDataAdapter tableAdapter) {
-		setEnabled((selection != null) &&	selection.containsOnlyType(Branch.class));
+		setEnabled((selection != null) &&	(selection.isEmpty() || selection.containsOnlyType(Branch.class)));
 	}
 
 
+	private boolean containsSupportConflictIDs(Document document) {
+  	List<String> ids = new ArrayList<String>(Arrays.asList(IDManager.getLabelIDs(
+  			document.getTree().getPaintStart(), Label.class)));
+		for (String id : ids) {
+			if (id.endsWith(AddSupportValuesEdit.SUPPORT_NAME) && 
+					ids.contains(id.replace(AddSupportValuesEdit.SUPPORT_NAME, AddSupportValuesEdit.CONFLICT_NAME))) {
+				
+				return true;  // Pair found
+			}
+		}
+		return false;
+	}
+	
+	
+	private boolean getEqualSupportConflictPosition(Document document) {
+		if (containsSupportConflictIDs(document)) {
+			return JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(getMainFrame(), 
+					"This document contains pairs of label IDs which seem to be comming from the add support values feature\n" +
+					"of TreeGraph (e.g. \"XXX" +	AddSupportValuesEdit.SUPPORT_NAME + "\" and \"XXX" + 
+					AddSupportValuesEdit.CONFLICT_NAME + "\").\n\n" +
+					"Do you want both label columns to have the same position?\n\n" + 
+					"(\"Yes\" is recommended because usually both types of labels won't occur on the same branch. Select \"No\" if\n" + 
+					"these labels have a different source and you expect both support and conflict labels to occur on the same branch.)", 
+					"Treatment of support and conflict labels", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) ;
+		}
+		else {
+			return false;
+		}
+		
+		
+	}
+	
+	
 	@Override
 	protected void onActionPerformed(ActionEvent e, TreeInternalFrame frame) {
-		TreeSelection selection = frame.getTreeViewPanel().getSelection(); 
-		frame.getDocument().executeEdit(new AutoPositionLabelsEdit(frame.getDocument(), 
-				selection.toArray(new Branch[selection.size()])));
+		TreeSelection selection = frame.getTreeViewPanel().getSelection();
+		Branch[] branches;
+		if (selection.isEmpty()) {
+			branches = TreeSerializer.getElementsInSubtree(frame.getDocument().getTree().getPaintStart(), false, Branch.class);
+		}
+		else {
+			branches = selection.toArray(new Branch[selection.size()]); 
+		}
+		frame.getDocument().executeEdit(new AutoPositionLabelsEdit(frame.getDocument(), branches, 
+				getEqualSupportConflictPosition(frame.getDocument())));
 	}
 }
