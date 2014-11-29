@@ -201,7 +201,7 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
 	 * @param highest - the initial support value
 	 * @param targetNode - the node in the target document to attach a support value to
 	 * @param info - information about the node in the source document which contains all terminals of
-	 *        <code>targetNode</code> in its subtree 
+	 *        {@code targetNode} in its subtree 
 	 * @return the node with the highest support value found (in the source document)
 	 */
 	private double findHighestConflict(Node root, double highest, Node targetNode, NodeInfo info) {

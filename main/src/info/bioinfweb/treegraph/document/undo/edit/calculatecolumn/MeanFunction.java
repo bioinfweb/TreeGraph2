@@ -19,37 +19,25 @@
 package info.bioinfweb.treegraph.document.undo.edit.calculatecolumn;
 
 
-import org.nfunk.jep.function.PostfixMathCommandI;
+import info.bioinfweb.treegraph.document.undo.edit.CalculateColumnEdit;
+
+import java.util.Stack;
+
+import org.nfunk.jep.ParseException;
 
 
 
 /**
- * Basic implementations for a custom JEP function.
- *  
+ * Calculates the arithmetic mean of a set of {@link Double} values in {@link CalculateColumnEdit}.
+ * 
  * @author Ben St&ouml;ver
- * @since 2.0.46 
+ * @since 2.4.0
  */
-public abstract class AbstractFunction implements PostfixMathCommandI {
-	private int curNumberOfParameters = 1;
-	
-	
-  public static Double codeBoolean(boolean value) {
-  	if (value) {
-  		return new Double(1);
-  	}
-  	else {
-  		return new Double(0);
-  	}
-  }
-  
-  
+public class MeanFunction extends SumFunction {
 	@Override
-	public void setCurNumberOfParameters(int n) {
-		curNumberOfParameters = n;
-	}
-
-
-	protected int getCurNumberOfParameters() {
-		return curNumberOfParameters;
-	}
+  public void run(Stack stack) throws ParseException {
+	  super.run(stack);
+	  Double value = (Double)stack.pop();
+	  stack.push(new Double(value.doubleValue() / getCurNumberOfParameters()));
+  }
 }

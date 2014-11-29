@@ -369,7 +369,14 @@ main/src/info/bioinfweb/treegraph/document/undo/edit/SortLeafsEdit.java -text sv
 main/src/info/bioinfweb/treegraph/document/undo/edit/TextElementEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/AbstractFunction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/DoubleVarargFunction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/GetValueFunction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/HasValuesFunction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/IDFunction.java -text
+main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/MaxFunction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/MeanFunction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/MinFunction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/ProductFunction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/SumFunction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/UndefinedIDException.java -text
 main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/VarargFunction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/file/AddSupportValuesEdit.java -text

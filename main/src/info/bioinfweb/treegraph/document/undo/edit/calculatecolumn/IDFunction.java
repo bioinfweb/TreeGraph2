@@ -20,6 +20,7 @@ package info.bioinfweb.treegraph.document.undo.edit.calculatecolumn;
 
 
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
+import info.bioinfweb.treegraph.document.undo.edit.CalculateColumnEdit;
 
 import java.util.Stack;
 
@@ -33,16 +34,25 @@ import org.nfunk.jep.function.PostfixMathCommandI;
  * @since 2.0.24
  */
 public abstract class IDFunction extends AbstractFunction implements PostfixMathCommandI {
-  public static Double codeBoolean(boolean value) {
-  	if (value) {
-  		return new Double(1);
-  	}
-  	else {
-  		return new Double(0);
-  	}
+	private CalculateColumnEdit edit;
+	
+	
+	/**
+	 * Creates a new instance of this class.
+	 * 
+	 * @param edit - the edit using this function
+	 */
+	public IDFunction(CalculateColumnEdit edit) {
+	  super();
+	  this.edit = edit;
   }
-  
-  
+
+
+	public CalculateColumnEdit getEdit() {
+		return edit;
+	}
+
+
 	public boolean checkNumberOfParameters(int n) {
 		return (n == 1) || (n == 2);
 	}
@@ -53,6 +63,7 @@ public abstract class IDFunction extends AbstractFunction implements PostfixMath
 	}
 
 	
+	@Override
 	public void run(Stack stack) throws ParseException {
 		if (checkNumberOfParameters(getCurNumberOfParameters())) {
 			Object defaultValue = null;

@@ -19,37 +19,33 @@
 package info.bioinfweb.treegraph.document.undo.edit.calculatecolumn;
 
 
-import org.nfunk.jep.function.PostfixMathCommandI;
+import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
+import info.bioinfweb.treegraph.document.undo.edit.CalculateColumnEdit;
+
+import org.nfunk.jep.ParseException;
 
 
 
 /**
- * Basic implementations for a custom JEP function.
- *  
+ * Function that return the value of a certain node/branch data column at the current node in {@link CalculateColumnEdit}.
+ * 
  * @author Ben St&ouml;ver
- * @since 2.0.46 
+ * @since 2.4.0
  */
-public abstract class AbstractFunction implements PostfixMathCommandI {
-	private int curNumberOfParameters = 1;
-	
-	
-  public static Double codeBoolean(boolean value) {
-  	if (value) {
-  		return new Double(1);
-  	}
-  	else {
-  		return new Double(0);
-  	}
+public class GetValueFunction extends IDFunction {
+	public GetValueFunction(CalculateColumnEdit edit) {
+	  super(edit);
   }
-  
-  
+
+	
 	@Override
-	public void setCurNumberOfParameters(int n) {
-		curNumberOfParameters = n;
+	public Object getValue(String id) throws ParseException {
+		return getEdit().getIDValue((String)id);
 	}
 
 
-	protected int getCurNumberOfParameters() {
-		return curNumberOfParameters;
+	@Override
+	public Object getValue(NodeBranchDataAdapter adapter) throws ParseException {
+		return getEdit().getCurrentValue(adapter);
 	}
 }

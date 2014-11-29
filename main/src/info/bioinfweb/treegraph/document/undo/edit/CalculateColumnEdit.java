@@ -44,6 +44,7 @@ import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.*;
 
 /**
  * Calculates a node/branch data column as specified by the passed expression.
+ * 
  * @author Ben St&ouml;ver
  * @since 2.0.24
  */
@@ -58,6 +59,7 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 	public static final String MAX_FUNC = "max";
 	public static final String SUM_FUNC = "sum";
 	public static final String PRODUCT_FUNC = "product";
+	public static final String MEAN_FUNC = "mean";
 	//public static final String SUBSTRING_FUNC = "product";
 	
 	
@@ -83,61 +85,19 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 		JEP result = new JEP();
 		result.addStandardConstants();
 		result.addStandardFunctions();
+		
 		result.addVariable(CURRENT_VALUE_VAR, adapter);
 		result.addVariable(UNIQUE_NODE_NAMES_VAR, UniqueNameAdapter.getSharedInstance());
 		result.addVariable(NODE_NAMES_VAR, NodeNameAdapter.getSharedInstance());
 		result.addVariable(BRANCH_LENGTH_VAR, BranchLengthAdapter.getSharedInstance());
-		result.addFunction(GET_VALUE_FUNC, new IDFunction() {
-					@Override
-					public Object getValue(String id) throws ParseException {
-						return getIDValue((String)id);
-					}
-
-					@Override
-					public Object getValue(NodeBranchDataAdapter adapter) throws ParseException {
-						return getCurrentValue(adapter);
-					}
-				});
 		
-		result.addFunction(HAS_VALUE_FUNC, new IDFunction() {
-					@Override
-					public Object getValue(String id) throws ParseException {
-						return codeBoolean(isEvaluating || !adapterMap.get(id).isEmpty(position));
-					}
-
-					@Override
-					public Object getValue(NodeBranchDataAdapter id) throws ParseException {
-						return codeBoolean(isEvaluating || !adapter.isEmpty(position));
-					}
-				});
-		
-		result.addFunction(MIN_FUNC, new DoubleVarargFunction() {
-					@Override
-					protected double calculate(double value1, double value2) {
-						return Math.min(value1, value2);
-					}
-				});
-		
-		result.addFunction(MAX_FUNC, new DoubleVarargFunction() {
-					@Override
-					protected double calculate(double value1, double value2) {
-						return Math.max(value1, value2);
-					}
-				});
-
-		result.addFunction(SUM_FUNC, new DoubleVarargFunction() {
-					@Override
-					protected double calculate(double value1, double value2) {
-						return value1 + value2;
-					}
-				});
-
-		result.addFunction(PRODUCT_FUNC, new DoubleVarargFunction() {
-					@Override
-					protected double calculate(double value1, double value2) {
-						return value1 * value2;
-					}
-				});
+		result.addFunction(GET_VALUE_FUNC, new GetValueFunction(this));
+		result.addFunction(HAS_VALUE_FUNC, new HasValuesFunction(this));
+		result.addFunction(MIN_FUNC, new MinFunction());
+		result.addFunction(MAX_FUNC, new MaxFunction());
+		result.addFunction(SUM_FUNC, new SumFunction());
+		result.addFunction(PRODUCT_FUNC, new ProductFunction());
+		result.addFunction(MEAN_FUNC, new MeanFunction());
 
 		return result;
 	}
@@ -167,11 +127,11 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 	
 	
 	/**
-	 * Evaluates the expression with one set of variable values. 
-	 * @param defaultValue - either a string or a double value
-	 * @return the error information or <code>null</code> if no error occurred.
+	 * Evaluates the expression with one set of variable values.
+	 * 
+	 * @return the error information or {@code null} if no error occurred.
 	 */
-	private String evaluationStep(Object defaultValue) {
+	private String evaluationStep() {
 		String result = null;
 		try {
 			parser.evaluate(parser.parse(expression));
@@ -184,9 +144,10 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 	
 	
 	/**
-	 * Evaluates the expression of this instance. Error can be obtined by calling 
+	 * Evaluates the expression of this instance. Error can be obtained by calling 
 	 * {@link CalculateColumnEdit#getErrors()}.
-	 * @return <code>true</code> if the expression contained no errors.
+	 * 
+	 * @return {@code true} if the expression contained no errors.
 	 */
 	public boolean evaluate() {
 		isEvaluating = true;
@@ -194,11 +155,11 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 		try {
 			errors.clear();
 			isEvaluatingDecimal = true;
-			String error = evaluationStep(new Double(1));
-			result = error == null;
+			String error = evaluationStep();
+			result = (error == null);
 			if (!result) {
 				isEvaluatingDecimal = false;
-				error = evaluationStep("a");
+				error = evaluationStep();
 				result = error == null;
 				if (!result) {
 					errors.add(error);
@@ -215,10 +176,11 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 	/**
 	 * Returns the value of the specified column in the current line 
 	 * (specified by {@link CalculateColumnEdit#position}).
+	 * 
 	 * @param adapter - defined the column to use
 	 * @return a value of type {@link Double} or {@link String}
 	 */
-	private Object getCurrentValue(NodeBranchDataAdapter adapter) {
+	public Object getCurrentValue(NodeBranchDataAdapter adapter) {
 		if (isEvaluating) {
 			if (isEvaluatingDecimal && !(adapter instanceof UniqueNameAdapter)) {
 				return new Double(1);
@@ -241,15 +203,21 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 	}
 	
 	
+	public boolean hasCurrentValue(NodeBranchDataAdapter adapter) {
+		return isEvaluating || !adapter.isEmpty(position);
+	}
+	
+	
 	/**
 	 * Returns the value of the current line in the column specified the passed id present.
+	 * 
 	 * @param id - the ID of the node/branch data column
 	 * @return the value (as {@link Double}, {@link String}) or <code>null</code> if the specified column 
 	 *         does not contain any value at the current position or a {@link Double} with the value 1 if 
 	 *         {@link CalculateColumnEdit#isEvaluating} is <code>true</code>
 	 * @throws UndefinedIDException - if no column with the specified ID exists 
 	 */
-	private Object getIDValue(String id) throws ParseException {
+	public Object getIDValue(String id) throws ParseException {
 		NodeBranchDataAdapter adapter = adapterMap.get(id);
 		if (adapter != null) {
 			return getCurrentValue(adapter);
@@ -258,6 +226,11 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 			throw new UndefinedIDException("A node/branch data column with the ID \"" + id + 
 					" \" does not exists.");
 		}
+	}
+	
+	
+	public boolean hasIDValue(String id) {
+		return isEvaluating || !adapterMap.get(id).isEmpty(position);
 	}
 	
 	
@@ -310,6 +283,7 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 	/**
 	 * Returns a description of the errors that occured during the last call of 
 	 * {@link CalculateColumnEdit#redo()} or {@link CalculateColumnEdit#evaluate()}.
+	 * 
 	 * @return
 	 */
 	public String[] getErrors() {

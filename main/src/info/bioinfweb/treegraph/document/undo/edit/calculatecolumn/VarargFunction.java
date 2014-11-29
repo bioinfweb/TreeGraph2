@@ -45,7 +45,7 @@ public abstract class VarargFunction extends AbstractFunction implements Postfix
 	
 	private boolean checkParamTypes(Stack stack) {
 		for (Object value : stack) {
-			if (!(value instanceof Double)) {
+			if (!paramClass.isInstance(value)) {
 				return false;
 			}
 		}

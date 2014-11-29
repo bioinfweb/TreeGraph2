@@ -18,38 +18,19 @@
  */
 package info.bioinfweb.treegraph.document.undo.edit.calculatecolumn;
 
-
-import org.nfunk.jep.function.PostfixMathCommandI;
+import info.bioinfweb.treegraph.document.undo.edit.CalculateColumnEdit;
 
 
 
 /**
- * Basic implementations for a custom JEP function.
- *  
+ * Calculates the maximum of a set of {@link Double} values in {@link CalculateColumnEdit}.
+ * 
  * @author Ben St&ouml;ver
- * @since 2.0.46 
+ * @since 2.4.0
  */
-public abstract class AbstractFunction implements PostfixMathCommandI {
-	private int curNumberOfParameters = 1;
-	
-	
-  public static Double codeBoolean(boolean value) {
-  	if (value) {
-  		return new Double(1);
-  	}
-  	else {
-  		return new Double(0);
-  	}
-  }
-  
-  
+public class MaxFunction extends DoubleVarargFunction {
 	@Override
-	public void setCurNumberOfParameters(int n) {
-		curNumberOfParameters = n;
-	}
-
-
-	protected int getCurNumberOfParameters() {
-		return curNumberOfParameters;
+	protected double calculate(double value1, double value2) {
+		return Math.max(value1, value2);
 	}
 }
