@@ -58,8 +58,6 @@ public class NewickStringReader extends NewickStringChars {
 		  BranchLengthAdapter.getSharedInstance();
 	
 	
-	private static NewickStringReader sharedInstance = null;
-	
 	private String newickDescription;
 	private List<NewickToken> tokens;
 	private NodeBranchDataAdapter internalAdapter;
@@ -68,15 +66,8 @@ public class NewickStringReader extends NewickStringChars {
 	private boolean translateInternals;
 	private boolean hiddenDataAdded = false;
 	private CommentDataReader commentDataReader = new CommentDataReader();
+	private BranchLengthsScaler branchLengthsScaler = new BranchLengthsScaler();
   
-	
-	public static NewickStringReader getSharedInstance() {
-		if (sharedInstance == null) {
-			sharedInstance = new NewickStringReader();
-		}
-		return sharedInstance;
-	}	
-	
 	
   private int searchSubtreeEnd(int start, int end) {
   	for (int pos = start; pos <= end; pos++) {
@@ -318,7 +309,7 @@ public class NewickStringReader extends NewickStringChars {
   	hiddenDataAdded = false;
   	
   	Tree tree = readTree();
-  	BranchLengthsScaler.getSharedInstance().setDefaultAverageScale(tree);
+  	branchLengthsScaler.setDefaultAverageScale(tree);
   	return tree;
   }
   
@@ -329,7 +320,7 @@ public class NewickStringReader extends NewickStringChars {
 
 		Tree[] trees = new Tree[newick.length];
 		boolean[] hiddenDataAdded = new boolean[newick.length];
-		NewickStringReader reader = NewickStringReader.getSharedInstance(); 
+		NewickStringReader reader = new NewickStringReader(); 
 		for (int i = 0; i < newick.length; i++) {
 			trees[i] = reader.read(newick[i], internalAdapter, 
 					branchLengthsAdapter, translTable, translateInternals);

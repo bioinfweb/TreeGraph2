@@ -36,18 +36,8 @@ import info.bioinfweb.commons.Math2;
  * @since 2.0.24
  */
 public class BranchLengthsScaler {	
-  private static BranchLengthsScaler sharedInstance = null;
-  
   private int count = 0;
   private double sum = 0;
-  
-  
-  public static BranchLengthsScaler getSharedInstance() {
-  	if (sharedInstance == null) {
-  		sharedInstance = new BranchLengthsScaler();
-  	}
-  	return sharedInstance;
-  }
   
   
   private void calculateAverage(Node root) {

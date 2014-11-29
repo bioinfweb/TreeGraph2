@@ -56,6 +56,7 @@ public class PhyloXMLReader extends AbstractDocumentReader implements PhyloXMLCo
   private XMLEventReader reader;
   private Vector<String> names = new Vector<String>();
   private Vector<Tree> phylogenies = new Vector<Tree>();
+  private BranchLengthsScaler branchLengthsScaler = new BranchLengthsScaler();
   
   
 	public PhyloXMLReader() {
@@ -340,7 +341,7 @@ public class PhyloXMLReader extends AbstractDocumentReader implements PhyloXMLCo
       event = reader.nextEvent();
     }
     
-  	BranchLengthsScaler.getSharedInstance().setDefaultAverageScale(phylogenies.lastElement());
+  	branchLengthsScaler.setDefaultAverageScale(phylogenies.lastElement());
   	return result;
   }
 	
