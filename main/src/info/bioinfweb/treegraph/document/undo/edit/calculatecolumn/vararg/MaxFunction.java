@@ -28,7 +28,7 @@ import info.bioinfweb.treegraph.document.undo.edit.CalculateColumnEdit;
  * @author Ben St&ouml;ver
  * @since 2.4.0
  */
-public class MaxFunction extends DoubleVarargFunction {
+public class MaxFunction extends DoubleVarArgFunction {
 	public MaxFunction(CalculateColumnEdit edit) {
 	  super(edit);
   }

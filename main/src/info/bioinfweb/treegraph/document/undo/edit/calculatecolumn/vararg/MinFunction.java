@@ -29,7 +29,7 @@ import info.bioinfweb.treegraph.document.undo.edit.CalculateColumnEdit;
  * @author Ben St&ouml;ver
  * @since 2.4.0
  */
-public class MinFunction extends DoubleVarargFunction {
+public class MinFunction extends DoubleVarArgFunction {
 	public MinFunction(CalculateColumnEdit edit) {
 	  super(edit);
   }

@@ -34,16 +34,20 @@ import org.nfunk.jep.function.PostfixMathCommandI;
  * 
  * @author Ben St&ouml;ver
  * @since 2.0.46
- *
  */
-public abstract class VarargFunction extends AbstractFunction implements PostfixMathCommandI {
+public abstract class VarArgFunction extends AbstractFunction implements PostfixMathCommandI {
 	private Class<? extends Object> paramClass;
 	
 	
-	public VarargFunction(CalculateColumnEdit edit, Class<? extends Object> paramClass) {
+	public VarArgFunction(CalculateColumnEdit edit, Class<? extends Object> paramClass) {
 	  super(edit);
 	  this.paramClass = paramClass;
   }
+	
+	
+	public IDVarArgFunction createIDVersion() {
+		return new IDVarArgFunction(getEdit(), this);
+	}
 
 
 	private boolean checkParamTypes(Stack stack) {
@@ -58,7 +62,7 @@ public abstract class VarargFunction extends AbstractFunction implements Postfix
 
 	@Override
 	public boolean checkNumberOfParameters(int n) {
-		return n > 1;
+		return n >= 1;
 	}
 	
 

@@ -29,7 +29,7 @@ import info.bioinfweb.treegraph.document.undo.edit.CalculateColumnEdit;
  * @author Ben St&ouml;ver
  * @since 2.4.0
  */
-public class ProductFunction extends DoubleVarargFunction {
+public class ProductFunction extends DoubleVarArgFunction {
 	public ProductFunction(CalculateColumnEdit edit) {
 	  super(edit);
   }

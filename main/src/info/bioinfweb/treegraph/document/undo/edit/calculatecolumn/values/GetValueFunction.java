@@ -19,21 +19,21 @@
 package info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.values;
 
 
-import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.edit.CalculateColumnEdit;
-import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.IDFunction;
-
-import org.nfunk.jep.ParseException;
+import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.DefaultValueIDFunction;
 
 
 
 /**
  * Function that returns the value of a certain node/branch data column at the current node in {@link CalculateColumnEdit}.
+ * <p>
+ * This function can directly use the default implementations of {@link #getValue(String)} and 
+ * {@link #getValue(info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter)}.
  * 
  * @author Ben St&ouml;ver
  * @since 2.4.0
  */
-public class GetValueFunction extends IDFunction {
+public class GetValueFunction extends DefaultValueIDFunction {
 	public GetValueFunction(CalculateColumnEdit edit) {
 	  super(edit);
   }
@@ -43,16 +43,4 @@ public class GetValueFunction extends IDFunction {
   public String getName() {
 	  return "getValue";
   }
-
-
-	@Override
-	public Object getValue(String id) throws ParseException {
-		return getEdit().getIDValue(getEdit().getPosition(), id);
-	}
-
-
-	@Override
-	public Object getValue(NodeBranchDataAdapter adapter) throws ParseException {
-		return getEdit().getValue(getEdit().getPosition(), adapter);
-	}
 }

@@ -51,6 +51,7 @@ import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.vararg.MeanFu
 import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.vararg.MinFunction;
 import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.vararg.ProductFunction;
 import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.vararg.SumFunction;
+import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.vararg.VarArgFunction;
 
 
 
@@ -90,6 +91,12 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 	}
 	
 	
+	private void addVarArgFunction(JEP parser, VarArgFunction function) {
+		addFunction(parser, function);
+		addFunction(parser, function.createIDVersion());
+	}
+	
+	
 	private JEP createParser() {
 		JEP result = new JEP();
 		result.addStandardConstants();
@@ -109,11 +116,11 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 		addFunction(result, new IsLeafFunction(this));
 		addFunction(result, new IndexInParentFunction(this));
 		
-		addFunction(result, new MinFunction(this));
-		addFunction(result, new MaxFunction(this));
-		addFunction(result, new SumFunction(this));
-		addFunction(result, new ProductFunction(this));
-		addFunction(result, new MeanFunction(this));
+		addVarArgFunction(result, new MinFunction(this));
+		addVarArgFunction(result, new MaxFunction(this));
+		addVarArgFunction(result, new SumFunction(this));
+		addVarArgFunction(result, new ProductFunction(this));
+		addVarArgFunction(result, new MeanFunction(this));
 
 		return result;
 	}
@@ -176,6 +183,7 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 			parser.evaluate(parser.parse(expression));
 		}
 		catch (ParseException e) {
+			e.printStackTrace();
 			result = e.getErrorInfo();
 		}
 		return result;

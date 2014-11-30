@@ -21,7 +21,7 @@ package info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.values;
 
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.edit.CalculateColumnEdit;
-import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.IDFunction;
+import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.DefaultValueIDFunction;
 
 import org.nfunk.jep.ParseException;
 
@@ -33,7 +33,7 @@ import org.nfunk.jep.ParseException;
  * @author Ben St&ouml;ver
  * @since 2.4.0
  */
-public class HasValueFunction extends IDFunction {
+public class HasValueFunction extends DefaultValueIDFunction {
 	public HasValueFunction(CalculateColumnEdit edit) {
 	  super(edit);
   }

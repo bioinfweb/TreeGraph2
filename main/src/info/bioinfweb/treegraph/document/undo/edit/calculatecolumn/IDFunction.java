@@ -22,75 +22,55 @@ package info.bioinfweb.treegraph.document.undo.edit.calculatecolumn;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.edit.CalculateColumnEdit;
 
-import java.util.Stack;
-
 import org.nfunk.jep.ParseException;
-import org.nfunk.jep.function.PostfixMathCommandI;
 
 
 
-/**
- * @author Ben St&ouml;ver
- * @since 2.0.24
- */
-public abstract class IDFunction extends AbstractFunction implements PostfixMathCommandI {
-	/**
-	 * Creates a new instance of this class.
-	 * 
-	 * @param edit - the edit using this function
-	 */
+public abstract class IDFunction extends AbstractFunction {
 	public IDFunction(CalculateColumnEdit edit) {
 	  super(edit);
   }
 
 
-	public boolean checkNumberOfParameters(int n) {
-		return (n == 1) || (n == 2);
-	}
-
-	
-	public int getNumberOfParameters() {
-		return -1;
-	}
-
-	
-	@Override
-	public void run(Stack stack) throws ParseException {
-		if (checkNumberOfParameters(getCurNumberOfParameters())) {
-			Object defaultValue = null;
-			if (getCurNumberOfParameters() > 1) {
-				defaultValue = stack.pop();
-			}
-			Object id = stack.pop();
-			
-			Object result = null;
-			if (id instanceof String) {
-				result = getValue((String)id);
-			}
-			else if (id instanceof NodeBranchDataAdapter) {
-				result = getValue((NodeBranchDataAdapter)id);
-			}
-			else {
-				throw new ParseException("Invalid parameter type");
-			}
-			if (result == null) {
-				if (defaultValue == null) {
-					throw new ParseException("A value for the specified column does not exist in the current line.");
-				}
-				else {
-					result = defaultValue;
-				}
-			}
-			stack.push(result);
+	public Object parseIDValue(Object value) throws ParseException {
+		if (value instanceof String) {
+			return getValue((String)value);
+		}
+		else if (value instanceof NodeBranchDataAdapter) {
+			return getValue((NodeBranchDataAdapter)value);
 		}
 		else {
-			throw new ParseException("Invalid number of parameters");
+			throw new ParseException("Invalid parameter type");
 		}
 	}
 	
 	
-	public abstract Object getValue(String id) throws ParseException;
-	
-	
-	public abstract Object getValue(NodeBranchDataAdapter adapter) throws ParseException;
+	/**
+	 * Default implementation that returns the value in the specified node/branch data column at the 
+	 * current node.
+	 * 
+	 * @param id - the ID of the column to be used
+	 * @return the value found in the node/branch data column or some default value depending on the current
+	 *         evaluation status of the associated {@link CalculateColumnEdit}
+	 * @throws ParseException if the associated {@link CalculateColumnEdit} is not in evaluation mode and the 
+	 *         specified node/branch data column does not contain any value at the current node
+	 */
+	public Object getValue(String id) throws ParseException {
+		return getEdit().getIDValue(getEdit().getPosition(), id);
+	}
+
+
+	/**
+	 * Default implementation that returns the value in the specified node/branch data column at the 
+	 * current node.
+	 * 
+	 * @param adapter - the node/branch data adapter of the column to be used
+	 * @return the value found in the node/branch data column or some default value depending on the current
+	 *         evaluation status of the associated {@link CalculateColumnEdit}
+	 * @throws ParseException if the associated {@link CalculateColumnEdit} is not in evaluation mode and the 
+	 *         specified node/branch data column does not contain any value at the current node
+	 */
+	public Object getValue(NodeBranchDataAdapter adapter) throws ParseException {
+		return getEdit().getValue(getEdit().getPosition(), adapter);
+	}
 }

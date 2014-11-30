@@ -29,7 +29,7 @@ import info.bioinfweb.treegraph.document.undo.edit.CalculateColumnEdit;
  * @author Ben St&ouml;ver
  * @since 2.4.0
  */
-public class SumFunction extends DoubleVarargFunction {
+public class SumFunction extends DoubleVarArgFunction {
 	public SumFunction(CalculateColumnEdit edit) {
 	  super(edit);
   }

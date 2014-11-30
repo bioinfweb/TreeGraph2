@@ -40,6 +40,12 @@ public class MeanFunction extends SumFunction {
 
 	
 	@Override
+  public String getName() {
+	  return "mean";
+  }
+
+
+	@Override
   public void run(Stack stack) throws ParseException {
 	  super.run(stack);
 	  Double value = (Double)stack.pop();

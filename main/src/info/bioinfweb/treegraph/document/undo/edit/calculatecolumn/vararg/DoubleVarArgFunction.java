@@ -29,8 +29,8 @@ import info.bioinfweb.treegraph.document.undo.edit.CalculateColumnEdit;
  * @author Ben St&ouml;ver
  * @since 2.0.46
  */
-public abstract class DoubleVarargFunction extends VarargFunction {
-	public DoubleVarargFunction(CalculateColumnEdit edit) {
+public abstract class DoubleVarArgFunction extends VarArgFunction {
+	public DoubleVarArgFunction(CalculateColumnEdit edit) {
 	  super(edit, Double.class);
   }
 
