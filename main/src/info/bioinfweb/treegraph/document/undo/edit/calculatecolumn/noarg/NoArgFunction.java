@@ -16,27 +16,35 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.document.undo.edit.calculatecolumn;
+package info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.noarg;
+
+
+import info.bioinfweb.treegraph.document.undo.edit.CalculateColumnEdit;
+import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.AbstractFunction;
 
 
 
 /**
- * Abstract vararg functions expecting <code>double</code> parameters should can inherit from this class.
- *  
+ * Abstract class that implements basic functionality for functions used in {@link CalculateColumnEdit} that
+ * have no parameters.
+ * 
  * @author Ben St&ouml;ver
- * @since 2.0.46
+ * @since 2.4.0
  */
-public abstract class DoubleVarargFunction extends VarargFunction {
-	public DoubleVarargFunction() {
-		super(Double.class);
-	}
+public abstract class NoArgFunction extends AbstractFunction {
+	public NoArgFunction(CalculateColumnEdit edit) {
+	  super(edit);
+  }
+
+
+	@Override
+  public boolean checkNumberOfParameters(int n) {
+	  return (n == 0);
+  }
 
 	
 	@Override
-	protected Object calculate(Object value1, Object value2) {
-		return calculate(((Double)value1).doubleValue(), ((Double)value2).doubleValue());
-	}
-
-	
-	protected abstract double calculate(double value1, double value2);
+  public int getNumberOfParameters() {
+	  return 0;
+  }
 }

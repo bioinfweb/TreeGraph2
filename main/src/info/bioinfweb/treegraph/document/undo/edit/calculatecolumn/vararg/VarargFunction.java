@@ -16,8 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.document.undo.edit.calculatecolumn;
+package info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.vararg;
 
+
+import info.bioinfweb.treegraph.document.undo.edit.CalculateColumnEdit;
+import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.AbstractFunction;
 
 import java.util.Stack;
 
@@ -37,12 +40,12 @@ public abstract class VarargFunction extends AbstractFunction implements Postfix
 	private Class<? extends Object> paramClass;
 	
 	
-	public VarargFunction(Class<? extends Object> paramClass) {
-		super();
-		this.paramClass = paramClass;
-	}
-	
-	
+	public VarargFunction(CalculateColumnEdit edit, Class<? extends Object> paramClass) {
+	  super(edit);
+	  this.paramClass = paramClass;
+  }
+
+
 	private boolean checkParamTypes(Stack stack) {
 		for (Object value : stack) {
 			if (!paramClass.isInstance(value)) {

@@ -16,28 +16,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.document.undo.edit.calculatecolumn;
-
+package info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.vararg;
 
 import info.bioinfweb.treegraph.document.undo.edit.CalculateColumnEdit;
-
-import java.util.Stack;
-
-import org.nfunk.jep.ParseException;
 
 
 
 /**
- * Calculates the arithmetic mean of a set of {@link Double} values in {@link CalculateColumnEdit}.
+ * Calculates the maximum of a set of {@link Double} values in {@link CalculateColumnEdit}.
  * 
  * @author Ben St&ouml;ver
  * @since 2.4.0
  */
-public class MeanFunction extends SumFunction {
-	@Override
-  public void run(Stack stack) throws ParseException {
-	  super.run(stack);
-	  Double value = (Double)stack.pop();
-	  stack.push(new Double(value.doubleValue() / getCurNumberOfParameters()));
+public class MaxFunction extends DoubleVarargFunction {
+	public MaxFunction(CalculateColumnEdit edit) {
+	  super(edit);
   }
+
+	
+	@Override
+  public String getName() {
+	  return "max";
+  }
+
+
+	@Override
+	protected double calculate(double value1, double value2) {
+		return Math.max(value1, value2);
+	}
 }

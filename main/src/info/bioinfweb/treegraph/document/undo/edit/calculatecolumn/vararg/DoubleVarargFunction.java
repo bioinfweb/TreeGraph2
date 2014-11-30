@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.document.undo.edit.calculatecolumn;
+package info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.vararg;
 
 
 import info.bioinfweb.treegraph.document.undo.edit.CalculateColumnEdit;
@@ -24,14 +24,22 @@ import info.bioinfweb.treegraph.document.undo.edit.CalculateColumnEdit;
 
 
 /**
- * Calculates the minimum of a set of {@link Double} values in {@link CalculateColumnEdit}.
- * 
+ * Abstract vararg functions expecting <code>double</code> parameters should can inherit from this class.
+ *  
  * @author Ben St&ouml;ver
- * @since 2.4.0
+ * @since 2.0.46
  */
-public class MinFunction extends DoubleVarargFunction {
+public abstract class DoubleVarargFunction extends VarargFunction {
+	public DoubleVarargFunction(CalculateColumnEdit edit) {
+	  super(edit, Double.class);
+  }
+
+
 	@Override
-	protected double calculate(double value1, double value2) {
-		return Math.min(value1, value2);
+	protected Object calculate(Object value1, Object value2) {
+		return calculate(((Double)value1).doubleValue(), ((Double)value2).doubleValue());
 	}
+
+	
+	protected abstract double calculate(double value1, double value2);
 }

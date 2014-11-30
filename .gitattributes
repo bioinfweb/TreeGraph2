@@ -368,17 +368,26 @@ main/src/info/bioinfweb/treegraph/document/undo/edit/SetColumnTypeEdit.java -tex
 main/src/info/bioinfweb/treegraph/document/undo/edit/SortLeafsEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/edit/TextElementEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/AbstractFunction.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/DoubleVarargFunction.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/GetValueFunction.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/HasValuesFunction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/IDFunction.java -text
-main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/MaxFunction.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/MeanFunction.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/MinFunction.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/ProductFunction.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/SumFunction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/UndefinedIDException.java -text
-main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/VarargFunction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/noarg/NoArgBooleanFunction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/noarg/NoArgDoubleFunction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/noarg/NoArgFunction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/package-info.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/topology/IndexInParentFunction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/topology/IsLeafFunction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/topology/IsRootFunction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/values/GetParentValueFunction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/values/GetValueFunction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/values/HasParentValueFunction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/values/HasValueFunction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/vararg/DoubleVarargFunction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/vararg/MaxFunction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/vararg/MeanFunction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/vararg/MinFunction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/vararg/ProductFunction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/vararg/SumFunction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/vararg/VarargFunction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/file/AddSupportValuesEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/file/NodeSupportEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/file/importtable/DuplicateKeyException.java -text svneol=unset#text/plain

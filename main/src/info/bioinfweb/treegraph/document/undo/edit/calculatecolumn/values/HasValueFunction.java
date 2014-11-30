@@ -16,36 +16,43 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.document.undo.edit.calculatecolumn;
+package info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.values;
 
 
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.edit.CalculateColumnEdit;
+import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.IDFunction;
 
 import org.nfunk.jep.ParseException;
 
 
 
 /**
- * Function that return the value of a certain node/branch data column at the current node in {@link CalculateColumnEdit}.
+ * Function that tests if a certain node/branch data column has a value at the current node in {@link CalculateColumnEdit}.
  * 
  * @author Ben St&ouml;ver
  * @since 2.4.0
  */
-public class GetValueFunction extends IDFunction {
-	public GetValueFunction(CalculateColumnEdit edit) {
+public class HasValueFunction extends IDFunction {
+	public HasValueFunction(CalculateColumnEdit edit) {
 	  super(edit);
   }
 
 	
 	@Override
-	public Object getValue(String id) throws ParseException {
-		return getEdit().getIDValue((String)id);
-	}
+  public String getName() {
+	  return "hasValue";
+  }
 
 
 	@Override
+	public Object getValue(String id) throws ParseException {
+		return codeBoolean(getEdit().hasIDValue(getEdit().getPosition(), id));
+	}
+	
+
+	@Override
 	public Object getValue(NodeBranchDataAdapter adapter) throws ParseException {
-		return getEdit().getCurrentValue(adapter);
+		return codeBoolean(getEdit().hasValue(getEdit().getPosition(), adapter));
 	}
 }

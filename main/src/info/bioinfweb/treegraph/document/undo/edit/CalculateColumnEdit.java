@@ -39,6 +39,18 @@ import info.bioinfweb.treegraph.document.nodebranchdata.*;
 import info.bioinfweb.treegraph.document.undo.NodeBranchDataBackup;
 import info.bioinfweb.treegraph.document.undo.NodeBranchDataEdit;
 import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.*;
+import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.topology.IndexInParentFunction;
+import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.topology.IsLeafFunction;
+import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.topology.IsRootFunction;
+import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.values.GetParentValueFunction;
+import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.values.GetValueFunction;
+import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.values.HasParentValueFunction;
+import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.values.HasValueFunction;
+import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.vararg.MaxFunction;
+import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.vararg.MeanFunction;
+import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.vararg.MinFunction;
+import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.vararg.ProductFunction;
+import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.vararg.SumFunction;
 
 
 
@@ -53,14 +65,6 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 	public static final String UNIQUE_NODE_NAMES_VAR = "UNIQUE";
 	public static final String NODE_NAMES_VAR = "NAME";
 	public static final String BRANCH_LENGTH_VAR = "LENGTH";
-	public static final String GET_VALUE_FUNC = "getValue";
-	public static final String HAS_VALUE_FUNC = "hasValue";
-	public static final String MIN_FUNC = "min";
-	public static final String MAX_FUNC = "max";
-	public static final String SUM_FUNC = "sum";
-	public static final String PRODUCT_FUNC = "product";
-	public static final String MEAN_FUNC = "mean";
-	//public static final String SUBSTRING_FUNC = "product";
 	
 	
   private String expression;
@@ -81,6 +85,11 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 	}
 	
 	
+	private void addFunction(JEP parser, AbstractFunction function) {
+		parser.addFunction(function.getName(), function);
+	}
+	
+	
 	private JEP createParser() {
 		JEP result = new JEP();
 		result.addStandardConstants();
@@ -91,13 +100,20 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 		result.addVariable(NODE_NAMES_VAR, NodeNameAdapter.getSharedInstance());
 		result.addVariable(BRANCH_LENGTH_VAR, BranchLengthAdapter.getSharedInstance());
 		
-		result.addFunction(GET_VALUE_FUNC, new GetValueFunction(this));
-		result.addFunction(HAS_VALUE_FUNC, new HasValuesFunction(this));
-		result.addFunction(MIN_FUNC, new MinFunction());
-		result.addFunction(MAX_FUNC, new MaxFunction());
-		result.addFunction(SUM_FUNC, new SumFunction());
-		result.addFunction(PRODUCT_FUNC, new ProductFunction());
-		result.addFunction(MEAN_FUNC, new MeanFunction());
+		addFunction(result, new GetValueFunction(this));
+		addFunction(result, new HasValueFunction(this));
+		addFunction(result, new GetParentValueFunction(this));
+		addFunction(result, new HasParentValueFunction(this));
+		
+		addFunction(result, new IsRootFunction(this));
+		addFunction(result, new IsLeafFunction(this));
+		addFunction(result, new IndexInParentFunction(this));
+		
+		addFunction(result, new MinFunction(this));
+		addFunction(result, new MaxFunction(this));
+		addFunction(result, new SumFunction(this));
+		addFunction(result, new ProductFunction(this));
+		addFunction(result, new MeanFunction(this));
 
 		return result;
 	}
@@ -126,6 +142,16 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 	}
 	
 	
+	public Node getPosition() {
+		return position;
+	}
+
+
+	public boolean isEvaluating() {
+		return isEvaluating;
+	}
+
+
 	/**
 	 * Evaluates the expression with one set of variable values.
 	 * 
@@ -180,7 +206,7 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 	 * @param adapter - defined the column to use
 	 * @return a value of type {@link Double} or {@link String}
 	 */
-	public Object getCurrentValue(NodeBranchDataAdapter adapter) {
+	public Object getValue(Node node, NodeBranchDataAdapter adapter) {
 		if (isEvaluating) {
 			if (isEvaluatingDecimal && !(adapter instanceof UniqueNameAdapter)) {
 				return new Double(1);
@@ -190,11 +216,11 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 			}
 		}
 		else {
-			if (adapter.isDecimal(position)) {
-				return new Double(adapter.getDecimal(position));
+			if (adapter.isDecimal(node)) {
+				return new Double(adapter.getDecimal(node));
 			}
-			else if (adapter.isString(position)) {
-				return adapter.getText(position);
+			else if (adapter.isString(node)) {
+				return adapter.getText(node);
 			}
 			else {
 				return null;
@@ -203,8 +229,8 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 	}
 	
 	
-	public boolean hasCurrentValue(NodeBranchDataAdapter adapter) {
-		return isEvaluating || !adapter.isEmpty(position);
+	public boolean hasValue(Node node, NodeBranchDataAdapter adapter) {
+		return isEvaluating || !adapter.isEmpty(node);
 	}
 	
 	
@@ -217,10 +243,10 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 	 *         {@link CalculateColumnEdit#isEvaluating} is <code>true</code>
 	 * @throws UndefinedIDException - if no column with the specified ID exists 
 	 */
-	public Object getIDValue(String id) throws ParseException {
+	public Object getIDValue(Node node, String id) throws ParseException {
 		NodeBranchDataAdapter adapter = adapterMap.get(id);
 		if (adapter != null) {
-			return getCurrentValue(adapter);
+			return getValue(node, adapter);
 		}
 		else {
 			throw new UndefinedIDException("A node/branch data column with the ID \"" + id + 
@@ -229,8 +255,8 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 	}
 	
 	
-	public boolean hasIDValue(String id) {
-		return isEvaluating || !adapterMap.get(id).isEmpty(position);
+	public boolean hasIDValue(Node node, String id) {
+		return hasValue(node, adapterMap.get(id));  // If adapter is undefined, false is returned.
 	}
 	
 	

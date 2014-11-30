@@ -34,23 +34,14 @@ import org.nfunk.jep.function.PostfixMathCommandI;
  * @since 2.0.24
  */
 public abstract class IDFunction extends AbstractFunction implements PostfixMathCommandI {
-	private CalculateColumnEdit edit;
-	
-	
 	/**
 	 * Creates a new instance of this class.
 	 * 
 	 * @param edit - the edit using this function
 	 */
 	public IDFunction(CalculateColumnEdit edit) {
-	  super();
-	  this.edit = edit;
+	  super(edit);
   }
-
-
-	public CalculateColumnEdit getEdit() {
-		return edit;
-	}
 
 
 	public boolean checkNumberOfParameters(int n) {
@@ -101,5 +92,5 @@ public abstract class IDFunction extends AbstractFunction implements PostfixMath
 	public abstract Object getValue(String id) throws ParseException;
 	
 	
-	public abstract Object getValue(NodeBranchDataAdapter id) throws ParseException;
+	public abstract Object getValue(NodeBranchDataAdapter adapter) throws ParseException;
 }

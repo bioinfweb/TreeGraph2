@@ -16,36 +16,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.document.undo.edit.calculatecolumn;
+package info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.vararg;
 
 
-import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.edit.CalculateColumnEdit;
-
-import org.nfunk.jep.ParseException;
 
 
 
 /**
- * Function that tests if a certain node/branch data column has a value at the current node in {@link CalculateColumnEdit}.
+ * Calculates the product of a set of {@link Double} values in {@link CalculateColumnEdit}.
  * 
  * @author Ben St&ouml;ver
  * @since 2.4.0
  */
-public class HasValuesFunction extends IDFunction {
-	public HasValuesFunction(CalculateColumnEdit edit) {
+public class ProductFunction extends DoubleVarargFunction {
+	public ProductFunction(CalculateColumnEdit edit) {
 	  super(edit);
   }
 
 	
 	@Override
-	public Object getValue(String id) throws ParseException {
-		return codeBoolean(getEdit().hasIDValue(id));
-	}
-	
+  public String getName() {
+	  return "product";
+  }
+
 
 	@Override
-	public Object getValue(NodeBranchDataAdapter adapter) throws ParseException {
-		return codeBoolean(getEdit().hasCurrentValue(adapter));
+	protected double calculate(double value1, double value2) {
+		return value1 * value2;
 	}
 }

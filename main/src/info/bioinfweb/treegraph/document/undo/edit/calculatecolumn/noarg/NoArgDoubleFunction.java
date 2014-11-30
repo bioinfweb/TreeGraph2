@@ -16,57 +16,40 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.document.undo.edit.calculatecolumn;
+package info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.noarg;
 
 
 import info.bioinfweb.treegraph.document.undo.edit.CalculateColumnEdit;
 
-import org.nfunk.jep.function.PostfixMathCommandI;
+import java.util.Stack;
+
+import org.nfunk.jep.ParseException;
 
 
 
 /**
- * Basic implementations for a custom JEP function.
- *  
+ * Abstract class that implements basic functionality for functions used in {@link CalculateColumnEdit} that
+ * have no parameters and return a {@code double} value.
+ * 
  * @author Ben St&ouml;ver
- * @since 2.0.46 
+ * @since 2.4.0
  */
-public abstract class AbstractFunction implements PostfixMathCommandI {
-	private CalculateColumnEdit edit;
-	private int curNumberOfParameters = 1;
-	
-	
-	public AbstractFunction(CalculateColumnEdit edit) {
-	  super();
-	  this.edit = edit;
+public abstract class NoArgDoubleFunction extends NoArgFunction {
+	public NoArgDoubleFunction(CalculateColumnEdit edit) {
+	  super(edit);
   }
 
 
-	public abstract String getName();
+	protected abstract double calculateResult();
 	
 	
-	public CalculateColumnEdit getEdit() {
-		return edit;
-	}
-
-
-  public static Double codeBoolean(boolean value) {
-  	if (value) {
-  		return new Double(1);
-  	}
-  	else {
-  		return new Double(0);
-  	}
-  }
-  
-  
 	@Override
-	public void setCurNumberOfParameters(int n) {
-		curNumberOfParameters = n;
-	}
-
-
-	protected int getCurNumberOfParameters() {
-		return curNumberOfParameters;
-	}
+  public void run(Stack stack) throws ParseException {
+		if (getEdit().isEvaluating()) {
+			stack.push(0);
+		}
+		else {
+			stack.push(calculateResult());
+		}
+  }
 }

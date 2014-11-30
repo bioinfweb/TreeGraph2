@@ -16,22 +16,34 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.document.undo.edit.calculatecolumn;
+package info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.topology;
 
 
 import info.bioinfweb.treegraph.document.undo.edit.CalculateColumnEdit;
+import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.noarg.NoArgBooleanFunction;
 
 
 
 /**
- * Calculates the product of a set of {@link Double} values in {@link CalculateColumnEdit}.
+ * Function used with {@link CalculateColumnEdit} that checks if the current node is a terminal node.
  * 
  * @author Ben St&ouml;ver
  * @since 2.4.0
  */
-public class ProductFunction extends DoubleVarargFunction {
+public class IsLeafFunction extends NoArgBooleanFunction {
+	public IsLeafFunction(CalculateColumnEdit edit) {
+	  super(edit);
+  }
+
+
 	@Override
-	protected double calculate(double value1, double value2) {
-		return value1 * value2;
-	}
+  public String getName() {
+	  return "isLeaf";
+  }
+
+
+	@Override
+  protected boolean calculateResult() {
+	  return getEdit().getPosition().isLeaf();
+  }
 }

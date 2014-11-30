@@ -16,57 +16,43 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.document.undo.edit.calculatecolumn;
+package info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.values;
 
 
+import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.edit.CalculateColumnEdit;
+import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.IDFunction;
 
-import org.nfunk.jep.function.PostfixMathCommandI;
+import org.nfunk.jep.ParseException;
 
 
 
 /**
- * Basic implementations for a custom JEP function.
- *  
+ * Function that returns the value of a certain node/branch data column at the current node in {@link CalculateColumnEdit}.
+ * 
  * @author Ben St&ouml;ver
- * @since 2.0.46 
+ * @since 2.4.0
  */
-public abstract class AbstractFunction implements PostfixMathCommandI {
-	private CalculateColumnEdit edit;
-	private int curNumberOfParameters = 1;
-	
-	
-	public AbstractFunction(CalculateColumnEdit edit) {
-	  super();
-	  this.edit = edit;
+public class GetValueFunction extends IDFunction {
+	public GetValueFunction(CalculateColumnEdit edit) {
+	  super(edit);
   }
 
-
-	public abstract String getName();
 	
-	
-	public CalculateColumnEdit getEdit() {
-		return edit;
-	}
-
-
-  public static Double codeBoolean(boolean value) {
-  	if (value) {
-  		return new Double(1);
-  	}
-  	else {
-  		return new Double(0);
-  	}
-  }
-  
-  
 	@Override
-	public void setCurNumberOfParameters(int n) {
-		curNumberOfParameters = n;
+  public String getName() {
+	  return "getValue";
+  }
+
+
+	@Override
+	public Object getValue(String id) throws ParseException {
+		return getEdit().getIDValue(getEdit().getPosition(), id);
 	}
 
 
-	protected int getCurNumberOfParameters() {
-		return curNumberOfParameters;
+	@Override
+	public Object getValue(NodeBranchDataAdapter adapter) throws ParseException {
+		return getEdit().getValue(getEdit().getPosition(), adapter);
 	}
 }

@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.document.undo.edit.calculatecolumn;
+package info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.vararg;
 
 
 import info.bioinfweb.treegraph.document.undo.edit.CalculateColumnEdit;
@@ -24,14 +24,25 @@ import info.bioinfweb.treegraph.document.undo.edit.CalculateColumnEdit;
 
 
 /**
- * Calculates the sum of a set of {@link Double} values in {@link CalculateColumnEdit}.
+ * Calculates the minimum of a set of {@link Double} values in {@link CalculateColumnEdit}.
  * 
  * @author Ben St&ouml;ver
  * @since 2.4.0
  */
-public class SumFunction extends DoubleVarargFunction {
+public class MinFunction extends DoubleVarargFunction {
+	public MinFunction(CalculateColumnEdit edit) {
+	  super(edit);
+  }
+
+	
+	@Override
+  public String getName() {
+	  return "min";
+  }
+
+
 	@Override
 	protected double calculate(double value1, double value2) {
-		return value1 + value2;
+		return Math.min(value1, value2);
 	}
 }

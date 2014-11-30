@@ -16,57 +16,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.document.undo.edit.calculatecolumn;
+package info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.vararg;
 
 
 import info.bioinfweb.treegraph.document.undo.edit.CalculateColumnEdit;
 
-import org.nfunk.jep.function.PostfixMathCommandI;
+import java.util.Stack;
+
+import org.nfunk.jep.ParseException;
 
 
 
 /**
- * Basic implementations for a custom JEP function.
- *  
+ * Calculates the arithmetic mean of a set of {@link Double} values in {@link CalculateColumnEdit}.
+ * 
  * @author Ben St&ouml;ver
- * @since 2.0.46 
+ * @since 2.4.0
  */
-public abstract class AbstractFunction implements PostfixMathCommandI {
-	private CalculateColumnEdit edit;
-	private int curNumberOfParameters = 1;
-	
-	
-	public AbstractFunction(CalculateColumnEdit edit) {
-	  super();
-	  this.edit = edit;
+public class MeanFunction extends SumFunction {
+	public MeanFunction(CalculateColumnEdit edit) {
+	  super(edit);
   }
 
-
-	public abstract String getName();
 	
-	
-	public CalculateColumnEdit getEdit() {
-		return edit;
-	}
-
-
-  public static Double codeBoolean(boolean value) {
-  	if (value) {
-  		return new Double(1);
-  	}
-  	else {
-  		return new Double(0);
-  	}
-  }
-  
-  
 	@Override
-	public void setCurNumberOfParameters(int n) {
-		curNumberOfParameters = n;
-	}
-
-
-	protected int getCurNumberOfParameters() {
-		return curNumberOfParameters;
-	}
+  public void run(Stack stack) throws ParseException {
+	  super.run(stack);
+	  Double value = (Double)stack.pop();
+	  stack.push(new Double(value.doubleValue() / getCurNumberOfParameters()));
+  }
 }

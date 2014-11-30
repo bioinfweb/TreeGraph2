@@ -16,57 +16,46 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.document.undo.edit.calculatecolumn;
+package info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.topology;
 
 
 import info.bioinfweb.treegraph.document.undo.edit.CalculateColumnEdit;
-
-import org.nfunk.jep.function.PostfixMathCommandI;
+import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.noarg.NoArgDoubleFunction;
 
 
 
 /**
- * Basic implementations for a custom JEP function.
- *  
+ * Function used with {@link CalculateColumnEdit} that returns the index of the current node in its parent node.
+ * If there is no parent node -1 is returned.
+ * 
  * @author Ben St&ouml;ver
- * @since 2.0.46 
+ * @since 2.4.0
+ * @see IsRootFunction
  */
-public abstract class AbstractFunction implements PostfixMathCommandI {
-	private CalculateColumnEdit edit;
-	private int curNumberOfParameters = 1;
-	
-	
-	public AbstractFunction(CalculateColumnEdit edit) {
-	  super();
-	  this.edit = edit;
+public class IndexInParentFunction extends NoArgDoubleFunction {
+	public IndexInParentFunction(CalculateColumnEdit edit) {
+	  super(edit);
   }
 
-
-	public abstract String getName();
 	
-	
-	public CalculateColumnEdit getEdit() {
-		return edit;
-	}
-
-
-  public static Double codeBoolean(boolean value) {
-  	if (value) {
-  		return new Double(1);
-  	}
-  	else {
-  		return new Double(0);
-  	}
-  }
-  
-  
 	@Override
-	public void setCurNumberOfParameters(int n) {
-		curNumberOfParameters = n;
-	}
+  public String getName() {
+	  return "indexInParent";
+  }
 
 
-	protected int getCurNumberOfParameters() {
-		return curNumberOfParameters;
-	}
+	@Override
+  protected double calculateResult() {
+		if (getEdit().isEvaluating()) {
+			return 0;
+		}
+		else {
+			if (getEdit().getPosition().hasParent()) {
+				return getEdit().getPosition().getParent().getChildren().indexOf(getEdit().getPosition());
+			}
+			else {
+				return -1;
+			}
+		}
+  }
 }

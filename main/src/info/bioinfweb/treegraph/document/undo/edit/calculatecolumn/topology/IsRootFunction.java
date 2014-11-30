@@ -16,21 +16,34 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.document.undo.edit.calculatecolumn;
+package info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.topology;
+
 
 import info.bioinfweb.treegraph.document.undo.edit.CalculateColumnEdit;
+import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.noarg.NoArgBooleanFunction;
 
 
 
 /**
- * Calculates the maximum of a set of {@link Double} values in {@link CalculateColumnEdit}.
+ * Function that checks if the current node is the root node of the tree in {@link CalculateColumnEdit}.
  * 
  * @author Ben St&ouml;ver
  * @since 2.4.0
  */
-public class MaxFunction extends DoubleVarargFunction {
+public class IsRootFunction extends NoArgBooleanFunction {
+	public IsRootFunction(CalculateColumnEdit edit) {
+	  super(edit);
+  }
+
+
 	@Override
-	protected double calculate(double value1, double value2) {
-		return Math.max(value1, value2);
-	}
+  public String getName() {
+	  return "isRoot";
+  }
+
+
+	@Override
+  protected boolean calculateResult() {
+	  return !getEdit().getPosition().hasParent();
+  }
 }
