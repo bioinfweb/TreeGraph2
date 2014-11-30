@@ -45,8 +45,13 @@ public abstract class VarArgFunction extends AbstractFunction implements Postfix
   }
 	
 	
-	public IDVarArgFunction createIDVersion() {
+	public IDVarArgFunction createColumnsVersion() {
 		return new IDVarArgFunction(getEdit(), this);
+	}
+
+
+	public WholeColumnFunction createLinesVersion() {
+		return new WholeColumnFunction(getEdit(), this);
 	}
 
 

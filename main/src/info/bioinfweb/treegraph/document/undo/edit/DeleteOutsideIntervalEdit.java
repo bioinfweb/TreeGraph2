@@ -48,10 +48,10 @@ public class DeleteOutsideIntervalEdit extends NodeBranchDataEdit {
 	
 
   private void deleteOutsideIntervalSubtree(Node root) {
-  	if (adapter.isDecimal(root)) {
-  		double value = adapter.getDecimal(root);
+  	if (getAdapter().isDecimal(root)) {
+  		double value = getAdapter().getDecimal(root);
   		if ((value < lowerBorder) || (value > upperBorder)) {
-  			adapter.delete(root);
+  			getAdapter().delete(root);
   		}
   	}
   	
@@ -70,6 +70,6 @@ public class DeleteOutsideIntervalEdit extends NodeBranchDataEdit {
 
 	public String getPresentationName() {
 		return "Delete values outide [" + lowerBorder + ", " + upperBorder + "] in \"" + 
-		    adapter.toString() + "\"";
+						getAdapter().toString() + "\"";
 	}
 }

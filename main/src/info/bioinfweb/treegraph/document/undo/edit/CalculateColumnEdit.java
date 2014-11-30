@@ -93,7 +93,8 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 	
 	private void addVarArgFunction(JEP parser, VarArgFunction function) {
 		addFunction(parser, function);
-		addFunction(parser, function.createIDVersion());
+		addFunction(parser, function.createColumnsVersion());
+		addFunction(parser, function.createLinesVersion());
 	}
 	
 	
@@ -102,7 +103,7 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 		result.addStandardConstants();
 		result.addStandardFunctions();
 		
-		result.addVariable(CURRENT_VALUE_VAR, adapter);
+		result.addVariable(CURRENT_VALUE_VAR, getAdapter());
 		result.addVariable(UNIQUE_NODE_NAMES_VAR, UniqueNameAdapter.getSharedInstance());
 		result.addVariable(NODE_NAMES_VAR, NodeNameAdapter.getSharedInstance());
 		result.addVariable(BRANCH_LENGTH_VAR, BranchLengthAdapter.getSharedInstance());
@@ -160,16 +161,6 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 	}
 	
 	
-	/**
-	 * Returns the node/branch data adapter for the column that is calculated by this edit.
-	 * 
-	 * @return the adapter
-	 */
-	public NodeBranchDataAdapter getAdapter() {
-		return adapter;
-	}
-	
-
 	/**
 	 * Allows to check if a function called by this step shall be executed or is just accessed during syntactical and 
 	 * semantic evaluation.
@@ -311,20 +302,20 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
     else {
     	Object result = parser.getValueAsObject();
     	if (result instanceof Double) {
-    		adapter.setDecimal(root, (Double)result);
+    		getAdapter().setDecimal(root, (Double)result);
     	}
     	else if (result instanceof String) {
-    		adapter.setText(root, (String)result);
+    		getAdapter().setText(root, (String)result);
     	}
     	else if (result instanceof Boolean) {
     		double value = 0d;
     		if ((Boolean)result) {
     			value = 1d;
     		}
-    		adapter.setDecimal(root, value);
+    		getAdapter().setDecimal(root, value);
     	}
     	else {
-    		adapter.delete(root);
+    		getAdapter().delete(root);
     		errors.add("Invalid result type (Must be decimal or string.)");
     	}
     }
@@ -344,7 +335,7 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 
 	
 	public String getPresentationName() {
-		return "Calculate \"" + adapter.toString() + "\"";
+		return "Calculate \"" + getAdapter().toString() + "\"";
 	}
 	
 	

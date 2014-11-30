@@ -38,8 +38,9 @@ public class SetColumnTypeEdit extends NodeBranchDataEdit {
 	}
 
   
-  private AbstractTextElementDataAdapter getAdapter() {
-  	return (AbstractTextElementDataAdapter)adapter;
+  @Override
+  public AbstractTextElementDataAdapter getAdapter() {
+  	return (AbstractTextElementDataAdapter)super.getAdapter();
   }
   
   

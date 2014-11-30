@@ -34,7 +34,7 @@ import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
  * @since 2.0.24
  */
 public abstract class NodeBranchDataEdit extends DocumentEdit {
-	protected NodeBranchDataAdapter adapter;
+	private NodeBranchDataAdapter adapter;
 	protected NodeBranchDataBackup backup;
 
 
@@ -42,6 +42,11 @@ public abstract class NodeBranchDataEdit extends DocumentEdit {
 		super(document);
 		this.adapter = adapter;
 		backup = new NodeBranchDataBackup(adapter, document.getTree().getPaintStart());
+	}
+
+
+	public NodeBranchDataAdapter getAdapter() {
+		return adapter;
 	}
 
 

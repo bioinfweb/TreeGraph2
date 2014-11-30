@@ -49,12 +49,12 @@ public class DeleteColumnEdit extends NodeBranchDataEdit {
 	
 	@Override
 	public void redo() throws CannotRedoException {
-		deleteSubtree(getDocument().getTree().getPaintStart(), adapter);
+		deleteSubtree(getDocument().getTree().getPaintStart(), getAdapter());
 		super.redo();
 	}
 
 
 	public String getPresentationName() {
-		return "Delete the column \"" + adapter.toString() + "\"";
+		return "Delete the column \"" + getAdapter().toString() + "\"";
 	}
 }

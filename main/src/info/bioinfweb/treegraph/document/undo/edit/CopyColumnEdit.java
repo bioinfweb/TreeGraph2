@@ -52,18 +52,18 @@ public class CopyColumnEdit extends NodeBranchDataEdit {
 	private void copySubtree(Node root) {
 		if (includeLeafs || !root.isLeaf()) {
 			if (source.isDecimal(root)) {
-				adapter.setDecimal(root, source.getDecimal(root));
+				getAdapter().setDecimal(root, source.getDecimal(root));
 			}
 			else if (source.isString(root)) {
 				try {
-					adapter.setText(root, source.getText(root));
+					getAdapter().setText(root, source.getText(root));
 				}
 				catch (NumberFormatException e) {
-					adapter.setDecimal(root, Double.NaN);  // hasLength() will return false if dest is a branch lengths adapter
+					getAdapter().setDecimal(root, Double.NaN);  // hasLength() will return false if dest is a branch lengths adapter
 				}
 			}
 	  	else {
-	  		adapter.delete(root);  // Ggf. vorhandenen Wert löschen
+	  		getAdapter().delete(root);  // Ggf. vorhandenen Wert löschen
 	  	}
 	
 	  	for (int i = 0; i < root.getChildren().size(); i++) {
@@ -81,6 +81,6 @@ public class CopyColumnEdit extends NodeBranchDataEdit {
 
 
 	public String getPresentationName() {
-		return "Copy column \"" + source.toString() + "\" to \"" + adapter.toString() + "\"";
+		return "Copy column \"" + source.toString() + "\" to \"" + getAdapter().toString() + "\"";
 	}
 }
