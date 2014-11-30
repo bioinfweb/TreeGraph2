@@ -49,7 +49,7 @@ public class DeleteColumnEdit extends NodeBranchDataEdit {
 	
 	@Override
 	public void redo() throws CannotRedoException {
-		deleteSubtree(document.getTree().getPaintStart(), adapter);
+		deleteSubtree(getDocument().getTree().getPaintStart(), adapter);
 		super.redo();
 	}
 

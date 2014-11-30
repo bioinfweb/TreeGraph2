@@ -97,7 +97,7 @@ public class ImportTableEdit extends DocumentEdit implements WarningMessageEdit 
 	private NodeBranchDataBackup[] createBackups() {
 		NodeBranchDataBackup[] result = new NodeBranchDataBackup[parameters.getImportAdapters().length];
 		for (int i = 0; i < result.length; i++) {
-			result[i] = new NodeBranchDataBackup(parameters.getImportAdapters()[i], document.getTree().getPaintStart());
+			result[i] = new NodeBranchDataBackup(parameters.getImportAdapters()[i], getDocument().getTree().getPaintStart());
 		}
 		return result;
 	}
@@ -120,7 +120,7 @@ public class ImportTableEdit extends DocumentEdit implements WarningMessageEdit 
 	
 	private Collection<Node> getNodesByData(TextElementData data) {
 		Collection<Node> result = new Vector<Node>(8);
-		addNodesByData(result, document.getTree().getPaintStart(), data);
+		addNodesByData(result, getDocument().getTree().getPaintStart(), data);
 		return result;
 	}
 	
@@ -172,7 +172,7 @@ public class ImportTableEdit extends DocumentEdit implements WarningMessageEdit 
 	@Override
 	public void undo() throws CannotUndoException {
 		for (int i = 0; i < backups.length; i++) {
-			backups[i].restore(document.getTree().getPaintStart());
+			backups[i].restore(getDocument().getTree().getPaintStart());
 		}
 		super.undo();
 	}

@@ -55,7 +55,7 @@ public class CollapseNodeEdit extends SaveLegendsEdit implements WarningMessageE
 	
 	
 	private void editLegends() {
-		Legends legends = document.getTree().getLegends();
+		Legends legends = getDocument().getTree().getLegends();
 		Node newAnchor;
 		if (node.getParent() != null) {
 			newAnchor = node.getParent();
@@ -105,7 +105,7 @@ public class CollapseNodeEdit extends SaveLegendsEdit implements WarningMessageE
 		else if (node.getChildren().size() == 1) {
 			node.getChildren().get(0).setParent(null);
 			Node child = node.getChildren().get(0);
-			document.getTree().setPaintStart(child);
+			getDocument().getTree().setPaintStart(child);
 			editBranchLength(child.getAfferentBranch(), 1);  // +1 to add parent length
 		}
 		else {
@@ -135,7 +135,7 @@ public class CollapseNodeEdit extends SaveLegendsEdit implements WarningMessageE
 		else {
 			Node child = node.getChildren().get(0); 
 			child.setParent(node);
-			document.getTree().setPaintStart(node);
+			getDocument().getTree().setPaintStart(node);
 			editBranchLength(child.getAfferentBranch(), -1);  // -1 to subtract parent length
 		}
 		

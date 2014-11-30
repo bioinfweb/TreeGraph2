@@ -173,7 +173,7 @@ public class RerootByLeafSetEdit extends AbstractTopologicalCalculationEdit impl
 	private Branch calculateRootingPoint() {
 		Branch result = null;
 		if (leafs.size() > 1) {
-			addLeafSets(document.getTree().getPaintStart(), UniqueNameAdapter.getSharedInstance());
+			addLeafSets(getDocument().getTree().getPaintStart(), UniqueNameAdapter.getSharedInstance());
 			createSelectedLeafsSet();
 			
 			// Mark paths:
@@ -247,6 +247,6 @@ public class RerootByLeafSetEdit extends AbstractTopologicalCalculationEdit impl
 
 	@Override
   protected void performRedo() {
-		warningText = RerootEdit.reroot(document.getTree(), rootingPoint);
+		warningText = RerootEdit.reroot(getDocument().getTree(), rootingPoint);
   }
 }

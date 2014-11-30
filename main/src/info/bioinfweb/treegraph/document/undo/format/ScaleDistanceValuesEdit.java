@@ -82,7 +82,7 @@ public class ScaleDistanceValuesEdit extends DocumentEdit {
 	
 	
 	private void setNewLegendValues() {
-		Legend[] legends = TreeSerializer.getLegendsInSubtree(document.getTree(), root);
+		Legend[] legends = TreeSerializer.getLegendsInSubtree(getDocument().getTree(), root);
 		for (int i = 0; i < targetAdapters.length; i++) {
 			if (targetAdapters[i] instanceof AbstractLegendAdapter) {
 				for (int j = 0; j < legends.length; j++) {

@@ -80,7 +80,7 @@ public class CollapseNodesBySupportEdit extends ComposedDocumentEdit implements 
 				nodeBranchDataInvalid = true;
 			}
 			else if (supportAdapter.getDecimal(root) < threshold) {
-				CollapseNodeEdit edit = new CollapseNodeEdit(document, root);
+				CollapseNodeEdit edit = new CollapseNodeEdit(getDocument(), root);
 				edit.setIsSubedit(true);
 				getEdits().add(edit);
 			}

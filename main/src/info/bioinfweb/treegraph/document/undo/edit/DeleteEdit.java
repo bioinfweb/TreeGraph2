@@ -127,15 +127,15 @@ public class DeleteEdit extends ComposedDocumentEdit implements WarningMessageEd
 					index = ((Node)element).getParent().getChildren().indexOf(
 							((Node)element));
 				}
-				edit = new RemoveSubtreeEdit(document, ((Node)element).getParent(), 
+				edit = new RemoveSubtreeEdit(getDocument(), ((Node)element).getParent(), 
 						((Node)element), index);
 			}
 			else if (element instanceof Label) {
-				edit = new RemoveLabelEdit(document, ((Label)element), 
+				edit = new RemoveLabelEdit(getDocument(), ((Label)element), 
 						((Label)element).getLabels());
 			}
 			else if (element instanceof Legend) {
-				edit = new RemoveLegendEdit(document, (Legend)element);
+				edit = new RemoveLegendEdit(getDocument(), (Legend)element);
 			}
 			
 			if (edit != null) {

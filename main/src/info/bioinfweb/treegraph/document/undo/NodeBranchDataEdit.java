@@ -47,7 +47,7 @@ public abstract class NodeBranchDataEdit extends DocumentEdit {
 
 	@Override
 	public void undo() throws CannotUndoException {
-		backup.restore(document.getTree().getPaintStart());
+		backup.restore(getDocument().getTree().getPaintStart());
 		super.undo();
 	}
 }

@@ -41,7 +41,7 @@ public class GlobalFormatsEdit extends DocumentEdit {
 	
 	
 	private void setFormats(GlobalFormats formats) {
-		document.getTree().getFormats().assign(formats);
+		getDocument().getTree().getFormats().assign(formats);
 	}
 	
 	

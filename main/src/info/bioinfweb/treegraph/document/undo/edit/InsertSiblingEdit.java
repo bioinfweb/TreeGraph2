@@ -62,7 +62,7 @@ public class InsertSiblingEdit extends DocumentEdit {
 			parent.getChildren().add(index, newParent);
 		}
 		else {
-			document.getTree().setPaintStart(newParent);
+			getDocument().getTree().setPaintStart(newParent);
 		}
 		firstSibling.setParent(newParent);
 		
@@ -79,7 +79,7 @@ public class InsertSiblingEdit extends DocumentEdit {
 			parent.getChildren().add(index, firstSibling);
 		}
 		else {
-			document.getTree().setPaintStart(firstSibling);
+			getDocument().getTree().setPaintStart(firstSibling);
 		}
 		firstSibling.setParent(parent);
 		

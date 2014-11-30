@@ -54,7 +54,7 @@ public abstract class SaveLegendsEdit extends DocumentEdit implements WarningMes
 	
 	protected void saveLegends() {
 		if (legendsSave == null) {
-			legendsSave = document.getTree().getLegends().toArray(new Legend[0]);
+			legendsSave = getDocument().getTree().getLegends().toArray(new Legend[0]);
 			for (int i = 0; i < legendsSave.length; i++) {
 				legendsSave[i] = legendsSave[i].clone();
 			}
@@ -67,7 +67,7 @@ public abstract class SaveLegendsEdit extends DocumentEdit implements WarningMes
 			throw new CannotUndoException();
 		}
 		else {
-			Legends legends = document.getTree().getLegends();
+			Legends legends = getDocument().getTree().getLegends();
 			legends.clear();
 			for (int i = 0; i < legendsSave.length; i++) {
 				legends.insert(legendsSave[i]);
@@ -130,7 +130,7 @@ public abstract class SaveLegendsEdit extends DocumentEdit implements WarningMes
 	 * @param root - the root node of the subtree that will be deleted later
 	 */
 	protected void editSubtreeLegends(Node root) {
-		Legends legends = document.getTree().getLegends();
+		Legends legends = getDocument().getTree().getLegends();
 		for (int i = 0; i < legends.size(); i++) {
 			Legend l = legends.get(i);
 			Node secondAnchor = l.getFormats().getAnchor(1);

@@ -59,7 +59,7 @@ public class ScaleBranchLengthsEdit extends DocumentEdit {
 	
 	@Override
 	public void redo() throws CannotRedoException {
-		document.getTree().getFormats().getBranchLengthScale().setInMillimeters(newScale);
+		getDocument().getTree().getFormats().getBranchLengthScale().setInMillimeters(newScale);
 		super.redo();
 	}
 
@@ -67,7 +67,7 @@ public class ScaleBranchLengthsEdit extends DocumentEdit {
 
 	@Override
 	public void undo() throws CannotUndoException {
-		document.getTree().getFormats().getBranchLengthScale().setInMillimeters(oldScale);
+		getDocument().getTree().getFormats().getBranchLengthScale().setInMillimeters(oldScale);
 		super.undo();
 	}
 

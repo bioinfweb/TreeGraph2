@@ -63,7 +63,7 @@ public class DeleteOutsideIntervalEdit extends NodeBranchDataEdit {
   
 	@Override
 	public void redo() throws CannotRedoException {
-		deleteOutsideIntervalSubtree(document.getTree().getPaintStart());
+		deleteOutsideIntervalSubtree(getDocument().getTree().getPaintStart());
 		super.redo();
 	}
 	

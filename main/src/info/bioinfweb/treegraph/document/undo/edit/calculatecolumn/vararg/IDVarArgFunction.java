@@ -49,7 +49,7 @@ public class IDVarArgFunction extends IDFunction {
 	
 	@Override
   public String getName() {
-	  return implementingVersion.getName() + "Column";
+	  return implementingVersion.getName() + "OfColumns";
   }
 
 

@@ -158,8 +158,8 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
     String errorMsg = compareLeafs(src);
     if (errorMsg == null) {  // The terminal nodes of both trees are identical.
   		addLeafSets(src.getTree().getPaintStart(), SOURCE_LEAFS_ADAPTER);
-  		addLeafSets(document.getTree().getPaintStart(), targetLeafsAdapter);
-  		processSubtree(document.getTree().getPaintStart());
+  		addLeafSets(getDocument().getTree().getPaintStart(), targetLeafsAdapter);
+  		processSubtree(getDocument().getTree().getPaintStart());
     }
     else {
 			JOptionPane.showMessageDialog(MainFrame.getInstance(), errorMsg, 

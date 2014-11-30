@@ -49,14 +49,14 @@ public class PasteLegendEdit extends DocumentEdit {
 
 	@Override
 	public void redo() throws CannotRedoException {
-		document.getTree().getLegends().insert(legend);
+		getDocument().getTree().getLegends().insert(legend);
 		super.redo();
 	}
 
 
 	@Override
 	public void undo() throws CannotUndoException {
-		document.getTree().getLegends().remove(legend);
+		getDocument().getTree().getLegends().remove(legend);
 		super.undo();
 	}
 

@@ -75,7 +75,7 @@ public class CopyColumnEdit extends NodeBranchDataEdit {
 	
 	@Override
 	public void redo() throws CannotRedoException {
-		copySubtree(document.getTree().getPaintStart());
+		copySubtree(getDocument().getTree().getPaintStart());
 		super.redo();
 	}
 

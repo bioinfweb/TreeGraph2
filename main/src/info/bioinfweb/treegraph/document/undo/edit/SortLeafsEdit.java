@@ -113,7 +113,7 @@ public class SortLeafsEdit extends DocumentEdit implements WarningMessageEdit {
 	private void saveNewOrder(List<TextElementData> order) {
 		newOrder = new ArrayList<Node>();
 		for (TextElementData data : order) {
-			Node node = document.getTree().getFirstNodeByData(leafAdapter, data, true, parameters);
+			Node node = getDocument().getTree().getFirstNodeByData(leafAdapter, data, true, parameters);
 			if (node != null) {
 				newOrder.add(node);
 			}

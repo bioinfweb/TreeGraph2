@@ -69,7 +69,7 @@ public class ColorsByNodeBranchDataEdit extends NodeBranchDataFormatEdit {
 		for (int i = 0; i < oldColors.length; i++) {
 			oldColors[i]  = new Vector<Color>();
 		}
-		saveOldSubtreeColors(document.getTree().getPaintStart());
+		saveOldSubtreeColors(getDocument().getTree().getPaintStart());
 	}
 	
 	
@@ -126,7 +126,7 @@ public class ColorsByNodeBranchDataEdit extends NodeBranchDataFormatEdit {
 
 	@Override
 	public void redo() throws CannotRedoException {
-		setNewColors(document.getTree().getPaintStart());
+		setNewColors(getDocument().getTree().getPaintStart());
 		super.redo();
 	}
 
@@ -152,7 +152,7 @@ public class ColorsByNodeBranchDataEdit extends NodeBranchDataFormatEdit {
 
 	@Override
 	public void undo() throws CannotUndoException {
-		setOldColors(document.getTree().getPaintStart(), 0);
+		setOldColors(getDocument().getTree().getPaintStart(), 0);
 		super.undo();
 	}
 	

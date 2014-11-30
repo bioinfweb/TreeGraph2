@@ -92,8 +92,8 @@ public class ReplaceInNodeDataEdit extends ComplexDocumentEdit {
 	
 	@Override
 	protected void performRedo() {
-		if (!document.getTree().isEmpty()) {
-			replace(document.getTree().getPaintStart());
+		if (!getDocument().getTree().isEmpty()) {
+			replace(getDocument().getTree().getPaintStart());
 		}
 	}
 

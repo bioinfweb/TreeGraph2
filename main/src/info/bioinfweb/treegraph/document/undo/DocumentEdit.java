@@ -29,12 +29,17 @@ import javax.swing.undo.UndoableEdit;
 
 
 public abstract class DocumentEdit extends AbstractDocumentEdit implements UndoableEdit {
-	protected Document document;
+	private Document document;
 	
 		
 	public DocumentEdit(Document document) {
 		super();
 		this.document = document;
+	}
+
+
+	public Document getDocument() {
+		return document;
 	}
 
 
@@ -45,7 +50,7 @@ public abstract class DocumentEdit extends AbstractDocumentEdit implements Undoa
 
 	@Override
 	public void registerDocumentChange() {
-  	document.getTree().assignUniqueNames();  // Must be called to update the uniqueNameMap. There not necessarily nodes without unique names present, but the content of the map might not match the current tree.
-		document.registerChange();
+  	getDocument().getTree().assignUniqueNames();  // Must be called to update the uniqueNameMap. There not necessarily nodes without unique names present, but the content of the map might not match the current tree.
+		getDocument().registerChange();
 	}
 }

@@ -46,11 +46,11 @@ public abstract class InsertRemoveLegendEdit extends DocumentEdit {
 			}
 		}
 		
-		document.getTree().getLegends().insert(legend);
+		getDocument().getTree().getLegends().insert(legend);
 	}
 	
 	
 	protected void remove() {
-		document.getTree().getLegends().remove(legend);
+		getDocument().getTree().getLegends().remove(legend);
 	}
 }

@@ -263,7 +263,7 @@ public class RerootEdit extends ComplexDocumentEdit implements WarningMessageEdi
 	
 	@Override
 	protected void performRedo() {
-		warningText = reroot(document.getTree(), rootingPoint);
+		warningText = reroot(getDocument().getTree(), rootingPoint);
 	}
 
 

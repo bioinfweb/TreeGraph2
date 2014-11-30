@@ -54,7 +54,7 @@ public abstract class InsertRemoveSubtreeEdit extends SaveLegendsEdit {
 	protected void insert() {
 		root.setParent(parent);
 		if (parent == null) {  // => Einfügen als Wurzel. Baum muss dafür leer sein.
-			document.getTree().setPaintStart(root);
+			getDocument().getTree().setPaintStart(root);
 		}
 		else {
 			parent.getChildren().add(index, root);
@@ -64,7 +64,7 @@ public abstract class InsertRemoveSubtreeEdit extends SaveLegendsEdit {
 	
 	protected void remove() {
 		if (parent == null) {
-			document.getTree().setPaintStart(null);
+			getDocument().getTree().setPaintStart(null);
 		}
 		else {
 			parent.getChildren().remove(index);

@@ -129,18 +129,18 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 	private HashMap<String, NodeBranchDataAdapter> createAdapterMap() {
 		HashMap<String, NodeBranchDataAdapter> result = new HashMap<String, NodeBranchDataAdapter>();
 		
-		String[] ids = IDManager.getLabelIDs(document.getTree().getPaintStart(), TextLabel.class);
+		String[] ids = IDManager.getLabelIDs(getDocument().getTree().getPaintStart(), TextLabel.class);
 		for (int i = 0; i < ids.length; i++) {
 			result.put(ids[i], new TextLabelAdapter(ids[i], 
 					new DecimalFormat(TextFormats.DEFAULT_DECIMAL_FORMAT_EXPR)));
 		}
 		
-		ids = IDManager.getHiddenNodeDataIDs(document.getTree().getPaintStart());
+		ids = IDManager.getHiddenNodeDataIDs(getDocument().getTree().getPaintStart());
 		for (int i = 0; i < ids.length; i++) {
 			result.put(ids[i], new HiddenNodeDataAdapter(ids[i])); 
 		}
 		
-		ids = IDManager.getHiddenBranchDataIDs(document.getTree().getPaintStart());
+		ids = IDManager.getHiddenBranchDataIDs(getDocument().getTree().getPaintStart());
 		for (int i = 0; i < ids.length; i++) {
 			result.put(ids[i], new HiddenBranchDataAdapter(ids[i])); 
 		}
@@ -158,7 +158,17 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 	public Node getPosition() {
 		return position;
 	}
-
+	
+	
+	/**
+	 * Returns the node/branch data adapter for the column that is calculated by this edit.
+	 * 
+	 * @return the adapter
+	 */
+	public NodeBranchDataAdapter getAdapter() {
+		return adapter;
+	}
+	
 
 	/**
 	 * Allows to check if a function called by this step shall be executed or is just accessed during syntactical and 
@@ -255,6 +265,11 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 	}
 	
 	
+	public NodeBranchDataAdapter getAdapterByID(String id) {
+		return adapterMap.get(id);
+	}
+	
+	
 	/**
 	 * Returns the value of the current line in the column specified the passed id present.
 	 * 
@@ -265,19 +280,25 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 	 * @throws UndefinedIDException - if no column with the specified ID exists 
 	 */
 	public Object getIDValue(Node node, String id) throws ParseException {
-		NodeBranchDataAdapter adapter = adapterMap.get(id);
+		NodeBranchDataAdapter adapter = getAdapterByID(id);
 		if (adapter != null) {
 			return getValue(node, adapter);
 		}
 		else {
-			throw new UndefinedIDException("A node/branch data column with the ID \"" + id + 
-					" \" does not exists.");
+			throwUndefinedIDException(id);
+			return null;  // Unreachable code
 		}
 	}
 	
 	
+	public void throwUndefinedIDException(String id) throws UndefinedIDException {
+		throw new UndefinedIDException("A node/branch data column with the ID \"" + id + 
+						" \" does not exists.");
+	}
+	
+	
 	public boolean hasIDValue(Node node, String id) {
-		return hasValue(node, adapterMap.get(id));  // If adapter is undefined, false is returned.
+		return hasValue(node, getAdapterByID(id));  // If adapter is undefined, false is returned.
 	}
 	
 	
@@ -317,7 +338,7 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 	@Override
 	public void redo() throws CannotRedoException {
 		errors.clear();
-		calculateSubtree(document.getTree().getPaintStart());
+		calculateSubtree(getDocument().getTree().getPaintStart());
 		super.redo();
 	}
 

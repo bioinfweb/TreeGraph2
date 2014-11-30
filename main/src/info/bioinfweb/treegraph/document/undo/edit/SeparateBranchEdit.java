@@ -65,7 +65,7 @@ public class SeparateBranchEdit extends DocumentEdit {
 			parent.getChildren().add(index, insertedNode);
 		}
 		else {
-			document.getTree().setPaintStart(insertedNode);
+			getDocument().getTree().setPaintStart(insertedNode);
 			branchToSplit.getTargetNode().setParent(insertedNode);
 			insertedNode.getChildren().add(branchToSplit.getTargetNode());
 		}
@@ -88,7 +88,7 @@ public class SeparateBranchEdit extends DocumentEdit {
 		}
 		else {
 			branchToSplit.getTargetNode().setParent(null);
-			document.getTree().setPaintStart(branchToSplit.getTargetNode());
+			getDocument().getTree().setPaintStart(branchToSplit.getTargetNode());
 		}
 
 		if (branchToSplit.hasLength()) {

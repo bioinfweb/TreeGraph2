@@ -54,7 +54,7 @@ public class RenameDataIDEdit extends DocumentEdit {
 	@Override
 	public void redo() throws CannotRedoException {
 		for (int i = 0; i < oldIDs.length; i++) {
-			IDManager.renameID(oldIDs[i], newIDs[i], document.getTree());
+			IDManager.renameID(oldIDs[i], newIDs[i], getDocument().getTree());
 		}
 		super.redo();
 	}
@@ -63,7 +63,7 @@ public class RenameDataIDEdit extends DocumentEdit {
 	@Override
 	public void undo() throws CannotUndoException {
 		for (int i = 0; i < oldIDs.length; i++) {
-			IDManager.renameID(newIDs[i], oldIDs[i], document.getTree());
+			IDManager.renameID(newIDs[i], oldIDs[i], getDocument().getTree());
 		}
 		super.undo();
 	}

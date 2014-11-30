@@ -50,9 +50,9 @@ public class NodeSupportEdit extends AbstractTopologicalCalculationEdit {
 	
 	@Override
 	protected void performRedo() {
-		 addLeafSets(document.getTree().getPaintStart(), targetLeafsAdapter);	
-		 createHashmap(document.getTree().getPaintStart());
-		 initialiseSupportValues(document.getTree().getPaintStart());
+		 addLeafSets(getDocument().getTree().getPaintStart(), targetLeafsAdapter);	
+		 createHashmap(getDocument().getTree().getPaintStart());
+		 initialiseSupportValues(getDocument().getTree().getPaintStart());
 		 try {
 			 Document result = documentIterator.next();
 			 while (result != null) {
@@ -61,7 +61,7 @@ public class NodeSupportEdit extends AbstractTopologicalCalculationEdit {
 				 result = documentIterator.next();
 			}
 			 if(normalisationBorder != -1){
-				 normalisationValues(document.getTree().getPaintStart());
+				 normalisationValues(getDocument().getTree().getPaintStart());
 			 }
 		 }
 		catch (Exception e) {

@@ -96,7 +96,7 @@ public class DistanceValuesByNodeBranchDataEdit extends NodeBranchDataFormatEdit
 
 	@Override
 	public void redo() throws CannotRedoException {
-		setNewValues(document.getTree().getPaintStart());
+		setNewValues(getDocument().getTree().getPaintStart());
 		super.redo();
 	}
 	

@@ -55,7 +55,7 @@ public class SetColumnTypeEdit extends NodeBranchDataEdit {
 
 	@Override
 	public void redo() throws CannotRedoException {
-		setDataTypeInSubtree(document.getTree().getPaintStart(), getAdapter(), decimal);
+		setDataTypeInSubtree(getDocument().getTree().getPaintStart(), getAdapter(), decimal);
 		super.redo();
 	}
 

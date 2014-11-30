@@ -84,10 +84,10 @@ public abstract class ComplexDocumentEdit extends DocumentEdit {
 	
 	@Override
 	public void redo() throws CannotRedoException {
-		document.getTree().setPaintStart(newRoot);
+		getDocument().getTree().setPaintStart(newRoot);
   	if (!firstRedone) {
 			performRedo();  // Can't be called in the constructor already
-			newRoot = document.getTree().getPaintStart();  // In case the root changed in performRedo()
+			newRoot = getDocument().getTree().getPaintStart();  // In case the root changed in performRedo()
 			firstRedone = true;
 		}
 		super.redo();
@@ -96,7 +96,7 @@ public abstract class ComplexDocumentEdit extends DocumentEdit {
 
 	@Override
 	public void undo() throws CannotUndoException {
-		document.getTree().setPaintStart(oldRoot);
+		getDocument().getTree().setPaintStart(oldRoot);
 		super.undo();
 	}
 }

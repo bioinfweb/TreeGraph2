@@ -55,8 +55,8 @@ public class RescaleNodeDataEdit extends ComplexDocumentEdit {
 
 	@Override
 	protected void performRedo() {
-		if (!document.getTree().isEmpty()) {
-			rescale(document.getTree().getPaintStart());
+		if (!getDocument().getTree().isEmpty()) {
+			rescale(getDocument().getTree().getPaintStart());
 		}
 	}
 
