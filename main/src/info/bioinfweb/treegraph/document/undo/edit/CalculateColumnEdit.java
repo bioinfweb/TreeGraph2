@@ -142,11 +142,24 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 	}
 	
 	
+	/**
+	 * Returns the node on which a value is currently calculated.
+	 * 
+	 * @return the current node if a concrete value is currently calculated or {@code null} if this instance is 
+	 *         currently evaluating an expression
+	 */
 	public Node getPosition() {
 		return position;
 	}
 
 
+	/**
+	 * Allows to check if a function called by this step shall be executed or is just accessed during syntactical and 
+	 * semantic evaluation.
+	 * 
+	 * @return {@code true} if the evaluation is currently ongoing, {@code false} if functions are executed to
+	 *         calculate a concrete value
+	 */
 	public boolean isEvaluating() {
 		return isEvaluating;
 	}

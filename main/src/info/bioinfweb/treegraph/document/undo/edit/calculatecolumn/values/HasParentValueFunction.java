@@ -28,6 +28,13 @@ import org.nfunk.jep.ParseException;
 
 
 
+/**
+ * Function used with {@link CalculateColumnEdit} that tests if a certain node/branch data column has a value 
+ * at the parent node of the current node.
+ * 
+ * @author Ben St&ouml;ver
+ * @since 2.4.0
+ */
 public class HasParentValueFunction extends IDFunction {
 	public HasParentValueFunction(CalculateColumnEdit edit) {
 	  super(edit);
