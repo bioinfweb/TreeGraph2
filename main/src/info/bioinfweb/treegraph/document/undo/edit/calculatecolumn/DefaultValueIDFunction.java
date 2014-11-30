@@ -29,6 +29,10 @@ import org.nfunk.jep.function.PostfixMathCommandI;
 
 
 /**
+ * Function to be used with {@link CalculateColumnEdit} that returns a value depending on a node/branch data ID
+ * (specified as the first parameter) or a default value, specified as the second parameter, if the current node 
+ * does not carry any data with the specified ID.
+ * 
  * @author Ben St&ouml;ver
  * @since 2.0.24
  */

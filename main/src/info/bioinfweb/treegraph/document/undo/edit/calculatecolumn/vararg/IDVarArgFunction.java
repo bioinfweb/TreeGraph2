@@ -30,6 +30,13 @@ import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.IDFunction;
 
 
 
+/**
+ * Function to be used with {@link CalculateColumnEdit} that allows to specify a set of node/branch data column IDs
+ * instead of concrete value for every {@link VarArgFunction}.
+ * 
+ * @author Ben St&ouml;ver
+ * @since 2.4.0
+ */
 public class IDVarArgFunction extends IDFunction {
 	private VarArgFunction implementingVersion;
 	

@@ -26,6 +26,13 @@ import org.nfunk.jep.ParseException;
 
 
 
+/**
+ * Implements basic functionality for functions to be used with {@link CalculateColumnEdit} that accept
+ * node/branch data IDs as parameters.
+ * 
+ * @author Ben St&ouml;ver
+ * @since 2.4.0
+ */
 public abstract class IDFunction extends AbstractFunction {
 	public IDFunction(CalculateColumnEdit edit) {
 	  super(edit);
