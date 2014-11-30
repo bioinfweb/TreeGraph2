@@ -67,6 +67,8 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 	public static final String NODE_NAMES_VAR = "NAME";
 	public static final String BRANCH_LENGTH_VAR = "LENGTH";
 	
+	public static final String UNKNOWN_FUNCTION_NAME_ERROR = "Syntax Error (implicit multiplication not enabled)";
+	
 	
   private String expression;
   private JEP parser;
@@ -184,7 +186,6 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 			parser.evaluate(parser.parse(expression));
 		}
 		catch (ParseException e) {
-			e.printStackTrace();
 			result = e.getErrorInfo();
 		}
 		return result;
@@ -284,7 +285,7 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 	
 	public void throwUndefinedIDException(String id) throws UndefinedIDException {
 		throw new UndefinedIDException("A node/branch data column with the ID \"" + id + 
-						" \" does not exists.");
+				" \" does not exists.");
 	}
 	
 	
@@ -340,12 +341,19 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 	
 	
 	/**
-	 * Returns a description of the errors that occured during the last call of 
+	 * Returns a description of the errors that occurred during the last call of 
 	 * {@link CalculateColumnEdit#redo()} or {@link CalculateColumnEdit#evaluate()}.
 	 * 
-	 * @return
+	 * @return a string possibly containing line breaks
 	 */
-	public String[] getErrors() {
-		return errors.toArray(new String[errors.size()]);
+	public String getErrors() {
+		StringBuffer result = new StringBuffer(errors.size() * 64);
+		for (String line : errors) {
+			if (UNKNOWN_FUNCTION_NAME_ERROR.equals(line)) {
+				line += ". This error can also occur if a misspelled function name was used.";
+			}
+	    result.append(line + "\n");
+    }
+		return result.toString();
 	}
 }
