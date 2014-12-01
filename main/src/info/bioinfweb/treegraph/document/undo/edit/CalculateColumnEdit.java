@@ -176,6 +176,16 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 
 
 	/**
+	 * Returns the expression that is executed by this edit.
+	 * 
+	 * @return the expression that has been passed to the constructor
+	 */
+	public String getExpression() {
+		return expression;
+	}
+
+
+	/**
 	 * Evaluates the expression with one set of variable values.
 	 * 
 	 * @return the error information or {@code null} if no error occurred.

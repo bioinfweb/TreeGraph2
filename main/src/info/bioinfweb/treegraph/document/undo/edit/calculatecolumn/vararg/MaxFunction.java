@@ -18,6 +18,7 @@
  */
 package info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.vararg;
 
+
 import info.bioinfweb.treegraph.document.undo.edit.CalculateColumnEdit;
 
 
