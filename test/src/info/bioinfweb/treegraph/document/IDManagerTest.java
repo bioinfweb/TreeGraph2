@@ -169,6 +169,6 @@ public class IDManagerTest {
   @Test
   public void test_getLabelIDVector() {
   	Tree tree = createBasicTree(false, false, false, true);
-  	assertEquals(0, IDManager.getLabelIDVectorFromSubtree(tree.getPaintStart(), TextLabel.class).size());
+  	assertEquals(0, IDManager.getLabelIDListFromSubtree(tree.getPaintStart(), TextLabel.class).size());
   }
 }
