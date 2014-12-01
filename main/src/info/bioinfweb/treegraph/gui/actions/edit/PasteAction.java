@@ -22,7 +22,9 @@ package info.bioinfweb.treegraph.gui.actions.edit;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.Action;
 import javax.swing.KeyStroke;
@@ -46,6 +48,7 @@ import info.bioinfweb.treegraph.document.undo.edit.PasteRootEdit;
 import info.bioinfweb.treegraph.document.undo.edit.PasteSiblingEdit;
 import info.bioinfweb.treegraph.document.undo.edit.PasteSubtreeEdit;
 import info.bioinfweb.treegraph.gui.actions.DocumentAction;
+import info.bioinfweb.treegraph.gui.dialogs.CollidingIDsDialog;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeInternalFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
@@ -128,13 +131,20 @@ public class PasteAction extends DocumentAction {
 				break;
 			case LABEL:
 				Label label = clipboard.getLabel();
-				if (contrastManager.ensureContrast(frame.getDocument(), label)) {  //TODO Sehen, was mit anderen Labels ist
+				if (contrastManager.ensureContrast(frame.getDocument(), label)) {
+					label.setID(CollidingIDsDialog.getInstance().checkConflicts(new Branch[]{(Branch)selected}, label.getID()));
   				edit = new PasteLabelEdit(frame.getDocument(), (Branch)selected, label);
 				}
 				break;
 			case LABELS:
 				Label[] labels = clipboard.getLabelList();
-				if (contrastManager.ensureContrast(frame.getDocument(), labels)) {  //TODO Sehen, was mit anderen Labels ist
+				if (contrastManager.ensureContrast(frame.getDocument(), labels)) {
+					List<String> reservedIDs = new ArrayList<String>(labels.length);
+					for (int i = 0; i < labels.length; i++) {
+						labels[i].setID(CollidingIDsDialog.getInstance().checkConflicts(
+								new Branch[]{(Branch)selected}, labels[i].getID(), reservedIDs));
+						reservedIDs.add(labels[i].getID());  // IDs of new labels must also be unique.
+          }
   				edit = new PasteAllLabelsEdit(frame.getDocument(), (Branch)selected, labels);
 				}
 				break;

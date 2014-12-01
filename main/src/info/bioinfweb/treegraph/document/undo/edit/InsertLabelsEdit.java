@@ -22,6 +22,7 @@ package info.bioinfweb.treegraph.document.undo.edit;
 import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Label;
+import info.bioinfweb.treegraph.document.undo.ComposedDocumentEdit;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
 
 import javax.swing.undo.CannotRedoException;
@@ -30,40 +31,22 @@ import javax.swing.undo.CannotUndoException;
 
 
 /**
- * Used to insert multiple labels and one or more branches.
+ * Used to insert a copy of the specified label onto each specified branch.
+ * <p>
+ * Note that the specified instance itself will not be inserted anywhere directly.
+ * 
  * @author Ben St&ouml;ver
  * @since 2.0.26
  */
-public class InsertLabelsEdit extends DocumentEdit {
-  private InsertLabelEdit[] edits;
-
-  
+public class InsertLabelsEdit extends ComposedDocumentEdit {
 	public InsertLabelsEdit(Document document, Label label, Branch[] branches) {
 		super(document);
 		
-		edits = new InsertLabelEdit[branches.length];
 		for (int i = 0; i < branches.length; i++) {
-			edits[i] = new InsertLabelEdit(document, label.clone(), branches[i].getLabels());
-			edits[i].setIsSubedit(true);
+			InsertLabelEdit edit = new InsertLabelEdit(document, label.clone(), branches[i].getLabels());
+			edit.setIsSubedit(true);
+			getEdits().add(edit);
 		}
-	}
-
-
-	@Override
-	public void redo() throws CannotRedoException {
-		for (int i = 0; i < edits.length; i++) {
-			edits[i].redo();
-		}
-		super.redo();
-	}
-
-
-	@Override
-	public void undo() throws CannotUndoException {
-		for (int i = 0; i < edits.length; i++) {
-			edits[i].undo();
-		}
-		super.undo();
 	}
 
 

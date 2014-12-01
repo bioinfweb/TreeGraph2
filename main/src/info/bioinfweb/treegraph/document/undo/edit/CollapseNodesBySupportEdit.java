@@ -38,6 +38,7 @@ import info.bioinfweb.treegraph.document.undo.WarningMessageEdit;
  *
  * @author Ben St&ouml;ver
  * @since 2.2.0
+ * @see DeleteOutsideIntervalEdit
  */
 public class CollapseNodesBySupportEdit extends ComposedDocumentEdit implements WarningMessageEdit {
   private NodeBranchDataAdapter supportAdapter;

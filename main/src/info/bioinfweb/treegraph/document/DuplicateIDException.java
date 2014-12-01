@@ -21,31 +21,29 @@ package info.bioinfweb.treegraph.document;
 
 
 /**
- * Thrown when a method of a tree element is invoked which need to access the linked node, but the element does not 
- * have a linked node.
- * 
- * @see TreeElement#getLinkedNode()
+ * Exception that is thrown if an element with a node/branch data ID (e.g. a label) shall be attached to a node or 
+ * branch that is already linked to another element with that ID.
  * 
  * @author Ben St&ouml;ver
- * @since 2.0.43
+ * @since 2.4.0
  */
-public class NoLinkedNodeException extends IllegalStateException {
-	public NoLinkedNodeException() {
-		super();
-	}
+public class DuplicateIDException extends RuntimeException {
+	private String id;
+	private Node node;
 
 	
-	public NoLinkedNodeException(String msg, Throwable thr) {
-		super(msg, thr);
+	public DuplicateIDException(String id, Node node) {
+	  super("An element with the ID \"" + id + "\" is already present on the node \"" + node.getUniqueName() + "\".");
+	  this.id = id;
+  }
+
+
+	public String getId() {
+		return id;
 	}
 
-	
-	public NoLinkedNodeException(String msg) {
-		super(msg);
-	}
 
-	
-	public NoLinkedNodeException(Throwable thr) {
-		super(thr);
+	public Node getNode() {
+		return node;
 	}
 }

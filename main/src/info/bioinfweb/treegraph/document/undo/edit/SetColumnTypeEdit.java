@@ -24,10 +24,15 @@ import javax.swing.undo.CannotRedoException;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.nodebranchdata.AbstractTextElementDataAdapter;
-import info.bioinfweb.treegraph.document.undo.NodeBranchDataEdit;
+import info.bioinfweb.treegraph.document.undo.nodebranchdata.NodeBranchDataEdit;
 
 
 
+/**
+ * Switches the type of elements in a node/branch data column between numerical and textual if possible.
+ * 
+ * @author Ben St&ouml;ver
+ */
 public class SetColumnTypeEdit extends NodeBranchDataEdit {
 	private boolean decimal;
 	

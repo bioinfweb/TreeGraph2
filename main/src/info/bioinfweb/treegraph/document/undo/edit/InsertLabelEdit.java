@@ -26,6 +26,11 @@ import javax.swing.undo.*;
 
 
 
+/**
+ * Inserts a label into the document.
+ * 
+ * @author Ben St&ouml;ver
+ */
 public class InsertLabelEdit extends InsertRemoveLabelEdit {
 	public InsertLabelEdit(Document document, Label label, Labels owner) {
 		super(document, label, owner);

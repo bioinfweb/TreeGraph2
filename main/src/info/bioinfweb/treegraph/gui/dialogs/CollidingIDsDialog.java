@@ -7,28 +7,23 @@ import info.bioinfweb.treegraph.document.IDManager;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.webinsel.wikihelp.client.OkCancelApplyWikiHelpDialog;
 
-import javax.swing.JPanel;
-
 import java.awt.Frame;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import java.util.Collections;
+import java.util.List;
 
 import javax.swing.BoxLayout;
-
-import java.awt.GridBagLayout;
-
-import javax.swing.JLabel;
-
-import java.awt.GridBagConstraints;
-
 import javax.swing.ButtonGroup;
 import javax.swing.JOptionPane;
+import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
+import javax.swing.JPanel;
 
 import org.apache.batik.ext.swing.JAffineTransformChooser.Dialog;
 
-import java.awt.Dimension;
-import java.awt.Rectangle;
-import java.awt.Insets;
 
 
 
@@ -44,7 +39,9 @@ public class CollidingIDsDialog extends OkCancelApplyWikiHelpDialog {
 	private static CollidingIDsDialog firstInstance = null;
 	
 	private String initialNewID = null;
-	private Branch[] selection = null; 
+	private Branch[] selection = null;
+	private List<String> additionalReservedIDs = null;
+	
 	private JPanel jContentPane = null;
 	private JPanel inputPanel = null;
 	private JLabel messageLabel = null;
@@ -96,7 +93,7 @@ public class CollidingIDsDialog extends OkCancelApplyWikiHelpDialog {
 	@Override
 	protected boolean apply() {
 		boolean result = idsEqual();
-		if (getOverwriteRadioButton().isSelected()){
+		if (getOverwriteRadioButton().isSelected()) {
 			return true;
 		}
 		else if (result){
@@ -106,11 +103,13 @@ public class CollidingIDsDialog extends OkCancelApplyWikiHelpDialog {
 		}
 		else {
 			String idText = "";
-			if (IDManager.idConflict(getPresentLabelID(), selection) && !getPresentLabelID().equals(initialNewID)) {
+			if ((IDManager.idConflict(getPresentLabelID(), selection) || additionalReservedIDs.contains(getPresentLabelID())) 
+					&& !getPresentLabelID().equals(initialNewID)) {
+				
 				idText = "\"" + getPresentLabelID() + "\"";
 			}
-			if (IDManager.idConflict(getNewLabelID(), selection) && 
-					!(getNewLabelID().equals(initialNewID) && !getPresentLabelID().equals(initialNewID))) {
+			if ((IDManager.idConflict(getNewLabelID(), selection) || additionalReservedIDs.contains(getNewLabelID())) 
+					&& !(getNewLabelID().equals(initialNewID) && !getPresentLabelID().equals(initialNewID))) {
 				
 				if (idText.equals("")) {
 					idText = "\"" + getNewLabelID() + "\"";
@@ -129,12 +128,17 @@ public class CollidingIDsDialog extends OkCancelApplyWikiHelpDialog {
 	}
 
 	
-	public String checkConflicts(Branch[] selection, String id){
+	public String checkConflicts(Branch[] selection, String id) {
+		return checkConflicts(selection, id, Collections.EMPTY_LIST);
+	}
+	
+	
+	public String checkConflicts(Branch[] selection, String id, List<String> additionalReservedIDs) {
 		if (IDManager.idConflict(id, selection)){
 			CollidingIDsDialog dialog = CollidingIDsDialog.getInstance();
-			if (!dialog.promt(id, selection)){
+			if (!dialog.promt(id, selection, additionalReservedIDs)){
 				for (int i = 0; i < selection.length; i++) {
-					if (IDManager.idExistsOnNode(selection[i].getTargetNode(), id)){
+					if (IDManager.idExistsOnNode(selection[i].getTargetNode(), id)) {
 						IDManager.renameID(id, dialog.getPresentLabelID(), selection[i].getTargetNode());
 					}
 				}
@@ -146,7 +150,13 @@ public class CollidingIDsDialog extends OkCancelApplyWikiHelpDialog {
 	
 	
 	public boolean promt(String id, Branch[] selection) {
+		return promt(id, selection, Collections.EMPTY_LIST);
+	}
+	
+	
+	public boolean promt(String id, Branch[] selection, List<String> additionalReservedIDs) {
 		this.selection = selection;
+		this.additionalReservedIDs = additionalReservedIDs;
 		this.initialNewID = id;
 		getNewIDTextField().setText(id);
 		getPresentIDTextField().setText(id);

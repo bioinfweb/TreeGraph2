@@ -24,13 +24,16 @@ import javax.swing.undo.CannotRedoException;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
-import info.bioinfweb.treegraph.document.undo.NodeBranchDataEdit;
+import info.bioinfweb.treegraph.document.undo.nodebranchdata.NodeBranchDataEdit;
 
 
 
 /**
+ * Deletes all numeric entries in the specified node/branch data column which lie outside the specified interval.
+ * 
  * @author Ben St&ouml;ver
  * @since 2.0.24
+ * @see CollapseNodesBySupportEdit
  */
 public class DeleteOutsideIntervalEdit extends NodeBranchDataEdit {
 	private double lowerBorder;
@@ -70,6 +73,6 @@ public class DeleteOutsideIntervalEdit extends NodeBranchDataEdit {
 
 	public String getPresentationName() {
 		return "Delete values outide [" + lowerBorder + ", " + upperBorder + "] in \"" + 
-						getAdapter().toString() + "\"";
+				getAdapter().toString() + "\"";
 	}
 }

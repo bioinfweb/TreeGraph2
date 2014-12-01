@@ -25,6 +25,11 @@ import info.bioinfweb.treegraph.document.undo.DocumentEdit;
 
 
 
+/**
+ * Abstract implementation for edits that insert or remove labels.
+ * 
+ * @author Ben St&ouml;ver
+ */
 public abstract class InsertRemoveLabelEdit extends DocumentEdit {
 	protected Label label;
 	protected Labels owner;
@@ -38,15 +43,21 @@ public abstract class InsertRemoveLabelEdit extends DocumentEdit {
 	
 	
 	protected void insert() {
-		LabelFormats f = label.getFormats();  
-		f.setLinePosition(owner.getLastLinePos(f.isAbove(), f.getLineNumber()));
-		label.setLabels(owner);
-		owner.add(label);
+		if (!IDManager.idExistsOnNode(owner.getHoldingBranch().getTargetNode(), label.getID())) {
+			LabelFormats f = label.getFormats();  
+			f.setLinePosition(owner.getLastLinePos(f.isAbove(), f.getLineNumber()));
+			label.setLabels(owner);
+			owner.add(label);
+		}
+		else {
+			throw new DuplicateIDException(label.getID(), owner.getHoldingBranch().getTargetNode());
+		}
 	}
 	
 	
 	protected void remove() {
 		owner.remove(label);
-		label.getFormats().setOwner(null);  //TODO Ist owner=null überall auf Zugriffsfehler gesichert?
+		label.setLabels(null);
+		//label.getFormats().setOwner(null);  //TODO Ist owner=null überall auf Zugriffsfehler gesichert?
 	}
 }

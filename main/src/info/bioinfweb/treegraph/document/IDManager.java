@@ -139,7 +139,7 @@ public class IDManager {
    * @return a list of all IDs (every string is contained only once)
    */
   public static String[] getIDs(Node root) {
-  	List<String> list = getIDVectorFromSubtree(root);
+  	List<String> list = getIDListFromSubtree(root);
   	return list.toArray(new String[list.size()]);
   }
   
@@ -176,7 +176,7 @@ public class IDManager {
    * @return a list of all IDs (every string is contained only once)
    */
   public static String[] getLabelIDs(Node root, Class<? extends Label> labelClass) {
-  	List<String> list = getLabelIDVectorFromSubtree(root, labelClass);
+  	List<String> list = getLabelIDListFromSubtree(root, labelClass);
   	return list.toArray(new String[list.size()]);
   }
   
@@ -189,7 +189,7 @@ public class IDManager {
    * @return a list of all IDs (every string is contained only once)
    */
   public static String[] getHiddenBranchDataIDs(Node root) {
-  	List<String> list = getHiddenBranchDataIDVectorFromSubtree(root);
+  	List<String> list = getHiddenBranchDataIDListFromSubtree(root);
   	return list.toArray(new String[list.size()]);
   }
   
@@ -202,7 +202,7 @@ public class IDManager {
    * @return a list of all IDs (every string is contained only once)
    */
   public static String[] getHiddenNodeDataIDs(Node root) {
-  	List<String> list = getHiddenNodeDataIDVectorFromSubtree(root);
+  	List<String> list = getHiddenNodeDataIDListFromSubtree(root);
   	return list.toArray(new String[list.size()]);
   }
   
@@ -210,7 +210,7 @@ public class IDManager {
   /**
    * Returns a vector of IDs from a whole subtree which is sorted alphabetically.
    */
-  private static List<String> getVectorFromSubtree(Node root, Class<? extends Label> labelClass, 
+  private static List<String> getListFromSubtree(Node root, Class<? extends Label> labelClass, 
   		boolean includeNodeHiddenData, boolean includeBranchHiddenData) {
   	
   	Vector<String> list = new Vector<String>();
@@ -224,7 +224,7 @@ public class IDManager {
   /**
    * Returns a vector of IDs from a single node which is sorted alphabetically.
    */
-  private static List<String> getVectorFromNode(Node node, Class<? extends Label> labelClass, 
+  private static List<String> getListFromNode(Node node, Class<? extends Label> labelClass, 
   		boolean includeNodeHiddenData, boolean includeBranchHiddenData) {
   	
   	Vector<String> list = new Vector<String>();
@@ -240,8 +240,8 @@ public class IDManager {
    * @param root - the root node of the subtree to be searched. 
    * @return a list of all IDs (every string is contained only once)
    */
-  public static List<String> getIDVectorFromSubtree(Node root) {
-  	return getVectorFromSubtree(root, Label.class, true, true);
+  public static List<String> getIDListFromSubtree(Node root) {
+  	return getListFromSubtree(root, Label.class, true, true);
   }
   
   
@@ -251,8 +251,8 @@ public class IDManager {
    * @param root - the root node of the subtree to be searched. 
    * @return a list of all IDs (every string is contained only once)
    */
-  public static List<String> getIDVectorFromNode(Node root) {
-  	return getVectorFromNode(root, Label.class, true, true);
+  public static List<String> getIDListFromNode(Node root) {
+  	return getListFromNode(root, Label.class, true, true);
   }
   
   
@@ -262,18 +262,18 @@ public class IDManager {
    * @param root - the root node of the subtree to be searched. 
    * @return a list of all label IDs (every string is contained only once)
    */
-  public static List<String> getLabelIDVectorFromSubtree(Node root, Class<? extends Label> labelClass) {
-  	return getVectorFromSubtree(root, labelClass, false, false);
+  public static List<String> getLabelIDListFromSubtree(Node root, Class<? extends Label> labelClass) {
+  	return getListFromSubtree(root, labelClass, false, false);
   }
   
   
-  public static List<String> getHiddenBranchDataIDVectorFromSubtree(Node root) {
-  	return getVectorFromSubtree(root, null, false, true);
+  public static List<String> getHiddenBranchDataIDListFromSubtree(Node root) {
+  	return getListFromSubtree(root, null, false, true);
   }
   
   
-  public static List<String> getHiddenNodeDataIDVectorFromSubtree(Node root) {
-  	return getVectorFromSubtree(root, null, true, false);
+  public static List<String> getHiddenNodeDataIDListFromSubtree(Node root) {
+  	return getListFromSubtree(root, null, true, false);
   }
   
   
@@ -500,7 +500,7 @@ public class IDManager {
    * @return <code>true</code>, if any element was found
    */
   public static boolean idExistsInSubtree(Node root, String id) {
-  	return getIDVectorFromSubtree(root).contains(id);
+  	return getIDListFromSubtree(root).contains(id);
   }
   
   
@@ -508,18 +508,26 @@ public class IDManager {
    * Tests whether any type of label or any hidden data entry with the specified is attached 
    * to <code>node</code>.
    * 
-   * @param root - the root of the subtree to be searched
+   * @param node - the root of the subtree to be searched
    * @param id - the ID to be searched for
    * @return <code>true</code>, if any element was found
    */
   public static boolean idExistsOnNode(Node node, String id) {
-  	return getIDVectorFromNode(node).contains(id);
+  	return getIDListFromNode(node).contains(id);
   }
 
 
+  /**
+   * Checks if at least one specified branch (or its target node) already contains an element with the specified ID.
+   * 
+   * @param id - the new ID to be tested
+   * @param selection - a set of branches to be searched for the new ID (the linked nodes are also searched)
+   * @return {@code false} if no branch or linked node was found that contains any element with the specified ID,
+   *         {@code true} otherwise
+   */
   public static boolean idConflict(String id, Branch[] selection){
 		for (int i = 0; i < selection.length; i++) {
-			if (IDManager.idExistsOnNode(selection[i].getTargetNode(),id)){
+			if (IDManager.idExistsOnNode(selection[i].getTargetNode(), id)){
 				return true;
 			}
 		}

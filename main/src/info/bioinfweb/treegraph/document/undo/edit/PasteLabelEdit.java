@@ -19,44 +19,23 @@
 package info.bioinfweb.treegraph.document.undo.edit;
 
 
-import javax.swing.undo.CannotRedoException;
-import javax.swing.undo.CannotUndoException;
-
 import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Label;
 import info.bioinfweb.treegraph.document.TextLabel;
-import info.bioinfweb.treegraph.document.undo.DocumentEdit;
-import info.bioinfweb.treegraph.gui.dialogs.CollidingIDsDialog;
 
 
 
-public class PasteLabelEdit extends DocumentEdit {
-  private Label label = null;
-  private Branch branch = null;
-  
-  
+/**
+ * Edit used to paste a label from the clipboard into the document.
+ * <p>
+ * The only difference to {@link InsertLabelEdit} is a different return value in {@link #getPresentationName()}.
+ * 
+ * @author Ben St&ouml;ver
+ */
+public class PasteLabelEdit extends InsertLabelEdit {
 	public PasteLabelEdit(Document document, Branch branch, Label label) {
-		super(document);
-		this.label = label;
-		this.branch = branch;
-	}
-
-
-	@Override
-	public void redo() throws CannotRedoException {
-		label.setID(CollidingIDsDialog.getInstance().checkConflicts(new Branch[]{branch}, label.getID()));
-		label.setLabels(branch.getLabels());
-		branch.getLabels().add(label);
-		super.redo();
-	}
-
-
-	@Override
-	public void undo() throws CannotUndoException {
-		branch.getLabels().remove(label);
-		label.setLabels(null);
-		super.undo();
+		super(document, label, branch.getLabels());
 	}
 
 
@@ -65,9 +44,7 @@ public class PasteLabelEdit extends DocumentEdit {
 			return "Paste text-label \"" + ((TextLabel)label).getData() + "\"";
 		}
 		else {
-			return "Paste icon-label";
+			return "Paste graphical label";
 		}
 	}
-  
-  
 }

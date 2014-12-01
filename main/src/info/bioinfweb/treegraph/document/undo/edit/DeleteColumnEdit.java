@@ -24,7 +24,7 @@ import javax.swing.undo.CannotRedoException;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
-import info.bioinfweb.treegraph.document.undo.NodeBranchDataEdit;
+import info.bioinfweb.treegraph.document.undo.nodebranchdata.NodeBranchDataEdit;
 
 
 

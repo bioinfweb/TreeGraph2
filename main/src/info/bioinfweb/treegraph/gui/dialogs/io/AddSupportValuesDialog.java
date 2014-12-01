@@ -100,7 +100,7 @@ public class AddSupportValuesDialog extends FileDialog {
 	protected boolean onExecute() {
 		if (!getDocument().getTree().isEmpty()) {
 			getIDNameTextField().setText(IDManager.newID(
-					IDManager.getIDVectorFromSubtree(getDocument().getTree().getPaintStart())));
+					IDManager.getIDListFromSubtree(getDocument().getTree().getPaintStart())));
 			getTerminalDataInput().setAdapters(getDocument().getTree(), false, true, false, false, false);
 			return true;
 		}

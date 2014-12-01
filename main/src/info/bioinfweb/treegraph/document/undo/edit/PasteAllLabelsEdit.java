@@ -19,47 +19,27 @@
 package info.bioinfweb.treegraph.document.undo.edit;
 
 
-import javax.swing.undo.CannotRedoException;
-import javax.swing.undo.CannotUndoException;
-
 import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Label;
-import info.bioinfweb.treegraph.document.undo.DocumentEdit;
-import info.bioinfweb.treegraph.gui.dialogs.CollidingIDsDialog;
+import info.bioinfweb.treegraph.document.undo.ComposedDocumentEdit;
 
 
 
-public class PasteAllLabelsEdit extends DocumentEdit{
-  private Branch branch = null;
-  private Label[] labelList = null;
-  
-  
+/**
+ * Pastes all labels from the clipboard onto the specified branch.
+ * 
+ * @author Ben St&ouml;ver
+ */
+public class PasteAllLabelsEdit extends ComposedDocumentEdit {
   public PasteAllLabelsEdit(Document document, Branch branch, Label[] labelList) {
 		super(document);
-		this.branch = branch;
-		this.labelList = labelList;
-	}
-  
-  
-	@Override
-	public void redo() throws CannotRedoException {
+	  
 		for (int i = 0; i < labelList.length; i++) {
-			labelList[i].setID(CollidingIDsDialog.getInstance().checkConflicts(new Branch[]{branch}, labelList[i].getID()));
-			labelList[i].setLabels(branch.getLabels());
-			branch.getLabels().add(labelList[i]);
+			InsertLabelEdit edit = new InsertLabelEdit(document, labelList[i], branch.getLabels());
+			edit.setIsSubedit(true);
+			getEdits().add(edit);
 		}
-		super.redo();
-	}
-
-
-	@Override
-	public void undo() throws CannotUndoException {
-		for (int i = 0; i < labelList.length; i++) {
-			branch.getLabels().remove(labelList[i]);
-			labelList[i].setLabels(null);
-		}
-		super.undo();
 	}
 	
 	

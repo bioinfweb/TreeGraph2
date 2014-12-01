@@ -28,6 +28,11 @@ import info.bioinfweb.treegraph.document.undo.SaveLegendsEdit;
 
 
 
+/**
+ * Removes all children and their subtrees of the specified node from the document.
+ * 
+ * @author Ben St&ouml;ver
+ */
 public class DeleteSubelementsEdit extends SaveLegendsEdit {
 	private Node root;
   private Node[] subnodes;

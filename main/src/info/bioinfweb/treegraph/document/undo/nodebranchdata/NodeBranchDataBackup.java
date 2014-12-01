@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.document.undo;
+package info.bioinfweb.treegraph.document.undo.nodebranchdata;
 
 
 import info.bioinfweb.treegraph.document.Node;
@@ -30,7 +30,8 @@ import java.util.Vector;
 
 
 /**
- * Used to backup a node/branch data column beforen an edit operation.
+ * Used to backup a node/branch data column before an edit operation.
+ * 
  * @author Ben St&ouml;ver
  * @since 2.0.24
  */

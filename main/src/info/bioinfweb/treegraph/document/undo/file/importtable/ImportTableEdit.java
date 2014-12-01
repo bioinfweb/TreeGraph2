@@ -32,8 +32,8 @@ import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
-import info.bioinfweb.treegraph.document.undo.NodeBranchDataBackup;
 import info.bioinfweb.treegraph.document.undo.WarningMessageEdit;
+import info.bioinfweb.treegraph.document.undo.nodebranchdata.NodeBranchDataBackup;
 import info.bioinfweb.treegraph.gui.actions.file.ImportTableAction;
 import info.bioinfweb.commons.Math2;
 

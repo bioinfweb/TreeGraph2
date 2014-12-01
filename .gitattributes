@@ -79,6 +79,7 @@ main/src/info/bioinfweb/treegraph/document/CornerRadiusElement.java -text
 main/src/info/bioinfweb/treegraph/document/Document.java -text
 main/src/info/bioinfweb/treegraph/document/DocumentChangeEvent.java -text
 main/src/info/bioinfweb/treegraph/document/DocumentListener.java -text
+main/src/info/bioinfweb/treegraph/document/DuplicateIDException.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/GraphicalLabel.java -text
 main/src/info/bioinfweb/treegraph/document/HiddenDataElement.java -text
 main/src/info/bioinfweb/treegraph/document/HiddenDataMap.java -text
@@ -317,8 +318,6 @@ main/src/info/bioinfweb/treegraph/document/undo/ComplexDocumentEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/ComposedDocumentEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/DocumentEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/ImportTextElementDataParameters.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/treegraph/document/undo/NodeBranchDataBackup.java -text
-main/src/info/bioinfweb/treegraph/document/undo/NodeBranchDataEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/SaveLegendsEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/WarningMessageEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/edit/BranchLengthEdit.java -text
@@ -411,6 +410,9 @@ main/src/info/bioinfweb/treegraph/document/undo/format/ScaleBranchLengthsEdit.ja
 main/src/info/bioinfweb/treegraph/document/undo/format/ScaleDistanceValuesEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/format/ShowHideScaleBarEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/format/ShowRootedEdit.java -text
+main/src/info/bioinfweb/treegraph/document/undo/nodebranchdata/NodeBranchDataBackup.java -text
+main/src/info/bioinfweb/treegraph/document/undo/nodebranchdata/NodeBranchDataEdit.java -text
+main/src/info/bioinfweb/treegraph/document/undo/nodebranchdata/package-info.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/package.html -text
 main/src/info/bioinfweb/treegraph/document/undo/topologicalcalculation/AbstractTopologicalCalculationEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/topologicalcalculation/LeafSet.java -text

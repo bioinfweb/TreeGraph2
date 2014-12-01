@@ -36,8 +36,6 @@ import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextLabel;
 import info.bioinfweb.treegraph.document.format.TextFormats;
 import info.bioinfweb.treegraph.document.nodebranchdata.*;
-import info.bioinfweb.treegraph.document.undo.NodeBranchDataBackup;
-import info.bioinfweb.treegraph.document.undo.NodeBranchDataEdit;
 import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.*;
 import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.topology.IndexInParentFunction;
 import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.topology.IsLeafFunction;
@@ -52,6 +50,8 @@ import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.vararg.MinFun
 import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.vararg.ProductFunction;
 import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.vararg.SumFunction;
 import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.vararg.VarArgFunction;
+import info.bioinfweb.treegraph.document.undo.nodebranchdata.NodeBranchDataBackup;
+import info.bioinfweb.treegraph.document.undo.nodebranchdata.NodeBranchDataEdit;
 
 
 

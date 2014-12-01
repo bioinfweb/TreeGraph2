@@ -29,6 +29,7 @@ import info.bioinfweb.treegraph.document.*;
  * This class is a clipboard for tree elements. It can store a single label, a list of 
  * labels or a node with its subtree. Note that only one of the three types of elements
  * can be stored at one time.
+ * 
  * @author Ben St&ouml;ver
  */
 public class TreeClipboard {
@@ -79,6 +80,7 @@ public class TreeClipboard {
   
 	/**
 	 * Returns a deep copy of the label in the clipboard.
+	 * 
 	 * @throws info.bioinfweb.treegraph.document.clipboard.TreeClipboardException if no label is stored. 
 	 */
   public Label getLabel() {
@@ -93,6 +95,7 @@ public class TreeClipboard {
 
 	/**
 	 * Returns a deep copy of the label list in the clipboard.
+	 * 
 	 * @throws info.bioinfweb.treegraph.document.clipboard.TreeClipboardException if no label list is stored. 
 	 */
 	public Label[] getLabelList() {
@@ -112,6 +115,7 @@ public class TreeClipboard {
 	/**
 	 * Returns a deep copy of the subtree in the clipboard. Note that the returned nodes have the same 
 	 * unique names as the original nodes had.
+	 * 
 	 * @throws info.bioinfweb.treegraph.document.clipboard.TreeClipboardException if no subtree is stored. 
 	 */
 	public Node getSubtree() {
@@ -126,6 +130,7 @@ public class TreeClipboard {
 
 	/**
 	 * Returns deep copies of the legends attached to the subtree in the clipboard.
+	 * 
 	 * @return the legends or an empty array if the subtree contains no legends
 	 * @throws info.bioinfweb.treegraph.document.clipboard.TreeClipboardException if no subtree is stored. 
 	 */
@@ -145,6 +150,7 @@ public class TreeClipboard {
 
 	/**
 	 * Returns a deep copy of the legend in the clipboard.
+	 * 
 	 * @throws info.bioinfweb.treegraph.document.clipboard.TreeClipboardException if no label is stored. 
 	 */
   public Legend getLegend() {

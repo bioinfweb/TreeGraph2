@@ -18,6 +18,7 @@
  */
 package info.bioinfweb.treegraph.document.undo;
 
+
 import info.bioinfweb.commons.Math2;
 import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.io.newick.NewickStringChars;
