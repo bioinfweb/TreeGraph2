@@ -20,12 +20,10 @@ package info.bioinfweb.treegraph.document.undo.nodebranchdata;
 
 
 import info.bioinfweb.treegraph.document.Node;
-import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
-import info.bioinfweb.treegraph.document.undo.edit.DeleteColumnEdit;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 
 
@@ -35,52 +33,28 @@ import java.util.Vector;
  * @author Ben St&ouml;ver
  * @since 2.0.24
  */
-public class NodeBranchDataBackup {
-	private NodeBranchDataAdapter adapter;
-  private List<TextElementData> list = null;
+public class NodeBranchDataColumnBackup {
+  private List<NodeBranchDataElementBackup> list = null;
   
   
-	public NodeBranchDataBackup(NodeBranchDataAdapter adapter, Node root) {
+	public NodeBranchDataColumnBackup(NodeBranchDataAdapter adapter, Node root) {
 		super();
-		this.adapter = adapter;
-		if (!adapter.isNewColumn()) {
-			list = new Vector<TextElementData>();
-			backupSubtree(root);
-		}
+		list = new ArrayList<NodeBranchDataElementBackup>();
+		backupSubtree(root, adapter);
 	}
   
   
-	private void backupSubtree(Node root) {
-		TextElementData data = null;
-		if (!adapter.isEmpty(root)) {
-			if (adapter.isDecimal(root)) {
-				data = new TextElementData(adapter.getDecimal(root));
-			}
-			else {
-				data = new TextElementData(adapter.getText(root));
-			}
-		}
-		list.add(data);
+	private void backupSubtree(Node root, NodeBranchDataAdapter adapter) {
+		list.add(new NodeBranchDataElementBackup(adapter, root));
 		
 		for (int i = 0; i < root.getChildren().size(); i++) {
-			backupSubtree(root.getChildren().get(i));
+			backupSubtree(root.getChildren().get(i), adapter);
 		}
 	}
 	
 	
 	private int restoreSubtree(Node root, int index) {
-		TextElementData data = list.get(index);
-		if (data != null) {
-			if (data.isDecimal()) {
-				adapter.setDecimal(root, data.getDecimal());
-			}
-			else {
-				adapter.setText(root, data.getText());
-			}
-		}
-		else {
-			adapter.delete(root);
-		}
+		list.get(index).restoreNode(root);
 		index++;
 		
 		for (int i = 0; i < root.getChildren().size(); i++) {
@@ -91,16 +65,12 @@ public class NodeBranchDataBackup {
 	
 	
 	/**
-	 * Restores the previous values of the specified column if it previously exsited. Otherwise the 
-	 * specified column is deleted. 
+	 * Restores the previous values of the specified column if it previously existed. Otherwise the 
+	 * specified column is deleted.
+	 * 
 	 * @param root
 	 */
 	public void restore(Node root) {
-		if (adapter.isNewColumn()) {
-			DeleteColumnEdit.deleteSubtree(root, adapter);
-		}
-		else {
-			restoreSubtree(root, 0);
-		}
+		restoreSubtree(root, 0);
 	}
 }

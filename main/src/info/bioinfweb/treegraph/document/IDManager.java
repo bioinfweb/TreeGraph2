@@ -424,6 +424,7 @@ public class IDManager {
   /**
    * Returns the element specified by the given ID which is linked to this node (either any type of label
    * label or a hidden node or hidden branch data). (The subtree is not searched.)  
+   * 
    * @param node - the node to which the returned value is linked
    * @return an instance of a class inherited from {@link Label} or an {@link TextElementData} object or
    *         <code>null</code> if no element with the specified ID is present

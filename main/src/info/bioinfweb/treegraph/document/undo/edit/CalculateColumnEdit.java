@@ -50,7 +50,7 @@ import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.vararg.MinFun
 import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.vararg.ProductFunction;
 import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.vararg.SumFunction;
 import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.vararg.VarArgFunction;
-import info.bioinfweb.treegraph.document.undo.nodebranchdata.NodeBranchDataBackup;
+import info.bioinfweb.treegraph.document.undo.nodebranchdata.NodeBranchDataColumnBackup;
 import info.bioinfweb.treegraph.document.undo.nodebranchdata.NodeBranchDataEdit;
 
 
@@ -84,7 +84,7 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 		this.expression = expression;
 		parser = createParser();
 		adapterMap = createAdapterMap();
-		backup = new NodeBranchDataBackup(targetAdapter, document.getTree().getPaintStart());
+		backup = new NodeBranchDataColumnBackup(targetAdapter, document.getTree().getPaintStart());
 	}
 	
 	
@@ -330,7 +330,7 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 	@Override
 	public void redo() throws CannotRedoException {
 		errors.clear();
-		calculateSubtree(getDocument().getTree().getPaintStart());
+		calculateSubtree(getDocument().getTree().getPaintStart());  // Keeps previously present labels and only changes their value.
 		super.redo();
 	}
 
@@ -342,7 +342,7 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 	
 	/**
 	 * Returns a description of the errors that occurred during the last call of 
-	 * {@link CalculateColumnEdit#redo()} or {@link CalculateColumnEdit#evaluate()}.
+	 * {@link #redo()} or {@link #evaluate()}.
 	 * 
 	 * @return a string possibly containing line breaks
 	 */

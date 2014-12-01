@@ -36,13 +36,13 @@ import info.bioinfweb.treegraph.document.undo.DocumentEdit;
  */
 public abstract class NodeBranchDataEdit extends DocumentEdit {
 	private NodeBranchDataAdapter adapter;
-	protected NodeBranchDataBackup backup;
+	protected NodeBranchDataColumnBackup backup;
 
 
 	public NodeBranchDataEdit(Document document, NodeBranchDataAdapter adapter) {
 		super(document);
 		this.adapter = adapter;
-		backup = new NodeBranchDataBackup(adapter, document.getTree().getPaintStart());
+		backup = new NodeBranchDataColumnBackup(adapter, document.getTree().getPaintStart());
 	}
 
 

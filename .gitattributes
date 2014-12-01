@@ -410,8 +410,9 @@ main/src/info/bioinfweb/treegraph/document/undo/format/ScaleBranchLengthsEdit.ja
 main/src/info/bioinfweb/treegraph/document/undo/format/ScaleDistanceValuesEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/format/ShowHideScaleBarEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/format/ShowRootedEdit.java -text
-main/src/info/bioinfweb/treegraph/document/undo/nodebranchdata/NodeBranchDataBackup.java -text
+main/src/info/bioinfweb/treegraph/document/undo/nodebranchdata/NodeBranchDataColumnBackup.java -text
 main/src/info/bioinfweb/treegraph/document/undo/nodebranchdata/NodeBranchDataEdit.java -text
+main/src/info/bioinfweb/treegraph/document/undo/nodebranchdata/NodeBranchDataElementBackup.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/nodebranchdata/package-info.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/package.html -text
 main/src/info/bioinfweb/treegraph/document/undo/topologicalcalculation/AbstractTopologicalCalculationEdit.java -text svneol=unset#text/plain

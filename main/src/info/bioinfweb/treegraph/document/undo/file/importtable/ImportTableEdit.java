@@ -33,7 +33,7 @@ import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
 import info.bioinfweb.treegraph.document.undo.WarningMessageEdit;
-import info.bioinfweb.treegraph.document.undo.nodebranchdata.NodeBranchDataBackup;
+import info.bioinfweb.treegraph.document.undo.nodebranchdata.NodeBranchDataColumnBackup;
 import info.bioinfweb.treegraph.gui.actions.file.ImportTableAction;
 import info.bioinfweb.commons.Math2;
 
@@ -50,7 +50,7 @@ import info.bioinfweb.commons.Math2;
 public class ImportTableEdit extends DocumentEdit implements WarningMessageEdit {
   private ImportTableParameters parameters;
   private ImportTableData data;
-  private NodeBranchDataBackup[] backups;
+  private NodeBranchDataColumnBackup[] backups;
   private Set<String> keysNotInTree = new TreeSet<String>();
   
   
@@ -94,10 +94,10 @@ public class ImportTableEdit extends DocumentEdit implements WarningMessageEdit 
   }
 
 
-	private NodeBranchDataBackup[] createBackups() {
-		NodeBranchDataBackup[] result = new NodeBranchDataBackup[parameters.getImportAdapters().length];
+	private NodeBranchDataColumnBackup[] createBackups() {
+		NodeBranchDataColumnBackup[] result = new NodeBranchDataColumnBackup[parameters.getImportAdapters().length];
 		for (int i = 0; i < result.length; i++) {
-			result[i] = new NodeBranchDataBackup(parameters.getImportAdapters()[i], getDocument().getTree().getPaintStart());
+			result[i] = new NodeBranchDataColumnBackup(parameters.getImportAdapters()[i], getDocument().getTree().getPaintStart());
 		}
 		return result;
 	}
