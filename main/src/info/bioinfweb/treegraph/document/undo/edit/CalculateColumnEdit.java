@@ -364,6 +364,6 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 			}
 	    result.append(line + "\n");
     }
-		return result.toString();
+		return result.substring(0, result.length() - 1);  // Cut off last line break.
 	}
 }
