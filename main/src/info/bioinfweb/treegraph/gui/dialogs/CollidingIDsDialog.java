@@ -129,7 +129,7 @@ public class CollidingIDsDialog extends OkCancelApplyWikiHelpDialog {
 
 	
 	public String checkConflicts(Branch[] selection, String id) {
-		return checkConflicts(selection, id, Collections.EMPTY_LIST);
+		return checkConflicts(selection, id, Collections.<String>emptyList());
 	}
 	
 	
@@ -150,7 +150,7 @@ public class CollidingIDsDialog extends OkCancelApplyWikiHelpDialog {
 	
 	
 	public boolean promt(String id, Branch[] selection) {
-		return promt(id, selection, Collections.EMPTY_LIST);
+		return promt(id, selection, Collections.<String>emptyList());
 	}
 	
 	
