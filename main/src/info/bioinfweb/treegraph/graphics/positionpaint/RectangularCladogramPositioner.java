@@ -366,10 +366,7 @@ public class RectangularCladogramPositioner implements TreePositioner {
 	  	PositionData branchPos = root.getAfferentBranch().getPosition(type);
 	    branchPos.getTop().setInMillimeters(y0 + pd.getHeightAbove());  // wurzel.elternast.y = y0 + wurzel.höheOben;
 	    if (root.hasParent()) {  // Verlägerung des Ast wg. cornerRadius
-	    	if (root.getParent().getChildren().size() > 1) {
-	  	    branchPos.getTop().add(-0.5f * branchPos.getHeight().getInMillimeters());
-	    	}
-	    	
+	    	branchPos.getTop().add(-0.5f * branchPos.getHeight().getInMillimeters());
 	    	float cornerRadiusShift = calculateCornerRadiusShift(root.getParent(), branchPos.getTop().getInMillimeters() + .5f * branchPos.getHeight().getInMillimeters());
 		    branchPos.getLeft().add(cornerRadiusShift);
 		    branchPos.getWidth().add(-cornerRadiusShift);  // -cornerRadiusShift ist positiv
