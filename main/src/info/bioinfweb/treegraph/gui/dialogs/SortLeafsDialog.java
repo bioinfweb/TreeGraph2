@@ -19,9 +19,7 @@
 package info.bioinfweb.treegraph.gui.dialogs;
 
 
-import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Document;
-import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
@@ -142,19 +140,30 @@ public class SortLeafsDialog extends EditDialog {
 		List<TextElementData> newOrder = null;
 		
 		if (getTextFileRadioButton().isSelected()) {
-			File file = new File(getTextFileField().getText());
-			if (file.exists()) {
-				try {
-					newOrder = SortLeafsEdit.orderFromTextFile(file, parameters);
+			if (!"".equals(getTextFileField().getText())) {
+				File file = new File(getTextFileField().getText());
+				if (file.exists()) {
+					if (!file.isDirectory()) {
+						try {
+							newOrder = SortLeafsEdit.orderFromTextFile(file, parameters);
+						}
+						catch (IOException e) {
+							JOptionPane.showMessageDialog(this, "The error \"" + e.toString() + "\" ocurred when trying to read the file \"" + 
+									file.getAbsolutePath() + "\".",	"IO error", JOptionPane.ERROR_MESSAGE);
+						}
+					}
+					else {
+						JOptionPane.showMessageDialog(this, "The file \"" + file.getAbsolutePath() + "\" is a directory.", 
+								"Invalid file", JOptionPane.ERROR_MESSAGE);
+					}
 				}
-				catch (IOException e) {
-					JOptionPane.showMessageDialog(this, "The error \"" + e.toString() + "\" ocurred when trying to read the file \"" + 
-							file.getAbsolutePath() + "\".",	"IO error", JOptionPane.ERROR_MESSAGE);
+				else {
+					JOptionPane.showMessageDialog(this, "The file \"" + file.getAbsolutePath() + "\" could not be found.", 
+							"File not found", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			else {
-				JOptionPane.showMessageDialog(this, "The file \"" + file.getAbsolutePath() + "\" could not be found.", 
-						"File not found", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(this, "You have to specify a file.", "No file specified", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		else {  // Order from other document
