@@ -267,14 +267,18 @@ public class TreeSelection implements Collection<PaintableElement> {
 	 * @since 2.0.52
 	 */
 	public boolean containsOnlyLeafNodes() {
+		boolean containsType = false;
 		Iterator<PaintableElement> iterator = iterator();
 		while (iterator.hasNext()) {
 			PaintableElement element = iterator.next();
 			if (!((element instanceof Node) && ((Node)element).isLeaf())) {
 				return false;
 			}
+			else {
+				containsType = true;
+			}
 		}
-  	return true;
+  	return containsType;
 	}
 	
 	

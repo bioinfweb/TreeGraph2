@@ -25,6 +25,7 @@ import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
+import info.bioinfweb.treegraph.document.undo.edit.SortLeafsEdit;
 import info.bioinfweb.treegraph.gui.actions.EditDialogAction;
 import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
 import info.bioinfweb.treegraph.gui.dialogs.SortLeafsDialog;
@@ -33,6 +34,13 @@ import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 
 
 
+/**
+ * Action that opens the {@link SortLeafsDialog} to sort the terminal nodes of the tree.
+ * 
+ * @author BenStoever
+ * @since 2.2.0
+ * @see SortLeafsEdit
+ */
 public class SortLeafsAction extends EditDialogAction {
 	public SortLeafsAction(MainFrame mainFrame) {
 	  super(mainFrame);
@@ -49,8 +57,8 @@ public class SortLeafsAction extends EditDialogAction {
 	
 	@Override
   public void setEnabled(Document document, TreeSelection selection, NodeBranchDataAdapter tableAdapter) {
-		setEnabled((selection != null) && 
+		setEnabled((document != null) &&  !document.getTree().isEmpty() && (selection != null) && 
 				(selection.isEmpty() || (oneElementSelected(selection) && 
-						(selection.containsType(Node.class) || selection.containsType(Branch.class)))));
+				(selection.containsType(Node.class) || selection.containsType(Branch.class)))));
   }
 }

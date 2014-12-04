@@ -73,6 +73,6 @@ public class SelectAllAction extends AbstractSelectionAction {
 	
 	@Override
 	public void setEnabled(Document document, TreeSelection selection, NodeBranchDataAdapter tableAdapter) {
-		setEnabled(document != null);
+		setEnabled((document != null) && !document.getTree().isEmpty());
 	}
 }

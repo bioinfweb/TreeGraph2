@@ -53,7 +53,8 @@ public class AutoPositionLabelsAction extends DocumentAction {
 	
 	@Override
 	public void setEnabled(Document document, TreeSelection selection, NodeBranchDataAdapter tableAdapter) {
-		setEnabled((selection != null) &&	(selection.isEmpty() || selection.containsOnlyType(Branch.class)));
+		setEnabled((document != null) && !document.getTree().isEmpty() && (selection != null) &&
+				(selection.isEmpty() || selection.containsOnlyType(Branch.class)));
 	}
 
 
