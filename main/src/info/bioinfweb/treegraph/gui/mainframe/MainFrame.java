@@ -157,7 +157,7 @@ public class MainFrame extends JFrame implements Runnable {
 	public void addInternalFrame(JInternalFrame iFrame) {
 		getDesktopPane().add(iFrame);
 		try {
-			iFrame.setMaximum(true);
+			iFrame.setMaximum(true);  //TODO Why is this ignored although no exception is thrown?
 			iFrame.setSelected(true);
 		}
 		catch (PropertyVetoException e) {
