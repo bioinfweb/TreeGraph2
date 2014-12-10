@@ -122,7 +122,7 @@ public class CalculateColumnDialog extends EditDialog {
 	 * @return void
 	 */
 	private void initialize() {
-		setHelpCode(43);
+		setHelpCode(77);
 		setContentPane(getJContentPane());
 		setTitle("Calculate node/branch data");
 		setMinimumSize(new Dimension(500, 50));
