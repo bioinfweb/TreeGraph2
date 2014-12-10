@@ -139,6 +139,7 @@ public abstract class AbstractTopologicalCalculationEdit extends ComplexDocument
 	 */
 	protected void addLeafSets(Node root, NodeBranchDataAdapter adapter) {
 		if (!root.isLeaf()) {
+			root.getAttributeMap().remove(KEY_LEAF_REFERENCE);  // Necessary to overwrite possible leaf sets from previous edits which might not be valid anymore.
 			LeafSet field = getLeafSet(root);
 			
 			for (int i = 0; i < root.getChildren().size(); i++) {
