@@ -27,7 +27,23 @@ package info.bioinfweb.treegraph.document.undo.file.importtable;
  * @since 2.0.50
  */
 public class InsufficientTableSizeException extends ImportTableException {
+	private int columns;
+	private int rows;
+	
+	
 	public InsufficientTableSizeException(int columns, int rows) {
 	  super("The imported table only had " + columns + " columns and " + rows + " rows. It must at least have 2 columns and 1 row.");
+	  this.columns = columns;
+	  this.rows = rows;
   }
+
+
+	public int getColumns() {
+		return columns;
+	}
+
+
+	public int getRows() {
+		return rows;
+	}
 }
