@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Main-Class: info.bioinfweb.treegraph.Main
 SplashScreen-Image: resources/Splash.png
-Class-Path: lib/bioinfweb.commons.core.jar
-            lib/bioinfweb.commons.swing.jar
+Class-Path: lib/bioinfweb.commons.java-Core-1.1.0.jar
+            lib/bioinfweb.commons.java-Swing-1.1.0.jar
             lib/batik/batik-anim.jar
             lib/batik/batik-awt-util.jar
             lib/batik/batik-bridge.jar

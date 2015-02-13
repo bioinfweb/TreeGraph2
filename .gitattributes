@@ -49,8 +49,8 @@ main/include/lib/batik/xalan-2.6.0.jar -text
 main/include/lib/batik/xerces_2_5_0.jar -text
 main/include/lib/batik/xml-apis-ext.jar -text
 main/include/lib/batik/xml-apis.jar -text
-main/include/lib/bioinfweb.commons.core.jar -text
-main/include/lib/bioinfweb.commons.swing.jar -text
+main/include/lib/bioinfweb.commons.java-Core-1.1.0.jar -text
+main/include/lib/bioinfweb.commons.java-Swing-1.1.0.jar -text
 main/include/lib/commons-lang3-3.1.jar -text
 main/include/lib/errorReporter/ErrorReporter.jar -text
 main/include/lib/errorReporter/jaxen-1.1.6.LICENSE.txt -text svneol=unset#text/plain
