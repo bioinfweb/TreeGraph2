@@ -30,6 +30,12 @@ import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.IDFunction;
 
 
 
+/**
+ * Calculates the result of a vararg function from all values of a node/branch data column.
+ * 
+ * @author Ben St&ouml;ver
+ * @since 2.4.0
+ */
 public class WholeColumnFunction extends IDFunction {
 	private VarArgFunction implementingVersion;
 	
