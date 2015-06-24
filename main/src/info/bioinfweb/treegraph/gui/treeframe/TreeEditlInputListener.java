@@ -28,6 +28,7 @@ import info.bioinfweb.commons.SystemUtils;
 import java.awt.event.*;
 
 import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
 
 
 
@@ -244,8 +245,8 @@ class TreeEditlInputListener extends MouseAdapter
 		if ((e.isMetaDown() && SystemUtils.IS_OS_MAC) || (e.isControlDown()&&  !SystemUtils.IS_OS_MAC)) {
 			owner.setZoom(owner.getZoom() - (float)e.getWheelRotation() * ZOOM_PER_CLICK);
 		}
-		else {
-			owner.getParent().dispatchEvent(e);  // Ereignis zum Scrollen an JScrollPane weiterleiten
+		else if (owner.getParent() != null) {
+			owner.getParent().dispatchEvent(SwingUtilities.convertMouseEvent(owner, e, owner.getParent()));  // Forward to JScrollPane to scroll.
 		}
 	}
 }
