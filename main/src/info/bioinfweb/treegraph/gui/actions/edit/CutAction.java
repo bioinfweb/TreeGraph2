@@ -32,7 +32,7 @@ import info.bioinfweb.treegraph.document.ConcretePaintableElement;
 import info.bioinfweb.treegraph.document.undo.edit.CutEdit;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeInternalFrame;
-import info.webinsel.wikihelp.client.WikiHelpOptionPane;
+import info.bioinfweb.wikihelp.client.WikiHelpOptionPane;
 
 
 

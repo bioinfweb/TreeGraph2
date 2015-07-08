@@ -30,7 +30,7 @@ import info.bioinfweb.treegraph.document.undo.edit.CollapseNodesBySupportEdit;
 import info.bioinfweb.treegraph.gui.actions.edit.CollapseNodesBySupportAction;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataInput;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
-import info.webinsel.wikihelp.client.WikiHelpOptionPane;
+import info.bioinfweb.wikihelp.client.WikiHelpOptionPane;
 
 import java.awt.Dimension;
 import java.awt.Frame;

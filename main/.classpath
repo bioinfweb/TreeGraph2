@@ -11,7 +11,6 @@
 	<classpathentry kind="lib" path="include/lib/org.jdesktop.swingx.scrollpaneselector.jar"/>
 	<classpathentry kind="lib" path="include/lib/l2fprod-common-directorychooser-7.3.jar"/>
 	<classpathentry kind="lib" path="include/lib/commons-lang3-3.1.jar"/>
-	<classpathentry kind="lib" path="/_Lib/bin" sourcepath="/_Lib/src"/>
 	<classpathentry kind="lib" path="include/lib/batik/batik-anim.jar"/>
 	<classpathentry kind="lib" path="include/lib/batik/batik-awt-util.jar"/>
 	<classpathentry kind="lib" path="include/lib/batik/batik-bridge.jar"/>
@@ -40,5 +39,8 @@
 	<classpathentry kind="lib" path="include/lib/errorReporter/jaxen-1.1.6.jar"/>
 	<classpathentry kind="lib" path="include/lib/errorReporter/jdom-2.0.5.jar"/>
 	<classpathentry kind="lib" path="include/lib/UpdateCenterShared.jar"/>
+	<classpathentry kind="lib" path="/info.bioinfweb.commons.core/bin" sourcepath="/info.bioinfweb.commons.core/src"/>
+	<classpathentry kind="lib" path="/info.bioinfweb.commons.swing/bin" sourcepath="/info.bioinfweb.commons.swing/src"/>
+	<classpathentry kind="lib" path="/info.bioinfweb.wikihelp.client/bin" sourcepath="/info.bioinfweb.wikihelp.client/src"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

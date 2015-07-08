@@ -37,7 +37,7 @@ import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeDataComboBoxModel;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
-import info.webinsel.wikihelp.client.WikiHelpOptionPane;
+import info.bioinfweb.wikihelp.client.WikiHelpOptionPane;
 
 
 

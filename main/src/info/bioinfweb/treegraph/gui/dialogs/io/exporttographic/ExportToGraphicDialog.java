@@ -39,7 +39,7 @@ import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 import info.bioinfweb.treegraph.gui.treeframe.TreeViewPanel;
 import info.bioinfweb.commons.Math2;
 import info.bioinfweb.commons.collections.ParameterMap;
-import info.webinsel.wikihelp.client.WikiHelpOptionPane;
+import info.bioinfweb.wikihelp.client.WikiHelpOptionPane;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;

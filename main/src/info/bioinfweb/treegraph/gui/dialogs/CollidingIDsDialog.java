@@ -5,7 +5,7 @@ import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.IDManager;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
-import info.webinsel.wikihelp.client.OkCancelApplyWikiHelpDialog;
+import info.bioinfweb.wikihelp.client.OkCancelApplyWikiHelpDialog;
 
 import java.awt.Frame;
 import java.awt.GridBagLayout;

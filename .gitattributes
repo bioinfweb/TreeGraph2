@@ -673,7 +673,6 @@ main/src/info/bioinfweb/treegraph/gui/dialogs/specialformats/SpecialFormatsDialo
 main/src/info/bioinfweb/treegraph/gui/mainframe/MainFrame.java -text
 main/src/info/bioinfweb/treegraph/gui/mainframe/ToolBarPanel.java -text
 main/src/info/bioinfweb/treegraph/gui/mainframe/package.html -text
-main/src/info/bioinfweb/treegraph/gui/mainframe/tools/DistanceValuePopup.java -text
 main/src/info/bioinfweb/treegraph/gui/package.html -text
 main/src/info/bioinfweb/treegraph/gui/treeframe/DocumentTableModel.java -text
 main/src/info/bioinfweb/treegraph/gui/treeframe/HelpButton.java -text

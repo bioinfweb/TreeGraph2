@@ -36,7 +36,7 @@ import info.bioinfweb.commons.io.DefaultNameManager;
 import info.bioinfweb.errorreport.swing.SwingErrorReporter;
 import info.bioinfweb.treegraph.cmd.CmdProcessor;
 import info.bioinfweb.treegraph.document.clipboard.TreeClipboard;
-import info.webinsel.wikihelp.client.WikiHelp;
+import info.bioinfweb.wikihelp.client.WikiHelp;
 
 
 

@@ -29,7 +29,7 @@ import info.bioinfweb.treegraph.gui.actions.DocumentAction;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeInternalFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
-import info.webinsel.wikihelp.client.WikiHelpOptionPane;
+import info.bioinfweb.wikihelp.client.WikiHelpOptionPane;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;

@@ -24,11 +24,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
 
-import javax.swing.JOptionPane;
 
-import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.treegraph.document.Document;
-import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.io.AbstractDocumentIterator;
 import info.bioinfweb.treegraph.document.io.DocumentIterator;
 import info.bioinfweb.treegraph.document.io.DocumentReader;
@@ -38,9 +35,7 @@ import info.bioinfweb.treegraph.document.io.nexus.NexusParser;
 import info.bioinfweb.treegraph.document.nodebranchdata.BranchLengthAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
-import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.commons.log.ApplicationLogger;
-import info.webinsel.wikihelp.client.WikiHelpOptionPane;
 
 
 

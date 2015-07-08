@@ -22,7 +22,7 @@ package info.bioinfweb.treegraph.gui.dialogs.io;
 import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.treegraph.document.io.newick.NewickException;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
-import info.webinsel.wikihelp.client.OkCancelApplyWikiHelpDialog;
+import info.bioinfweb.wikihelp.client.OkCancelApplyWikiHelpDialog;
 
 import javax.swing.JPanel;
 import java.awt.Frame;

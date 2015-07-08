@@ -28,7 +28,7 @@ import info.bioinfweb.treegraph.document.undo.edit.CopyColumnEdit;
 import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NewNodeBranchDataInput;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataInput;
-import info.webinsel.wikihelp.client.WikiHelpOptionPane;
+import info.bioinfweb.wikihelp.client.WikiHelpOptionPane;
 
 import javax.swing.JPanel;
 import java.awt.Frame;

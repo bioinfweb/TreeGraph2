@@ -41,7 +41,7 @@ import info.bioinfweb.treegraph.document.nodebranchdata.VoidNodeBranchDataAdapte
 import info.bioinfweb.treegraph.document.undo.file.importtable.ImportTableData;
 import info.bioinfweb.treegraph.document.undo.file.importtable.ImportTableParameters;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NewNodeBranchDataInput;
-import info.webinsel.wikihelp.client.OkCancelApplyWikiHelpDialog;
+import info.bioinfweb.wikihelp.client.OkCancelApplyWikiHelpDialog;
 
 
 

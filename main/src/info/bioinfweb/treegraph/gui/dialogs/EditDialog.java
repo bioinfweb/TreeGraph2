@@ -26,7 +26,7 @@ import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
-import info.webinsel.wikihelp.client.OkCancelApplyWikiHelpDialog;
+import info.bioinfweb.wikihelp.client.OkCancelApplyWikiHelpDialog;
 
 
 
