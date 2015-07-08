@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry kind="lib" path="/_Lib/bin" sourcepath="/_Lib/src"/>
 	<classpathentry kind="lib" path="lib/junit-4.9b1.jar"/>
 	<classpathentry kind="lib" path="/TreeGraph2/include/lib/commons-lang3-3.1.jar"/>
 	<classpathentry kind="lib" path="/TreeGraph2/include/lib/ext-1.1.1.jar"/>
@@ -42,5 +41,9 @@
 	<classpathentry kind="lib" path="/TreeGraph2/include/lib/errorReporter/jaxen-1.1.6.jar"/>
 	<classpathentry kind="lib" path="/TreeGraph2/include/lib/errorReporter/jdom-2.0.5.jar"/>
 	<classpathentry kind="lib" path="/TreeGraph2/bin"/>
+	<classpathentry kind="lib" path="/info.bioinfweb.commons.core/bin" sourcepath="/info.bioinfweb.commons.core/src"/>
+	<classpathentry kind="lib" path="/info.bioinfweb.commons.swing/bin" sourcepath="/info.bioinfweb.commons.swing/src"/>
+	<classpathentry kind="lib" path="/info.bioinfweb.wikihelp.client/bin" sourcepath="/info.bioinfweb.wikihelp.client/src"/>
+	<classpathentry kind="lib" path="/info.bioinfweb.commons.testing/bin" sourcepath="/info.bioinfweb.commons.testing/src"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
