@@ -252,7 +252,7 @@ public class XTGReader extends AbstractDocumentReader implements XTGConstants {
         if (element.getName().getLocalPart().equals(TAG_PIE_CHART_ID)) {
         	l.getFormats().setPieColor(index, XMLUtils.readColorAttr(element, ATTR_PIE_COLOR, 
               l.getFormats().getPieColor(index)));
-        	l.addValueID(reader.nextEvent().asCharacters().getData());
+        	l.addValueID(XMLUtils.readCharactersAsString(reader));  // If string contains e.g. "&lt;" it will be split into separate events. Therefore the util method needs to be used. 
           reachElementEnd(reader, element);
           index++;
         }
