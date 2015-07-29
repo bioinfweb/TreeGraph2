@@ -202,7 +202,7 @@ public class SortLeafsEdit extends DocumentEdit implements WarningMessageEdit {
 			
 			if (!unlinkedTreeValues.isEmpty()) {
 				buffer.append("The following elements from the tree have not been found in the order list:\n\n");
-				addListToWarningText(unlinkedOrderValues, buffer);
+				addListToWarningText(unlinkedTreeValues, buffer);
 				buffer.append("\nThese elements have been positioned as the last elements in their subtree.");
 			}
 
