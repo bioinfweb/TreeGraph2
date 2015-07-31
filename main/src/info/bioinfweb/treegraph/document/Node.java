@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben Stï¿½ver, Kai Mï¿½ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -43,7 +43,7 @@ public class Node extends AbstractTextElement
   private HashMap<String, Object> attributeMap = new HashMap<String, Object>(); 
 
   
-	public static Node getInstanceWithBranch() {
+	public static Node newInstanceWithBranch() {
 		Node result = new Node();
 		result.setAfferentBranch(new Branch(result));
 		return result;
@@ -129,7 +129,7 @@ public class Node extends AbstractTextElement
 	 */
 	public boolean isOnlySubelement() {
 		if (!hasParent()) {
-			return true;  // Element ist Baumwurzel und deshalb zwangläufig allein.
+			return true;  // Element ist Baumwurzel und deshalb zwanglï¿½ufig allein.
 		}
 		else {
 			return getParent().getChildren().size() == 1;

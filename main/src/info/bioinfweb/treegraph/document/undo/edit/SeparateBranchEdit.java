@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben Stï¿½ver, Kai Mï¿½ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -37,7 +37,7 @@ import info.bioinfweb.treegraph.document.undo.DocumentEdit;
  */
 public class SeparateBranchEdit extends DocumentEdit {
   private Branch branchToSplit;
-  private Node insertedNode = Node.getInstanceWithBranch();
+  private Node insertedNode = Node.newInstanceWithBranch();
   private int index;
   
   

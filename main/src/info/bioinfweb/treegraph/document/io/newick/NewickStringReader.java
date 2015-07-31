@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben Stï¿½ver, Kai Mï¿½ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -77,7 +77,7 @@ public class NewickStringReader extends NewickStringChars {
 			}
 			else if (type.equals(TokenType.SUBTREE_START)) {
 				pos = searchSubtreeEnd(pos + 1, end);
-				if (pos == -1) {  // Sonst würde diese Rekursionsebene die Suche wieder von neum beginnen.
+				if (pos == -1) {  // Sonst wï¿½rde diese Rekursionsebene die Suche wieder von neum beginnen.
 					return -1;
 				}
 			}
@@ -174,7 +174,7 @@ public class NewickStringReader extends NewickStringChars {
   		}
   	}
   	else if (previousEnd != end) {  // kein Name angegeben aber trotzdem Token vorhanden  
-  		throw new NewickException(tokens.get(previousEnd + 2), newickDescription);  //TODO vorher stand hier "+ 1". So in Funktion z.B. für direkt aufeinander folgende Namen, aber was war mit Kommentar oben gemeint?
+  		throw new NewickException(tokens.get(previousEnd + 2), newickDescription);  //TODO vorher stand hier "+ 1". So in Funktion z.B. fï¿½r direkt aufeinander folgende Namen, aber was war mit Kommentar oben gemeint?
   	}
   }
  	
@@ -182,7 +182,7 @@ public class NewickStringReader extends NewickStringChars {
  	private Node readInternal(int start, int end) throws NewickException {
  		if (tokens.get(start).getType().equals(TokenType.SUBTREE_START)) {
  	 		int subtreeEnd = searchToken(start + 1, end, TokenType.SUBTREE_END);
- 			Node root = Node.getInstanceWithBranch();
+ 			Node root = Node.newInstanceWithBranch();
  			readBranchList(start + 1, subtreeEnd - 1, root);
  			if (translateInternals) {
  				readName(subtreeEnd, end, root, internalAdapter, translTable);
@@ -200,7 +200,7 @@ public class NewickStringReader extends NewickStringChars {
  	
  	
  	private Node readLeaf(int start, int end) throws NewickException {
- 		Node result = Node.getInstanceWithBranch();
+ 		Node result = Node.newInstanceWithBranch();
  		readName(start - 1, end, result, LEAF_ADAPTER, translTable);
  		return result;
  	}

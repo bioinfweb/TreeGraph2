@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben Stï¿½ver, Kai Mï¿½ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -79,18 +79,18 @@ public class PhyloXMLReader extends AbstractDocumentReader implements PhyloXMLCo
       if (event.getEventType() == XMLStreamConstants.START_ELEMENT) {
       	StartElement element = event.asStartElement();
         if (element.getName().equals(TAG_COLOR_RED)) {
-        	red = readColorValue();  // Anmerkung: Führt zu Fehler, falls Element leer ist!
+        	red = readColorValue();  // Anmerkung: Fï¿½hrt zu Fehler, falls Element leer ist!
         	reader.nextEvent();
         }
         else if (element.getName().equals(TAG_COLOR_GREEN)) {
-        	green = readColorValue();  // Anmerkung: Führt zu Fehler, falls Element leer ist!
+        	green = readColorValue();  // Anmerkung: Fï¿½hrt zu Fehler, falls Element leer ist!
         	reader.nextEvent();
         }
         else if (element.getName().equals(TAG_COLOR_BLUE)) {
-        	blue = readColorValue();  // Anmerkung: Führt zu Fehler, falls Element leer ist!
+        	blue = readColorValue();  // Anmerkung: Fï¿½hrt zu Fehler, falls Element leer ist!
         	reader.nextEvent();
         }
-        else {  // evtl. zusätzlich vorhandenes Element, dass nicht gelesen wird
+        else {  // evtl. zusï¿½tzlich vorhandenes Element, dass nicht gelesen wird
           XMLUtils.reachElementEnd(reader);  
         }
       }
@@ -125,7 +125,7 @@ public class PhyloXMLReader extends AbstractDocumentReader implements PhyloXMLCo
         	
         	storeHiddenData(node.getHiddenDataMap(), TAG_TAXONOMY.getLocalPart().toString() + ".", element);
         }
-        else {  // evtl. zusätzlich vorhandenes Element, dass nicht gelesen wird
+        else {  // evtl. zusï¿½tzlich vorhandenes Element, dass nicht gelesen wird
           XMLUtils.reachElementEnd(reader);  
         }
       }
@@ -150,7 +150,7 @@ public class PhyloXMLReader extends AbstractDocumentReader implements PhyloXMLCo
         	
         	storeHiddenData(node.getHiddenDataMap(), TAG_SEQUENCE.getLocalPart().toString() + ".", element);
         }
-        else {  // evtl. zusätzlich vorhandenes Element, dass nicht gelesen wird
+        else {  // evtl. zusï¿½tzlich vorhandenes Element, dass nicht gelesen wird
           XMLUtils.reachElementEnd(reader);  
         }
       }
@@ -168,7 +168,7 @@ public class PhyloXMLReader extends AbstractDocumentReader implements PhyloXMLCo
         	storeHiddenData(node.getHiddenDataMap(), TAG_DISTRIBUTION.getLocalPart().toString() + ".", 
         			element);
         }
-        else {  // evtl. zusätzlich vorhandenes Element, dass nicht gelesen wird
+        else {  // evtl. zusï¿½tzlich vorhandenes Element, dass nicht gelesen wird
           XMLUtils.reachElementEnd(reader);  
         }
       }
@@ -187,7 +187,7 @@ public class PhyloXMLReader extends AbstractDocumentReader implements PhyloXMLCo
         	
         	storeHiddenData(node.getHiddenDataMap(), TAG_DATE.getLocalPart().toString() + ".", element);
         }
-        else {  // evtl. zusätzlich vorhandenes Element, dass nicht gelesen wird
+        else {  // evtl. zusï¿½tzlich vorhandenes Element, dass nicht gelesen wird
           XMLUtils.reachElementEnd(reader);  
         }
       }
@@ -197,9 +197,9 @@ public class PhyloXMLReader extends AbstractDocumentReader implements PhyloXMLCo
 	
 	
 	private Node readSubtree(StartElement rootElement, Node parent) throws XMLStreamException {
-		Node result = Node.getInstanceWithBranch();
+		Node result = Node.newInstanceWithBranch();
 		Branch b = result.getAfferentBranch();
-		b.setLength(XMLUtils.readDoubleAttr(rootElement, ATTR_BRANCH_LENGTH, b.getLength()));  // Format erlaubt Angabe über Attribut oder Tag.
+		b.setLength(XMLUtils.readDoubleAttr(rootElement, ATTR_BRANCH_LENGTH, b.getLength()));  // Format erlaubt Angabe ï¿½ber Attribut oder Tag.
 		
     XMLEvent event = reader.nextEvent();
     int confidenceCount = 0;
@@ -230,7 +230,7 @@ public class PhyloXMLReader extends AbstractDocumentReader implements PhyloXMLCo
         else if (element.getName().equals(TAG_LINE_WIDTH)) {
         	double width = Double.parseDouble(reader.nextEvent().asCharacters().getData());
         	b.getHiddenDataMap().put(
-        			BRANCH_WIDT_DATA_NAME, new TextElementData(width));  // Astdicke wird für evtl. Reskalierungen zusätzlich als hidden node data gespeichert.
+        			BRANCH_WIDT_DATA_NAME, new TextElementData(width));  // Astdicke wird fï¿½r evtl. Reskalierungen zusï¿½tzlich als hidden node data gespeichert.
         	b.getFormats().getLineWidth().setInMillimeters((float)width);  //TODO Welche Einheit hat die hier gelesene Astdicke?
           reader.nextEvent();
         }
@@ -257,7 +257,7 @@ public class PhyloXMLReader extends AbstractDocumentReader implements PhyloXMLCo
         	subelement.setParent(result);
         	result.getChildren().add(subelement);
         }
-        else {  // evtl. zusätzlich vorhandenes Element, dass nicht gelesen wird
+        else {  // evtl. zusï¿½tzlich vorhandenes Element, dass nicht gelesen wird
           XMLUtils.reachElementEnd(reader);  
         }
       }
@@ -282,7 +282,7 @@ public class PhyloXMLReader extends AbstractDocumentReader implements PhyloXMLCo
     	result.getData().assign(data);
     }
     
-    // Formate des Elternelements übernehmen:
+    // Formate des Elternelements ï¿½bernehmen:
     if (parent != null) {
     	if (b.getHiddenDataMap().get(BRANCH_WIDT_DATA_NAME) == null) {
     		data = parent.getAfferentBranch().getHiddenDataMap().get(BRANCH_WIDT_DATA_NAME); 
@@ -334,7 +334,7 @@ public class PhyloXMLReader extends AbstractDocumentReader implements PhyloXMLCo
         	result.updateElementSet();
           reader.nextEvent();
         }
-        else {  // evtl. zusätzlich vorhandenes Element, dass nicht gelesen wird
+        else {  // evtl. zusï¿½tzlich vorhandenes Element, dass nicht gelesen wird
           XMLUtils.reachElementEnd(reader);  
         }
       }
@@ -354,7 +354,7 @@ public class PhyloXMLReader extends AbstractDocumentReader implements PhyloXMLCo
         if (element.getName().equals(TAG_PHYLOGENY)) {
       		phylogenies.add(readPhylogeny(element));
         }
-        else {  // evtl. zusätzlich vorhandenes Element, dass nicht gelesen wird
+        else {  // evtl. zusï¿½tzlich vorhandenes Element, dass nicht gelesen wird
           XMLUtils.reachElementEnd(reader);  
         }
       }
@@ -377,7 +377,7 @@ public class PhyloXMLReader extends AbstractDocumentReader implements PhyloXMLCo
 	        case XMLStreamConstants.END_DOCUMENT:
 	          reader.close();
 	          Tree tree = phylogenies.get(parameterMap.getTreeSelector().select(names.toArray(new String[names.size()]), phylogenies));
-	          AutoPositionLabelsEdit.position(tree.getPaintStart());  // Label gleichmäßig anordnen
+	          AutoPositionLabelsEdit.position(tree.getPaintStart());  // Label gleichmï¿½ï¿½ig anordnen
 	          document.setTree(tree);
 	          phylogenies.clear();
 	          return document;

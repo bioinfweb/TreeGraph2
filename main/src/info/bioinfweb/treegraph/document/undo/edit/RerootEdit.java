@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben Stï¿½ver, Kai Mï¿½ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -190,7 +190,7 @@ public class RerootEdit extends ComplexDocumentEdit implements WarningMessageEdi
 	
 	
 	private static Node createNewRoot(Node rootingPoint) {
-		Node result = Node.getInstanceWithBranch();
+		Node result = Node.newInstanceWithBranch();
 		result.getFormats().assign(rootingPoint.getFormats());
 		result.getFormats().assignLineFormats(rootingPoint.getAfferentBranch().getFormats());  // Use line formats from branch and not from (not directly linked) node.
 		result.getAfferentBranch().getFormats().assign(rootingPoint.getAfferentBranch().getFormats());

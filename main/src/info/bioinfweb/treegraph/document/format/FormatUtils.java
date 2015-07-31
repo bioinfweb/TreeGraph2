@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben Stï¿½ver, Kai Mï¿½ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -71,7 +71,7 @@ public class FormatUtils {
 	 * @see FormatUtils#createNode(Document)
 	 */
 	public static Node createNode(Node parent) {
-		Node result = Node.getInstanceWithBranch();
+		Node result = Node.newInstanceWithBranch();
 		result.getFormats().assign(parent.getFormats());
 		result.getAfferentBranch().getFormats().assign(parent.getAfferentBranch().getFormats());
 		return result;
@@ -86,7 +86,7 @@ public class FormatUtils {
 	 * @param document - the document the returned node shall be inserted to
 	 */
 	public static Node createNode(Document document) {
-		Node result = Node.getInstanceWithBranch();
+		Node result = Node.newInstanceWithBranch();
 		Color lineColor = getLineColor(document); 
 		result.getFormats().setLineColor(lineColor);
 		result.getAfferentBranch().getFormats().setLineColor(lineColor);

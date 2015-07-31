@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben Stï¿½ver, Kai Mï¿½ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -137,7 +137,7 @@ public class XTGReader extends AbstractDocumentReader implements XTGConstants {
         if (element.getName().getLocalPart().equals(TAG_DOC_MARGIN)) {
         	readMargin(f.getDocumentMargin(), element);
         }
-        else {  // evtl. zusätzlich vorhandenes Element, dass nicht gelesen wird
+        else {  // evtl. zusï¿½tzlich vorhandenes Element, dass nicht gelesen wird
           reachElementEnd(reader, element);  
         }
       }
@@ -234,7 +234,7 @@ public class XTGReader extends AbstractDocumentReader implements XTGConstants {
         else if (element.getName().getLocalPart().equals(TAG_HIDDEN_DATA)) {
         	readHiddenData(element, b.getHiddenDataMap());
         }
-        else {  // evtl. zusätzlich vorhandenes Element, dass nicht gelesen wird
+        else {  // evtl. zusï¿½tzlich vorhandenes Element, dass nicht gelesen wird
           reachElementEnd(reader, element);  
         }
       }
@@ -256,7 +256,7 @@ public class XTGReader extends AbstractDocumentReader implements XTGConstants {
           reachElementEnd(reader, element);
           index++;
         }
-        else {  // evtl. zusätzlich vorhandenes Element, dass nicht gelesen wird
+        else {  // evtl. zusï¿½tzlich vorhandenes Element, dass nicht gelesen wird
           reachElementEnd(reader, element);
         }
       }
@@ -291,7 +291,7 @@ public class XTGReader extends AbstractDocumentReader implements XTGConstants {
         	
         	readPieChartIDs((PieChartLabel)l);
         }
-        else {  // evtl. zusätzlich vorhandenes Element, dass nicht gelesen wird
+        else {  // evtl. zusï¿½tzlich vorhandenes Element, dass nicht gelesen wird
           reachElementEnd(reader, element);  
         }
       }
@@ -366,7 +366,7 @@ public class XTGReader extends AbstractDocumentReader implements XTGConstants {
 	
 	
 	private Node readSubtree(StartElement rootElement) throws XMLStreamException {
-		Node result = Node.getInstanceWithBranch();
+		Node result = Node.newInstanceWithBranch();
 		NodeFormats f = result.getFormats();
 		
     readTextElementDataAttr(result.getData(), rootElement);
@@ -382,7 +382,7 @@ public class XTGReader extends AbstractDocumentReader implements XTGConstants {
         if (element.getName().getLocalPart().equals(TAG_BRANCH)) {
          	readBranch(element, result.getAfferentBranch());
         }
-        else if (element.getName().getLocalPart().equals(TAG_TEXT_LABEL)) {  // Wird nur zur Abwärtskompatibilität auch hier noch gelesen. Sollte jetzt nur noch unterhalb von Branch stehen.
+        else if (element.getName().getLocalPart().equals(TAG_TEXT_LABEL)) {  // Wird nur zur Abwï¿½rtskompatibilitï¿½t auch hier noch gelesen. Sollte jetzt nur noch unterhalb von Branch stehen.
         	readTextLabel(element, result.getAfferentBranch().getLabels());
         }
         else if (element.getName().getLocalPart().equals(TAG_HIDDEN_DATA)) {
@@ -396,7 +396,7 @@ public class XTGReader extends AbstractDocumentReader implements XTGConstants {
         	subelement.setParent(result);
         	result.getChildren().add(subelement);
         }
-        else {  // evtl. zusätzlich vorhandenes Element, dass nicht gelesen wird
+        else {  // evtl. zusï¿½tzlich vorhandenes Element, dass nicht gelesen wird
           reachElementEnd(reader, element);  
         }
       }
@@ -458,7 +458,7 @@ public class XTGReader extends AbstractDocumentReader implements XTGConstants {
   	if (uniqueName != null) {
   		Node anchor = document.getTree().getNodeByUniqueName(uniqueName.toLowerCase());
   		if (anchor == null) {
-  			anchor = document.getTree().getPaintStart();  // Willkürlich gewählter Anker, falls Knoten mit dem entsprechenden Namen fehlt.
+  			anchor = document.getTree().getPaintStart();  // Willkï¿½rlich gewï¿½hlter Anker, falls Knoten mit dem entsprechenden Namen fehlt.
   			JOptionPane.showMessageDialog(MainFrame.getInstance(), "The legend \"" + l.getData() + "\" refers to a node with the unique name \"" + uniqueName + "\" as anchor which does not exist in this document. The root node was set as the new achor.\n(This problem is probably the result of an incorrect manual edit of the document.)", "Missing anchor", JOptionPane.WARNING_MESSAGE);
   		}
   		l.getFormats().setAnchor(no, anchor);
@@ -504,7 +504,7 @@ public class XTGReader extends AbstractDocumentReader implements XTGConstants {
         if (element.getName().getLocalPart().equals(TAG_LEGEND_MARGIN)) {
         	readMargin(f.getMargin(), element);
         }
-        else {  // evtl. zusätzlich vorhandenes Element, dass nicht gelesen wird
+        else {  // evtl. zusï¿½tzlich vorhandenes Element, dass nicht gelesen wird
           reachElementEnd(reader, element);  
         }
       }
@@ -530,7 +530,7 @@ public class XTGReader extends AbstractDocumentReader implements XTGConstants {
         else if (element.getName().getLocalPart().equals(TAG_LEGEND)) {
           readLegend(element, document.getTree().getLegends());
         }
-        else {  // evtl. zusätzlich vorhandenes Element, dass nicht gelesen wird
+        else {  // evtl. zusï¿½tzlich vorhandenes Element, dass nicht gelesen wird
           reachElementEnd(reader, element);  
         }
       }
@@ -552,7 +552,7 @@ public class XTGReader extends AbstractDocumentReader implements XTGConstants {
         else if (element.getName().getLocalPart().equals(TAG_TREE)) {
         	readTree(element);
         }
-        else {  // evtl. zusätzlich vorhandenes Element, dass nicht gelesen wird
+        else {  // evtl. zusï¿½tzlich vorhandenes Element, dass nicht gelesen wird
           reachElementEnd(reader, element);  
         }
       }
