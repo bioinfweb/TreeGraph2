@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben Stï¿½ver, Kai Mï¿½ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -126,8 +126,8 @@ public class TreeSelection implements Collection<PaintableElement> {
 
 	/**
 	 * Sets the specified element as the only selected element.
-	 * @param element - the element to select or <code>nil</code> if no element should be#
-	 *        selected
+	 * 
+	 * @param element - the element to select or {@code null} if no element should be selected
 	 */
 	public void set(PaintableElement element) {
 		if ((element == null) || owner.getDocument().getTree().contains(element)) {
@@ -151,7 +151,11 @@ public class TreeSelection implements Collection<PaintableElement> {
 	
 	@Override
 	public boolean add(PaintableElement element) {
-		if ((element != null) && owner.getDocument().getTree().contains(element)) {
+		if (!owner.getDocument().getTree().contains(element)) {
+			throw new IllegalArgumentException(
+					"An element can only be added to the selection if it is contained in the associated tree.");
+		}
+		else if (element != null) {
 			boolean result = true;
 			if (!contains(element)) {  // kein Element doppelt hinzufg.
 				result = elements.add(element) && result;
@@ -163,7 +167,7 @@ public class TreeSelection implements Collection<PaintableElement> {
 			return result;
 		}
 		else {
-			throw new IllegalArgumentException("An element can only be added to the selection if it is contained in the associated tree and not nil.");
+			return false;
 		}
 	}
 	
