@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben Stï¿½ver, Kai Mï¿½ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -24,9 +24,6 @@ import info.bioinfweb.treegraph.document.format.GlobalFormats;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.gui.CurrentDirectoryModel;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
-import info.bioinfweb.treegraph.gui.treeframe.ruler.RulerOrientation;
-import info.bioinfweb.treegraph.gui.treeframe.ruler.TreeViewRuler;
-import info.bioinfweb.treegraph.gui.treeframe.ruler.TreeViewRulerUnitField;
 import info.bioinfweb.commons.swing.TableColumnModelAdapter;
 import info.bioinfweb.commons.swing.scrollpaneselector.ExtendedScrollPaneSelector;
 import javax.swing.*;
@@ -41,11 +38,7 @@ import javax.swing.table.TableColumnModel;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.GridBagLayout;
 import java.awt.Rectangle;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
 
 
 
@@ -64,9 +57,7 @@ public class TreeInternalFrame extends JInternalFrame {
 	private InternalFrameListener internalFrameListener = null;  //  @jve:decl-index=0:
 	private JPanel jContentPane = null;
 	private JSplitPane documentSplitPane = null;
-	private JScrollPane treeScrollPane = null;
-	private TreeViewPanel treeViewPanel = null;
-	private TreeEditlInputListener treeViewInputListener = null;	
+	private TreeScrollPane treeScrollPane = null;
 	private JScrollPane tableScrollPane = null;
 	private JTable table = null;
 	
@@ -202,6 +193,11 @@ public class TreeInternalFrame extends JInternalFrame {
 		}
 		return documentSplitPane;
 	}
+	
+	
+	public TreeViewPanel getTreeViewPanel() {
+		return getTreeScrollPane().getTreeViewPanel();
+	}
 
 
 	/**
@@ -209,75 +205,18 @@ public class TreeInternalFrame extends JInternalFrame {
 	 * 	
 	 * @return javax.swing.JScrollPane	
 	 */
-	private JScrollPane getTreeScrollPane() {
+	private TreeScrollPane getTreeScrollPane() {
 		if (treeScrollPane == null) {
-			treeScrollPane = new JScrollPane();
-			treeScrollPane.setViewportView(getTreeViewPanel());
-			
-			TreeViewRuler horizontalRuler = 
-			  	new TreeViewRuler(RulerOrientation.HORIZONTAL, getTreeViewPanel()); 
-			TreeViewRuler verticalRuler = 
-			  	new TreeViewRuler(RulerOrientation.VERTICAL, getTreeViewPanel());
-			treeScrollPane.setColumnHeaderView(horizontalRuler);
-			treeScrollPane.setRowHeaderView(verticalRuler);
-			treeScrollPane.setCorner(JScrollPane.UPPER_LEFT_CORNER, 
-					new TreeViewRulerUnitField(horizontalRuler, verticalRuler));
+			treeScrollPane = new TreeScrollPane(getDocument());
 			
 			ExtendedScrollPaneSelector.installScrollPaneSelector(treeScrollPane);
 			treeScrollPane.setCorner(JScrollPane.UPPER_RIGHT_CORNER, new HelpButton(44));
-			
-			treeScrollPane.addMouseListener(new MouseAdapter() {
-						@Override
-						public void mousePressed(java.awt.event.MouseEvent e) {
-							// Weitergeben mit Koordinaten (0|0) zum Deselektieren:
-							getTreeViewInputListener().mousePressed(new MouseEvent(
-									e.getComponent(), e.getID(), e.getWhen(), e.getModifiers(),
-									0, 0, e.getButton(), e.isPopupTrigger()));
-						}
-					});
-			
-			treeScrollPane.addMouseWheelListener(new MouseAdapter() {
-						@Override
-						public void mouseWheelMoved(MouseWheelEvent e) {
-							if (e.isControlDown()) {  // Darf nicht immer erfolgen, da auch zurückgeleitet wird.
-								getTreeViewInputListener().mouseWheelMoved(e);
-							}
-						}
-					});
-			
 			treeScrollPane.getViewport().setBackground(GlobalFormats.DEFAULT_BACKGROUNG_COLOR);
 		}
 		return treeScrollPane;
 	}
 
 
-	/**
-	 * This method initializes treeViewPanel	
-	 * 	
-	 * @return info.webinsel.treegraph.gui.TreeViewPanel	
-	 */
-	public TreeViewPanel getTreeViewPanel() {
-		if (treeViewPanel == null) {
-			treeViewPanel = new TreeViewPanel(getDocument());
-			treeViewPanel.setLayout(new GridBagLayout());
-			
-			treeViewInputListener = new TreeEditlInputListener(treeViewPanel); 
-			treeViewPanel.addKeyListener(treeViewInputListener);
-			treeViewPanel.addMouseListener(treeViewInputListener);
-			treeViewPanel.addMouseWheelListener(treeViewInputListener);
-		}
-		return treeViewPanel;
-	}
-	
-	
-	private TreeEditlInputListener getTreeViewInputListener() {
-		if (treeViewInputListener == null) {
-			getTreeViewPanel();
-		}
-		return treeViewInputListener;
-	}
-	
-	
 	/**
 	 * This method initializes tableScrollPane	
 	 * 	
@@ -309,7 +248,7 @@ public class TreeInternalFrame extends JInternalFrame {
 			table.getTableHeader().setReorderingAllowed(false);
 			table.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			
-			ListSelectionListener listener = new ListSelectionListener() {  //TODO Muss zusätzlich auch ein Model-Listener her? Muss der Tastenstatus initialisiert werden?
+			ListSelectionListener listener = new ListSelectionListener() {  //TODO Muss zusï¿½tzlich auch ein Model-Listener her? Muss der Tastenstatus initialisiert werden?
 					  public void valueChanged(ListSelectionEvent e) {
 					  	if ((table.getSelectedColumnCount() > 0) && (table.getSelectedRowCount() > 0)) {
 					  		int selRow = table.getSelectedRows()[table.getSelectedRowCount() - 1];
