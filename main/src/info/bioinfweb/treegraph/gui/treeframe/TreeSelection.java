@@ -23,6 +23,7 @@ import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.PaintableElement;
 import info.bioinfweb.treegraph.document.Label;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.TreeElement;
 
 import java.lang.reflect.Array;
 import java.util.Collection;
@@ -334,18 +335,24 @@ public class TreeSelection implements Collection<PaintableElement> {
   
 	/**
 	 * Returns all selected elements of the specified type.
-	 * @param <T> - the class of the returned elements (determined by <code>elementClass</code>)
-	 * @param elementClass - the class of the sought-after elements
+	 * 
+	 * @param <T> the class of the returned elements (determined by <code>elementClass</code>)
+	 * @param elementClass the class of the sought-after elements
+	 * @param leavesOnly Specify {@code true} here if only selected elements attached to leaf nodes or
+	 *        {@code false} if all selected elements of the specified type shall be returned.
 	 * @return an array of the sought-after elements
-	 * @since 2.0.43
+	 * @since 2.5.0
 	 */
-	public <T extends PaintableElement> T[] getAllElementsOfType(Class<T> elementClass) {
+	@SuppressWarnings("unchecked")
+	public <T extends PaintableElement> T[] getAllElementsOfType(Class<T> elementClass, boolean leavesOnly) {
 		LinkedList<PaintableElement> list = new LinkedList<PaintableElement>();
 		
 		Iterator<PaintableElement> iterator = iterator();
 		while (iterator.hasNext()) {
 			PaintableElement element = iterator.next();
-			if (elementClass.isInstance(element)) {
+			if (elementClass.isInstance(element) && 
+					(!leavesOnly || ((element instanceof TreeElement) && ((TreeElement)element).getLinkedNode().isLeaf()))) {
+				
 				list.add(element);
 			}
 		}
@@ -353,9 +360,23 @@ public class TreeSelection implements Collection<PaintableElement> {
 	}
 	
 	
+	/**
+	 * Returns all selected elements of the specified type.
+	 * 
+	 * @param <T> - the class of the returned elements (determined by <code>elementClass</code>)
+	 * @param elementClass - the class of the sought-after elements
+	 * @return an array of the sought-after elements
+	 * @since 2.0.43
+	 */
+	public <T extends PaintableElement> T[] getAllElementsOfType(Class<T> elementClass) {
+		return getAllElementsOfType(elementClass, false);
+	}
+	
+	
   /**
    * Returns a list of the IDs of the labels that are currently selected. If a label
    * without an ID is selected <code>""</code> is included in the result.
+   * 
    * @return the list of IDs (Every ID is included only once.)
    */
   public String[] containedLabelIDs() {
