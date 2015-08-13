@@ -27,12 +27,12 @@ public class BayesTraitsReader {
 		String[] parts = line.split("\\s+");
 		AncestralStateData result = new AncestralStateData(parts[1]);
 		
-		line = "";  //reader.peekLine();
+		line = reader.peekLine().getSequence().toString();  //TODO Later: Handle reader.peekLine().isCompletelyRead() == false (buffer size exceeded or use very high buffer size) 
 		Matcher matcher = LEAF_NAME_PATTERN.matcher(line);
 		while (matcher.matches()) {	
 			result.getLeafNames().add(matcher.group(1));
 			reader.readLine();
-			line = "";  //reader.peekLine();
+			line = reader.peekLine().getSequence().toString();  //TODO Later: Handle reader.peekLine().isCompletelyRead() == false (buffer size exceeded or use very high buffer size)
 			matcher = LEAF_NAME_PATTERN.matcher(line);
 		}
 		return result;
