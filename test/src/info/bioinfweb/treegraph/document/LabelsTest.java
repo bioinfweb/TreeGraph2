@@ -33,7 +33,7 @@ public class LabelsTest {
 	@Test
 	public void test_getLastLinePos(){
 	 	Tree tree = new Tree();
-	 	tree.setPaintStart(Node.getInstanceWithBranch());
+	 	tree.setPaintStart(Node.newInstanceWithBranch());
 	  	
 		Labels labels = tree.getPaintStart().getAfferentBranch().getLabels();
 		TextLabel t1 = new TextLabel(null);
@@ -58,7 +58,7 @@ public class LabelsTest {
 	@Test	
 	public void test_calculateNewLinePosition(){
   	Tree tree = new Tree();
-  	tree.setPaintStart(Node.getInstanceWithBranch());
+  	tree.setPaintStart(Node.newInstanceWithBranch());
   	
 		Labels labels = tree.getPaintStart().getAfferentBranch().getLabels();
 		TextLabel t1 = new TextLabel(null);

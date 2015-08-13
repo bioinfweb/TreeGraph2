@@ -45,9 +45,9 @@ public class IDManagerTest {
 	
 	private Tree createBasicTree(boolean secondLevel, boolean text, boolean icon, boolean pieChart) {
   	Tree result = new Tree();
-  	result.setPaintStart(Node.getInstanceWithBranch());
-  	result.getPaintStart().getChildren().add(Node.getInstanceWithBranch());
-  	result.getPaintStart().getChildren().add(Node.getInstanceWithBranch());
+  	result.setPaintStart(Node.newInstanceWithBranch());
+  	result.getPaintStart().getChildren().add(Node.newInstanceWithBranch());
+  	result.getPaintStart().getChildren().add(Node.newInstanceWithBranch());
 
   	Labels labels = result.getPaintStart().getAfferentBranch().getLabels();
   	if (secondLevel) {

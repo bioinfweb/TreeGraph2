@@ -30,7 +30,7 @@ public class LabelLineTest {
 	@Test	
 	public void test_getIndexBeforeLinePos(){
   	Tree tree = new Tree();
-  	tree.setPaintStart(Node.getInstanceWithBranch());
+  	tree.setPaintStart(Node.newInstanceWithBranch());
   	
 		Labels labels = tree.getPaintStart().getAfferentBranch().getLabels();
 		TextLabel t1 = new TextLabel(null);
