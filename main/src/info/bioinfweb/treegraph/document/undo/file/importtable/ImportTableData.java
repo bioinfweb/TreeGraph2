@@ -133,7 +133,7 @@ public class ImportTableData {
 			return data[0][row + rowOffset];  // first column contains the unprocessed keys
 		}
 		else {
-			throw new IllegalArgumentException("Invalid invalid row index " + row + ".");
+			throw new IllegalArgumentException("Invalid row index " + row + ".");
 		}
 	}
 	

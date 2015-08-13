@@ -392,6 +392,9 @@ main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/vararg/VarA
 main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/vararg/WholeColumnFunction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/file/AddSupportValuesEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/file/NodeSupportEdit.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/file/ancestralstate/AncestralStateData.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/file/ancestralstate/BayesTraitsReader.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/file/ancestralstate/ImportBayesTraitsDataEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/file/importtable/DuplicateKeyException.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/file/importtable/ImportTableData.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/file/importtable/ImportTableEdit.java -text
