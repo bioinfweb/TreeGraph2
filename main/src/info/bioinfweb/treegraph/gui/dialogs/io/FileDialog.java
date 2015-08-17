@@ -39,7 +39,7 @@ import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
  */
 public abstract class FileDialog extends EditDialog {
 	public enum Option {
-		NONE, FILE_MUST_EXEST, ASK_TO_OVERWRITE;
+		NONE, FILE_MUST_EXIST, ASK_TO_OVERWRITE;
 	}
 	
 	
@@ -104,7 +104,7 @@ public abstract class FileDialog extends EditDialog {
 		File file = getSelectedFile(); 
 		if (file != null) {
 			boolean exists = file.exists();
-			if (!option.equals(Option.FILE_MUST_EXEST) || exists) {
+			if (!option.equals(Option.FILE_MUST_EXIST) || exists) {
 				boolean write = true;
 				if (option.equals(Option.ASK_TO_OVERWRITE) && exists) {
 					write = (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(this, 

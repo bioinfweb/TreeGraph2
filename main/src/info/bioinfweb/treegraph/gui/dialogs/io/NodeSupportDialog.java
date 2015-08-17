@@ -66,7 +66,7 @@ public class NodeSupportDialog extends FileDialog {
 	 * @param owner
 	 */
 	public NodeSupportDialog(Frame owner) {
-		super(owner, FileDialog.Option.FILE_MUST_EXEST);
+		super(owner, FileDialog.Option.FILE_MUST_EXIST);
 		initialize();
 		setHelpCode(59);
 		

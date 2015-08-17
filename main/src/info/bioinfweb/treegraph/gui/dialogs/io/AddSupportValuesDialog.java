@@ -89,7 +89,7 @@ public class AddSupportValuesDialog extends FileDialog {
 	 * @param owner - the parent frame
 	 */
 	public AddSupportValuesDialog(Frame owner) {
-		super(owner, FileDialog.Option.FILE_MUST_EXEST);
+		super(owner, FileDialog.Option.FILE_MUST_EXIST);
 		setHelpCode(12);
 		initialize();
 		setLocationRelativeTo(owner);

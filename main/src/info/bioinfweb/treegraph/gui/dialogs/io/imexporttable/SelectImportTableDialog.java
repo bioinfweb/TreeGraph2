@@ -81,7 +81,7 @@ public class SelectImportTableDialog extends FileDialog {
 	 * @param owner
 	 */
 	public SelectImportTableDialog(Frame owner) {
-		super(owner, FileDialog.Option.FILE_MUST_EXEST);
+		super(owner, FileDialog.Option.FILE_MUST_EXIST);
 		initialize();
 		setLocationRelativeTo(owner);
 	}
@@ -130,9 +130,9 @@ public class SelectImportTableDialog extends FileDialog {
 			fileChooser = new JFileChooser();
 			fileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
 			fileChooser.setControlButtonsAreShown(false);
-			FileFilter textFiler = new TextFileFilter();
-			fileChooser.addChoosableFileFilter(textFiler);
-			fileChooser.setFileFilter(textFiler);
+			FileFilter textFilter = new TextFileFilter();
+			fileChooser.addChoosableFileFilter(textFilter);
+			fileChooser.setFileFilter(textFilter);
 		}
 		return fileChooser;
 	}

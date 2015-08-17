@@ -78,7 +78,7 @@ public class OpenDialog extends FileDialog {
 	 * @param owner
 	 */
 	public OpenDialog(Frame owner) {
-		super(owner, FileDialog.Option.FILE_MUST_EXEST);
+		super(owner, FileDialog.Option.FILE_MUST_EXIST);
 		initialize();
 		setLocationRelativeTo(owner);
 		setHelpCode(50);
