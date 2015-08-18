@@ -40,7 +40,7 @@
 	<classpathentry kind="lib" path="/TreeGraph2/include/lib/errorReporter/ErrorReporter.jar"/>
 	<classpathentry kind="lib" path="/TreeGraph2/include/lib/errorReporter/jaxen-1.1.6.jar"/>
 	<classpathentry kind="lib" path="/TreeGraph2/include/lib/errorReporter/jdom-2.0.5.jar"/>
-	<classpathentry kind="lib" path="/TreeGraph2/bin"/>
+	<classpathentry kind="lib" path="/TreeGraph2/bin" sourcepath="/TreeGraph2/src"/>
 	<classpathentry kind="lib" path="/info.bioinfweb.commons.core/bin" sourcepath="/info.bioinfweb.commons.core/src"/>
 	<classpathentry kind="lib" path="/info.bioinfweb.commons.swing/bin" sourcepath="/info.bioinfweb.commons.swing/src"/>
 	<classpathentry kind="lib" path="/info.bioinfweb.wikihelp.client/bin" sourcepath="/info.bioinfweb.wikihelp.client/src"/>

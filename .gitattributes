@@ -767,6 +767,7 @@ test/.classpath -text svneol=unset#text/plain
 test/.project -text svneol=unset#text/plain
 test/.settings/org.eclipse.jdt.core.prefs -text svneol=unset#text/plain
 test/data/RerootByLeafs.xtg -text
+test/data/ancestralState/Primates.txt.log.txt -text svneol=unset#text/plain
 test/data/getFirstNodeByData.xtg -text
 test/data/importTable/TableNodeNames.txt -text svneol=unset#text/plain
 test/data/importTable/TableNodeNames_numbersAsDec.txt -text svneol=unset#text/plain
@@ -797,6 +798,7 @@ test/src/info/bioinfweb/treegraph/document/LabelsTest.java -text svneol=unset#te
 test/src/info/bioinfweb/treegraph/document/TreeTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/undo/edit/RerootByLeafSetEditTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/undo/edit/SortLeafsEditTest.java -text svneol=unset#text/plain
+test/src/info/bioinfweb/treegraph/document/undo/file/ancestralstate/BayesTraitsReaderTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/undo/file/importtable/ImportTableDataTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/undo/file/importtable/ImportTableEditTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/undo/topologicalcalculation/LeafSetTest.java -text svneol=unset#text/plain
