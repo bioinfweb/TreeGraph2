@@ -35,6 +35,14 @@ public class AncestralStateData {
 	}
 	
 	
+	public double normalizeProbability(String name, double lineCounter) {
+		Double value = probabilities.get(name);
+		value /= lineCounter;
+		probabilities.put(name, value);
+		return value;
+	}
+	
+	
 	public double addToProbability(String name, double addend) {
 		Double value = probabilities.get(name);
 		if (value == null) {

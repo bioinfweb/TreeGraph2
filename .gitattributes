@@ -641,6 +641,7 @@ main/src/info/bioinfweb/treegraph/gui/dialogs/io/TableSeparatorPanel.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/TextFileFilter.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/TreeSelectionDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/ancestralstate/GenerateBayesTraitsCommandsDialog.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/gui/dialogs/io/ancestralstate/ImportBayesTraitsLogTable.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttographic/ExportToGraphicDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttographic/JPEGPrefPanel.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttographic/PreferencesPanel.java -text
