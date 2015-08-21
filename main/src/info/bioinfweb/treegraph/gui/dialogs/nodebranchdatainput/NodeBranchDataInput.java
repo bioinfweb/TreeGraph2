@@ -91,13 +91,14 @@ public class NodeBranchDataInput {
    * Refreshes the selectable node data adapters.
    * 
    * @param tree - the tree to obtain the IDs from (can also be <code>null</code>)
-   * @param nodeNamesSelectable - determines whether the node names adapter can be selected
-   * @param branchLengthSelectable - determines whether the branch length adapter can be
-   *        selected
-   * @param decimalOnly - only adapters for node/branch data columns that contain at least one decimal
+   * @param uniqueNamesSelectable Determines whether unique node names can be selected. 
+   * @param nodeNamesSelectable Determines whether the node names adapter can be selected.
+   * @param branchLengthSelectable Determines whether the branch length adapter can be
+   *        selected.
+   * @param decimalOnly only adapters for node/branch data columns that contain at least one decimal
    *        element are included (This flag overwrites <code>nodeNamesSelectable</code> and
    *        <code>branchLengthSelectable</code>.)
-   * @param newIDSelectable - If true an adaptor for a new user defined label ID is 
+   * @param newIDSelectable If true an adaptor for a new user defined label ID is 
    *        added. Note that the label ID has still to be set. This adapters are also added if 
    *        <code>decimalOnly</code> is <code>true</code>. 
    */

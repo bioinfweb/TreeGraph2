@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 
 
 public class BayesTraitsReader {
-	private static final String ROOT_NAME = "Root";	
+	public static final String ROOT_NAME = "Root";	
 	private static final String MRCA_COMMAND = "MRCA:";
 	private static final String TABLE_START = "Iteration\t";
 //	private static final String CHARACTER_PREFIX = "S(";
@@ -82,7 +82,7 @@ public class BayesTraitsReader {
 		}
 		
 		for (int i = 0; i < nodeNames.size(); i++) {
-			if (nodeNames.get(i) !=null) {
+			if (nodeNames.get(i) != null) {
 				nodes.get(nodeNames.get(i)).normalizeProbability(probabilityKeys.get(i), lineCounter);
 			}
 		}		

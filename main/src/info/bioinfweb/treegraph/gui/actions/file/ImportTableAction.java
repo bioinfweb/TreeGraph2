@@ -169,5 +169,4 @@ public class ImportTableAction extends DocumentAction {
 	public void setEnabled(Document document, TreeSelection selection, NodeBranchDataAdapter tableAdapter) {
 		setEnabled((document != null) && !document.getTree().isEmpty());
 	}
-
 }

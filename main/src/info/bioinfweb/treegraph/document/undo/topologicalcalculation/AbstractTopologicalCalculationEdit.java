@@ -11,6 +11,7 @@ import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 import info.bioinfweb.treegraph.document.undo.ComplexDocumentEdit;
+import info.bioinfweb.treegraph.document.undo.file.ImportDataColumnsParameters;
 
 
 
@@ -126,6 +127,18 @@ public abstract class AbstractTopologicalCalculationEdit extends ComplexDocument
 	}
 	
 	
+	protected int getLeafIndex(TextElementData value, ImportDataColumnsParameters parameters) {
+		TextElementData current = null;
+		for (int i = 0; i < leafValues.size(); i++) {
+			current = parameters.createEditedValue(leafValues.get(i).toString());
+			if (current.equals(value)) {
+				return i;
+			}
+		}
+		return -1;
+	}
+	
+	
 	protected int getLeafCount() {
 		return leafValues.size();
 	}
@@ -153,5 +166,24 @@ public abstract class AbstractTopologicalCalculationEdit extends ComplexDocument
 				}
 			}
 		}
+	}	
+	
+	
+	protected NodeInfo findSourceNodeWithAllLeafs(Node sourceRoot, LeafSet targetLeafs) {
+		int additionalCount = targetLeafs.compareTo(getLeafSet(sourceRoot), false);
+		boolean downwards = additionalCount != -1;
+		if (!downwards) {
+			additionalCount = targetLeafs.compareTo(getLeafSet(sourceRoot), true);
+		}
+  	NodeInfo result = new NodeInfo(sourceRoot, additionalCount, downwards);
+		for (int i = 0; i < sourceRoot.getChildren().size(); i++) {
+			NodeInfo childResult = findSourceNodeWithAllLeafs(sourceRoot.getChildren().get(i), targetLeafs);
+			if ((childResult.getAdditionalCount() != -1) && 
+					((childResult.getAdditionalCount() < result.getAdditionalCount()) || (result.getAdditionalCount() == -1))) {
+				
+				result = childResult;
+			}
+		}
+		return result;
 	}
 }

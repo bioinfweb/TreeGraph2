@@ -19,10 +19,7 @@
 package info.bioinfweb.treegraph.document.undo.file.importtable;
 
 
-import java.io.File;
-
-import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
-import info.bioinfweb.treegraph.document.undo.ImportTextElementDataParameters;
+import info.bioinfweb.treegraph.document.undo.file.ImportDataColumnsParameters;
 
 
 
@@ -32,26 +29,12 @@ import info.bioinfweb.treegraph.document.undo.ImportTextElementDataParameters;
  * @author Ben St&ouml;ver
  * @since 2.0.50
  */
-public class ImportTableParameters extends ImportTextElementDataParameters {
-	private File tableFile = null;
+public class ImportTableParameters extends ImportDataColumnsParameters {
 	private char columnSeparator = '\t';
   private int linesToSkip = 0;
   private boolean headingContained = false;
   
-  private NodeBranchDataAdapter keyAdapter = null;
-  private NodeBranchDataAdapter[] importAdapters = new NodeBranchDataAdapter[0];
-
-  
-	public File getTableFile() {
-		return tableFile;
-	}
-
-
-	public void setTableFile(File tableFile) {
-		this.tableFile = tableFile;
-	}
-
-
+ 
 	public char getColumnSeparator() {
 		return columnSeparator;
 	}
@@ -79,25 +62,5 @@ public class ImportTableParameters extends ImportTextElementDataParameters {
 
 	public void setHeadingContained(boolean headingContained) {
 		this.headingContained = headingContained;
-	}
-
-
-	public NodeBranchDataAdapter getKeyAdapter() {
-		return keyAdapter;
-	}
-
-
-	public void setKeyAdapter(NodeBranchDataAdapter keyAdapter) {
-		this.keyAdapter = keyAdapter;
-	}
-
-
-	public NodeBranchDataAdapter[] getImportAdapters() {
-		return importAdapters;
-	}
-
-
-	public void setImportAdapters(NodeBranchDataAdapter[] importAdapters) {
-		this.importAdapters = importAdapters;
 	}
 }

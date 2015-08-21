@@ -19,11 +19,10 @@
 package info.bioinfweb.treegraph.gui.dialogs.io.ancestralstate;
 
 
-import info.bioinfweb.treegraph.document.undo.ImportTextElementDataParameters;
-import info.bioinfweb.treegraph.document.undo.file.importtable.ImportTableParameters;
+import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
+import info.bioinfweb.treegraph.document.undo.file.ancestralstate.AncestralStateImportParameters;
 import info.bioinfweb.treegraph.gui.dialogs.ImportTextElementDataParametersPanel;
 import info.bioinfweb.treegraph.gui.dialogs.io.FileDialog;
-import info.bioinfweb.treegraph.gui.dialogs.io.TableSeparatorPanel;
 import info.bioinfweb.treegraph.gui.dialogs.io.TextFileFilter;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataInput;
 
@@ -45,11 +44,6 @@ import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
-import javax.swing.UIManager;
-import javax.swing.JCheckBox;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
-
 
 
 /**
@@ -58,7 +52,7 @@ import javax.swing.SpinnerNumberModel;
  * 
  * @author Ben St&ouml;ver
  */
-public class ImportBayesTraitsLogTable extends FileDialog {
+public class ImportBayesTraitsDataDialog extends FileDialog {
 	private static final long serialVersionUID = 1L;
 
 	
@@ -74,15 +68,15 @@ public class ImportBayesTraitsLogTable extends FileDialog {
 	/**
 	 * @param owner
 	 */
-	public ImportBayesTraitsLogTable(Frame owner) {
+	public ImportBayesTraitsDataDialog(Frame owner) {
 		super(owner, FileDialog.Option.FILE_MUST_EXIST);
 		initialize();
 		setLocationRelativeTo(owner);
 	}
 	
 	
-  public void assignParameters(ImportTableParameters parameters) {
-		parameters.setTableFile(getSelectedFile()); //TODO anderes Parameterobjekt erstellen
+  public void assignParameters(AncestralStateImportParameters parameters) {
+		parameters.setTableFile(getSelectedFile());
 		parameters.setKeyAdapter(getKeyColumnInput().getSelectedAdapter());
 		getTextElementDataParametersPanel().assignParameters(parameters);
   }
@@ -97,6 +91,7 @@ public class ImportBayesTraitsLogTable extends FileDialog {
 	@Override
 	protected boolean onExecute() {
 		getKeyColumnInput().setAdapters(getDocument().getTree(), true, true, true, false, false);
+		getKeyColumnInput().setSelectedAdapter(NodeNameAdapter.class);
 		return true;
 	}
 
@@ -141,7 +136,7 @@ public class ImportBayesTraitsLogTable extends FileDialog {
 			jContentPane.add(getKeyColumnPanel());
 			jContentPane.add(getButtonsPanel(), null);
 			getApplyButton().setVisible(false);
-			getOkButton().setText("Next >");
+			//getOkButton().setText("Next >");
 		}
 		return jContentPane;
 	}

@@ -374,6 +374,7 @@ public class MainFrame extends JFrame implements Runnable {
 			fileMenu.addSeparator();
 			fileMenu.add(getActionManagement().get("file.addSupportValues"));
 			fileMenu.add(getActionManagement().get("file.importTable"));
+			fileMenu.add(getActionManagement().get("file.importBayesTraitsData"));
 			fileMenu.addSeparator();
 			fileMenu.add(getActionManagement().get("file.exportGraphic"));
 			fileMenu.add(getActionManagement().get("file.exportNewickNexus"));

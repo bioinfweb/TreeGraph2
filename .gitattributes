@@ -391,8 +391,10 @@ main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/vararg/SumF
 main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/vararg/VarArgFunction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/vararg/WholeColumnFunction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/file/AddSupportValuesEdit.java -text
+main/src/info/bioinfweb/treegraph/document/undo/file/ImportDataColumnsParameters.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/file/NodeSupportEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/file/ancestralstate/AncestralStateData.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/file/ancestralstate/AncestralStateImportParameters.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/file/ancestralstate/BayesTraitsReader.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/file/ancestralstate/ImportBayesTraitsDataEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/file/importtable/DuplicateKeyException.java -text svneol=unset#text/plain
@@ -536,7 +538,7 @@ main/src/info/bioinfweb/treegraph/gui/actions/file/ExportToGraphicAction.java -t
 main/src/info/bioinfweb/treegraph/gui/actions/file/ExportToNewickNexusAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/file/ExportToPDFAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/file/GenerateBayesTraitsCommandsAction.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/treegraph/gui/actions/file/ImportBayesTraitsLogAction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/gui/actions/file/ImportBayesTraitsDataAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/actions/file/ImportTableAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/file/NewDocumentAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/file/NodeSupportAction.java -text svneol=unset#text/plain
@@ -641,7 +643,7 @@ main/src/info/bioinfweb/treegraph/gui/dialogs/io/TableSeparatorPanel.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/TextFileFilter.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/TreeSelectionDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/ancestralstate/GenerateBayesTraitsCommandsDialog.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/treegraph/gui/dialogs/io/ancestralstate/ImportBayesTraitsLogTable.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/gui/dialogs/io/ancestralstate/ImportBayesTraitsDataDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttographic/ExportToGraphicDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttographic/JPEGPrefPanel.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttographic/PreferencesPanel.java -text

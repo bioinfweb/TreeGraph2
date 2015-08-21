@@ -168,26 +168,6 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
 	}
 	
 	
-	private NodeInfo findSourceNodeWithAllLeafs(Node sourceRoot, LeafSet targetLeafs) {
-		int additionalCount = targetLeafs.compareTo(getLeafSet(sourceRoot), false);
-		boolean downwards = additionalCount != -1;
-		if (!downwards) {
-			additionalCount = targetLeafs.compareTo(getLeafSet(sourceRoot), true);
-		}
-  	NodeInfo result = new NodeInfo(sourceRoot, additionalCount, downwards);
-		for (int i = 0; i < sourceRoot.getChildren().size(); i++) {
-			NodeInfo childResult = findSourceNodeWithAllLeafs(sourceRoot.getChildren().get(i), targetLeafs);
-			if ((childResult.getAdditionalCount() != -1) && 
-					((childResult.getAdditionalCount() < result.getAdditionalCount()) || 
-							(result.getAdditionalCount() == -1))) {
-				
-				result = childResult;
-			}
-		}
-		return result;
-	}
-	
-	
 	private double getSupportValue(Node node) {
 		return sourceAdapter.getDecimal(node);
 	}
