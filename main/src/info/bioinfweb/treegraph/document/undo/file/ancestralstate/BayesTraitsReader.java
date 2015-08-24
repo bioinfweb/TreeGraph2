@@ -20,16 +20,25 @@ public class BayesTraitsReader {
 	public static final String ROOT_NAME = "Root";	
 	private static final String MRCA_COMMAND = "MRCA:";
 	private static final String TABLE_START = "Iteration\t";
-//	private static final String CHARACTER_PREFIX = "S(";
-//	private static final String CHARACTER_STATE_PREFIX = "P(";
-//	private static final String SUFFIX = ")";
 	
 	private static final Pattern LEAF_NAME_PATTERN = Pattern.compile("\\s*\\d+\\s+(\\S+)\\s*");
 	private static final Pattern HEADING = Pattern.compile("(\\S+)\\s\\-\\s(.+)");
+	private static final Pattern CHARACTER_STATE_PATTERN = Pattern.compile("S\\((.+)\\)\\s\\-\\sP\\((.+)\\)");
 	
 	
 	public BayesTraitsReader() {
 		super();
+	}
+	
+	
+	public String[] getHeadingParts(String heading) {
+		String[] characterStates = new String[2];
+		Matcher matcher = CHARACTER_STATE_PATTERN.matcher(heading);
+		if (matcher.matches()) {
+			characterStates[0] = matcher.group(1);
+			characterStates[1] = matcher.group(2);
+		}
+		return characterStates;
 	}
 
 
@@ -74,7 +83,8 @@ public class BayesTraitsReader {
 			parts = line.split("\\t");			
 			for (int i = 0; i < parts.length; i++) {
 				if (nodeNames.get(i) != null) {
-					nodes.get(nodeNames.get(i)).addToProbability(probabilityKeys.get(i), Math2.parseDouble(parts[i]));
+					String[] headingParts = getHeadingParts(probabilityKeys.get(i));
+					nodes.get(nodeNames.get(i)).addToProbability(headingParts[0], headingParts[1], Math2.parseDouble(parts[i]));
 				}
 			}		
 			lineCounter += 1;
@@ -83,7 +93,8 @@ public class BayesTraitsReader {
 		
 		for (int i = 0; i < nodeNames.size(); i++) {
 			if (nodeNames.get(i) != null) {
-				nodes.get(nodeNames.get(i)).normalizeProbability(probabilityKeys.get(i), lineCounter);
+				String[] headingParts = getHeadingParts(probabilityKeys.get(i));
+				nodes.get(nodeNames.get(i)).normalizeProbability(headingParts[0], headingParts[1], lineCounter);
 			}
 		}		
 	}

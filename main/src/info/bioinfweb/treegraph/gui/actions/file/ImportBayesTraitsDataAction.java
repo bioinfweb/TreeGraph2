@@ -85,11 +85,13 @@ public class ImportBayesTraitsDataAction extends DocumentAction {
 //				ImportTableData data = new ImportTableData(parameters);
 				BayesTraitsReader bayesTraitsReader = new BayesTraitsReader();
 				parameters.setData(bayesTraitsReader.read(parameters.getTableFile().getAbsolutePath()));
-				NodeBranchDataAdapter[] adapters = new NodeBranchDataAdapter[parameters.getData().get("Root").getProbabilitySize()];
+				int size = parameters.getData().get("Root").getHeadings().length;
+				NodeBranchDataAdapter[] adapters = new NodeBranchDataAdapter[size];
 //				if (data != null) {
 //					getAssignImportColumnsDialog().execute(parameters, data, frame.getDocument().getTree());		
-				for (int i = 0; i < parameters.getData().get("Root").getProbabilitySize(); i++) {
-					adapters[i] = new HiddenNodeDataAdapter(parameters.getData().get("Root").getProbabilityKey(i));
+				for (int i = 0; i < size; i++) {
+					System.out.println(parameters.getData().get("Root").getHeadings()[i]);
+					adapters[i] = new HiddenNodeDataAdapter(parameters.getData().get("Root").getHeadings()[i]);
 				}
 				parameters.setImportAdapters(adapters);
 				if ((parameters.getImportAdapters() != null) && (parameters.getImportAdapters().length > 0)) {  // parameters.getImportAdapters().length == 0, if the user canceled in the second dialog
@@ -117,7 +119,7 @@ public class ImportBayesTraitsDataAction extends DocumentAction {
 //			catch (DuplicateKeyException ex) {
 //				JOptionPane.showMessageDialog(MainFrame.getInstance(),
 //						"The first column of the imported table file (keys to identify nodes) contained the\n" +
-//				    "follwing entries multiple times:\n\n" + createKeyList(ex.getKeys().iterator()) + "\n\n" +
+//				    "following entries multiple times:\n\n" + createKeyList(ex.getKeys().iterator()) + "\n\n" +
 //						PARAMETER_MESSAGE, "Error", JOptionPane.ERROR_MESSAGE);
 //			}
 //			catch (InsufficientTableSizeException ex) {

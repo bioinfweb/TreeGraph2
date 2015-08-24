@@ -1,16 +1,20 @@
 package info.bioinfweb.treegraph.document.undo.file.ancestralstate;
 
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.Vector;
 
+import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.PieChartLabel;
 import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.undo.WarningMessageEdit;
+import info.bioinfweb.treegraph.document.undo.edit.InsertLabelsEdit;
 import info.bioinfweb.treegraph.document.undo.file.AddSupportValuesEdit;
 import info.bioinfweb.treegraph.document.undo.topologicalcalculation.AbstractTopologicalCalculationEdit;
 import info.bioinfweb.treegraph.document.undo.topologicalcalculation.LeafSet;
@@ -89,15 +93,37 @@ public class ImportBayesTraitsDataEdit extends AbstractTopologicalCalculationEdi
 		
 		for (String internalNodeName : parameters.getData().keySet()) {
 			Node internalNode = findReconstructedNode(parameters.getData().get(internalNodeName));
-			for (int i = 0; i < parameters.getImportAdapters().length; i++) {			
-				if (internalNode != null) {
-					parameters.getImportAdapters()[i].
-					setDecimal(internalNode, parameters.getData().get(internalNodeName).getProbability(i));
+			Branch branch = internalNode.getAfferentBranch();
+			int count = 0;
+			
+			Iterator<String> iterator1 = parameters.getData().get(internalNodeName).getCharacterMap().keySet().iterator();
+			while (iterator1.hasNext()) {
+				String character = iterator1.next();
+				PieChartLabel label = new PieChartLabel(branch.getLabels());
+				label.setID(character);
+				Iterator<String> iterator2 = parameters.getData().get(internalNodeName).getCharacterMap().get(character).keySet().iterator();
+				while (iterator2.hasNext()) {
+					String characterState = iterator2.next();
+					label.addValueID(parameters.getData().get(internalNodeName).getHeadings()[count]);
+					if (internalNode != null) {
+						parameters.getImportAdapters()[count].
+						setDecimal(internalNode, parameters.getData().get(internalNodeName).getCharacterMap().get(character).get(characterState));
+					}
+					else {
+						nodesNotFound.add(parameters.getData().get(internalNodeName).getName());
+					}	
+					count += 1;
 				}
-				else {
-					nodesNotFound.add(parameters.getData().get(internalNodeName).getName());
-				}
-			}
-		}
+				internalNode.getAfferentBranch().getLabels().add(label);
+			}	
+		}		
+//		for (int i = 0; i < parameters.getData().get("Root").getProbabilitySize(); i += 2) {
+//			PieChartLabel label = new PieChartLabel(null);
+//			label.setID("Label" + i);
+//			label.addValueID(parameters.getData().get("Root").getProbabilityKey(i));
+//			label.addValueID(parameters.getData().get("Root").getProbabilityKey(i+1));
+//			InsertLabelsEdit labelsEdit = new InsertLabelsEdit(getDocument(), label, branches);
+//			getDocument().executeEdit(labelsEdit);
+//		}		
 	}
 }

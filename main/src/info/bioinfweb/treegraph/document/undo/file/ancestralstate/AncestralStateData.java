@@ -2,9 +2,13 @@ package info.bioinfweb.treegraph.document.undo.file.ancestralstate;
 
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 
@@ -12,8 +16,8 @@ public class AncestralStateData {
 	private String name;
 	private List<String> leafNames = new ArrayList<String>();
 	
-	private List<String> probabilityKeys = new ArrayList<String>();
-	private Map<String, Double> probabilities = new TreeMap<String, Double>();
+	private SortedMap<String, SortedMap<String, Double>> characterMap = new TreeMap<String, SortedMap<String, Double>>();
+	
 	
 	
 	public AncestralStateData(String name) {
@@ -32,42 +36,64 @@ public class AncestralStateData {
 	}
 	
 	
-	public Double getProbability(String key) {
-		return probabilities.get(key);
+	public SortedMap<String, SortedMap<String, Double>> getCharacterMap() {
+		return characterMap;
+	}
+
+
+	public int getCharacterStateCount() {
+		int count = 0;
+		Iterator<String> iterator = characterMap.keySet().iterator(); 
+		while (iterator.hasNext()) {
+			count += characterMap.get(iterator.next()).size();			
+		}
+		return count;
 	}
 	
 	
-	public Double getProbability(int index) {
-		return probabilities.get(probabilityKeys.get(index));
+	@Deprecated
+	public String[] getHeadings() {
+		String[] headings = new String[getCharacterStateCount()];
+		Iterator<String> iterator1 = characterMap.keySet().iterator();
+		int count = 0;
+		while (iterator1.hasNext()) {
+			String characterName = iterator1.next();
+			Iterator<String> iterator2 = characterMap.get(characterName).keySet().iterator();
+			while (iterator2.hasNext()) {
+				String characterStateName = iterator2.next();
+				headings[count] = characterName + "." + characterStateName;
+				count += 1;
+			}
+		}
+		return headings;
 	}
 	
 	
-	public String getProbabilityKey(int index) {
-		return probabilityKeys.get(index);
+	public int getCharacterCount() {
+		return characterMap.size();
 	}
 	
 	
-	public int getProbabilitySize() {
-		return probabilityKeys.size();
-	}
-		
-	
-	public double normalizeProbability(String name, double lineCounter) {
-		Double value = probabilities.get(name);
+	public double normalizeProbability(String characterName, String characterStateName, double lineCounter) {
+		Double value = characterMap.get(characterName).get(characterStateName);
 		value /= lineCounter;
-		probabilities.put(name, value);
+		characterMap.get(characterName).put(characterStateName, value);
 		return value;
 	}
 	
 	
-	public double addToProbability(String name, double addend) {
-		Double value = getProbability(name);
+	public double addToProbability(String characterName, String characterStateName, double addend) {		
+		if (characterMap.get(characterName) == null) {			
+			characterMap.put(characterName, new TreeMap<String, Double>());
+		}
+		
+		Double value = characterMap.get(characterName).get(characterStateName);
 		if (value == null) {
 			value = 0.0;
-			probabilityKeys.add(name);
+			characterMap.get(characterName).put(characterStateName, value);
 		}
 		value += addend;
-		probabilities.put(name, value);
+		characterMap.get(characterName).put(characterStateName, value);
 		return value;
 	}
 }

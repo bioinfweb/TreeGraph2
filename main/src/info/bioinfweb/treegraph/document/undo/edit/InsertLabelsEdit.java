@@ -23,10 +23,6 @@ import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Label;
 import info.bioinfweb.treegraph.document.undo.ComposedDocumentEdit;
-import info.bioinfweb.treegraph.document.undo.DocumentEdit;
-
-import javax.swing.undo.CannotRedoException;
-import javax.swing.undo.CannotUndoException;
 
 
 
