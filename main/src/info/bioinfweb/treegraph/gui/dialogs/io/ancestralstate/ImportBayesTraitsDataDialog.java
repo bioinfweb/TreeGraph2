@@ -90,7 +90,7 @@ public class ImportBayesTraitsDataDialog extends FileDialog {
 
 	@Override
 	protected boolean onExecute() {
-		getKeyColumnInput().setAdapters(getDocument().getTree(), true, true, true, false, false);
+		getKeyColumnInput().setAdapters(getDocument().getTree(), true, true, true, false, false, false);
 		getKeyColumnInput().setSelectedAdapter(NodeNameAdapter.class);
 		return true;
 	}

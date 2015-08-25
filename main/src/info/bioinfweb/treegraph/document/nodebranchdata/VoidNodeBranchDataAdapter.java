@@ -33,6 +33,7 @@ import info.bioinfweb.treegraph.document.TextElementData;
  */
 public class VoidNodeBranchDataAdapter implements NodeBranchDataAdapter {
 	private String text = getClass().getName();
+	private static VoidNodeBranchDataAdapter sharedInstance = null;
 	
 	
 	/**
@@ -44,6 +45,14 @@ public class VoidNodeBranchDataAdapter implements NodeBranchDataAdapter {
 	  super();
 	  this.text = text;
   }
+	
+	
+	public static VoidNodeBranchDataAdapter getSharedInstance() {
+		if (sharedInstance == null) {
+			sharedInstance = new VoidNodeBranchDataAdapter("Do not import this column");
+		}
+		return sharedInstance;
+	}
 
 
 	@Override

@@ -109,8 +109,8 @@ public class NodeSupportDialog extends FileDialog {
 	@Override
 	protected boolean onExecute() {
 		if (!getDocument().getTree().isEmpty()) {
-			getDestInput().setAdapters(getDocument().getTree(), true, false, false, true, false);
-			getTerminalInput().setAdapters(getDocument().getTree(), true, false, false, false, true);
+			getDestInput().setAdapters(getDocument().getTree(), true, false, false, true, false, false);
+			getTerminalInput().setAdapters(getDocument().getTree(), true, false, false, false, true, false);
 			return true;
 		}
 		else {

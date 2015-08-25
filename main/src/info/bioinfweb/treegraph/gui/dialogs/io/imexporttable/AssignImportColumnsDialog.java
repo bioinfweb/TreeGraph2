@@ -114,7 +114,6 @@ public class AssignImportColumnsDialog extends OkCancelApplyWikiHelpDialog {
 		importPanel.add(firstLineLabel, firstLineGBC);
 		importPanel.add(keyColumnLabel, keyColumnGBC);
 
-		final VoidNodeBranchDataAdapter noImportAdapter = new VoidNodeBranchDataAdapter("Do not import this column");
 		for (int i = 1; i <= data.columnCount(); i++) {
 			GridBagConstraints labelGBC = new GridBagConstraints();
 			labelGBC.anchor = GridBagConstraints.EAST;
@@ -124,8 +123,7 @@ public class AssignImportColumnsDialog extends OkCancelApplyWikiHelpDialog {
 			
 			getImportPanel().add(new JLabel("" + i + ")"), labelGBC);
 			NewNodeBranchDataInput input = new NewNodeBranchDataInput(getImportPanel(), 1, i + USED_ROWS - 1, true);
-			input.setAdapters(tree, false, true, true, false, true);
-			input.getModel().addAdapter(0, noImportAdapter);
+			input.setAdapters(tree, false, true, true, false, true, true);
 			input.setSelectedAdapter(NewHiddenBranchDataAdapter.class);
 			if (data.containsHeadings()) {
 				input.setID(data.getHeading(i - 1));

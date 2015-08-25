@@ -82,7 +82,7 @@ public class CalculateColumnDialog extends EditDialog {
 	
 	@Override
 	protected boolean onExecute() {
-		getColumnInput().setAdapters(getDocument().getTree(), false, true, true, false, true);
+		getColumnInput().setAdapters(getDocument().getTree(), false, true, true, false, true, false);
 		getColumnInput().setSelectedAdapter(NewHiddenBranchDataAdapter.class);
 		if (getSelectedAdapter() != null) {
 			getColumnInput().setSelectedAdapter(getSelectedAdapter());  // If an readOnly adapter is selected, nothing will change.

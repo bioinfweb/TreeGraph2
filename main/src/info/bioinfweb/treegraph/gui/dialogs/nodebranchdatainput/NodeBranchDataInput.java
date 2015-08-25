@@ -101,12 +101,13 @@ public class NodeBranchDataInput {
    * @param newIDSelectable If true an adaptor for a new user defined label ID is 
    *        added. Note that the label ID has still to be set. This adapters are also added if 
    *        <code>decimalOnly</code> is <code>true</code>. 
+   * @param noImportAdapterSelectable determines whether the void adapter can be selected 
    */
   public void setAdapters(Tree tree, boolean uniqueNamesSelectable, boolean nodeNamesSelectable, 
-  		boolean branchLengthSelectable,	boolean decimalOnly, boolean newIDSelectable) {
+  		boolean branchLengthSelectable,	boolean decimalOnly, boolean newIDSelectable, boolean noImportAdapterSelectable) {
   	
   	((NodeDataComboBoxModel)getComboBox().getModel()).setAdapters(tree, uniqueNamesSelectable,
-  			nodeNamesSelectable, branchLengthSelectable, decimalOnly, newIDSelectable);
+  			nodeNamesSelectable, branchLengthSelectable, decimalOnly, newIDSelectable, noImportAdapterSelectable);
   }
   
   
