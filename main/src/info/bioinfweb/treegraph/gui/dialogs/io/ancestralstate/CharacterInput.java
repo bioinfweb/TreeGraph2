@@ -1,5 +1,6 @@
 package info.bioinfweb.treegraph.gui.dialogs.io.ancestralstate;
 
+
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.util.ArrayList;
@@ -20,86 +21,96 @@ import javax.swing.JTextField;
 
 
 
+/**
+ * Collection of GUI elements used to defined the import target for information associated with character
+ * in ancestral state reconstruction.
+ * 
+ * @author Sarah Wiechers 
+ * @author Ben St&ouml;ver
+ * @since 2.5.0 
+ */
 public class CharacterInput {
-	private static final int ROW_COUNT = 7;
-	private static final int USED_ROWS = 2;
+	private static final int ROWS_PER_CHARACTER = 7;
+	private static final int HEADING_ROWS_COUNT = 2;
 	
-	private List<NewNodeBranchDataInput> inputs = new ArrayList<NewNodeBranchDataInput>();
 	
-	private JCheckBox prefixCheckbox = null;
+	private List<NewNodeBranchDataInput> stateInputs = new ArrayList<NewNodeBranchDataInput>();
+	
+	private JCheckBox importCharacterCheckbox = null;
 	private JLabel prefixLabel = null;
 	private JTextField prefixIDTextField = null;
 	
-	private JLabel typeLabel = null;
-	private JLabel idLabel = null;
+	private JLabel typeHeadingLabel = null;
+	private JLabel idHeadingLabel = null;
 	
 	private JCheckBox pieChartLabelCheckbox = null;
 	private JTextField pieChartLabelIDTextField = null;
 	
-	
 
-	public CharacterInput(JPanel panel, int x, int y, AncestralStateImportParameters parameters, AncestralStateData data, Tree tree ) {
+	public CharacterInput(JPanel panel, int x, int y, AncestralStateImportParameters parameters, AncestralStateData data, Tree tree) {
 		super();		
 		panel.removeAll();
-		inputs.clear();
+		stateInputs.clear();
 		createCharacterInput(panel, x, y, parameters, data, tree);
 	}
 	
 	
-	private void createCharacterInput(JPanel panel, int x, int y, AncestralStateImportParameters parameters, AncestralStateData data, Tree tree) {
-		GridBagConstraints prefixCheckboxGBC = new GridBagConstraints();
-		prefixCheckboxGBC.gridx = 0;
-		prefixCheckboxGBC.anchor = GridBagConstraints.WEST;
-		prefixCheckboxGBC.gridy = y * ROW_COUNT;
-		prefixCheckboxGBC.insets = new Insets(0, 0, 8, 0);
-		prefixCheckbox = new JCheckBox();
-		prefixCheckbox.setSelected(true); // TODO add listener and method setContentsEnabled()
+	private void createCharacterInput(JPanel panel, int x, int y, AncestralStateImportParameters parameters, 
+					AncestralStateData data, Tree tree) {
+		
+		GridBagConstraints importCharacterCheckboxGBC = new GridBagConstraints();
+		importCharacterCheckboxGBC.gridx = 0;
+		importCharacterCheckboxGBC.anchor = GridBagConstraints.WEST;
+		importCharacterCheckboxGBC.gridy = y * ROWS_PER_CHARACTER;
+		importCharacterCheckboxGBC.insets = new Insets(0, 0, 8, 0);
+		importCharacterCheckbox = new JCheckBox();
+		importCharacterCheckbox.setSelected(true); // TODO add listener and method setContentsEnabled()
 		GridBagConstraints prefixGBC = new GridBagConstraints();	
 		prefixGBC.gridx = 1;
 		prefixGBC.anchor = GridBagConstraints.WEST;
-		prefixGBC.gridy = y * ROW_COUNT;
+		prefixGBC.gridy = y * ROWS_PER_CHARACTER;
 		prefixGBC.insets = new Insets(0, 0, 8, 0);
 		prefixLabel = new JLabel();
 		prefixLabel.setText("Prefix ID:");
 		GridBagConstraints prefixIDGBC = new GridBagConstraints();
 		prefixIDGBC.gridx = 2;
 		prefixIDGBC.anchor = GridBagConstraints.WEST;
-		prefixIDGBC.gridy = y * ROW_COUNT;
+		prefixIDGBC.gridy = y * ROWS_PER_CHARACTER;
 		prefixIDGBC.insets = new Insets(0, 0, 8, 0);
 		prefixIDTextField = new JTextField();
 		prefixIDTextField.setText("default prefix"); //TODO set prefix
-		GridBagConstraints typeGBC = new GridBagConstraints();
-		typeGBC.gridx = 1;
-		typeGBC.anchor = GridBagConstraints.WEST;
-		typeGBC.gridy = y * ROW_COUNT + 1;
-		typeGBC.insets = new Insets(0, 0, 8, 0);
-		typeLabel = new JLabel();
-		typeLabel.setText("Node data type:");
-		GridBagConstraints idGBC = new GridBagConstraints();
-		idGBC.gridx = 2;
-		idGBC.gridy = y * ROW_COUNT + 1;
-		idGBC.anchor = GridBagConstraints.WEST;
-		idGBC.insets = new Insets(0, 0, 8, 0);
-		idLabel = new JLabel();
-		idLabel.setText("ID:                ");  // increase widths of text fields		
-		panel.add(prefixCheckbox, prefixCheckboxGBC);
+		GridBagConstraints typeHeadingGBC = new GridBagConstraints();
+		typeHeadingGBC.gridx = 1;
+		typeHeadingGBC.anchor = GridBagConstraints.WEST;
+		typeHeadingGBC.gridy = y * ROWS_PER_CHARACTER + 1;
+		typeHeadingGBC.insets = new Insets(0, 0, 8, 0);
+		typeHeadingLabel = new JLabel();
+		typeHeadingLabel.setText("Node data type:");
+		GridBagConstraints idHeadingGBC = new GridBagConstraints();
+		idHeadingGBC.gridx = 2;
+		idHeadingGBC.gridy = y * ROWS_PER_CHARACTER + 1;
+		idHeadingGBC.anchor = GridBagConstraints.WEST;
+		idHeadingGBC.insets = new Insets(0, 0, 8, 0);
+		idHeadingLabel = new JLabel();
+		idHeadingLabel.setText("ID:                ");  // increase widths of text fields		
+		panel.add(importCharacterCheckbox, importCharacterCheckboxGBC);
 		panel.add(prefixLabel, prefixGBC);
 		panel.add(prefixIDTextField, prefixIDGBC);
-		panel.add(typeLabel, typeGBC);
-		panel.add(idLabel, idGBC);			
+		panel.add(typeHeadingLabel, typeHeadingGBC);
+		panel.add(idHeadingLabel, idHeadingGBC);			
 	
 		for (int j = 1; j <= data.getCharacterStateCount(); j++) {
-			NewNodeBranchDataInput input = new NewNodeBranchDataInput(panel, 1, y * ROW_COUNT + j + USED_ROWS - 1, true);
+			NewNodeBranchDataInput input = new NewNodeBranchDataInput(panel, 1, y * ROWS_PER_CHARACTER + j + HEADING_ROWS_COUNT - 1, true);
 			input.setAdapters(tree, false, false, false, false, true, false);
 			input.setSelectedAdapter(NewHiddenBranchDataAdapter.class);
 			input.setID("default ID");
-			inputs.add(input);
+			stateInputs.add(input);
 		}
 		
 		GridBagConstraints pieChartLabelCheckboxGBC = new GridBagConstraints();
 		pieChartLabelCheckboxGBC.gridx = 1;
 		pieChartLabelCheckboxGBC.anchor = GridBagConstraints.WEST;
-		pieChartLabelCheckboxGBC.gridy = ROW_COUNT * (y + 1) - 1;
+		pieChartLabelCheckboxGBC.gridy = ROWS_PER_CHARACTER * (y + 1) - 1;
 		pieChartLabelCheckboxGBC.insets = new Insets(0, 0, 8, 0);
 		pieChartLabelCheckbox = new JCheckBox();
 		pieChartLabelCheckbox.setText("Pie chart ID:");
@@ -107,7 +118,7 @@ public class CharacterInput {
 		GridBagConstraints pieChartLabelIDGBC = new GridBagConstraints();
 		pieChartLabelIDGBC.gridx = 2;
 		pieChartLabelIDGBC.anchor = GridBagConstraints.WEST;
-		pieChartLabelIDGBC.gridy = ROW_COUNT * (y + 1) - 1;
+		pieChartLabelIDGBC.gridy = ROWS_PER_CHARACTER * (y + 1) - 1;
 		pieChartLabelIDGBC.insets = new Insets(0, 0, 8, 0);
 		pieChartLabelIDTextField = new JTextField();
 		pieChartLabelIDTextField.setText("default pie chart label"); //TODO set default label
