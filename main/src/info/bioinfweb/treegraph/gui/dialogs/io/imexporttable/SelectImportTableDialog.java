@@ -106,7 +106,7 @@ public class SelectImportTableDialog extends FileDialog {
 
 	@Override
 	protected boolean onExecute() {
-		getKeyColumnInput().setAdapters(getDocument().getTree(), true, true, true, false, false, false);
+		getKeyColumnInput().setAdapters(getDocument().getTree(), true, true, true, false, false, "");
 		return true;
 	}
 

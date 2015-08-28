@@ -51,7 +51,7 @@ public class NodeDataComboBoxModel extends AbstractListModel<NodeBranchDataAdapt
    * @see info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeDataComboBoxModel#setAdapters(Tree, boolean, boolean)
    */
   public void setAdapters(Tree tree) {
-  	setAdapters(tree, false, true, true, false, false, false);
+  	setAdapters(tree, false, true, true, false, false, "");
   }
   
   
@@ -82,15 +82,15 @@ public class NodeDataComboBoxModel extends AbstractListModel<NodeBranchDataAdapt
    * @param newIDSelectable If true an adaptor for a new user defined label ID is 
    *        added. Note that the label ID has still to be set. This adapters are also added if 
    *        <code>decimalOnly</code> is <code>true</code>. 
-   * @param noImportAdapterSelectable determines whether the void adapter can be selected 
+   * @param noImportAdapterSelectable TODO
    */
   public void setAdapters(Tree tree, boolean uniqueNamesSelectable, boolean nodeNamesSelectable, 
-  		boolean branchLengthSelectable,	boolean decimalOnly, boolean newIDSelectable, boolean noImportAdapterSelectable) {
+  		boolean branchLengthSelectable,	boolean decimalOnly, boolean newIDSelectable, String noImportAdapterSelectable) {
 
   	clear();
   	
-  	if (noImportAdapterSelectable) {
-			adapters.add(VoidNodeBranchDataAdapter.getSharedInstance());
+  	if (!noImportAdapterSelectable.equals("")) {
+			adapters.add(new VoidNodeBranchDataAdapter(noImportAdapterSelectable));
 		}
   	
   	if (uniqueNamesSelectable) {
@@ -144,14 +144,14 @@ public class NodeDataComboBoxModel extends AbstractListModel<NodeBranchDataAdapt
   
 	/**
 	 * Inserts the specified node/branch data adapter instance at the specified position. Note that this method
-	 * is only for special tasks an in general {@link #setAdapters(Tree, boolean, boolean, boolean, boolean, boolean, boolean)}
+	 * is only for special tasks an in general {@link #setAdapters(Tree, boolean, boolean, boolean, boolean, boolean, String)}
 	 * should be used.
 	 * 
 	 * @param index - the index of the new adapter
 	 * @param adapter - the new adapter instance.
 	 * 
 	 * @see #setAdapters(Tree)
-	 * @see #setAdapters(Tree, boolean, boolean, boolean, boolean, boolean, boolean)
+	 * @see #setAdapters(Tree, boolean, boolean, boolean, boolean, boolean, String)
 	 * @see #setOnlyNewAdapters()
 	 * @see #addAdapter(NodeBranchDataAdapter)
 	 */
@@ -163,7 +163,7 @@ public class NodeDataComboBoxModel extends AbstractListModel<NodeBranchDataAdapt
 
 	/**
 	 * Appends the specified node/branch data adapter instance at the end of the list. Note that this method
-	 * is only for special tasks an in general {@link #setAdapters(Tree, boolean, boolean, boolean, boolean, boolean, boolean)}
+	 * is only for special tasks an in general {@link #setAdapters(Tree, boolean, boolean, boolean, boolean, boolean, String)}
 	 * should be used.
 	 * 
 	 * @param index - the index of the new adapter
@@ -171,7 +171,7 @@ public class NodeDataComboBoxModel extends AbstractListModel<NodeBranchDataAdapt
 	 * @return {@code true} (as specified by {@link Collection#add(Object)})
 	 * 
 	 * @see #setAdapters(Tree)
-	 * @see #setAdapters(Tree, boolean, boolean, boolean, boolean, boolean, boolean)
+	 * @see #setAdapters(Tree, boolean, boolean, boolean, boolean, boolean, String)
 	 * @see #setOnlyNewAdapters()
 	 * @see #addAdapter(int, NodeBranchDataAdapter)
 	 */

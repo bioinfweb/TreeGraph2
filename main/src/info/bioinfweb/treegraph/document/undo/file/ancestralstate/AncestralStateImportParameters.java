@@ -11,8 +11,18 @@ import info.bioinfweb.treegraph.document.undo.file.ImportDataColumnsParameters;
 public class AncestralStateImportParameters extends ImportDataColumnsParameters {
 	private Map<String, AncestralStateData> data = null;
 	private NodeBranchDataAdapter internalNodeNamesAdapter = null;
-//	private String[] //TODO LabelIDs from dialog
+	private String[] pieChartLabelIDs= null;
 	
+
+	public String[] getPieChartLabelIDs() {
+		return pieChartLabelIDs;
+	}
+
+
+	public void setPieChartLabelIDs(String[] pieChartLabelIDs) {
+		this.pieChartLabelIDs = pieChartLabelIDs;
+	}
+
 
 	public AncestralStateImportParameters() {
 		super();

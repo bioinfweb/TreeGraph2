@@ -99,7 +99,7 @@ public class SortLeafsDialog extends EditDialog {
 	private void updateSourceAdapters() {
 		if (getOpenedDocumentsComboBoxModel().getSelectedItem() != null) {
 			getSourceAdapterModel().setAdapters(getOpenedDocumentsComboBoxModel().getSelectedItem().getTree(), 
-					true, true, true, false, false, false);
+					true, true, true, false, false, "");
 			getSourceAdapterModel().setSelectedAdapter(NodeNameAdapter.class);
 		}
 		else {
@@ -125,7 +125,7 @@ public class SortLeafsDialog extends EditDialog {
 		getSourceAdapterComboBox().setEnabled(otherDocumentsOpen);
 		
 		// Refresh adapters:
-		getTargetAdapterModel().setAdapters(getDocument().getTree(), true, true, true, false, false, false);
+		getTargetAdapterModel().setAdapters(getDocument().getTree(), true, true, true, false, false, "");
 		getTargetAdapterModel().setSelectedAdapter(NodeNameAdapter.class);
 		updateSourceAdapters();
 		

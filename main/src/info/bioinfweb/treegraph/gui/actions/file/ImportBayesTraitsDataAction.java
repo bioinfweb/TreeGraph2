@@ -22,18 +22,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Iterator;
 
 import javax.swing.Action;
 import javax.swing.JOptionPane;
 
 import info.bioinfweb.treegraph.document.Document;
-import info.bioinfweb.treegraph.document.nodebranchdata.HiddenNodeDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.file.ancestralstate.AncestralStateImportParameters;
 import info.bioinfweb.treegraph.document.undo.file.ancestralstate.BayesTraitsReader;
 import info.bioinfweb.treegraph.document.undo.file.ancestralstate.ImportBayesTraitsDataEdit;
+import info.bioinfweb.treegraph.document.undo.file.importtable.DuplicateKeyException;
+import info.bioinfweb.treegraph.document.undo.file.importtable.InsufficientTableSizeException;
 import info.bioinfweb.treegraph.gui.actions.DocumentAction;
+import info.bioinfweb.treegraph.gui.dialogs.io.ancestralstate.AssignBayesTraitsImportColumnsDialog;
 import info.bioinfweb.treegraph.gui.dialogs.io.ancestralstate.ImportBayesTraitsDataDialog;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeInternalFrame;
@@ -49,7 +50,7 @@ import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
  */
 public class ImportBayesTraitsDataAction extends DocumentAction {
 	private ImportBayesTraitsDataDialog importBayesTraitsDataDialog = null;	
-//	private AssignImportColumnsDialog assignImportColumnsDialog = null;
+	private AssignBayesTraitsImportColumnsDialog assignBayesTraitsImportColumnsDialog = null;
 
 	public ImportBayesTraitsDataAction(MainFrame mainFrame) {
 		super(mainFrame);
@@ -65,14 +66,14 @@ public class ImportBayesTraitsDataAction extends DocumentAction {
 		return importBayesTraitsDataDialog;
 	}	
 	
-//	
-//	private AssignImportColumnsDialog getAssignImportColumnsDialog() {
-//		if (assignImportColumnsDialog == null) {
-//			assignImportColumnsDialog = new AssignImportColumnsDialog(getMainFrame());
-//		}
-//		return assignImportColumnsDialog;
-//	}
-//	
+	
+	private AssignBayesTraitsImportColumnsDialog getAssignBayesTraitsImportColumnsDialog() {
+		if (assignBayesTraitsImportColumnsDialog == null) {
+			assignBayesTraitsImportColumnsDialog = new AssignBayesTraitsImportColumnsDialog(getMainFrame());
+		}
+		return assignBayesTraitsImportColumnsDialog;
+	}
+	
 	
 	@Override
 	protected void onActionPerformed(ActionEvent e, TreeInternalFrame frame) {
@@ -81,20 +82,11 @@ public class ImportBayesTraitsDataAction extends DocumentAction {
 			
 			AncestralStateImportParameters parameters = new AncestralStateImportParameters();
 			getImportBayesTraitsDataDialog().assignParameters(parameters);
+			
 			try {
-//				ImportTableData data = new ImportTableData(parameters);
 				BayesTraitsReader bayesTraitsReader = new BayesTraitsReader();
 				parameters.setData(bayesTraitsReader.read(parameters.getTableFile().getAbsolutePath()));
-				int size = parameters.getData().get("Root").getHeadings().length;
-				NodeBranchDataAdapter[] adapters = new NodeBranchDataAdapter[size];
-//				if (data != null) {
-//					getAssignImportColumnsDialog().execute(parameters, data, frame.getDocument().getTree());		
-				for (int i = 0; i < size; i++) {
-					System.out.println(parameters.getData().get("Root").getHeadings()[i]);
-					adapters[i] = new HiddenNodeDataAdapter(parameters.getData().get("Root").getHeadings()[i]);
-				}
-				parameters.setImportAdapters(adapters);
-				if ((parameters.getImportAdapters() != null) && (parameters.getImportAdapters().length > 0)) {  // parameters.getImportAdapters().length == 0, if the user canceled in the second dialog
+				if (getAssignBayesTraitsImportColumnsDialog().execute(parameters, parameters.getData().get("Root"), frame.getDocument().getTree())) {
 					ImportBayesTraitsDataEdit edit = new ImportBayesTraitsDataEdit(frame.getDocument(), parameters);
 					frame.getDocument().executeEdit(edit);
 					if (edit.hasWarnings()) {

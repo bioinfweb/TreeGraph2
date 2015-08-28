@@ -157,7 +157,7 @@ public class CollapseNodesBySupportDialog extends EditDialog {
 	
 	@Override
   protected boolean onExecute() {
-		adapterInput.setAdapters(getDocument().getTree(), false, true, true, true, false, false);
+		adapterInput.setAdapters(getDocument().getTree(), false, true, true, true, false, "");
 		if (adapterInput.getModel().getSize() > 0) {
 			if (!adapterInput.setSelectedAdapter(TextLabelAdapter.class)) {
 				adapterInput.setSelectedAdapter(HiddenDataAdapter.class);

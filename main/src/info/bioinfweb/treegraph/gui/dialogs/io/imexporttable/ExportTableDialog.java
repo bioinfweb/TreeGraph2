@@ -99,7 +99,7 @@ public class ExportTableDialog extends EditDialog {
 	
 	@Override
 	protected boolean onExecute() {
-		getNodeDataInput().setAdapters(getDocument().getTree(), true, true, true, false, false, false);
+		getNodeDataInput().setAdapters(getDocument().getTree(), true, true, true, false, false, "");
 		setButtonStatus();
 		return true;
 	}

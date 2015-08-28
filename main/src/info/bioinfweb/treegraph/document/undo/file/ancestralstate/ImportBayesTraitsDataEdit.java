@@ -13,6 +13,7 @@ import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.PieChartLabel;
 import info.bioinfweb.treegraph.document.TextElementData;
+import info.bioinfweb.treegraph.document.nodebranchdata.IDElementAdapter;
 import info.bioinfweb.treegraph.document.undo.WarningMessageEdit;
 import info.bioinfweb.treegraph.document.undo.edit.InsertLabelsEdit;
 import info.bioinfweb.treegraph.document.undo.file.AddSupportValuesEdit;
@@ -91,39 +92,45 @@ public class ImportBayesTraitsDataEdit extends AbstractTopologicalCalculationEdi
 	protected void performRedo() {
 		addLeafSets(getDocument().getTree().getPaintStart(), parameters.getKeyAdapter());
 		
+		
 		for (String internalNodeName : parameters.getData().keySet()) {
 			Node internalNode = findReconstructedNode(parameters.getData().get(internalNodeName));
 			Branch branch = internalNode.getAfferentBranch();
-			int count = 0;
 			
-			Iterator<String> iterator1 = parameters.getData().get(internalNodeName).getCharacterMap().keySet().iterator();
-			while (iterator1.hasNext()) {
-				String character = iterator1.next();
-				PieChartLabel label = new PieChartLabel(branch.getLabels());
-				label.setID(character);
-				Iterator<String> iterator2 = parameters.getData().get(internalNodeName).getCharacterMap().get(character).keySet().iterator();
-				while (iterator2.hasNext()) {
-					String characterState = iterator2.next();
-					label.addValueID(parameters.getData().get(internalNodeName).getHeadings()[count]);
-					if (internalNode != null) {
-						parameters.getImportAdapters()[count].
-						setDecimal(internalNode, parameters.getData().get(internalNodeName).getCharacterMap().get(character).get(characterState));
+			if (internalNode != null) {
+				int importAdapterIndex = 0;
+				Iterator<String> characterIterator = parameters.getData().get(internalNodeName).getCharacterMap().keySet().iterator();
+				int characterIndex = 0;
+				parameters.getInternalNodeNamesAdapter().setText(internalNode, internalNodeName);
+				while (characterIterator.hasNext()) {
+					String labelID = parameters.getPieChartLabelIDs()[characterIndex];
+					PieChartLabel label = null;
+					if (labelID != null) {
+						label = new PieChartLabel(branch.getLabels());
+						label.setID(parameters.getPieChartLabelIDs()[characterIndex]);
 					}
-					else {
-						nodesNotFound.add(parameters.getData().get(internalNodeName).getName());
-					}	
-					count += 1;
+					
+					String characterKey = characterIterator.next();
+					Iterator<String> stateIterator = parameters.getData().get(internalNodeName).getCharacterMap().get(characterKey).keySet().iterator();
+					while (stateIterator.hasNext()) {
+						if (labelID != null) {
+							label.addValueID(((IDElementAdapter)parameters.getImportAdapters()[importAdapterIndex]).getID());
+						}
+						
+						parameters.getImportAdapters()[importAdapterIndex].
+						setDecimal(internalNode, parameters.getData().get(internalNodeName).getCharacterMap().get(characterKey).get(stateIterator.next()));
+						importAdapterIndex += 1;
+					}
+					
+					if (labelID != null) {
+						internalNode.getAfferentBranch().getLabels().add(label);
+					}
+					characterIndex += 1;
 				}
-				internalNode.getAfferentBranch().getLabels().add(label);
+			}
+			else {
+				nodesNotFound.add(parameters.getData().get(internalNodeName).getName());
 			}	
-		}		
-//		for (int i = 0; i < parameters.getData().get("Root").getProbabilitySize(); i += 2) {
-//			PieChartLabel label = new PieChartLabel(null);
-//			label.setID("Label" + i);
-//			label.addValueID(parameters.getData().get("Root").getProbabilityKey(i));
-//			label.addValueID(parameters.getData().get("Root").getProbabilityKey(i+1));
-//			InsertLabelsEdit labelsEdit = new InsertLabelsEdit(getDocument(), label, branches);
-//			getDocument().executeEdit(labelsEdit);
-//		}		
+		}	
 	}
 }

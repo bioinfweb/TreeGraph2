@@ -270,7 +270,7 @@ public class OpenDialog extends FileDialog {
 			internalNodesPanel.setBorder(BorderFactory.createTitledBorder(null, "Import internal nodes as", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
 			internalNodesPanel.add(getTranslateInternalNodesCheckBox(), gridBagConstraints1);
 			nodeNamesDataInput = new NewNodeBranchDataInput(internalNodesPanel, 0, 0, true);
-			nodeNamesDataInput.setAdapters(null, false, true, false, false, true, false);
+			nodeNamesDataInput.setAdapters(null, false, true, false, false, true, "");
 			nodeNamesDataInput.setSelectedAdapter(NewTextLabelAdapter.class);
 			nodeNamesDataInput.setID(DEFAULT_NODE_NAME_ID);
 		}
@@ -309,7 +309,7 @@ public class OpenDialog extends FileDialog {
 			branchLengthsPanel.setLayout(new GridBagLayout());
 			branchLengthsPanel.setBorder(BorderFactory.createTitledBorder(null, "Branch lengths", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
 			branchLengthsDataInput = new NewNodeBranchDataInput(branchLengthsPanel, 0, 0, true);
-			branchLengthsDataInput.setAdapters(null, false, false, true, true, true, false);
+			branchLengthsDataInput.setAdapters(null, false, false, true, true, true, "");
 			branchLengthsDataInput.setSelectedAdapter(BranchLengthAdapter.class);
 			branchLengthsDataInput.setID(DEFAULT_BRANCH_LENGTH_ID);
 		}

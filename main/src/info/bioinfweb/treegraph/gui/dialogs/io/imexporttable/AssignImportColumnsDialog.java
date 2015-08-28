@@ -123,7 +123,7 @@ public class AssignImportColumnsDialog extends OkCancelApplyWikiHelpDialog {
 			
 			getImportPanel().add(new JLabel("" + i + ")"), labelGBC);
 			NewNodeBranchDataInput input = new NewNodeBranchDataInput(getImportPanel(), 1, i + USED_ROWS - 1, true);
-			input.setAdapters(tree, false, true, true, false, true, true);
+			input.setAdapters(tree, false, true, true, false, true, "Do not import this column");
 			input.setSelectedAdapter(NewHiddenBranchDataAdapter.class);
 			if (data.containsHeadings()) {
 				input.setID(data.getHeading(i - 1));
