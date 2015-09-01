@@ -117,8 +117,8 @@ public class ImportBayesTraitsDataEdit extends AbstractTopologicalCalculationEdi
 							label.addValueID(((IDElementAdapter)parameters.getImportAdapters()[importAdapterIndex]).getID());
 						}
 						
-						parameters.getImportAdapters()[importAdapterIndex].
-						setDecimal(internalNode, parameters.getData().get(internalNodeName).getCharacterMap().get(characterKey).get(stateIterator.next()));
+						parameters.getImportAdapters()[importAdapterIndex].setDecimal(
+								internalNode, parameters.getData().get(internalNodeName).getCharacterMap().get(characterKey).get(stateIterator.next()));
 						importAdapterIndex += 1;
 					}
 					

@@ -2,19 +2,18 @@ package info.bioinfweb.treegraph.gui.dialogs.io.ancestralstate;
 
 
 import info.bioinfweb.treegraph.Main;
-import info.bioinfweb.treegraph.document.IDManager;
 import info.bioinfweb.treegraph.document.Tree;
-import info.bioinfweb.treegraph.document.nodebranchdata.NewHiddenBranchDataAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.NewNodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.VoidNodeBranchDataAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.PieChartLabelAdapter;
 import info.bioinfweb.treegraph.document.undo.file.ancestralstate.AncestralStateData;
 import info.bioinfweb.treegraph.document.undo.file.ancestralstate.AncestralStateImportParameters;
+import info.bioinfweb.treegraph.gui.dialogs.io.AssignImportColumnsDialog;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NewNodeBranchDataInput;
-import info.bioinfweb.wikihelp.client.OkCancelApplyWikiHelpDialog;
 
-import java.awt.Color;
-import java.awt.Font;
+
+
+
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -25,22 +24,21 @@ import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.border.TitledBorder;
 
 
 
-public class AssignBayesTraitsImportColumnsDialog extends OkCancelApplyWikiHelpDialog {	
-	private Tree tree = null;	
+public class AssignBayesTraitsImportColumnsDialog extends AssignImportColumnsDialog {	
 	private JPanel jContentPane = null;
-	private JPanel importPanel = null;
+	
 	private JPanel importInternalNodeNamesPanel = null;
 	private AncestralStateImportParameters parameters = null;
 	private AncestralStateData data = null;
-	
 	private List<CharacterInput> characterInputs = new ArrayList<CharacterInput>();
 	private NewNodeBranchDataInput internalNodeNames = null;
+	
+	private JLabel importCharacterDataLabel = null;
+	private JLabel importInternalNodeNamesLabel = null;
 
 
 	/**
@@ -58,18 +56,38 @@ public class AssignBayesTraitsImportColumnsDialog extends OkCancelApplyWikiHelpD
 		getImportPanel().removeAll();
 		characterInputs.clear();
 		
+		GridBagConstraints importCharacterDataLabelGBC = new GridBagConstraints();	
+		importCharacterDataLabelGBC.gridx = 0;
+		importCharacterDataLabelGBC.anchor = GridBagConstraints.WEST;
+		importCharacterDataLabelGBC.gridy =  0;
+		importCharacterDataLabelGBC.insets = new Insets(4, 6, 4, 0);
+		importCharacterDataLabelGBC.gridwidth = GridBagConstraints.RELATIVE;
+		importCharacterDataLabel = new JLabel();
+		importCharacterDataLabel.setText("Import character data");
+		getImportPanel().add(importCharacterDataLabel, importCharacterDataLabelGBC);
+		
 		Iterator<String> keySetIterator = data.getCharacterMap().keySet().iterator();
-		int y = 0;
+		int y = 1;
 		while (keySetIterator.hasNext()) {
 			CharacterInput input = new CharacterInput(getImportPanel(), y, data, tree, keySetIterator.next());
 			y = input.getBottomY();
 			characterInputs.add(input);
 		}
 		
-		internalNodeNames = new NewNodeBranchDataInput(getImportInternalNodeNamesPanel(), 1, y, true);
+		GridBagConstraints importInternalNodeNamesLabelGBC = new GridBagConstraints();	
+		importInternalNodeNamesLabelGBC.gridx = 0;
+		importInternalNodeNamesLabelGBC.anchor = GridBagConstraints.WEST;
+		importInternalNodeNamesLabelGBC.gridy =  y;
+		importInternalNodeNamesLabelGBC.insets = new Insets(4, 6, 4, 0);
+		importInternalNodeNamesLabelGBC.gridwidth = GridBagConstraints.RELATIVE;
+		importInternalNodeNamesLabel = new JLabel();
+		importInternalNodeNamesLabel.setText("Import internal node names");
+		getImportInternalNodeNamesPanel().add(importInternalNodeNamesLabel, importInternalNodeNamesLabelGBC);
+		
+		internalNodeNames = new NewNodeBranchDataInput(getImportInternalNodeNamesPanel(), 1, y + 1, true);
 		internalNodeNames.setAdapters(tree, false, true, false, false, true, "Do not import internal node names");
-		internalNodeNames.setSelectedAdapter(NewHiddenBranchDataAdapter.class);
-		internalNodeNames.setID("Internal node names");
+		internalNodeNames.setSelectedAdapter(NodeNameAdapter.class);
+		internalNodeNames.setID("");
 		
 		pack();
 	}
@@ -105,38 +123,16 @@ public class AssignBayesTraitsImportColumnsDialog extends OkCancelApplyWikiHelpD
 		}
 		parameters.setInternalNodeNamesAdapter(internalNodeNames.getSelectedAdapter());
 		
-		StringBuffer message = new StringBuffer();
-		message.append("The following node/branch data columns already exist in the tree:\n\n");
-		
-		boolean cancel = false;
-		
-		for (int i = 0; i < parameters.getImportAdapters().length; i++) {
-			NodeBranchDataAdapter adapter = parameters.getImportAdapters()[i];
-			if (!(adapter instanceof VoidNodeBranchDataAdapter)) {
-				boolean columnExists; 
-				if (adapter instanceof NewNodeBranchDataAdapter) {
-					columnExists = IDManager.idExistsInSubtree(tree.getPaintStart(), ((NewNodeBranchDataAdapter)adapter).getID());
-					if (columnExists) {
-						message.append("Node/branch data with the ID \"");
-						message.append(((NewNodeBranchDataAdapter)adapter).getID());
-						message.append("\"\n");
-					}
-				}
-				else {
-					message.append(adapter.toString());
-					message.append('\n');
-					columnExists = true;
-				}
-				cancel = cancel || columnExists;
-			}
+		NodeBranchDataAdapter[] allAdapters = new NodeBranchDataAdapter[parameters.getImportAdapters().length + parameters.getPieChartLabelIDs().length];
+		int adapterCount = parameters.getImportAdapters().length;
+		for (int i = 0; i < adapterCount; i++) {
+			allAdapters[i] = parameters.getImportAdapters()[i];
 		}
-		message.append("\n\nDo you want to possibly overwrite entries in these columns?\n");
-		message.append("(Only data of nodes referenced by the key column, could be overwritten.)");
-		
-		if (cancel) {
-			cancel = (JOptionPane.showConfirmDialog(this, message, "Warning", JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION);
+		for (int i = 0; i < parameters.getPieChartLabelIDs().length; i++) {
+			allAdapters[i + adapterCount] = new PieChartLabelAdapter(parameters.getPieChartLabelIDs()[i]);
 		}
-		return !cancel;
+		
+		return checkSelectedAdapters(allAdapters);
 	}
 
 
@@ -148,7 +144,7 @@ public class AssignBayesTraitsImportColumnsDialog extends OkCancelApplyWikiHelpD
 	private void initialize() {
 		setHelpCode(66); //TODO set correct help code
 		setTitle("Import BayesTraits data");
-		setSize(400, 300);
+		setSize(300, 200);
 		getApplyButton().setVisible(false);
 		setContentPane(getJContentPane());
 	}
@@ -163,7 +159,7 @@ public class AssignBayesTraitsImportColumnsDialog extends OkCancelApplyWikiHelpD
 		if (jContentPane == null) {
 			jContentPane = new JPanel();
 			jContentPane.setLayout(new BoxLayout(getJContentPane(), BoxLayout.Y_AXIS));
-			jContentPane.add(getImportPanel(), null);
+			jContentPane.add(getScrollPane());
 			jContentPane.add(getImportInternalNodeNamesPanel(), null);
 			jContentPane.add(getButtonsPanel(), null);
 		}
@@ -175,23 +171,7 @@ public class AssignBayesTraitsImportColumnsDialog extends OkCancelApplyWikiHelpD
 		if (importInternalNodeNamesPanel == null) {
 			importInternalNodeNamesPanel = new JPanel();
 			importInternalNodeNamesPanel.setLayout(new GridBagLayout());
-			importInternalNodeNamesPanel.setBorder(new TitledBorder(null, "Import internal node names", TitledBorder.LEADING, TitledBorder.TOP, new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
 		}
 		return importInternalNodeNamesPanel;
-	}
-	
-
-	/**
-	 * This method initializes importPanel	
-	 * 	
-	 * @return javax.swing.JPanel	
-	 */
-	private JPanel getImportPanel() {
-		if (importPanel == null) {
-			importPanel = new JPanel();
-			importPanel.setLayout(new GridBagLayout());
-			importPanel.setBorder(new TitledBorder(null, "Import character data", TitledBorder.LEADING, TitledBorder.TOP, new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
-		}
-		return importPanel;
 	}
 }

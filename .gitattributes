@@ -304,6 +304,7 @@ main/src/info/bioinfweb/treegraph/document/nodebranchdata/NewTextLabelAdapter.ja
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/NodeBranchDataActionNotSupportedException.java -text
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/NodeBranchDataAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/NodeNameAdapter.java -text
+main/src/info/bioinfweb/treegraph/document/nodebranchdata/PieChartLabelAdapter.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/TextElementDataAdapter.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/TextLabelAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/UniqueNameAdapter.java -text
@@ -634,6 +635,7 @@ main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/piecolor/PieColorCe
 main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/piecolor/PieColorIcon.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/piecolor/PieColorListEntry.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/AddSupportValuesDialog.java -text
+main/src/info/bioinfweb/treegraph/gui/dialogs/io/AssignImportColumnsDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/ExportToNewickStringDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/FileDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/NewickExceptionDialog.java -text
@@ -652,7 +654,7 @@ main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttographic/PreferencesPane
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttographic/PreferencesPanelFactory.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttographic/TIFFPrefPanel.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttographic/TransparentBgPrefPanel.java -text
-main/src/info/bioinfweb/treegraph/gui/dialogs/io/imexporttable/AssignImportColumnsDialog.java -text
+main/src/info/bioinfweb/treegraph/gui/dialogs/io/imexporttable/AssignImportTableColumnsDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/imexporttable/ExportNodeDataTableModel.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/imexporttable/ExportTableDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/imexporttable/SelectImportTableDialog.java -text

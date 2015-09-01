@@ -20,6 +20,7 @@ package info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput;
 
 
 import java.awt.GridBagConstraints;
+import java.awt.Insets;
 
 import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
@@ -45,6 +46,7 @@ public class NodeBranchDataInput {
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.gridx = x;
 		gbc.gridy = y;
+		gbc.insets = new Insets(2, 2, 2, 2);
 		gbc.weightx = 1.0;
     panel.add(getComboBox(), gbc);
 	}

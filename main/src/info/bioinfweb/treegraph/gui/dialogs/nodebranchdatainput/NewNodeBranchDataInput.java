@@ -23,9 +23,11 @@ import info.bioinfweb.treegraph.document.nodebranchdata.NewNodeBranchDataAdapter
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 
 import java.awt.GridBagConstraints;
+import java.awt.Insets;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.Vector;
+
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -55,6 +57,7 @@ public class NewNodeBranchDataInput extends NodeBranchDataInput {
 			gbc.gridx = x;
 			gbc.gridy = y + 1;
 		}
+		gbc.insets = new Insets(2, 2, 2, 2);
 		gbc.weightx = 2.0;
     panel.add(getTextField(), gbc);
 	}

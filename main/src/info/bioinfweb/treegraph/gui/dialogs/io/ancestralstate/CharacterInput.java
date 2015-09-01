@@ -43,7 +43,7 @@ public class CharacterInput {
 	
 	private JCheckBox importCharacterCheckbox = null;
 	private JLabel prefixLabel = null;
-	private JTextField prefixIDTextField = null;
+//	private JTextField prefixIDTextField = null;
 	
 	private JLabel typeHeadingLabel = null;
 	private JLabel idHeadingLabel = null;
@@ -67,41 +67,41 @@ public class CharacterInput {
 		importCharacterCheckboxGBC.gridx = 0;
 		importCharacterCheckboxGBC.anchor = GridBagConstraints.WEST;
 		importCharacterCheckboxGBC.gridy = y;
-		importCharacterCheckboxGBC.insets = new Insets(0, 0, 8, 0);
+		importCharacterCheckboxGBC.insets = new Insets(2, 2, 2, 0);
 		importCharacterCheckbox = new JCheckBox();
 		importCharacterCheckbox.setSelected(true);
 		GridBagConstraints prefixGBC = new GridBagConstraints();	
 		prefixGBC.gridx = 1;
 		prefixGBC.anchor = GridBagConstraints.WEST;
-		prefixGBC.gridy = y;
-		prefixGBC.insets = new Insets(0, 0, 8, 0);
+		prefixGBC.gridy =  y;
+		prefixGBC.insets = new Insets(2, 0, 2, 2);
 		prefixLabel = new JLabel();
-		prefixLabel.setText("Prefix ID:");
-		GridBagConstraints prefixIDGBC = new GridBagConstraints();
-		prefixIDGBC.gridx = 2;
-		prefixIDGBC.anchor = GridBagConstraints.WEST;
-		prefixIDGBC.gridy = y;
-		prefixIDGBC.insets = new Insets(0, 0, 8, 0);
-		prefixIDGBC.fill = GridBagConstraints.HORIZONTAL;
-		prefixIDTextField = new JTextField();
-		prefixIDTextField.setText(prefixIDText);
+		prefixLabel.setText("Import character state data for character " + "\"" + prefixIDText + "\"");
+//		GridBagConstraints prefixIDGBC = new GridBagConstraints();
+//		prefixIDGBC.gridx = 2;
+//		prefixIDGBC.anchor = GridBagConstraints.WEST;
+//		prefixIDGBC.gridy = y;
+//		prefixIDGBC.insets = new Insets(0, 0, 4, 4);
+//		prefixIDGBC.fill = GridBagConstraints.HORIZONTAL;
+//		prefixIDTextField = new JTextField();
+//		prefixIDTextField.setText(prefixIDText);
 		GridBagConstraints typeHeadingGBC = new GridBagConstraints();
 		typeHeadingGBC.gridx = 1;
 		typeHeadingGBC.anchor = GridBagConstraints.WEST;
 		typeHeadingGBC.gridy = y + 1;
-		typeHeadingGBC.insets = new Insets(0, 0, 8, 0);
+		typeHeadingGBC.insets = new Insets(2, 2, 2, 2);
 		typeHeadingLabel = new JLabel();
 		typeHeadingLabel.setText("Node data type:");
 		GridBagConstraints idHeadingGBC = new GridBagConstraints();
 		idHeadingGBC.gridx = 2;
 		idHeadingGBC.gridy = y + 1;
 		idHeadingGBC.anchor = GridBagConstraints.WEST;
-		idHeadingGBC.insets = new Insets(0, 0, 8, 0);
+		idHeadingGBC.insets = new Insets(2, 2, 2, 2);
 		idHeadingLabel = new JLabel();
-		idHeadingLabel.setText("ID:");	
+		idHeadingLabel.setText("ID:                "); // increase widths of text fields
 		panel.add(importCharacterCheckbox, importCharacterCheckboxGBC);
 		panel.add(prefixLabel, prefixGBC);
-		panel.add(prefixIDTextField, prefixIDGBC);
+//		panel.add(prefixIDTextField, prefixIDGBC);
 		panel.add(typeHeadingLabel, typeHeadingGBC);
 		panel.add(idHeadingLabel, idHeadingGBC);			
 		
@@ -120,7 +120,7 @@ public class CharacterInput {
 		pieChartLabelCheckboxGBC.gridx = 1;
 		pieChartLabelCheckboxGBC.anchor = GridBagConstraints.WEST;
 		pieChartLabelCheckboxGBC.gridy = usedRows - 1;
-		pieChartLabelCheckboxGBC.insets = new Insets(0, 0, 8, 0);
+		pieChartLabelCheckboxGBC.insets = new Insets(2, 2, 2, 2);
 		pieChartLabelCheckbox = new JCheckBox();
 		pieChartLabelCheckbox.setText("Create pie chart label with ID:");
 		pieChartLabelCheckbox.setSelected(true);
@@ -128,7 +128,7 @@ public class CharacterInput {
 		pieChartLabelIDGBC.gridx = 2;
 		pieChartLabelIDGBC.anchor = GridBagConstraints.WEST;
 		pieChartLabelIDGBC.gridy = usedRows - 1;
-		pieChartLabelIDGBC.insets = new Insets(0, 0, 8, 0);
+		pieChartLabelIDGBC.insets = new Insets(2, 2, 2, 2);
 		pieChartLabelIDGBC.fill = GridBagConstraints.HORIZONTAL;
 		pieChartLabelIDTextField = new JTextField();
 		pieChartLabelIDTextField.setText(prefixIDText + ".label");
@@ -160,7 +160,7 @@ public class CharacterInput {
 		parameters.setImportAdapters(importAdapters);
 		
 		String[] labelIDs = parameters.getPieChartLabelIDs();
-		labelIDs[labelIDsIndex] = pieChartLabelCheckbox.isSelected() ? pieChartLabelIDTextField.getText() : null;
+		labelIDs[labelIDsIndex] = (importCharacterCheckbox.isSelected() && pieChartLabelCheckbox.isSelected()) ? pieChartLabelIDTextField.getText() : null;
 		parameters.setPieChartLabelIDs(labelIDs);
 	}
 	
@@ -172,7 +172,7 @@ public class CharacterInput {
 
 	private void setContentsEnabled(boolean enabled) {
 		prefixLabel.setEnabled(enabled);
-		prefixIDTextField.setEnabled(enabled);	
+//		prefixIDTextField.setEnabled(enabled);	
 		typeHeadingLabel.setEnabled(enabled);
 		idHeadingLabel.setEnabled(enabled);
 		for (int i = 0; i < stateInputs.size(); i++) {

@@ -48,7 +48,7 @@ import java.awt.Insets;
 
 /**
  * Dialog that prompts the user for a table file to be imported to node/branch data columns as well as
- * several import options. This dialog is displayed in a sequence before {@link AssignImportColumnsDialog}.
+ * several import options. This dialog is displayed in a sequence before {@link AssignImportTableColumnsDialog}.
  * 
  * @author Ben St&ouml;ver
  */

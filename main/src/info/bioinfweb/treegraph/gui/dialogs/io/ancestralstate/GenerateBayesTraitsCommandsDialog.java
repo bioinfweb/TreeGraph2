@@ -74,7 +74,6 @@ public class GenerateBayesTraitsCommandsDialog extends EditDialog {
 	private JPanel nodeTypePanel;
 	private JRadioButton addNodeRadioButton;
 	private JRadioButton addMRCARadioButton;
-	private JRadioButton dependantCommandRadioButton;
 	private ButtonGroup commandTypeButtonGroup = null;
 	private NodeBranchDataInput commandTypeColumnInput = null;
 	private JPanel charactersPanel;
@@ -336,15 +335,7 @@ public class GenerateBayesTraitsCommandsDialog extends EditDialog {
 			gbc_addMRCARadioButton.gridx = 0;
 			gbc_addMRCARadioButton.gridy = 1;
 			nodeTypePanel.add(getAddMRCARadioButton(), gbc_addMRCARadioButton);
-			GridBagConstraints gbc_dependantCommandRadioButton = new GridBagConstraints();
-			gbc_dependantCommandRadioButton.gridwidth = 2;
-			gbc_dependantCommandRadioButton.anchor = GridBagConstraints.WEST;
-			gbc_dependantCommandRadioButton.insets = new Insets(0, 0, 5, 0);
-			gbc_dependantCommandRadioButton.gridx = 0;
-			gbc_dependantCommandRadioButton.gridy = 2;
-			nodeTypePanel.add(getDependantCommandRadioButton(), gbc_dependantCommandRadioButton);
 			commandTypeColumnInput = new NodeBranchDataInput(nodeTypePanel, 1, 3);
-			commandTypeColumnInput.setEnabled(getDependantCommandRadioButton().isSelected());
 		}
 		return nodeTypePanel;
 	}
@@ -380,20 +371,6 @@ public class GenerateBayesTraitsCommandsDialog extends EditDialog {
 			getCommandTypeButtonGroup().add(addMRCARadioButton);
 		}
 		return addMRCARadioButton;
-	}
-	
-	
-	private JRadioButton getDependantCommandRadioButton() {
-		if (dependantCommandRadioButton == null) {
-			dependantCommandRadioButton = new JRadioButton("Choose dependant on the following node/branch data column");
-			dependantCommandRadioButton.addItemListener(new ItemListener() {
-				public void itemStateChanged(ItemEvent e) {
-					getCommandTypeColumnInput().setEnabled(getDependantCommandRadioButton().isSelected());
-				}
-			});
-			getCommandTypeButtonGroup().add(dependantCommandRadioButton);
-		}
-		return dependantCommandRadioButton;
 	}
 	
 	

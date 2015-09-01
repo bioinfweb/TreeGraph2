@@ -40,6 +40,7 @@ import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.VoidNodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.file.importtable.ImportTableData;
 import info.bioinfweb.treegraph.document.undo.file.importtable.ImportTableParameters;
+import info.bioinfweb.treegraph.gui.dialogs.io.AssignImportColumnsDialog;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NewNodeBranchDataInput;
 import info.bioinfweb.wikihelp.client.OkCancelApplyWikiHelpDialog;
 
@@ -51,18 +52,16 @@ import info.bioinfweb.wikihelp.client.OkCancelApplyWikiHelpDialog;
  * 
  * @author Ben St&ouml;ver
  */
-public class AssignImportColumnsDialog extends OkCancelApplyWikiHelpDialog {
+public class AssignImportTableColumnsDialog extends AssignImportColumnsDialog {
 	private static final long serialVersionUID = 1L;
 	private static final int USED_ROWS = 2;
 	
 	
-	private Tree tree = null;
-	
 	private JPanel jContentPane = null;
-	private JPanel importPanel = null;
 	private JLabel typeLabel = null;
 	private JLabel idLabel = null;
 	private Vector<NewNodeBranchDataInput> inputs = new Vector<NewNodeBranchDataInput>();  //  @jve:decl-index=0:
+	NodeBranchDataAdapter[] inputAdapters = null;
 	private JLabel firstLineLabel = null;
 	private JLabel keyColumnLabel = null;
 
@@ -71,7 +70,7 @@ public class AssignImportColumnsDialog extends OkCancelApplyWikiHelpDialog {
 	 * Creates a new instance of this dialog.
 	 * @param owner - the parent window
 	 */
-	public AssignImportColumnsDialog(Frame owner) {
+	public AssignImportTableColumnsDialog(Frame owner) {
 		super(owner, true, Main.getInstance().getWikiHelp());
 		initialize();
 		setLocationRelativeTo(owner);
@@ -138,11 +137,7 @@ public class AssignImportColumnsDialog extends OkCancelApplyWikiHelpDialog {
 		this.tree = tree;
 		createInputs(parameters, data);
 		if (execute()) {
-			NodeBranchDataAdapter[] adapters = new NodeBranchDataAdapter[data.columnCount()];
-			for (int i = 0; i < adapters.length; i++) {
-				adapters[i] = inputs.get(i).getSelectedAdapter();
-			}
-			parameters.setImportAdapters(adapters);
+			parameters.setImportAdapters(inputAdapters);
 		}
 	}
 	
@@ -154,38 +149,12 @@ public class AssignImportColumnsDialog extends OkCancelApplyWikiHelpDialog {
 	 */
 	@Override
 	protected boolean apply() {
-		StringBuffer message = new StringBuffer();
-		message.append("The following node/branch data columns already exist in the tree:\n\n");
-		
-		boolean cancel = false;
+		inputAdapters = new NodeBranchDataAdapter[inputs.size()];
 		Iterator<NewNodeBranchDataInput> iterator = inputs.iterator();
-		while (iterator.hasNext()) {
-			NodeBranchDataAdapter adapter = iterator.next().getSelectedAdapter();
-			if (!(adapter instanceof VoidNodeBranchDataAdapter)) {
-				boolean columnExists; 
-				if (adapter instanceof NewNodeBranchDataAdapter) {
-					columnExists = IDManager.idExistsInSubtree(tree.getPaintStart(), ((NewNodeBranchDataAdapter)adapter).getID());
-					if (columnExists) {
-						message.append("Node/branch data with the ID \"");
-						message.append(((NewNodeBranchDataAdapter)adapter).getID());
-						message.append("\"\n");
-					}
-				}
-				else {
-					message.append(adapter.toString());
-					message.append('\n');
-					columnExists = true;
-				}
-				cancel = cancel || columnExists;
-			}
+		for (int i = 0; i < inputAdapters.length; i++) {
+			inputAdapters[i] = iterator.next().getSelectedAdapter();
 		}
-		message.append("\n\nDo you want to possibly overwrite entries in these columns?\n");
-		message.append("(Only data of nodes referenced by the key column, could be overwritten.)");
-		
-		if (cancel) {
-			cancel = (JOptionPane.showConfirmDialog(this, message, "Warning", JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION);
-		}
-		return !cancel;
+		return checkSelectedAdapters(inputAdapters);
 	}
 
 
@@ -212,24 +181,9 @@ public class AssignImportColumnsDialog extends OkCancelApplyWikiHelpDialog {
 		if (jContentPane == null) {
 			jContentPane = new JPanel();
 			jContentPane.setLayout(new BoxLayout(getJContentPane(), BoxLayout.Y_AXIS));
-			jContentPane.add(getImportPanel(), null);
+			jContentPane.add(getScrollPane(), null);
 			jContentPane.add(getButtonsPanel(), null);
 		}
 		return jContentPane;
 	}
-
-
-	/**
-	 * This method initializes importPanel	
-	 * 	
-	 * @return javax.swing.JPanel	
-	 */
-	private JPanel getImportPanel() {
-		if (importPanel == null) {
-			importPanel = new JPanel();
-			importPanel.setLayout(new GridBagLayout());
-		}
-		return importPanel;
-	}
-
 }

@@ -38,7 +38,7 @@ import info.bioinfweb.treegraph.document.undo.file.importtable.ImportTableEdit;
 import info.bioinfweb.treegraph.document.undo.file.importtable.ImportTableParameters;
 import info.bioinfweb.treegraph.document.undo.file.importtable.InsufficientTableSizeException;
 import info.bioinfweb.treegraph.gui.actions.DocumentAction;
-import info.bioinfweb.treegraph.gui.dialogs.io.imexporttable.AssignImportColumnsDialog;
+import info.bioinfweb.treegraph.gui.dialogs.io.imexporttable.AssignImportTableColumnsDialog;
 import info.bioinfweb.treegraph.gui.dialogs.io.imexporttable.SelectImportTableDialog;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeInternalFrame;
@@ -61,7 +61,7 @@ public class ImportTableAction extends DocumentAction {
 	
 	
 	private SelectImportTableDialog importTableDialog = null;
-	private AssignImportColumnsDialog assignImportColumnsDialog = null;
+	private AssignImportTableColumnsDialog assignImportColumnsDialog = null;
 	
 	
 	
@@ -81,9 +81,9 @@ public class ImportTableAction extends DocumentAction {
 	}	
 
 	
-	private AssignImportColumnsDialog getAssignImportColumnsDialog() {
+	private AssignImportTableColumnsDialog getAssignImportColumnsDialog() {
 		if (assignImportColumnsDialog == null) {
-			assignImportColumnsDialog = new AssignImportColumnsDialog(getMainFrame());
+			assignImportColumnsDialog = new AssignImportTableColumnsDialog(getMainFrame());
 		}
 		return assignImportColumnsDialog;
 	}	
