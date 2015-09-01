@@ -79,4 +79,13 @@ public abstract class AbstractIDElementAdapter extends AbstractTextElementDataAd
 	public boolean equals(Object other) {
 		return super.equals(other) && ((AbstractIDElementAdapter)other).getID().equals(getID());
 	}
+	
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
 }

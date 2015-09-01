@@ -41,6 +41,12 @@ public abstract class AbstractNodeBranchDataAdapter implements NodeBranchDataAda
 
 	
 	@Override
+	public int hashCode() {
+		return getClass().getCanonicalName().hashCode();
+	}
+
+
+	@Override
   public void setTextElementData(Node node, TextElementData data) {
 		if (!readOnly()) {
 			if (data.isDecimal()) {
