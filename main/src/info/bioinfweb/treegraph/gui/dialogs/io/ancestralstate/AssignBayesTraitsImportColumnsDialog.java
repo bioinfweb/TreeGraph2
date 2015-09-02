@@ -137,7 +137,7 @@ public class AssignBayesTraitsImportColumnsDialog extends AssignImportColumnsDia
 	private void initialize() {
 		setHelpCode(66); //TODO set correct help code
 		setTitle("Import BayesTraits data");
-		setSize(300, 200);
+		setSize(380, 400);
 		getApplyButton().setVisible(false);
 		setContentPane(getJContentPane());
 	}

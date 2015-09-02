@@ -1,6 +1,7 @@
 package info.bioinfweb.treegraph.gui.dialogs.io;
 
 
+import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.GridBagLayout;
 import java.util.HashSet;
@@ -114,7 +115,7 @@ public abstract class AssignImportColumnsDialog extends OkCancelApplyWikiHelpDia
 	protected JScrollPane getScrollPane() {
 		if (scrollPane == null) {
 			scrollPane = new JScrollPane();
-			scrollPane.setSize(300, 150);
+			scrollPane.setPreferredSize(new Dimension(380, 280));
 			scrollPane.setViewportView(getImportPanel());
 		}
 		return scrollPane;
