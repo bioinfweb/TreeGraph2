@@ -5,7 +5,6 @@ import java.awt.Frame;
 import java.awt.GridBagLayout;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -14,11 +13,8 @@ import javax.swing.JScrollPane;
 import info.bioinfweb.treegraph.document.IDManager;
 import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.nodebranchdata.IDElementAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.NewNodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.PieChartLabelAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.VoidNodeBranchDataAdapter;
-import info.bioinfweb.treegraph.document.undo.file.ImportDataColumnsParameters;
 import info.bioinfweb.wikihelp.client.OkCancelApplyWikiHelpDialog;
 import info.bioinfweb.wikihelp.client.WikiHelp;
 
@@ -118,6 +114,7 @@ public abstract class AssignImportColumnsDialog extends OkCancelApplyWikiHelpDia
 	protected JScrollPane getScrollPane() {
 		if (scrollPane == null) {
 			scrollPane = new JScrollPane();
+			scrollPane.setSize(300, 150);
 			scrollPane.setViewportView(getImportPanel());
 		}
 		return scrollPane;

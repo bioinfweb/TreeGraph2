@@ -31,8 +31,6 @@ import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.file.ancestralstate.AncestralStateImportParameters;
 import info.bioinfweb.treegraph.document.undo.file.ancestralstate.BayesTraitsReader;
 import info.bioinfweb.treegraph.document.undo.file.ancestralstate.ImportBayesTraitsDataEdit;
-import info.bioinfweb.treegraph.document.undo.file.importtable.DuplicateKeyException;
-import info.bioinfweb.treegraph.document.undo.file.importtable.InsufficientTableSizeException;
 import info.bioinfweb.treegraph.gui.actions.DocumentAction;
 import info.bioinfweb.treegraph.gui.dialogs.io.ancestralstate.AssignBayesTraitsImportColumnsDialog;
 import info.bioinfweb.treegraph.gui.dialogs.io.ancestralstate.ImportBayesTraitsDataDialog;
@@ -93,6 +91,10 @@ public class ImportBayesTraitsDataAction extends DocumentAction {
 						JOptionPane.showMessageDialog(MainFrame.getInstance(), edit.getWarningText(), 
 						    "Warning", JOptionPane.WARNING_MESSAGE);
 					}
+					if (edit.hasNodeDataNotFoundWarnings()) {
+						JOptionPane.showMessageDialog(MainFrame.getInstance(), edit.getNodeDataNotFoundWarningText(), 
+						    "Warning", JOptionPane.WARNING_MESSAGE);
+					} 
 				}
 			}
 			catch (FileNotFoundException ex) {
@@ -108,15 +110,6 @@ public class ImportBayesTraitsDataAction extends DocumentAction {
 						"\" occured when writing to the file \"" + parameters.getTableFile().getAbsolutePath() + "\".", 
 						"Error", JOptionPane.ERROR_MESSAGE);
 			}
-//			catch (DuplicateKeyException ex) {
-//				JOptionPane.showMessageDialog(MainFrame.getInstance(),
-//						"The first column of the imported table file (keys to identify nodes) contained the\n" +
-//				    "following entries multiple times:\n\n" + createKeyList(ex.getKeys().iterator()) + "\n\n" +
-//						PARAMETER_MESSAGE, "Error", JOptionPane.ERROR_MESSAGE);
-//			}
-//			catch (InsufficientTableSizeException ex) {
-//				JOptionPane.showMessageDialog(MainFrame.getInstance(), ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-//			}
 		}
 	}
 	

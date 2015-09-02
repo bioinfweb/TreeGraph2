@@ -1,25 +1,18 @@
 package info.bioinfweb.treegraph.document.undo.file.ancestralstate;
 
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.Vector;
 
 import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.PieChartLabel;
-import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.nodebranchdata.IDElementAdapter;
 import info.bioinfweb.treegraph.document.undo.WarningMessageEdit;
-import info.bioinfweb.treegraph.document.undo.edit.InsertLabelsEdit;
-import info.bioinfweb.treegraph.document.undo.file.AddSupportValuesEdit;
 import info.bioinfweb.treegraph.document.undo.topologicalcalculation.AbstractTopologicalCalculationEdit;
 import info.bioinfweb.treegraph.document.undo.topologicalcalculation.LeafSet;
-import info.bioinfweb.treegraph.gui.actions.file.ImportTableAction;
 
 
 
@@ -27,6 +20,8 @@ public class ImportBayesTraitsDataEdit extends AbstractTopologicalCalculationEdi
 	private AncestralStateImportParameters parameters;	
 
 	private Set<String> nodesNotFound = new TreeSet<String>();
+	private Set<String> nodeDataNotFound = new TreeSet<String>();
+	
 
 
 	public ImportBayesTraitsDataEdit(Document document,
@@ -35,27 +30,59 @@ public class ImportBayesTraitsDataEdit extends AbstractTopologicalCalculationEdi
 		super(document, parameters.getKeyAdapter(), false);  //TODO User parameter for processRooted needed?
 		this.parameters = parameters;
 	}
-	
+
 	
 	public boolean isAllNodesFound() {
 		return nodesNotFound.isEmpty();
 	}
-
+	
+	
+	public boolean isAllNodeDataFound() {
+		return nodeDataNotFound.isEmpty();
+	}
+	
 	
 	public Set<String> getNodesNotFound() {
 		return nodesNotFound;
 	}
 
-
+	
+	public Set<String> getNodeDataNotFound() {
+		return nodeDataNotFound;
+	}
+	
+	
 	@Override
   public String getWarningText() {
-	  return "";
+		String message = "The following internal nodes were not found:\n\n";
+		Iterator<String> iterator = nodesNotFound.iterator(); 
+		while (iterator.hasNext()) {
+			message = message + "\"" + iterator.next() + "\"" + "\n";
+		}
+		message = message + "\nMake sure the current tree contains the same nodes as the one you used for BayesTraits analysis.";
+	  return message;
   }
+	
+	
+  public String getNodeDataNotFoundWarningText() {
+		String message = "No probability data for the following internal nodes could be found:\n\n";
+		Iterator<String> iterator = nodeDataNotFound.iterator(); 
+		while (iterator.hasNext()) {
+			message = message + "\"" + iterator.next() + "\"" + "\n";
+		}
+		message = message + "\nMake sure the BayesTraits analysis worked correctly.";
+	  return message;
+  }
+  
 
-
-	@Override
+  @Override
   public boolean hasWarnings() {
 	  return !isAllNodesFound();
+  }
+	
+	
+  public boolean hasNodeDataNotFoundWarnings() {
+	  return !isAllNodeDataFound();
   }
 
 
@@ -95,9 +122,9 @@ public class ImportBayesTraitsDataEdit extends AbstractTopologicalCalculationEdi
 		
 		for (String internalNodeName : parameters.getData().keySet()) {
 			Node internalNode = findReconstructedNode(parameters.getData().get(internalNodeName));
-			Branch branch = internalNode.getAfferentBranch();
 			
 			if (internalNode != null) {
+				Branch branch = internalNode.getAfferentBranch();
 				int importAdapterIndex = 0;
 				Iterator<String> characterIterator = parameters.getData().get(internalNodeName).getCharacterMap().keySet().iterator();
 				int characterIndex = 0;
@@ -117,8 +144,14 @@ public class ImportBayesTraitsDataEdit extends AbstractTopologicalCalculationEdi
 							label.addValueID(((IDElementAdapter)parameters.getImportAdapters()[importAdapterIndex]).getID());
 						}
 						
-						parameters.getImportAdapters()[importAdapterIndex].setDecimal(
-								internalNode, parameters.getData().get(internalNodeName).getCharacterMap().get(characterKey).get(stateIterator.next()));
+						Double probability = parameters.getData().get(internalNodeName).getCharacterMap().get(characterKey).get(stateIterator.next());
+						if (probability != null) {
+							parameters.getImportAdapters()[importAdapterIndex].setDecimal(internalNode, probability);
+						}
+						else {
+							nodeDataNotFound.add(parameters.getData().get(internalNodeName).getName());
+							parameters.getImportAdapters()[importAdapterIndex].setText(internalNode, "--");
+						}
 						importAdapterIndex += 1;
 					}
 					

@@ -1,6 +1,8 @@
 package info.bioinfweb.treegraph.document.undo.file.ancestralstate;
 
 
+import info.bioinfweb.commons.Math2;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -53,49 +55,36 @@ public class AncestralStateData {
 	}
 	
 	
-	@Deprecated
-	public String[] getHeadings() {
-		String[] headings = new String[getCharacterStateCount()];
-		Iterator<String> iterator1 = characterMap.keySet().iterator();
-		int count = 0;
-		while (iterator1.hasNext()) {
-			String characterName = iterator1.next();
-			Iterator<String> iterator2 = characterMap.get(characterName).keySet().iterator();
-			while (iterator2.hasNext()) {
-				String characterStateName = iterator2.next();
-				headings[count] = characterName + "." + characterStateName;
-				count += 1;
-			}
-		}
-		return headings;
-	}
-	
-	
 	public int getCharacterCount() {
 		return characterMap.size();
 	}
 	
 	
-	public double normalizeProbability(String characterName, String characterStateName, double lineCounter) {
+	public void normalizeProbability(String characterName, String characterStateName, double lineCounter) {
 		Double value = characterMap.get(characterName).get(characterStateName);
-		value /= lineCounter;
-		characterMap.get(characterName).put(characterStateName, value);
-		return value;
+		if (value != null) {
+			value /= lineCounter;
+			characterMap.get(characterName).put(characterStateName, value);
+		}
 	}
 	
 	
-	public double addToProbability(String characterName, String characterStateName, double addend) {		
+	public void addToProbability(String characterName, String characterStateName, String addend) {		
 		if (characterMap.get(characterName) == null) {			
 			characterMap.put(characterName, new TreeMap<String, Double>());
 		}
-		
-		Double value = characterMap.get(characterName).get(characterStateName);
-		if (value == null) {
-			value = 0.0;
+		if (!addend.equals("--")) {
+			double addValue = Math2.parseDouble(addend);
+			Double value = characterMap.get(characterName).get(characterStateName);
+			if (value == null) {
+				value = 0.0;
+				characterMap.get(characterName).put(characterStateName, value);
+			}
+			value += addValue;
 			characterMap.get(characterName).put(characterStateName, value);
 		}
-		value += addend;
-		characterMap.get(characterName).put(characterStateName, value);
-		return value;
+		else {
+			characterMap.get(characterName).put(characterStateName, null);
+		}
 	}
 }

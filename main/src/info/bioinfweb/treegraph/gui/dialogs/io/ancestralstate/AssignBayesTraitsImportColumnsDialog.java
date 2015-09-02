@@ -6,12 +6,11 @@ import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.PieChartLabelAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.VoidNodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.file.ancestralstate.AncestralStateData;
 import info.bioinfweb.treegraph.document.undo.file.ancestralstate.AncestralStateImportParameters;
 import info.bioinfweb.treegraph.gui.dialogs.io.AssignImportColumnsDialog;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NewNodeBranchDataInput;
-
-
 
 
 import java.awt.Frame;
@@ -39,6 +38,8 @@ public class AssignBayesTraitsImportColumnsDialog extends AssignImportColumnsDia
 	
 	private JLabel importCharacterDataLabel = null;
 	private JLabel importInternalNodeNamesLabel = null;
+	
+	private int bottomY;
 
 
 	/**
@@ -67,28 +68,13 @@ public class AssignBayesTraitsImportColumnsDialog extends AssignImportColumnsDia
 		getImportPanel().add(importCharacterDataLabel, importCharacterDataLabelGBC);
 		
 		Iterator<String> keySetIterator = data.getCharacterMap().keySet().iterator();
-		int y = 1;
+		bottomY = 1;
 		while (keySetIterator.hasNext()) {
-			CharacterInput input = new CharacterInput(getImportPanel(), y, data, tree, keySetIterator.next());
-			y = input.getBottomY();
+			CharacterInput input = new CharacterInput(getImportPanel(), bottomY, data, tree, keySetIterator.next());
+			bottomY = input.getBottomY();
 			characterInputs.add(input);
 		}
-		
-		GridBagConstraints importInternalNodeNamesLabelGBC = new GridBagConstraints();	
-		importInternalNodeNamesLabelGBC.gridx = 0;
-		importInternalNodeNamesLabelGBC.anchor = GridBagConstraints.WEST;
-		importInternalNodeNamesLabelGBC.gridy =  y;
-		importInternalNodeNamesLabelGBC.insets = new Insets(4, 6, 4, 0);
-		importInternalNodeNamesLabelGBC.gridwidth = GridBagConstraints.RELATIVE;
-		importInternalNodeNamesLabel = new JLabel();
-		importInternalNodeNamesLabel.setText("Import internal node names");
-		getImportInternalNodeNamesPanel().add(importInternalNodeNamesLabel, importInternalNodeNamesLabelGBC);
-		
-		internalNodeNames = new NewNodeBranchDataInput(getImportInternalNodeNamesPanel(), 1, y + 1, true);
-		internalNodeNames.setAdapters(tree, false, true, false, false, true, "Do not import internal node names");
-		internalNodeNames.setSelectedAdapter(NodeNameAdapter.class);
-		internalNodeNames.setID("");
-		
+		getImportInternalNodeNamesPanel();		
 		pack();
 	}
 	
@@ -121,17 +107,24 @@ public class AssignBayesTraitsImportColumnsDialog extends AssignImportColumnsDia
 			importAdapterIndexStart += data.getStateCountPerCharacter(keySetIterator.next());
 			labelIDsIndexStart += 1;
 		}
-		parameters.setInternalNodeNamesAdapter(internalNodeNames.getSelectedAdapter());
+		parameters.setInternalNodeNamesAdapter(internalNodeNames.getSelectedAdapter());		
 		
-		NodeBranchDataAdapter[] allAdapters = new NodeBranchDataAdapter[parameters.getImportAdapters().length + parameters.getPieChartLabelIDs().length];
-		int adapterCount = parameters.getImportAdapters().length;
-		for (int i = 0; i < adapterCount; i++) {
-			allAdapters[i] = parameters.getImportAdapters()[i];
+		int importAdapterCount = parameters.getImportAdapters().length;
+		int pieChartLabelCount = parameters.getPieChartLabelIDs().length;
+		NodeBranchDataAdapter[] allAdapters = new NodeBranchDataAdapter[1 + importAdapterCount + pieChartLabelCount];
+		allAdapters[0] = parameters.getInternalNodeNamesAdapter();
+		for (int i = 0; i < importAdapterCount; i++) {
+			allAdapters[i + 1] = parameters.getImportAdapters()[i];
 		}
-		for (int i = 0; i < parameters.getPieChartLabelIDs().length; i++) {
-			allAdapters[i + adapterCount] = new PieChartLabelAdapter(parameters.getPieChartLabelIDs()[i]);
+		for (int i = 0; i < pieChartLabelCount; i++) {
+			String pieChartLabelID = parameters.getPieChartLabelIDs()[i];
+			if (pieChartLabelID != null) {
+				allAdapters[i + importAdapterCount + 1] = new PieChartLabelAdapter(pieChartLabelID);
+			}
+			else {
+				allAdapters[i + importAdapterCount + 1] = new VoidNodeBranchDataAdapter("");
+			}
 		}
-		
 		return checkSelectedAdapters(allAdapters);
 	}
 
@@ -167,10 +160,24 @@ public class AssignBayesTraitsImportColumnsDialog extends AssignImportColumnsDia
 	}
 
 	
-	private JPanel getImportInternalNodeNamesPanel() {
+	private JPanel getImportInternalNodeNamesPanel() {		
 		if (importInternalNodeNamesPanel == null) {
 			importInternalNodeNamesPanel = new JPanel();
 			importInternalNodeNamesPanel.setLayout(new GridBagLayout());
+			GridBagConstraints importInternalNodeNamesLabelGBC = new GridBagConstraints();	
+			importInternalNodeNamesLabelGBC.gridx = 0;
+			importInternalNodeNamesLabelGBC.anchor = GridBagConstraints.WEST;
+			importInternalNodeNamesLabelGBC.gridy =  bottomY;
+			importInternalNodeNamesLabelGBC.insets = new Insets(4, 6, 4, 0);
+			importInternalNodeNamesLabelGBC.gridwidth = GridBagConstraints.RELATIVE;
+			importInternalNodeNamesLabel = new JLabel();
+			importInternalNodeNamesLabel.setText("Import internal node names");
+			importInternalNodeNamesPanel.add(importInternalNodeNamesLabel, importInternalNodeNamesLabelGBC);
+			
+			internalNodeNames = new NewNodeBranchDataInput(importInternalNodeNamesPanel, 1, bottomY + 1, true);
+			internalNodeNames.setAdapters(tree, false, true, false, false, true, "Do not import internal node names");
+			internalNodeNames.setSelectedAdapter(NodeNameAdapter.class);
+			internalNodeNames.setID("");
 		}
 		return importInternalNodeNamesPanel;
 	}

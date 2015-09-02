@@ -1,7 +1,6 @@
 package info.bioinfweb.treegraph.document.undo.file.ancestralstate;
 
 
-import info.bioinfweb.commons.Math2;
 import info.bioinfweb.commons.io.PeekReader;
 
 import java.io.BufferedReader;
@@ -19,6 +18,7 @@ import java.util.regex.Pattern;
 public class BayesTraitsReader {
 	public static final String ROOT_NAME = "Root";	
 	private static final String MRCA_COMMAND = "MRCA:";
+	private static final String NODE_COMMAND = "Node:";
 	private static final String TABLE_START = "Iteration\t";
 	
 	private static final Pattern LEAF_NAME_PATTERN = Pattern.compile("\\s*\\d+\\s+(\\S+)\\s*");
@@ -83,8 +83,8 @@ public class BayesTraitsReader {
 			parts = line.split("\\t");			
 			for (int i = 0; i < parts.length; i++) {
 				if (nodeNames.get(i) != null) {
-					String[] headingParts = getHeadingParts(probabilityKeys.get(i));
-					nodes.get(nodeNames.get(i)).addToProbability(headingParts[0], headingParts[1], Math2.parseDouble(parts[i]));
+					String[] headingParts = getHeadingParts(probabilityKeys.get(i));				
+					nodes.get(nodeNames.get(i)).addToProbability(headingParts[0], headingParts[1], parts[i]);
 				}
 			}		
 			lineCounter += 1;
@@ -107,7 +107,7 @@ public class BayesTraitsReader {
 		result.put(ROOT_NAME, new AncestralStateData(ROOT_NAME));
 		try {
 			while (reader.peek() != -1) {
-				if (reader.isNext(MRCA_COMMAND)) {
+				if (reader.isNext(MRCA_COMMAND) || reader.isNext(NODE_COMMAND)) {
 					AncestralStateData data = readMRCA(reader);
 					result.put(data.getName(), data);
 				}
