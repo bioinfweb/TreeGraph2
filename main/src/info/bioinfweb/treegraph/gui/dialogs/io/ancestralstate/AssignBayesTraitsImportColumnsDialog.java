@@ -13,10 +13,14 @@ import info.bioinfweb.treegraph.gui.dialogs.io.AssignImportColumnsDialog;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NewNodeBranchDataInput;
 
 
+
+
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -63,6 +67,7 @@ public class AssignBayesTraitsImportColumnsDialog extends AssignImportColumnsDia
 		importCharacterDataLabelGBC.gridy =  0;
 		importCharacterDataLabelGBC.insets = new Insets(4, 6, 4, 0);
 		importCharacterDataLabelGBC.gridwidth = GridBagConstraints.RELATIVE;
+		importCharacterDataLabelGBC.weighty = 2.0;
 		importCharacterDataLabel = new JLabel();
 		importCharacterDataLabel.setText("Import character data");
 		getImportPanel().add(importCharacterDataLabel, importCharacterDataLabelGBC);
@@ -74,8 +79,14 @@ public class AssignBayesTraitsImportColumnsDialog extends AssignImportColumnsDia
 			bottomY = input.getBottomY();
 			characterInputs.add(input);
 		}
-		getImportInternalNodeNamesPanel();		
+
 		pack();
+		setLocationRelativeTo(getOwner());
+		
+		// Make sure the task bar does not overlap with the dialog:
+		Rectangle bounds = getBounds();
+		setBounds(bounds.x, bounds.y, bounds.width, Math.min(bounds.height, 
+				Math.round((float)Toolkit.getDefaultToolkit().getScreenSize().getHeight() * 0.9f)));
 	}
 	
 	

@@ -115,7 +115,6 @@ public abstract class AssignImportColumnsDialog extends OkCancelApplyWikiHelpDia
 	protected JScrollPane getScrollPane() {
 		if (scrollPane == null) {
 			scrollPane = new JScrollPane();
-			scrollPane.setPreferredSize(new Dimension(380, 280));
 			scrollPane.setViewportView(getImportPanel());
 		}
 		return scrollPane;

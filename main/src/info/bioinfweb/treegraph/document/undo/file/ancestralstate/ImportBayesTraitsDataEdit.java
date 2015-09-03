@@ -54,12 +54,12 @@ public class ImportBayesTraitsDataEdit extends AbstractTopologicalCalculationEdi
 	
 	@Override
   public String getWarningText() {
-		String message = "The following internal nodes were not found:\n\n";
+		String message = "The following MRCA/node definitions could not be reconstructed, because one or more\n"
+				+ "of the referenced terminal nodes is not contained in the current tree document:\n\n";
 		Iterator<String> iterator = nodesNotFound.iterator(); 
 		while (iterator.hasNext()) {
 			message = message + "\"" + iterator.next() + "\"" + "\n";
 		}
-		message = message + "\nMake sure the current tree contains the same nodes as the one you used for BayesTraits analysis.";
 	  return message;
   }
 	
