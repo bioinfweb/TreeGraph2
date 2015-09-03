@@ -35,7 +35,7 @@ import java.util.Vector;
 
 
 /**
- * This class manages the selection of multiple elements in an tree view panel.
+ * This class manages the selection of multiple elements in a tree view panel.
  * 
  * @author Ben St&ouml;ver
  */
