@@ -67,6 +67,7 @@ public class MainFrame extends JFrame implements Runnable {
 	
 	private static MainFrame firstInstance = null;
 	
+	private TreeSelectionSynchronizer treeSelectionSynchronizer = new TreeSelectionSynchronizer(this);
 	private ActionManagement actionManagement = new ActionManagement(this);  //  @jve:decl-index=0:
 	private WindowListener windowListener = null;  //  @jve:decl-index=0:
 	private JMenuBar mainMenu = null;
@@ -251,6 +252,11 @@ public class MainFrame extends JFrame implements Runnable {
 	}
 	
 	
+	public TreeSelectionSynchronizer getTreeSelectionSynchronizer() {
+		return treeSelectionSynchronizer;
+	}
+
+
 	public ActionManagement getActionManagement() {
 		return actionManagement;
 	}

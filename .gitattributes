@@ -576,6 +576,7 @@ main/src/info/bioinfweb/treegraph/gui/actions/select/SelectLegendsWithPosIndexAc
 main/src/info/bioinfweb/treegraph/gui/actions/select/SelectSubtreeAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/select/SelectTypeInDocumentAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/select/SelectTypeInSubtreeAction.java -text
+main/src/info/bioinfweb/treegraph/gui/actions/select/TreeSelectionSynchronizeToggleAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/actions/view/ChangePainterIDAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/view/FitZoomToHeightAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/view/FitZoomToWidthAction.java -text
@@ -756,6 +757,7 @@ main/src/resources/symbols/ShowRooted16.png -text
 main/src/resources/symbols/ShowRooted22.png -text
 main/src/resources/symbols/ShowScaleBar16.png -text
 main/src/resources/symbols/ShowScaleBar22.png -text
+main/src/resources/symbols/SynchronizeTreeSelection22.png -text
 main/src/resources/symbols/TreeGraph16.png -text
 main/src/resources/symbols/TreeGraph20.png -text
 main/src/resources/symbols/TreeGraph22.png -text
