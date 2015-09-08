@@ -26,6 +26,7 @@ import java.util.Vector;
 import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
+import javax.swing.JToggleButton;
 import javax.swing.undo.UndoableEdit;
 
 import info.bioinfweb.treegraph.document.*;
@@ -98,6 +99,7 @@ public class ActionManagement extends AbstractUndoActionManagement {
 		put("select.allLegends", new SelectLegendsAction(mainFrame));
 		put("select.legendsWithPosIndex", new SelectLegendsWithPosIndexAction(mainFrame));
 		put("select.legendsInSubtree", new SelectLegendsInSubtreeAction(mainFrame));
+		put("select.synchronizeTreeSelection", new TreeSelectionSynchronizeToggleAction(mainFrame));
 		
 		put("edit.undo", new UndoAction(mainFrame));
 		put("edit.redo", new RedoAction(mainFrame));

@@ -10,9 +10,9 @@ import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.PieChartLabel;
 import info.bioinfweb.treegraph.document.nodebranchdata.IDElementAdapter;
+import info.bioinfweb.treegraph.document.topologicalcalculation.LeafSet;
+import info.bioinfweb.treegraph.document.undo.AbstractTopologicalCalculationEdit;
 import info.bioinfweb.treegraph.document.undo.WarningMessageEdit;
-import info.bioinfweb.treegraph.document.undo.topologicalcalculation.AbstractTopologicalCalculationEdit;
-import info.bioinfweb.treegraph.document.undo.topologicalcalculation.LeafSet;
 
 
 

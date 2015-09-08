@@ -80,7 +80,7 @@ public class TreeViewRuler extends JPanel
 		super();
 		this.orientation = orientation;
 		this.treeViewPanel = treeViewPanel;
-		treeViewPanel.addTreeViewListener(this);
+		treeViewPanel.addTreeViewPanelListener(this);
 		sizeChanged(new ChangeEvent(this));
 	}
 

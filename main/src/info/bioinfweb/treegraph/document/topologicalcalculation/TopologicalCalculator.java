@@ -1,4 +1,4 @@
-package info.bioinfweb.treegraph.document.undo.topologicalcalculation;
+package info.bioinfweb.treegraph.document.topologicalcalculation;
 
 
 import java.util.Iterator;
@@ -10,7 +10,8 @@ import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
-import info.bioinfweb.treegraph.document.undo.ComplexDocumentEdit;
+import info.bioinfweb.treegraph.document.topologicalcalculation.LeafSet;
+import info.bioinfweb.treegraph.document.topologicalcalculation.NodeInfo;
 import info.bioinfweb.treegraph.document.undo.file.ImportDataColumnsParameters;
 
 
@@ -21,8 +22,8 @@ import info.bioinfweb.treegraph.document.undo.file.ImportDataColumnsParameters;
  * 
  * @author Ben St&ouml;ver
  */
-public abstract class AbstractTopologicalCalculationEdit extends ComplexDocumentEdit {
-	public static final String KEY_LEAF_REFERENCE = AbstractTopologicalCalculationEdit.class.getName() + ".LeafSet";
+public class TopologicalCalculator {
+	public static final String KEY_LEAF_REFERENCE = TopologicalCalculator.class.getName() + ".LeafSet";
 	public static final int MAX_TERMINAL_ERROR_COUNT = 10;
 	public static final NodeNameAdapter SOURCE_LEAFS_ADAPTER = NodeNameAdapter.getSharedInstance();
 	
@@ -34,16 +35,35 @@ public abstract class AbstractTopologicalCalculationEdit extends ComplexDocument
 	protected NodeBranchDataAdapter targetLeafsAdapter = null;
 	
 	
-	public AbstractTopologicalCalculationEdit(Document document,
+	public TopologicalCalculator(Document document,
 			NodeBranchDataAdapter targetLeafsAdapter, boolean processRooted) {
 	
-		super(document);
 		this.processRooted = processRooted;
 		this.targetLeafsAdapter = targetLeafsAdapter;
 		addLeafList(leafValues, document.getTree().getPaintStart(), targetLeafsAdapter);  // Source und target sollten das selbe Ergebnis liefern.
 	}
 
-	
+
+	public NodeBranchDataAdapter getTargetLeafsAdapter() {
+		return targetLeafsAdapter;
+	}
+
+
+	public List<TextElementData> getLeafValues() {
+		return leafValues;
+	}
+
+
+	public boolean isProcessRooted() {
+		return processRooted;
+	}
+
+
+	public void setProcessRooted(boolean processRooted) {
+		this.processRooted = processRooted;
+	}
+
+
 	/**
 	 * Fills the specified list with the values of all leafs under <code>root</code>.
 	 * 
@@ -51,7 +71,7 @@ public abstract class AbstractTopologicalCalculationEdit extends ComplexDocument
 	 * @param root
 	 * @param adapter
 	 */
-	protected void addLeafList(List<TextElementData> list, Node root, NodeBranchDataAdapter adapter) {
+	private void addLeafList(List<TextElementData> list, Node root, NodeBranchDataAdapter adapter) {
 		if (root.isLeaf()) {
 			list.add(adapter.toTextElementData(root));
 		}
@@ -69,7 +89,7 @@ public abstract class AbstractTopologicalCalculationEdit extends ComplexDocument
 	 * 
 	 * @return an error message, if the terminal nodes are not identical or <code>null</code> if they are
 	 */
-	protected String compareLeafs(Document src) {
+	public String compareLeafs(Document src) {
 		Vector<TextElementData> sourceLeafValues = new Vector<TextElementData>();
 		addLeafList(sourceLeafValues, src.getTree().getPaintStart(), SOURCE_LEAFS_ADAPTER);
 		if (leafValues.size() != sourceLeafValues.size()) {
@@ -109,7 +129,7 @@ public abstract class AbstractTopologicalCalculationEdit extends ComplexDocument
 	 * 
 	 * @param node - the node from which the leaf field attribute shall be returned or created. 
 	 */
-	protected LeafSet getLeafSet(Node node) {
+	public LeafSet getLeafSet(Node node) {
 		if (node.getAttributeMap().get(KEY_LEAF_REFERENCE) == null) {
 			int size = leafValues.size();
 			if (processRooted) {
@@ -122,12 +142,12 @@ public abstract class AbstractTopologicalCalculationEdit extends ComplexDocument
 	}
 
 	
-	protected int getLeafIndex(TextElementData value) {
+	public int getLeafIndex(TextElementData value) {
 		return leafValues.indexOf(value);
 	}
 	
 	
-	protected int getLeafIndex(TextElementData value, ImportDataColumnsParameters parameters) {
+	public int getLeafIndex(TextElementData value, ImportDataColumnsParameters parameters) {
 		TextElementData current = null;
 		for (int i = 0; i < leafValues.size(); i++) {
 			current = parameters.createEditedValue(leafValues.get(i).toString());
@@ -139,7 +159,7 @@ public abstract class AbstractTopologicalCalculationEdit extends ComplexDocument
 	}
 	
 	
-	protected int getLeafCount() {
+	public int getLeafCount() {
 		return leafValues.size();
 	}
 	
@@ -150,7 +170,7 @@ public abstract class AbstractTopologicalCalculationEdit extends ComplexDocument
 	 * 
 	 * @param root - the root of the subtree
 	 */
-	protected void addLeafSets(Node root, NodeBranchDataAdapter adapter) {
+	public void addLeafSets(Node root, NodeBranchDataAdapter adapter) {
 		if (!root.isLeaf()) {
 			root.getAttributeMap().remove(KEY_LEAF_REFERENCE);  // Necessary to overwrite possible leaf sets from previous edits which might not be valid anymore.
 			LeafSet field = getLeafSet(root);
@@ -169,7 +189,7 @@ public abstract class AbstractTopologicalCalculationEdit extends ComplexDocument
 	}	
 	
 	
-	protected NodeInfo findSourceNodeWithAllLeafs(Node sourceRoot, LeafSet targetLeafs) {
+	public NodeInfo findSourceNodeWithAllLeafs(Node sourceRoot, LeafSet targetLeafs) {
 		int additionalCount = targetLeafs.compareTo(getLeafSet(sourceRoot), false);
 		boolean downwards = additionalCount != -1;
 		if (!downwards) {

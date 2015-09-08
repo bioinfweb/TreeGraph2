@@ -11,8 +11,8 @@ import info.bioinfweb.treegraph.document.io.DocumentIterator;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextElementDataAdapter;
-import info.bioinfweb.treegraph.document.undo.topologicalcalculation.AbstractTopologicalCalculationEdit;
-import info.bioinfweb.treegraph.document.undo.topologicalcalculation.LeafSet;
+import info.bioinfweb.treegraph.document.topologicalcalculation.LeafSet;
+import info.bioinfweb.treegraph.document.undo.AbstractTopologicalCalculationEdit;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 
 
@@ -50,7 +50,7 @@ public class NodeSupportEdit extends AbstractTopologicalCalculationEdit {
 	
 	@Override
 	protected void performRedo() {
-		 addLeafSets(getDocument().getTree().getPaintStart(), targetLeafsAdapter);	
+		 getTopologicalCalculator().addLeafSets(getDocument().getTree().getPaintStart(), getTopologicalCalculator().getTargetLeafsAdapter());	
 		 createHashmap(getDocument().getTree().getPaintStart());
 		 initialiseSupportValues(getDocument().getTree().getPaintStart());
 		 try {

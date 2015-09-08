@@ -315,6 +315,10 @@ main/src/info/bioinfweb/treegraph/document/position/LegendPositionData.java -tex
 main/src/info/bioinfweb/treegraph/document/position/NodePositionData.java -text
 main/src/info/bioinfweb/treegraph/document/position/PositionData.java -text
 main/src/info/bioinfweb/treegraph/document/position/package.html -text
+main/src/info/bioinfweb/treegraph/document/topologicalcalculation/LeafSet.java -text
+main/src/info/bioinfweb/treegraph/document/topologicalcalculation/NodeInfo.java -text
+main/src/info/bioinfweb/treegraph/document/topologicalcalculation/TopologicalCalculator.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/AbstractTopologicalCalculationEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/ComplexDocumentEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/ComposedDocumentEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/DocumentEdit.java -text
@@ -421,9 +425,6 @@ main/src/info/bioinfweb/treegraph/document/undo/nodebranchdata/NodeBranchDataEdi
 main/src/info/bioinfweb/treegraph/document/undo/nodebranchdata/NodeBranchDataElementBackup.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/nodebranchdata/package-info.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/package.html -text
-main/src/info/bioinfweb/treegraph/document/undo/topologicalcalculation/AbstractTopologicalCalculationEdit.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/treegraph/document/undo/topologicalcalculation/LeafSet.java -text
-main/src/info/bioinfweb/treegraph/document/undo/topologicalcalculation/NodeInfo.java -text
 main/src/info/bioinfweb/treegraph/graphics/export/AbstractGraphicWriter.java -text
 main/src/info/bioinfweb/treegraph/graphics/export/FreeHEPWriter.java -text
 main/src/info/bioinfweb/treegraph/graphics/export/GraphicFilter.java -text
@@ -757,6 +758,7 @@ main/src/resources/symbols/ShowRooted16.png -text
 main/src/resources/symbols/ShowRooted22.png -text
 main/src/resources/symbols/ShowScaleBar16.png -text
 main/src/resources/symbols/ShowScaleBar22.png -text
+main/src/resources/symbols/SynchronizeTreeSelection16.png -text
 main/src/resources/symbols/SynchronizeTreeSelection22.png -text
 main/src/resources/symbols/TreeGraph16.png -text
 main/src/resources/symbols/TreeGraph20.png -text

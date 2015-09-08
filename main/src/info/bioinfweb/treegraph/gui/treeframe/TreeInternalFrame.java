@@ -270,7 +270,7 @@ public class TreeInternalFrame extends JInternalFrame {
 						}
 					});
 			
-			getTreeViewPanel().addTreeViewListener(new TreeViewPanelListener() {
+			getTreeViewPanel().addTreeViewPanelListener(new TreeViewPanelListener() {
 						public void selectionChanged(ChangeEvent e) {
 							TreeElement element = getTreeViewPanel().getSelection().getFirstElementOfType(TreeElement.class);
 							if (element != null) {

@@ -25,7 +25,9 @@ import info.bioinfweb.treegraph.gui.actions.ActionManagement;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+
 import javax.swing.JPanel;
+import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 
 
@@ -129,6 +131,10 @@ public class ToolBarPanel extends JPanel {
 			upperToolBar.add(getActionManagement().get("file.open"));
 			upperToolBar.add(getActionManagement().get("file.save"));
 			upperToolBar.add(getActionManagement().get("file.exportPDF"));
+			upperToolBar.addSeparator();
+			JToggleButton button = new JToggleButton(getActionManagement().get("select.synchronizeTreeSelection"));
+			button.setText("");
+			upperToolBar.add(button);
 			upperToolBar.addSeparator();
 			upperToolBar.add(getActionManagement().get("edit.undo"));
 			upperToolBar.add(getActionManagement().get("edit.redo"));

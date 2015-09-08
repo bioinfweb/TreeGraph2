@@ -156,7 +156,7 @@ public class TreeViewPanel extends JPanel implements DocumentListener, Scrollabl
 	}
 
 
-	public void addTreeViewListener(TreeViewPanelListener listener) {
+	public void addTreeViewPanelListener(TreeViewPanelListener listener) {
 		treeViewListeners.add(listener);
 	}
 	

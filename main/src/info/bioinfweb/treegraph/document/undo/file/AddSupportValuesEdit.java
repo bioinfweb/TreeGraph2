@@ -33,9 +33,9 @@ import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.AbstractTextElementDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextElementDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;
-import info.bioinfweb.treegraph.document.undo.topologicalcalculation.AbstractTopologicalCalculationEdit;
-import info.bioinfweb.treegraph.document.undo.topologicalcalculation.LeafSet;
-import info.bioinfweb.treegraph.document.undo.topologicalcalculation.NodeInfo;
+import info.bioinfweb.treegraph.document.topologicalcalculation.NodeInfo;
+import info.bioinfweb.treegraph.document.topologicalcalculation.TopologicalCalculator;
+import info.bioinfweb.treegraph.document.undo.AbstractTopologicalCalculationEdit;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 
 
@@ -73,7 +73,7 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
 		super(document, terminalsAdapter, processRooted);
 		this.src = src;
 		this.sourceAdapter = sourceAdapter;
-		this.processRooted = processRooted;
+		this.getTopologicalCalculator().setProcessRooted(processRooted);
 		
 		switch (targetType) {
 			case LABEL:
@@ -157,8 +157,8 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
 	protected void performRedo() {
     String errorMsg = compareLeafs(src);
     if (errorMsg == null) {  // The terminal nodes of both trees are identical.
-  		addLeafSets(src.getTree().getPaintStart(), SOURCE_LEAFS_ADAPTER);
-  		addLeafSets(getDocument().getTree().getPaintStart(), targetLeafsAdapter);
+  		getTopologicalCalculator().addLeafSets(src.getTree().getPaintStart(), TopologicalCalculator.SOURCE_LEAFS_ADAPTER);
+  		getTopologicalCalculator().addLeafSets(getDocument().getTree().getPaintStart(), getTopologicalCalculator().getTargetLeafsAdapter());
   		processSubtree(getDocument().getTree().getPaintStart());
     }
     else {
@@ -218,7 +218,7 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
 
 	
 	private boolean checkOtherPaintStartBranch(Node sourceNode) {
-		return !processRooted &&  // no root node between the two branches 
+		return !getTopologicalCalculator().isProcessRooted() &&  // no root node between the two branches 
 				sourceNode.hasParent() && !sourceNode.getParent().hasParent() &&  // the source node is attached to the paint start   
 				(sourceNode.getParent().getChildren().size() == 2);  // no polytomy at the paint start
 	}
@@ -232,7 +232,7 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
 	 */
 	private void processSubtree(Node targetRoot) {
 		if (!targetRoot.isLeaf()) {
-			if (!(targetRoot.hasParent() && !targetRoot.getParent().hasParent() && !processRooted && 
+			if (!(targetRoot.hasParent() && !targetRoot.getParent().hasParent() && !getTopologicalCalculator().isProcessRooted() && 
 					(targetRoot.getParent().getChildren().size() == 2) && targetRoot.isLast())) {  // Check if the current node is linked to the paint start which does not represent a root and the other linked branch already carries the same support value.
 				
 				NodeInfo bestSourceNode = findSourceNodeWithAllLeafs(src.getTree().getPaintStart(), 

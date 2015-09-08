@@ -23,9 +23,9 @@ import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.nodebranchdata.UniqueNameAdapter;
+import info.bioinfweb.treegraph.document.topologicalcalculation.LeafSet;
+import info.bioinfweb.treegraph.document.undo.AbstractTopologicalCalculationEdit;
 import info.bioinfweb.treegraph.document.undo.WarningMessageEdit;
-import info.bioinfweb.treegraph.document.undo.topologicalcalculation.AbstractTopologicalCalculationEdit;
-import info.bioinfweb.treegraph.document.undo.topologicalcalculation.LeafSet;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -101,7 +101,7 @@ public class RerootByLeafSetEdit extends AbstractTopologicalCalculationEdit impl
 		selectedLeafs = new LeafSet(getLeafCount());
 		Iterator<Node> iterator = leafs.iterator();
 		while (iterator.hasNext()) {
-			selectedLeafs.setChild(getLeafIndex(UniqueNameAdapter.getSharedInstance().toTextElementData(iterator.next())), true);
+			selectedLeafs.setChild(getTopologicalCalculator().getLeafIndex(UniqueNameAdapter.getSharedInstance().toTextElementData(iterator.next())), true);
 		}
 	}
 	

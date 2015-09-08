@@ -41,7 +41,7 @@ public class OpenAction extends EditDialogAction {
 		super(mainFrame);
 
 		putValue(Action.NAME, "Open..."); 
-	  putValue(Action.MNEMONIC_KEY, KeyEvent.VK_O);
+		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_O);
 		putValue(Action.SHORT_DESCRIPTION, "Open document"); 
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke('O', 
 				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));

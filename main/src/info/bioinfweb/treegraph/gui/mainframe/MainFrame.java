@@ -50,6 +50,7 @@ import javax.swing.*;
 import java.awt.BorderLayout;
 
 import javax.swing.ImageIcon;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JMenu;
 
@@ -582,6 +583,8 @@ public class MainFrame extends JFrame implements Runnable {
 			selectMenu.add(getActionManagement().get("select.allLegends"));
 			selectMenu.add(getActionManagement().get("select.legendsWithPosIndex"));
 			selectMenu.add(getActionManagement().get("select.legendsInSubtree"));
+			selectMenu.addSeparator();
+			selectMenu.add(new JCheckBoxMenuItem(getActionManagement().get("select.synchronizeTreeSelection")));
 		}
 		return selectMenu;
 	}
