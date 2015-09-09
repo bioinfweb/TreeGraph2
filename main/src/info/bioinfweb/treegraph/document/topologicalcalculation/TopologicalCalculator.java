@@ -1,9 +1,12 @@
 package info.bioinfweb.treegraph.document.topologicalcalculation;
 
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
+import java.util.Map;
+import java.util.TreeMap;
 
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
@@ -12,7 +15,9 @@ import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 import info.bioinfweb.treegraph.document.topologicalcalculation.LeafSet;
 import info.bioinfweb.treegraph.document.topologicalcalculation.NodeInfo;
+import info.bioinfweb.treegraph.document.undo.ImportTextElementDataParameters;
 import info.bioinfweb.treegraph.document.undo.file.ImportDataColumnsParameters;
+import info.bioinfweb.treegraph.document.undo.file.ancestralstate.AncestralStateImportParameters;
 
 
 
@@ -23,24 +28,28 @@ import info.bioinfweb.treegraph.document.undo.file.ImportDataColumnsParameters;
  * @author Ben St&ouml;ver
  */
 public class TopologicalCalculator {
-	public static final String KEY_LEAF_REFERENCE = TopologicalCalculator.class.getName() + ".LeafSet";
 	public static final int MAX_TERMINAL_ERROR_COUNT = 10;
 	public static final NodeNameAdapter SOURCE_LEAFS_ADAPTER = NodeNameAdapter.getSharedInstance();
 	
 	
-	protected List<TextElementData> leafValues = new Vector<TextElementData>();
+	protected Map<TextElementData, Integer> leafValues = new TreeMap<TextElementData, Integer>();
 	protected boolean processRooted;
+	protected String keyLeafReference;
+	protected ImportTextElementDataParameters parameters;
 	
 	/** The column that contains the terminal identifiers in the target document (usually nodes names) */
 	protected NodeBranchDataAdapter targetLeafsAdapter = null;
 	
 	
 	public TopologicalCalculator(Document document,
-			NodeBranchDataAdapter targetLeafsAdapter, boolean processRooted) {
-	
+			NodeBranchDataAdapter targetLeafsAdapter, boolean processRooted, String keyLeafReference, ImportTextElementDataParameters parameters) {
+		
 		this.processRooted = processRooted;
 		this.targetLeafsAdapter = targetLeafsAdapter;
-		addLeafList(leafValues, document.getTree().getPaintStart(), targetLeafsAdapter);  // Source und target sollten das selbe Ergebnis liefern.
+		this.keyLeafReference = keyLeafReference;
+		this.parameters = parameters;
+		
+		addLeafMap(leafValues, document.getTree().getPaintStart(), targetLeafsAdapter);
 	}
 
 
@@ -49,7 +58,7 @@ public class TopologicalCalculator {
 	}
 
 
-	public List<TextElementData> getLeafValues() {
+	public Map<TextElementData, Integer> getLeafValues() {
 		return leafValues;
 	}
 
@@ -65,20 +74,23 @@ public class TopologicalCalculator {
 
 
 	/**
-	 * Fills the specified list with the values of all leafs under <code>root</code>.
+	 * Fills the specified map with the values of all leafs under <code>root</code> and an according index.
 	 * 
 	 * @param list
 	 * @param root
 	 * @param adapter
 	 */
-	private void addLeafList(List<TextElementData> list, Node root, NodeBranchDataAdapter adapter) {
+	public void addLeafMap(Map<TextElementData, Integer> leafMap, Node root, NodeBranchDataAdapter adapter) {
 		if (root.isLeaf()) {
-			list.add(adapter.toTextElementData(root));
+			TextElementData data = parameters.createEditedValue(adapter.getText(root));
+			if (!leafMap.containsKey(data)) {
+				leafMap.put(data, leafMap.size());
+			}
 		}
 		else {
 			Iterator<Node> iterator = root.getChildren().iterator();
 			while (iterator.hasNext()) {
-				addLeafList(list, iterator.next(), adapter);
+				addLeafMap(leafMap, iterator.next(), adapter);
 			}
 		}
 	}
@@ -90,22 +102,22 @@ public class TopologicalCalculator {
 	 * @return an error message, if the terminal nodes are not identical or <code>null</code> if they are
 	 */
 	public String compareLeafs(Document src) {
-		Vector<TextElementData> sourceLeafValues = new Vector<TextElementData>();
-		addLeafList(sourceLeafValues, src.getTree().getPaintStart(), SOURCE_LEAFS_ADAPTER);
+		Map<TextElementData, Integer> sourceLeafValues = new TreeMap<TextElementData, Integer>();
+		addLeafMap(sourceLeafValues, src.getTree().getPaintStart(), SOURCE_LEAFS_ADAPTER);
 		if (leafValues.size() != sourceLeafValues.size()) {
-			return "The selected tree has different number of terminals than " +
+			return "The selected tree has a different number of terminals than " +
 				"the opened document. No support values were added.";
 		}
 		else {
 			String errorMsg = "";
 			int errorCount = 0;
-			for (int i = 0; i < sourceLeafValues.size(); i++) {
-				if (getLeafIndex(sourceLeafValues.get(i)) == -1) {
+			for (TextElementData data : sourceLeafValues.keySet()) {
+				if (!getLeafValues().containsKey(parameters.createEditedValue(data.toString()))) {
 					if (errorCount < MAX_TERMINAL_ERROR_COUNT) {
 						if (!errorMsg.equals("")) {
 							errorMsg += ",\n";
 						}
-						errorMsg += "\"" + sourceLeafValues.get(i) + "\"";
+						errorMsg += "\"" + data + "\"";
 					}
 					errorCount++;
 				}
@@ -130,33 +142,40 @@ public class TopologicalCalculator {
 	 * @param node - the node from which the leaf field attribute shall be returned or created. 
 	 */
 	public LeafSet getLeafSet(Node node) {
-		if (node.getAttributeMap().get(KEY_LEAF_REFERENCE) == null) {
+		if (node.getAttributeMap().get(keyLeafReference) == null) {
 			int size = leafValues.size();
 			if (processRooted) {
 				size++;
 			}
 			LeafSet field = new LeafSet(size);
-			node.getAttributeMap().put(KEY_LEAF_REFERENCE, field);
+			node.getAttributeMap().put(keyLeafReference, field);
 		}
-		return (LeafSet)node.getAttributeMap().get(KEY_LEAF_REFERENCE);
+		return (LeafSet)node.getAttributeMap().get(keyLeafReference);
 	}
 
 	
-	public int getLeafIndex(TextElementData value) {
-		return leafValues.indexOf(value);
-	}
-	
-	
-	public int getLeafIndex(TextElementData value, ImportDataColumnsParameters parameters) {
-		TextElementData current = null;
-		for (int i = 0; i < leafValues.size(); i++) {
-			current = parameters.createEditedValue(leafValues.get(i).toString());
-			if (current.equals(value)) {
-				return i;
-			}
+	public int getLeafIndex(String value) {
+		TextElementData key = parameters.createEditedValue(value);
+		Integer result = leafValues.get(key);
+		if (result == null) {
+			return -1;
 		}
-		return -1;
+		else {
+			return result;
+		}
 	}
+	
+	
+//	public int getLeafIndex(TextElementData value, ImportDataColumnsParameters parameters) {
+//		TextElementData current = null;
+//		for (int i = 0; i < leafValues.size(); i++) {
+//			current = parameters.createEditedValue(leafValues.get(i).toString());
+//			if (current.equals(value)) {
+//				return i;
+//			}
+//		}
+//		return -1;
+//	}
 	
 	
 	public int getLeafCount() {
@@ -171,22 +190,24 @@ public class TopologicalCalculator {
 	 * @param root - the root of the subtree
 	 */
 	public void addLeafSets(Node root, NodeBranchDataAdapter adapter) {
+		root.getAttributeMap().remove(keyLeafReference);  // Necessary to overwrite possible leaf sets from previous edits which might not be valid anymore.
+		LeafSet field = getLeafSet(root);
 		if (!root.isLeaf()) {
-			root.getAttributeMap().remove(KEY_LEAF_REFERENCE);  // Necessary to overwrite possible leaf sets from previous edits which might not be valid anymore.
-			LeafSet field = getLeafSet(root);
-			
 			for (int i = 0; i < root.getChildren().size(); i++) {
 				Node child = root.getChildren().get(i);
 				addLeafSets(child, adapter);
 				if (child.isLeaf()) {
-					field.setChild(getLeafIndex(adapter.toTextElementData(child)), true);
+					field.setChild(getLeafIndex(adapter.toTextElementData(child).toString()), true);
 				}
 				else {
 					field.addField(getLeafSet(child));
 				}
 			}
 		}
-	}	
+		else {
+			field.setChild(getLeafIndex(adapter.toTextElementData(root).toString()), true);
+		}
+	}
 	
 	
 	public NodeInfo findSourceNodeWithAllLeafs(Node sourceRoot, LeafSet targetLeafs) {

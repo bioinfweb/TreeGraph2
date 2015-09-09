@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben Stï¿½ver, Kai Mï¿½ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -101,7 +101,7 @@ public class RerootByLeafSetEdit extends AbstractTopologicalCalculationEdit impl
 		selectedLeafs = new LeafSet(getLeafCount());
 		Iterator<Node> iterator = leafs.iterator();
 		while (iterator.hasNext()) {
-			selectedLeafs.setChild(getTopologicalCalculator().getLeafIndex(UniqueNameAdapter.getSharedInstance().toTextElementData(iterator.next())), true);
+			selectedLeafs.setChild(getTopologicalCalculator().getLeafIndex(UniqueNameAdapter.getSharedInstance().toTextElementData(iterator.next()).toString()), true);
 		}
 	}
 	

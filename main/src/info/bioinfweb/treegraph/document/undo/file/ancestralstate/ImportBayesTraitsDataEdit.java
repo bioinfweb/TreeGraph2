@@ -17,7 +17,7 @@ import info.bioinfweb.treegraph.document.undo.WarningMessageEdit;
 
 
 public class ImportBayesTraitsDataEdit extends AbstractTopologicalCalculationEdit implements WarningMessageEdit {
-	private AncestralStateImportParameters parameters;	
+	private AncestralStateImportParameters parameters;
 
 	private Set<String> nodesNotFound = new TreeSet<String>();
 	private Set<String> nodeDataNotFound = new TreeSet<String>();
@@ -96,7 +96,7 @@ public class ImportBayesTraitsDataEdit extends AbstractTopologicalCalculationEdi
 		else {
 			Iterator<String> iterator = data.getLeafNames().iterator();
 			while (iterator.hasNext()) {
-			int index = getLeafIndex(parameters.createEditedValue(iterator.next()), parameters);
+			int index = getLeafIndex(iterator.next());
 				if (index != -1 ) {				
 					leafSet.setChild(index, true);
 				}

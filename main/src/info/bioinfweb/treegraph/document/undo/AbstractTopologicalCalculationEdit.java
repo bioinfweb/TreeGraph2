@@ -9,7 +9,6 @@ import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.topologicalcalculation.LeafSet;
 import info.bioinfweb.treegraph.document.topologicalcalculation.NodeInfo;
 import info.bioinfweb.treegraph.document.topologicalcalculation.TopologicalCalculator;
-import info.bioinfweb.treegraph.document.undo.file.ImportDataColumnsParameters;
 
 
 
@@ -20,14 +19,16 @@ import info.bioinfweb.treegraph.document.undo.file.ImportDataColumnsParameters;
  * @author Ben St&ouml;ver
  */
 public abstract class AbstractTopologicalCalculationEdit extends ComplexDocumentEdit {
-	protected TopologicalCalculator topologicalCalculator = null;
+	public static final String KEY_LEAF_REFERENCE = AbstractTopologicalCalculationEdit.class.getName() + ".LeafSet";
 	
+	protected TopologicalCalculator topologicalCalculator = null;
+
 	
 	public AbstractTopologicalCalculationEdit(Document document,
 			NodeBranchDataAdapter targetLeafsAdapter, boolean processRooted) {
 	
 		super(document);
-		topologicalCalculator = new TopologicalCalculator(document, targetLeafsAdapter, processRooted);
+		topologicalCalculator = new TopologicalCalculator(document, targetLeafsAdapter, processRooted, KEY_LEAF_REFERENCE, new ImportTextElementDataParameters());
 	}
 
 	
@@ -57,8 +58,8 @@ public abstract class AbstractTopologicalCalculationEdit extends ComplexDocument
 	}
 	
 	
-	protected int getLeafIndex(TextElementData value, ImportDataColumnsParameters parameters) {
-		return topologicalCalculator.getLeafIndex(value, parameters);
+	protected int getLeafIndex(String value) {
+		return topologicalCalculator.getLeafIndex(value);
 	}
 	
 	

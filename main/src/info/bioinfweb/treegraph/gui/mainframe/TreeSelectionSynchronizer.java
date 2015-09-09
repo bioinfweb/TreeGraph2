@@ -2,8 +2,6 @@ package info.bioinfweb.treegraph.gui.mainframe;
 
 
 import info.bioinfweb.treegraph.document.Node;
-import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 import info.bioinfweb.treegraph.document.topologicalcalculation.TopologicalCalculator;
 import info.bioinfweb.treegraph.gui.treeframe.TreeInternalFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
@@ -53,7 +51,7 @@ public class TreeSelectionSynchronizer implements TreeViewPanelListener {
 			TreeSelection selection = target.getSelection();
 			selection.clear();
 //			Set<TextElementData> nameSet = new TreeSet<TextElementData>();
-			for (Node node : source.getSelection().getAllElementsOfType(Node.class, true)) {
+			for (Node node : source.getSelection().getAllElementsOfType(Node.class, false)) {
 				System.out.println(node.getData());
 				System.out.println(topologicalCalculator.getLeafSet(node));
 				selection.add(topologicalCalculator.findSourceNodeWithAllLeafs(
