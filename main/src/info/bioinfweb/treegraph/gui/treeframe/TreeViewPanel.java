@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben Stï¿½ver, Kai Mï¿½ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -148,7 +148,7 @@ public class TreeViewPanel extends JPanel implements DocumentListener, Scrollabl
 		PositionPaintType oldType = painterType;
 		painterType = type;
 	  if (getDocument() != null) {
-	  	document.unregisterPositioner(oldType);  //TODO Führt zu einem Fehler, falls ein anderes TreeViewPanel hierzu ebenfalls einen Positioner angemeldet hat.
+	  	document.unregisterPositioner(oldType);  //TODO Fï¿½hrt zu einem Fehler, falls ein anderes TreeViewPanel hierzu ebenfalls einen Positioner angemeldet hat.
 			document.registerPositioner(painterType);
 		  PositionPaintFactory.getInstance().getPositioner(painterType).positionAll(document, 1f);
 		  changeHappened(new DocumentChangeEvent(document));
@@ -161,7 +161,7 @@ public class TreeViewPanel extends JPanel implements DocumentListener, Scrollabl
 	}
 	
 	
-	public boolean removeTreeViewListener(TreeViewPanelListener listener) {
+	public boolean removeTreeViewPanelListener(TreeViewPanelListener listener) {
 		return treeViewListeners.remove(listener);
 	}
 	
@@ -192,7 +192,7 @@ public class TreeViewPanel extends JPanel implements DocumentListener, Scrollabl
 	private void assignPaintSize() {
 		DistanceDimension d = getDocument().getTree().getPaintDimension(painterType);
 		setSize(d.getWidth().getRoundedInPixels(pixelsPerMillimeter()), d.getHeight().getRoundedInPixels(pixelsPerMillimeter()));
-		setPreferredSize(getSize());  //TODO was ist der genaue Unterschied der beiden Größen?
+		setPreferredSize(getSize());  //TODO was ist der genaue Unterschied der beiden Grï¿½ï¿½en?
 		fireSizeChanged();
 	}
 	
@@ -223,7 +223,7 @@ public class TreeViewPanel extends JPanel implements DocumentListener, Scrollabl
 		try {
 			Iterator<PaintableElement> iterator = getSelection().iterator();
 			while (iterator.hasNext()) {
-				if (!document.getTree().contains(iterator.next())) {  // Das markierte Element könnte entfernt worden sein.
+				if (!document.getTree().contains(iterator.next())) {  // Das markierte Element kï¿½nnte entfernt worden sein.
 					iterator.remove();
 				}
 			}

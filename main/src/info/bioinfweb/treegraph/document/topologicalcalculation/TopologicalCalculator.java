@@ -1,10 +1,7 @@
 package info.bioinfweb.treegraph.document.topologicalcalculation;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -16,8 +13,6 @@ import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 import info.bioinfweb.treegraph.document.topologicalcalculation.LeafSet;
 import info.bioinfweb.treegraph.document.topologicalcalculation.NodeInfo;
 import info.bioinfweb.treegraph.document.undo.ImportTextElementDataParameters;
-import info.bioinfweb.treegraph.document.undo.file.ImportDataColumnsParameters;
-import info.bioinfweb.treegraph.document.undo.file.ancestralstate.AncestralStateImportParameters;
 
 
 
@@ -41,9 +36,8 @@ public class TopologicalCalculator {
 	protected NodeBranchDataAdapter targetLeafsAdapter = null;
 	
 	
-	public TopologicalCalculator(Document document,
-			NodeBranchDataAdapter targetLeafsAdapter, boolean processRooted, String keyLeafReference, ImportTextElementDataParameters parameters) {
-		
+	public TopologicalCalculator(Document document, NodeBranchDataAdapter targetLeafsAdapter, boolean processRooted, 
+				String keyLeafReference, ImportTextElementDataParameters parameters) {		
 		this.processRooted = processRooted;
 		this.targetLeafsAdapter = targetLeafsAdapter;
 		this.keyLeafReference = keyLeafReference;
@@ -166,18 +160,6 @@ public class TopologicalCalculator {
 	}
 	
 	
-//	public int getLeafIndex(TextElementData value, ImportDataColumnsParameters parameters) {
-//		TextElementData current = null;
-//		for (int i = 0; i < leafValues.size(); i++) {
-//			current = parameters.createEditedValue(leafValues.get(i).toString());
-//			if (current.equals(value)) {
-//				return i;
-//			}
-//		}
-//		return -1;
-//	}
-	
-	
 	public int getLeafCount() {
 		return leafValues.size();
 	}
@@ -211,6 +193,7 @@ public class TopologicalCalculator {
 	
 	
 	public NodeInfo findSourceNodeWithAllLeafs(Node sourceRoot, LeafSet targetLeafs) {
+//		targetLeafs = targetLeafs.addTo(other); //TODO passendes leafset erzeugen
 		int additionalCount = targetLeafs.compareTo(getLeafSet(sourceRoot), false);
 		boolean downwards = additionalCount != -1;
 		if (!downwards) {
@@ -227,4 +210,22 @@ public class TopologicalCalculator {
 		}
 		return result;
 	}
+	
+	
+//	public Node findHighestConflictingNode(Node root, Node targetNode, NodeInfo info) {
+//		Node highestConflict = null;
+//		if ((getLeafSet(root).containsAnyAndOther(getLeafSet(targetNode), false) &&
+//				 getLeafSet(root).inSubtreeOf(getLeafSet(info.getNode()), false)))
+////				|| (getLeafSet(root).containsAnyAndOther(getLeafSet(targetNode), true) &&
+////						getLeafSet(root).inSubtreeOf(getLeafSet(info.getNode()), true))) 
+//		{
+//			return root;
+//		}
+//		else {
+//			for (int i = 0; i < root.getChildren().size(); i++) {
+//				findHighestConflictingNode(root.getChildren().get(i), targetNode, info);
+//			}
+//		}
+//		return highestConflict;
+//	}
 }

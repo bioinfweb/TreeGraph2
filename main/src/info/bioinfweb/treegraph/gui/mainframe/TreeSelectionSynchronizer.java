@@ -2,6 +2,7 @@ package info.bioinfweb.treegraph.gui.mainframe;
 
 
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.topologicalcalculation.NodeInfo;
 import info.bioinfweb.treegraph.document.topologicalcalculation.TopologicalCalculator;
 import info.bioinfweb.treegraph.gui.treeframe.TreeInternalFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
@@ -29,42 +30,37 @@ public class TreeSelectionSynchronizer implements TreeViewPanelListener {
 	public MainFrame getOwner() {
 		return owner;
 	}
-
-
-//	private void selectAccordingNodesInSubtree(Node root, Set<TextElementData> names, TreeSelection selection) {
-//		
-//		if (root.isLeaf()) {
-//			if (names.contains(root.getData())) {
-//				selection.add(root);
-//			}
-//		}
-//		else {
-//			for (Node child : root.getChildren()) {
-//				selectAccordingNodesInSubtree(child, names, selection);
-//			}
-//		}
-//	}
 	
 	
 	private void selectAccordingNodes(TreeViewPanel source, TreeViewPanel target) {
 		if (!source.equals(target)) {
 			TreeSelection selection = target.getSelection();
 			selection.clear();
-//			Set<TextElementData> nameSet = new TreeSet<TextElementData>();
 			for (Node node : source.getSelection().getAllElementsOfType(Node.class, false)) {
-				System.out.println(node.getData());
-				System.out.println(topologicalCalculator.getLeafSet(node));
-				selection.add(topologicalCalculator.findSourceNodeWithAllLeafs(
-						target.getDocument().getTree().getPaintStart(), topologicalCalculator.getLeafSet(node)).getNode());
-				System.out.println(topologicalCalculator.findSourceNodeWithAllLeafs(
-						target.getDocument().getTree().getPaintStart(), topologicalCalculator.getLeafSet(node)).getNode().getData());
-				System.out.println(topologicalCalculator.getLeafSet(topologicalCalculator.findSourceNodeWithAllLeafs(
-						target.getDocument().getTree().getPaintStart(), topologicalCalculator.getLeafSet(node)).getNode()));
-//				nameSet.add(node.getData());
-			}			
-//			selectAccordingNodesInSubtree(target.getDocument().getTree().getPaintStart(), nameSet, selection);		
-		}
+				
+				NodeInfo bestSourceNode = topologicalCalculator.findSourceNodeWithAllLeafs(target.getDocument().getTree().getPaintStart(), topologicalCalculator.getLeafSet(node));
+				if (bestSourceNode.getAdditionalCount() >= 0) {
+//					System.out.println("Match found.");
+					selection.add(bestSourceNode.getNode());
+				}
+//				else if (bestSourceNode.getAdditionalCount() == -1) {
+//						throw new InternalError("-1 RETURNED");  // Should not happen.
+//				}
+//				else {
+//					System.out.println("Conflict found.");
+//					Node highestConflictingNode = topologicalCalculator.findHighestConflictingNode(target.getDocument().getTree().getPaintStart(), node, bestSourceNode);
+//					
+//					if (highestConflictingNode != null) {
+//						selection.add(highestConflictingNode);
+//					}
+//					else {
+//						System.out.println("Null.");
+//					}
+//				}
+			}
+		}					
 	}
+	
 
 
 	@Override

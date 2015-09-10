@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben Stï¿½ver, Kai Mï¿½ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -73,7 +73,6 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
 		super(document, terminalsAdapter, processRooted);
 		this.src = src;
 		this.sourceAdapter = sourceAdapter;
-		this.getTopologicalCalculator().setProcessRooted(processRooted);
 		
 		switch (targetType) {
 			case LABEL:

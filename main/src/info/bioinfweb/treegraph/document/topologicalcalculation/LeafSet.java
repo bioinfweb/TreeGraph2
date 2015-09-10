@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben Stï¿½ver, Kai Mï¿½ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -93,6 +93,20 @@ public class LeafSet {
 				setChild(i, true);
 			}
 		}
+	}
+	
+	
+	public LeafSet addTo(LeafSet other) {
+		if (other.size() != size()) {
+			throw new IllegalArgumentException();
+		}
+		else {
+			LeafSet result = new LeafSet(size());
+			for (int i = 0; i < field.length; i++) {
+				result.field[i] = field[i] & other.field[i];
+			}
+			return result;
+		}		
 	}
 	
 	

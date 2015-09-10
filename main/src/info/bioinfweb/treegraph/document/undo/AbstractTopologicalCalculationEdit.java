@@ -82,4 +82,9 @@ public abstract class AbstractTopologicalCalculationEdit extends ComplexDocument
 	protected NodeInfo findSourceNodeWithAllLeafs(Node sourceRoot, LeafSet targetLeafs) {
 		return topologicalCalculator.findSourceNodeWithAllLeafs(sourceRoot, targetLeafs);
 	}
+	
+	
+//	protected Node findHighestConflictingNode(Node root, Node targetNode, NodeInfo info) {
+//		return topologicalCalculator.findHighestConflictingNode(root, targetNode, info);
+//	}
 }
