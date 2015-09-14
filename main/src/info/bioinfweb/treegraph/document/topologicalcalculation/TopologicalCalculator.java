@@ -37,7 +37,8 @@ public class TopologicalCalculator {
 	
 	
 	public TopologicalCalculator(Document document, NodeBranchDataAdapter targetLeafsAdapter, boolean processRooted, 
-				String keyLeafReference, ImportTextElementDataParameters parameters) {		
+				String keyLeafReference, ImportTextElementDataParameters parameters) {
+		
 		this.processRooted = processRooted;
 		this.targetLeafsAdapter = targetLeafsAdapter;
 		this.keyLeafReference = keyLeafReference;
@@ -59,11 +60,6 @@ public class TopologicalCalculator {
 
 	public boolean isProcessRooted() {
 		return processRooted;
-	}
-
-
-	public void setProcessRooted(boolean processRooted) {
-		this.processRooted = processRooted;
 	}
 
 
@@ -193,7 +189,7 @@ public class TopologicalCalculator {
 	
 	
 	public NodeInfo findSourceNodeWithAllLeafs(Node sourceRoot, LeafSet targetLeafs) {
-//		targetLeafs = targetLeafs.addTo(other); //TODO passendes leafset erzeugen
+//		targetLeafs = targetLeafs.addTo(getLeafSet(sourceRoot)); //TODO passendes leafset erzeugen
 		int additionalCount = targetLeafs.compareTo(getLeafSet(sourceRoot), false);
 		boolean downwards = additionalCount != -1;
 		if (!downwards) {

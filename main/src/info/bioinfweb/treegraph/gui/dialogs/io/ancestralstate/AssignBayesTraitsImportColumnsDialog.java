@@ -171,7 +171,7 @@ public class AssignBayesTraitsImportColumnsDialog extends AssignImportColumnsDia
 	}
 
 	
-	private JPanel getImportInternalNodeNamesPanel() {		
+	private JPanel getImportInternalNodeNamesPanel() {
 		if (importInternalNodeNamesPanel == null) {
 			importInternalNodeNamesPanel = new JPanel();
 			importInternalNodeNamesPanel.setLayout(new GridBagLayout());

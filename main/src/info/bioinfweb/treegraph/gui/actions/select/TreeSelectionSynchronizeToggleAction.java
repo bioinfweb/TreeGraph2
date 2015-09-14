@@ -22,12 +22,13 @@ import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 
 public class TreeSelectionSynchronizeToggleAction extends DocumentAction {
 	public static final String KEY_LEAF_REFERENCE = TreeSelectionSynchronizeToggleAction.class.getName() + ".LeafSet";
+	
 	private NodeBranchDataAdapter adapter = NodeNameAdapter.getSharedInstance();
 	
 	
 	public TreeSelectionSynchronizeToggleAction(MainFrame mainFrame) {
 		super(mainFrame);
-		putValue(Action.NAME, "Synchronize tree selection");
+		putValue(Action.NAME, "Synchronize tree selection toggle");
 		putValue(Action.SHORT_DESCRIPTION, "Synchronize node selection in all currently opened trees");
 		putValue(Action.SELECTED_KEY, false);
 		loadSymbols("SynchronizeTreeSelection");
@@ -37,6 +38,7 @@ public class TreeSelectionSynchronizeToggleAction extends DocumentAction {
 	@Override
 	protected void onActionPerformed(ActionEvent e, TreeInternalFrame frame) {
 		if ((Boolean)getValue(Action.SELECTED_KEY)) { //TODO Action geht aus und lädt alles beim Neustart neu, wenn Änderungen im Dokument sind
+			System.out.println("Loaded");
 			getMainFrame().getTreeSelectionSynchronizer().setTopologicalCalculator(
 					new TopologicalCalculator(frame.getDocument(), adapter, false, KEY_LEAF_REFERENCE, new ImportTextElementDataParameters()));
 			Map<TextElementData, Integer> leafValues = getMainFrame().getTreeSelectionSynchronizer().getTopologicalCalculator().getLeafValues();
@@ -45,8 +47,7 @@ public class TreeSelectionSynchronizeToggleAction extends DocumentAction {
 			Iterator<TreeInternalFrame> treeFrameIterator = getMainFrame().treeFrameIterator();
 			while(treeFrameIterator.hasNext()) {
 					TreeInternalFrame currentFrame = treeFrameIterator.next();
-					currentFrame.getTreeViewPanel().addTreeViewPanelListener(getMainFrame().getTreeSelectionSynchronizer());
-					
+					currentFrame.getTreeViewPanel().addTreeViewPanelListener(getMainFrame().getTreeSelectionSynchronizer());					
 					if (currentFrame.getDocument() != frame.getDocument()) {  // First document was already added in the constructor. 
 						getMainFrame().getTreeSelectionSynchronizer().getTopologicalCalculator().
 								addLeafMap(leafValues, currentFrame.getDocument().getTree().getPaintStart(), adapter);
@@ -67,8 +68,8 @@ public class TreeSelectionSynchronizeToggleAction extends DocumentAction {
 			}
 		}
 	}
-
-
+	
+	
 	@Override
 	public void setEnabled(Document document, TreeSelection selection, NodeBranchDataAdapter tableAdapter) {
 		setEnabled((document != null) && !document.getTree().isEmpty());

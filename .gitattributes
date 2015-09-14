@@ -529,6 +529,7 @@ main/src/info/bioinfweb/treegraph/gui/actions/edit/SetColumnToDecimalAction.java
 main/src/info/bioinfweb/treegraph/gui/actions/edit/SetColumnToTextAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/edit/SetColumnTypeAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/edit/SortLeafsAction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/gui/actions/edit/SynchronizeTreeSelectionAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/actions/edit/UndoAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/edit/UndoRedoToAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/edit/UndoToAction.java -text
@@ -616,6 +617,7 @@ main/src/info/bioinfweb/treegraph/gui/dialogs/editelement/NewGraphicalLabelsDial
 main/src/info/bioinfweb/treegraph/gui/dialogs/editelement/NewIconLabelsDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/editelement/NewPieChartLabelsDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/editelement/NewTextLabelDialog.java -text
+main/src/info/bioinfweb/treegraph/gui/dialogs/editelement/SynchronizeTreeSelectionDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/BranchPanel.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/DecimalFormatPanel.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/DecimalFormatsTableModel.java -text

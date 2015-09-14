@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben Stï¿½ver, Kai Mï¿½ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -100,6 +100,7 @@ public class ActionManagement extends AbstractUndoActionManagement {
 		put("select.legendsWithPosIndex", new SelectLegendsWithPosIndexAction(mainFrame));
 		put("select.legendsInSubtree", new SelectLegendsInSubtreeAction(mainFrame));
 		put("select.synchronizeTreeSelection", new TreeSelectionSynchronizeToggleAction(mainFrame));
+		put("select.synchronizeTreeSelectionOptions", new SynchronizeTreeSelectionAction(mainFrame));
 		
 		put("edit.undo", new UndoAction(mainFrame));
 		put("edit.redo", new RedoAction(mainFrame));

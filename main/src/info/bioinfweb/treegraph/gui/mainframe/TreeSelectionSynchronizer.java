@@ -2,6 +2,7 @@ package info.bioinfweb.treegraph.gui.mainframe;
 
 
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.topologicalcalculation.LeafSet;
 import info.bioinfweb.treegraph.document.topologicalcalculation.NodeInfo;
 import info.bioinfweb.treegraph.document.topologicalcalculation.TopologicalCalculator;
 import info.bioinfweb.treegraph.gui.treeframe.TreeInternalFrame;
@@ -37,30 +38,33 @@ public class TreeSelectionSynchronizer implements TreeViewPanelListener {
 			TreeSelection selection = target.getSelection();
 			selection.clear();
 			for (Node node : source.getSelection().getAllElementsOfType(Node.class, false)) {
-				
-				NodeInfo bestSourceNode = topologicalCalculator.findSourceNodeWithAllLeafs(target.getDocument().getTree().getPaintStart(), topologicalCalculator.getLeafSet(node));
-				if (bestSourceNode.getAdditionalCount() >= 0) {
-//					System.out.println("Match found.");
-					selection.add(bestSourceNode.getNode());
+				System.out.println("Source Leafset: " + topologicalCalculator.getLeafSet(node));
+				System.out.println("Target Leafset: " + topologicalCalculator.getLeafSet(target.getDocument().getTree().getPaintStart()));
+				LeafSet targetLeafs = topologicalCalculator.getLeafSet(node).addTo(topologicalCalculator.getLeafSet(target.getDocument().getTree().getPaintStart()));
+//				LeafSet targetLeafs = topologicalCalculator.getLeafSet(node);
+				System.out.println("Added LS: " + targetLeafs);
+				NodeInfo sourceNode = topologicalCalculator.findSourceNodeWithAllLeafs(target.getDocument().getTree().getPaintStart(), targetLeafs);
+				if (sourceNode.getAdditionalCount() == 0) {
+					System.out.println("Match found, additional count: " + sourceNode.getAdditionalCount());
+					System.out.println("Matching Leafset: " + topologicalCalculator.getLeafSet(sourceNode.getNode()));
+					selection.add(sourceNode.getNode());
 				}
-//				else if (bestSourceNode.getAdditionalCount() == -1) {
-//						throw new InternalError("-1 RETURNED");  // Should not happen.
-//				}
-//				else {
-//					System.out.println("Conflict found.");
+				else { // if (sourceNode.getAdditionalCount() == -1)
+					System.out.println("Conflict found, additional count:" + sourceNode.getAdditionalCount());
+//					System.out.println("Target Leafset: " + topologicalCalculator.getLeafSet(sourceNode.getNode()));
+//					selection.add(sourceNode.getNode());
 //					Node highestConflictingNode = topologicalCalculator.findHighestConflictingNode(target.getDocument().getTree().getPaintStart(), node, bestSourceNode);
-//					
+//		
 //					if (highestConflictingNode != null) {
 //						selection.add(highestConflictingNode);
 //					}
 //					else {
 //						System.out.println("Null.");
-//					}
-//				}
+//					}					
+				}
 			}
 		}					
 	}
-	
 
 
 	@Override

@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben Stï¿½ver, Kai Mï¿½ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -79,6 +79,7 @@ public abstract class DocumentAction extends ExtendedAbstractAction {
 	 * {@link DocumentAction#onActionPerformed(ActionEvent, TreeInternalFrame)}. If no active
 	 * frame is found an error message is displayed and 
 	 * {@link DocumentAction#onActionPerformed(ActionEvent, TreeInternalFrame)} is not called.
+	 * 
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	public void actionPerformed(ActionEvent e) {
