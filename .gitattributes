@@ -77,8 +77,6 @@ main/src/info/bioinfweb/treegraph/document/ConcretePaintableElement.java -text
 main/src/info/bioinfweb/treegraph/document/ContrastManager.java -text
 main/src/info/bioinfweb/treegraph/document/CornerRadiusElement.java -text
 main/src/info/bioinfweb/treegraph/document/Document.java -text
-main/src/info/bioinfweb/treegraph/document/DocumentChangeEvent.java -text
-main/src/info/bioinfweb/treegraph/document/DocumentListener.java -text
 main/src/info/bioinfweb/treegraph/document/DuplicateIDException.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/GraphicalLabel.java -text
 main/src/info/bioinfweb/treegraph/document/HiddenDataElement.java -text
@@ -105,6 +103,10 @@ main/src/info/bioinfweb/treegraph/document/Tree.java -text
 main/src/info/bioinfweb/treegraph/document/TreeElement.java -text
 main/src/info/bioinfweb/treegraph/document/TreePath.java -text
 main/src/info/bioinfweb/treegraph/document/TreeSerializer.java -text
+main/src/info/bioinfweb/treegraph/document/change/DocumentChangeEvent.java -text
+main/src/info/bioinfweb/treegraph/document/change/DocumentChangeType.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/change/DocumentListener.java -text
+main/src/info/bioinfweb/treegraph/document/change/package-info.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/clipboard/ClipboardContentType.java -text
 main/src/info/bioinfweb/treegraph/document/clipboard/TreeClipboard.java -text
 main/src/info/bioinfweb/treegraph/document/clipboard/TreeClipboardException.java -text

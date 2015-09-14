@@ -20,6 +20,8 @@ package info.bioinfweb.treegraph.gui.treeframe;
 
 
 import info.bioinfweb.treegraph.document.*;
+import info.bioinfweb.treegraph.document.change.DocumentChangeEvent;
+import info.bioinfweb.treegraph.document.change.DocumentListener;
 import info.bioinfweb.treegraph.document.format.DistanceDimension;
 import info.bioinfweb.treegraph.document.format.DistanceValue;
 import info.bioinfweb.treegraph.graphics.positionpaint.PositionPaintFactory;
@@ -31,6 +33,7 @@ import info.bioinfweb.commons.swing.scrollpaneselector.ScrollPaneSelectable;
 import java.util.*;
 
 import javax.swing.*;
+
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.Graphics;
@@ -38,6 +41,7 @@ import java.awt.Graphics2D;
 import java.awt.Color;
 import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
+
 import javax.swing.event.ChangeEvent;
 
 

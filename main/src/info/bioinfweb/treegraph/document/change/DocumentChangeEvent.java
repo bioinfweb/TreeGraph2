@@ -16,19 +16,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.document;
+package info.bioinfweb.treegraph.document.change;
+
+
+
+import info.bioinfweb.treegraph.document.Document;
+
+import javax.swing.event.ChangeEvent;
 
 
 
 /**
- * Classes implementing this interface can listen to changes made in a TreeGraph 2 document.
+ * Event that indicates all types of changes in TreeGraph 2 document.
  * 
  * @author Ben St&ouml;ver
  */
-public interface DocumentListener {
-  /**
-   * Called every time changes were made to the document.
-   * @param e
-   */
-  public void changeHappened(DocumentChangeEvent e);
+public class DocumentChangeEvent extends ChangeEvent {
+	public DocumentChangeEvent(Document document) {
+		super(document);
+	}
+	
+
+	@Override
+	public Document getSource() {
+		return (Document)super.getSource();
+	}
 }

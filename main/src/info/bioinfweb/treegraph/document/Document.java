@@ -25,6 +25,8 @@ import java.util.*;
 import javax.swing.JOptionPane;
 
 import info.bioinfweb.treegraph.Main;
+import info.bioinfweb.treegraph.document.change.DocumentChangeEvent;
+import info.bioinfweb.treegraph.document.change.DocumentListener;
 import info.bioinfweb.treegraph.document.io.ReadWriteFactory;
 import info.bioinfweb.treegraph.document.io.ReadWriteFormat;
 import info.bioinfweb.treegraph.document.io.xtg.XTGFilter;
