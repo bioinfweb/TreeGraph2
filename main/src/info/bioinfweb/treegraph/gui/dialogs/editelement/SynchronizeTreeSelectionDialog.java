@@ -1,5 +1,7 @@
 package info.bioinfweb.treegraph.gui.dialogs.editelement;
 
+
+
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -14,6 +16,8 @@ import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
 import info.bioinfweb.treegraph.gui.dialogs.ImportTextElementDataParametersPanel;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NewNodeBranchDataInput;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
+
+
 
 public class SynchronizeTreeSelectionDialog extends EditDialog {	
 	private JPanel jContentPane = null;
@@ -41,6 +45,7 @@ public class SynchronizeTreeSelectionDialog extends EditDialog {
 		return true;
 	}
 
+	
 	@Override
 	protected boolean apply() {
 		// TODO Auto-generated method stub
