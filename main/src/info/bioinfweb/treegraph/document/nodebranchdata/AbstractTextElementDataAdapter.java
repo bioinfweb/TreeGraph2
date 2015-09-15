@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben Stï¿½ver, Kai Mï¿½ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -36,6 +36,24 @@ import info.bioinfweb.commons.Math2;
 public abstract class AbstractTextElementDataAdapter extends AbstractNodeBranchDataAdapter 
     implements NodeBranchDataAdapter, TextElementDataAdapter {
 	
+	
+	public static final DecimalFormat DEFAULT_DECIMAL_FORMAT = new DecimalFormat();
+	
+	
+	private DecimalFormat defaultDecimalFormat;
+	
+	
+  public AbstractTextElementDataAdapter() {
+  	this(DEFAULT_DECIMAL_FORMAT);
+  }
+  
+  
+  public AbstractTextElementDataAdapter(DecimalFormat defaultDecimalFormat) {
+		super();
+		this.defaultDecimalFormat = defaultDecimalFormat;
+	}
+
+
   @Override
   public abstract TextElementData getData(Node node);
 
@@ -56,7 +74,16 @@ public abstract class AbstractTextElementDataAdapter extends AbstractNodeBranchD
   public abstract boolean assignData(Node node, TextElementData data);
   
   
-  public abstract DecimalFormat getDecimalFormat(Node node);
+  /**
+   * Always returns the specified default decimal format. Inherited classes should overwrite this method, if they 
+   * have access to an actual decimal format.
+   * 
+   * @param node the node associated with the current decimal value to be formatted
+   * @return the default decimal format
+   */
+  public DecimalFormat getDecimalFormat(Node node) {
+  	return defaultDecimalFormat;
+  }
 
   
   /**

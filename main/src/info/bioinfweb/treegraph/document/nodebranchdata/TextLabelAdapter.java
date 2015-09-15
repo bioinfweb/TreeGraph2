@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben Stï¿½ver, Kai Mï¿½ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -31,12 +31,8 @@ import info.bioinfweb.treegraph.document.format.TextFormats;
 
 
 public class TextLabelAdapter extends AbstractIDElementAdapter implements NodeBranchDataAdapter {
-	private DecimalFormat defaultDecimalFormat;
-	
-	
-	public TextLabelAdapter(String labelID, DecimalFormat decimalFormat) {
-		super(labelID);
-		this.defaultDecimalFormat = decimalFormat;
+	public TextLabelAdapter(String labelID, DecimalFormat defaultDecimalFormat) {
+		super(labelID, defaultDecimalFormat);
 	}
 
 
@@ -70,7 +66,7 @@ public class TextLabelAdapter extends AbstractIDElementAdapter implements NodeBr
 			return ((TextLabel)l).getFormats().getDecimalFormat();
 		}
 		else {
-			return defaultDecimalFormat;
+			return super.getDecimalFormat(node);
 		}
 	}
 
@@ -83,7 +79,7 @@ public class TextLabelAdapter extends AbstractIDElementAdapter implements NodeBr
 			if ((label == null) || !(label instanceof TextLabel)) {
 				label = new TextLabel(labels);
 				label.setID(getID());
-				((TextLabel)label).getFormats().setDecimalFormat(defaultDecimalFormat, TextFormats.DEFAULT_LOCALE);
+				((TextLabel)label).getFormats().setDecimalFormat(getDecimalFormat(node), TextFormats.DEFAULT_LOCALE);
 				labels.add(label);
 			}
 		}

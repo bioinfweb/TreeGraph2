@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben Stï¿½ver, Kai Mï¿½ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -67,12 +67,12 @@ public class UniqueNameAdapter extends AbstractNodeBranchDataAdapter implements 
 
 
 	public void delete(Node node) {
-		throw new NodeBranchDataActionNotSupportedException("Cannot delete the unique name of a node.");
+		throw new UnsupportedOperationException("Cannot delete the unique name of a node.");
 	}
 	
 
 	public double getDecimal(Node node) {
-		throw new NodeBranchDataActionNotSupportedException("Unique node names cannot be parsed as a decimal.");
+		throw new UnsupportedOperationException("Unique node names cannot be parsed as a decimal.");
 	}
 
 	

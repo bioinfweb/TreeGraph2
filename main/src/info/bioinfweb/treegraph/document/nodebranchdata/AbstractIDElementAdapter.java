@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben Stï¿½ver, Kai Mï¿½ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -18,8 +18,8 @@
  */
 package info.bioinfweb.treegraph.document.nodebranchdata;
 
-import info.bioinfweb.treegraph.document.ConcretePaintableElement;
-import info.bioinfweb.treegraph.document.Node;
+
+import java.text.DecimalFormat;
 
 
 
@@ -34,7 +34,12 @@ public abstract class AbstractIDElementAdapter extends AbstractTextElementDataAd
 	
 	
 	public AbstractIDElementAdapter(String id) {
-		super();
+		this(id, DEFAULT_DECIMAL_FORMAT);
+	}
+	
+	
+	public AbstractIDElementAdapter(String id, DecimalFormat defaultDecimalFormat) {
+		super(defaultDecimalFormat);
 		this.id = id;
 	}
 
@@ -63,16 +68,10 @@ public abstract class AbstractIDElementAdapter extends AbstractTextElementDataAd
 	}
 
 
-	@Override
-	public ConcretePaintableElement getDataElement(Node node) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
 	/**
 	 * Returns <code>true</code> if the specified object is an instance of the same class and has the same
 	 * ID.
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override

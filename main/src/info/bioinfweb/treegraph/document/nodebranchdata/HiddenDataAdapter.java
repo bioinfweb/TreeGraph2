@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben Stï¿½ver, Kai Mï¿½ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -28,7 +28,10 @@ import info.bioinfweb.treegraph.document.TextElementData;
 
 
 public abstract class HiddenDataAdapter extends AbstractIDElementAdapter {
-	public DecimalFormat DECIMAL_FORMAT = new DecimalFormat();
+	public static final DecimalFormat DEFAULT_DECIMAL_FORMAT = new DecimalFormat();
+	
+	
+	private DecimalFormat defaultDecimalFormat;
 	
 	
   public HiddenDataAdapter(String id) {
@@ -58,7 +61,7 @@ public abstract class HiddenDataAdapter extends AbstractIDElementAdapter {
 
 	@Override
 	public DecimalFormat getDecimalFormat(Node node) {
-		return DECIMAL_FORMAT;
+		return DEFAULT_DECIMAL_FORMAT;
 	}
 	
 	

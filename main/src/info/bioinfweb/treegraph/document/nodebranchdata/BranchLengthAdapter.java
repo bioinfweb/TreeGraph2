@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben Stï¿½ver, Kai Mï¿½ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -106,7 +106,7 @@ public class BranchLengthAdapter extends AbstractNodeBranchDataAdapter
 
 	
 	@Override
-	public void setText(Node node, String value) throws NumberFormatException, NodeBranchDataActionNotSupportedException {
+	public void setText(Node node, String value) throws NumberFormatException, UnsupportedOperationException {
 		if (node.hasAfferentBranch()) {
 			if ((value != null) && (!value.equals(""))) {
   			node.getAfferentBranch().setLength(Math2.parseDouble(value));
@@ -116,8 +116,7 @@ public class BranchLengthAdapter extends AbstractNodeBranchDataAdapter
 			}
 		}
 		else {
-			throw new NodeBranchDataActionNotSupportedException("This node does not have an afferent " +
-					"branch to store a branch length.");
+			throw new UnsupportedOperationException("This node does not have an afferent branch to store a branch length.");
 		}
 	}
 
