@@ -25,6 +25,7 @@ import javax.swing.undo.CannotUndoException;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Legend;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
 
 
@@ -40,7 +41,7 @@ public class PasteLegendEdit extends DocumentEdit {
 	 * @param legend - the legend to be pasted
 	 */
 	public PasteLegendEdit(Document document, Node anchor1, Node anchor2, Legend legend) {
-		super(document);
+		super(document, DocumentChangeType.POSITION);
 		this.legend = legend;
 		legend.getFormats().setAnchor(0, anchor1);
 		legend.getFormats().setAnchor(1, anchor2);

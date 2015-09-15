@@ -22,6 +22,7 @@ package info.bioinfweb.treegraph.document.undo.edit;
 import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Label;
+import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.undo.ComposedDocumentEdit;
 
 
@@ -33,7 +34,7 @@ import info.bioinfweb.treegraph.document.undo.ComposedDocumentEdit;
  */
 public class PasteAllLabelsEdit extends ComposedDocumentEdit {
   public PasteAllLabelsEdit(Document document, Branch branch, Label[] labelList) {
-		super(document);
+		super(document, DocumentChangeType.TOPOLOGICAL_BY_RENAMING);  // A label could be inserted with the ID of the default leafs adapter.
 	  
 		for (int i = 0; i < labelList.length; i++) {
 			InsertLabelEdit edit = new InsertLabelEdit(document, labelList[i], branch.getLabels());

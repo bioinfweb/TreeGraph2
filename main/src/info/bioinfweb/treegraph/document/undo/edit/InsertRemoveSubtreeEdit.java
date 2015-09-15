@@ -20,6 +20,7 @@ package info.bioinfweb.treegraph.document.undo.edit;
 
 
 import info.bioinfweb.treegraph.document.*;
+import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.undo.SaveLegendsEdit;
 
 
@@ -44,7 +45,7 @@ public abstract class InsertRemoveSubtreeEdit extends SaveLegendsEdit {
 	 * @param index - the index of the root node in the child list of its parent node
 	 */
 	public InsertRemoveSubtreeEdit(Document document, Node parent, Node root, int index) {
-		super(document);
+		super(document, DocumentChangeType.TOPOLOGICAL_BY_OBJECT_CHANGE);
 		this.parent = parent;
 		this.root = root;
 		this.index = index;

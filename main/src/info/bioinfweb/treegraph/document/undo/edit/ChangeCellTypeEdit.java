@@ -24,6 +24,7 @@ import javax.swing.undo.CannotUndoException;
 
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.nodebranchdata.AbstractTextElementDataAdapter;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
 
@@ -45,7 +46,7 @@ public class ChangeCellTypeEdit extends DocumentEdit {
 	public ChangeCellTypeEdit(Document document, AbstractTextElementDataAdapter adapter,
 			Node node, boolean newValue) {
 		
-		super(document);
+		super(document, DocumentChangeType.TOPOLOGICAL_BY_RENAMING);  // Depends e.g. if compare parameters force to parse numeric values.
 		this.adapter = adapter;
 		this.node = node;
 		this.newValue = newValue;

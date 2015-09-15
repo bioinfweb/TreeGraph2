@@ -24,6 +24,7 @@ import javax.swing.undo.CannotUndoException;
 
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
 
 
@@ -34,7 +35,7 @@ public class MoveSubtreeEdit extends DocumentEdit {
 	
 	
 	public MoveSubtreeEdit(Document document, Node root, boolean down) {
-		super(document);
+		super(document, DocumentChangeType.NODE_ORDER);
 		this.root = root;
 		this.down = down;
 	}

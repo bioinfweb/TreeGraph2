@@ -20,6 +20,7 @@ package info.bioinfweb.treegraph.document.undo.edit;
 
 
 import info.bioinfweb.treegraph.document.*;
+import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
 
 import javax.swing.undo.*;
@@ -39,7 +40,7 @@ public class TextElementEdit extends DocumentEdit {
 
 	
 	public TextElementEdit(Document document, TextElement element, TextElementData newData) {
-	  super(document);
+	  super(document, DocumentChangeType.TOPOLOGICAL_BY_RENAMING);
 	  this.element = element;
 	  oldData = element.getData().clone();
 	  this.newData = newData;

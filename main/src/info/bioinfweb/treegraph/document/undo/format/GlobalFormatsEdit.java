@@ -23,6 +23,7 @@ import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 
 import info.bioinfweb.treegraph.document.Document;
+import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.format.GlobalFormats;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
 
@@ -34,7 +35,7 @@ public class GlobalFormatsEdit extends DocumentEdit {
 	
 	
 	public GlobalFormatsEdit(Document document, GlobalFormats newFormats) {
-		super(document);
+		super(document, DocumentChangeType.POSITION);
 		this.newFormats = newFormats;
 		oldFormats.assign(document.getTree().getFormats());
 	}

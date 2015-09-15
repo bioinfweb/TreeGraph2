@@ -24,8 +24,11 @@ import javax.swing.undo.CannotUndoException;
 
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.format.adapters.distance.DistanceAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.AbstractNodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
+import info.bioinfweb.treegraph.document.undo.DocumentEdit;
 
 
 
@@ -33,7 +36,7 @@ import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
  * @author Ben St&ouml;ver
  * @since 2.0.23
  */
-public class DistanceValuesByNodeBranchDataEdit extends NodeBranchDataFormatEdit {
+public class DistanceValuesByNodeBranchDataEdit extends DocumentEdit {
   private NodeBranchDataAdapter sourceAdapter;
   private float min;
   private float factor;
@@ -47,11 +50,11 @@ public class DistanceValuesByNodeBranchDataEdit extends NodeBranchDataFormatEdit
 			float min, float max, boolean changeUndefined, boolean inheritToTerminals, 
 			DistanceAdapter[] targetAdapters) {
 		
-		super(document);
+		super(document, DocumentChangeType.POSITION);
 		this.sourceAdapter = sourceAdapter;
 		this.min = min;
 		this.factor = (max - min) / 
-		    (float)calculateMaxNodeData(sourceAdapter, document.getTree().getPaintStart());
+		    (float)AbstractNodeBranchDataAdapter.calculateMaxNodeData(sourceAdapter, document.getTree().getPaintStart());
 		this.changeUndefined = changeUndefined;
 		this.inheritToTerminals = inheritToTerminals;
 		this.targetAdapters = targetAdapters;

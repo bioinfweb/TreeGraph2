@@ -124,7 +124,7 @@ public class TreeViewPanel extends JPanel implements DocumentListener, Scrollabl
 			document.registerPositioner(painterType);  //TODO Deregistrierung an entsprechenden Stellen implementieren!
 		  PositionPaintFactory.getInstance().getPositioner(painterType).positionAll(document, 1f);
 			getSelection().set(null);
-		  changeHappened(new DocumentChangeEvent(document));
+		  changeHappened(new DocumentChangeEvent(document, null));
 		}
 	}
 
@@ -152,10 +152,10 @@ public class TreeViewPanel extends JPanel implements DocumentListener, Scrollabl
 		PositionPaintType oldType = painterType;
 		painterType = type;
 	  if (getDocument() != null) {
-	  	document.unregisterPositioner(oldType);  //TODO Fï¿½hrt zu einem Fehler, falls ein anderes TreeViewPanel hierzu ebenfalls einen Positioner angemeldet hat.
+	  	document.unregisterPositioner(oldType);  //TODO Führt zu einem Fehler, falls ein anderes TreeViewPanel hierzu ebenfalls einen Positioner angemeldet hat.
 			document.registerPositioner(painterType);
 		  PositionPaintFactory.getInstance().getPositioner(painterType).positionAll(document, 1f);
-		  changeHappened(new DocumentChangeEvent(document));
+		  changeHappened(new DocumentChangeEvent(document, null));
 	  }
 	}
 

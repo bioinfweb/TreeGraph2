@@ -7,6 +7,7 @@ import javax.swing.JOptionPane;
 
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.io.DocumentIterator;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
@@ -35,7 +36,7 @@ public class NodeSupportEdit extends AbstractTopologicalCalculationEdit {
 			NodeBranchDataAdapter supportValuesAdapter, TextElementDataAdapter sourceLeafsAdapter, 
 			boolean processRooted, DocumentIterator documentIterator, double normalisationBorder) {
 		
-		super(document,terminalsAdapter, processRooted); 
+		super(document, DocumentChangeType.TOPOLOGICAL_BY_RENAMING, terminalsAdapter, processRooted); 
 		this.supportValuesAdapter = supportValuesAdapter;
 		this.documentIterator = documentIterator; 
 		this.normalisationBorder = normalisationBorder;

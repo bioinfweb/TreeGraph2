@@ -9,6 +9,7 @@ import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.PieChartLabel;
+import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.nodebranchdata.IDElementAdapter;
 import info.bioinfweb.treegraph.document.topologicalcalculation.LeafSet;
 import info.bioinfweb.treegraph.document.undo.AbstractTopologicalCalculationEdit;
@@ -27,7 +28,7 @@ public class ImportBayesTraitsDataEdit extends AbstractTopologicalCalculationEdi
 	public ImportBayesTraitsDataEdit(Document document,
 			AncestralStateImportParameters parameters) {
 		
-		super(document, parameters.getKeyAdapter(), false);  //TODO User parameter for processRooted needed?
+		super(document, DocumentChangeType.TOPOLOGICAL_BY_RENAMING, parameters.getKeyAdapter(), false);  //TODO User parameter for processRooted needed?
 		this.parameters = parameters;
 	}
 

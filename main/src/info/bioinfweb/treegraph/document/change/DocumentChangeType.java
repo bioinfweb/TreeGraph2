@@ -18,10 +18,24 @@
  */
 package info.bioinfweb.treegraph.document.change;
 
+import info.bioinfweb.treegraph.document.Document;
+
 
 
 /**
  * Enumerates different types of document changes.
+ * <p>
+ * The different change type have a hierarchical order, where a subsequent type automatically includes all 
+ * previous types except for {@link #TOPOLOGICAL_BY_RENAMING} and {@link #TOPOLOGICAL_LEAF_INVARIANT} which
+ * are alternatives located on the same level. The hierarchical order would be the following:
+ * <ol>
+ *   <li>{@link #NEUTRAL}</li>
+ *   <li>{@link #POSITION}</li>
+ *   <li>{@link #NODE_ORDER}</li>
+ *   <li>{@link #ROOT_POSITION}</li>
+ *   <li>{@link #TOPOLOGICAL_BY_RENAMING} | {@link #TOPOLOGICAL_LEAF_INVARIANT}</li>
+ *   <li>{@link #TOPOLOGICAL_BY_OBJECT_CHANGE}</li>
+ * </ol>
  * 
  * @author Ben St&ouml;ver
  * @since 2.5.0
@@ -29,13 +43,13 @@ package info.bioinfweb.treegraph.document.change;
 public enum DocumentChangeType {
 	/** 
 	 * Indicates that a document change does not affect the paint or topological position of any document element.
-	 * (A color change would be an example.) 
+	 * (A color change would be an example.)
 	 */
 	NEUTRAL,
 	
 	/** 
-	 * Indicates that the paint position of one or more document elements was changed, but no topological or node order 
-	 * changes occurred.
+	 * Indicates that the paint position of one or more document elements was changed, but no topological or node 
+	 * order changes occurred.
 	 */
 	POSITION,
 	
@@ -45,15 +59,40 @@ public enum DocumentChangeType {
 	 */
 	NODE_ORDER,
 	
-	/** 
+	/**
 	 * Indicates that the position of the root if the document changed. If the tree would be considered unrooted,
 	 * its topology would be unchanged. 
 	 */
 	ROOT_POSITION,
 	
-	/** 
-	 * Indicates that the topology of the tree in this document was changed, even if the tree would be considered 
-	 * unrooted.
+	/**
+	 * Indicates a change of topology triggered by the change of a textual or numeric value which changes the identity
+	 * of a node. There was no change of the actual object topology, but the character of a node changed, so it could
+	 * be considered as a replacement of this node.
+	 * <p>
+	 * Edits of a node name, a data ID or the contents of a data ID element attached to a node are considered as 
+	 * character changing, i.e. a possible replacement of the according node. Changes of branch lengths are not considered 
+	 * as a possible node replacement. (Anyway some edits that can modify any node/branch data column would also declare 
+	 * this type even if a concrete of them instance modifies nothing but branch lengths.) Note that the question if such 
+	 * an edit really would be equal to a node replacement depends of the default leaf adapter that is set in the according 
+	 * {@link Document} at runtime. 
 	 */
-	TOPOLOGICAL;
+	TOPOLOGICAL_BY_RENAMING,
+	
+	/**
+	 * Indicates that a topological change in the tree occurred that does not affect the leaf sets (e.g. collapsing of
+	 * an internal node).
+	 * <p>
+	 * Note that this type is only returned by edits that never affect leaf distributions. Edits of the types
+	 * {@link #TOPOLOGICAL_BY_RENAMING} or {@link #TOPOLOGICAL_BY_OBJECT_CHANGE} may also be leaf set invariant
+	 * in certain situations, but that is not guaranteed for every case.
+	 */
+	TOPOLOGICAL_LEAF_INVARIANT,
+	
+	/**
+	 * Indicates a topological change that includes the actual movement, insertion or deletion of a node instance.
+	 * In contrast to {@link #TOPOLOGICAL_BY_RENAMING} changing the character of a node, which stays at its position
+	 * is not sufficient for this type.
+	 */
+	TOPOLOGICAL_BY_OBJECT_CHANGE;
 }

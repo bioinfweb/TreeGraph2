@@ -22,6 +22,7 @@ package info.bioinfweb.treegraph.document.undo.edit;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Legend;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
 
 
@@ -32,7 +33,7 @@ public abstract class InsertRemoveLegendEdit extends DocumentEdit {
 
   
 	public InsertRemoveLegendEdit(Document document, Legend legend, Node anchor0, Node anchor1) {
-		super(document);
+		super(document, DocumentChangeType.POSITION);
 		this.legend = legend;
 		anchor[0] = anchor0;
 		anchor[1] = anchor1;

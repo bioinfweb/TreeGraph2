@@ -1,10 +1,9 @@
 package info.bioinfweb.treegraph.document.undo;
 
 
-
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
-import info.bioinfweb.treegraph.document.TextElementData;
+import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.topologicalcalculation.LeafSet;
 import info.bioinfweb.treegraph.document.topologicalcalculation.NodeInfo;
@@ -24,10 +23,10 @@ public abstract class AbstractTopologicalCalculationEdit extends ComplexDocument
 	protected TopologicalCalculator topologicalCalculator = null;
 
 	
-	public AbstractTopologicalCalculationEdit(Document document,
+	public AbstractTopologicalCalculationEdit(Document document, DocumentChangeType changeType,
 			NodeBranchDataAdapter targetLeafsAdapter, boolean processRooted) {
 	
-		super(document);
+		super(document, changeType);
 		topologicalCalculator = new TopologicalCalculator(document, targetLeafsAdapter, processRooted, KEY_LEAF_REFERENCE, new ImportTextElementDataParameters());
 	}
 

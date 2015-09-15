@@ -20,6 +20,7 @@ package info.bioinfweb.treegraph.document.undo;
 
 
 import info.bioinfweb.treegraph.document.Document;
+import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,8 +40,8 @@ public abstract class ComposedDocumentEdit extends DocumentEdit {
   private List<DocumentEdit> edits = new ArrayList<DocumentEdit>();
 
   
-	public ComposedDocumentEdit(Document document) {
-	  super(document);
+	public ComposedDocumentEdit(Document document, DocumentChangeType changeType) {
+	  super(document, changeType);
   }
 
 

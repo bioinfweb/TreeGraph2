@@ -29,6 +29,7 @@ import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Legend;
 import info.bioinfweb.treegraph.document.Legends;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.undo.SaveLegendsEdit;
 import info.bioinfweb.treegraph.document.undo.WarningMessageEdit;
 
@@ -46,7 +47,7 @@ public class CollapseNodeEdit extends SaveLegendsEdit implements WarningMessageE
 
   
 	public CollapseNodeEdit(Document document, Node node) {
-		super(document);
+		super(document, DocumentChangeType.TOPOLOGICAL_LEAF_INVARIANT);
 		this.node = node;
 		if (node.hasParent()) {
 			index = node.getParent().getChildren().indexOf(node); 

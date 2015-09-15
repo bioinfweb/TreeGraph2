@@ -21,17 +21,21 @@ package info.bioinfweb.treegraph.document.undo.format;
 
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.format.adapters.color.ColorAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.AbstractNodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
+import info.bioinfweb.treegraph.document.undo.DocumentEdit;
 
 import java.awt.Color;
 import java.util.Vector;
+
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 
 
 
-public class ColorsByNodeBranchDataEdit extends NodeBranchDataFormatEdit {
+public class ColorsByNodeBranchDataEdit extends DocumentEdit {
   private NodeBranchDataAdapter sourceAdapter;
   private Color min;
 	double redFactor;
@@ -47,14 +51,14 @@ public class ColorsByNodeBranchDataEdit extends NodeBranchDataFormatEdit {
 			Color min, Color max, boolean changeUndefined, boolean inheritToTerminals, 
 			ColorAdapter[] targetAdapters) {
 		
-		super(document);
+		super(document, DocumentChangeType.NEUTRAL);
 		this.sourceAdapter = sourceAdapter;
 		this.min = min;
 		this.changeUndefined = changeUndefined;
 		this.inheritToTerminals = inheritToTerminals;
 		this.targetAdapters = targetAdapters;
 		
-		double maxValue = calculateMaxNodeData(
+		double maxValue = AbstractNodeBranchDataAdapter.calculateMaxNodeData(
 				sourceAdapter, document.getTree().getPaintStart());
 		redFactor = ((double)(max.getRed() - min.getRed())) / maxValue;
 		greenFactor = ((double)(max.getGreen() - min.getGreen())) / maxValue;

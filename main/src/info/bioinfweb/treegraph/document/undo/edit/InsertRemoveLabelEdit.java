@@ -20,6 +20,7 @@ package info.bioinfweb.treegraph.document.undo.edit;
 
 
 import info.bioinfweb.treegraph.document.*;
+import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.format.LabelFormats;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
 
@@ -36,7 +37,7 @@ public abstract class InsertRemoveLabelEdit extends DocumentEdit {
 	
 	
 	public InsertRemoveLabelEdit(Document document, Label label, Labels owner) {
-		super(document);
+		super(document, DocumentChangeType.TOPOLOGICAL_BY_RENAMING);  // The label could be inserted with the ID of the default leafs adapter.
 		this.label = label;
 		this.owner = owner;
 	}

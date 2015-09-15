@@ -25,6 +25,7 @@ import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Legend;
 import info.bioinfweb.treegraph.document.Legends;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 
 
 
@@ -42,8 +43,8 @@ public abstract class SaveLegendsEdit extends DocumentEdit implements WarningMes
   private boolean legendsRemoved = false;
 	
 	
-	public SaveLegendsEdit(Document document) {
-		super(document);
+	public SaveLegendsEdit(Document document, DocumentChangeType changeType) {
+		super(document, changeType);
 	}
 
 

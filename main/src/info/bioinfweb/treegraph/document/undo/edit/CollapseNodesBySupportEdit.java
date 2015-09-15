@@ -25,6 +25,7 @@ import javax.swing.undo.CannotRedoException;
 
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.ComposedDocumentEdit;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
@@ -49,7 +50,7 @@ public class CollapseNodesBySupportEdit extends ComposedDocumentEdit implements 
   
   
 	public CollapseNodesBySupportEdit(Document document, Node root, NodeBranchDataAdapter supportAdapter, double threshold) {
-	  super(document);
+	  super(document, DocumentChangeType.TOPOLOGICAL_LEAF_INVARIANT);
 	  this.supportAdapter = supportAdapter;
 	  this.threshold = threshold;
 	  

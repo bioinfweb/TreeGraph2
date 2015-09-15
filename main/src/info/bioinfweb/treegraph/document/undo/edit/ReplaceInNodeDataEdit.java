@@ -23,11 +23,19 @@ import java.util.regex.Pattern;
 
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.ComplexDocumentEdit;
 
 
 
+/**
+ * Replaces textual occurrences in a specified node/branch data column.
+ * <p>
+ * This edit is marked as a topological edit, because it may change 
+ * 
+ * @author Ben St&ouml;ver
+ */
 public class ReplaceInNodeDataEdit extends ComplexDocumentEdit {
 	private NodeBranchDataAdapter adapter = null;
 	private InsertPosition position = null;
@@ -44,7 +52,7 @@ public class ReplaceInNodeDataEdit extends ComplexDocumentEdit {
 			InsertPosition position, String oldText, String newText, boolean caseSensitive,
 			boolean wordsOnly) {
 		
-		super(document);
+		super(document, DocumentChangeType.TOPOLOGICAL_BY_RENAMING);
 		this.adapter = adapter;
 		this.position = position;
 		if (position.equals(InsertPosition.REPLACE)) {

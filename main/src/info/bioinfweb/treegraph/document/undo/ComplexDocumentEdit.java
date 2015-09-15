@@ -26,6 +26,7 @@ import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TreePath;
+import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 
 
 
@@ -46,8 +47,8 @@ public abstract class ComplexDocumentEdit extends DocumentEdit {
 	private boolean firstRedone = false;
 	
 	
-	public ComplexDocumentEdit(Document document) {
-		super(document);
+	public ComplexDocumentEdit(Document document, DocumentChangeType changeType) {
+		super(document, changeType);
 		oldRoot = document.getTree().getPaintStart();
 		newRoot = oldRoot.cloneWithSubtree(true);  // Unique names are copied as well.
 		// Legends do not have to be copied since they are anchored by unique node names.

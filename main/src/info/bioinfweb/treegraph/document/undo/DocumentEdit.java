@@ -20,6 +20,7 @@ package info.bioinfweb.treegraph.document.undo;
 
 
 import info.bioinfweb.treegraph.document.*;
+import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.commons.swing.AbstractDocumentEdit;
 
 import javax.swing.undo.CannotRedoException;
@@ -27,19 +28,30 @@ import javax.swing.undo.UndoableEdit;
 
 
 
-
+/**
+ * All edits modifying an instance of {@link Document} should be inherited from this class.
+ * 
+ * @author Ben St&ouml;ver
+ */
 public abstract class DocumentEdit extends AbstractDocumentEdit implements UndoableEdit {
 	private Document document;
+	private DocumentChangeType changeType;
 	
 		
-	public DocumentEdit(Document document) {
+	public DocumentEdit(Document document, DocumentChangeType changeType) {
 		super();
 		this.document = document;
+		this.changeType = changeType;
 	}
 
 
 	public Document getDocument() {
 		return document;
+	}
+
+
+	public DocumentChangeType getChangeType() {
+		return changeType;
 	}
 
 
@@ -51,6 +63,6 @@ public abstract class DocumentEdit extends AbstractDocumentEdit implements Undoa
 	@Override
 	public void registerDocumentChange() {
   	getDocument().getTree().assignUniqueNames();  // Must be called to update the uniqueNameMap. There not necessarily nodes without unique names present, but the content of the map might not match the current tree.
-		getDocument().registerChange();
+		getDocument().registerChange(this);
 	}
 }

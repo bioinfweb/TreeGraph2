@@ -29,6 +29,7 @@ import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Legend;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TreeSerializer;
+import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.format.DistanceValue;
 import info.bioinfweb.treegraph.document.format.adapters.distance.AbstractLegendAdapter;
 import info.bioinfweb.treegraph.document.format.adapters.distance.DistanceAdapter;
@@ -52,7 +53,7 @@ public class ScaleDistanceValuesEdit extends DocumentEdit {
 	public ScaleDistanceValuesEdit(Document document, Node root, float factor, 
 			DistanceAdapter[] targetAdapters) {
 		
-		super(document);
+		super(document, DocumentChangeType.POSITION);
 		this.root = root;
 		this.factor = factor;
 		this.targetAdapters = targetAdapters;

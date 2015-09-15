@@ -35,6 +35,7 @@ import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.TreeSerializer;
+import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
 import info.bioinfweb.treegraph.document.undo.ImportTextElementDataParameters;
@@ -100,7 +101,7 @@ public class SortLeafsEdit extends DocumentEdit implements WarningMessageEdit {
 	public SortLeafsEdit(Document document, Node root, List<TextElementData> newOrder, NodeBranchDataAdapter leafAdapter,
 					ImportTextElementDataParameters parameters) {
 		
-	  super(document);
+	  super(document, DocumentChangeType.NODE_ORDER);
 	  this.root = root;
 	  this.leafAdapter = leafAdapter;
 	  this.parameters = parameters;

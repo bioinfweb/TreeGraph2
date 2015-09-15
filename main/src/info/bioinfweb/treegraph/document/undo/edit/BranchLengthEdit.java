@@ -24,6 +24,7 @@ import javax.swing.undo.CannotUndoException;
 
 import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Document;
+import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
 
 
@@ -35,7 +36,7 @@ public class BranchLengthEdit extends DocumentEdit {
 
   
 	public BranchLengthEdit(Document document, Branch branch, double newLength) {
-		super(document);
+		super(document, DocumentChangeType.POSITION);
 		
 		this.branch = branch;
 		oldLength = branch.getLength();

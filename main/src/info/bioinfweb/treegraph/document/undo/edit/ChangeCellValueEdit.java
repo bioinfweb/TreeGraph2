@@ -21,6 +21,7 @@ package info.bioinfweb.treegraph.document.undo.edit;
 
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
 
@@ -38,9 +39,8 @@ public abstract class ChangeCellValueEdit extends DocumentEdit {
 	private Node node;
 	
 
-	public ChangeCellValueEdit(Document document, NodeBranchDataAdapter adapter,
-			Node node) {
-		super(document);
+	public ChangeCellValueEdit(Document document, NodeBranchDataAdapter adapter, Node node) {
+		super(document, DocumentChangeType.TOPOLOGICAL_BY_RENAMING);
 		this.adapter = adapter;
 		this.node = node;
 	}

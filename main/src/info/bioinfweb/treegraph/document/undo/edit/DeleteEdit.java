@@ -30,6 +30,7 @@ import info.bioinfweb.treegraph.document.Label;
 import info.bioinfweb.treegraph.document.Legend;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.Tree;
+import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.undo.ComposedDocumentEdit;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
 import info.bioinfweb.treegraph.document.undo.WarningMessageEdit;
@@ -37,8 +38,8 @@ import info.bioinfweb.treegraph.document.undo.WarningMessageEdit;
 
 
 /**
- * Removes all elements currently selected. <code>RemoveSubtreeEdit</code>, 
- * <code>RemoveLabelEdit</code> and <code>RemoveLegendEdit</code> are used internally.
+ * Removes all currently selected elements. {@link RemoveSubtreeEdit}, {@link RemoveLabelEdit} and 
+ * {@link RemoveLegendEdit} are used internally.
  *  
  * @author Ben St&ouml;ver
  */
@@ -47,7 +48,7 @@ public class DeleteEdit extends ComposedDocumentEdit implements WarningMessageEd
   
   
 	public DeleteEdit(Document document, ConcretePaintableElement[] elements) {
-		super(document);
+		super(document, DocumentChangeType.TOPOLOGICAL_BY_OBJECT_CHANGE);
 		this.elements = new HashSet<ConcretePaintableElement>();
 		for (int i = 0; i < elements.length; i++) {
 			this.elements.add(elements[i]);

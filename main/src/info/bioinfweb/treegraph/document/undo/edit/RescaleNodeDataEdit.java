@@ -21,19 +21,20 @@ package info.bioinfweb.treegraph.document.undo.edit;
 
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.ComplexDocumentEdit;
 
 
 
-public class RescaleNodeDataEdit extends ComplexDocumentEdit {
+public class RescaleNodeDataEdit extends ComplexDocumentEdit {  //TODO Why is this edit not used? (Replaced by CalculateNodeBranchDataEdit?)
 	private NodeBranchDataAdapter adapter = null;
 	private double factor;
 	private double addend;
 	
 	
   public RescaleNodeDataEdit(Document document, NodeBranchDataAdapter adapter, double factor, double addend) {
-		super(document);
+		super(document, DocumentChangeType.TOPOLOGICAL_BY_RENAMING);
 		this.adapter = adapter;
 		this.factor = factor;
 		this.addend = addend;

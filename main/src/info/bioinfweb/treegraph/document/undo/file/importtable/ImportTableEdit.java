@@ -31,6 +31,7 @@ import javax.swing.undo.CannotUndoException;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextElementData;
+import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
 import info.bioinfweb.treegraph.document.undo.WarningMessageEdit;
 import info.bioinfweb.treegraph.document.undo.nodebranchdata.NodeBranchDataColumnBackup;
@@ -55,7 +56,7 @@ public class ImportTableEdit extends DocumentEdit implements WarningMessageEdit 
   
   
 	public ImportTableEdit(Document document, ImportTableParameters parameters, ImportTableData data) {
-		super(document);
+		super(document, DocumentChangeType.TOPOLOGICAL_BY_RENAMING);
 		this.parameters = parameters;
 		this.data = data;
 		backups = createBackups();

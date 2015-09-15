@@ -24,6 +24,7 @@ import java.util.Arrays;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.NodeLadderizeComparable;
+import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.undo.ComplexDocumentEdit;
 
 
@@ -39,7 +40,7 @@ public class LadderizeEdit extends ComplexDocumentEdit {
 
   
 	public LadderizeEdit(Document document, Node root, boolean down) {
-		super(document);
+		super(document, DocumentChangeType.NODE_ORDER);
 		this.root = findEquivilant(root);
 		this.down = down;
 	}

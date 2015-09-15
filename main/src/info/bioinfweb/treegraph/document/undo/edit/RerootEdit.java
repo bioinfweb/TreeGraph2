@@ -27,6 +27,7 @@ import info.bioinfweb.treegraph.document.Label;
 import info.bioinfweb.treegraph.document.Labels;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.Tree;
+import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.undo.ComplexDocumentEdit;
 import info.bioinfweb.treegraph.document.undo.WarningMessageEdit;
 
@@ -46,7 +47,7 @@ public class RerootEdit extends ComplexDocumentEdit implements WarningMessageEdi
   
   
 	public RerootEdit(Document document, Branch rootingPoint) {
-		super(document);
+		super(document, DocumentChangeType.ROOT_POSITION);
 		this.rootingPoint = findEquivalent(rootingPoint);
 	}
 	
@@ -59,7 +60,7 @@ public class RerootEdit extends ComplexDocumentEdit implements WarningMessageEdi
 	 * @param document - the document that contains the tree to be rerooted 
 	 */
 	protected RerootEdit(Document document) {
-		super(document);
+		super(document, DocumentChangeType.ROOT_POSITION);
 	}
 	
 	

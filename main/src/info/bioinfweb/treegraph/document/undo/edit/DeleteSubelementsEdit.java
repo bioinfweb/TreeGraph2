@@ -24,6 +24,7 @@ import javax.swing.undo.CannotUndoException;
 
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.undo.SaveLegendsEdit;
 
 
@@ -39,7 +40,7 @@ public class DeleteSubelementsEdit extends SaveLegendsEdit {
 	
 	
 	public DeleteSubelementsEdit(Document document, Node root) {
-		super(document);
+		super(document, DocumentChangeType.TOPOLOGICAL_BY_OBJECT_CHANGE);
 		this.root = root;
 
 		subnodes = new Node[root.getChildren().size()];

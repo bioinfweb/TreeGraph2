@@ -26,6 +26,7 @@ import javax.swing.JOptionPane;
 
 import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.treegraph.document.change.DocumentChangeEvent;
+import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.change.DocumentListener;
 import info.bioinfweb.treegraph.document.io.ReadWriteFactory;
 import info.bioinfweb.treegraph.document.io.ReadWriteFormat;
@@ -227,7 +228,7 @@ public class Document extends SwingSaver
 	
 	
   /**
-   * Alerts all registered positioners to reposition the tree elements becuase of made 
+   * Alerts all registered positioners to reposition the tree elements because of made 
    * changes.
    */
   private void alertPositioners() {
@@ -240,19 +241,25 @@ public class Document extends SwingSaver
 
 
   /** Alerts all registered views to display made changes. */
-  private void fireChangeHappened() {
+  private void fireChangeHappened(DocumentEdit edit) {
+  	DocumentChangeEvent event = new DocumentChangeEvent(this, edit);
   	for (int i = 0; i < views.size(); i++) {
-  		views.get(i).changeHappened(new DocumentChangeEvent(this));
+  		views.get(i).changeHappened(event);
   	}
   }
 
 
 	@Override
 	public void registerChange() {
+		registerChange(null);
+	}
+	
+	
+	public void registerChange(DocumentEdit edit) {
 		super.registerChange();
 		getTree().updateElementSet();
 		alertPositioners();  // Positioners must be alerted first
-		fireChangeHappened();
+		fireChangeHappened(edit);
 		updateFrame();
 	}
 

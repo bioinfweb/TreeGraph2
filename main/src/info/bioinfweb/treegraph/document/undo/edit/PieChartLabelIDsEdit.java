@@ -24,11 +24,14 @@ import javax.swing.undo.CannotUndoException;
 
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.PieChartLabel;
+import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
 
 
 
 /**
+ * Changes the node/branch data column IDs referenced by a pie chart label.
+ * 
  * @author Ben St&ouml;ver
  * @since 2.0.43
  */
@@ -38,10 +41,8 @@ public class PieChartLabelIDsEdit extends DocumentEdit {
 	private String[][] oldIDs;
 	
 	
-	public PieChartLabelIDsEdit(Document document, PieChartLabel[] labels,
-			String[] newIDs) {
-		
-		super(document);
+	public PieChartLabelIDsEdit(Document document, PieChartLabel[] labels, String[] newIDs) {
+		super(document, DocumentChangeType.NEUTRAL);
 		this.labels = labels;
 		this.newIDs = newIDs;
 		

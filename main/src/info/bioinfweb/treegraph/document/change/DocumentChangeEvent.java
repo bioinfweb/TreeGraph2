@@ -19,8 +19,8 @@
 package info.bioinfweb.treegraph.document.change;
 
 
-
 import info.bioinfweb.treegraph.document.Document;
+import info.bioinfweb.treegraph.document.undo.DocumentEdit;
 
 import javax.swing.event.ChangeEvent;
 
@@ -32,13 +32,26 @@ import javax.swing.event.ChangeEvent;
  * @author Ben St&ouml;ver
  */
 public class DocumentChangeEvent extends ChangeEvent {
-	public DocumentChangeEvent(Document document) {
+	private DocumentEdit edit;
+	
+	
+	public DocumentChangeEvent(Document document, DocumentEdit edit) {
 		super(document);
+		if ((edit != null) && (!edit.getDocument().equals(document))) {
+			throw new IllegalArgumentException("The document specified as the source of this event must be equal to the document "
+							+ "associated with the specified edit.");
+		}
+		this.edit = edit;
 	}
 	
 
 	@Override
 	public Document getSource() {
 		return (Document)super.getSource();
+	}
+
+
+	public DocumentEdit getEdit() {
+		return edit;
 	}
 }

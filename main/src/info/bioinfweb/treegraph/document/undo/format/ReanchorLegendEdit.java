@@ -24,6 +24,7 @@ import javax.swing.undo.CannotUndoException;
 
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Legend;
+import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
 
 
@@ -35,7 +36,7 @@ public class ReanchorLegendEdit extends DocumentEdit {
 	
 
 	public ReanchorLegendEdit(Document document, Legend legend, String newAnchor1, String newAnchor2) {
-		super(document);
+		super(document, DocumentChangeType.POSITION);
 		
 		this.legend = legend;
 		for (int i = 0; i < 2; i++) {

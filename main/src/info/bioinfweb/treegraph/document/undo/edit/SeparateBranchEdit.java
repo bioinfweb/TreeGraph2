@@ -25,6 +25,7 @@ import javax.swing.undo.CannotUndoException;
 import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
 
 
@@ -42,7 +43,7 @@ public class SeparateBranchEdit extends DocumentEdit {
   
   
 	public SeparateBranchEdit(Document document, Branch branch) {
-		super(document);
+		super(document, DocumentChangeType.TOPOLOGICAL_LEAF_INVARIANT);
 		this.branchToSplit = branch;
 		
 		insertedNode.getFormats().assign(branch.getTargetNode().getFormats());

@@ -82,7 +82,8 @@ public class DocumentTableModel extends AbstractTableModel implements DocumentLi
 	/**
 	 * Sets this view to a new model and repaints the element using the data of the 
 	 * new document. This view is automatically unregistered at the old and registered at 
-	 * the new document. 
+	 * the new document.
+	 * 
 	 * @param document the model to associate with
 	 */
 	public void setDocument(Document document) {
@@ -93,7 +94,7 @@ public class DocumentTableModel extends AbstractTableModel implements DocumentLi
 		this.document = document;
 		if (document != null) {
 			document.addView(this);
-		  changeHappened(new DocumentChangeEvent(document));
+		  changeHappened(new DocumentChangeEvent(document, null));
 		}
 	}
 

@@ -34,6 +34,7 @@ import info.bioinfweb.treegraph.document.IDManager;
 import info.bioinfweb.treegraph.document.Label;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TreeSerializer;
+import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.format.LabelFormats;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
 import info.bioinfweb.treegraph.document.undo.file.AddSupportValuesEdit;
@@ -56,7 +57,7 @@ public class AutoPositionLabelsEdit extends DocumentEdit {
 		
 	
   public AutoPositionLabelsEdit(Document document, Branch[] branches, boolean equalSupportConflictPosition) {
-		super(document);
+		super(document, DocumentChangeType.POSITION);
 		this.branches = branches;
 		this.equalSupportConflictPosition = equalSupportConflictPosition;
 		ids = readIDs(document.getTree().getPaintStart(), equalSupportConflictPosition);

@@ -26,11 +26,14 @@ import org.lsmp.djep.vectorJep.function.GetDiagonal;
 
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.IDManager;
+import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
 
 
 
 /**
+ * Renames a data ID in the specified tree and updates possible links to this ID in pie chart labels.
+ * 
  * @author Ben St&ouml;ver
  * @since 2.0.24
  */
@@ -45,7 +48,7 @@ public class RenameDataIDEdit extends DocumentEdit {
 	 * @param oldIDs - the old IDs that shall be renamed
 	 */
 	public RenameDataIDEdit(Document document, String[] newIDs, String[] oldIDs) {
-		super(document);
+		super(document, DocumentChangeType.TOPOLOGICAL_BY_RENAMING);  // The ID of the default leafs adapter could be affected.
 		this.newIDs = newIDs;
 		this.oldIDs = oldIDs;
 	}

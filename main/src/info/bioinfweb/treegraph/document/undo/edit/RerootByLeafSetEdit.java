@@ -22,6 +22,7 @@ package info.bioinfweb.treegraph.document.undo.edit;
 import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.nodebranchdata.UniqueNameAdapter;
 import info.bioinfweb.treegraph.document.topologicalcalculation.LeafSet;
 import info.bioinfweb.treegraph.document.undo.AbstractTopologicalCalculationEdit;
@@ -74,7 +75,7 @@ public class RerootByLeafSetEdit extends AbstractTopologicalCalculationEdit impl
 	 * @throws IllegalArgumentException - if one or more of the specified nodes is not a leaf 
 	 */
 	public RerootByLeafSetEdit(Document document, List<Node> leafs) {
-		super(document, UniqueNameAdapter.getSharedInstance(), false);
+		super(document, DocumentChangeType.ROOT_POSITION, UniqueNameAdapter.getSharedInstance(), false);
 		this.leafs = leafs;  // Since leafs are only compared by their unique names, it is not necessary to call findEquivalent() here.
 		rootingPoint = calculateRootingPoint();
 		nodesOnPath = null;  // Save memory, since this set will not be needed anymore after calculateRootingPoint() is finished.
@@ -90,7 +91,7 @@ public class RerootByLeafSetEdit extends AbstractTopologicalCalculationEdit impl
 	 * @throws IllegalArgumentException - if one or more of the specified nodes is not a leaf 
 	 */
 	public RerootByLeafSetEdit(Document document, Node[] leafs) {
-		super(document, UniqueNameAdapter.getSharedInstance(), false);
+		super(document, DocumentChangeType.ROOT_POSITION, UniqueNameAdapter.getSharedInstance(), false);
 		this.leafs = Arrays.asList(leafs);  // Since leafs are only compared by their unique names, it is not necessary to call findEquivalent() here.
 		rootingPoint = calculateRootingPoint();
 		nodesOnPath = null;  // Save memory, since this set will not be needed anymore after calculateRootingPoint() is finished.

@@ -24,6 +24,7 @@ import javax.swing.undo.CannotUndoException;
 
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Tree;
+import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
 
 
@@ -39,7 +40,7 @@ public class ScaleBranchLengthsEdit extends DocumentEdit {
 	 * @param length - the desired length of the longest path throught the tree im millimeters
 	 */
 	public ScaleBranchLengthsEdit(Document document, float length) {
-		super(document);
+		super(document, DocumentChangeType.POSITION);
 		this.oldScale = document.getTree().getFormats().getBranchLengthScale().getInMillimeters();
 		this.newScale = calculateScaleByLength(document.getTree(), length);
 	}

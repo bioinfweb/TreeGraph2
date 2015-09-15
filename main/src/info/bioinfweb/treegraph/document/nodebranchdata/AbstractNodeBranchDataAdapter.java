@@ -65,4 +65,23 @@ public abstract class AbstractNodeBranchDataAdapter implements NodeBranchDataAda
 			}
 		}
   }
+
+	
+	/**
+	 * Searches for the maximal node data specified by <code>adapter</code> in the 
+	 * subtree under root.
+	 * 
+	 * @param root the root of the subtree
+	 * @return the maximal node data (0 if no decimal value was found)
+	 */
+	public static double calculateMaxNodeData(NodeBranchDataAdapter adapter, Node root) {
+		double result = 0;
+		if (!Double.isNaN(adapter.getDecimal(root))) {
+			result = adapter.getDecimal(root);
+		}
+		for (int i = 0; i < root.getChildren().size(); i++) {
+			result = Math.max(result, calculateMaxNodeData(adapter, root.getChildren().get(i)));
+		}
+		return result;
+	}
 }

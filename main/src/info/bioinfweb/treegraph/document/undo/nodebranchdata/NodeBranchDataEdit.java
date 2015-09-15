@@ -22,6 +22,7 @@ package info.bioinfweb.treegraph.document.undo.nodebranchdata;
 import javax.swing.undo.CannotUndoException;
 
 import info.bioinfweb.treegraph.document.Document;
+import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
 
@@ -40,7 +41,7 @@ public abstract class NodeBranchDataEdit extends DocumentEdit {
 
 
 	public NodeBranchDataEdit(Document document, NodeBranchDataAdapter adapter) {
-		super(document);
+		super(document, DocumentChangeType.TOPOLOGICAL_BY_RENAMING);
 		this.adapter = adapter;
 		backup = new NodeBranchDataColumnBackup(adapter, document.getTree().getPaintStart());
 	}

@@ -20,12 +20,14 @@ package info.bioinfweb.treegraph.document.undo.format;
 
 
 import info.bioinfweb.treegraph.document.*;
+import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.format.ElementFormats;
 import info.bioinfweb.treegraph.document.format.LabelFormats;
 import info.bioinfweb.treegraph.document.format.operate.FormatOperator;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
 
 import java.util.Vector;
+
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 
@@ -50,7 +52,7 @@ public class OperatorsEdit extends DocumentEdit {
 	public OperatorsEdit(Document document, PaintableElement[] applyElements, 
 			FormatOperator[] operators) {
 		
-		super(document);
+		super(document, DocumentChangeType.POSITION);
 		this.applyElements = applyElements;
 		this.operators = operators;
 	}

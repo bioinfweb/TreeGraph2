@@ -22,6 +22,7 @@ package info.bioinfweb.treegraph.document.nodebranchdata;
 
 /**
  * This interface should be implemented by all node data adapters that store an ID.
+ * 
  * @see AbstractIDElementAdapter
  * @author Ben St&ouml;ver
  */
@@ -31,6 +32,7 @@ public interface IDElementAdapter extends NodeBranchDataAdapter {
 	
 	/**
 	 * Sets the ID used to access the returned data.
+	 * 
 	 * @param id
    * @since 2.0.43
 	 */

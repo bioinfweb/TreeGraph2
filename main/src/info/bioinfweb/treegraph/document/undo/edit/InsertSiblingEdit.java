@@ -24,6 +24,7 @@ import javax.swing.undo.CannotUndoException;
 
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
 
 
@@ -40,7 +41,7 @@ public class InsertSiblingEdit extends DocumentEdit {
   
   
 	public InsertSiblingEdit(Document document, Node firstSibling, Node newSibling) {
-		super(document);
+		super(document, DocumentChangeType.TOPOLOGICAL_BY_OBJECT_CHANGE);
 		this.firstSibling = firstSibling;
 		
 		newParent.getFormats().assign(firstSibling.getFormats());

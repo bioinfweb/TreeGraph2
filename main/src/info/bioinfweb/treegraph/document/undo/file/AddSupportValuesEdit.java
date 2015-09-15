@@ -25,6 +25,7 @@ import javax.swing.JOptionPane;
 
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.nodebranchdata.BranchLengthAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.HiddenBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.HiddenNodeDataAdapter;
@@ -52,13 +53,13 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
 	public Document src = null ; 
 
 	
-	/** The node/branch data to be imported (node names or branch lengths) */
+	/** The node/branch data to be imported (node names or branch lengths). */
 	private NodeBranchDataAdapter sourceAdapter = null;
 	
-	/** The node/branch data column to write imported support values to */
+	/** The node/branch data column to write imported support values to. */
 	private AbstractTextElementDataAdapter supportAdapter = null;
 	
-	/** The node/branch data column to write imported conflict values to */
+	/** The node/branch data column to write imported conflict values to. */
 	private AbstractTextElementDataAdapter conflictAdapter = null;
 	
 	public enum TargetType {
@@ -70,7 +71,7 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
 			TextElementDataAdapter terminalsAdapter, TargetType targetType, String idPrefix,
 			NodeBranchDataAdapter sourceAdapter, boolean processRooted) {
 		
-		super(document, terminalsAdapter, processRooted);
+		super(document, DocumentChangeType.TOPOLOGICAL_BY_RENAMING, terminalsAdapter, processRooted);  // Topological relevance only if the default leafs adapter ID is affected. 
 		this.src = src;
 		this.sourceAdapter = sourceAdapter;
 		

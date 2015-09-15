@@ -415,7 +415,6 @@ main/src/info/bioinfweb/treegraph/document/undo/format/ColorsByNodeBranchDataEdi
 main/src/info/bioinfweb/treegraph/document/undo/format/DistanceValuesBackup.java -text
 main/src/info/bioinfweb/treegraph/document/undo/format/DistanceValuesByNodeBranchDataEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/format/GlobalFormatsEdit.java -text
-main/src/info/bioinfweb/treegraph/document/undo/format/NodeBranchDataFormatEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/format/OperatorsEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/format/ReanchorLegendEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/format/ScaleBranchLengthsEdit.java -text

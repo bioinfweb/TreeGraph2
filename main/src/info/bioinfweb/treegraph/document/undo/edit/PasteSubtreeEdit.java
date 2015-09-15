@@ -25,6 +25,7 @@ import javax.swing.undo.CannotUndoException;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Legend;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
 
 
@@ -39,7 +40,7 @@ public class PasteSubtreeEdit extends DocumentEdit {
   
   
 	public PasteSubtreeEdit(Document document, Node parent, Node root, Legend[] legends) {
-		super(document);
+		super(document, DocumentChangeType.TOPOLOGICAL_BY_OBJECT_CHANGE);
 		this.parent = parent;
 		this.root = root;
 		legendPaster = new LegendPaster(document, legends);
