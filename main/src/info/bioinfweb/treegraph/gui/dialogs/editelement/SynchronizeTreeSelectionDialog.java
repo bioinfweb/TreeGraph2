@@ -2,28 +2,28 @@ package info.bioinfweb.treegraph.gui.dialogs.editelement;
 
 
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Insets;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.TitledBorder;
 
-import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 import info.bioinfweb.treegraph.document.undo.ImportTextElementDataParameters;
 import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
 import info.bioinfweb.treegraph.gui.dialogs.ImportTextElementDataParametersPanel;
-import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NewNodeBranchDataInput;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 
 
 
-public class SynchronizeTreeSelectionDialog extends EditDialog {	
+public class SynchronizeTreeSelectionDialog extends EditDialog {
 	private JPanel jContentPane = null;
-	private JPanel inputAdaptersPanel = null;
-	private JLabel inputAdaptersLabel = null;
-	private NewNodeBranchDataInput inputAdapters = null;
+//	private JPanel compareParametersPanel = null;
+//	JLabel textElementDataParametersLabel = null;
 	private ImportTextElementDataParametersPanel textElementDataParametersPanel = null;
 	private ImportTextElementDataParameters textElementDataParameters = null;
 	
@@ -34,6 +34,7 @@ public class SynchronizeTreeSelectionDialog extends EditDialog {
 		initialize();
 		setLocationRelativeTo(mainFrame);
 	}
+	
 
 	@Override
 	protected boolean onExecute() {
@@ -59,7 +60,7 @@ public class SynchronizeTreeSelectionDialog extends EditDialog {
 	 * @return void
 	 */
 	private void initialize() {
-		setTitle("Synchronize Tree Selection");
+		setTitle("Tree selection synchronization compare parameters");
 		setContentPane(getJContentPane());
 		pack();
 	}
@@ -74,7 +75,6 @@ public class SynchronizeTreeSelectionDialog extends EditDialog {
 		if (jContentPane == null) {
 			jContentPane = new JPanel();
 			jContentPane.setLayout(new BoxLayout(getJContentPane(), BoxLayout.Y_AXIS));
-			jContentPane.add(getInputAdaptersPanel(), null);
 			jContentPane.add(getTextElementDataParametersPanel(), null);
 			jContentPane.add(getButtonsPanel(), null);
 			getApplyButton().setVisible(false);
@@ -83,32 +83,12 @@ public class SynchronizeTreeSelectionDialog extends EditDialog {
 	}
 	
 	
-	private JPanel getInputAdaptersPanel() {
-		if (inputAdaptersPanel == null) {
-			inputAdaptersPanel = new JPanel();
-			inputAdaptersPanel.setLayout(new GridBagLayout());
-			GridBagConstraints inputAdaptersGBC = new GridBagConstraints();	
-			inputAdaptersGBC.gridx = 0;
-			inputAdaptersGBC.anchor = GridBagConstraints.WEST;
-			inputAdaptersGBC.gridy =  1;
-			inputAdaptersGBC.insets = new Insets(4, 6, 4, 0);
-			inputAdaptersGBC.gridwidth = GridBagConstraints.RELATIVE;
-			inputAdaptersLabel = new JLabel();
-			inputAdaptersLabel.setText("Input Adapters");
-			inputAdaptersPanel.add(inputAdaptersLabel, inputAdaptersGBC);
-			
-			inputAdapters = new NewNodeBranchDataInput(inputAdaptersPanel, 0, 2, true);
-			inputAdapters.setAdapters(null, false, true, false, false, true, "");
-			inputAdapters.setSelectedAdapter(NodeNameAdapter.class);
-			inputAdapters.setID("");
-		}
-		return inputAdaptersPanel;
-	}	
-	
-	
 	private ImportTextElementDataParametersPanel getTextElementDataParametersPanel() {
 		if (textElementDataParametersPanel == null) {
 			textElementDataParametersPanel = new ImportTextElementDataParametersPanel();
+			textElementDataParametersPanel.setBorder(BorderFactory.createTitledBorder(null, "", 
+					TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, 
+					new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
 		}
 		return textElementDataParametersPanel;
 	}

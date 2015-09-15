@@ -5,20 +5,20 @@ import javax.swing.Action;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.gui.actions.EditDialogAction;
-import info.bioinfweb.treegraph.gui.dialogs.editelement.SynchronizeTreeSelectionDialog;
+import info.bioinfweb.treegraph.gui.dialogs.editelement.DefaultDocumentAdapterDialog;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 
-public class SynchronizeTreeSelectionAction extends EditDialogAction {
-	public SynchronizeTreeSelectionAction(MainFrame mainFrame) {
+public class DefaultDocumentAdapterAction extends EditDialogAction {
+	public DefaultDocumentAdapterAction(MainFrame mainFrame) {
 		super(mainFrame);
-		putValue(Action.NAME, "Tree selection compare parameters...");
+		putValue(Action.NAME, "Set default document adapters...");
 	}
 
 	
 	@Override
-	public SynchronizeTreeSelectionDialog createDialog() {
-		return new SynchronizeTreeSelectionDialog(getMainFrame());
+	public DefaultDocumentAdapterDialog createDialog() {
+		return new DefaultDocumentAdapterDialog(getMainFrame());
 	}
 
 

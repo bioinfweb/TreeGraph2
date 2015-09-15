@@ -1,18 +1,13 @@
 package info.bioinfweb.treegraph.gui.actions.select;
 
 
-import java.util.Map;
 import java.awt.event.ActionEvent;
 import java.util.Iterator;
 
 import javax.swing.Action;
 
 import info.bioinfweb.treegraph.document.Document;
-import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
-import info.bioinfweb.treegraph.document.topologicalcalculation.TopologicalCalculator;
-import info.bioinfweb.treegraph.document.undo.ImportTextElementDataParameters;
 import info.bioinfweb.treegraph.gui.actions.DocumentAction;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeInternalFrame;
@@ -21,14 +16,9 @@ import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 
 
 public class TreeSelectionSynchronizeToggleAction extends DocumentAction {
-	public static final String KEY_LEAF_REFERENCE = TreeSelectionSynchronizeToggleAction.class.getName() + ".LeafSet";
-	
-	private NodeBranchDataAdapter adapter = NodeNameAdapter.getSharedInstance();
-	
-	
 	public TreeSelectionSynchronizeToggleAction(MainFrame mainFrame) {
 		super(mainFrame);
-		putValue(Action.NAME, "Synchronize tree selection toggle");
+		putValue(Action.NAME, "Synchronize tree selection");
 		putValue(Action.SHORT_DESCRIPTION, "Synchronize node selection in all currently opened trees");
 		putValue(Action.SELECTED_KEY, false);
 		loadSymbols("SynchronizeTreeSelection");
@@ -37,35 +27,21 @@ public class TreeSelectionSynchronizeToggleAction extends DocumentAction {
 	
 	@Override
 	protected void onActionPerformed(ActionEvent e, TreeInternalFrame frame) {
-		if ((Boolean)getValue(Action.SELECTED_KEY)) { //TODO Action geht aus und lädt alles beim Neustart neu, wenn Änderungen im Dokument sind
-			System.out.println("Loaded");
-			getMainFrame().getTreeSelectionSynchronizer().setTopologicalCalculator(
-					new TopologicalCalculator(frame.getDocument(), adapter, false, KEY_LEAF_REFERENCE, new ImportTextElementDataParameters()));
-			Map<TextElementData, Integer> leafValues = getMainFrame().getTreeSelectionSynchronizer().getTopologicalCalculator().getLeafValues();
-	
-			// Create map of leaves from all documents and add listeners:
-			Iterator<TreeInternalFrame> treeFrameIterator = getMainFrame().treeFrameIterator();
+		Iterator<TreeInternalFrame> treeFrameIterator = getMainFrame().treeFrameIterator();
+		if (getMainFrame().getTreeSelectionSynchronizer().isActive()) {		// Reset TreeSelectionSynchronizer and add listeners:
+			getMainFrame().getTreeSelectionSynchronizer().reset();
 			while(treeFrameIterator.hasNext()) {
-					TreeInternalFrame currentFrame = treeFrameIterator.next();
-					currentFrame.getTreeViewPanel().addTreeViewPanelListener(getMainFrame().getTreeSelectionSynchronizer());					
-					if (currentFrame.getDocument() != frame.getDocument()) {  // First document was already added in the constructor. 
-						getMainFrame().getTreeSelectionSynchronizer().getTopologicalCalculator().
-								addLeafMap(leafValues, currentFrame.getDocument().getTree().getPaintStart(), adapter);
-					}
+				TreeInternalFrame currentFrame = treeFrameIterator.next();
+				currentFrame.getTreeViewPanel().addTreeViewPanelListener(getMainFrame().getTreeSelectionSynchronizer());
+				currentFrame.getTreeViewPanel().getDocument().addView(getMainFrame().getTreeSelectionSynchronizer());
+				}
 			}
-
-			// Create leaf sets:
-			treeFrameIterator = getMainFrame().treeFrameIterator();
+		else {		// Unregister listeners:
 			while(treeFrameIterator.hasNext()) {
-					getMainFrame().getTreeSelectionSynchronizer().getTopologicalCalculator().
-							addLeafSets(treeFrameIterator.next().getDocument().getTree().getPaintStart(), adapter);
-			}
-		}
-		else {  // Unregister listeners:				
-			Iterator<TreeInternalFrame> treeFrameIterator = getMainFrame().treeFrameIterator();
-			while(treeFrameIterator.hasNext()) {
-				treeFrameIterator.next().getTreeViewPanel().removeTreeViewPanelListener(getMainFrame().getTreeSelectionSynchronizer());
-			}
+				TreeInternalFrame currentFrame = treeFrameIterator.next();		
+				currentFrame.getTreeViewPanel().removeTreeViewPanelListener(getMainFrame().getTreeSelectionSynchronizer());
+				currentFrame.getTreeViewPanel().getDocument().removeView(getMainFrame().getTreeSelectionSynchronizer());
+				}
 		}
 	}
 	

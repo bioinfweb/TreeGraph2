@@ -138,6 +138,7 @@ public class ActionManagement extends AbstractUndoActionManagement {
 		put("edit.search", new SearchTextAction(mainFrame));
 		put("edit.replaceInNodeData", new ReplaceInNodeDataAction(mainFrame));
 		put("edit.calculate", new CalculateColumnAction(mainFrame));
+		put("edit.defaultDocumentAdapters", new DefaultDocumentAdapterAction(mainFrame));
 		
 		put("format.editDocumentFormats", new EditGlobalFormatsAction(mainFrame));
 		put("format.showRooted", new ShowRootedAction(mainFrame));

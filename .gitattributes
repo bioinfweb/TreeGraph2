@@ -499,6 +499,7 @@ main/src/info/bioinfweb/treegraph/gui/actions/edit/CopyAllLabelsAction.java -tex
 main/src/info/bioinfweb/treegraph/gui/actions/edit/CopyColumnAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/edit/CopyElementAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/edit/CutAction.java -text
+main/src/info/bioinfweb/treegraph/gui/actions/edit/DefaultDocumentAdapterAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/actions/edit/DeleteColumnAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/edit/DeleteElementAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/edit/DeleteOutsideIntervalAction.java -text
@@ -611,6 +612,7 @@ main/src/info/bioinfweb/treegraph/gui/dialogs/SearchTextDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/SortLeafsDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/editelement/AbstractTextElementDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/editelement/ChangeIDDialog.java -text
+main/src/info/bioinfweb/treegraph/gui/dialogs/editelement/DefaultDocumentAdapterDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/editelement/EditBranchLengthDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/editelement/EditPieChartLabelsDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/editelement/EditTextElementDialog.java -text

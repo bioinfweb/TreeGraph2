@@ -674,6 +674,8 @@ public class MainFrame extends JFrame implements Runnable {
 			nodeBranchDataMenu.add(getActionManagement().get("edit.deleteColumn"));
 			nodeBranchDataMenu.add(getActionManagement().get("edit.deleteOutsideInterval"));
 			nodeBranchDataMenu.add(getActionManagement().get("edit.calculate"));
+			nodeBranchDataMenu.addSeparator();
+			nodeBranchDataMenu.add(getActionManagement().get("edit.defaultDocumentAdapters"));
 		}
 		return nodeBranchDataMenu;
 	}

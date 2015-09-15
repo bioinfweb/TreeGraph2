@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben Stï¿½ver, Kai Mï¿½ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -26,11 +26,13 @@ import javax.swing.JOptionPane;
 
 import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.treegraph.document.change.DocumentChangeEvent;
-import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.change.DocumentListener;
 import info.bioinfweb.treegraph.document.io.ReadWriteFactory;
 import info.bioinfweb.treegraph.document.io.ReadWriteFormat;
 import info.bioinfweb.treegraph.document.io.xtg.XTGFilter;
+import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.VoidNodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.*;
 import info.bioinfweb.treegraph.graphics.positionpaint.*;
 import info.bioinfweb.treegraph.gui.*;
@@ -73,6 +75,9 @@ public class Document extends SwingSaver
   	  new EnumMap<PositionPaintType, Boolean>(PositionPaintType.class);
   private EnumMap<PositionPaintType, Boolean> painters = 
   	  new EnumMap<PositionPaintType, Boolean>(PositionPaintType.class);
+  
+  private NodeBranchDataAdapter defaultLeafAdapter = new NodeNameAdapter();
+  private NodeBranchDataAdapter defaultSupportAdapter = new VoidNodeBranchDataAdapter("No support values available");
   
     
   /**
@@ -219,11 +224,31 @@ public class Document extends SwingSaver
 	}
 
 
+	public NodeBranchDataAdapter getDefaultLeafAdapter() {
+		return defaultLeafAdapter;
+	}
+
+
+	public void setDefaultLeafAdapter(NodeBranchDataAdapter defaultLeafAdapter) {
+		this.defaultLeafAdapter = defaultLeafAdapter;
+	}
+
+
+	public NodeBranchDataAdapter getDefaultSupportAdapter() {
+		return defaultSupportAdapter;
+	}
+
+
+	public void setDefaultSupportAdapter(NodeBranchDataAdapter defaultSupportAdapter) {
+		this.defaultSupportAdapter = defaultSupportAdapter;
+	}
+
+
 	public void executeEdit(DocumentEdit edit) {
-		if (!getUndoManager().addEdit(edit)) {  // Muss vor Ausführung erfolgen da sonst Undo-Schalter ggf. nicht aktiviert werden.
+		if (!getUndoManager().addEdit(edit)) {  // Muss vor Ausfï¿½hrung erfolgen da sonst Undo-Schalter ggf. nicht aktiviert werden.
 			throw new RuntimeException("The edit could not be executed.");
 		}
-		edit.redo();  // Tatsächlich ausführen.
+		edit.redo();  // Tatsï¿½chlich ausfï¿½hren.
 	}
 	
 	
