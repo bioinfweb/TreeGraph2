@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben Stï¿½ver, Kai Mï¿½ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -31,6 +31,11 @@ import info.bioinfweb.treegraph.document.TextElementData;
  * @author Ben St&ouml;ver
  */
 public interface NodeBranchDataAdapter {
+	public static final String NAME_PREFIX = "info.bioinfweb.treegraph.";
+	
+	
+	public String getName();
+	
 	public boolean readOnly();
 	
 	public boolean decimalOnly();

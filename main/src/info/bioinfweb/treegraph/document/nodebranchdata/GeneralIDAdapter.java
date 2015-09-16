@@ -19,6 +19,12 @@ public class GeneralIDAdapter extends AbstractIDElementAdapter {
 	
 	
 	@Override
+	public String getName() {
+		return NAME_PREFIX + "generalID";
+	}
+
+
+	@Override
 	public boolean readOnly() {
 		return true; //TODO evtl. an anderen Stellen ungünstig?
 	}

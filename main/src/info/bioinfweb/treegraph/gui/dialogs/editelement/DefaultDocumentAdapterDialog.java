@@ -19,8 +19,8 @@ public class DefaultDocumentAdapterDialog extends EditDialog {
 	private JPanel jContentPane = null;
 	private JPanel defaultDocumentAdaptersPanel = null;
 	private JLabel defaultSupportAdapterLabel = null;
-	private NodeBranchDataInput defaultLeafAdapter = null;
-	private NodeBranchDataInput defaultSupportAdapter = null;
+	private NodeBranchDataInput defaultLeafAdapterInput = null;
+	private NodeBranchDataInput defaultSupportAdapterInput = null;
 	
 	
 	public DefaultDocumentAdapterDialog(MainFrame mainFrame) {
@@ -32,18 +32,18 @@ public class DefaultDocumentAdapterDialog extends EditDialog {
 
 	@Override
 	protected boolean onExecute() {
-		defaultLeafAdapter.setSelectedAdapter(getDocument().getDefaultLeafAdapter());
-		defaultSupportAdapter.setSelectedAdapter(getDocument().getDefaultSupportAdapter());
+		defaultLeafAdapterInput.setAdapters(getDocument().getTree(), true, true, false, false, false, null);
+		defaultSupportAdapterInput.setAdapters(getDocument().getTree(), false, true, true, false, false, "No support values available");  // DecimalOnly is not set because previously set default document adapters may not be displayed then.
+		defaultLeafAdapterInput.setSelectedAdapter(getDocument().getDefaultLeafAdapter());
+		defaultSupportAdapterInput.setSelectedAdapter(getDocument().getDefaultSupportAdapter());
 		return true;
 	}
 
 	
 	@Override
 	protected boolean apply() {
-		getDocument().setDefaultLeafAdapter(defaultLeafAdapter.getSelectedAdapter());
-		System.out.println(getDocument().getDefaultLeafAdapter());
-		getDocument().setDefaultSupportAdapter(defaultSupportAdapter.getSelectedAdapter());
-		System.out.println(getDocument().getDefaultSupportAdapter());
+		getDocument().setDefaultLeafAdapter(defaultLeafAdapterInput.getSelectedAdapter());
+		getDocument().setDefaultSupportAdapter(defaultSupportAdapterInput.getSelectedAdapter());
 		return true;
 	}
 	
@@ -93,10 +93,9 @@ public class DefaultDocumentAdapterDialog extends EditDialog {
 			defaultSupportAdapterLabel.setText("Set default leaf adapter:");
 			defaultDocumentAdaptersPanel.add(defaultSupportAdapterLabel, defaultLeafAdapterLabelGBC);
 			
-			defaultLeafAdapter = new NodeBranchDataInput(defaultDocumentAdaptersPanel, 0, 1);
-			defaultLeafAdapter.setAdapters(null, true, true, false, false, false, "");			
+			defaultLeafAdapterInput = new NodeBranchDataInput(defaultDocumentAdaptersPanel, 0, 1);		
 			
-			GridBagConstraints defaultSupportAdapterLabelGBC = new GridBagConstraints();	
+			GridBagConstraints defaultSupportAdapterLabelGBC = new GridBagConstraints();
 			defaultSupportAdapterLabelGBC.gridx = 0;
 			defaultSupportAdapterLabelGBC.anchor = GridBagConstraints.WEST;
 			defaultSupportAdapterLabelGBC.gridy =  2;
@@ -106,8 +105,7 @@ public class DefaultDocumentAdapterDialog extends EditDialog {
 			defaultSupportAdapterLabel.setText("Set default support adapter:");
 			defaultDocumentAdaptersPanel.add(defaultSupportAdapterLabel, defaultSupportAdapterLabelGBC);
 			
-			defaultSupportAdapter = new NodeBranchDataInput(defaultDocumentAdaptersPanel, 0, 3);
-			defaultSupportAdapter.setAdapters(null, false, true, true, true, false, "No support values available");			
+			defaultSupportAdapterInput = new NodeBranchDataInput(defaultDocumentAdaptersPanel, 0, 3);			
 		}
 		return defaultDocumentAdaptersPanel;
 	}	

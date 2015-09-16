@@ -311,6 +311,8 @@ main/src/info/bioinfweb/treegraph/document/nodebranchdata/TextElementDataAdapter
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/TextLabelAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/UniqueNameAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/VoidNodeBranchDataAdapter.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/nodebranchdata/factory/NodeBranchDataAdapterFactory.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/nodebranchdata/factory/SingleNodeBranchDataAdapterFactory.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/package.html -text
 main/src/info/bioinfweb/treegraph/document/package.html -text
 main/src/info/bioinfweb/treegraph/document/position/LegendPositionData.java -text

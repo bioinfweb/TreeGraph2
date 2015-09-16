@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben Stï¿½ver, Kai Mï¿½ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -89,7 +89,7 @@ public class NodeDataComboBoxModel extends AbstractListModel<NodeBranchDataAdapt
 
   	clear();
   	
-  	if (!noImportAdapterSelectable.equals("")) {
+  	if ((noImportAdapterSelectable != null) && !noImportAdapterSelectable.equals("")) {
 			adapters.add(new VoidNodeBranchDataAdapter(noImportAdapterSelectable));
 		}
   	
@@ -125,7 +125,7 @@ public class NodeDataComboBoxModel extends AbstractListModel<NodeBranchDataAdapt
 		// Delete all adapters for columns that contain no decimal value
 		if (decimalOnly && (tree != null)) {
 			for (int i = getSize() - 1; i >= 0; i--) {
-				if (!tree.containsDecimal(adapters.get(i))) {
+				if (!tree.containsDecimal(adapters.get(i)) && !(adapters.get(i) instanceof VoidNodeBranchDataAdapter)) {
 					adapters.remove(i);
 				}
 			}

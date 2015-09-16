@@ -16,6 +16,12 @@ public class PieChartLabelAdapter extends AbstractIDElementAdapter {
 
 	
 	@Override
+	public String getName() {
+		return NAME_PREFIX + "pieChartLabel";
+	}
+
+
+	@Override
 	public TextElementData getData(Node node) {
 		// unused
 		return null;

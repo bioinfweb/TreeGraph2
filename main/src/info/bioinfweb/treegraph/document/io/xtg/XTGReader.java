@@ -24,6 +24,8 @@ import info.bioinfweb.treegraph.document.format.*;
 import info.bioinfweb.treegraph.document.io.AbstractDocumentReader;
 import info.bioinfweb.treegraph.document.io.DocumentIterator;
 import info.bioinfweb.treegraph.document.io.SingleDocumentIterator;
+import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.factory.NodeBranchDataAdapterFactory;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.commons.io.FormatVersion;
 import info.bioinfweb.commons.io.InvalidXSDPathException;
@@ -40,6 +42,8 @@ import javax.xml.stream.*;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
+
+import org.lsmp.djep.vectorJep.function.GetDiagonal;
 
 
 
@@ -101,6 +105,53 @@ public class XTGReader extends AbstractDocumentReader implements XTGConstants {
   private void readDistanceDimensionAttr(DistanceDimension d, StartElement element) {
   	readDistanceValueAttr(d.getWidth(), element, ATTR_WIDTH);
   	readDistanceValueAttr(d.getHeight(), element, ATTR_HEIGHT);
+  }
+  
+  
+  private void readAdapter(StartElement element) throws XMLStreamException {
+  	String adapterName = XMLUtils.readStringAttr(element, ATTR_ADAPTER_NAME, null);
+  	String adapterPurpose =  XMLUtils.readStringAttr(element, ATTR_ADAPTER_PURPOSE, null);
+  	if (adapterName != null) {
+  		NodeBranchDataAdapter adapter = NodeBranchDataAdapterFactory.getInstance().newAdapterInstance(adapterName, XMLUtils.readStringAttr(element, ATTR_ADAPTER_ID, ""));
+  		if (adapter == null) {
+    		loadLogger.addWarning("No NodeBranchDataAdapter with the name \"" + adapterName + "\" could be created. Probably you are not using the most recent version of TreeGraph 2.");
+  		}
+  		else {
+	  		if (VALUE_LEAFS_ADAPTER.equals(adapterPurpose)) {
+	  			document.setDefaultLeafAdapter(adapter);
+	  		}
+	  		else if (VALUE_SUPPORT_VALUES_ADAPTER.equals(adapterPurpose)) {
+	  			document.setDefaultSupportAdapter(adapter);
+	  		}
+	  		else if (adapterPurpose == null) {
+	    		loadLogger.addWarning("An adapter could not be read, beacuse no purpose attribute was specified.");
+	  		}
+	  		else {
+	    		loadLogger.addWarning("No default adapter for the purpose \"" + adapterPurpose + "\" could be written to the document. Probably you are not using the most recent version of TreeGraph 2.");
+	  		}
+  		}
+  	}
+  	else {
+  		loadLogger.addWarning("An adapter could not be read, beacuse no name attribute was specified.");
+  	}
+  	reachElementEnd(reader, "XML elements under <" + TAG_ADAPTER + ">");
+  }
+  
+  
+  private void readNodeBranchDataAdapters(StartElement rootElement) throws XMLStreamException {
+  	XMLEvent event = reader.nextEvent();
+    while (event.getEventType() != XMLStreamConstants.END_ELEMENT) {
+      if (event.getEventType() == XMLStreamConstants.START_ELEMENT) {
+      	StartElement element = event.asStartElement();
+        if (element.getName().getLocalPart().equals(TAG_ADAPTER)) {
+        	readAdapter(element);
+        }
+        else {  // evtl. zusätzlich vorhandenes Element, dass nicht gelesen wird
+          reachElementEnd(reader, element);  
+        }
+      }
+      event = reader.nextEvent();
+    }
   }
   
   
@@ -545,7 +596,10 @@ public class XTGReader extends AbstractDocumentReader implements XTGConstants {
     while (event.getEventType() != XMLStreamConstants.END_ELEMENT) {
       if (event.getEventType() == XMLStreamConstants.START_ELEMENT) {
       	StartElement element = event.asStartElement();
-        if (element.getName().getLocalPart().equals(TAG_GLOBAL_FORMATS)) {
+      	if (element.getName().getLocalPart().equals(TAG_NODE_BRANCH_DATA_ADAPTERS)) {
+      		readNodeBranchDataAdapters(element);
+      	}
+      	else if (element.getName().getLocalPart().equals(TAG_GLOBAL_FORMATS)) {
          	readGlobalFormats(element);
           //event = reader.nextEvent();
         }
@@ -603,8 +657,7 @@ public class XTGReader extends AbstractDocumentReader implements XTGConstants {
 		
 		try {
 			XMLEvent event;
-			while (reader.hasNext())
-	    {
+			while (reader.hasNext()) {
 	      event = reader.nextEvent();
 	      switch (event.getEventType()) {
 	        case XMLStreamConstants.START_DOCUMENT:

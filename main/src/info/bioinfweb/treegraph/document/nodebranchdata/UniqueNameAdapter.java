@@ -36,6 +36,12 @@ public class UniqueNameAdapter extends AbstractNodeBranchDataAdapter implements 
 	}
 	
 	
+	@Override
+	public String getName() {
+		return NAME_PREFIX + "uniqueNodeName";
+	}
+
+
 	public boolean readOnly() {
 		return true;
 	}

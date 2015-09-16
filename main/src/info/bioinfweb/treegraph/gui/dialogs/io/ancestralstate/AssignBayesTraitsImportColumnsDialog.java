@@ -92,9 +92,14 @@ public class AssignBayesTraitsImportColumnsDialog extends AssignImportColumnsDia
 	
 	public boolean execute(AncestralStateImportParameters parameters, AncestralStateData data, Tree tree) {
 		this.tree = tree;
-		createInputs(data);
 		this.parameters = parameters;
 		this.data = data;
+
+		createInputs(data);
+		internalNodeNames.setAdapters(tree, false, true, false, false, true, "Do not import internal node names");
+		internalNodeNames.setSelectedAdapter(NodeNameAdapter.class);
+		internalNodeNames.setID("");
+
 		return execute();
 	}
 	
@@ -162,7 +167,7 @@ public class AssignBayesTraitsImportColumnsDialog extends AssignImportColumnsDia
 	private JPanel getJContentPane() {
 		if (jContentPane == null) {
 			jContentPane = new JPanel();
-			jContentPane.setLayout(new BoxLayout(getJContentPane(), BoxLayout.Y_AXIS));
+			jContentPane.setLayout(new BoxLayout(jContentPane, BoxLayout.Y_AXIS));
 			jContentPane.add(getScrollPane());
 			jContentPane.add(getImportInternalNodeNamesPanel(), null);
 			jContentPane.add(getButtonsPanel(), null);
@@ -186,9 +191,6 @@ public class AssignBayesTraitsImportColumnsDialog extends AssignImportColumnsDia
 			importInternalNodeNamesPanel.add(importInternalNodeNamesLabel, importInternalNodeNamesLabelGBC);
 			
 			internalNodeNames = new NewNodeBranchDataInput(importInternalNodeNamesPanel, 1, bottomY + 1, true);
-			internalNodeNames.setAdapters(tree, false, true, false, false, true, "Do not import internal node names");
-			internalNodeNames.setSelectedAdapter(NodeNameAdapter.class);
-			internalNodeNames.setID("");
 		}
 		return importInternalNodeNamesPanel;
 	}

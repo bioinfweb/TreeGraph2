@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben Stï¿½ver, Kai Mï¿½ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -24,11 +24,14 @@ import info.bioinfweb.treegraph.document.format.*;
 import info.bioinfweb.treegraph.document.io.AbstractDocumentWriter;
 import info.bioinfweb.treegraph.document.io.DocumentWriter;
 import info.bioinfweb.treegraph.document.io.ReadWriteParameterMap;
+import info.bioinfweb.treegraph.document.nodebranchdata.IDElementAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.commons.io.XMLUtils;
 
 import java.awt.Color;
 import java.io.OutputStream;
 import java.util.Iterator;
+
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -86,6 +89,25 @@ public class XTGWriter extends AbstractDocumentWriter implements XTGConstants, D
 		writer.writeStartElement(name);
 		writer.writeAttribute(ATTR_WIDTH.toString(), "" + d.getWidth().getInMillimeters());
 		writer.writeAttribute(ATTR_HEIGHT.toString(), "" + d.getHeight().getInMillimeters());
+		writer.writeEndElement();
+	}
+	
+	
+	private void writeAdapter(Document document, NodeBranchDataAdapter adapter, String purpose) throws XMLStreamException {
+		writer.writeStartElement(TAG_ADAPTER);
+		writer.writeAttribute(ATTR_ADAPTER_NAME.toString(), adapter.getName());
+		if (document.getDefaultLeafAdapter() instanceof IDElementAdapter) {
+			writer.writeAttribute(ATTR_ADAPTER_ID.toString(), ((IDElementAdapter)adapter).getID());		
+		}
+		writer.writeAttribute(ATTR_ADAPTER_PURPOSE.toString(), purpose);		
+		writer.writeEndElement();
+	}
+	
+	
+	private void writeNodeBranchDataAdapters(Document document) throws XMLStreamException {
+		writer.writeStartElement(TAG_NODE_BRANCH_DATA_ADAPTERS.toString());
+		writeAdapter(document, document.getDefaultLeafAdapter(), VALUE_LEAFS_ADAPTER);
+		writeAdapter(document, document.getDefaultSupportAdapter(), VALUE_SUPPORT_VALUES_ADAPTER);
 		writer.writeEndElement();
 	}
 	
@@ -367,6 +389,8 @@ public class XTGWriter extends AbstractDocumentWriter implements XTGConstants, D
 						VERSION + ".xsd");
 				
 			  writeGlobalFormats(document.getTree().getFormats());
+			  writeNodeBranchDataAdapters(document);
+			  //TODO write default adapters
 				writer.writeStartElement(TAG_TREE.toString());
 			  if (!document.getTree().isEmpty()) {
 				  writeSubtree(document.getTree().getPaintStart());

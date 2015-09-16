@@ -37,8 +37,7 @@ public class SynchronizeTreeSelectionDialog extends EditDialog {
 	
 
 	@Override
-	protected boolean onExecute() {
-		//MainFrame.getInstance().getT
+	protected boolean onExecute() {		
 		getTextElementDataParameters().setCaseSensitive(getTextElementDataParametersPanel().getCaseCheckBox().isEnabled());
 		getTextElementDataParameters().setDistinguishSpaceUnderscore(getTextElementDataParametersPanel().getDistinguishSpaceUnderscoreCheckBox().isEnabled());
 		getTextElementDataParameters().setIgnoreWhitespace(getTextElementDataParametersPanel().getIgnoreWhitespaceCheckBox().isEnabled());
@@ -49,7 +48,7 @@ public class SynchronizeTreeSelectionDialog extends EditDialog {
 	
 	@Override
 	protected boolean apply() {
-		// TODO Auto-generated method stub
+		textElementDataParametersPanel.assignToParameters(textElementDataParameters);
 		return true;
 	}
 	

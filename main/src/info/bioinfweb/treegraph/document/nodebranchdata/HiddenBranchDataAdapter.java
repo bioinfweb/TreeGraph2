@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben Stï¿½ver, Kai Mï¿½ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -28,6 +28,12 @@ import info.bioinfweb.treegraph.document.Node;
 public class HiddenBranchDataAdapter extends HiddenDataAdapter {
 	public HiddenBranchDataAdapter(String id) {
 		super(id);
+	}
+
+
+	@Override
+	public String getName() {
+		return NAME_PREFIX + "hiddenBranchData";
 	}
 
 

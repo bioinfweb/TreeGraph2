@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben Stï¿½ver, Kai Mï¿½ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -32,7 +32,7 @@ import javax.xml.namespace.QName;
  */
 public interface XTGConstants {
   public static final String NAMESPACE_URI = "http://bioinfweb.info/xmlns/xtg";
-  public static final FormatVersion VERSION = new FormatVersion(1, 2);
+  public static final FormatVersion VERSION = new FormatVersion(1, 4);
   public static final String FULL_SCHEMA_LOCATION = NAMESPACE_URI + " " + NAMESPACE_URI + "/" + VERSION + ".xsd";
   
   public static final String TAG_ROOT = "TreegraphDocument";
@@ -45,6 +45,15 @@ public interface XTGConstants {
   public static final QName ATTR_SHOW_ROOTED = new QName("ShowRooted");
   public static final QName ATTR_ALIGN_TO_SUBTREE = new QName("AlignToSubtree");
   public static final QName ATTR_POSITION_LABELS_TO_LEFT = new QName("LabelsLeft");
+  
+  public static final String TAG_NODE_BRANCH_DATA_ADAPTERS = "NodeBranchDataAdapters";
+  public static final String TAG_ADAPTER = "Adapter";
+  public static final QName ATTR_ADAPTER_NAME = new QName("Name");
+  public static final QName ATTR_ADAPTER_ID = new QName("ID");
+  public static final QName ATTR_ADAPTER_PURPOSE = new QName("Purpose");
+  public static final String VALUE_ADAPTER_PURPOSE_PREFIX = "info.bioinfweb.treegraph.";
+  public static final String VALUE_LEAFS_ADAPTER = VALUE_ADAPTER_PURPOSE_PREFIX + "defaultLeafsAdapter";
+  public static final String VALUE_SUPPORT_VALUES_ADAPTER = VALUE_ADAPTER_PURPOSE_PREFIX + "defaultSupportAdapter";
   
   public static final QName ATTR_WIDTH = new QName("Width");
   public static final QName ATTR_HEIGHT = new QName("Height");

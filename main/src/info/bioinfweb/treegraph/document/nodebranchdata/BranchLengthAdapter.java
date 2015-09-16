@@ -41,6 +41,12 @@ public class BranchLengthAdapter extends AbstractNodeBranchDataAdapter
 	
 	
 	@Override
+	public String getName() {
+		return NAME_PREFIX + "branchLength";
+	}
+
+
+	@Override
 	public boolean decimalOnly() {
 		return true;
 	}

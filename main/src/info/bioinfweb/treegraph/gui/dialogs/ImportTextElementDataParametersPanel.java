@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben Stï¿½ver, Kai Mï¿½ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -59,12 +59,20 @@ public class ImportTextElementDataParametersPanel extends JPanel {
   }
 
 
-	public void assignParameters(ImportTextElementDataParameters parameters) {
+	public void assignToParameters(ImportTextElementDataParameters parameters) {
 		parameters.setIgnoreWhitespace(getIgnoreWhitespaceCheckBox().isSelected());
 		parameters.setDistinguishSpaceUnderscore(getDistinguishSpaceUnderscoreCheckBox().isSelected());
 		parameters.setCaseSensitive(getCaseCheckBox().isSelected());
 		parameters.setParseNumericValues(getParseNumericValuesCheckBox().isSelected());
   }
+	
+	
+	public void assignFromParameters(ImportTextElementDataParameters parameters) {		
+//		getIgnoreWhitespaceCheckBox().setSelected(arg0);
+//	  getCaseCheckBox().
+//	  getDistinguishSpaceUnderscoreCheckBox().
+//	  getParseNumericValuesCheckBox().
+	}
 	
 	
 	private void initialize() {

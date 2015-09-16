@@ -36,6 +36,17 @@ public class TextLabelAdapter extends AbstractIDElementAdapter implements NodeBr
 	}
 
 
+	public TextLabelAdapter(String id) {
+		super(id);
+	}
+
+
+	@Override
+	public String getName() {
+		return NAME_PREFIX + "textLabelAdapter";
+	}
+
+
 	@Override
 	public TextElementData getData(Node node) {
 		Label l = getDataElement(node);
