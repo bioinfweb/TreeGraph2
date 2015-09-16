@@ -7,7 +7,6 @@ import info.bioinfweb.treegraph.document.change.DocumentChangeEvent;
 import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.change.DocumentListener;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 import info.bioinfweb.treegraph.document.topologicalcalculation.LeafSet;
 import info.bioinfweb.treegraph.document.topologicalcalculation.NodeInfo;
 import info.bioinfweb.treegraph.document.topologicalcalculation.TopologicalCalculator;
@@ -31,7 +30,7 @@ public class TreeSelectionSynchronizer implements TreeViewPanelListener, Documen
 	private MainFrame owner;
 	private boolean isUpdating = false;
 	private TopologicalCalculator topologicalCalculator = null;
-	private NodeBranchDataAdapter adapter = null;
+	private ImportTextElementDataParameters compareParameters = new ImportTextElementDataParameters();
 	
 	
 	public TreeSelectionSynchronizer(MainFrame owner) {
@@ -45,10 +44,15 @@ public class TreeSelectionSynchronizer implements TreeViewPanelListener, Documen
 	}
 	
 	
+	public ImportTextElementDataParameters getCompareParameters() {
+		return compareParameters;
+	}
+
+
 	public void reset() {
 		TreeInternalFrame frame = getOwner().getActiveTreeFrame();
-		adapter = new NodeNameAdapter();
-		topologicalCalculator = new TopologicalCalculator(frame.getDocument(), adapter, false, KEY_LEAF_REFERENCE, new ImportTextElementDataParameters());
+		NodeBranchDataAdapter adapter = frame.getDocument().getDefaultLeafAdapter();
+		topologicalCalculator = new TopologicalCalculator(frame.getDocument(), adapter, false, KEY_LEAF_REFERENCE, compareParameters);
 		Map<TextElementData, Integer> leafValues = topologicalCalculator.getLeafValues();
 	
 		// Create map of leaves from all documents:
