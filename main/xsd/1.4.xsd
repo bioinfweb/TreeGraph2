@@ -1,0 +1,599 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--                                                                         -->
+<!-- XTG - Extensible TreeGraph format                                       -->
+<!--                                                                         -->
+<!-- XTG is the XML format used by the phylogenetic tree editor TreeGraph 2. -->
+<!-- <http://treegraph.bioinfweb.info/>                                      -->
+<!--                                                                         -->
+<!-- Copyright (C) 2007-2010 Ben Stöver                                      -->
+<!-- Version: 1.2 (corrected version)                                        -->
+<!-- Last modified: 2010-08-12 by Ben Stöver                                 -->
+<!--                                                                         -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xtg="http://bioinfweb.info/xmlns/xtg" 
+    targetNamespace="http://bioinfweb.info/xmlns/xtg" elementFormDefault="qualified" 
+    attributeFormDefault="unqualified">
+    
+  <xsd:annotation>
+    <xsd:documentation xml:lang="EN"><![CDATA[{@JSP
+      XTG is the XML format used by the phylogenetic tree editor TreeGraph 2.<br />
+      <a href="http://treegraph.bioinfweb.info/">http://treegraph.bioinfweb.info/</a><br />
+      <br />
+      Copyright (C) 2007-2015 Ben St&ouml;ver<br />
+      Version: 1.4
+    @}]]></xsd:documentation>
+  </xsd:annotation>
+  
+  <xsd:element name="TreegraphDocument" type="xtg:TreegraphDocumentType">
+	  <xsd:annotation>
+	    <xsd:documentation xml:lang="EN">This is the root element of a XTG document.</xsd:documentation>
+	  </xsd:annotation>
+  </xsd:element>
+  
+  <xsd:complexType name="TreegraphDocumentType">
+	  <xsd:annotation>
+	    <xsd:documentation xml:lang="EN">This is the type of the root element of a XTG document.</xsd:documentation>
+	  </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="GlobalFormats" type="xtg:GlobalFormatsType" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="NodeBranchDataAdapters" type="xtg:NodeBranchDataAdaptersType" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="Tree" type="xtg:TreeType" minOccurs="1" maxOccurs="1" />
+    </xsd:sequence>
+  </xsd:complexType>
+  
+  <xsd:complexType name="GlobalFormatsType">
+	  <xsd:annotation>
+	    <xsd:documentation xml:lang="EN"><![CDATA[{@JSP
+        This class is used by the <code>GlobalFormats</code> element, which specifies the 
+	      <a href="http://treegraph.bioinfweb.info/Help/wiki/Document_formats">global document formats</a>. The 
+	      attributes and subelements store the values of the single formats which are described 
+	      <a href="http://treegraph.bioinfweb.info/Help/wiki/Document_formats">here</a>. 
+	    @}]]></xsd:documentation>
+	  </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="DocMargin" type="xtg:MarginType" minOccurs="0" maxOccurs="1" />
+    </xsd:sequence>
+    <xsd:attribute name="BgColor" type="xtg:ColorType" />
+    <xsd:attribute name="BranchLengthScale" type="xsd:double" />
+    <xsd:attribute name="ShowRooted" type="xsd:boolean" />
+    <xsd:attribute name="AlignToSubtree" type="xsd:boolean" />
+    <xsd:attribute name="LabelsLeft" type="xsd:boolean" />
+  </xsd:complexType>
+
+  <xsd:complexType name="MarginType">
+	  <xsd:annotation>
+	    <xsd:documentation xml:lang="EN"><![CDATA[{@JSP
+        This class is used by elements specifying the margin around a 
+        <a href="http://treegraph.bioinfweb.info/Help/wiki/Document_element">document element</a> or the whole 
+        document.
+	    @}]]></xsd:documentation>
+	  </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:restriction base="xsd:anyType">
+        <xsd:attribute name="Left" type="xtg:DistanceValueType" />
+        <xsd:attribute name="Top" type="xtg:DistanceValueType" />
+        <xsd:attribute name="Right" type="xtg:DistanceValueType" />
+        <xsd:attribute name="Bottom" type="xtg:DistanceValueType" />
+      </xsd:restriction>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+	<xsd:simpleType name='DistanceValueType'>
+	  <xsd:annotation>
+	    <xsd:documentation xml:lang="EN"><![CDATA[{@JSP
+        This class is used by elements specifying a non negative distance value. It restricts <code>xsd:float</code>. 
+	    @}]]></xsd:documentation>
+	  </xsd:annotation>
+	  <xsd:restriction base='xsd:float'>
+	    <xsd:minInclusive value='0'/>
+	  </xsd:restriction>
+	</xsd:simpleType>	
+
+  <xsd:complexType name="NodeBranchDataAdaptersType">
+	  <xsd:annotation>
+	    <xsd:documentation xml:lang="EN"><![CDATA[{@JSP
+        This class is used by the <code>NodeBranchDataAdapters</code> element, which specifies the default adapters of a TreeGraph document.
+	    @}]]></xsd:documentation>
+	  </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="Adapter" type="xtg:AdapterType" minOccurs="1" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+  
+  <xsd:complexType name="AdapterType">
+	  <xsd:annotation>
+	    <xsd:documentation xml:lang="EN"><![CDATA[{@JSP
+	    This class is used by elements defining a default document adapters. The attributes describe the purpose (usage in document), 
+	    the name of the adapter type and an optional ID if the specified adapter type requires one. The values for <code>Name</code> and 
+	    <code>Purpose</code> should be unique identifiers (mostly inverted full qualified domain names).
+	    @}]]></xsd:documentation>
+	  </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:restriction base="xsd:anyType">
+        <xsd:attribute name="Name" type="xtg:string" use="required"/>
+        <xsd:attribute name="ID" type="xtg:string" />
+        <xsd:attribute name="Purpose" type="xtg:string" use="required"/>
+      </xsd:restriction>
+    </xsd:complexContent>
+  </xsd:complexType>
+	
+  <xsd:complexType name="TreeType">
+	  <xsd:annotation>
+	    <xsd:documentation xml:lang="EN"><![CDATA[{@JSP
+        <p>
+          This class is used by the <code>Tree</code> element and can contain the root 
+          <a href="http://treegraph.bioinfweb.info/Help/wiki/Node">node</a> of the tree, a 
+          <a href="http://treegraph.bioinfweb.info/Help/wiki/Scale_bar">scale bar</a> and a set of 
+          <a href="http://treegraph.bioinfweb.info/Help/wiki/Legend">legends</a>.
+        </p>
+				<jsp:include page="/PROTECTED/content/Development/XTG/RelatedClasses.jsp">
+				  <jsp:param name="path" value="document" />
+				  <jsp:param name="name" value="Tree" />
+				</jsp:include>
+      @}]]></xsd:documentation>
+	  </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="Node" type="xtg:NodeType" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="ScaleBar" type="xtg:ScaleBarType" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="Legend" type="xtg:LegendType" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="TextType" abstract="true">
+	  <xsd:annotation>
+	    <xsd:documentation xml:lang="EN"><![CDATA[{@JSP
+        <p>
+          This abstract class defines the attributes used by the type of text elements 
+          (<a href="#type_NodeType">NodeType</a>, <a href="#type_LegendType">LegendType</a>, 
+          <a href="#type_ScaleBarType">ScaleBarType</a> and <a href="#type_TextLabelType">TextLabelType</a>).
+        </p>
+        <p>
+          The attribute <code>Text</code> can either contain the textual or the numeric value of the text element
+          represented by the XML element. <code>IsDecimal</code> defines whether the value of <code>Text</code>
+          must be <code>float</code> or can be any textual value. If <code>IsDecimal</code> is <code>true</code>
+          <code>DecimalFormat</code>, <code>LocaleLang</code>, <code>LocaleCountry</code> and 
+          <code>LocaleVariant</code> define how this value will be formatted by the application. Note that although 
+          declared as <code>xsd:string</code> here not every string value is valid for these attributes (See javadoc
+          links below for details).
+        </p>   
+				<jsp:include page="/PROTECTED/content/Development/XTG/RelatedClasses.jsp">
+				  <jsp:param name="path" value="document" />
+				  <jsp:param name="name" value="TextElement" />
+				  <jsp:param name="path" value="document" />
+				  <jsp:param name="name" value="AbstractTextElement" />
+				</jsp:include>
+      @}]]></xsd:documentation>
+	  </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:restriction base="xsd:anyType">
+        <xsd:attribute name="Text" type="xsd:string" />
+        <xsd:attribute name="IsDecimal" type="xsd:boolean" />
+        <xsd:attribute name="TextColor" type="xtg:ColorType" />
+        <xsd:attribute name="TextHeight" type="xtg:DistanceValueType" />
+        <xsd:attribute name="TextStyle" type="xtg:TextStyleType" />
+        <xsd:attribute name="FontFamily" type="xsd:string" />
+        <xsd:attribute name="DecimalFormat" type="xsd:string" />
+        <xsd:attribute name="LocaleLang" type="xtg:LocaleType" />
+        <xsd:attribute name="LocaleCountry" type="xtg:LocaleType" />
+        <xsd:attribute name="LocaleVariant" type="xtg:LocaleType" />
+      </xsd:restriction>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:simpleType name="LocaleType">
+	  <xsd:annotation>
+	    <xsd:documentation xml:lang="EN"><![CDATA[{@JSP
+ 	      This type restricts a <code>xsd:string</code> to an empty string or a sequence of characters (a..z, A..Z).
+ 	      It is used for the attributes of <a href="#type_TextType">TextType</a> which specify the locale information
+ 	      used to format numeric values.
+      @}]]></xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="[a-zA-Z]*"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  
+  <xsd:complexType name="LineType" abstract="true">
+	  <xsd:annotation>
+	    <xsd:documentation xml:lang="EN"><![CDATA[{@JSP
+        <p>
+          This abstract class defines the attributes used by the type of line elements which are not text elements
+          at the same time (<a href="#type_BranchType">BranchType</a> and 
+          <a href="#type_IconLabelType">IconLabelType</a>). Types of other line elements inherit from
+          <a href="#type_TextLineType">TextLineType</a> instead. 
+        </p>
+				<jsp:include page="/PROTECTED/content/Development/XTG/RelatedClasses.jsp">
+				  <jsp:param name="path" value="document" />
+				  <jsp:param name="name" value="LineElement" />
+				</jsp:include>
+      @}]]></xsd:documentation>
+	  </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:restriction base="xsd:anyType">
+        <xsd:attribute name="LineColor" type="xtg:ColorType" />
+        <xsd:attribute name="LineWidth" type="xtg:DistanceValueType" />
+      </xsd:restriction>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="TextLineType" abstract="true">
+	  <xsd:annotation>
+	    <xsd:documentation xml:lang="EN"><![CDATA[{@JSP
+        <p>
+          This abstract class adds the attributes used by the type of a line elements which are also text elements 
+          (<a href="#type_NodeType">NodeType</a>, <a href="#type_LegendType">LegendType</a> and 
+          <a href="#type_ScaleBarType">ScaleBarType</a>).
+        </p>
+        <p>
+          The other line element types (<a href="#type_BranchType">BranchType</a> and 
+          <a href="#type_IconLabelType">IconLabelType</a>) declare these attributes independently, since inheriting
+          from multiple types is not possible in XSD. 
+        </p>   
+				<jsp:include page="/PROTECTED/content/Development/XTG/RelatedClasses.jsp">
+				  <jsp:param name="path" value="document" />
+				  <jsp:param name="name" value="TextElement" />
+				  <jsp:param name="path" value="document" />
+				  <jsp:param name="name" value="AbstractTextElement" />
+				  <jsp:param name="path" value="document" />
+				  <jsp:param name="name" value="LineElement" />
+				</jsp:include>
+      @}]]></xsd:documentation>
+	  </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="xtg:TextType">
+        <xsd:attribute name="LineColor" type="xtg:ColorType" />
+        <xsd:attribute name="LineWidth" type="xtg:DistanceValueType" />
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:simpleType name="ColorType">
+	  <xsd:annotation>
+	    <xsd:documentation xml:lang="EN"><![CDATA[{@JSP
+ 	      This type restricts a <code>xsd:string</code> to all valid color values. A valid color value in XTG starts
+        with a <code>#</code> followed by six hexadecimal charcters (e.g. <code>#FF0000</code> for red).
+      @}]]></xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="\#[0-9A-Fa-f]{6}"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  
+  <xsd:simpleType name="TextStyleType">
+	  <xsd:annotation>
+	    <xsd:documentation xml:lang="EN"><![CDATA[{@JSP
+ 	      This type restricts a <code>xsd:string</code> to all valid text style values. A valid text style value in 
+ 	      XTG can consists of the combination of <code>b</code> (bold), <code>i</code> (italic) and 
+ 	      <code>u</code> (underlined).  
+      @}]]></xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="b?i?u?"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  
+  <xsd:complexType name="NodeType">
+	  <xsd:annotation>
+	    <xsd:documentation xml:lang="EN"><![CDATA[{@JSP
+        <p>
+          This class is used by the <code>Node</code> elements under <code>Tree</code> or <code>Node</code> and 
+          contains data specific for a 
+          <a href="http://treegraph.bioinfweb.info/Help/wiki/Node">node</a>. 
+        </p>
+				<jsp:include page="/PROTECTED/content/Development/XTG/RelatedClasses.jsp">
+				  <jsp:param name="path" value="document" />
+				  <jsp:param name="name" value="Node" />
+				</jsp:include>
+      @}]]></xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="xtg:TextLineType">
+        <xsd:sequence>
+          <xsd:element name="LeafMargin" type="xtg:MarginType" minOccurs="0" maxOccurs="1" />
+          <xsd:element name="Branch" type="xtg:BranchType" minOccurs="0" maxOccurs="1" />
+          <xsd:element name="InvisibleData" type="xtg:InvisibleDataType" minOccurs="0" maxOccurs="unbounded" />
+          <xsd:element name="Node" type="xtg:NodeType" minOccurs="0" maxOccurs="unbounded" />
+        </xsd:sequence>
+        <xsd:attribute name="UniqueName" type="xsd:string" />
+        <xsd:attribute name="EdgeRadius" type="xtg:DistanceValueType" />
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="BranchType">
+	  <xsd:annotation>
+	    <xsd:documentation xml:lang="EN"><![CDATA[{@JSP
+        <p>
+          This class is used by the <code>Branch</code> element under <code>Node</code> and contains data specific 
+          for a <a href="http://treegraph.bioinfweb.info/Help/wiki/Branch">branch</a>. 
+        </p>
+        <p>The attribute <code>Length</code> should is only specified if this branch has a defined length.</p>
+				<jsp:include page="/PROTECTED/content/Development/XTG/RelatedClasses.jsp">
+				  <jsp:param name="path" value="document" />
+				  <jsp:param name="name" value="Branch" />
+				</jsp:include>
+      @}]]></xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="xtg:LineType">
+        <xsd:sequence>
+          <xsd:choice minOccurs="0" maxOccurs="unbounded">
+            <xsd:element name="TextLabel" type="xtg:TextLabelType" minOccurs="0" maxOccurs="unbounded" />
+            <xsd:element name="IconLabel" type="xtg:IconLabelType" minOccurs="0" maxOccurs="unbounded" />
+            <xsd:element name="PieChartLabel" type="xtg:PieChartLabelType" minOccurs="0" maxOccurs="unbounded" />
+          </xsd:choice>
+          <xsd:element name="InvisibleData" type="xtg:InvisibleDataType" minOccurs="0" maxOccurs="unbounded" />
+        </xsd:sequence>
+        <xsd:attribute name="Length" type="xtg:BranchLengthType" />
+        <xsd:attribute name="ConstantWidth" type="xsd:boolean" />
+        <xsd:attribute name="MinLength" type="xtg:DistanceValueType" />
+        <xsd:attribute name="MinSpaceAbove" type="xtg:DistanceValueType" />
+        <xsd:attribute name="MinSpaceBelow" type="xtg:DistanceValueType" />
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+	<xsd:simpleType name='BranchLengthType'>
+	  <xsd:annotation>
+	    <xsd:documentation xml:lang="EN"><![CDATA[{@JSP
+        This class is used by the <code>Length</code> element, which specifies the length of a 
+        <a href="http://treegraph.bioinfweb.info/Help/wiki/Branch">branch</a>. It restricts <code>xsd:double</code>
+        to non negative values. 
+	    @}]]></xsd:documentation>
+	  </xsd:annotation>
+	  <xsd:restriction base='xsd:double'>
+	    <xsd:minInclusive value='0'/>
+	  </xsd:restriction>
+	</xsd:simpleType>
+	
+  <xsd:complexType name="InvisibleDataType">
+	  <xsd:annotation>
+	    <xsd:documentation xml:lang="EN"><![CDATA[{@JSP
+        <p>
+          This class is used by the <code>InsibleData</code> elements under <code>Node</code> and <code>Branch</code> 
+          and contains data specific 
+          for <a href="http://treegraph.bioinfweb.info/Help/wiki/Hidden_node/branch_data">hidden node/branch data</a>. 
+        </p>
+				<jsp:include page="/PROTECTED/content/Development/XTG/RelatedClasses.jsp">
+				  <jsp:param name="path" value="document" />
+				  <jsp:param name="name" value="TextElementData" />
+				</jsp:include>
+      @}]]></xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:restriction base="xsd:anyType">
+        <xsd:attribute name="Id" type="xsd:string" />
+        <xsd:attribute name="Text" type="xsd:string" />
+        <xsd:attribute name="IsDecimal" type="xsd:boolean" />
+      </xsd:restriction>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="ScaleBarType">
+	  <xsd:annotation>
+	    <xsd:documentation xml:lang="EN"><![CDATA[{@JSP
+        <p>
+          This class is used by the <code>ScaleBar</code> element under <code>Tree</code> and contains data specific 
+          for a <a href="http://treegraph.bioinfweb.info/Help/wiki/Scale_bar">scale bar</a>. 
+        </p>
+				<jsp:include page="/PROTECTED/content/Development/XTG/RelatedClasses.jsp">
+				  <jsp:param name="path" value="document" />
+				  <jsp:param name="name" value="ScaleBar" />
+				</jsp:include>
+      @}]]></xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="xtg:TextLineType">
+        <xsd:attribute name="Align" type="xtg:ScaleBarAlignType" />
+        <xsd:attribute name="TreeDistance" type="xtg:DistanceValueType" />
+        <xsd:attribute name="Width" type="xtg:ScaleValueType" />
+        <xsd:attribute name="Height" type="xtg:DistanceValueType" />
+        <xsd:attribute name="SmallInterval" type="xtg:DistanceValueType" />
+        <xsd:attribute name="LongInterval" type="xsd:nonNegativeInteger" />
+        <xsd:attribute name="StartLeft" type="xsd:boolean" />
+        <xsd:attribute name="Increasing" type="xsd:boolean" />
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:simpleType name="ScaleBarAlignType">
+	  <xsd:annotation>
+	    <xsd:documentation xml:lang="EN"><![CDATA[{@JSP
+ 	      This type restricts a <code>xsd:string</code> to a enumeration of all valid scale bar align values.
+      @}]]></xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="left" />
+      <xsd:enumeration value="right" />
+      <xsd:enumeration value="treeWidth" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  
+  <xsd:simpleType name="ScaleValueType">
+	  <xsd:annotation>
+	    <xsd:documentation xml:lang="EN"><![CDATA[{@JSP
+ 	      This type restricts a <code>xsd:string</code> to all valid scale bar width values. The width of a 
+ 	      <a href="">scale bar</a> is a float value followed by a unit identifier (<code>mm</code> for millimeters or
+ 	      <code>u</code> for branch length units).
+      @}]]></xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="\+?[0-9]*\.?[0-9]+([eE][-\+]?[0-9]+)?\p{Z}?(mm|u)"/>
+      <!-- <xsd:pattern value="\p{N}(mm|u)"/> -->
+    </xsd:restriction>
+  </xsd:simpleType>
+  
+  <xsd:complexType name="LegendType">
+	  <xsd:annotation>
+	    <xsd:documentation xml:lang="EN"><![CDATA[{@JSP
+        <p>
+          This class is used by the <code>Legend</code> element under <code>Tree</code> and contains data specific 
+          for a <a href="http://treegraph.bioinfweb.info/Help/wiki/Legend">legend</a>. 
+        </p>
+				<jsp:include page="/PROTECTED/content/Development/XTG/RelatedClasses.jsp">
+				  <jsp:param name="path" value="document" />
+				  <jsp:param name="name" value="Legend" />
+				</jsp:include>
+      @}]]></xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="xtg:TextLineType">
+        <xsd:sequence>
+          <xsd:element name="LegendMargin" type="xtg:MarginType" minOccurs="0" maxOccurs="1" />
+        </xsd:sequence>
+        <xsd:attribute name="Anchor0" type="xsd:string" />
+        <xsd:attribute name="LegendPos" type="xsd:int" />
+        <xsd:attribute name="MinTreeDistance" type="xtg:DistanceValueType" />
+        <xsd:attribute name="LegendSpacing" type="xtg:DistanceValueType" />
+        <xsd:attribute name="LegendStyle" type="xtg:LegendStyleType" />
+        <xsd:attribute name="Orientation" type="xtg:LegendOrientationType" />
+        <xsd:attribute name="EdgeRadius" type="xtg:DistanceValueType" />
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:simpleType name="LegendStyleType">
+	  <xsd:annotation>
+	    <xsd:documentation xml:lang="EN"><![CDATA[{@JSP
+ 	      This type restricts a <code>xsd:string</code> to a enumeration of all valid 
+ 	      <a href="http://treegraph.bioinfweb.info/Help/wiki/Legend">legend</a> style values.
+      @}]]></xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="brace" />
+      <xsd:enumeration value="bracket" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  
+  <xsd:simpleType name="LegendOrientationType">
+	  <xsd:annotation>
+	    <xsd:documentation xml:lang="EN"><![CDATA[{@JSP
+ 	      This type restricts a <code>xsd:string</code> to a enumeration of all valid 
+ 	      <a href="http://treegraph.bioinfweb.info/Help/wiki/Legend">legend</a> orientation values.
+      @}]]></xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="up" />
+      <xsd:enumeration value="down" />
+      <xsd:enumeration value="horizontal" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  
+  <xsd:complexType name="TextLabelType">
+	  <xsd:annotation>
+	    <xsd:documentation xml:lang="EN"><![CDATA[{@JSP
+        <p>
+          This class is used by the <code>TextLabel</code> element under <code>Branch</code> and contains data 
+          specific for a <a href="http://treegraph.bioinfweb.info/Help/wiki/Text_label">text label</a>. 
+        </p>
+				<jsp:include page="/PROTECTED/content/Development/XTG/RelatedClasses.jsp">
+				  <jsp:param name="path" value="document" />
+				  <jsp:param name="name" value="TextLabel" />
+				</jsp:include>
+      @}]]></xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="xtg:TextType">
+        <xsd:sequence>
+          <xsd:element name="LabelMargin" type="xtg:MarginType" minOccurs="0" maxOccurs="1" />
+        </xsd:sequence>
+        <xsd:attribute name="Id" type="xsd:string" />
+        <xsd:attribute name="Above" type="xsd:boolean" />
+        <xsd:attribute name="LineNo" type="xsd:int" />
+        <xsd:attribute name="LinePos" type="xsd:decimal" />
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="IconLabelType">
+	  <xsd:annotation>
+	    <xsd:documentation xml:lang="EN"><![CDATA[{@JSP
+        <p>
+          This class is used by the <code>IconLabel</code> element under <code>Branch</code> and contains data 
+          specific for a <a href="http://treegraph.bioinfweb.info/Help/wiki/Icon_label">icon label</a>. 
+        </p>
+				<jsp:include page="/PROTECTED/content/Development/XTG/RelatedClasses.jsp">
+				  <jsp:param name="path" value="document" />
+				  <jsp:param name="name" value="IconLabel" />
+				</jsp:include>
+      @}]]></xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="xtg:LineType">
+        <xsd:sequence>
+          <xsd:element name="LabelMargin" type="xtg:MarginType" minOccurs="0" maxOccurs="1" />
+        </xsd:sequence>
+        <xsd:attribute name="Icon" type="xsd:string" />
+        <xsd:attribute name="Width" type="xtg:DistanceValueType" />
+        <xsd:attribute name="Height" type="xtg:DistanceValueType" />
+        <xsd:attribute name="IconFilled" type="xsd:boolean" />
+        <xsd:attribute name="Id" type="xsd:string" />
+        <xsd:attribute name="Above" type="xsd:boolean" />
+        <xsd:attribute name="LineNo" type="xsd:int" />
+        <xsd:attribute name="LinePos" type="xsd:decimal" />
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <xsd:complexType name="DataIdType">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="EN"><![CDATA[{@JSP
+        Contains the left stem of an inverted repeat.
+      @}]]></xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="PieColor" type="xtg:ColorType" /> 
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="DataIdsType">
+	  <xsd:annotation>
+	    <xsd:documentation xml:lang="EN"><![CDATA[{@JSP
+        <p>
+          This class is used by the <code>DataIds</code> element under <code>PieChartLabel</code> and contains  
+          the IDs of the source node/branch data columns of the 
+          <a href="http://treegraph.bioinfweb.info/Help/wiki/Pie_chart_label">pie chart label</a>. 
+        </p>
+				<jsp:include page="/PROTECTED/content/Development/XTG/RelatedClasses.jsp">
+				  <jsp:param name="path" value="document" />
+				  <jsp:param name="name" value="PieChartLabel" />
+				</jsp:include>
+      @}]]></xsd:documentation>
+	  </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="DataId" type="xtg:DataIdType" minOccurs="1" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="PieChartLabelType">
+	  <xsd:annotation>
+	    <xsd:documentation xml:lang="EN"><![CDATA[{@JSP
+        <p>
+          This class is used by the <code>PieChartLabel</code> element under <code>Branch</code> and contains data 
+          specific for a <a href="http://treegraph.bioinfweb.info/Help/wiki/Pie_chart_label">pie chart label</a>. 
+        </p>
+				<jsp:include page="/PROTECTED/content/Development/XTG/RelatedClasses.jsp">
+				  <jsp:param name="path" value="document" />
+				  <jsp:param name="name" value="PieChartLabel" />
+				</jsp:include>
+      @}]]></xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="xtg:LineType">
+        <xsd:sequence>
+          <xsd:element name="LabelMargin" type="xtg:MarginType" minOccurs="0" maxOccurs="1" />
+          <xsd:element name="DataIds" type="xtg:DataIdsType" minOccurs="0" maxOccurs="1" />
+        </xsd:sequence>
+        <xsd:attribute name="Width" type="xtg:DistanceValueType" />
+        <xsd:attribute name="Height" type="xtg:DistanceValueType" />
+        <xsd:attribute name="InternalLines" type="xsd:boolean" />
+        <xsd:attribute name="NullLines" type="xsd:boolean" />
+        <xsd:attribute name="Id" type="xsd:string" />
+        <xsd:attribute name="Above" type="xsd:boolean" />
+        <xsd:attribute name="LineNo" type="xsd:int" />
+        <xsd:attribute name="LinePos" type="xsd:decimal" />
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+</xsd:schema>
