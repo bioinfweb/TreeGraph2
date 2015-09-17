@@ -25,6 +25,10 @@ import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.nodebranchdata.*;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 import java.util.Vector;
 
 import javax.swing.AbstractListModel;
@@ -68,10 +72,20 @@ public class NodeDataComboBoxModel extends AbstractListModel<NodeBranchDataAdapt
   }
   
   
+  private void countIDs(String id, Map<String, Integer> idMap) {
+  	if (idMap.get(id) != null) {
+  		idMap.put(id, idMap.get(id) + 1);
+		}
+		else {
+			idMap.put(id, 1);
+		}
+  }
+  
+  
   /**
    * Refreshes the selectable node data adapters.
    * 
-   * @param tree the tree to obtain the IDs from (Can also be <code>null</code>.)
+   * @param tree the tree to obtain the IDs from (If <code>null</code> no existing IDAdapters can be selected.)
    * @param uniqueNamesSelectable determines whether the unique node names adapter can be selected
    * @param nodeNamesSelectable determines whether the node names adapter can be selected
    * @param branchLengthSelectable determines whether the branch length adapter can be
@@ -81,18 +95,17 @@ public class NodeDataComboBoxModel extends AbstractListModel<NodeBranchDataAdapt
    *        <code>branchLengthSelectable</code>.)
    * @param newIDSelectable If true an adaptor for a new user defined label ID is 
    *        added. Note that the label ID has still to be set. This adapters are also added if 
-   *        <code>decimalOnly</code> is <code>true</code>. 
+   *        <code>decimalOnly</code> is <code>true</code>.
    * @param noImportAdapterSelectable TODO
    */
   public void setAdapters(Tree tree, boolean uniqueNamesSelectable, boolean nodeNamesSelectable, 
-  		boolean branchLengthSelectable,	boolean decimalOnly, boolean newIDSelectable, String noImportAdapterSelectable) {
+  		boolean branchLengthSelectable,	boolean decimalOnly, boolean newIDSelectable,	String noImportAdapterSelectable) {
 
   	clear();
   	
   	if ((noImportAdapterSelectable != null) && !noImportAdapterSelectable.equals("")) {
 			adapters.add(new VoidNodeBranchDataAdapter(noImportAdapterSelectable));
-		}
-  	
+		}  	
   	if (uniqueNamesSelectable) {
   		adapters.add(UniqueNameAdapter.getSharedInstance());
   	}
@@ -102,23 +115,38 @@ public class NodeDataComboBoxModel extends AbstractListModel<NodeBranchDataAdapt
 		if (branchLengthSelectable) {
 			adapters.add(BranchLengthAdapter.getSharedInstance());
 		}
-		// More adapters can be added here.
+	// More adapters can be added here.
 		
 		if (tree != null) {
-			String[] ids = IDManager.getLabelIDs(tree.getPaintStart(), TextLabel.class);
-			for (int i = 0; i < ids.length; i++) {
-				adapters.add(new TextLabelAdapter(ids[i], 
-						((TextLabel)IDManager.getFirstLabel(tree.getPaintStart(), TextLabel.class, ids[i])).getFormats().getDecimalFormat()));
+			String[] labelIDs = IDManager.getLabelIDs(tree.getPaintStart(), TextLabel.class);
+			String[] hiddenBranchDataIDs = IDManager.getHiddenBranchDataIDs(tree.getPaintStart());
+			String[] hiddenNodeDataIDs = IDManager.getHiddenNodeDataIDs(tree.getPaintStart());
+			Map<String, Integer> idDuplication = new TreeMap<String, Integer>();
+			
+			for (int i = 0; i < labelIDs.length; i++) {
+				countIDs(labelIDs[i], idDuplication);
+			}			
+			for (int i = 0; i < hiddenBranchDataIDs.length; i++) {
+				countIDs(hiddenBranchDataIDs[i], idDuplication);
+			}			
+			for (int i = 0; i < hiddenNodeDataIDs.length; i++) {
+				countIDs(hiddenNodeDataIDs[i], idDuplication);
 			}
 			
-			ids = IDManager.getHiddenBranchDataIDs(tree.getPaintStart());
-			for (int i = 0; i < ids.length; i++) {
-				adapters.add(new HiddenBranchDataAdapter(ids[i]));
+			for (String key : idDuplication.keySet()) {
+				if (idDuplication.get(key) > 1) {
+					adapters.add(new GeneralIDAdapter(key));
+				}
 			}
 			
-			ids = IDManager.getHiddenNodeDataIDs(tree.getPaintStart());
-			for (int i = 0; i < ids.length; i++) {
-				adapters.add(new HiddenNodeDataAdapter(ids[i]));
+			for (int i = 0; i < labelIDs.length; i++) {				
+				adapters.add(new TextLabelAdapter(labelIDs[i],((TextLabel)IDManager.getFirstLabel(tree.getPaintStart(), TextLabel.class, labelIDs[i])).getFormats().getDecimalFormat()));
+			}			
+			for (int i = 0; i < hiddenBranchDataIDs.length; i++) {
+				adapters.add(new HiddenBranchDataAdapter(hiddenBranchDataIDs[i]));				
+			}			
+			for (int i = 0; i < hiddenNodeDataIDs.length; i++) {				
+				adapters.add(new HiddenNodeDataAdapter(hiddenNodeDataIDs[i]));							
 			}
 		}
 		
@@ -134,7 +162,7 @@ public class NodeDataComboBoxModel extends AbstractListModel<NodeBranchDataAdapt
 		if (newIDSelectable) {  // New adapters can all be numeric
 	  	addNewAdapters();
 		}
-	
+		
 		if (getSize() > 0) {
 			fireIntervalAdded(this, 0, adapters.size() - 1);
 			setSelectedItem(adapters.get(0));
@@ -144,7 +172,7 @@ public class NodeDataComboBoxModel extends AbstractListModel<NodeBranchDataAdapt
   
 	/**
 	 * Inserts the specified node/branch data adapter instance at the specified position. Note that this method
-	 * is only for special tasks an in general {@link #setAdapters(Tree, boolean, boolean, boolean, boolean, boolean, String)}
+	 * is only for special tasks and in general {@link #setAdapters(Tree, boolean, boolean, boolean, boolean, boolean, String)}
 	 * should be used.
 	 * 
 	 * @param index - the index of the new adapter
@@ -163,7 +191,7 @@ public class NodeDataComboBoxModel extends AbstractListModel<NodeBranchDataAdapt
 
 	/**
 	 * Appends the specified node/branch data adapter instance at the end of the list. Note that this method
-	 * is only for special tasks an in general {@link #setAdapters(Tree, boolean, boolean, boolean, boolean, boolean, String)}
+	 * is only for special tasks and in general {@link #setAdapters(Tree, boolean, boolean, boolean, boolean, boolean, String)}
 	 * should be used.
 	 * 
 	 * @param index - the index of the new adapter
@@ -240,7 +268,7 @@ public class NodeDataComboBoxModel extends AbstractListModel<NodeBranchDataAdapt
 		else {
 			return;  // no contentsChanged event!
 		}
-		fireContentsChanged(this, 0, adapters.size() - 1);  //TODO Interval verkleinern?
+		fireContentsChanged(this, 0, adapters.size() - 1);  //TODO Intervall verkleinern?
 	}
 
 	

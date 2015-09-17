@@ -20,6 +20,7 @@ package info.bioinfweb.treegraph.gui.dialogs;
 
 
 import info.bioinfweb.treegraph.document.undo.ImportTextElementDataParameters;
+import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
@@ -68,10 +69,10 @@ public class ImportTextElementDataParametersPanel extends JPanel {
 	
 	
 	public void assignFromParameters(ImportTextElementDataParameters parameters) {		
-//		getIgnoreWhitespaceCheckBox().setSelected(arg0);
-//	  getCaseCheckBox().
-//	  getDistinguishSpaceUnderscoreCheckBox().
-//	  getParseNumericValuesCheckBox().
+		getIgnoreWhitespaceCheckBox().setSelected(parameters.isIgnoreWhitespace());
+	  getCaseCheckBox().setSelected(parameters.isCaseSensitive());
+	  getDistinguishSpaceUnderscoreCheckBox().setSelected(parameters.isDistinguishSpaceUnderscore());
+	  getParseNumericValuesCheckBox().setSelected(parameters.isParseNumericValues());
 	}
 	
 	

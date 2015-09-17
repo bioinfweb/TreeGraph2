@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben Stï¿½ver, Kai Mï¿½ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -30,6 +30,7 @@ import info.bioinfweb.treegraph.document.TextLabel;
 import info.bioinfweb.treegraph.document.change.DocumentChangeEvent;
 import info.bioinfweb.treegraph.document.change.DocumentListener;
 import info.bioinfweb.treegraph.document.nodebranchdata.BranchLengthAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.GeneralIDAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.HiddenBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.HiddenNodeDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;
@@ -120,20 +121,9 @@ public class DocumentTableModel extends AbstractTableModel implements DocumentLi
 		adapters.add(new NodeNameAdapter());
 		adapters.add(new BranchLengthAdapter());
 
-		List<String> ids = IDManager.getLabelIDListFromSubtree(root, TextLabel.class);
+		List<String> ids = IDManager.getListFromSubtree(root, TextLabel.class, true, true);
 		for (int i = 0; i < ids.size(); i++) {
-			adapters.add(new TextLabelAdapter(ids.get(i), 
-					((TextLabel)IDManager.getFirstLabel(root, TextLabel.class, ids.get(i))).getFormats().getDecimalFormat()));
-		}
-		
-		ids = IDManager.getHiddenNodeDataIDListFromSubtree(root);
-		for (int i = 0; i < ids.size(); i++) {
-			adapters.add(new HiddenNodeDataAdapter(ids.get(i)));
-		}
-		
-		ids = IDManager.getHiddenBranchDataIDListFromSubtree(root);
-		for (int i = 0; i < ids.size(); i++) {
-			adapters.add(new HiddenBranchDataAdapter(ids.get(i)));
+			adapters.add(new GeneralIDAdapter(ids.get(i)));
 		}
 	}
 	
@@ -163,9 +153,15 @@ public class DocumentTableModel extends AbstractTableModel implements DocumentLi
 
 	
 	@Override
-	public String getColumnName(int col) {
-		if (col % 2 == 0) {
-			return adapters.get(col / 2).toString();
+	public String getColumnName(int columnIndex) {
+		if (columnIndex % 2 == 0) {
+			NodeBranchDataAdapter adapter = adapters.get(columnIndex / 2);
+			if (adapter instanceof GeneralIDAdapter) {
+				return "ID: " + ((GeneralIDAdapter)adapter).getID();
+			}
+			else {
+				return adapter.toString();
+			}
 		}
 		else {
 			return DECIMAL_COLUMN_HEADING;

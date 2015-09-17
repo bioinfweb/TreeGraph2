@@ -1,3 +1,21 @@
+/*
+ * TreeGraph 2 - A feature rich editor for phylogenetic trees
+ * Copyright (C) 2007-2015  Ben St�ver, Kai M�ller
+ * <http://treegraph.bioinfweb.info/>
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 package info.bioinfweb.treegraph.gui.mainframe;
 
 
@@ -77,29 +95,12 @@ public class TreeSelectionSynchronizer implements TreeViewPanelListener, Documen
 			TreeSelection selection = target.getSelection();
 			selection.clear();
 			for (Node node : source.getSelection().getAllElementsOfType(Node.class, false)) {
-//				System.out.println("Source Leafset: " + topologicalCalculator.getLeafSet(node));
-//				System.out.println("Target Leafset: " + topologicalCalculator.getLeafSet(target.getDocument().getTree().getPaintStart()));
-				LeafSet targetLeafs = topologicalCalculator.getLeafSet(node).addTo(topologicalCalculator.getLeafSet(target.getDocument().getTree().getPaintStart()));
-//				LeafSet targetLeafs = topologicalCalculator.getLeafSet(node);
-//				System.out.println("Added LS: " + targetLeafs);
-				NodeInfo sourceNode = topologicalCalculator.findSourceNodeWithAllLeafs(target.getDocument().getTree().getPaintStart(), targetLeafs);
+				NodeInfo sourceNode = topologicalCalculator.findSourceNodeWithAllLeafs(target.getDocument().getTree().getPaintStart(), topologicalCalculator.getLeafSet(node));
 				if (sourceNode.getAdditionalCount() == 0) {
-					System.out.println("Match found");
-//					System.out.println("Matching Leafset: " + topologicalCalculator.getLeafSet(sourceNode.getNode()));
 					selection.add(sourceNode.getNode());
 				}
-				else { // if (sourceNode.getAdditionalCount() == -1)
-					System.out.println("Conflict found, additional count:" + sourceNode.getAdditionalCount());
-//					System.out.println("Target Leafset: " + topologicalCalculator.getLeafSet(sourceNode.getNode()));
-//					selection.add(sourceNode.getNode());
-//					Node highestConflictingNode = topologicalCalculator.findHighestConflictingNode(target.getDocument().getTree().getPaintStart(), node, bestSourceNode);
-//		
-//					if (highestConflictingNode != null) {
-//						selection.add(highestConflictingNode);
-//					}
-//					else {
-//						System.out.println("Null.");
-//					}					
+				else {
+					System.out.println("Additional count:" + sourceNode.getAdditionalCount());
 				}
 			}
 		}					

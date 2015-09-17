@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben Stï¿½ver, Kai Mï¿½ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -210,12 +210,12 @@ public class IDManager {
   /**
    * Returns a vector of IDs from a whole subtree which is sorted alphabetically.
    */
-  private static List<String> getListFromSubtree(Node root, Class<? extends Label> labelClass, 
-  		boolean includeNodeHiddenData, boolean includeBranchHiddenData) {
+  public static List<String> getListFromSubtree(Node root, Class<? extends Label> labelClass, 
+  		boolean includeHiddenNodeData, boolean includeHiddenBranchData) {
   	
   	Vector<String> list = new Vector<String>();
-  	searchIDsInSubtree(root, list, labelClass, includeNodeHiddenData, 
-  			includeBranchHiddenData);
+  	searchIDsInSubtree(root, list, labelClass, includeHiddenNodeData, 
+  			includeHiddenBranchData);
   	Collections.sort(list, STRING_COMPARATOR);
   	return list;
   }

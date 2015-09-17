@@ -1,3 +1,21 @@
+/*
+ * TreeGraph 2 - A feature rich editor for phylogenetic trees
+ * Copyright (C) 2007-2015  Ben St�ver, Kai M�ller
+ * <http://treegraph.bioinfweb.info/>
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 package info.bioinfweb.treegraph.document.topologicalcalculation;
 
 
@@ -188,8 +206,13 @@ public class TopologicalCalculator {
 	}
 	
 	
-	public NodeInfo findSourceNodeWithAllLeafs(Node sourceRoot, LeafSet targetLeafs) {
-//		targetLeafs = targetLeafs.addTo(getLeafSet(sourceRoot)); //TODO passendes leafset erzeugen
+	public NodeInfo findSourceNodeWithAllLeafs(Node sourceRoot, LeafSet targetLeafs) { //necessary because LeafSet can not be created in the recursive method
+		targetLeafs = targetLeafs.addTo(getLeafSet(sourceRoot));
+		return findSourceNodeWithAllLeafsRecursive(sourceRoot, targetLeafs);
+	}
+	
+	
+	public NodeInfo findSourceNodeWithAllLeafsRecursive(Node sourceRoot, LeafSet targetLeafs) {
 		int additionalCount = targetLeafs.compareTo(getLeafSet(sourceRoot), false);
 		boolean downwards = additionalCount != -1;
 		if (!downwards) {
@@ -197,7 +220,7 @@ public class TopologicalCalculator {
 		}
   	NodeInfo result = new NodeInfo(sourceRoot, additionalCount, downwards);
 		for (int i = 0; i < sourceRoot.getChildren().size(); i++) {
-			NodeInfo childResult = findSourceNodeWithAllLeafs(sourceRoot.getChildren().get(i), targetLeafs);
+			NodeInfo childResult = findSourceNodeWithAllLeafsRecursive(sourceRoot.getChildren().get(i), targetLeafs);
 			if ((childResult.getAdditionalCount() != -1) && 
 					((childResult.getAdditionalCount() < result.getAdditionalCount()) || (result.getAdditionalCount() == -1))) {
 				
@@ -206,22 +229,4 @@ public class TopologicalCalculator {
 		}
 		return result;
 	}
-	
-	
-//	public Node findHighestConflictingNode(Node root, Node targetNode, NodeInfo info) {
-//		Node highestConflict = null;
-//		if ((getLeafSet(root).containsAnyAndOther(getLeafSet(targetNode), false) &&
-//				 getLeafSet(root).inSubtreeOf(getLeafSet(info.getNode()), false)))
-////				|| (getLeafSet(root).containsAnyAndOther(getLeafSet(targetNode), true) &&
-////						getLeafSet(root).inSubtreeOf(getLeafSet(info.getNode()), true))) 
-//		{
-//			return root;
-//		}
-//		else {
-//			for (int i = 0; i < root.getChildren().size(); i++) {
-//				findHighestConflictingNode(root.getChildren().get(i), targetNode, info);
-//			}
-//		}
-//		return highestConflict;
-//	}
 }

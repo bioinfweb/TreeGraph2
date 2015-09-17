@@ -49,6 +49,6 @@ public class HiddenNodeDataAdapter extends HiddenDataAdapter {
 
 	@Override
 	public String toString() {
-		return getID() + " (hidden node data)";
+		return "Hidden node data with the ID \"" + getID() + "\"";
 	}
 }

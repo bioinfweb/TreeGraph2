@@ -50,6 +50,6 @@ public class HiddenBranchDataAdapter extends HiddenDataAdapter {
 
 	@Override
 	public String toString() {
-		return getID() + " (hidden branch data)";
+		return "Hidden branch data with the ID \"" + getID() + "\"";
 	}
 }

@@ -1,15 +1,29 @@
+/*
+ * TreeGraph 2 - A feature rich editor for phylogenetic trees
+ * Copyright (C) 2007-2015  Ben St�ver, Kai M�ller
+ * <http://treegraph.bioinfweb.info/>
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 package info.bioinfweb.treegraph.gui.dialogs.editelement;
-
 
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
@@ -22,8 +36,6 @@ import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 
 public class SynchronizeTreeSelectionDialog extends EditDialog {
 	private JPanel jContentPane = null;
-//	private JPanel compareParametersPanel = null;
-//	JLabel textElementDataParametersLabel = null;
 	private ImportTextElementDataParametersPanel textElementDataParametersPanel = null;
 	private ImportTextElementDataParameters textElementDataParameters = null;
 	
@@ -38,10 +50,7 @@ public class SynchronizeTreeSelectionDialog extends EditDialog {
 
 	@Override
 	protected boolean onExecute() {		
-		getTextElementDataParameters().setCaseSensitive(getTextElementDataParametersPanel().getCaseCheckBox().isEnabled());
-		getTextElementDataParameters().setDistinguishSpaceUnderscore(getTextElementDataParametersPanel().getDistinguishSpaceUnderscoreCheckBox().isEnabled());
-		getTextElementDataParameters().setIgnoreWhitespace(getTextElementDataParametersPanel().getIgnoreWhitespaceCheckBox().isEnabled());
-		getTextElementDataParameters().setParseNumericValues(getTextElementDataParametersPanel().getParseNumericValuesCheckBox().isEnabled());
+		textElementDataParametersPanel.assignFromParameters(textElementDataParameters);
 		return true;
 	}
 
@@ -91,12 +100,9 @@ public class SynchronizeTreeSelectionDialog extends EditDialog {
 		}
 		return textElementDataParametersPanel;
 	}
-	
+
 
 	public ImportTextElementDataParameters getTextElementDataParameters() {
-		if (textElementDataParameters == null) {
-			textElementDataParameters = new ImportTextElementDataParameters();
-		}
 		return textElementDataParameters;
-	}	
+	}
 }

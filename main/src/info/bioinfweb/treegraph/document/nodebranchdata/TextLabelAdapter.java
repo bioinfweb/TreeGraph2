@@ -118,6 +118,6 @@ public class TextLabelAdapter extends AbstractIDElementAdapter implements NodeBr
 
 
 	public String toString() {
-		return getID() + " (labels)";
+		return "Text labels with the ID \"" + getID() + "\"";
 	}
 }
