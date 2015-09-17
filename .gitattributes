@@ -4,6 +4,7 @@ launch4j/TreeGraph.xml -text
 main/.classpath -text
 main/.project -text
 main/.settings/org.eclipse.jdt.core.prefs -text
+main/.settings/org.eclipse.jdt.ui.prefs -text svneol=unset#text/plain
 main/MANIFEST.MF -text
 main/include/TreeGraph.exe -text
 main/include/icons/Nexus.ico -text
