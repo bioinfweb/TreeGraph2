@@ -785,6 +785,7 @@ main/xsd/1.2.xsd -text
 test/.classpath -text svneol=unset#text/plain
 test/.project -text svneol=unset#text/plain
 test/.settings/org.eclipse.jdt.core.prefs -text svneol=unset#text/plain
+test/.settings/org.eclipse.jdt.ui.prefs -text svneol=unset#text/plain
 test/data/RerootByLeafs.xtg -text
 test/data/ancestralState/Primates.txt.log.txt -text svneol=unset#text/plain
 test/data/getFirstNodeByData.xtg -text
