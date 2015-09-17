@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben StÃ¶ver, Sarah Wiechers, Kai MÃ¼ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -70,7 +70,7 @@ public class TreePath {
    * @return the end of the path
    */
   public Node findNode(Node root) {
-  	for (int i = path.size() - 1; i >= 0; i--) {  // Pfad wurde in umgekehrter Reihenfolge gespeichert um unnötige Feldinitialisierungen zu vermeiden.
+  	for (int i = path.size() - 1; i >= 0; i--) {  // Pfad wurde in umgekehrter Reihenfolge gespeichert um unnï¿½tige Feldinitialisierungen zu vermeiden.
 			if (root.getChildren().size() > path.get(i)) {
 				root = root.getChildren().get(path.get(i));
 			}

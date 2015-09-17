@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben StÃ¶ver, Sarah Wiechers, Kai MÃ¼ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -63,7 +63,7 @@ public class CopyColumnEdit extends NodeBranchDataEdit {
 				}
 			}
 	  	else {
-	  		getAdapter().delete(root);  // Ggf. vorhandenen Wert löschen
+	  		getAdapter().delete(root);  // Ggf. vorhandenen Wert lï¿½schen
 	  	}
 	
 	  	for (int i = 0; i < root.getChildren().size(); i++) {

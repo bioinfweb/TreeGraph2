@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben StÃ¶ver, Sarah Wiechers, Kai MÃ¼ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -60,7 +60,7 @@ public class GlobalFormatsDialog extends EditDialog {
 	@Override
 	protected boolean onExecute() {
 		setValues(getDocument().getTree().getFormats());
-		return true;  // Für globale formate muss kein Element markiert sein.
+		return true;  // Fï¿½r globale formate muss kein Element markiert sein.
 	}
 
 

@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben StÃ¶ver, Sarah Wiechers, Kai MÃ¼ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -50,7 +50,7 @@ public class NewickScanner extends NewickStringChars {
 	
 	
 	private static int readDelimitedName(final String text, int start, NewickToken token) {
-		start++;  // NAME_DELIMITER am Anfang überspringen.
+		start++;  // NAME_DELIMITER am Anfang ï¿½berspringen.
 		int pos = start;
 		String result = "";
 		do {
@@ -59,7 +59,7 @@ public class NewickScanner extends NewickStringChars {
 				pos++;
 			}
 			if ((pos + 1 < text.length()) && (text.charAt(pos + 1) == NAME_DELIMITER)) {
-				result += NAME_DELIMITER;  // Ermöglichen von 'abc'''
+				result += NAME_DELIMITER;  // Ermï¿½glichen von 'abc'''
 				pos +=2;  
 			}
 		} while (pos < text.length() && (text.charAt(pos) != NAME_DELIMITER));
@@ -110,7 +110,7 @@ public class NewickScanner extends NewickStringChars {
 	 * @throws NewickException if the comment is unterminated
 	 */
 	private static int readComment(final String text, int start, List<NewickToken> tokenList) {
-		start++;  // COMMENT_START am Anfang überspringen.
+		start++;  // COMMENT_START am Anfang ï¿½berspringen.
 		int pos = start;
 		String result = "";
 		while ((pos < text.length()) && (text.charAt(pos) != COMMENT_END)) {
@@ -153,9 +153,9 @@ public class NewickScanner extends NewickStringChars {
   		  	break;
   		  case LENGTH_SEPERATOR:
   		  	token = new NewickToken(TokenType.LENGTH, pos);
-  		  	pos++; // LENGTH_SEPERATOR selbst überspringen
-  		  	if (text.charAt(pos) == COMMENT_START) {  // Sonderfall: Kommentar zwischen LENGTH_SEPERATOR und Längenangabe 
-    		  	pos = readComment(text, pos, result) + 1;  // Zusätzlich COMMENT_END überspringen
+  		  	pos++; // LENGTH_SEPERATOR selbst ï¿½berspringen
+  		  	if (text.charAt(pos) == COMMENT_START) {  // Sonderfall: Kommentar zwischen LENGTH_SEPERATOR und Lï¿½ngenangabe 
+    		  	pos = readComment(text, pos, result) + 1;  // Zusï¿½tzlich COMMENT_END ï¿½berspringen
   		  	}
   		  	pos = readBranchLength(text, pos, token);
   		  	result.add(token);

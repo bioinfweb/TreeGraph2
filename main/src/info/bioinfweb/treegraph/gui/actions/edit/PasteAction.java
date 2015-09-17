@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben StÃ¶ver, Sarah Wiechers, Kai MÃ¼ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -155,7 +155,7 @@ public class PasteAction extends DocumentAction {
 					if (frame.getTreeViewPanel().getSelection().size() > 1) {
 						Iterator<PaintableElement> iterator = 
 							  frame.getTreeViewPanel().getSelection().iterator();
-						iterator.next();  // Erstes überspringen
+						iterator.next();  // Erstes ï¿½berspringen
 						anchor2 = (Node)iterator.next();
 					}
 					edit = new PasteLegendEdit(frame.getDocument(), (Node)selected, anchor2, legend);

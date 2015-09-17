@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben StÃ¶ver, Sarah Wiechers, Kai MÃ¼ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -395,7 +395,7 @@ public class FontFormatsPanel extends JPanel implements ElementFormatTab {
 			fontFamilyList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
 					public void valueChanged(javax.swing.event.ListSelectionEvent e) {
 						if (!e.getValueIsAdjusting()) {
-							if (getFontFamilyList().isFocusOwner()) {  // Muss ebenfalls geprüft werden, da es sonst zu Division durch Null kommt, die irgendwie mit dem Wechselseitigen Aufruf der beiden Listener bei der Aktualisierung in onExecute kommt. (!getFontFamilyTextField().isFocusOwner() reicht als Bedingung nicht.)								
+							if (getFontFamilyList().isFocusOwner()) {  // Muss ebenfalls geprï¿½ft werden, da es sonst zu Division durch Null kommt, die irgendwie mit dem Wechselseitigen Aufruf der beiden Listener bei der Aktualisierung in onExecute kommt. (!getFontFamilyTextField().isFocusOwner() reicht als Bedingung nicht.)								
 								getFontFamilyTextField().setText(fontFamilyList.getModel().getElementAt(
 										fontFamilyList.getSelectedIndex()).toString());
 								preview();

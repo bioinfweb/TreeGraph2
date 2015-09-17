@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben StÃ¶ver, Sarah Wiechers, Kai MÃ¼ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -48,7 +48,7 @@ public class Tree {
 	public static final float DEFAULT_LONGEST_PATH_LENGTH = 150;  // mm
 	
 	public static final String UNIQUE_NAME_CHARS = "abcdefghijklmnopqrstuvwxyz01234567890";
-	public static final int UNIQUE_NAME_LENGTH = 10;  // Entspricht 10^14 Möglichkeiten
+	public static final int UNIQUE_NAME_LENGTH = 10;  // Entspricht 10^14 Mï¿½glichkeiten
 
 	
 	private Node paintStart = null;

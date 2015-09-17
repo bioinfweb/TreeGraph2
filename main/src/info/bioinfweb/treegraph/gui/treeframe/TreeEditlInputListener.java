@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben StÃ¶ver, Sarah Wiechers, Kai MÃ¼ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -93,7 +93,7 @@ class TreeEditlInputListener extends MouseAdapter
 			doubleClick(e, selected);
 		}
 		else {
-			if (e.getButton() == MouseEvent.BUTTON3) {  //TODO Besser wäre auch eine plattformunabhängige Lösung über e.getPopupTrigger und mouseReleased + mousePressed
+			if (e.getButton() == MouseEvent.BUTTON3) {  //TODO Besser wï¿½re auch eine plattformunabhï¿½ngige Lï¿½sung ï¿½ber e.getPopupTrigger und mouseReleased + mousePressed
 				if (!owner.getSelection().contains(selected)) {
 					if ((e.isMetaDown() && SystemUtils.IS_OS_MAC) || (e.isControlDown()&&  !SystemUtils.IS_OS_MAC)) {
   	  			owner.getSelection().add(selected);
@@ -102,7 +102,7 @@ class TreeEditlInputListener extends MouseAdapter
 						owner.getSelection().set(selected);
 					}
   			}
-				// sonst Markierung unverändert lassen
+				// sonst Markierung unverï¿½ndert lassen
 			}
 			else if (e.getButton() == MouseEvent.BUTTON1) {
 				if ((e.isMetaDown() && SystemUtils.IS_OS_MAC) || (e.isControlDown() &&  !SystemUtils.IS_OS_MAC)) {
@@ -119,15 +119,15 @@ class TreeEditlInputListener extends MouseAdapter
 					owner.getSelection().set(selected);
 				}
 			}
-			// Wurde außerhalb eines Elements geklickt, ist die Markierung null (= keine Element).
+			// Wurde auï¿½erhalb eines Elements geklickt, ist die Markierung null (= keine Element).
 		}
-		checkPopup(e, selected);  // Muss wg. Plattformunabhängigkeit bei mousePressed und mouseReleased erfolgen
+		checkPopup(e, selected);  // Muss wg. Plattformunabhï¿½ngigkeit bei mousePressed und mouseReleased erfolgen
 	}
 
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		checkPopup(e, getElementByPosition(e));  // Muss wg. Plattformunabhängigkeit bei mousePressed und mouseReleased erfolgen
+		checkPopup(e, getElementByPosition(e));  // Muss wg. Plattformunabhï¿½ngigkeit bei mousePressed und mouseReleased erfolgen
 	}
 
 

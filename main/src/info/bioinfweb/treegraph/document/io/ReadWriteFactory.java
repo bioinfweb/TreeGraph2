@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben StÃ¶ver, Sarah Wiechers, Kai MÃ¼ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -44,7 +44,7 @@ public class ReadWriteFactory {
   
   private void fillList() {
   	factories.put(ReadWriteFormat.XTG, new XTGFactory());
-  	factories.put(ReadWriteFormat.NEWICK, new NewickFactory());   // Muss vor NEXUS eingefügt werden
+  	factories.put(ReadWriteFormat.NEWICK, new NewickFactory());   // Muss vor NEXUS eingefï¿½gt werden
   	factories.put(ReadWriteFormat.NEXUS, new NexusFactory());
   	factories.put(ReadWriteFormat.TGF, new TGFFactory());  //TODO Warum steht das hier? Ist doch noch gar nicht fertig.
   	factories.put(ReadWriteFormat.PHYLO_XML, new PhyloXMLFactory());
@@ -79,7 +79,7 @@ public class ReadWriteFactory {
 		ReadWriteFormat result = formatByFileName(file.getName());
 		if (result != null) {
 			if (result.equals(ReadWriteFormat.NEWICK) || result.equals(ReadWriteFormat.NEXUS)) {  // In diesem Fall ist aufgrund der Dateierweiterung nicht klar, ob es sich um NEWICK oder NEXUS handelt.
-				if (getFilter(ReadWriteFormat.NEXUS).accept(file)) {  // Datei wird geöffnet und geprüft, ob "#NEXUS" vorhanden ist.
+				if (getFilter(ReadWriteFormat.NEXUS).accept(file)) {  // Datei wird geï¿½ffnet und geprï¿½ft, ob "#NEXUS" vorhanden ist.
 					result = ReadWriteFormat.NEXUS;
 				}
 				else {

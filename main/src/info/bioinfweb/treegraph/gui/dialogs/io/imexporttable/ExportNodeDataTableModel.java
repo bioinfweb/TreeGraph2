@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben StÃ¶ver, Sarah Wiechers, Kai MÃ¼ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -146,7 +146,7 @@ public class ExportNodeDataTableModel extends AbstractTableModel {
 		if (col == 0) {
 			return "Column";
 		}
-		else {  // nur noch 1 möglich
+		else {  // nur noch 1 mï¿½glich
 			return "Data";
 		}
 	}
@@ -166,7 +166,7 @@ public class ExportNodeDataTableModel extends AbstractTableModel {
 		if (col == 0) {
 			return "" + row;
 		}
-		else {  // nur noch 1 möglich
+		else {  // nur noch 1 mï¿½glich
 			return adapters.get(row).toString();
 		}
 	}

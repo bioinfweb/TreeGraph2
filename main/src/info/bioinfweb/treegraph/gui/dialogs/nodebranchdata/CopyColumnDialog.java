@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben StÃ¶ver, Sarah Wiechers, Kai MÃ¼ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -75,7 +75,7 @@ public class CopyColumnDialog extends EditDialog {
 		getDestInput().setAdapters(getDocument().getTree(), false, true, true, false, true, "");
 		getDestInput().setSelectedAdapter(NewTextLabelAdapter.class);
 		
-		pack();  // An Länge der Namen anpassen.
+		pack();  // An Lï¿½nge der Namen anpassen.
 		return true;
 	}
 

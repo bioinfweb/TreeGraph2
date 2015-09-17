@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben StÃ¶ver, Sarah Wiechers, Kai MÃ¼ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -103,7 +103,7 @@ public class NewickReader extends TextStreamReader implements DocumentReader {
 	
 	private String readNextTree(InputStreamReader reader) throws IOException {
 		int code = reader.read();
-		if (code == -1) {  //TODO Wird hier wirklich -1 zurückgegeben, wenn Ende des Streams erreicht ist.
+		if (code == -1) {  //TODO Wird hier wirklich -1 zurï¿½ckgegeben, wenn Ende des Streams erreicht ist.
 			return null;
 		}
 		else {

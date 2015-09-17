@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben StÃ¶ver, Sarah Wiechers, Kai MÃ¼ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -37,7 +37,7 @@ public class HexagonIcon extends ShapeLabelIcon implements LabelIcon {
 		x += 0.5f * lineWidth;
 		y += 0.5f * lineWidth;
 		float width = formats.getWidth().getInPixels(pixelsPerMillimeter) - lineWidth;
-		float cornerLengthX = width / 4f;  // wg. sin(60°) = 0.5 
+		float cornerLengthX = width / 4f;  // wg. sin(60ï¿½) = 0.5 
 		float edgeLengthX = width / 2f;
 		float height = formats.getHeight().getInPixels(pixelsPerMillimeter) - lineWidth;
 		float edgeLengthY = height / 2f;

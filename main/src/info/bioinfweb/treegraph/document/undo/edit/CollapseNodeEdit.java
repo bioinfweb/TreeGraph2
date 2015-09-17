@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben StÃ¶ver, Sarah Wiechers, Kai MÃ¼ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -99,7 +99,7 @@ public class CollapseNodeEdit extends SaveLegendsEdit implements WarningMessageE
 				Node child = node.getChildren().get(i);
 				child.setParent(parent);
 				editBranchLength(child.getAfferentBranch(), 1);  // +1 to add parent length
-				parent.getChildren().add(insertIndex + i, child);  // Kinder bleiben auch mit Node verknüpft.
+				parent.getChildren().add(insertIndex + i, child);  // Kinder bleiben auch mit Node verknï¿½pft.
 			}
 			parent.getChildren().remove(node);
 		}

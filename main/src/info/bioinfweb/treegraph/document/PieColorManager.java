@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben StÃ¶ver, Sarah Wiechers, Kai MÃ¼ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -35,12 +35,12 @@ import java.util.Vector;
  */
 public class PieColorManager {
   public static final Color[] DEFAULT_COLORS = {Color.BLUE, Color.RED, Color.GREEN, Color.ORANGE, 
-  	Color.CYAN, Color.MAGENTA, Color.YELLOW, Color.PINK};  //TODO Farben evtl. überarbeiten
+  	Color.CYAN, Color.MAGENTA, Color.YELLOW, Color.PINK};  //TODO Farben evtl. ï¿½berarbeiten
  
   
   private static PieColorManager firstInstance = null;
   
-  private List<Color> colors = new Vector<Color>();  //TODO Später erlauben mit benutzerdefinierten Werten zu belegen
+  private List<Color> colors = new Vector<Color>();  //TODO Spï¿½ter erlauben mit benutzerdefinierten Werten zu belegen
 
 
 	private PieColorManager() {

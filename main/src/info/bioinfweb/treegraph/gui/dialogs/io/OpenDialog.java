@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben StÃ¶ver, Sarah Wiechers, Kai MÃ¼ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -240,7 +240,7 @@ public class OpenDialog extends FileDialog {
 					else if (e.getPropertyName().equals(JFileChooser.SELECTED_FILE_CHANGED_PROPERTY)) {
 						boolean enableAdapters = (file != null) && 
 						    nexusFilter.validExtension(file.getAbsolutePath()) &&
-						    newickFilter.validExtension(file.getAbsolutePath());  // nur validExtension() um Öffnen jder Datei zu verhindern
+						    newickFilter.validExtension(file.getAbsolutePath());  // nur validExtension() um ï¿½ffnen jder Datei zu verhindern
 						getNodeNamesDataInput().setEnabled(enableAdapters);
 						getTranslateInternalNodesCheckBox().setEnabled((file != null) && 
 								nexusFilter.accept(file));

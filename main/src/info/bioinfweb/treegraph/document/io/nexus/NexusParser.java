@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben StÃ¶ver, Sarah Wiechers, Kai MÃ¼ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -171,7 +171,7 @@ public class NexusParser {
   
   private static String parseName(String name) {
   	if (ENCLOSED_NAME_PATTERN.matcher(name).matches()) {
-  		return NAME_SEPARATOR_PATTERN.split(name)[1];  // Nur die Mitte zurückgeben
+  		return NAME_SEPARATOR_PATTERN.split(name)[1];  // Nur die Mitte zurï¿½ckgeben
   	}
   	else {
   		return name.replaceAll(Character.toString(NewickStringChars.FREE_NAME_BLANK), " ");

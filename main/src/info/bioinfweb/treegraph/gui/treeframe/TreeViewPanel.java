@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben St�ver, Kai M�ller
+ * Copyright (C) 2007-2015  Ben Stöver, Sarah Wiechers, Kai Müller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -152,7 +152,7 @@ public class TreeViewPanel extends JPanel implements DocumentListener, Scrollabl
 		PositionPaintType oldType = painterType;
 		painterType = type;
 	  if (getDocument() != null) {
-	  	document.unregisterPositioner(oldType);  //TODO F�hrt zu einem Fehler, falls ein anderes TreeViewPanel hierzu ebenfalls einen Positioner angemeldet hat.
+	  	document.unregisterPositioner(oldType);  //TODO F�hrt zu einem Fehler, falls ein anderes TreeViewPanel hierzu ebenfalls einen Positioner angemeldet hat.
 			document.registerPositioner(painterType);
 		  PositionPaintFactory.getInstance().getPositioner(painterType).positionAll(document, 1f);
 		  changeHappened(new DocumentChangeEvent(document, null));

@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben StÃ¶ver, Sarah Wiechers, Kai MÃ¼ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -70,7 +70,7 @@ public class NodeMarginPanel extends JPanel implements ElementFormatTab {
 
 
 	public boolean setValues(TreeSelection selection) {
-		Node first = selection.getFirstElementOfType(Node.class);  // Soll explizit auch bei internen Knoten möglich sein.
+		Node first = selection.getFirstElementOfType(Node.class);  // Soll explizit auch bei internen Knoten mï¿½glich sein.
 		boolean result = (first != null);
 		if (result) {
 			getMarginInput().setValue(first.getFormats().getLeafMargin());

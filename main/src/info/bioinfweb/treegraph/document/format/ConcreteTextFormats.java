@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben StÃ¶ver, Sarah Wiechers, Kai MÃ¼ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -118,7 +118,7 @@ public class ConcreteTextFormats implements ElementFormats, Cloneable, TextForma
 	 * @see info.bioinfweb.treegraph.document.format.TextFormats#getFont(float)
 	 */
 	public Font getFont(float pixelsPerMillimeter) {  
-		//Die Angabe size von Font in Punkten ist ungleich der Angabe der Schrifthöhe in Punkten. 
+		//Die Angabe size von Font in Punkten ist ungleich der Angabe der Schrifthï¿½he in Punkten. 
 		//Sie muss zur Umrechnung skaliert werden.
 		
 		final float factor = 0.8f;

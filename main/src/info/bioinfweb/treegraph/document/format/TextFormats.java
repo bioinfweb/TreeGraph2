@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben StÃ¶ver, Sarah Wiechers, Kai MÃ¼ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -27,7 +27,7 @@ import java.util.Locale;
 
 
 public interface TextFormats extends ElementFormats {
-	public static final String DEFAULT_FONT_NAME = "Arial"; //TODO sinnvollen Startwert wählen
+	public static final String DEFAULT_FONT_NAME = "Arial"; //TODO sinnvollen Startwert wï¿½hlen
 	public static final float DEFAULT_TEXT_HEIGHT_IN_MM = 6;
 	public static final Color DEFAULT_TEXT_COLOR = Color.BLACK;
 	public static final Locale DEFAULT_LOCALE = Locale.ENGLISH;

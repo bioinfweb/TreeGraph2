@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben StÃ¶ver, Sarah Wiechers, Kai MÃ¼ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -48,7 +48,7 @@ public abstract class ShapeLabelIcon implements LabelIcon {
 		Stroke stroke = g.getStroke();
 		try {
 	    g.setStroke(new BasicStroke(formats.getLineWidth().getInPixels(pixelsPerMillimeter)));
-			g.draw(shape);  // g.fill() allein würde zu klein zeichnen
+			g.draw(shape);  // g.fill() allein wï¿½rde zu klein zeichnen
 			if (formats.getIconFilled()) {
 				g.fill(shape);
 			}

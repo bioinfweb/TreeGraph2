@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben StÃ¶ver, Sarah Wiechers, Kai MÃ¼ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -59,6 +59,6 @@ public abstract class InsertRemoveLabelEdit extends DocumentEdit {
 	protected void remove() {
 		owner.remove(label);
 		label.setLabels(null);
-		//label.getFormats().setOwner(null);  //TODO Ist owner=null überall auf Zugriffsfehler gesichert?
+		//label.getFormats().setOwner(null);  //TODO Ist owner=null ï¿½berall auf Zugriffsfehler gesichert?
 	}
 }

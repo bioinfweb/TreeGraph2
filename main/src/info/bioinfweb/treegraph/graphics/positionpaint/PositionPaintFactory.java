@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben StÃ¶ver, Sarah Wiechers, Kai MÃ¼ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -44,7 +44,7 @@ public class PositionPaintFactory {
   private void fillFactoryList() {
   	factories.put(PositionPaintType.RECT_CLAD, new RectangularCladogramFactory());
   	factories.put(PositionPaintType.PHYLOGRAM, new PhylogramFactory());
-  	// Hier neue Klassen hinzufügen.
+  	// Hier neue Klassen hinzufï¿½gen.
   }
   
   

@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben StÃ¶ver, Sarah Wiechers, Kai MÃ¼ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -127,11 +127,11 @@ public class RectangularCladogramPainter implements TreePainter {
 		float halfHeightRight = 0.5f * b.getFormats().getLineWidth().getInPixels(pixelsPerMillimeter);
 		float left = pd.getLeft().getInPixels(pixelsPerMillimeter);
 		if ((!n.isFirst() && !n.isLast()) || !parentHasEdgeRadius) {
-			left = (int)left;  //Überlappung der Linien erreichen
+			left = (int)left;  //ï¿½berlappung der Linien erreichen
 		}
 		float right = pd.getRightInPixels(pixelsPerMillimeter);
 		if (!n.isLeaf()) {
-			right = Math2.roundUp(right);  //Überlappung der Linien erreichen
+			right = Math2.roundUp(right);  //ï¿½berlappung der Linien erreichen
 		}
 		
 		Path2D path = new  Path2D.Float();
@@ -251,14 +251,14 @@ public class RectangularCladogramPainter implements TreePainter {
 			float topEdge = pd.getTop().getInPixels(pixelsPerMillimeter);
 			float verticalLeft = left + cornerRadius + 0.5f * width;
 			//path.append(new Line2D.Float(verticalLeft, topEdge, verticalLeft, topEdge), false);
-			path.append(new Line2D.Float(Math2.roundUp(verticalLeft), topEdge, verticalLeft, topEdge), false);  //Linie nach rechts verlängern um Überlappung zu erreichen
+			path.append(new Line2D.Float(Math2.roundUp(verticalLeft), topEdge, verticalLeft, topEdge), false);  //Linie nach rechts verlï¿½ngern um ï¿½berlappung zu erreichen
 			path.append(new Arc2D.Float(left, topEdge, length, length, 90, 90, Arc2D.OPEN), true);
 			
   		path.append(new Line2D.Float(left, top, left, top + height), true);
   		
 			height += 2 * width;
 			path.append(new Arc2D.Float(left, topEdge + height, length, length, 180, 90, Arc2D.OPEN), true);
-			path.append(new Line2D.Float(verticalLeft, topEdge + height + 2 * cornerRadius, Math2.roundUp(verticalLeft), topEdge + height + 2 * cornerRadius), true);  //Linie nach rechts verlängern um Überlappung zu erreichen
+			path.append(new Line2D.Float(verticalLeft, topEdge + height + 2 * cornerRadius, Math2.roundUp(verticalLeft), topEdge + height + 2 * cornerRadius), true);  //Linie nach rechts verlï¿½ngern um ï¿½berlappung zu erreichen
 
 			g.draw(path);
 		}
@@ -475,13 +475,13 @@ public class RectangularCladogramPainter implements TreePainter {
 	    		g.draw(new Line2D.Float(left, top, left, top + 0.5f * height - cornerRadius));
 	    		g.draw(new Line2D.Float(left, top + 0.5f * height + cornerRadius, left, top + height));
 	    		
-	    		// Mittlere Bögen:
+	    		// Mittlere Bï¿½gen:
 	    		float middleTop = top + 0.5f * height - cornerRadius;
 	    		float length = 2 * cornerRadius;
 	  			g.draw(new Arc2D.Float(left, middleTop - cornerRadius, length, length, 180, 90, Arc2D.OPEN));
 	  			g.draw(new Arc2D.Float(left, middleTop + cornerRadius, length, length, 90, 90, Arc2D.OPEN));
 	  			
-	  			// Äußere Bögen:
+	  			// ï¿½uï¿½ere Bï¿½gen:
 	  			height += 2 * lineWidth;
 	  			top = pd.getLinePos().getTop().getInPixels(pixelsPerMillimeter);
 	  			left -= 2 * cornerRadius;  // Linke obere Ecke des Kreises wird angegeben.

@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben StÃ¶ver, Sarah Wiechers, Kai MÃ¼ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -112,7 +112,7 @@ public class DecimalFormatPanel extends JPanel implements ElementFormatTab {
 	public void addOperators(List<FormatOperator> operators) {
 		if (changeMonitor.hasChanged()) {
 			operators.add(new DecimalFormatOperator(getDecimalFormat(), getLocaleValue()));
-			//TODO Kann Formatsangabe ungültig sein?
+			//TODO Kann Formatsangabe ungï¿½ltig sein?
 		}
 	}
 	
@@ -304,7 +304,7 @@ public class DecimalFormatPanel extends JPanel implements ElementFormatTab {
 			predifinedTable.getTableHeader().setReorderingAllowed(false);
 			predifinedTable.getSelectionModel().setSelectionMode(
 					ListSelectionModel.SINGLE_SELECTION);
-			predifinedTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {  //TODO Muss zusätzlich auch ein Model-Listener her? Muss der Tastenstatus initielisiert werden?
+			predifinedTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {  //TODO Muss zusï¿½tzlich auch ein Model-Listener her? Muss der Tastenstatus initielisiert werden?
 			  public void valueChanged(ListSelectionEvent e) {
 			  	getFormatTextField().setText(
 			  			getPredifinedTable().getModel().getValueAt(getPredifinedTable().

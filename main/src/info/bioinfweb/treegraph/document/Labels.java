@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2015  Ben Stöver, Kai Müller
+ * Copyright (C) 2007-2015  Ben StÃ¶ver, Sarah Wiechers, Kai MÃ¼ller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -121,7 +121,7 @@ public class Labels implements Cloneable {
 		label.setLabels(this);
 		LabelFormats f = label.getFormats();
 		List<LabelLine> lines = getLines(f.isAbove());
-		// Ggf. Zeile hinzufügen:
+		// Ggf. Zeile hinzufï¿½gen:
 		if (f.getLineNumber() >= lines.size()) {
 			for (int i = lines.size(); i <= f.getLineNumber(); i++) {
 				lines.add(new LabelLine());
@@ -173,7 +173,7 @@ public class Labels implements Cloneable {
 	
 	public boolean reinsert(Label label) {
 		boolean result = remove(label);
-		if (result) {  // Nur wieder einfügen, wenn es vorher vorhanden war.
+		if (result) {  // Nur wieder einfï¿½gen, wenn es vorher vorhanden war.
 			add(label);
 			reduceLabelLineVectors();
 		}
@@ -359,7 +359,7 @@ public class Labels implements Cloneable {
 	 * @return true if labels are present
 	 */
 	public boolean isEmpty() {
-		reduceLabelLineVectors();  // Stellt sicher, dass nicht ausschließlic leere Linien vorhanden sind.
+		reduceLabelLineVectors();  // Stellt sicher, dass nicht ausschlieï¿½lic leere Linien vorhanden sind.
 		return labelLinesAbove.isEmpty() && labelLinesBelow.isEmpty();
 	}
 	
