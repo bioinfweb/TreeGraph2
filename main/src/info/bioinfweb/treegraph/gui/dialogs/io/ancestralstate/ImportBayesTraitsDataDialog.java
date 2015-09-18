@@ -21,7 +21,7 @@ package info.bioinfweb.treegraph.gui.dialogs.io.ancestralstate;
 
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 import info.bioinfweb.treegraph.document.undo.file.ancestralstate.AncestralStateImportParameters;
-import info.bioinfweb.treegraph.gui.dialogs.ImportTextElementDataParametersPanel;
+import info.bioinfweb.treegraph.gui.dialogs.CompareTextElementDataParametersPanel;
 import info.bioinfweb.treegraph.gui.dialogs.io.FileDialog;
 import info.bioinfweb.treegraph.gui.dialogs.io.TextFileFilter;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataInput;
@@ -62,7 +62,7 @@ public class ImportBayesTraitsDataDialog extends FileDialog {
 	private JLabel nodeIdentifierLabel;
 	private NodeBranchDataInput keyColumnInput;
 	private JPanel keyColumnPanel;
-	private ImportTextElementDataParametersPanel textElementDataParametersPanel;
+	private CompareTextElementDataParametersPanel textElementDataParametersPanel;
 
 
 	/**
@@ -202,9 +202,9 @@ public class ImportBayesTraitsDataDialog extends FileDialog {
 	}
 	
 	
-	private ImportTextElementDataParametersPanel getTextElementDataParametersPanel() {
+	private CompareTextElementDataParametersPanel getTextElementDataParametersPanel() {
 		if (textElementDataParametersPanel == null) {
-			textElementDataParametersPanel = new ImportTextElementDataParametersPanel();
+			textElementDataParametersPanel = new CompareTextElementDataParametersPanel();
 		}
 		return textElementDataParametersPanel;
 	}

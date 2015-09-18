@@ -96,7 +96,14 @@ public class LeafSet {
 	}
 	
 	
-	public LeafSet addTo(LeafSet other) {
+	/**
+	 * Performs a binary {@code AND} operation between this instance and the specified leaf set and returns the result 
+	 * as new instance. This instance is not modified by this method.
+	 * 
+	 * @param other the leaf set to be added
+	 * @return a new leaf set instance
+	 */
+	public LeafSet and(LeafSet other) {
 		if (other.size() != size()) {
 			throw new IllegalArgumentException();
 		}

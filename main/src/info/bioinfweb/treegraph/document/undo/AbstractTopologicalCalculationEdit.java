@@ -21,6 +21,7 @@ package info.bioinfweb.treegraph.document.undo;
 
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.topologicalcalculation.LeafSet;
@@ -45,7 +46,7 @@ public abstract class AbstractTopologicalCalculationEdit extends ComplexDocument
 			NodeBranchDataAdapter targetLeafsAdapter, boolean processRooted) {
 	
 		super(document, changeType);
-		topologicalCalculator = new TopologicalCalculator(document, targetLeafsAdapter, processRooted, KEY_LEAF_REFERENCE, new ImportTextElementDataParameters());
+		topologicalCalculator = new TopologicalCalculator(document, targetLeafsAdapter, processRooted, KEY_LEAF_REFERENCE, new CompareTextElementDataParameters());
 	}
 
 	
@@ -96,12 +97,7 @@ public abstract class AbstractTopologicalCalculationEdit extends ComplexDocument
 	}	
 	
 	
-	protected NodeInfo findSourceNodeWithAllLeafs(Node sourceRoot, LeafSet targetLeafs) {
-		return topologicalCalculator.findSourceNodeWithAllLeafs(sourceRoot, targetLeafs);
+	protected NodeInfo findSourceNodeWithAllLeafs(Tree tree, Node sourceRoot, LeafSet targetLeafs) {
+		return topologicalCalculator.findSourceNodeWithAllLeafs(tree, sourceRoot, targetLeafs);
 	}
-	
-	
-//	protected Node findHighestConflictingNode(Node root, Node targetNode, NodeInfo info) {
-//		return topologicalCalculator.findHighestConflictingNode(root, targetNode, info);
-//	}
 }

@@ -22,7 +22,7 @@ package info.bioinfweb.treegraph.document;
 import info.bioinfweb.treegraph.document.format.DistanceDimension;
 import info.bioinfweb.treegraph.document.format.GlobalFormats;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
-import info.bioinfweb.treegraph.document.undo.ImportTextElementDataParameters;
+import info.bioinfweb.treegraph.document.undo.CompareTextElementDataParameters;
 import info.bioinfweb.treegraph.graphics.positionpaint.PositionPaintType;
 import info.bioinfweb.commons.RandomValues;
 
@@ -229,7 +229,7 @@ public class Tree {
 	 * @return the node containing the sought-after value or {@code null} if no according node has been found.
 	 */
 	public Node getFirstNodeByData(NodeBranchDataAdapter adapter, double value, boolean leafsOnly, 
-			ImportTextElementDataParameters parameters) {
+			CompareTextElementDataParameters parameters) {
 		
 		return getFirstNodeByData(adapter, new TextElementData(value), leafsOnly, parameters);
 	}
@@ -245,7 +245,7 @@ public class Tree {
 	 * @return the node containing the sought-after value or {@code null} if no according node has been found.
 	 */
 	public Node getFirstNodeByData(NodeBranchDataAdapter adapter, String value, boolean leafsOnly,
-			ImportTextElementDataParameters parameters) {
+			CompareTextElementDataParameters parameters) {
 				
 		return getFirstNodeByData(adapter, new TextElementData(value), leafsOnly, parameters);
 	}
@@ -261,7 +261,7 @@ public class Tree {
 	 * @return the node containing the sought-after value or {@code null} if no according node has been found.
 	 */
 	public Node getFirstNodeByData(NodeBranchDataAdapter adapter, TextElementData data, boolean leafsOnly,
-			ImportTextElementDataParameters parameters) {
+			CompareTextElementDataParameters parameters) {
 			
 		return getFirstNodeInSubtreeByData(getPaintStart(), adapter, data, leafsOnly, parameters);
 	}
@@ -279,7 +279,7 @@ public class Tree {
 	 * @return the node containing the sought-after value or {@code null} if no according node has been found.
 	 */
 	public static Node getFirstNodeInSubtreeByData(Node root, NodeBranchDataAdapter adapter, TextElementData data, 
-			boolean leafsOnly, ImportTextElementDataParameters parameters) {
+			boolean leafsOnly, CompareTextElementDataParameters parameters) {
 		
 		TextElementData rootData = adapter.toTextElementData(root);
 		if ((!leafsOnly || root.isLeaf()) && (data.equals(rootData) ||  // First tries to compare without creating new objects

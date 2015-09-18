@@ -29,9 +29,14 @@ import info.bioinfweb.treegraph.document.undo.file.ImportDataColumnsParameters;
 public class AncestralStateImportParameters extends ImportDataColumnsParameters {
 	private Map<String, AncestralStateData> data = null;
 	private NodeBranchDataAdapter internalNodeNamesAdapter = null;
-	private String[] pieChartLabelIDs= null;
-	
+	private String[] pieChartLabelIDs= null;	
 
+
+	public AncestralStateImportParameters() {
+		super();
+	}
+	
+	
 	public String[] getPieChartLabelIDs() {
 		return pieChartLabelIDs;
 	}
@@ -41,10 +46,6 @@ public class AncestralStateImportParameters extends ImportDataColumnsParameters 
 		this.pieChartLabelIDs = pieChartLabelIDs;
 	}
 
-
-	public AncestralStateImportParameters() {
-		super();
-	}
 
 
 	public NodeBranchDataAdapter getInternalNodeNamesAdapter() {

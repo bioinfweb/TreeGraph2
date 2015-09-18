@@ -38,7 +38,7 @@ import info.bioinfweb.treegraph.document.TreeSerializer;
 import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
-import info.bioinfweb.treegraph.document.undo.ImportTextElementDataParameters;
+import info.bioinfweb.treegraph.document.undo.CompareTextElementDataParameters;
 import info.bioinfweb.treegraph.document.undo.WarningMessageEdit;
 
 
@@ -84,7 +84,7 @@ public class SortLeafsEdit extends DocumentEdit implements WarningMessageEdit {
 	private List<Node> newOrder;
 	private List<Node> oldOrder;
 	private NodeBranchDataAdapter leafAdapter;
-	private ImportTextElementDataParameters parameters;
+	private CompareTextElementDataParameters parameters;
 	private List<TextElementData> unlinkedOrderValues = new ArrayList<TextElementData>();
 	private List<TextElementData> unlinkedTreeValues = new ArrayList<TextElementData>();
 
@@ -99,7 +99,7 @@ public class SortLeafsEdit extends DocumentEdit implements WarningMessageEdit {
 	 *        order elements
 	 */
 	public SortLeafsEdit(Document document, Node root, List<TextElementData> newOrder, NodeBranchDataAdapter leafAdapter,
-					ImportTextElementDataParameters parameters) {
+					CompareTextElementDataParameters parameters) {
 		
 	  super(document, DocumentChangeType.NODE_ORDER);
 	  this.root = root;
@@ -229,7 +229,7 @@ public class SortLeafsEdit extends DocumentEdit implements WarningMessageEdit {
 	 * @return a list containing the loaded values in the order they were stored in the file
 	 * @throws IOException if an IO exception occurs while trying to read from the specified file
 	 */
-	public static List<TextElementData> orderFromTextFile(File file, ImportTextElementDataParameters parameters) 
+	public static List<TextElementData> orderFromTextFile(File file, CompareTextElementDataParameters parameters) 
 			throws IOException {
 		
 		List<TextElementData> result = new ArrayList<TextElementData>();
@@ -257,7 +257,7 @@ public class SortLeafsEdit extends DocumentEdit implements WarningMessageEdit {
 	 * @return a list containing the values of the leafs nodes of the specified document from top to bottom
 	 */
 	public static List<TextElementData> orderFromDocument(Document document, NodeBranchDataAdapter adapter,
-			ImportTextElementDataParameters parameters) {
+			CompareTextElementDataParameters parameters) {
 		
 		List<Node> leafs = TreeSerializer.getElementsInSubtreeAsList(document.getTree().getPaintStart(), true, Node.class);
 		List<TextElementData> result = new ArrayList<TextElementData>(leafs.size());

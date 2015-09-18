@@ -25,10 +25,10 @@ import info.bioinfweb.treegraph.document.change.DocumentChangeEvent;
 import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.change.DocumentListener;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
-import info.bioinfweb.treegraph.document.topologicalcalculation.LeafSet;
 import info.bioinfweb.treegraph.document.topologicalcalculation.NodeInfo;
 import info.bioinfweb.treegraph.document.topologicalcalculation.TopologicalCalculator;
-import info.bioinfweb.treegraph.document.undo.ImportTextElementDataParameters;
+import info.bioinfweb.treegraph.document.undo.CompareTextElementDataParameters;
+import info.bioinfweb.treegraph.document.undo.SelectionSynchronizationCompareParamters;
 import info.bioinfweb.treegraph.gui.treeframe.TreeInternalFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 import info.bioinfweb.treegraph.gui.treeframe.TreeViewPanel;
@@ -40,6 +40,8 @@ import java.util.Map;
 import javax.swing.Action;
 import javax.swing.event.ChangeEvent;
 
+import org.lsmp.djep.vectorJep.function.GetDiagonal;
+
 
 
 public class TreeSelectionSynchronizer implements TreeViewPanelListener, DocumentListener {
@@ -48,7 +50,7 @@ public class TreeSelectionSynchronizer implements TreeViewPanelListener, Documen
 	private MainFrame owner;
 	private boolean isUpdating = false;
 	private TopologicalCalculator topologicalCalculator = null;
-	private ImportTextElementDataParameters compareParameters = new ImportTextElementDataParameters();
+	private SelectionSynchronizationCompareParamters compareParameters = new SelectionSynchronizationCompareParamters();
 	
 	
 	public TreeSelectionSynchronizer(MainFrame owner) {
@@ -62,7 +64,7 @@ public class TreeSelectionSynchronizer implements TreeViewPanelListener, Documen
 	}
 	
 	
-	public ImportTextElementDataParameters getCompareParameters() {
+	public SelectionSynchronizationCompareParamters getCompareParameters() {
 		return compareParameters;
 	}
 
@@ -70,7 +72,7 @@ public class TreeSelectionSynchronizer implements TreeViewPanelListener, Documen
 	public void reset() {
 		TreeInternalFrame frame = getOwner().getActiveTreeFrame();
 		NodeBranchDataAdapter adapter = frame.getDocument().getDefaultLeafAdapter();
-		topologicalCalculator = new TopologicalCalculator(frame.getDocument(), adapter, false, KEY_LEAF_REFERENCE, compareParameters);
+		topologicalCalculator = new TopologicalCalculator(frame.getDocument(), adapter, compareParameters.isProcessRooted(), KEY_LEAF_REFERENCE, compareParameters);
 		Map<TextElementData, Integer> leafValues = topologicalCalculator.getLeafValues();
 	
 		// Create map of leaves from all documents:
@@ -95,13 +97,14 @@ public class TreeSelectionSynchronizer implements TreeViewPanelListener, Documen
 			TreeSelection selection = target.getSelection();
 			selection.clear();
 			for (Node node : source.getSelection().getAllElementsOfType(Node.class, false)) {
-				NodeInfo sourceNode = topologicalCalculator.findSourceNodeWithAllLeafs(target.getDocument().getTree().getPaintStart(), topologicalCalculator.getLeafSet(node));
-				if (sourceNode.getAdditionalCount() == 0) {
-					selection.add(sourceNode.getNode());
-				}
-				else {
-					System.out.println("Additional count:" + sourceNode.getAdditionalCount());
-				}
+				NodeInfo sourceNodeInfo = topologicalCalculator.findSourceNodeWithAllLeafs(target.getDocument().getTree(), target.getDocument().getTree().getPaintStart(), topologicalCalculator.getLeafSet(node));
+				selection.add(sourceNodeInfo.getNode());
+//				if (sourceNode.getAdditionalCount() == 0) {
+//					selection.add(sourceNode.getNode());
+//				}
+//				else {
+//					System.out.println("Additional count:" + sourceNode.getAdditionalCount());
+//				}
 			}
 		}					
 	}

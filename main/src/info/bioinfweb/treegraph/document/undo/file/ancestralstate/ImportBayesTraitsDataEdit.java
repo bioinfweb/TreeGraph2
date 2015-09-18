@@ -124,7 +124,7 @@ public class ImportBayesTraitsDataEdit extends AbstractTopologicalCalculationEdi
 				}
 			}
 		}
-		return findSourceNodeWithAllLeafs(getDocument().getTree().getPaintStart(), leafSet).getNode(); //TODO handle isDownwards() == false
+		return findSourceNodeWithAllLeafs(getDocument().getTree(), getDocument().getTree().getPaintStart(), leafSet).getNode(); //TODO handle isDownwards() == false
 	}
 
 

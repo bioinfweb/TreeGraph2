@@ -166,55 +166,6 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
 					"Incompatible trees", JOptionPane.ERROR_MESSAGE);
     }
 	}
-	
-	
-	private double getSupportValue(Node node) {
-		return sourceAdapter.getDecimal(node);
-	}
-	
-
-	/**
-	 * This method is the recursive part called by {@code findHighestConflict}. The only difference between 
-	 * the two is that this method can return the support value of root itself as {@code findHighestConflict} does not.
-	 * 
-	 * @param root - the root of the subtree to be searched (a node in the source document)
-	 * @param highest - the initial support value
-	 * @param targetNode - the node in the target document to attach a support value to
-	 * @param info - information about the node in the source document which contains all terminals of
-	 *        {@code targetNode} in its subtree 
-	 * @return the node with the highest support value found (in the source document)
-	 */
-	private double findHighestConflict(Node root, double highest, Node targetNode, NodeInfo info) {
-		if ((getLeafSet(root).containsAnyAndOther(getLeafSet(targetNode), false) &&
-				 getLeafSet(root).inSubtreeOf(getLeafSet(info.getNode()), false))
-				|| (getLeafSet(root).containsAnyAndOther(getLeafSet(targetNode), true) &&
-						getLeafSet(root).inSubtreeOf(getLeafSet(info.getNode()), true))) {
-			
-			double value = getSupportValue(root);
-			if (!Double.isNaN(value)) {
-				if (Double.isNaN(highest)) {
-					highest = value;
-				}
-				else {
-					highest = Math.max(highest, value);
-				}
-			}
-		}
-		
-		for (int i = 0; i < root.getChildren().size(); i++) {
-			double value = findHighestConflict(root.getChildren().get(i), highest, targetNode, info);
-			if (!Double.isNaN(value)) {
-				if (Double.isNaN(highest)) {
-					highest = value;
-				}
-				else {
-					highest = Math.max(highest, value);
-				}
-			}
-		}
-		
-		return highest;
-	}
 
 	
 	private boolean checkOtherPaintStartBranch(Node sourceNode) {
@@ -235,8 +186,7 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
 			if (!(targetRoot.hasParent() && !targetRoot.getParent().hasParent() && !getTopologicalCalculator().isProcessRooted() && 
 					(targetRoot.getParent().getChildren().size() == 2) && targetRoot.isLast())) {  // Check if the current node is linked to the paint start which does not represent a root and the other linked branch already carries the same support value.
 				
-				NodeInfo bestSourceNode = findSourceNodeWithAllLeafs(src.getTree().getPaintStart(), 
-						getLeafSet(targetRoot));
+				NodeInfo bestSourceNode = findSourceNodeWithAllLeafs(src.getTree(), src.getTree().getPaintStart(), getLeafSet(targetRoot));
 				if (bestSourceNode.getAdditionalCount() == 0) {  // support found
   				if (sourceAdapter.isDecimal(bestSourceNode.getNode())) {  // if no value exists there
 	  				supportAdapter.setDecimal(targetRoot, sourceAdapter.getDecimal(bestSourceNode.getNode()));  // Only decimal values can appear here.
@@ -266,6 +216,55 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
 				processSubtree(targetRoot.getChildren().get(i));
 			}
 		}
+	}	
+	
+	
+	public double getSupportValue(Node node) {
+		return sourceAdapter.getDecimal(node);
+	}
+	
+	
+	/**
+	 * This method is the recursive part called by {@code findHighestConflict}. The only difference between 
+	 * the two is that this method can return the support value of root itself as {@code findHighestConflict} does not.
+	 * 
+	 * @param root - the root of the subtree to be searched (a node in the source document)
+	 * @param highest - the initial support value
+	 * @param targetNode - the node in the target document to attach a support value to
+	 * @param info - information about the node in the source document which contains all terminals of
+	 *        {@code targetNode} in its subtree 
+	 * @return the node with the highest support value found (in the source document)
+	 */
+	public double findHighestConflict(Node root, double highest, Node targetNode, NodeInfo info) {
+		if ((getLeafSet(root).containsAnyAndOther(getLeafSet(targetNode), false) &&
+				 getLeafSet(root).inSubtreeOf(getLeafSet(info.getNode()), false))
+				|| (getLeafSet(root).containsAnyAndOther(getLeafSet(targetNode), true) &&
+						getLeafSet(root).inSubtreeOf(getLeafSet(info.getNode()), true))) {
+			
+			double value = getSupportValue(root);
+			if (!Double.isNaN(value)) {
+				if (Double.isNaN(highest)) {
+					highest = value;
+				}
+				else {
+					highest = Math.max(highest, value);
+				}
+			}
+		}
+		
+		for (int i = 0; i < root.getChildren().size(); i++) {
+			double value = findHighestConflict(root.getChildren().get(i), highest, targetNode, info);
+			if (!Double.isNaN(value)) {
+				if (Double.isNaN(highest)) {
+					highest = value;
+				}
+				else {
+					highest = Math.max(highest, value);
+				}
+			}
+		}
+		
+		return highest;
 	}
 	
 	

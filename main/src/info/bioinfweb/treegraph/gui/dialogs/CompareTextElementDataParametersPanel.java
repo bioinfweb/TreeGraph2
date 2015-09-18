@@ -19,7 +19,7 @@
 package info.bioinfweb.treegraph.gui.dialogs;
 
 
-import info.bioinfweb.treegraph.document.undo.ImportTextElementDataParameters;
+import info.bioinfweb.treegraph.document.undo.CompareTextElementDataParameters;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 
 import javax.swing.JCheckBox;
@@ -32,19 +32,19 @@ import java.awt.Insets;
 
 
 /**
- * GUI components that allows the user to specify {@link ImportTextElementDataParameters}.
+ * GUI components that allows the user to specify {@link CompareTextElementDataParameters}.
  * 
  * @author Ben St&ouml;ver
  * @since 2.2.0
  */
-public class ImportTextElementDataParametersPanel extends JPanel {
+public class CompareTextElementDataParametersPanel extends JPanel {
 	private JCheckBox ignoreWhitespaceCheckBox;
 	private JCheckBox caseCheckBox;
 	private JCheckBox distinguishSpaceUnderscoreCheckBox;
 	private JCheckBox parseNumericValuesCheckBox;
 
 	
-	public ImportTextElementDataParametersPanel() {
+	public CompareTextElementDataParametersPanel() {
 		super();
 		initialize();
 	}
@@ -60,7 +60,7 @@ public class ImportTextElementDataParametersPanel extends JPanel {
   }
 
 
-	public void assignToParameters(ImportTextElementDataParameters parameters) {
+	public void assignToParameters(CompareTextElementDataParameters parameters) {
 		parameters.setIgnoreWhitespace(getIgnoreWhitespaceCheckBox().isSelected());
 		parameters.setDistinguishSpaceUnderscore(getDistinguishSpaceUnderscoreCheckBox().isSelected());
 		parameters.setCaseSensitive(getCaseCheckBox().isSelected());
@@ -68,7 +68,7 @@ public class ImportTextElementDataParametersPanel extends JPanel {
   }
 	
 	
-	public void assignFromParameters(ImportTextElementDataParameters parameters) {		
+	public void assignFromParameters(CompareTextElementDataParameters parameters) {		
 		getIgnoreWhitespaceCheckBox().setSelected(parameters.isIgnoreWhitespace());
 	  getCaseCheckBox().setSelected(parameters.isCaseSensitive());
 	  getDistinguishSpaceUnderscoreCheckBox().setSelected(parameters.isDistinguishSpaceUnderscore());

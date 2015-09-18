@@ -324,11 +324,12 @@ main/src/info/bioinfweb/treegraph/document/topologicalcalculation/LeafSet.java -
 main/src/info/bioinfweb/treegraph/document/topologicalcalculation/NodeInfo.java -text
 main/src/info/bioinfweb/treegraph/document/topologicalcalculation/TopologicalCalculator.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/AbstractTopologicalCalculationEdit.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/CompareTextElementDataParameters.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/ComplexDocumentEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/ComposedDocumentEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/DocumentEdit.java -text
-main/src/info/bioinfweb/treegraph/document/undo/ImportTextElementDataParameters.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/SaveLegendsEdit.java -text
+main/src/info/bioinfweb/treegraph/document/undo/SelectionSynchronizationCompareParamters.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/WarningMessageEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/edit/BranchLengthEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/edit/CalculateColumnEdit.java -text
@@ -600,12 +601,12 @@ main/src/info/bioinfweb/treegraph/gui/actions/window/TileVerticalAction.java -te
 main/src/info/bioinfweb/treegraph/gui/dialogs/AboutDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/CollapseNodesBySupportDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/CollidingIDsDialog.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/gui/dialogs/CompareTextElementDataParametersPanel.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/DataIDComboBox.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/DecimalUnitInput.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/DistanceValueInput.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/EditDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/GlobalFormatsDialog.java -text
-main/src/info/bioinfweb/treegraph/gui/dialogs/ImportTextElementDataParametersPanel.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/MarginInput.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/OpenedDocumentsComboBoxModel.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/ReplaceInNodeDataDialog.java -text

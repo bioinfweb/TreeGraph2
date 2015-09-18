@@ -31,7 +31,7 @@ import info.bioinfweb.treegraph.document.io.newick.NewickStringChars;
  * @author Ben St&ouml;ver
  * @since 2.2.0
  */
-public class ImportTextElementDataParameters {
+public class CompareTextElementDataParameters {
   private boolean ignoreWhitespace = false;
   private boolean distinguishSpaceUnderscore = false;
   private boolean caseSensitive = false;

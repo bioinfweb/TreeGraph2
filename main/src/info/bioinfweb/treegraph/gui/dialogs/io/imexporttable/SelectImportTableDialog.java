@@ -19,9 +19,9 @@
 package info.bioinfweb.treegraph.gui.dialogs.io.imexporttable;
 
 
-import info.bioinfweb.treegraph.document.undo.ImportTextElementDataParameters;
+import info.bioinfweb.treegraph.document.undo.CompareTextElementDataParameters;
 import info.bioinfweb.treegraph.document.undo.file.importtable.ImportTableParameters;
-import info.bioinfweb.treegraph.gui.dialogs.ImportTextElementDataParametersPanel;
+import info.bioinfweb.treegraph.gui.dialogs.CompareTextElementDataParametersPanel;
 import info.bioinfweb.treegraph.gui.dialogs.io.FileDialog;
 import info.bioinfweb.treegraph.gui.dialogs.io.TableSeparatorPanel;
 import info.bioinfweb.treegraph.gui.dialogs.io.TextFileFilter;
@@ -74,7 +74,7 @@ public class SelectImportTableDialog extends FileDialog {
 	private JSpinner linesToSkipSpinner;
 	private NodeBranchDataInput keyColumnInput;
 	private JPanel keyColumnPanel;
-	private ImportTextElementDataParametersPanel textElementDataParametersPanel;
+	private CompareTextElementDataParametersPanel textElementDataParametersPanel;
 
 
 	/**
@@ -312,9 +312,9 @@ public class SelectImportTableDialog extends FileDialog {
 	}
 	
 	
-	private ImportTextElementDataParametersPanel getTextElementDataParametersPanel() {
+	private CompareTextElementDataParametersPanel getTextElementDataParametersPanel() {
 		if (textElementDataParametersPanel == null) {
-			textElementDataParametersPanel = new ImportTextElementDataParametersPanel();
+			textElementDataParametersPanel = new CompareTextElementDataParametersPanel();
 		}
 		return textElementDataParametersPanel;
 	}

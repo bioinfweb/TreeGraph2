@@ -23,7 +23,7 @@ import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
-import info.bioinfweb.treegraph.document.undo.ImportTextElementDataParameters;
+import info.bioinfweb.treegraph.document.undo.CompareTextElementDataParameters;
 import info.bioinfweb.treegraph.document.undo.edit.SortLeafsEdit;
 import info.bioinfweb.treegraph.gui.CurrentDirectoryModel;
 import info.bioinfweb.treegraph.gui.actions.edit.SortLeafsAction;
@@ -79,7 +79,7 @@ public class SortLeafsDialog extends EditDialog {
 	private JComboBox<Document> openedDocumentComboBox;
 	private JButton chooseTextFileButton;
 	private final ButtonGroup orderSourceButtonGroup = new ButtonGroup();
-	private ImportTextElementDataParametersPanel textElementDataParametersPanel;
+	private CompareTextElementDataParametersPanel textElementDataParametersPanel;
 	private JFileChooser fileChooser = null;
 	private JComboBox<NodeBranchDataAdapter> sourceAdapterComboBox;
 	private JComboBox<NodeBranchDataAdapter> targetAdapterComboBox;
@@ -135,7 +135,7 @@ public class SortLeafsDialog extends EditDialog {
 	
 	@Override
   protected boolean apply() {
-		ImportTextElementDataParameters parameters = new ImportTextElementDataParameters();
+		CompareTextElementDataParameters parameters = new CompareTextElementDataParameters();
 		getTextElementDataParametersPanel().assignToParameters(parameters);
 		List<TextElementData> newOrder = null;
 		
@@ -389,9 +389,9 @@ public class SortLeafsDialog extends EditDialog {
 	}
 	
 	
-	private ImportTextElementDataParametersPanel getTextElementDataParametersPanel() {
+	private CompareTextElementDataParametersPanel getTextElementDataParametersPanel() {
 		if (textElementDataParametersPanel == null) {
-			textElementDataParametersPanel = new ImportTextElementDataParametersPanel();
+			textElementDataParametersPanel = new CompareTextElementDataParametersPanel();
 			textElementDataParametersPanel.setBorder(new TitledBorder(null, "Compare options", TitledBorder.LEADING, 
 							TitledBorder.TOP, null, null));
 		}

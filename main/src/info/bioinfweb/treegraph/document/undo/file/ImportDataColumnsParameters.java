@@ -22,11 +22,11 @@ package info.bioinfweb.treegraph.document.undo.file;
 import java.io.File;
 
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
-import info.bioinfweb.treegraph.document.undo.ImportTextElementDataParameters;
+import info.bioinfweb.treegraph.document.undo.CompareTextElementDataParameters;
 
 
 
-public class ImportDataColumnsParameters extends ImportTextElementDataParameters {
+public class ImportDataColumnsParameters extends CompareTextElementDataParameters {
 	private File tableFile = null;
 	private NodeBranchDataAdapter keyAdapter = null;
   private NodeBranchDataAdapter[] importAdapters = new NodeBranchDataAdapter[0];   

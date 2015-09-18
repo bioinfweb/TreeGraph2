@@ -26,11 +26,12 @@ import java.util.TreeMap;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextElementData;
+import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 import info.bioinfweb.treegraph.document.topologicalcalculation.LeafSet;
 import info.bioinfweb.treegraph.document.topologicalcalculation.NodeInfo;
-import info.bioinfweb.treegraph.document.undo.ImportTextElementDataParameters;
+import info.bioinfweb.treegraph.document.undo.CompareTextElementDataParameters;
 
 
 
@@ -48,14 +49,14 @@ public class TopologicalCalculator {
 	protected Map<TextElementData, Integer> leafValues = new TreeMap<TextElementData, Integer>();
 	protected boolean processRooted;
 	protected String keyLeafReference;
-	protected ImportTextElementDataParameters parameters;
+	protected CompareTextElementDataParameters parameters;
 	
 	/** The column that contains the terminal identifiers in the target document (usually nodes names) */
 	protected NodeBranchDataAdapter targetLeafsAdapter = null;
 	
 	
 	public TopologicalCalculator(Document document, NodeBranchDataAdapter targetLeafsAdapter, boolean processRooted, 
-				String keyLeafReference, ImportTextElementDataParameters parameters) {
+				String keyLeafReference, CompareTextElementDataParameters parameters) {
 		
 		this.processRooted = processRooted;
 		this.targetLeafsAdapter = targetLeafsAdapter;
@@ -144,7 +145,7 @@ public class TopologicalCalculator {
 
 
 	/**
-	 * Returns the leaf field attribute of <code>node</code> if it has one attached. If not an according object
+	 * Returns the leaf field attribute of {@code node} if it has one attached. If not an according object
 	 * is created first and than returned.
 	 * 
 	 * @param node - the node from which the leaf field attribute shall be returned or created. 
@@ -206,8 +207,8 @@ public class TopologicalCalculator {
 	}
 	
 	
-	public NodeInfo findSourceNodeWithAllLeafs(Node sourceRoot, LeafSet targetLeafs) { //necessary because LeafSet can not be created in the recursive method
-		targetLeafs = targetLeafs.addTo(getLeafSet(sourceRoot));
+	public NodeInfo findSourceNodeWithAllLeafs(Tree tree, Node sourceRoot, LeafSet targetLeafs) {  //necessary because LeafSet can not be created in the recursive method
+		targetLeafs = targetLeafs.and(getLeafSet(tree.getPaintStart()));
 		return findSourceNodeWithAllLeafsRecursive(sourceRoot, targetLeafs);
 	}
 	
