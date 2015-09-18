@@ -27,7 +27,7 @@ import info.bioinfweb.treegraph.document.TreeSerializer;
 import info.bioinfweb.treegraph.document.io.xtg.XTGReader;
 import info.bioinfweb.treegraph.document.io.xtg.XTGWriter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
-import info.bioinfweb.treegraph.document.undo.ImportTextElementDataParameters;
+import info.bioinfweb.treegraph.document.undo.CompareTextElementDataParameters;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -94,7 +94,7 @@ public class SortLeafsEditTest {
   	
   	Document document = createDocument();
   	SortLeafsEdit edit = new SortLeafsEdit(document, document.getTree().getPaintStart(), order, 
-  			NodeNameAdapter.getSharedInstance(), new ImportTextElementDataParameters());
+  			NodeNameAdapter.getSharedInstance(), new CompareTextElementDataParameters());
   	document.executeEdit(edit);
   	
   	List<Node> leafs = TreeSerializer.getElementsInSubtreeAsList(document.getTree().getPaintStart(), true, Node.class);
@@ -123,7 +123,7 @@ public class SortLeafsEditTest {
   	
   	Document document = createDocument();
   	SortLeafsEdit edit = new SortLeafsEdit(document, document.getTree().getPaintStart(), order, 
-  			NodeNameAdapter.getSharedInstance(), new ImportTextElementDataParameters());
+  			NodeNameAdapter.getSharedInstance(), new CompareTextElementDataParameters());
   	document.executeEdit(edit);
   	
   	List<Node> leafs = TreeSerializer.getElementsInSubtreeAsList(document.getTree().getPaintStart(), true, Node.class);
@@ -154,7 +154,7 @@ public class SortLeafsEditTest {
   	
   	Document document = createDocument();
   	SortLeafsEdit edit = new SortLeafsEdit(document, document.getTree().getPaintStart(), order, 
-  			NodeNameAdapter.getSharedInstance(), new ImportTextElementDataParameters());
+  			NodeNameAdapter.getSharedInstance(), new CompareTextElementDataParameters());
   	document.executeEdit(edit);
   	
   	List<Node> leafs = TreeSerializer.getElementsInSubtreeAsList(document.getTree().getPaintStart(), true, Node.class);

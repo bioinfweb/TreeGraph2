@@ -23,7 +23,7 @@ import info.bioinfweb.treegraph.document.io.xtg.XTGReader;
 import info.bioinfweb.treegraph.document.nodebranchdata.BranchLengthAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;
-import info.bioinfweb.treegraph.document.undo.ImportTextElementDataParameters;
+import info.bioinfweb.treegraph.document.undo.CompareTextElementDataParameters;
 import info.bioinfweb.commons.SystemUtils;
 
 import java.io.File;
@@ -61,7 +61,7 @@ public class TreeTest {
   	assertEquals("wxon0b0cj4", tree.getFirstNodeByData(labelAdapter, 24.5, false, null).getUniqueName());
   	assertNull(tree.getFirstNodeByData(labelAdapter, "24.5", false, null));
 
-  	ImportTextElementDataParameters parameters = new ImportTextElementDataParameters();
+  	CompareTextElementDataParameters parameters = new CompareTextElementDataParameters();
   	assertEquals("thfuyevs93", tree.getFirstNodeByData(labelAdapter, "Text", false, parameters).getUniqueName());
   	assertEquals("wxon0b0cj4", tree.getFirstNodeByData(labelAdapter, "24.5", false, parameters).getUniqueName());
 
