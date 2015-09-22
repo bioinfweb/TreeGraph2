@@ -262,19 +262,7 @@ public class TopologicalCalculator {
 		}
 		
 		for (int i = 0; i < root.getChildren().size(); i++) {
-			Node startNode = findHighestConflict(root.getChildren().get(i), highestConflictingNode, targetNode, sourceNode, adapter);
-			
-			if (startNode != null) {
-				System.out.println(startNode.toString());
-				if (highestConflictingNode == null) {
-					highestConflictingNode = startNode;
-				}
-				else {
-					if (adapter.getDecimal(highestConflictingNode) < adapter.getDecimal(startNode)) {  //TODO Check if numerical values are present
-						highestConflictingNode = startNode;
-					}
-				}
-			}
+			highestConflictingNode = findHighestConflict(root.getChildren().get(i), highestConflictingNode, targetNode, sourceNode, adapter);
 		}
 		
 		return highestConflictingNode;
