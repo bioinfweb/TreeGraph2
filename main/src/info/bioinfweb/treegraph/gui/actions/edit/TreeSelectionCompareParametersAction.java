@@ -30,8 +30,8 @@ import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 
 
 
-public class SynchronizeTreeSelectionAction extends EditDialogAction {
-	public SynchronizeTreeSelectionAction(MainFrame mainFrame) {
+public class TreeSelectionCompareParametersAction extends EditDialogAction {
+	public TreeSelectionCompareParametersAction(MainFrame mainFrame) {
 		super(mainFrame);
 		putValue(Action.NAME, "Tree selection compare parameters...");
 	}

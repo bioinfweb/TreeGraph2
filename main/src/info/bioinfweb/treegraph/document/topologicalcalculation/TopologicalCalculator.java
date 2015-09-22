@@ -208,7 +208,7 @@ public class TopologicalCalculator {
 	
 	
 	public NodeInfo findSourceNodeWithAllLeafs(Tree tree, Node sourceRoot, LeafSet targetLeafs) {  //necessary because LeafSet can not be created in the recursive method
-		targetLeafs = targetLeafs.and(getLeafSet(tree.getPaintStart()));
+		targetLeafs = targetLeafs.and(getLeafSet(tree.getPaintStart()));  //TODO Does the root bit have to be set to true here?
 		return findSourceNodeWithAllLeafsRecursive(sourceRoot, targetLeafs);
 	}
 	
@@ -229,5 +229,54 @@ public class TopologicalCalculator {
 			}
 		}
 		return result;
+	}
+	
+	
+	/**
+	 * This method is the recursive part called by {@code findHighestConflict}. The only difference between 
+	 * the two is that this method can return the support value of root itself as {@code findHighestConflict} does not.
+	 * 
+	 * @param root - the root of the subtree to be searched (a node in the source document)
+	 * @param highest - the initial support value
+	 * @param targetNode - the node in the target document to attach a support value to
+	 * @param info - information about the node in the source document which contains all terminals of
+	 *        {@code targetNode} in its subtree 
+	 * @return the node with the highest support value found (in the source document)
+	 */
+	public Node findHighestConflict(Node root, Node highestConflictingNode, Node targetNode, Node sourceNode, NodeBranchDataAdapter adapter) {
+		if ((getLeafSet(root).containsAnyAndOther(getLeafSet(targetNode), false) &&
+				 getLeafSet(root).inSubtreeOf(getLeafSet(sourceNode), false))
+				|| (getLeafSet(root).containsAnyAndOther(getLeafSet(targetNode), true) &&
+						getLeafSet(root).inSubtreeOf(getLeafSet(sourceNode), true))) {
+			
+			if (root != null) {
+				if (highestConflictingNode == null) {
+					highestConflictingNode = root;
+				}
+				else {
+					if (adapter.getDecimal(highestConflictingNode) < adapter.getDecimal(root)) {
+						highestConflictingNode = root;
+					}
+				}
+			}
+		}
+		
+		for (int i = 0; i < root.getChildren().size(); i++) {
+			Node startNode = findHighestConflict(root.getChildren().get(i), highestConflictingNode, targetNode, sourceNode, adapter);
+			
+			if (startNode != null) {
+				System.out.println(startNode.toString());
+				if (highestConflictingNode == null) {
+					highestConflictingNode = startNode;
+				}
+				else {
+					if (adapter.getDecimal(highestConflictingNode) < adapter.getDecimal(startNode)) {  //TODO Check if numerical values are present
+						highestConflictingNode = startNode;
+					}
+				}
+			}
+		}
+		
+		return highestConflictingNode;
 	}
 }

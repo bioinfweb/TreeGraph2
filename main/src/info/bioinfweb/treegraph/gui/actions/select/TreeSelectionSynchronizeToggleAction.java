@@ -66,6 +66,6 @@ public class TreeSelectionSynchronizeToggleAction extends DocumentAction {
 	
 	@Override
 	public void setEnabled(Document document, TreeSelection selection, NodeBranchDataAdapter tableAdapter) {
-		setEnabled((document != null) && !document.getTree().isEmpty());
+		setEnabled((document != null) && !document.getTree().isEmpty() && (getMainFrame().getTreeFrameCount() > 1));
 	}
 }

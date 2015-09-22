@@ -19,16 +19,19 @@
 package info.bioinfweb.treegraph.gui.mainframe;
 
 
+import info.bioinfweb.treegraph.document.Label;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.change.DocumentChangeEvent;
 import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.change.DocumentListener;
+import info.bioinfweb.treegraph.document.nodebranchdata.IDElementAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.VoidNodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.topologicalcalculation.NodeInfo;
 import info.bioinfweb.treegraph.document.topologicalcalculation.TopologicalCalculator;
-import info.bioinfweb.treegraph.document.undo.CompareTextElementDataParameters;
-import info.bioinfweb.treegraph.document.undo.SelectionSynchronizationCompareParamters;
+import info.bioinfweb.treegraph.document.undo.SelectionSynchronizationCompareParameters;
 import info.bioinfweb.treegraph.gui.treeframe.TreeInternalFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 import info.bioinfweb.treegraph.gui.treeframe.TreeViewPanel;
@@ -40,8 +43,6 @@ import java.util.Map;
 import javax.swing.Action;
 import javax.swing.event.ChangeEvent;
 
-import org.lsmp.djep.vectorJep.function.GetDiagonal;
-
 
 
 public class TreeSelectionSynchronizer implements TreeViewPanelListener, DocumentListener {
@@ -50,7 +51,7 @@ public class TreeSelectionSynchronizer implements TreeViewPanelListener, Documen
 	private MainFrame owner;
 	private boolean isUpdating = false;
 	private TopologicalCalculator topologicalCalculator = null;
-	private SelectionSynchronizationCompareParamters compareParameters = new SelectionSynchronizationCompareParamters();
+	private SelectionSynchronizationCompareParameters compareParameters = new SelectionSynchronizationCompareParameters();
 	
 	
 	public TreeSelectionSynchronizer(MainFrame owner) {
@@ -64,7 +65,7 @@ public class TreeSelectionSynchronizer implements TreeViewPanelListener, Documen
 	}
 	
 	
-	public SelectionSynchronizationCompareParamters getCompareParameters() {
+	public SelectionSynchronizationCompareParameters getCompareParameters() {
 		return compareParameters;
 	}
 
@@ -92,19 +93,34 @@ public class TreeSelectionSynchronizer implements TreeViewPanelListener, Documen
 	}
 	
 	
-	private void selectAccordingNodes(TreeViewPanel source, TreeViewPanel target) {
-		if (!source.equals(target)) {
-			TreeSelection selection = target.getSelection();
+	private void selectAccordingNodes(TreeViewPanel activeTree, TreeViewPanel selectionTargetTree) {
+		NodeBranchDataAdapter defaultSupportAdapter = selectionTargetTree.getDocument().getDefaultSupportAdapter();
+		if (!activeTree.equals(selectionTargetTree)) {
+			TreeSelection selection = selectionTargetTree.getSelection();
 			selection.clear();
-			for (Node node : source.getSelection().getAllElementsOfType(Node.class, false)) {
-				NodeInfo sourceNodeInfo = topologicalCalculator.findSourceNodeWithAllLeafs(target.getDocument().getTree(), target.getDocument().getTree().getPaintStart(), topologicalCalculator.getLeafSet(node));
-				selection.add(sourceNodeInfo.getNode());
-//				if (sourceNode.getAdditionalCount() == 0) {
-//					selection.add(sourceNode.getNode());
-//				}
-//				else {
-//					System.out.println("Additional count:" + sourceNode.getAdditionalCount());
-//				}
+			for (Node activeNode : activeTree.getSelection().getAllElementsOfType(Node.class, false)) {
+				NodeInfo selectionTargetNodeInfo = topologicalCalculator.findSourceNodeWithAllLeafs(selectionTargetTree.getDocument().getTree(), selectionTargetTree.getDocument().getTree().getPaintStart(), 
+						topologicalCalculator.getLeafSet(activeNode));
+				selection.add(selectionTargetNodeInfo.getNode());
+				if (!(defaultSupportAdapter instanceof VoidNodeBranchDataAdapter)) {
+					Node conflictingNode = topologicalCalculator.findHighestConflict(selectionTargetTree.getDocument().getTree().getPaintStart(), null, 
+							activeNode, selectionTargetNodeInfo.getNode(), defaultSupportAdapter);
+					
+					if (conflictingNode != null) {
+						if (defaultSupportAdapter instanceof IDElementAdapter) {
+							Label label = conflictingNode.getAfferentBranch().getLabels().get(((IDElementAdapter)defaultSupportAdapter).getID());
+							if (label != null) {
+								selection.add(label);
+							}
+							else {
+								selection.add(conflictingNode.getAfferentBranch());
+							}
+						}
+						else {
+							selection.add(conflictingNode.getAfferentBranch());
+						}
+					}
+				}
 			}
 		}					
 	}

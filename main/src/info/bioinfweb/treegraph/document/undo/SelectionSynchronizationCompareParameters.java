@@ -20,7 +20,7 @@ package info.bioinfweb.treegraph.document.undo;
 
 
 
-public class SelectionSynchronizationCompareParamters extends CompareTextElementDataParameters {
+public class SelectionSynchronizationCompareParameters extends CompareTextElementDataParameters {
 	private boolean processRooted = false;
 	
 

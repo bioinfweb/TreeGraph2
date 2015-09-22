@@ -217,6 +217,11 @@ public class MainFrame extends JFrame implements Runnable {
 		      }
 				};
 	}
+	
+	
+	public int getTreeFrameCount() {
+		return getDesktopPane().getAllFrames().length;
+	}
 
 	
 	public JInternalFrame selectFrame(boolean forward) {

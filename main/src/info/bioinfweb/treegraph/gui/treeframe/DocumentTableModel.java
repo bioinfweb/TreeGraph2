@@ -121,9 +121,20 @@ public class DocumentTableModel extends AbstractTableModel implements DocumentLi
 		adapters.add(new NodeNameAdapter());
 		adapters.add(new BranchLengthAdapter());
 
-		List<String> ids = IDManager.getListFromSubtree(root, TextLabel.class, true, true);
+		List<String> ids = IDManager.getLabelIDListFromSubtree(root, TextLabel.class);
 		for (int i = 0; i < ids.size(); i++) {
-			adapters.add(new GeneralIDAdapter(ids.get(i)));
+			adapters.add(new TextLabelAdapter(ids.get(i), 
+					((TextLabel)IDManager.getFirstLabel(root, TextLabel.class, ids.get(i))).getFormats().getDecimalFormat()));
+		}
+  	        
+		ids = IDManager.getHiddenNodeDataIDListFromSubtree(root);
+		for (int i = 0; i < ids.size(); i++) {
+			adapters.add(new HiddenNodeDataAdapter(ids.get(i)));
+		}
+		
+		ids = IDManager.getHiddenBranchDataIDListFromSubtree(root);
+		for (int i = 0; i < ids.size(); i++) {
+			adapters.add(new HiddenBranchDataAdapter(ids.get(i)));
 		}
 	}
 	
@@ -156,8 +167,14 @@ public class DocumentTableModel extends AbstractTableModel implements DocumentLi
 	public String getColumnName(int columnIndex) {
 		if (columnIndex % 2 == 0) {
 			NodeBranchDataAdapter adapter = adapters.get(columnIndex / 2);
-			if (adapter instanceof GeneralIDAdapter) {
-				return "ID: " + ((GeneralIDAdapter)adapter).getID();
+			if (adapter instanceof TextLabelAdapter) {
+				return ((TextLabelAdapter)adapter).getID() + " (text labels)";
+			}
+			if (adapter instanceof HiddenNodeDataAdapter) {
+				return ((HiddenNodeDataAdapter)adapter).getID() + " (hidden node data)";
+			}
+			if (adapter instanceof HiddenBranchDataAdapter) {
+				return ((HiddenBranchDataAdapter)adapter).getID() + " (hidden branch data)";
 			}
 			else {
 				return adapter.toString();

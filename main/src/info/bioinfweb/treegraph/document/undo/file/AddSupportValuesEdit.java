@@ -206,7 +206,7 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
 					throw new InternalError("-1 RETURNED");  // Should not happen.
 				}
 				else {  // conflict found
-					double value = findHighestConflict(src.getTree().getPaintStart(), Double.NaN, targetRoot, bestSourceNode);
+					double value = getSupportValue(findHighestConflict(src.getTree().getPaintStart(), null, targetRoot, bestSourceNode.getNode(), sourceAdapter));
 					if (!Double.isNaN(value) && (value != 0)) {
 	  				conflictAdapter.setDecimal(targetRoot, value);
 					}
@@ -221,50 +221,6 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
 	
 	public double getSupportValue(Node node) {
 		return sourceAdapter.getDecimal(node);
-	}
-	
-	
-	/**
-	 * This method is the recursive part called by {@code findHighestConflict}. The only difference between 
-	 * the two is that this method can return the support value of root itself as {@code findHighestConflict} does not.
-	 * 
-	 * @param root - the root of the subtree to be searched (a node in the source document)
-	 * @param highest - the initial support value
-	 * @param targetNode - the node in the target document to attach a support value to
-	 * @param info - information about the node in the source document which contains all terminals of
-	 *        {@code targetNode} in its subtree 
-	 * @return the node with the highest support value found (in the source document)
-	 */
-	public double findHighestConflict(Node root, double highest, Node targetNode, NodeInfo info) {
-		if ((getLeafSet(root).containsAnyAndOther(getLeafSet(targetNode), false) &&
-				 getLeafSet(root).inSubtreeOf(getLeafSet(info.getNode()), false))
-				|| (getLeafSet(root).containsAnyAndOther(getLeafSet(targetNode), true) &&
-						getLeafSet(root).inSubtreeOf(getLeafSet(info.getNode()), true))) {
-			
-			double value = getSupportValue(root);
-			if (!Double.isNaN(value)) {
-				if (Double.isNaN(highest)) {
-					highest = value;
-				}
-				else {
-					highest = Math.max(highest, value);
-				}
-			}
-		}
-		
-		for (int i = 0; i < root.getChildren().size(); i++) {
-			double value = findHighestConflict(root.getChildren().get(i), highest, targetNode, info);
-			if (!Double.isNaN(value)) {
-				if (Double.isNaN(highest)) {
-					highest = value;
-				}
-				else {
-					highest = Math.max(highest, value);
-				}
-			}
-		}
-		
-		return highest;
 	}
 	
 	

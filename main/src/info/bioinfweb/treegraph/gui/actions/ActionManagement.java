@@ -100,7 +100,7 @@ public class ActionManagement extends AbstractUndoActionManagement {
 		put("select.legendsWithPosIndex", new SelectLegendsWithPosIndexAction(mainFrame));
 		put("select.legendsInSubtree", new SelectLegendsInSubtreeAction(mainFrame));
 		put("select.synchronizeTreeSelection", new TreeSelectionSynchronizeToggleAction(mainFrame));
-		put("select.synchronizeTreeSelectionOptions", new SynchronizeTreeSelectionAction(mainFrame));
+		put("select.synchronizeTreeSelectionOptions", new TreeSelectionCompareParametersAction(mainFrame));
 		
 		put("edit.undo", new UndoAction(mainFrame));
 		put("edit.redo", new RedoAction(mainFrame));

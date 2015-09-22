@@ -329,7 +329,7 @@ main/src/info/bioinfweb/treegraph/document/undo/ComplexDocumentEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/ComposedDocumentEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/DocumentEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/SaveLegendsEdit.java -text
-main/src/info/bioinfweb/treegraph/document/undo/SelectionSynchronizationCompareParamters.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/SelectionSynchronizationCompareParameters.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/WarningMessageEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/edit/BranchLengthEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/edit/CalculateColumnEdit.java -text
@@ -535,7 +535,7 @@ main/src/info/bioinfweb/treegraph/gui/actions/edit/SetColumnToDecimalAction.java
 main/src/info/bioinfweb/treegraph/gui/actions/edit/SetColumnToTextAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/edit/SetColumnTypeAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/edit/SortLeafsAction.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/treegraph/gui/actions/edit/SynchronizeTreeSelectionAction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/gui/actions/edit/TreeSelectionCompareParametersAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/actions/edit/UndoAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/edit/UndoRedoToAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/edit/UndoToAction.java -text
