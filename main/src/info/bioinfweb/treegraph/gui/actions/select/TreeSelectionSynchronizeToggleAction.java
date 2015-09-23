@@ -48,6 +48,7 @@ public class TreeSelectionSynchronizeToggleAction extends DocumentAction {
 		Iterator<TreeInternalFrame> treeFrameIterator = getMainFrame().treeFrameIterator();
 		if (getMainFrame().getTreeSelectionSynchronizer().isActive()) {		// Reset TreeSelectionSynchronizer and add listeners:
 			getMainFrame().getTreeSelectionSynchronizer().reset();
+			getMainFrame().addChildWindowListener(getMainFrame().getTreeSelectionSynchronizer());
 			while(treeFrameIterator.hasNext()) {
 				TreeInternalFrame currentFrame = treeFrameIterator.next();
 				currentFrame.getTreeViewPanel().addTreeViewPanelListener(getMainFrame().getTreeSelectionSynchronizer());
@@ -55,6 +56,7 @@ public class TreeSelectionSynchronizeToggleAction extends DocumentAction {
 				}
 			}
 		else {		// Unregister listeners:
+			getMainFrame().removeChildWindowListener(getMainFrame().getTreeSelectionSynchronizer());
 			while(treeFrameIterator.hasNext()) {
 				TreeInternalFrame currentFrame = treeFrameIterator.next();		
 				currentFrame.getTreeViewPanel().removeTreeViewPanelListener(getMainFrame().getTreeSelectionSynchronizer());
@@ -66,6 +68,17 @@ public class TreeSelectionSynchronizeToggleAction extends DocumentAction {
 	
 	@Override
 	public void setEnabled(Document document, TreeSelection selection, NodeBranchDataAdapter tableAdapter) {
-		setEnabled((document != null) && !document.getTree().isEmpty() && (getMainFrame().getTreeFrameCount() > 1));
+		Iterator<TreeInternalFrame> iterator = getMainFrame().treeFrameIterator();
+		int treeCount = 0;
+		while (iterator.hasNext()) {
+			if (!iterator.next().getDocument().getTree().isEmpty()) {
+				treeCount++;
+				if (treeCount >= 2) {
+					setEnabled(true);
+					return;
+				}
+			}
+		}
+		setEnabled(false);
 	}
 }

@@ -177,6 +177,16 @@ public class MainFrame extends JFrame implements Runnable {
   }
   
   
+  public void addChildWindowListener(ContainerListener listener) {
+  	getDesktopPane().addContainerListener(listener);
+  }
+  
+  
+  public void removeChildWindowListener(ContainerListener listener) {
+  	getDesktopPane().removeContainerListener(listener);
+  }
+    
+  
 	/**
 	 * Returns the currently active Frame where a tree is displayed.
 	 * 

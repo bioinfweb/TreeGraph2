@@ -24,7 +24,7 @@ import javax.swing.Action;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.gui.actions.EditDialogAction;
-import info.bioinfweb.treegraph.gui.dialogs.editelement.SynchronizeTreeSelectionDialog;
+import info.bioinfweb.treegraph.gui.dialogs.SynchronizeTreeSelectionDialog;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 

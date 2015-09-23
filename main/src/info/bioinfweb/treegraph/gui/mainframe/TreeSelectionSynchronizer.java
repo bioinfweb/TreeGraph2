@@ -22,12 +22,12 @@ package info.bioinfweb.treegraph.gui.mainframe;
 import info.bioinfweb.treegraph.document.Label;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextElementData;
+import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.change.DocumentChangeEvent;
 import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.change.DocumentListener;
 import info.bioinfweb.treegraph.document.nodebranchdata.IDElementAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.VoidNodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.topologicalcalculation.NodeInfo;
 import info.bioinfweb.treegraph.document.topologicalcalculation.TopologicalCalculator;
@@ -37,6 +37,8 @@ import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 import info.bioinfweb.treegraph.gui.treeframe.TreeViewPanel;
 import info.bioinfweb.treegraph.gui.treeframe.TreeViewPanelListener;
 
+import java.awt.event.ContainerEvent;
+import java.awt.event.ContainerListener;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -45,7 +47,7 @@ import javax.swing.event.ChangeEvent;
 
 
 
-public class TreeSelectionSynchronizer implements TreeViewPanelListener, DocumentListener {
+public class TreeSelectionSynchronizer implements TreeViewPanelListener, DocumentListener, ContainerListener {
 	public static final String KEY_LEAF_REFERENCE = TreeSelectionSynchronizer.class.getName() + ".LeafSet";
 	
 	private MainFrame owner;
@@ -71,30 +73,41 @@ public class TreeSelectionSynchronizer implements TreeViewPanelListener, Documen
 
 
 	public void reset() {
-		TreeInternalFrame frame = getOwner().getActiveTreeFrame();
-		NodeBranchDataAdapter adapter = frame.getDocument().getDefaultLeafAdapter();
-		topologicalCalculator = new TopologicalCalculator(frame.getDocument(), adapter, compareParameters.isProcessRooted(), KEY_LEAF_REFERENCE, compareParameters);
-		Map<TextElementData, Integer> leafValues = topologicalCalculator.getLeafValues();
-	
-		// Create map of leaves from all documents:
 		Iterator<TreeInternalFrame> treeFrameIterator = getOwner().treeFrameIterator();
-		while(treeFrameIterator.hasNext()) {
-				TreeInternalFrame currentFrame = treeFrameIterator.next();				
-				if (currentFrame.getDocument() != frame.getDocument()) {  // First document was already added in the constructor. 
-					topologicalCalculator.addLeafMap(leafValues, currentFrame.getDocument().getTree().getPaintStart(), adapter);
+		int calculatorInitialized = 0;
+		
+		while (calculatorInitialized == 0) {
+			TreeInternalFrame initialFrame = treeFrameIterator.next();
+			if (!initialFrame.getDocument().getTree().isEmpty()) {
+				calculatorInitialized++;
+				NodeBranchDataAdapter adapter = initialFrame.getDocument().getDefaultLeafAdapter();
+				topologicalCalculator = new TopologicalCalculator(initialFrame.getDocument(), adapter, compareParameters.isProcessRooted(), KEY_LEAF_REFERENCE, compareParameters);
+				Map<TextElementData, Integer> leafValues = topologicalCalculator.getLeafValues();
+				
+				// Create map of leaves from all documents:
+				treeFrameIterator = getOwner().treeFrameIterator();
+				while(treeFrameIterator.hasNext()) {
+					TreeInternalFrame currentFrame = treeFrameIterator.next();				
+					if ((currentFrame.getDocument() != initialFrame.getDocument()) && !currentFrame.getDocument().getTree().isEmpty()) {  // First document was already added in the constructor. 
+						topologicalCalculator.addLeafMap(leafValues, currentFrame.getDocument().getTree().getPaintStart(), adapter);
+					}
 				}
-		}
-
-		// Create leaf sets:
-		treeFrameIterator = getOwner().treeFrameIterator();
-		while(treeFrameIterator.hasNext()) {
-			topologicalCalculator.addLeafSets(treeFrameIterator.next().getDocument().getTree().getPaintStart(), adapter);
+		
+				// Create leaf sets:
+				treeFrameIterator = getOwner().treeFrameIterator();
+				while(treeFrameIterator.hasNext()) {
+					Tree currentTree = treeFrameIterator.next().getDocument().getTree();
+					if (!currentTree.isEmpty()) {
+						topologicalCalculator.addLeafSets(currentTree.getPaintStart(), adapter);
+					}
+				}			
+			}
 		}
 	}
 	
 	
 	private void selectAccordingNodes(TreeViewPanel activeTree, TreeViewPanel selectionTargetTree) {
-		if (!activeTree.equals(selectionTargetTree)) {
+		if ((!activeTree.equals(selectionTargetTree)) && (!selectionTargetTree.getDocument().getTree().isEmpty())) {
 			TreeSelection selection = selectionTargetTree.getSelection();
 			selection.clear();
 			
@@ -176,5 +189,23 @@ public class TreeSelectionSynchronizer implements TreeViewPanelListener, Documen
 	
 	public TopologicalCalculator getTopologicalCalculator() {
 		return topologicalCalculator;
+	}
+
+
+	@Override
+	public void componentAdded(ContainerEvent e) {
+		if (e.getChild() instanceof TreeInternalFrame) {
+			TreeInternalFrame addedFrame = ((TreeInternalFrame) e.getChild());
+			addedFrame.getTreeViewPanel().addTreeViewPanelListener(this);
+			addedFrame.getTreeViewPanel().getDocument().addView(this);
+			reset();
+		}
+	}
+
+
+	@Override
+	public void componentRemoved(ContainerEvent e) {
+		((TreeInternalFrame) e.getChild()).getTreeViewPanel().removeTreeViewPanelListener(this);
+		((TreeInternalFrame) e.getChild()).getTreeViewPanel().getDocument().removeView(this);
 	}
 }
