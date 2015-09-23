@@ -94,30 +94,34 @@ public class TreeSelectionSynchronizer implements TreeViewPanelListener, Documen
 	
 	
 	private void selectAccordingNodes(TreeViewPanel activeTree, TreeViewPanel selectionTargetTree) {
-		NodeBranchDataAdapter defaultSupportAdapter = selectionTargetTree.getDocument().getDefaultSupportAdapter();
 		if (!activeTree.equals(selectionTargetTree)) {
 			TreeSelection selection = selectionTargetTree.getSelection();
 			selection.clear();
+			
+			NodeBranchDataAdapter defaultSupportAdapter = selectionTargetTree.getDocument().getDefaultSupportAdapter();
 			for (Node activeNode : activeTree.getSelection().getAllElementsOfType(Node.class, false)) {
 				NodeInfo selectionTargetNodeInfo = topologicalCalculator.findSourceNodeWithAllLeafs(selectionTargetTree.getDocument().getTree(), selectionTargetTree.getDocument().getTree().getPaintStart(), 
 						topologicalCalculator.getLeafSet(activeNode));
-				selection.add(selectionTargetNodeInfo.getNode());
-				if (!(defaultSupportAdapter instanceof VoidNodeBranchDataAdapter)) {
-					Node conflictingNode = topologicalCalculator.findHighestConflict(selectionTargetTree.getDocument().getTree().getPaintStart(), null, 
-							activeNode, selectionTargetNodeInfo.getNode(), defaultSupportAdapter);
-					
-					if (conflictingNode != null) {
-						if (defaultSupportAdapter instanceof IDElementAdapter) {
-							Label label = conflictingNode.getAfferentBranch().getLabels().get(((IDElementAdapter)defaultSupportAdapter).getID());
-							if (label != null) {
-								selection.add(label);
+				
+				if (selectionTargetNodeInfo != null) {
+					selection.add(selectionTargetNodeInfo.getNode());
+					if (!(defaultSupportAdapter instanceof VoidNodeBranchDataAdapter)) {
+						Node conflictingNode = topologicalCalculator.findHighestConflict(selectionTargetTree.getDocument().getTree().getPaintStart(), null, 
+								activeNode, selectionTargetNodeInfo.getNode(), defaultSupportAdapter);
+						
+						if (conflictingNode != null) {
+							if (defaultSupportAdapter instanceof IDElementAdapter) {
+								Label label = conflictingNode.getAfferentBranch().getLabels().get(((IDElementAdapter)defaultSupportAdapter).getID());
+								if (label != null) {
+									selection.add(label);
+								}
+								else {
+									selection.add(conflictingNode.getAfferentBranch());
+								}
 							}
 							else {
 								selection.add(conflictingNode.getAfferentBranch());
 							}
-						}
-						else {
-							selection.add(conflictingNode.getAfferentBranch());
 						}
 					}
 				}

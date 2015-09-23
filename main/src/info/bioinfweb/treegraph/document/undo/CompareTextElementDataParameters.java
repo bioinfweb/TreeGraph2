@@ -83,7 +83,7 @@ public class CompareTextElementDataParameters {
 	 * in {@code parameters}.
 	 */
 	public TextElementData createEditedValue(String text) {
-		if (text.equals("")) {
+		if ((text == null) || text.equals("")) {
 			return new TextElementData();  // return empty instance because the if the the TextElementData instance used to call this method was also empty
 		}
 		else {

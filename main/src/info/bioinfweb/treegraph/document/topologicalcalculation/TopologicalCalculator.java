@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
+import info.bioinfweb.commons.Math2;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextElementData;
@@ -91,7 +92,7 @@ public class TopologicalCalculator {
 	 */
 	public void addLeafMap(Map<TextElementData, Integer> leafMap, Node root, NodeBranchDataAdapter adapter) {
 		if (root.isLeaf()) {
-			TextElementData data = parameters.createEditedValue(adapter.getText(root));
+			TextElementData data = parameters.createEditedValue(adapter.toTextElementData(root).toString());
 			if (!leafMap.containsKey(data)) {
 				leafMap.put(data, leafMap.size());
 			}
@@ -219,13 +220,22 @@ public class TopologicalCalculator {
 		if (!downwards) {
 			additionalCount = targetLeafs.compareTo(getLeafSet(sourceRoot), true);
 		}
-  	NodeInfo result = new NodeInfo(sourceRoot, additionalCount, downwards);
+  	NodeInfo result = null;
+  	if (additionalCount != -1) {
+  		result = new NodeInfo(sourceRoot, additionalCount, downwards);
+  	}
+  	
 		for (int i = 0; i < sourceRoot.getChildren().size(); i++) {
 			NodeInfo childResult = findSourceNodeWithAllLeafsRecursive(sourceRoot.getChildren().get(i), targetLeafs);
-			if ((childResult.getAdditionalCount() != -1) && 
-					((childResult.getAdditionalCount() < result.getAdditionalCount()) || (result.getAdditionalCount() == -1))) {
-				
-				result = childResult;
+			if (childResult != null) {
+				if (result == null) {
+					result = childResult;
+				}
+				else if ((childResult.getAdditionalCount() != -1) && 
+						((childResult.getAdditionalCount() < result.getAdditionalCount()) || (result.getAdditionalCount() == -1))) {
+					
+					result = childResult;
+				}
 			}
 		}
 		return result;
@@ -249,12 +259,31 @@ public class TopologicalCalculator {
 				|| (getLeafSet(root).containsAnyAndOther(getLeafSet(targetNode), true) &&
 						getLeafSet(root).inSubtreeOf(getLeafSet(sourceNode), true))) {
 			
-			if (root != null) {
+			double currentSupport = Double.NaN;
+			if (adapter.isDecimal(root)) {
+				currentSupport = adapter.getDecimal(root);
+			}
+			else if (adapter.isString(root)) {
+				try {
+					currentSupport = Math2.parseDouble(adapter.getText(root));
+				}
+				catch (NumberFormatException e) {}  // Nothing to do. 
+			}
+			
+			if (!Double.isNaN(currentSupport)) {
 				if (highestConflictingNode == null) {
 					highestConflictingNode = root;
 				}
 				else {
-					if (adapter.getDecimal(highestConflictingNode) < adapter.getDecimal(root)) {
+					double previousSupport;
+					if (adapter.isDecimal(highestConflictingNode)) {
+						previousSupport = adapter.getDecimal(highestConflictingNode);
+					}
+					else {
+						previousSupport = Math2.parseDouble(adapter.getText(highestConflictingNode));
+					}
+					
+					if (previousSupport < currentSupport) {
 						highestConflictingNode = root;
 					}
 				}

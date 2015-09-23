@@ -50,7 +50,7 @@ public interface NodeBranchDataAdapter {
 	
 	public String getText(Node node); 
 	
-	public void setText(Node node, String value); 
+	public void setText(Node node, String value);
 	
 	public double getDecimal(Node node); 
 	
