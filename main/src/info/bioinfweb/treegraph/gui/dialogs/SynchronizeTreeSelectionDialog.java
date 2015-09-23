@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.gui.dialogs.editelement;
+package info.bioinfweb.treegraph.gui.dialogs;
 
 
 import java.awt.Color;
@@ -33,9 +33,8 @@ import javax.swing.JRadioButton;
 import javax.swing.border.TitledBorder;
 
 import info.bioinfweb.treegraph.document.undo.CompareTextElementDataParameters;
-import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
-import info.bioinfweb.treegraph.gui.dialogs.CompareTextElementDataParametersPanel;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
+
 import java.awt.FlowLayout;
 
 

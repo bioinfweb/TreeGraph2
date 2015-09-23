@@ -21,7 +21,6 @@ package info.bioinfweb.treegraph.gui.actions.file;
 
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.Action;
@@ -57,6 +56,6 @@ public class SaveAction extends DocumentAction {
 	
 	@Override
 	public void setEnabled(Document document, TreeSelection selection, NodeBranchDataAdapter tableAdapter) {
-		setEnabled(document != null);
+		setEnabled((document != null) && document.hasChanged());
 	}
 }
