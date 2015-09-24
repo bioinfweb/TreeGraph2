@@ -57,7 +57,7 @@ public class TreeSelectionSynchronizer implements TreeViewPanelListener, Documen
 	public static final String KEY_LEAF_REFERENCE = TreeSelectionSynchronizer.class.getName() + ".LeafSet";
 	
 	private Iterable<TreeViewPanel> treeSource;
-	private boolean isUpdating = false;
+	protected boolean isUpdating = false;
 	private TopologicalCalculator topologicalCalculator = null;
 	private SelectionSynchronizationCompareParameters compareParameters = new SelectionSynchronizationCompareParameters();
 	
@@ -94,7 +94,7 @@ public class TreeSelectionSynchronizer implements TreeViewPanelListener, Documen
 		Map<TextElementData, Integer> leafValues = topologicalCalculator.getLeafValues();
 		while(iterator.hasNext()) {
 			Document document = iterator.next().getDocument();
-			if (!document.getTree().isEmpty()) { 
+			if (!document.getTree().isEmpty()) {
 				topologicalCalculator.addLeafMap(leafValues, document.getTree().getPaintStart(), document.getDefaultLeafAdapter());
 			}
 		}
