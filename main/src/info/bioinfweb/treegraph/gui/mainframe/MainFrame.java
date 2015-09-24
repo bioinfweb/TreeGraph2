@@ -68,9 +68,9 @@ public class MainFrame extends JFrame implements Runnable {
 	
 	private static MainFrame firstInstance = null;
 	
-	private TreeSelectionSynchronizer treeSelectionSynchronizer = new TreeSelectionSynchronizer(this);
-	private ActionManagement actionManagement = new ActionManagement(this);  //  @jve:decl-index=0:
-	private WindowListener windowListener = null;  //  @jve:decl-index=0:
+	private TreeSelectionSynchronizer treeSelectionSynchronizer = new TreeSelectionSynchronizer(new TreeViewPanelIterator());
+	private ActionManagement actionManagement = new ActionManagement(this);
+	private WindowListener windowListener = null;
 	private JMenuBar mainMenu = null;
 	private JMenu fileMenu = null;
 	private JMenu editMenu = null;

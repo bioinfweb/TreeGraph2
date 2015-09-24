@@ -43,10 +43,15 @@ public class TreeSelectionSynchronizeToggleAction extends DocumentAction {
 	}
 	
 	
+	public boolean isActive() {
+		return (Boolean)getValue(Action.SELECTED_KEY);
+	}
+	
+	
 	@Override
 	protected void onActionPerformed(ActionEvent e, TreeInternalFrame frame) {
 		Iterator<TreeInternalFrame> treeFrameIterator = getMainFrame().treeFrameIterator();
-		if (getMainFrame().getTreeSelectionSynchronizer().isActive()) {		// Reset TreeSelectionSynchronizer and add listeners:
+		if (isActive()) {		// Reset TreeSelectionSynchronizer and add listeners:
 			getMainFrame().getTreeSelectionSynchronizer().reset();
 			getMainFrame().addChildWindowListener(getMainFrame().getTreeSelectionSynchronizer());
 			while(treeFrameIterator.hasNext()) {
