@@ -225,6 +225,11 @@ public class MainFrame extends JFrame implements Runnable {
 						pos++;
 			      return (TreeInternalFrame)frames[pos - 1];
 		      }
+
+					@Override
+					public void remove() {
+						throw new UnsupportedOperationException("This iterator does not support removing elements."); 
+					}
 				};
 	}
 	

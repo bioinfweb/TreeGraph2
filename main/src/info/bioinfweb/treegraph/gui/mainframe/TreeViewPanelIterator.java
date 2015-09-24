@@ -48,6 +48,11 @@ public class TreeViewPanelIterator implements Iterable<TreeViewPanel> {
       public TreeViewPanel next() {
 	      return iterator.next().getTreeViewPanel();
       }
+
+			@Override
+			public void remove() {
+				throw new UnsupportedOperationException("This iterator does not support removing elements."); 
+			}
 		};
   }
 }
