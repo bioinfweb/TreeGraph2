@@ -33,7 +33,7 @@ import info.bioinfweb.treegraph.gui.treeframe.TreeViewPanel;
  * @author Ben St&ouml;ver
  * @since 2.5.0
  */
-public class TreeViewPanelIterator implements Iterable<TreeViewPanel> {
+public class TreeViewPanelIterable implements Iterable<TreeViewPanel> {
 	@Override
   public Iterator<TreeViewPanel> iterator() {
 		final Iterator<TreeInternalFrame> iterator = MainFrame.getInstance().treeFrameIterator();
