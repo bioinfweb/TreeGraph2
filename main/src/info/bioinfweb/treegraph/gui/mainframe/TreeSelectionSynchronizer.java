@@ -20,12 +20,14 @@ package info.bioinfweb.treegraph.gui.mainframe;
 
 
 import info.bioinfweb.treegraph.document.Document;
+import info.bioinfweb.treegraph.document.IDManager;
 import info.bioinfweb.treegraph.document.Label;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.change.DocumentChangeEvent;
 import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.change.DocumentListener;
+import info.bioinfweb.treegraph.document.nodebranchdata.GeneralIDAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.IDElementAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.VoidNodeBranchDataAdapter;
@@ -123,8 +125,8 @@ public class TreeSelectionSynchronizer implements TreeViewPanelListener, Documen
 				if (selectionTargetNodeInfo != null) {
 					selection.add(selectionTargetNodeInfo.getNode());
 					if (!(defaultSupportAdapter instanceof VoidNodeBranchDataAdapter)) {
-						Node conflictingNode = topologicalCalculator.findHighestConflict(selectionTargetTree.getDocument().getTree().getPaintStart(), null, 
-								activeNode, selectionTargetNodeInfo.getNode(), defaultSupportAdapter);
+						Node conflictingNode = topologicalCalculator.findHighestConflict(selectionTargetTree.getDocument().getTree(), activeTree.getDocument().getTree(), null, 
+								topologicalCalculator.getLeafSet(activeNode), topologicalCalculator.getLeafSet(selectionTargetNodeInfo.getNode()), defaultSupportAdapter);
 						
 						if (conflictingNode != null) {
 							if (defaultSupportAdapter instanceof IDElementAdapter) {

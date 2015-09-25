@@ -30,7 +30,7 @@ import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 public class DefaultDocumentAdapterAction extends EditDialogAction {
 	public DefaultDocumentAdapterAction(MainFrame mainFrame) {
 		super(mainFrame);
-		putValue(Action.NAME, "Set default document adapters...");
+		putValue(Action.NAME, "Set default node/branch data columns...");
 	}
 
 	

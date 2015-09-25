@@ -102,7 +102,7 @@ public abstract class AbstractTopologicalCalculationEdit extends ComplexDocument
 	}
 	
 	
-	public Node findHighestConflict(Node root, Node highestConflictingNode, Node targetNode, Node sourceNode, NodeBranchDataAdapter adapter) {
-		return topologicalCalculator.findHighestConflict(root, highestConflictingNode, targetNode, sourceNode, adapter);
+	public Node findHighestConflict(Tree activeTree, Tree selectionTargetTree, Node highestConflictingNode, LeafSet targetLeafSet, LeafSet sourceLeafSet, NodeBranchDataAdapter adapter) {
+		return topologicalCalculator.findHighestConflict(activeTree, selectionTargetTree, highestConflictingNode, targetLeafSet, sourceLeafSet, adapter);
 	}
 }

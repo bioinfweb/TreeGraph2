@@ -206,7 +206,8 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
 					throw new InternalError("-1 RETURNED");  // Should not happen.
 				}
 				else {  // conflict found
-					double value = getSupportValue(findHighestConflict(src.getTree().getPaintStart(), null, targetRoot, bestSourceNode.getNode(), sourceAdapter));
+					double value = getSupportValue(findHighestConflict(src.getTree(), getDocument().getTree(), null, getTopologicalCalculator().getLeafSet(targetRoot), 
+							getTopologicalCalculator().getLeafSet(bestSourceNode.getNode()), sourceAdapter));
 					if (!Double.isNaN(value) && (value != 0)) {
 	  				conflictAdapter.setDecimal(targetRoot, value);
 					}
