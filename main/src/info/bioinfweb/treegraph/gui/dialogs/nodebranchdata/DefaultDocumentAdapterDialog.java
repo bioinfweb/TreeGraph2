@@ -28,6 +28,8 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import info.bioinfweb.treegraph.document.undo.DocumentEdit;
+import info.bioinfweb.treegraph.document.undo.edit.DefaultDocumentAdapterEdit;
 import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataInput;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
@@ -61,8 +63,8 @@ public class DefaultDocumentAdapterDialog extends EditDialog {
 	
 	@Override
 	protected boolean apply() {
-		getDocument().setDefaultLeafAdapter(defaultLeafAdapterInput.getSelectedAdapter());
-		getDocument().setDefaultSupportAdapter(defaultSupportAdapterInput.getSelectedAdapter());
+		DocumentEdit edit = new DefaultDocumentAdapterEdit(getDocument(), defaultLeafAdapterInput.getSelectedAdapter(), defaultSupportAdapterInput.getSelectedAdapter());
+		getDocument().executeEdit(edit);
 		return true;
 	}
 	
@@ -74,7 +76,7 @@ public class DefaultDocumentAdapterDialog extends EditDialog {
 	 */
 	private void initialize() {
 //	setHelpCode(); //TODO set correct help code
-		setTitle("Set default document adapters");
+		setTitle("Set default node/branch data columns");
 		setContentPane(getJContentPane());
 		setMinimumSize(new Dimension(300, 150));
 		pack();
@@ -110,7 +112,7 @@ public class DefaultDocumentAdapterDialog extends EditDialog {
 			defaultLeafAdapterLabelGBC.insets = new Insets(4, 6, 4, 0);
 			defaultLeafAdapterLabelGBC.gridwidth = GridBagConstraints.RELATIVE;
 			defaultSupportAdapterLabel = new JLabel();
-			defaultSupportAdapterLabel.setText("Set default leaf adapter:");
+			defaultSupportAdapterLabel.setText("Set default leaf column:");
 			defaultDocumentAdaptersPanel.add(defaultSupportAdapterLabel, defaultLeafAdapterLabelGBC);
 			
 			defaultLeafAdapterInput = new NodeBranchDataInput(defaultDocumentAdaptersPanel, 0, 1);		
@@ -122,7 +124,7 @@ public class DefaultDocumentAdapterDialog extends EditDialog {
 			defaultSupportAdapterLabelGBC.insets = new Insets(4, 6, 4, 0);
 			defaultSupportAdapterLabelGBC.gridwidth = GridBagConstraints.RELATIVE;
 			defaultSupportAdapterLabel = new JLabel();
-			defaultSupportAdapterLabel.setText("Set default support adapter:");
+			defaultSupportAdapterLabel.setText("Set default support column:");
 			defaultDocumentAdaptersPanel.add(defaultSupportAdapterLabel, defaultSupportAdapterLabelGBC);
 			
 			defaultSupportAdapterInput = new NodeBranchDataInput(defaultDocumentAdaptersPanel, 0, 3);			

@@ -48,6 +48,7 @@ public class TreeViewPanelIterable implements Iterable<TreeViewPanel> {
       public TreeViewPanel next() {
 	      return iterator.next().getTreeViewPanel();
       }
+			
 
 			@Override
 			public void remove() {
