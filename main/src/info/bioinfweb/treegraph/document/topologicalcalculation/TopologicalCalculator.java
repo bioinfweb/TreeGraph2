@@ -37,8 +37,8 @@ import info.bioinfweb.treegraph.document.undo.CompareTextElementDataParameters;
 
 
 /**
- * Implements basic functionalities for all edits that depend on calculations based on the tree topology
- * and therefore need the tree nodes to be decorated with information in their subtrees. 
+ * Implements basic functionalities for all edits and operations that depend on calculations based on the 
+ * tree topology and therefore need the tree nodes to be decorated with information in their subtrees. 
  * 
  * @author Ben St&ouml;ver
  */
@@ -52,24 +52,11 @@ public class TopologicalCalculator {
 	protected String keyLeafReference;
 	protected CompareTextElementDataParameters parameters;
 	
-	/** The column that contains the terminal identifiers in the target document (usually nodes names) */
-	protected NodeBranchDataAdapter targetLeafsAdapter = null;
 	
-	
-	public TopologicalCalculator(Document document, NodeBranchDataAdapter targetLeafsAdapter, boolean processRooted, 
-				String keyLeafReference, CompareTextElementDataParameters parameters) {
-		
+	public TopologicalCalculator(boolean processRooted,	String keyLeafReference, CompareTextElementDataParameters parameters) {
 		this.processRooted = processRooted;
-		this.targetLeafsAdapter = targetLeafsAdapter;
 		this.keyLeafReference = keyLeafReference;
 		this.parameters = parameters;
-		
-		addLeafMap(leafValues, document.getTree().getPaintStart(), targetLeafsAdapter);
-	}
-
-
-	public NodeBranchDataAdapter getTargetLeafsAdapter() {
-		return targetLeafsAdapter;
 	}
 
 
@@ -83,14 +70,19 @@ public class TopologicalCalculator {
 	}
 
 
+	public void addLeafMap(Node root, NodeBranchDataAdapter adapter) {
+		addLeafMap(leafValues, root, adapter);
+	}
+	
+	
 	/**
-	 * Fills the specified map with the values of all leafs under <code>root</code> and an according index.
+	 * Fills the specified map with the values of all leafs under {@code root} and an according index.
 	 * 
 	 * @param list
 	 * @param root
 	 * @param adapter
 	 */
-	public void addLeafMap(Map<TextElementData, Integer> leafMap, Node root, NodeBranchDataAdapter adapter) {
+	private void addLeafMap(Map<TextElementData, Integer> leafMap, Node root, NodeBranchDataAdapter adapter) {
 		if (root.isLeaf()) {
 			TextElementData data = parameters.createEditedValue(adapter.toTextElementData(root).toString());
 			if (!leafMap.containsKey(data)) {

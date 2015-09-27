@@ -81,23 +81,14 @@ public class TreeSelectionSynchronizer implements TreeViewPanelListener, Documen
 
 
 	public void reset() {
-		// Find first non-empty document to create the calculator on:
-		Iterator<TreeViewPanel> iterator = getTreeSource().iterator();
-		while (iterator.hasNext()) {
-			Document document = iterator.next().getDocument();
-			if (!document.getTree().isEmpty()) {
-				topologicalCalculator = new TopologicalCalculator(document, document.getDefaultLeafAdapter(), 
-								compareParameters.isProcessRooted(), KEY_LEAF_REFERENCE, compareParameters);
-				break;
-			}
-		}
+		topologicalCalculator = new TopologicalCalculator(compareParameters.isProcessRooted(), KEY_LEAF_REFERENCE, compareParameters);
 		
 		// Add leaves from other documents to map (First document was already added in the constructor):
-		Map<TextElementData, Integer> leafValues = topologicalCalculator.getLeafValues();
+		Iterator<TreeViewPanel> iterator = getTreeSource().iterator();
 		while(iterator.hasNext()) {
 			Document document = iterator.next().getDocument();
 			if (!document.getTree().isEmpty()) {
-				topologicalCalculator.addLeafMap(leafValues, document.getTree().getPaintStart(), document.getDefaultLeafAdapter());
+				topologicalCalculator.addLeafMap(document.getTree().getPaintStart(), document.getDefaultLeafAdapter());
 			}
 		}
 		

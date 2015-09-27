@@ -41,12 +41,18 @@ public abstract class AbstractTopologicalCalculationEdit extends ComplexDocument
 	
 	protected TopologicalCalculator topologicalCalculator = null;
 
+	/** The column that contains the terminal identifiers in the target document (usually nodes names) */
+	protected NodeBranchDataAdapter targetLeafsAdapter = null;
+
 	
 	public AbstractTopologicalCalculationEdit(Document document, DocumentChangeType changeType,
 			NodeBranchDataAdapter targetLeafsAdapter, boolean processRooted) {
 	
 		super(document, changeType);
-		topologicalCalculator = new TopologicalCalculator(document, targetLeafsAdapter, processRooted, KEY_LEAF_REFERENCE, new CompareTextElementDataParameters());
+		this.targetLeafsAdapter = targetLeafsAdapter;
+		topologicalCalculator = new TopologicalCalculator(processRooted, KEY_LEAF_REFERENCE, 
+						new CompareTextElementDataParameters());
+		topologicalCalculator.addLeafMap(document.getTree().getPaintStart(), targetLeafsAdapter);
 	}
 
 	
@@ -55,6 +61,11 @@ public abstract class AbstractTopologicalCalculationEdit extends ComplexDocument
 	}
 
 	
+	public NodeBranchDataAdapter getTargetLeafsAdapter() {
+		return targetLeafsAdapter;
+	}
+
+
 	/**
 	 * Checks if both the loaded and the imported tree contain exactly the same terminals.
 	 * 
