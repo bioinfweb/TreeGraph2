@@ -116,8 +116,10 @@ public class TreeSelectionSynchronizer implements TreeViewPanelListener, Documen
 				if (selectionTargetNodeInfo != null) {
 					selection.add(selectionTargetNodeInfo.getNode());
 					if (!(defaultSupportAdapter instanceof VoidNodeBranchDataAdapter)) {
-						Node conflictingNode = topologicalCalculator.findHighestConflict(selectionTargetTree.getDocument().getTree(), activeTree.getDocument().getTree(), null, 
-								topologicalCalculator.getLeafSet(activeNode), topologicalCalculator.getLeafSet(selectionTargetNodeInfo.getNode()), defaultSupportAdapter);
+						Node conflictingNode = topologicalCalculator.findHighestConflict(
+								activeTree.getDocument().getTree(), selectionTargetTree.getDocument().getTree(), 
+								selectionTargetNodeInfo.getNode(), topologicalCalculator.getLeafSet(activeNode), 
+								topologicalCalculator.getLeafSet(selectionTargetNodeInfo.getNode()), defaultSupportAdapter);
 						
 						if (conflictingNode != null) {
 							if (defaultSupportAdapter instanceof IDElementAdapter) {

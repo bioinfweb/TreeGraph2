@@ -153,25 +153,28 @@ public class LeafSet {
 	
 	/**
 	 * Returns <code>false</code> if this field (or its complement) contains any terminal the specified 
-	 * field  does not contain and this field (or its complement) contains at least one terminal less than
+	 * field does not contain and this field (or its complement) contains at least one terminal less than
 	 * the specified field. (Tests whether this field (or its complement) is in the subtree of the 
 	 * specified field.)
 	 * 
-	 * @param other
-	 * @param complement
-	 * @return
+	 * @param parent a leaf set describing a subtree that shall be tested be be the parent of the subtree
+	 *        represented by this instance
+	 * @param complement Specify {@code true} here, if the complement of {@code parent} shall be compared
+	 *        to this instance of {@code false} if parent shall be compared directly. 
+	 * @return {@code true} if this instance represents a subset of the other leaf set, {@code false}
+	 *         otherwise
 	 */
-	public boolean inSubtreeOf(LeafSet other, boolean complement) {
+	public boolean inSubtreeOf(LeafSet parent, boolean complement) {
 		boolean oneLess = false;
 		for (int i = 0; i < size(); i++) {
 			boolean isChildHere = isChild(i);
 			if (complement) {
 				isChildHere = !isChildHere;
 			}
-			if (isChildHere && !other.isChild(i)) {
+			if (isChildHere && !parent.isChild(i)) {
 				return false;
 			}
-			oneLess = oneLess || (!isChildHere && other.isChild(i));
+			oneLess = oneLess || (!isChildHere && parent.isChild(i));
 		}
 		return oneLess;
 	}

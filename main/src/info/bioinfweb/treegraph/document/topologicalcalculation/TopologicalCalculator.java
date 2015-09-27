@@ -33,6 +33,7 @@ import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 import info.bioinfweb.treegraph.document.topologicalcalculation.LeafSet;
 import info.bioinfweb.treegraph.document.topologicalcalculation.NodeInfo;
 import info.bioinfweb.treegraph.document.undo.CompareTextElementDataParameters;
+import info.bioinfweb.treegraph.document.undo.file.AddSupportValuesEdit;
 
 
 
@@ -220,28 +221,41 @@ public class TopologicalCalculator {
 	}
 	
 	
-	public NodeInfo findSourceNodeWithAllLeafs(Tree tree, LeafSet targetLeafs) {  //necessary because LeafSet can not be created in the recursive method
-		targetLeafs = targetLeafs.and(getLeafSet(tree.getPaintStart()));
-		return findSourceNodeWithAllLeafsRecursive(tree.getPaintStart(), targetLeafs);
+	/**
+	 * Searches the MRCA in {@code tree} containing all leaves defined in the specified leaf set.
+	 * <p>
+	 * This method will return {@code null} if either an empty leaf set is provided or the specified
+	 * leaf set contains one ore more terminals, that are not contained in {@code tree}. (The latter
+	 * can only happen if trees with different leaves have been registered in this instance using
+	 * {@link #addToLeafValueToIndexMap(Node, NodeBranchDataAdapter)}.)
+	 * 
+	 * @param tree the tree to be searched
+	 * @param leafSet the leaves that shall be contained in the sought-after subtree
+	 * @return a node info describing the found subtree root or {@code null} if no according subtree could 
+	 *         be found. 
+	 */
+	public NodeInfo findSourceNodeWithAllLeafs(Tree tree, LeafSet leafSet) {
+		leafSet = leafSet.and(getLeafSet(tree.getPaintStart()));
+		return findSourceNodeWithAllLeafsRecursive(tree.getPaintStart(), leafSet);
 	}
 	
 	
-	private NodeInfo findSourceNodeWithAllLeafsRecursive(Node sourceRoot, LeafSet targetLeafs) {
-		if (isLeafSetEmpty(targetLeafs)) {
+	private NodeInfo findSourceNodeWithAllLeafsRecursive(Node root, LeafSet leafSet) {
+		if (isLeafSetEmpty(leafSet)) {
 			return null;
 		}
-		int additionalCount = targetLeafs.compareTo(getLeafSet(sourceRoot), false);
+		int additionalCount = leafSet.compareTo(getLeafSet(root), false);
 		boolean downwards = additionalCount != -1;
 		if (!downwards) {
-			additionalCount = targetLeafs.compareTo(getLeafSet(sourceRoot), true);
+			additionalCount = leafSet.compareTo(getLeafSet(root), true);
 		}
   	NodeInfo result = null;
   	if (additionalCount != -1) {
-  		result = new NodeInfo(sourceRoot, additionalCount, downwards);
+  		result = new NodeInfo(root, additionalCount, downwards);
   	}
   	
-		for (int i = 0; i < sourceRoot.getChildren().size(); i++) {
-			NodeInfo childResult = findSourceNodeWithAllLeafsRecursive(sourceRoot.getChildren().get(i), targetLeafs);
+		for (int i = 0; i < root.getChildren().size(); i++) {
+			NodeInfo childResult = findSourceNodeWithAllLeafsRecursive(root.getChildren().get(i), leafSet);
 			if (childResult != null) {
 				if (result == null) {
 					result = childResult;
@@ -257,15 +271,17 @@ public class TopologicalCalculator {
 	}
 	
 	
-	public Node findHighestConflict(Tree activeTree, Tree selectionTargetTree, Node highestConflictingNode, LeafSet activeLeafSet, LeafSet selectionTargetLeafSet, NodeBranchDataAdapter adapter) {
-		// TODO eindeutige Namen finden!
-		Node selectionTargetRoot = selectionTargetTree.getPaintStart();
-		Node activeTreeRoot = activeTree.getPaintStart();
+	public Node findHighestConflict(Tree referenceTree, Tree searchedTree, Node searchRoot, LeafSet conflictingReferenceLeafSet, 
+			LeafSet completeSearchedLeafSet, NodeBranchDataAdapter searchedSupportAdapter) {
+		
+		//Node searchRoot = searchedTree.getPaintStart();  //TODO Replace by parameter, to start search already and the found according node.
+		LeafSet referenceRootLeafSet = getLeafSet(referenceTree.getPaintStart());
 	
-		selectionTargetLeafSet = selectionTargetLeafSet.and(getLeafSet(activeTreeRoot));
-		activeLeafSet = activeLeafSet.and(getLeafSet(selectionTargetRoot));
+		completeSearchedLeafSet = completeSearchedLeafSet.and(referenceRootLeafSet);
+		conflictingReferenceLeafSet = conflictingReferenceLeafSet.and(getLeafSet(searchedTree.getPaintStart()));
 	
-		return findHighestConflictRecursive(selectionTargetRoot, activeTreeRoot, highestConflictingNode, activeLeafSet, selectionTargetLeafSet, adapter);
+		return findHighestConflictRecursive(searchRoot, referenceRootLeafSet, null, conflictingReferenceLeafSet, 
+				completeSearchedLeafSet, searchedSupportAdapter);
 	}
 	
 	
@@ -273,55 +289,63 @@ public class TopologicalCalculator {
 	 * This method is the recursive part called by {@code findHighestConflict}. The only difference between 
 	 * the two is that this method can return the support value of root itself as {@code findHighestConflict} does not.
 	 * 
-	 * @param selectionTargetRoot - the root of the subtree to be searched (a node in the source document)
-	 * @param highest - the initial support value
-	 * @param targetNode - the node in the target document to attach a support value to
-	 * @param info - information about the node in the source document which contains all terminals of
+	 * @param currentSearchRoot the root of the subtree to be searched
+	 * @param referenceRootLeafSet the leaf set of the root of the reference tree (containing the node in conflict with the 
+	 *        searched tree)
+	 * @param highestConflictingNode the conflicting node carrying the highest support value, that was found until now (Can
+	 *        be {@code null}.)
+	 * @param conflictingReferenceLeafSet a leaf set describing the node from the reference tree that is in conflict with the searched
+	 *        tree (For {@link AddSupportValuesEdit}: The node in the target document to attach a support value to)
+	 * @param completeSearchedLeafSet a leaf set describing the MRCA in the searched tree of all leaves under the conflicting 
+	 *        node in the reference tree (described by {@code conflictingReferenceLeafSet})  
+	 * @param info information about the node in the source document which contains all terminals of
 	 *        {@code targetNode} in its subtree 
 	 * @return the node with the highest support value found (in the source document)
 	 */
-	private Node findHighestConflictRecursive(Node selectionTargetRoot, Node activeTreeRoot, Node highestConflictingNode, LeafSet activeNode, LeafSet selectionTargetNode, NodeBranchDataAdapter adapter) {
-		LeafSet selectionTargetRootLeafSet = getLeafSet(selectionTargetRoot).and(getLeafSet(activeTreeRoot));
+	private Node findHighestConflictRecursive(Node currentSearchRoot, LeafSet referenceRootLeafSet, Node highestConflictingNode, 
+			LeafSet conflictingReferenceLeafSet, LeafSet completeSearchedLeafSet, NodeBranchDataAdapter searchedSupportAdapter) {
 		
-		if ((selectionTargetRootLeafSet.containsAnyAndOther(activeNode, false) &&
-				selectionTargetRootLeafSet.inSubtreeOf(selectionTargetNode, false))
-				|| (selectionTargetRootLeafSet.containsAnyAndOther(activeNode, true) &&
-						selectionTargetRootLeafSet.inSubtreeOf(selectionTargetNode, true))) {
+		LeafSet currentSearchRootLeafSet = getLeafSet(currentSearchRoot).and(referenceRootLeafSet);
+		
+		if ((currentSearchRootLeafSet.containsAnyAndOther(conflictingReferenceLeafSet, false) &&
+				currentSearchRootLeafSet.inSubtreeOf(completeSearchedLeafSet, false))  //TODO This condition could be removed if the loop of the first level would be run in the non-recursive method.
+				|| (currentSearchRootLeafSet.containsAnyAndOther(conflictingReferenceLeafSet, true) &&
+						currentSearchRootLeafSet.inSubtreeOf(completeSearchedLeafSet, true))) {
 			
 			double currentSupport = Double.NaN;
-			if (adapter.isDecimal(selectionTargetRoot)) {
-				currentSupport = adapter.getDecimal(selectionTargetRoot);
+			if (searchedSupportAdapter.isDecimal(currentSearchRoot)) {
+				currentSupport = searchedSupportAdapter.getDecimal(currentSearchRoot);
 			}
-			else if (adapter.isString(selectionTargetRoot)) {
+			else if (searchedSupportAdapter.isString(currentSearchRoot)) {
 				try {
-					currentSupport = Math2.parseDouble(adapter.getText(selectionTargetRoot));
+					currentSupport = Math2.parseDouble(searchedSupportAdapter.getText(currentSearchRoot));
 				}
 				catch (NumberFormatException e) {}  // Nothing to do. 
 			}
 			
 			if (!Double.isNaN(currentSupport)) {
 				if (highestConflictingNode == null) {
-					highestConflictingNode = selectionTargetRoot;
+					highestConflictingNode = currentSearchRoot;
 				}
 				else {
 					double previousSupport;
-					if (adapter.isDecimal(highestConflictingNode)) {
-						previousSupport = adapter.getDecimal(highestConflictingNode);
+					if (searchedSupportAdapter.isDecimal(highestConflictingNode)) {
+						previousSupport = searchedSupportAdapter.getDecimal(highestConflictingNode);
 					}
 					else {
-						previousSupport = Math2.parseDouble(adapter.getText(highestConflictingNode));
+						previousSupport = Math2.parseDouble(searchedSupportAdapter.getText(highestConflictingNode));
 					}
 					
 					if (previousSupport < currentSupport) {
-						highestConflictingNode = selectionTargetRoot;
+						highestConflictingNode = currentSearchRoot;
 					}
 				}
 			}
 		}
 		
-		for (int i = 0; i < selectionTargetRoot.getChildren().size(); i++) {
-			highestConflictingNode = findHighestConflictRecursive(selectionTargetRoot.getChildren().get(i), activeTreeRoot, highestConflictingNode, 
-					activeNode, selectionTargetNode, adapter);
+		for (int i = 0; i < currentSearchRoot.getChildren().size(); i++) {
+			highestConflictingNode = findHighestConflictRecursive(currentSearchRoot.getChildren().get(i), referenceRootLeafSet, 
+					highestConflictingNode,	conflictingReferenceLeafSet, completeSearchedLeafSet, searchedSupportAdapter);
 		}
 		
 		return highestConflictingNode;

@@ -47,7 +47,7 @@ public abstract class AbstractTopologicalCalculationEdit extends ComplexDocument
 		super(document, changeType);
 		this.targetLeafsAdapter = targetLeafsAdapter;
 		topologicalCalculator = new TopologicalCalculator(processRooted, KEY_LEAF_REFERENCE, 
-						new CompareTextElementDataParameters());
+				new CompareTextElementDataParameters());
 		topologicalCalculator.addToLeafValueToIndexMap(document.getTree().getPaintStart(), targetLeafsAdapter);
 	}
 
