@@ -66,6 +66,7 @@ public class AssignBayesTraitsImportColumnsDialog extends AssignImportColumnsDia
 
 	/**
 	 * Creates a new instance of this dialog.
+	 * 
 	 * @param owner the parent window
 	 */
 	public AssignBayesTraitsImportColumnsDialog(Frame owner) {
