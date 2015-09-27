@@ -99,7 +99,7 @@ public class RerootByLeafSetEdit extends AbstractTopologicalCalculationEdit impl
 	
 	
 	private void createSelectedLeafsSet() {
-		selectedLeafs = new LeafSet(getLeafCount());
+		selectedLeafs = new LeafSet(getTopologicalCalculator().getLeafCount());
 		Iterator<Node> iterator = leafs.iterator();
 		while (iterator.hasNext()) {
 			selectedLeafs.setChild(getTopologicalCalculator().getLeafIndex(UniqueNameAdapter.getSharedInstance().toTextElementData(iterator.next()).toString()), true);
@@ -114,7 +114,7 @@ public class RerootByLeafSetEdit extends AbstractTopologicalCalculationEdit impl
 	 */
 	private void markPath(Node node) {
 		node = node.getParent();  // The leaf node should not be added to the path
-		while (node != null && !nodesOnPath.contains(node) && !getLeafSet(node).containsAll(selectedLeafs)) {
+		while (node != null && !nodesOnPath.contains(node) && !getTopologicalCalculator().getLeafSet(node).containsAll(selectedLeafs)) {
 			nodesOnPath.add(node);
 			node = node.getParent();
 		}
@@ -136,14 +136,14 @@ public class RerootByLeafSetEdit extends AbstractTopologicalCalculationEdit impl
 		BranchingSubtreesResult result = new BranchingSubtreesResult();
 		if (root.hasParent() && !nodesOnPath.contains(root.getParent())) {
 			result.first = root.getAfferentBranch();
-			result.leafCount = getLeafSet(root).complement().childCount();
+			result.leafCount = getTopologicalCalculator().getLeafSet(root).complement().childCount();
 		}
 		
 		Iterator<Node> iterator = root.getChildren().iterator();
 		while (iterator.hasNext()) {
 			Node child = iterator.next();
 			if (!nodesOnPath.contains(child)) {
-				int childLeafCount = getLeafSet(child).childCount();
+				int childLeafCount = getTopologicalCalculator().getLeafSet(child).childCount();
 				if (childLeafCount > result.leafCount) {  // Replace current result(s).
 					result.alternatives.clear();
 					result.first = child.getAfferentBranch();
@@ -174,7 +174,7 @@ public class RerootByLeafSetEdit extends AbstractTopologicalCalculationEdit impl
 	private Branch calculateRootingPoint() {
 		Branch result = null;
 		if (leafs.size() > 1) {
-			addLeafSets(getDocument().getTree().getPaintStart(), UniqueNameAdapter.getSharedInstance());
+			getTopologicalCalculator().addLeafSets(getDocument().getTree().getPaintStart(), UniqueNameAdapter.getSharedInstance());
 			createSelectedLeafsSet();
 			
 			// Mark paths:

@@ -114,7 +114,7 @@ public class NodeSupportEdit extends AbstractTopologicalCalculationEdit {
 	
 	public void createHashmap (Node root){
 		if (!root.isLeaf()) {
-			LeafSet field = getLeafSet(root);
+			LeafSet field = getTopologicalCalculator().getLeafSet(root);
 			hashMap.put(field, root);
 			for (int i = 0; i < root.getChildren().size(); i++) {
 				Node child = root.getChildren().get(i);	
@@ -125,24 +125,20 @@ public class NodeSupportEdit extends AbstractTopologicalCalculationEdit {
 	
 	
 	private void counter(Node node){
-		// System.out.println("" + supportValuesAdapter.getDecimal(node));
 		supportValuesAdapter.setDecimal(node, supportValuesAdapter.getDecimal(node) + 1);
 	}
 	
 	
 	private void countSimilarNodes(Node root) {
-		System.out.println("Count similar nodes");
-		addLeafSets(root, sourceLeafsAdapter);
+		getTopologicalCalculator().addLeafSets(root, sourceLeafsAdapter);
 
 		if (!root.isLeaf()) {
-			Node corresponding = hashMap.get(getLeafSet(root));
-			System.out.println("" + corresponding + " " + hashMap.size());
-			
+			Node corresponding = hashMap.get(getTopologicalCalculator().getLeafSet(root));
 			if (corresponding != null) {
 				counter(corresponding);
 			}
 			else {
-				corresponding = hashMap.get(getLeafSet(root).complement());
+				corresponding = hashMap.get(getTopologicalCalculator().getLeafSet(root).complement());
 				if (corresponding != null){
 					counter(corresponding);
 				}
@@ -150,27 +146,8 @@ public class NodeSupportEdit extends AbstractTopologicalCalculationEdit {
 		
 			for (int i = 0; i < root.getChildren().size(); i++) {
 				countSimilarNodes(root.getChildren().get(i));
+			}
 		}
 	}
-		
-		
-	}
-//		LeafField field = getLeafField(root);
-//		if (hashMap.get(root).hashCode() == rootToCompare.hashCode()){
-//			supportValuesAdapter.setDecimal(root, supportValuesAdapter.getDecimal(root)+1);
-//		}
-//		else if (getLeafField(root).complement().hashCode() == rootToCompare.hashCode()){
-//			supportValuesAdapter.setDecimal(root, supportValuesAdapter.getDecimal(root)+1);
-//		}
-//		
-//		if (!root.isLeaf()) {
-//			for (int i = 0; i < rootToCompare.getChildren().size(); i++) {
-//				root = root.getChildren().get(i);
-//				Node child = rootToCompare.getChildren().get(i);
-//				countSimilarNodes(root, child);
-//			}
-//		}
-//			
-//	}
 }
 

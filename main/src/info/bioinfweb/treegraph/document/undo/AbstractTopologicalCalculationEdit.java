@@ -20,12 +20,8 @@ package info.bioinfweb.treegraph.document.undo;
 
 
 import info.bioinfweb.treegraph.document.Document;
-import info.bioinfweb.treegraph.document.Node;
-import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
-import info.bioinfweb.treegraph.document.topologicalcalculation.LeafSet;
-import info.bioinfweb.treegraph.document.topologicalcalculation.NodeInfo;
 import info.bioinfweb.treegraph.document.topologicalcalculation.TopologicalCalculator;
 
 
@@ -52,7 +48,7 @@ public abstract class AbstractTopologicalCalculationEdit extends ComplexDocument
 		this.targetLeafsAdapter = targetLeafsAdapter;
 		topologicalCalculator = new TopologicalCalculator(processRooted, KEY_LEAF_REFERENCE, 
 						new CompareTextElementDataParameters());
-		topologicalCalculator.addLeafMap(document.getTree().getPaintStart(), targetLeafsAdapter);
+		topologicalCalculator.addToLeafValueToIndexMap(document.getTree().getPaintStart(), targetLeafsAdapter);
 	}
 
 	
@@ -63,57 +59,5 @@ public abstract class AbstractTopologicalCalculationEdit extends ComplexDocument
 	
 	public NodeBranchDataAdapter getTargetLeafsAdapter() {
 		return targetLeafsAdapter;
-	}
-
-
-	/**
-	 * Checks if both the loaded and the imported tree contain exactly the same terminals.
-	 * 
-	 * @return an error message, if the terminal nodes are not identical or <code>null</code> if they are
-	 */
-	protected String compareLeafs(Document src) {
-		return topologicalCalculator.compareLeafs(src);
-	}
-
-
-	/**
-	 * Returns the leaf field attribute of <code>node</code> if it has one attached. If not an according object
-	 * is created first and than returned.
-	 * 
-	 * @param node - the node from which the leaf field attribute shall be returned or created. 
-	 */
-	protected LeafSet getLeafSet(Node node) {
-		return topologicalCalculator.getLeafSet(node);
-	}
-	
-	
-	protected int getLeafIndex(String value) {
-		return topologicalCalculator.getLeafIndex(value);
-	}
-	
-	
-	protected int getLeafCount() {
-		return topologicalCalculator.getLeafCount();
-	}
-	
-
-	/**
-	 * Adds a boolean set which indicates the leafs located under <code>root</code> to
-	 * the attribute map of <code>root</code>.`
-	 * 
-	 * @param root - the root of the subtree
-	 */
-	protected void addLeafSets(Node root, NodeBranchDataAdapter adapter) {
-		topologicalCalculator.addLeafSets(root, adapter);
-	}	
-	
-	
-	protected NodeInfo findSourceNodeWithAllLeafs(Tree tree, Node sourceRoot, LeafSet targetLeafs) {
-		return topologicalCalculator.findSourceNodeWithAllLeafs(tree, sourceRoot, targetLeafs);
-	}
-	
-	
-	public Node findHighestConflict(Tree activeTree, Tree selectionTargetTree, Node highestConflictingNode, LeafSet targetLeafSet, LeafSet sourceLeafSet, NodeBranchDataAdapter adapter) {
-		return topologicalCalculator.findHighestConflict(activeTree, selectionTargetTree, highestConflictingNode, targetLeafSet, sourceLeafSet, adapter);
 	}
 }

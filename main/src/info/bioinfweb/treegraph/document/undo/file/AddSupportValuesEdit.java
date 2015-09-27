@@ -155,7 +155,7 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
 	
 	@Override
 	protected void performRedo() {
-    String errorMsg = compareLeafs(src);
+    String errorMsg = getTopologicalCalculator().compareLeafs(src);
     if (errorMsg == null) {  // The terminal nodes of both trees are identical.
   		getTopologicalCalculator().addLeafSets(src.getTree().getPaintStart(), TopologicalCalculator.SOURCE_LEAFS_ADAPTER);
   		getTopologicalCalculator().addLeafSets(getDocument().getTree().getPaintStart(), getTargetLeafsAdapter());
@@ -186,7 +186,8 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
 			if (!(targetRoot.hasParent() && !targetRoot.getParent().hasParent() && !getTopologicalCalculator().isProcessRooted() && 
 					(targetRoot.getParent().getChildren().size() == 2) && targetRoot.isLast())) {  // Check if the current node is linked to the paint start which does not represent a root and the other linked branch already carries the same support value.
 				
-				NodeInfo bestSourceNode = findSourceNodeWithAllLeafs(src.getTree(), src.getTree().getPaintStart(), getLeafSet(targetRoot));
+				NodeInfo bestSourceNode = getTopologicalCalculator().findSourceNodeWithAllLeafs(src.getTree(), 
+								getTopologicalCalculator().getLeafSet(targetRoot));
 				if (bestSourceNode.getAdditionalCount() == 0) {  // support found
   				if (sourceAdapter.isDecimal(bestSourceNode.getNode())) {  // if no value exists there
 	  				supportAdapter.setDecimal(targetRoot, sourceAdapter.getDecimal(bestSourceNode.getNode()));  // Only decimal values can appear here.
@@ -206,7 +207,8 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
 					throw new InternalError("-1 RETURNED");  // Should not happen.
 				}
 				else {  // conflict found
-					double value = getSupportValue(findHighestConflict(src.getTree(), getDocument().getTree(), null, getTopologicalCalculator().getLeafSet(targetRoot), 
+					double value = getSupportValue(getTopologicalCalculator().findHighestConflict(src.getTree(), 
+							getDocument().getTree(), null, getTopologicalCalculator().getLeafSet(targetRoot), 
 							getTopologicalCalculator().getLeafSet(bestSourceNode.getNode()), sourceAdapter));
 					if (!Double.isNaN(value) && (value != 0)) {
 	  				conflictAdapter.setDecimal(targetRoot, value);

@@ -47,7 +47,7 @@ public class TopologicalCalculator {
 	public static final NodeNameAdapter SOURCE_LEAFS_ADAPTER = NodeNameAdapter.getSharedInstance();
 	
 	
-	protected Map<TextElementData, Integer> leafValues = new TreeMap<TextElementData, Integer>();
+	protected Map<TextElementData, Integer> leafValueToIndexMap = new TreeMap<TextElementData, Integer>();
 	protected boolean processRooted;
 	protected String keyLeafReference;
 	protected CompareTextElementDataParameters parameters;
@@ -60,18 +60,38 @@ public class TopologicalCalculator {
 	}
 
 
-	public Map<TextElementData, Integer> getLeafValues() {
-		return leafValues;
+	private Map<TextElementData, Integer> getLeafValueToIndexMap() {
+		return leafValueToIndexMap;
 	}
 
 
+	/**
+	 * Indicates whether the root of the trees used with this instance shall be considered as an additional
+	 * terminal node or be ignored to assume trees to be unrooted.
+	 * <p>
+	 * Note that the value of this property determines how trees are compared by this instance. It is not
+	 * taken into account whether the compared documents are displayed rooted or not as determined by their
+	 * document format property.
+	 * 
+	 * @return {@code true} is the root is considered as an additional terminal node or {@code false} if it
+	 *         shall be ignored. 
+	 */
 	public boolean isProcessRooted() {
 		return processRooted;
 	}
 
 
-	public void addLeafMap(Node root, NodeBranchDataAdapter adapter) {
-		addLeafMap(leafValues, root, adapter);
+	/**
+	 * Registers the leaf values of the subtree under {@code root} to the leaf value map of this instance.
+	 * This map is used to map leaves to indices in a leaf set internally. Therefore all terminal under nodes 
+	 * for which leaf sets shall be calculated using this instance in the future must be registered using this
+	 * method. 
+	 * 
+	 * @param root the root of the subtree in which all leaves shall be registered
+	 * @param adapter the adapter to be used to obtain leaf values from the terminals
+	 */
+	public void addToLeafValueToIndexMap(Node root, NodeBranchDataAdapter adapter) {
+		addToLeafValueToIndexMap(leafValueToIndexMap, root, adapter);
 	}
 	
 	
@@ -82,7 +102,7 @@ public class TopologicalCalculator {
 	 * @param root
 	 * @param adapter
 	 */
-	private void addLeafMap(Map<TextElementData, Integer> leafMap, Node root, NodeBranchDataAdapter adapter) {
+	private void addToLeafValueToIndexMap(Map<TextElementData, Integer> leafMap, Node root, NodeBranchDataAdapter adapter) {
 		if (root.isLeaf()) {
 			TextElementData data = parameters.createEditedValue(adapter.toTextElementData(root).toString());
 			if (!leafMap.containsKey(data)) {
@@ -92,7 +112,7 @@ public class TopologicalCalculator {
 		else {
 			Iterator<Node> iterator = root.getChildren().iterator();
 			while (iterator.hasNext()) {
-				addLeafMap(leafMap, iterator.next(), adapter);
+				addToLeafValueToIndexMap(leafMap, iterator.next(), adapter);
 			}
 		}
 	}
@@ -105,8 +125,8 @@ public class TopologicalCalculator {
 	 */
 	public String compareLeafs(Document src) {
 		Map<TextElementData, Integer> sourceLeafValues = new TreeMap<TextElementData, Integer>();
-		addLeafMap(sourceLeafValues, src.getTree().getPaintStart(), SOURCE_LEAFS_ADAPTER);
-		if (leafValues.size() != sourceLeafValues.size()) {
+		addToLeafValueToIndexMap(sourceLeafValues, src.getTree().getPaintStart(), SOURCE_LEAFS_ADAPTER);
+		if (leafValueToIndexMap.size() != sourceLeafValues.size()) {
 			return "The selected tree has a different number of terminals than " +
 				"the opened document. No support values were added.";
 		}
@@ -114,7 +134,7 @@ public class TopologicalCalculator {
 			String errorMsg = "";
 			int errorCount = 0;
 			for (TextElementData data : sourceLeafValues.keySet()) {
-				if (!getLeafValues().containsKey(parameters.createEditedValue(data.toString()))) {
+				if (!getLeafValueToIndexMap().containsKey(parameters.createEditedValue(data.toString()))) {
 					if (errorCount < MAX_TERMINAL_ERROR_COUNT) {
 						if (!errorMsg.equals("")) {
 							errorMsg += ",\n";
@@ -145,7 +165,7 @@ public class TopologicalCalculator {
 	 */
 	public LeafSet getLeafSet(Node node) {
 		if (node.getAttributeMap().get(keyLeafReference) == null) {
-			int size = leafValues.size();
+			int size = leafValueToIndexMap.size();
 			if (processRooted) {
 				size++;
 			}
@@ -158,7 +178,7 @@ public class TopologicalCalculator {
 	
 	public int getLeafIndex(String value) {
 		TextElementData key = parameters.createEditedValue(value);
-		Integer result = leafValues.get(key);
+		Integer result = leafValueToIndexMap.get(key);
 		if (result == null) {
 			return -1;
 		}
@@ -169,7 +189,7 @@ public class TopologicalCalculator {
 	
 	
 	public int getLeafCount() {
-		return leafValues.size();
+		return leafValueToIndexMap.size();
 	}
 	
 
@@ -200,13 +220,13 @@ public class TopologicalCalculator {
 	}
 	
 	
-	public NodeInfo findSourceNodeWithAllLeafs(Tree tree, Node sourceRoot, LeafSet targetLeafs) {  //necessary because LeafSet can not be created in the recursive method
-		targetLeafs = targetLeafs.and(getLeafSet(tree.getPaintStart()));  //TODO Does the root bit have to be set to true here?
-		return findSourceNodeWithAllLeafsRecursive(sourceRoot, targetLeafs);
+	public NodeInfo findSourceNodeWithAllLeafs(Tree tree, LeafSet targetLeafs) {  //necessary because LeafSet can not be created in the recursive method
+		targetLeafs = targetLeafs.and(getLeafSet(tree.getPaintStart()));
+		return findSourceNodeWithAllLeafsRecursive(tree.getPaintStart(), targetLeafs);
 	}
 	
 	
-	public NodeInfo findSourceNodeWithAllLeafsRecursive(Node sourceRoot, LeafSet targetLeafs) {
+	private NodeInfo findSourceNodeWithAllLeafsRecursive(Node sourceRoot, LeafSet targetLeafs) {
 		if (isLeafSetEmpty(targetLeafs)) {
 			return null;
 		}
@@ -260,7 +280,7 @@ public class TopologicalCalculator {
 	 *        {@code targetNode} in its subtree 
 	 * @return the node with the highest support value found (in the source document)
 	 */
-	public Node findHighestConflictRecursive(Node selectionTargetRoot, Node activeTreeRoot, Node highestConflictingNode, LeafSet activeNode, LeafSet selectionTargetNode, NodeBranchDataAdapter adapter) {
+	private Node findHighestConflictRecursive(Node selectionTargetRoot, Node activeTreeRoot, Node highestConflictingNode, LeafSet activeNode, LeafSet selectionTargetNode, NodeBranchDataAdapter adapter) {
 		LeafSet selectionTargetRootLeafSet = getLeafSet(selectionTargetRoot).and(getLeafSet(activeTreeRoot));
 		
 		if ((selectionTargetRootLeafSet.containsAnyAndOther(activeNode, false) &&

@@ -106,7 +106,7 @@ public class ImportBayesTraitsDataEdit extends AbstractTopologicalCalculationEdi
 
 
 	private Node findReconstructedNode(AncestralStateData data) {
-		LeafSet leafSet = new LeafSet(getLeafCount());
+		LeafSet leafSet = new LeafSet(getTopologicalCalculator().getLeafCount());
 		if (data.getName().equals(BayesTraitsReader.ROOT_NAME)) {
 			for (int i = 0; i < leafSet.size(); i++) {
 				leafSet.setChild(i, true);
@@ -115,7 +115,7 @@ public class ImportBayesTraitsDataEdit extends AbstractTopologicalCalculationEdi
 		else {
 			Iterator<String> iterator = data.getLeafNames().iterator();
 			while (iterator.hasNext()) {
-			int index = getLeafIndex(iterator.next());
+			int index = getTopologicalCalculator().getLeafIndex(iterator.next());
 				if (index != -1 ) {				
 					leafSet.setChild(index, true);
 				}
@@ -124,7 +124,7 @@ public class ImportBayesTraitsDataEdit extends AbstractTopologicalCalculationEdi
 				}
 			}
 		}
-		return findSourceNodeWithAllLeafs(getDocument().getTree(), getDocument().getTree().getPaintStart(), leafSet).getNode(); //TODO handle isDownwards() == false
+		return getTopologicalCalculator().findSourceNodeWithAllLeafs(getDocument().getTree(), leafSet).getNode(); //TODO handle isDownwards() == false
 	}
 
 
@@ -136,7 +136,7 @@ public class ImportBayesTraitsDataEdit extends AbstractTopologicalCalculationEdi
 
 	@Override
 	protected void performRedo() {
-		addLeafSets(getDocument().getTree().getPaintStart(), parameters.getKeyAdapter());
+		getTopologicalCalculator().addLeafSets(getDocument().getTree().getPaintStart(), parameters.getKeyAdapter());
 		
 		
 		for (String internalNodeName : parameters.getData().keySet()) {

@@ -88,7 +88,7 @@ public class TreeSelectionSynchronizer implements TreeViewPanelListener, Documen
 		while(iterator.hasNext()) {
 			Document document = iterator.next().getDocument();
 			if (!document.getTree().isEmpty()) {
-				topologicalCalculator.addLeafMap(document.getTree().getPaintStart(), document.getDefaultLeafAdapter());
+				topologicalCalculator.addToLeafValueToIndexMap(document.getTree().getPaintStart(), document.getDefaultLeafAdapter());
 			}
 		}
 		
@@ -110,8 +110,8 @@ public class TreeSelectionSynchronizer implements TreeViewPanelListener, Documen
 			
 			NodeBranchDataAdapter defaultSupportAdapter = selectionTargetTree.getDocument().getDefaultSupportAdapter();
 			for (Node activeNode : activeTree.getSelection().getAllElementsOfType(Node.class, false)) {
-				NodeInfo selectionTargetNodeInfo = topologicalCalculator.findSourceNodeWithAllLeafs(selectionTargetTree.getDocument().getTree(), selectionTargetTree.getDocument().getTree().getPaintStart(), 
-						topologicalCalculator.getLeafSet(activeNode));
+				NodeInfo selectionTargetNodeInfo = topologicalCalculator.findSourceNodeWithAllLeafs(
+						selectionTargetTree.getDocument().getTree(), topologicalCalculator.getLeafSet(activeNode));
 				
 				if (selectionTargetNodeInfo != null) {
 					selection.add(selectionTargetNodeInfo.getNode());
