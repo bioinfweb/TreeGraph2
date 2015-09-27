@@ -615,7 +615,7 @@ main/src/info/bioinfweb/treegraph/gui/dialogs/ResolutionInput.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/ScaleBranchLengthsDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/SearchTextDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/SortLeafsDialog.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/treegraph/gui/dialogs/SynchronizeTreeSelectionDialog.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/gui/dialogs/SynchronizeTreeSelectionParametersDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/editelement/AbstractTextElementDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/editelement/ChangeIDDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/editelement/EditBranchLengthDialog.java -text

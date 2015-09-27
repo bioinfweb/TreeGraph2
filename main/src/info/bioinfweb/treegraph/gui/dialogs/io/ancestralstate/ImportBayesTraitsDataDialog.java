@@ -70,6 +70,7 @@ public class ImportBayesTraitsDataDialog extends FileDialog {
 	 */
 	public ImportBayesTraitsDataDialog(Frame owner) {
 		super(owner, FileDialog.Option.FILE_MUST_EXIST);
+		setHelpCode(80);
 		initialize();
 		setLocationRelativeTo(owner);
 	}
@@ -102,7 +103,6 @@ public class ImportBayesTraitsDataDialog extends FileDialog {
 	 * @return void
 	 */
 	private void initialize() {
-		setHelpCode(65); //TODO correct help code?
 		setTitle("Import BayesTraits Log Data");
 		setContentPane(getJContentPane());
 		pack();

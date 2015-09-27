@@ -70,6 +70,7 @@ public class AssignBayesTraitsImportColumnsDialog extends AssignImportColumnsDia
 	 */
 	public AssignBayesTraitsImportColumnsDialog(Frame owner) {
 		super(owner, true, Main.getInstance().getWikiHelp());
+		setHelpCode(81);
 		initialize();
 		setLocationRelativeTo(owner);
 	}
@@ -169,7 +170,6 @@ public class AssignBayesTraitsImportColumnsDialog extends AssignImportColumnsDia
 	 * @return void
 	 */
 	private void initialize() {
-		setHelpCode(66); //TODO set correct help code
 		setTitle("Import BayesTraits data");
 		setSize(380, 400);
 		getApplyButton().setVisible(false);

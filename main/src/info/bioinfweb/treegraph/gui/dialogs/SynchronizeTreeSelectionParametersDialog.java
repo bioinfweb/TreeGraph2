@@ -27,19 +27,17 @@ import java.awt.Insets;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.border.TitledBorder;
 
-import info.bioinfweb.treegraph.document.undo.CompareTextElementDataParameters;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 
 import java.awt.FlowLayout;
 
 
 
-public class SynchronizeTreeSelectionDialog extends EditDialog {
+public class SynchronizeTreeSelectionParametersDialog extends EditDialog {
 	private JPanel jContentPane = null;
 	private JPanel processRootedPanel = null;
 	private JRadioButton rootedRadioButton = null;
@@ -48,9 +46,9 @@ public class SynchronizeTreeSelectionDialog extends EditDialog {
 	private CompareTextElementDataParametersPanel compareTextElementDataParametersPanel = null;
 	
 	
-	public SynchronizeTreeSelectionDialog(MainFrame mainFrame) {
+	public SynchronizeTreeSelectionParametersDialog(MainFrame mainFrame) {
 		super(mainFrame);
-//		setHelpCode(); //TODO set correct help code
+		setHelpCode(78);
 		initialize();
 		setLocationRelativeTo(mainFrame);
 	}

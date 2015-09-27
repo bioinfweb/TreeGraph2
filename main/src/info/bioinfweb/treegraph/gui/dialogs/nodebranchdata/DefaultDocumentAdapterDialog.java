@@ -46,6 +46,7 @@ public class DefaultDocumentAdapterDialog extends EditDialog {
 	
 	public DefaultDocumentAdapterDialog(MainFrame mainFrame) {
 		super(mainFrame);
+		setHelpCode(79);
 		initialize();
 		setLocationRelativeTo(mainFrame);
 	}
@@ -75,7 +76,6 @@ public class DefaultDocumentAdapterDialog extends EditDialog {
 	 * @return void
 	 */
 	private void initialize() {
-//	setHelpCode(); //TODO set correct help code
 		setTitle("Set default node/branch data columns");
 		setContentPane(getJContentPane());
 		setMinimumSize(new Dimension(300, 150));

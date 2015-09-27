@@ -24,7 +24,7 @@ import javax.swing.Action;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.gui.actions.EditDialogAction;
-import info.bioinfweb.treegraph.gui.dialogs.SynchronizeTreeSelectionDialog;
+import info.bioinfweb.treegraph.gui.dialogs.SynchronizeTreeSelectionParametersDialog;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 
@@ -38,8 +38,8 @@ public class TreeSelectionCompareParametersAction extends EditDialogAction {
 
 	
 	@Override
-	public SynchronizeTreeSelectionDialog createDialog() {
-		return new SynchronizeTreeSelectionDialog(getMainFrame());
+	public SynchronizeTreeSelectionParametersDialog createDialog() {
+		return new SynchronizeTreeSelectionParametersDialog(getMainFrame());
 	}
 
 
