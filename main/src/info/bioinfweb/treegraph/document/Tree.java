@@ -34,8 +34,11 @@ import java.util.TreeMap;
 
 
 /**
- * Instances of this class provide an environment for the recursive data-structure of 
- * tree-elements without their formats.
+ * Contains a {@link PaintableElement}s of a {@link Document}. These are all elements that are visible in a 
+ * tree file with there attached data (including invisible data, like hidden branch data).
+ * <p>
+ * Parts of the document that are not stored on {@link PaintableElement}s (e.g. default document adapters) 
+ * are located directly in {@link Document}. 
  *  
  * @author Ben St&ouml;ver
  */

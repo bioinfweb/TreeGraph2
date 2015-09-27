@@ -22,8 +22,6 @@ package info.bioinfweb.treegraph.document.undo.edit;
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 
-import org.lsmp.djep.vectorJep.function.GetDiagonal;
-
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.IDManager;
 import info.bioinfweb.treegraph.document.change.DocumentChangeType;
@@ -57,7 +55,7 @@ public class RenameDataIDEdit extends DocumentEdit {
 	@Override
 	public void redo() throws CannotRedoException {
 		for (int i = 0; i < oldIDs.length; i++) {
-			IDManager.renameID(oldIDs[i], newIDs[i], getDocument().getTree());
+			IDManager.renameID(oldIDs[i], newIDs[i], getDocument());
 		}
 		super.redo();
 	}
@@ -66,7 +64,7 @@ public class RenameDataIDEdit extends DocumentEdit {
 	@Override
 	public void undo() throws CannotUndoException {
 		for (int i = 0; i < oldIDs.length; i++) {
-			IDManager.renameID(newIDs[i], oldIDs[i], getDocument().getTree());
+			IDManager.renameID(newIDs[i], oldIDs[i], getDocument());
 		}
 		super.undo();
 	}

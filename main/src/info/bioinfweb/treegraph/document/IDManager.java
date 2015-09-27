@@ -20,6 +20,8 @@ package info.bioinfweb.treegraph.document;
 
 
 import info.bioinfweb.commons.RandomValues;
+import info.bioinfweb.treegraph.document.nodebranchdata.IDElementAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -350,6 +352,16 @@ public class IDManager {
   }
   
   
+  private static void updateDefaultAdapter(String oldName, String newName, NodeBranchDataAdapter adapter) {
+  	if (adapter instanceof IDElementAdapter) {
+  		IDElementAdapter idAdapter = (IDElementAdapter)adapter;
+  		if (idAdapter.getID().equals(oldName)) {
+  			idAdapter.setID(newName);
+  		}
+  	}
+  }
+  
+  
   /**
    * Renames a data ID in the specified tree and updates possible links to this ID in pie chart labels.
    * 
@@ -357,11 +369,14 @@ public class IDManager {
    * @param newName - the new ID
    * @param tree - the tree to rename the IDs in
    */
-  public static void renameID(String oldName, String newName, Tree tree) {
-  	if (!tree.isEmpty()) {
-  		renameIDSubtree(oldName, newName, tree.getPaintStart());
-  		updatePieChartLabels(oldName, newName, tree.getPaintStart());
+  public static void renameID(String oldName, String newName, Document document) {
+  	if (!document.getTree().isEmpty()) {
+  		renameIDSubtree(oldName, newName, document.getTree().getPaintStart());
+  		updatePieChartLabels(oldName, newName, document.getTree().getPaintStart());
   	}
+  	
+  	updateDefaultAdapter(oldName, newName, document.getDefaultLeafAdapter());
+  	updateDefaultAdapter(oldName, newName, document.getDefaultSupportAdapter());
   }
   
   /**
