@@ -37,7 +37,7 @@ import static org.junit.Assert.* ;
 public class RerootByLeafSetEditTest {
 	private Document createDocument() {
 		try {
-			return new XTGReader().read(new File("data" + SystemUtils.FILE_SEPARATOR + "RerootByLeafs.xtg"));
+			return new XTGReader().read(new File("data" + SystemUtils.FILE_SEPARATOR + "RerootByLeaves.xtg"));
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -50,11 +50,11 @@ public class RerootByLeafSetEditTest {
   @Test
   public void test_redo_distantNodes() {
   	Document document = createDocument();
-  	List<Node> leafs = new ArrayList<Node>(2);
-  	leafs.add(document.getTree().getNodeByUniqueName("624i1qcsfd"));
-  	leafs.add(document.getTree().getNodeByUniqueName("j99xcxa0in"));
+  	List<Node> leaves = new ArrayList<Node>(2);
+  	leaves.add(document.getTree().getNodeByUniqueName("624i1qcsfd"));
+  	leaves.add(document.getTree().getNodeByUniqueName("j99xcxa0in"));
 
-  	RerootByLeafSetEdit edit = new RerootByLeafSetEdit(document, leafs);
+  	RerootByLeafSetEdit edit = new RerootByLeafSetEdit(document, leaves);
   	document.executeEdit(edit);
   	
   	final String newRootID = "newRoot";
@@ -69,11 +69,11 @@ public class RerootByLeafSetEditTest {
   @Test
   public void test_redo_closeNodes() {
   	Document document = createDocument();
-  	List<Node> leafs = new ArrayList<Node>(2);
-  	leafs.add(document.getTree().getNodeByUniqueName("bh0q07axdt"));
-  	leafs.add(document.getTree().getNodeByUniqueName("624i1qcsfd"));
+  	List<Node> leaves = new ArrayList<Node>(2);
+  	leaves.add(document.getTree().getNodeByUniqueName("bh0q07axdt"));
+  	leaves.add(document.getTree().getNodeByUniqueName("624i1qcsfd"));
 
-  	RerootByLeafSetEdit edit = new RerootByLeafSetEdit(document, leafs);
+  	RerootByLeafSetEdit edit = new RerootByLeafSetEdit(document, leaves);
   	document.executeEdit(edit);
   	
   	final String newRootName = "ztkxbqbhnl";
@@ -89,10 +89,10 @@ public class RerootByLeafSetEditTest {
   	final String uniqueName = "bh0q07axdt";
 
   	Document document = createDocument();
-  	List<Node> leafs = new ArrayList<Node>(2);
-  	leafs.add(document.getTree().getNodeByUniqueName(uniqueName));
+  	List<Node> leaves = new ArrayList<Node>(2);
+  	leaves.add(document.getTree().getNodeByUniqueName(uniqueName));
 
-  	RerootByLeafSetEdit edit = new RerootByLeafSetEdit(document, leafs);
+  	RerootByLeafSetEdit edit = new RerootByLeafSetEdit(document, leaves);
   	document.executeEdit(edit);
   	
   	List<Node> rootChildren = document.getTree().getPaintStart().getChildren();

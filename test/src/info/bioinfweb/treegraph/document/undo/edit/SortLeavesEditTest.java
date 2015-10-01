@@ -40,16 +40,16 @@ import static org.junit.Assert.* ;
 
 
 /**
- * Tests {@link SortLeafsEdit}.
+ * Tests {@link SortLeavesEdit}.
  * 
  * @author Ben St&ouml;ver
  * @since 2.2.0
  */
-public class SortLeafsEditTest {
+public class SortLeavesEditTest {
 	private Document createDocument() {
 		try {
-			return new XTGReader().read(new File("data" + SystemUtils.FILE_SEPARATOR + "sortLeafs" + SystemUtils.FILE_SEPARATOR + 
-					"SortLeafs.xtg"));
+			return new XTGReader().read(new File("data" + SystemUtils.FILE_SEPARATOR + "sortLeaves" + SystemUtils.FILE_SEPARATOR + 
+					"SortLeaves.xtg"));
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -66,8 +66,8 @@ public class SortLeafsEditTest {
 	 */
 	private void writeTree(Document document) {
   	try {
-  		new XTGWriter().write(document, new File("data" + SystemUtils.FILE_SEPARATOR + "sortLeafs" + 
-  				SystemUtils.FILE_SEPARATOR + "SortLeafsOut.xtg"));
+  		new XTGWriter().write(document, new File("data" + SystemUtils.FILE_SEPARATOR + "sortLeaves" + 
+  				SystemUtils.FILE_SEPARATOR + "SortLeavesOut.xtg"));
   	}
   	catch (Exception e) {
   		e.printStackTrace();
@@ -93,13 +93,13 @@ public class SortLeafsEditTest {
   	order.add(new TextElementData("F"));
   	
   	Document document = createDocument();
-  	SortLeafsEdit edit = new SortLeafsEdit(document, document.getTree().getPaintStart(), order, 
+  	SortLeavesEdit edit = new SortLeavesEdit(document, document.getTree().getPaintStart(), order, 
   			NodeNameAdapter.getSharedInstance(), new CompareTextElementDataParameters());
   	document.executeEdit(edit);
   	
-  	List<Node> leafs = TreeSerializer.getElementsInSubtreeAsList(document.getTree().getPaintStart(), true, Node.class);
+  	List<Node> leaves = TreeSerializer.getElementsInSubtreeAsList(document.getTree().getPaintStart(), true, Node.class);
   	for (int i = 0; i < order.size(); i++) {
-	    assertEquals(order.get(i).getText(), leafs.get(i).getData().getText());
+	    assertEquals(order.get(i).getText(), leaves.get(i).getData().getText());
     }
   }
 	
@@ -122,15 +122,15 @@ public class SortLeafsEditTest {
   	order.add(new TextElementData("M"));
   	
   	Document document = createDocument();
-  	SortLeafsEdit edit = new SortLeafsEdit(document, document.getTree().getPaintStart(), order, 
+  	SortLeavesEdit edit = new SortLeavesEdit(document, document.getTree().getPaintStart(), order, 
   			NodeNameAdapter.getSharedInstance(), new CompareTextElementDataParameters());
   	document.executeEdit(edit);
   	
-  	List<Node> leafs = TreeSerializer.getElementsInSubtreeAsList(document.getTree().getPaintStart(), true, Node.class);
-    assertEquals("A", leafs.get(0).getData().getText());
-    assertEquals("B", leafs.get(1).getData().getText());
+  	List<Node> leaves = TreeSerializer.getElementsInSubtreeAsList(document.getTree().getPaintStart(), true, Node.class);
+    assertEquals("A", leaves.get(0).getData().getText());
+    assertEquals("B", leaves.get(1).getData().getText());
   	for (int i = 2; i < order.size(); i++) {
-	    assertEquals(order.get(i).getText(), leafs.get(i).getData().getText());
+	    assertEquals(order.get(i).getText(), leaves.get(i).getData().getText());
     }
   }
 	
@@ -153,17 +153,17 @@ public class SortLeafsEditTest {
   	order.add(new TextElementData("M"));
   	
   	Document document = createDocument();
-  	SortLeafsEdit edit = new SortLeafsEdit(document, document.getTree().getPaintStart(), order, 
+  	SortLeavesEdit edit = new SortLeavesEdit(document, document.getTree().getPaintStart(), order, 
   			NodeNameAdapter.getSharedInstance(), new CompareTextElementDataParameters());
   	document.executeEdit(edit);
   	
-  	List<Node> leafs = TreeSerializer.getElementsInSubtreeAsList(document.getTree().getPaintStart(), true, Node.class);
-    assertEquals("B", leafs.get(0).getData().getText());
-    assertEquals("C", leafs.get(1).getData().getText());
-    assertEquals("D", leafs.get(2).getData().getText());
-    assertEquals("A", leafs.get(3).getData().getText());
+  	List<Node> leaves = TreeSerializer.getElementsInSubtreeAsList(document.getTree().getPaintStart(), true, Node.class);
+    assertEquals("B", leaves.get(0).getData().getText());
+    assertEquals("C", leaves.get(1).getData().getText());
+    assertEquals("D", leaves.get(2).getData().getText());
+    assertEquals("A", leaves.get(3).getData().getText());
   	for (int i = 4; i < order.size(); i++) {
-	    assertEquals(order.get(i).getText(), leafs.get(i).getData().getText());
+	    assertEquals(order.get(i).getText(), leaves.get(i).getData().getText());
     }
   }
 }

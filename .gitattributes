@@ -791,7 +791,7 @@ test/.classpath -text svneol=unset#text/plain
 test/.project -text svneol=unset#text/plain
 test/.settings/org.eclipse.jdt.core.prefs -text svneol=unset#text/plain
 test/.settings/org.eclipse.jdt.ui.prefs -text svneol=unset#text/plain
-test/data/RerootByLeafs.xtg -text
+test/data/RerootByLeaves.xtg -text
 test/data/ancestralState/Primates.txt.log.txt -text svneol=unset#text/plain
 test/data/getFirstNodeByData.xtg -text
 test/data/importTable/TableNodeNames.txt -text svneol=unset#text/plain
@@ -811,11 +811,11 @@ test/data/importTable/Tree.xtg -text
 test/data/importTable/Tree_numbersAsText.xtg -text
 test/data/importTable/Tree_numbersAsText_german.xtg -text
 test/data/importTable/Tree_options.xtg -text
-test/data/sortLeafs/ConflictingOrderingChanged.txt -text svneol=unset#text/plain
-test/data/sortLeafs/ConflictingOrderingUnchanged.txt -text svneol=unset#text/plain
-test/data/sortLeafs/DistinctOrdering.txt -text svneol=unset#text/plain
-test/data/sortLeafs/DistinctOrderingAdditionalElement.txt -text svneol=unset#text/plain
-test/data/sortLeafs/SortLeafs.xtg -text
+test/data/sortLeaves/ConflictingOrderingChanged.txt -text svneol=unset#text/plain
+test/data/sortLeaves/ConflictingOrderingUnchanged.txt -text svneol=unset#text/plain
+test/data/sortLeaves/DistinctOrdering.txt -text svneol=unset#text/plain
+test/data/sortLeaves/DistinctOrderingAdditionalElement.txt -text svneol=unset#text/plain
+test/data/sortLeaves/SortLeaves.xtg -text
 test/lib/junit-4.9b1.jar -text
 test/src/info/bioinfweb/treegraph/document/IDManagerTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/LabelLineTest.java -text svneol=unset#text/plain
@@ -824,7 +824,7 @@ test/src/info/bioinfweb/treegraph/document/TextElementDataTest.java -text svneol
 test/src/info/bioinfweb/treegraph/document/TreeTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/topologicalcalculation/LeafSetTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/undo/edit/RerootByLeafSetEditTest.java -text svneol=unset#text/plain
-test/src/info/bioinfweb/treegraph/document/undo/edit/SortLeafsEditTest.java -text svneol=unset#text/plain
+test/src/info/bioinfweb/treegraph/document/undo/edit/SortLeavesEditTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/undo/file/ancestralstate/BayesTraitsReaderTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/undo/file/importtable/ImportTableDataTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/undo/file/importtable/ImportTableEditTest.java -text svneol=unset#text/plain
