@@ -21,9 +21,6 @@ package info.bioinfweb.treegraph.gui.actions.select;
 
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
-import info.bioinfweb.treegraph.document.PaintableElement;
-import info.bioinfweb.treegraph.document.Tree;
-import info.bioinfweb.treegraph.document.TreeElement;
 import info.bioinfweb.treegraph.document.TreeSerializer;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
@@ -32,45 +29,36 @@ import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.Iterator;
 
 import javax.swing.Action;
 
 
 
-public class SelectLeafsInSubtreeAction extends AbstractSelectionAction {
-	public SelectLeafsInSubtreeAction(MainFrame mainFrame) {
+public class SelectLeavesInDocumentAction extends AbstractSelectionAction {
+	public SelectLeavesInDocumentAction(MainFrame mainFrame) {
 		super(mainFrame);
-	  putValue(Action.NAME, "Select leafs in subtree(s)"); 
-	  putValue(Action.MNEMONIC_KEY, KeyEvent.VK_B);
-	  putValue(Action.DISPLAYED_MNEMONIC_INDEX_KEY, 18);
+	  putValue(Action.NAME, "Select leaves in document"); 
+	  putValue(Action.MNEMONIC_KEY, KeyEvent.VK_L);
+	  putValue(Action.DISPLAYED_MNEMONIC_INDEX_KEY, 7);
 	}
 
 
 	@Override
 	public void setEnabled(Document document, TreeSelection selection, NodeBranchDataAdapter tableAdapter) {
-		setEnabled((selection != null) && selection.containsType(TreeElement.class));
+		setEnabled((document != null) && !document.getTree().isEmpty());
 	}
 
 	
 	@Override
 	protected void performSelection(ActionEvent e, TreeInternalFrame frame,
 			TreeSelection selection) {
-
-		ArrayList<PaintableElement> selectionCopy = new ArrayList<PaintableElement>(selection.size());  // Copy selection to avoid a ConcurrentModificationException when adding new elements in the loop.
-		selectionCopy.addAll(selection);
-		Iterator<PaintableElement> iterator = selectionCopy.iterator();
-		while (iterator.hasNext()) {
-			PaintableElement element = iterator.next();
-			Node root = Tree.getLinkedNode(element);
-			if (root != null) {
-				Node[] subelements = TreeSerializer.getElementsInSubtree(root, true, Node.class);
-				for (int j = 0; j < subelements.length; j++) {
-					selection.add(subelements[j]);
-					selection.add(subelements[j].getAfferentBranch());
-				}
-			}
+		
+		Node[] leaves = 
+			  TreeSerializer.getElementsInSubtree(frame.getDocument().getTree().getPaintStart(), true, Node.class);
+		
+		for (int j = 0; j < leaves.length; j++) {
+			selection.add(leaves[j]);
+			selection.add(leaves[j].getAfferentBranch());
 		}
 	}
 }

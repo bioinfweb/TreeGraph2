@@ -37,7 +37,7 @@ public abstract class InsertRemoveLabelEdit extends DocumentEdit {
 	
 	
 	public InsertRemoveLabelEdit(Document document, Label label, Labels owner) {
-		super(document, DocumentChangeType.TOPOLOGICAL_BY_RENAMING);  // The label could be inserted with the ID of the default leafs adapter.
+		super(document, DocumentChangeType.TOPOLOGICAL_BY_RENAMING);  // The label could be inserted with the ID of the default leaves adapter.
 		this.label = label;
 		this.owner = owner;
 	}

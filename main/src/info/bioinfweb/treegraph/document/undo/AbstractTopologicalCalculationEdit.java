@@ -38,17 +38,17 @@ public abstract class AbstractTopologicalCalculationEdit extends ComplexDocument
 	protected TopologicalCalculator topologicalCalculator = null;
 
 	/** The column that contains the terminal identifiers in the target document (usually nodes names) */
-	protected NodeBranchDataAdapter targetLeafsAdapter = null;
+	protected NodeBranchDataAdapter targetLeavesAdapter = null;
 
 	
 	public AbstractTopologicalCalculationEdit(Document document, DocumentChangeType changeType,
-			NodeBranchDataAdapter targetLeafsAdapter, boolean processRooted) {
+			NodeBranchDataAdapter targetLeavesAdapter, boolean processRooted) {
 	
 		super(document, changeType);
-		this.targetLeafsAdapter = targetLeafsAdapter;
+		this.targetLeavesAdapter = targetLeavesAdapter;
 		topologicalCalculator = new TopologicalCalculator(processRooted, KEY_LEAF_REFERENCE, 
 				new CompareTextElementDataParameters());
-		topologicalCalculator.addToLeafValueToIndexMap(document.getTree().getPaintStart(), targetLeafsAdapter);
+		topologicalCalculator.addToLeafValueToIndexMap(document.getTree().getPaintStart(), targetLeavesAdapter);
 	}
 
 	
@@ -57,7 +57,7 @@ public abstract class AbstractTopologicalCalculationEdit extends ComplexDocument
 	}
 
 	
-	public NodeBranchDataAdapter getTargetLeafsAdapter() {
-		return targetLeafsAdapter;
+	public NodeBranchDataAdapter getTargetLeavesAdapter() {
+		return targetLeavesAdapter;
 	}
 }

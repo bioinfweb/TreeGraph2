@@ -479,11 +479,11 @@ public class RectangularCladogramPositioner implements TreePositioner {
 				lowerAnchor = f.getAnchor(0);
 			}
 			
-			Node[] leafs = TreeSerializer.getLeafNodesBetween(f.getAnchor(0).getHighestChild(), 
+			Node[] leaves = TreeSerializer.getLeafNodesBetween(f.getAnchor(0).getHighestChild(), 
 					lowerAnchor.getLowestChild());
 			float result = 0;
-			for (int i = 0; i < leafs.length; i++) {
-				result = Math.max(result, leafs[i].getPosition(type).getRightInMillimeters());
+			for (int i = 0; i < leaves.length; i++) {
+				result = Math.max(result, leaves[i].getPosition(type).getRightInMillimeters());
 			}
 			return result;
 		}

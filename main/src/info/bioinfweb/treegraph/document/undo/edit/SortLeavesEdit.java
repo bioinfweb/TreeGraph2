@@ -44,13 +44,13 @@ import info.bioinfweb.treegraph.document.undo.WarningMessageEdit;
 
 
 /**
- * Sorts the leafs in the specified subtree as close as possible to the specified order. Leaf nodes that are not 
+ * Sorts the leaves in the specified subtree as close as possible to the specified order. Leaf nodes that are not 
  * found in the order list are positioned at the end.
  * 
  * @author Ben St&ouml;ver
  * @since 2.2.0
  */
-public class SortLeafsEdit extends DocumentEdit implements WarningMessageEdit {
+public class SortLeavesEdit extends DocumentEdit implements WarningMessageEdit {
 	private static class SortInfo {
 		public int indexSum = 0;
 		public int nodeCount = 0;
@@ -75,7 +75,7 @@ public class SortLeafsEdit extends DocumentEdit implements WarningMessageEdit {
 	
 	
 	public static final int MAX_WARNING_ELEMENTS = 8;
-	public static final String ATTRIBUTE_ID = SortLeafsEdit.class.getCanonicalName() + "_averageIndex";
+	public static final String ATTRIBUTE_ID = SortLeavesEdit.class.getCanonicalName() + "_averageIndex";
 	
 	private static final NodeComparator NODE_COMPARATOR = new NodeComparator();
 	
@@ -94,11 +94,11 @@ public class SortLeafsEdit extends DocumentEdit implements WarningMessageEdit {
 	 * 
 	 * @param document - the document where the leafs shall be sorted
 	 * @param newOrder - the new order of the leaf nodes (Should contain most of the values the document contains on 
-	 *        its leafs in the specified node/branch data column.)
+	 *        its leaves in the specified node/branch data column.)
 	 * @param leafAdapter - the node/branch data column used to combine the document leaf nodes with the specified 
 	 *        order elements
 	 */
-	public SortLeafsEdit(Document document, Node root, List<TextElementData> newOrder, NodeBranchDataAdapter leafAdapter,
+	public SortLeavesEdit(Document document, Node root, List<TextElementData> newOrder, NodeBranchDataAdapter leafAdapter,
 					CompareTextElementDataParameters parameters) {
 		
 	  super(document, DocumentChangeType.NODE_ORDER);
@@ -173,7 +173,7 @@ public class SortLeafsEdit extends DocumentEdit implements WarningMessageEdit {
 	
 	@Override
   public String getPresentationName() {
-	  return "Sort leafs";
+	  return "Sort leaves";
   }
 
 
@@ -222,7 +222,7 @@ public class SortLeafsEdit extends DocumentEdit implements WarningMessageEdit {
 	
 	
 	/**
-	 * Reads a list of values to order the leafs of a tree from a text file where each value is contained in one line.
+	 * Reads a list of values to order the leaves of a tree from a text file where each value is contained in one line.
 	 * 
 	 * @param file - the file to be loaded
 	 * @param parameters - the parameter object specifying how to parse the single values for comparison 
@@ -249,19 +249,19 @@ public class SortLeafsEdit extends DocumentEdit implements WarningMessageEdit {
 	
 	
 	/**
-	 * Creates a list of values to order the leafs of a tree from another tree document.
+	 * Creates a list of values to order the leaves of a tree from another tree document.
 	 * 
 	 * @param document - the document to read the order from
 	 * @param adapter - the node/branch data adapter to be used to obtain a value from a leaf node
 	 * @param parameters - the parameter object specifying how to parse the single values for comparison 
-	 * @return a list containing the values of the leafs nodes of the specified document from top to bottom
+	 * @return a list containing the values of the leaves nodes of the specified document from top to bottom
 	 */
 	public static List<TextElementData> orderFromDocument(Document document, NodeBranchDataAdapter adapter,
 			CompareTextElementDataParameters parameters) {
 		
-		List<Node> leafs = TreeSerializer.getElementsInSubtreeAsList(document.getTree().getPaintStart(), true, Node.class);
-		List<TextElementData> result = new ArrayList<TextElementData>(leafs.size());
-		for (Node node : leafs) {
+		List<Node> leaves = TreeSerializer.getElementsInSubtreeAsList(document.getTree().getPaintStart(), true, Node.class);
+		List<TextElementData> result = new ArrayList<TextElementData>(leaves.size());
+		for (Node node : leaves) {
 	    result.add(parameters.createEditedValue(adapter.toTextElementData(node).toString()));
     }
 		return result;

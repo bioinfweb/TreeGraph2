@@ -92,8 +92,8 @@ public class ActionManagement extends AbstractUndoActionManagement {
 		put("select.wholeSubtree", new SelectSubtreeAction(mainFrame));
 		put("select.typeInDocument", new SelectTypeInDocumentAction(mainFrame));
 		put("select.typeInSubtree", new SelectTypeInSubtreeAction(mainFrame));
-		put("select.leafsInDocument", new SelectLeafsInDocumentAction(mainFrame));
-		put("select.leafsInSubtree", new SelectLeafsInSubtreeAction(mainFrame));
+		put("select.leavesInDocument", new SelectLeavesInDocumentAction(mainFrame));
+		put("select.leavesInSubtree", new SelectLeavesInSubtreeAction(mainFrame));
 		put("select.labelsWithID", new SelectLabelsWithIDAction(mainFrame));
 		put("select.labelsInSubtree", new SelectLabelsInSubtreeAction(mainFrame));
 		put("select.allLegends", new SelectLegendsAction(mainFrame));
@@ -128,7 +128,7 @@ public class ActionManagement extends AbstractUndoActionManagement {
 		put("edit.separateBranch", new SeparateBranchAction(mainFrame));
 		put("edit.ladderizeUp", new LadderizeUpAction(mainFrame));
 		put("edit.ladderizeDown", new LadderizeDownAction(mainFrame));
-		put("edit.sortLeafs", new SortLeafsAction(mainFrame));
+		put("edit.sortLeaves", new SortLeavesAction(mainFrame));
 		put("edit.reroot", new RerootAction(mainFrame));
 		put("edit.rerootByLeafSet", new RerootByLeafSetAction(mainFrame));
 		put("edit.editText", new EditTextElementAction(mainFrame));
@@ -179,7 +179,7 @@ public class ActionManagement extends AbstractUndoActionManagement {
 		popupActions.add(get("select.wholeSubtree"));
 		popupActions.add(get("select.typeInDocument"));
 		popupActions.add(get("select.typeInSubtree"));
-		popupActions.add(get("select.leafsInSubtree"));
+		popupActions.add(get("select.leavesInSubtree"));
 		popupActions.add(get("select.labelsWithID"));
 		popupActions.add(get("select.labelsInSubtree"));
 		popupActions.add(get("select.legendsWithPosIndex"));
@@ -201,7 +201,7 @@ public class ActionManagement extends AbstractUndoActionManagement {
 		popupActions.add(get("edit.moveSubtreeDown"));
 		popupActions.add(get("edit.ladderizeUp"));
 		popupActions.add(get("edit.ladderizeDown"));
-		popupActions.add(get("edit.sortLeafs"));
+		popupActions.add(get("edit.sortLeaves"));
 		popupActions.add(get("edit.reroot"));
 		popupActions.add(get("edit.rerootByLeafSet"));
 		popupActions.add(null);

@@ -49,7 +49,7 @@ import javax.swing.KeyStroke;
 public class RerootByLeafSetAction extends DocumentAction {
 	public RerootByLeafSetAction(MainFrame mainFrame) {
 		super(mainFrame);
-		putValue(Action.NAME, "Root by leafs"); 
+		putValue(Action.NAME, "Root by leaves"); 
 	  putValue(Action.MNEMONIC_KEY, KeyEvent.VK_R);
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke('R', 
 				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));  // The same key as for RerootAction, but both actions should never be enabled at the same time.

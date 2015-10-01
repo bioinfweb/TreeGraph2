@@ -59,8 +59,8 @@ public class RerootByLeafSetEdit extends AbstractTopologicalCalculationEdit impl
 	
 	
 	private Branch rootingPoint;
-	private List<Node> leafs;
-	private LeafSet selectedLeafs;
+	private List<Node> leaves;
+	private LeafSet selectedLeaves;
 	private HashSet<Node> nodesOnPath = new HashSet<Node>();
 	private String warningText = null;
 	private Collection<Branch> alternativeRootingPoints = new ArrayList<Branch>(8);  // Initialized with 8, since there will never be many.
@@ -70,13 +70,13 @@ public class RerootByLeafSetEdit extends AbstractTopologicalCalculationEdit impl
 	 * Creates a new instance of this class.
 	 * 
 	 * @param document - the document that contains the tree to be rerooted 
-	 * @param leafs - a list of leaf nodes contained in {@code document} that shall all be contained in one 
+	 * @param leaves - a list of leaf nodes contained in {@code document} that shall all be contained in one 
 	 *        of the subtrees of the future root
 	 * @throws IllegalArgumentException - if one or more of the specified nodes is not a leaf 
 	 */
-	public RerootByLeafSetEdit(Document document, List<Node> leafs) {
+	public RerootByLeafSetEdit(Document document, List<Node> leaves) {
 		super(document, DocumentChangeType.ROOT_POSITION, UniqueNameAdapter.getSharedInstance(), false);
-		this.leafs = leafs;  // Since leafs are only compared by their unique names, it is not necessary to call findEquivalent() here.
+		this.leaves = leaves;  // Since leafs are only compared by their unique names, it is not necessary to call findEquivalent() here.
 		rootingPoint = calculateRootingPoint();
 		nodesOnPath = null;  // Save memory, since this set will not be needed anymore after calculateRootingPoint() is finished.
 	}
@@ -86,35 +86,35 @@ public class RerootByLeafSetEdit extends AbstractTopologicalCalculationEdit impl
 	 * Creates a new instance of this class.
 	 * 
 	 * @param document - the document that contains the tree to be rerooted 
-	 * @param leafs - an array of leaf nodes contained in {@code document} that shall all be contained in one 
+	 * @param leaves - an array of leaf nodes contained in {@code document} that shall all be contained in one 
 	 *        of the subtrees of the future root
 	 * @throws IllegalArgumentException - if one or more of the specified nodes is not a leaf 
 	 */
-	public RerootByLeafSetEdit(Document document, Node[] leafs) {
+	public RerootByLeafSetEdit(Document document, Node[] leaves) {
 		super(document, DocumentChangeType.ROOT_POSITION, UniqueNameAdapter.getSharedInstance(), false);
-		this.leafs = Arrays.asList(leafs);  // Since leafs are only compared by their unique names, it is not necessary to call findEquivalent() here.
+		this.leaves = Arrays.asList(leaves);  // Since leafs are only compared by their unique names, it is not necessary to call findEquivalent() here.
 		rootingPoint = calculateRootingPoint();
 		nodesOnPath = null;  // Save memory, since this set will not be needed anymore after calculateRootingPoint() is finished.
 	}
 	
 	
-	private void createSelectedLeafsSet() {
-		selectedLeafs = new LeafSet(getTopologicalCalculator().getLeafCount());
-		Iterator<Node> iterator = leafs.iterator();
+	private void createSelectedLeafSet() {
+		selectedLeaves = new LeafSet(getTopologicalCalculator().getLeafCount());
+		Iterator<Node> iterator = leaves.iterator();
 		while (iterator.hasNext()) {
-			selectedLeafs.setChild(getTopologicalCalculator().getLeafIndex(UniqueNameAdapter.getSharedInstance().toTextElementData(iterator.next()).toString()), true);
+			selectedLeaves.setChild(getTopologicalCalculator().getLeafIndex(UniqueNameAdapter.getSharedInstance().toTextElementData(iterator.next()).toString()), true);
 		}
 	}
 	
 	
 	/**
-	 * Marks the upward part of the path from the specified leaf to the other selected leafs.
+	 * Marks the upward part of the path from the specified leaf to the other selected leaves.
 	 * 
 	 * @param node - one of the leaf node defining the rooting point (outgroup)
 	 */
 	private void markPath(Node node) {
 		node = node.getParent();  // The leaf node should not be added to the path
-		while (node != null && !nodesOnPath.contains(node) && !getTopologicalCalculator().getLeafSet(node).containsAll(selectedLeafs)) {
+		while (node != null && !nodesOnPath.contains(node) && !getTopologicalCalculator().getLeafSet(node).containsAll(selectedLeaves)) {
 			nodesOnPath.add(node);
 			node = node.getParent();
 		}
@@ -173,12 +173,12 @@ public class RerootByLeafSetEdit extends AbstractTopologicalCalculationEdit impl
 	 */
 	private Branch calculateRootingPoint() {
 		Branch result = null;
-		if (leafs.size() > 1) {
+		if (leaves.size() > 1) {
 			getTopologicalCalculator().addLeafSets(getDocument().getTree().getPaintStart(), UniqueNameAdapter.getSharedInstance());
-			createSelectedLeafsSet();
+			createSelectedLeafSet();
 			
 			// Mark paths:
-			Iterator<Node> iterator = leafs.iterator();
+			Iterator<Node> iterator = leaves.iterator();
 			while (iterator.hasNext()) {
 				Node leaf = iterator.next();
 				if (leaf.isLeaf()) {
@@ -210,11 +210,11 @@ public class RerootByLeafSetEdit extends AbstractTopologicalCalculationEdit impl
 			
 			findEquivalentAlternativeRootingPoints();
 		}
-		else if (leafs.size() == 1) {
+		else if (leaves.size() == 1) {
 			alternativeRootingPoints.clear();  // Currently unnecessary since this method is only called once.
-			result = leafs.get(0).getAfferentBranch();
+			result = leaves.get(0).getAfferentBranch();
 		}
-		else {  // leafs is empty
+		else {  // leaves is empty
 			throw new IllegalArgumentException("At least one leaf node needs to be specified to define the new root.");
 		}
 		return findEquivalent(result);

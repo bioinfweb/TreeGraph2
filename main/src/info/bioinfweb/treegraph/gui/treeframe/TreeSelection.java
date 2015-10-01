@@ -268,7 +268,7 @@ public class TreeSelection implements Collection<PaintableElement> {
 	/**
 	 * Checks if the selection contains only terminal nodes.
 	 * 
-	 * @return {@code true} if only terminal nodes (leafs) are selected, {@code false otherwise}.
+	 * @return {@code true} if only terminal nodes (leaves) are selected, {@code false otherwise}.
 	 * @since 2.0.52
 	 */
 	public boolean containsOnlyLeafNodes() {
@@ -289,6 +289,7 @@ public class TreeSelection implements Collection<PaintableElement> {
 	
 	/**
 	 * Returns the first selected element of the specified type.
+	 * 
 	 * @param <T> - the class of the returned element (determined by <code>elementClass</code>)
 	 * @param elementClass - the class of the sought-after element
 	 * @return the sought-after element or <code>null</code> of none of this type is selected

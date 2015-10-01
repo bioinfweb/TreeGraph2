@@ -21,7 +21,6 @@ package info.bioinfweb.treegraph.gui.dialogs.io.imexporttable;
 
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.UniqueNameAdapter;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -41,7 +40,7 @@ public class ExportNodeDataTableModel extends AbstractTableModel {
 	
 	
 	public enum Nodes {
-		ALL, INTERNALS, LEAFS;
+		ALL, INTERNALS, LEAVES;
 	}
 
 	
@@ -193,7 +192,7 @@ public class ExportNodeDataTableModel extends AbstractTableModel {
 	 * @throws IOException
 	 */
 	private void writeSubtree(Node root) throws IOException {
-		if ((root.isLeaf() && !nodes.equals(Nodes.INTERNALS)) || (!root.isLeaf() && !nodes.equals(Nodes.LEAFS))) {
+		if ((root.isLeaf() && !nodes.equals(Nodes.INTERNALS)) || (!root.isLeaf() && !nodes.equals(Nodes.LEAVES))) {
 			String line = "";
 			if (adapters.size() > 0) {
 				for (int i = 0; i < adapters.size() - 1; i++) {

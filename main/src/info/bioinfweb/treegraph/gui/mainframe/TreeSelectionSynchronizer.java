@@ -110,7 +110,7 @@ public class TreeSelectionSynchronizer implements TreeViewPanelListener, Documen
 			
 			NodeBranchDataAdapter defaultSupportAdapter = selectionTargetTree.getDocument().getDefaultSupportAdapter();
 			for (Node activeNode : activeTree.getSelection().getAllElementsOfType(Node.class, false)) {
-				NodeInfo selectionTargetNodeInfo = topologicalCalculator.findSourceNodeWithAllLeafs(
+				NodeInfo selectionTargetNodeInfo = topologicalCalculator.findSourceNodeWithAllLeaves(
 						selectionTargetTree.getDocument().getTree(), topologicalCalculator.getLeafSet(activeNode));
 				
 				if (selectionTargetNodeInfo != null) {

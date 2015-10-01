@@ -37,20 +37,20 @@ import info.bioinfweb.treegraph.document.undo.nodebranchdata.NodeBranchDataEdit;
  */
 public class CopyColumnEdit extends NodeBranchDataEdit {
 	private NodeBranchDataAdapter source;
-	private boolean includeLeafs;
+	private boolean includeLeaves;
 	
 	
 	public CopyColumnEdit(Document document, NodeBranchDataAdapter source, NodeBranchDataAdapter dest, 
-			boolean includeLeafs) {
+			boolean includeLeaves) {
 		
 		super(document, dest);
 		this.source = source;
-		this.includeLeafs = includeLeafs;
+		this.includeLeaves = includeLeaves;
 	}
 
 
 	private void copySubtree(Node root) {
-		if (includeLeafs || !root.isLeaf()) {
+		if (includeLeaves || !root.isLeaf()) {
 			if (source.isDecimal(root)) {
 				getAdapter().setDecimal(root, source.getDecimal(root));
 			}

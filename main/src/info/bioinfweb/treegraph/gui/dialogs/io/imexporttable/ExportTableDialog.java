@@ -82,7 +82,7 @@ public class ExportTableDialog extends EditDialog {
 	private JPanel NodesPanel = null;
 	private ButtonGroup nodesGroup = null;  //  @jve:decl-index=0:
 	private JRadioButton InternalsRadioButton = null;
-	private JRadioButton LeafsRadioButton = null;
+	private JRadioButton leavesRadioButton = null;
   private JRadioButton bothRadioButton = null;
 
 	
@@ -122,8 +122,8 @@ public class ExportTableDialog extends EditDialog {
 				if (getInternalsRadioButton().isSelected()) {
 					nodes = ExportNodeDataTableModel.Nodes.INTERNALS;
 				}
-				else if (getLeafsRadioButton().isSelected()) {
-					nodes = ExportNodeDataTableModel.Nodes.LEAFS;
+				else if (getLeavesRadioButton().isSelected()) {
+					nodes = ExportNodeDataTableModel.Nodes.LEAVES;
 				}
 				getTableModel().writeData(file, getDocument().getTree().getPaintStart(), nodes);
 			}
@@ -548,7 +548,7 @@ public class ExportTableDialog extends EditDialog {
 			NodesPanel.setBorder(BorderFactory.createTitledBorder(null, "Nodes to export", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
 			getNodesGroup();
 			NodesPanel.add(getInternalsRadioButton(), gridBagConstraints9);
-			NodesPanel.add(getLeafsRadioButton(), gridBagConstraints10);
+			NodesPanel.add(getLeavesRadioButton(), gridBagConstraints10);
 			NodesPanel.add(getBothRadioButton(), gridBagConstraints11);
 		}
 		return NodesPanel;
@@ -559,7 +559,7 @@ public class ExportTableDialog extends EditDialog {
 		if (nodesGroup == null) {
 			nodesGroup = new ButtonGroup();
 			nodesGroup.add(getInternalsRadioButton());
-			nodesGroup.add(getLeafsRadioButton());
+			nodesGroup.add(getLeavesRadioButton());
 			nodesGroup.add(getBothRadioButton());
 		}
 		return nodesGroup;
@@ -580,17 +580,12 @@ public class ExportTableDialog extends EditDialog {
 	}
 
 
-	/**
-	 * This method initializes LeafsRadioButton	
-	 * 	
-	 * @return javax.swing.JRadioButton	
-	 */
-	private JRadioButton getLeafsRadioButton() {
-		if (LeafsRadioButton == null) {
-			LeafsRadioButton = new JRadioButton();
-			LeafsRadioButton.setText("Terminal nodes");
+	private JRadioButton getLeavesRadioButton() {
+		if (leavesRadioButton == null) {
+			leavesRadioButton = new JRadioButton();
+			leavesRadioButton.setText("Terminal nodes");
 		}
-		return LeafsRadioButton;
+		return leavesRadioButton;
 	}
 
 

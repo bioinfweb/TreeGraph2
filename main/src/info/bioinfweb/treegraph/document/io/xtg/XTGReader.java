@@ -117,7 +117,7 @@ public class XTGReader extends AbstractDocumentReader implements XTGConstants {
     		loadLogger.addWarning("No NodeBranchDataAdapter with the name \"" + adapterName + "\" could be created. Probably you are not using the most recent version of TreeGraph 2.");
   		}
   		else {
-	  		if (VALUE_LEAFS_ADAPTER.equals(adapterPurpose)) {
+	  		if (VALUE_LEAVES_ADAPTER.equals(adapterPurpose)) {
 	  			document.setDefaultLeafAdapter(adapter);
 	  		}
 	  		else if (VALUE_SUPPORT_VALUES_ADAPTER.equals(adapterPurpose)) {

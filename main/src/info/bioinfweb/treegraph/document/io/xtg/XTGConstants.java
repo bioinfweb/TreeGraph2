@@ -52,7 +52,7 @@ public interface XTGConstants {
   public static final QName ATTR_ADAPTER_ID = new QName("ID");
   public static final QName ATTR_ADAPTER_PURPOSE = new QName("Purpose");
   public static final String VALUE_ADAPTER_PURPOSE_PREFIX = "info.bioinfweb.treegraph.";
-  public static final String VALUE_LEAFS_ADAPTER = VALUE_ADAPTER_PURPOSE_PREFIX + "defaultLeafsAdapter";
+  public static final String VALUE_LEAVES_ADAPTER = VALUE_ADAPTER_PURPOSE_PREFIX + "defaultLeafsAdapter";
   public static final String VALUE_SUPPORT_VALUES_ADAPTER = VALUE_ADAPTER_PURPOSE_PREFIX + "defaultSupportAdapter";
   
   public static final QName ATTR_WIDTH = new QName("Width");

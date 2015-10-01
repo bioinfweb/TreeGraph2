@@ -52,7 +52,7 @@ public class CopyColumnDialog extends EditDialog {
 	private JLabel destLabel = null;
 	private JLabel labelIDLabel = null;
 	private NewNodeBranchDataInput destInput = null;
-	private JCheckBox includeLeafsCheckBox = null;
+	private JCheckBox includeLeavesCheckBox = null;
 	
 
 	/**
@@ -87,7 +87,7 @@ public class CopyColumnDialog extends EditDialog {
 				    ((NewNodeBranchDataAdapter)getDestAdapter()).getID());
 		if (result) {
 			getDocument().executeEdit(new CopyColumnEdit(getDocument(), getSrcAdapter(), getDestAdapter(), 
-					getIncludeLeafs()));
+					getIncludeLeaves()));
 		}
 		else {
 			WikiHelpOptionPane.showMessageDialog(this,	"There are already elements " +
@@ -109,8 +109,8 @@ public class CopyColumnDialog extends EditDialog {
 	}
 
 
-	public boolean getIncludeLeafs() {
-		return getIncludeLeafsCheckBox().isSelected();
+	public boolean getIncludeLeaves() {
+		return getIncludeLeavesCheckBox().isSelected();
 	}
 
 
@@ -190,23 +190,23 @@ public class CopyColumnDialog extends EditDialog {
 			copyPanel.add(destLabel, gridBagConstraints1);
 			copyPanel.add(labelIDLabel, gridBagConstraints3);
 			destInput = new NewNodeBranchDataInput(copyPanel, 1, 1, false);
-			copyPanel.add(getIncludeLeafsCheckBox(), gridBagConstraints12);
+			copyPanel.add(getIncludeLeavesCheckBox(), gridBagConstraints12);
 		}
 		return copyPanel;
 	}
 
 
 	/**
-	 * This method initializes includeLeafsCheckBox	
+	 * This method initializes includeLeavesCheckBox	
 	 * 	
 	 * @return javax.swing.JCheckBox	
 	 */
-	private JCheckBox getIncludeLeafsCheckBox() {
-		if (includeLeafsCheckBox == null) {
-			includeLeafsCheckBox = new JCheckBox();
-			includeLeafsCheckBox.setText("Include data from leafs");
+	private JCheckBox getIncludeLeavesCheckBox() {
+		if (includeLeavesCheckBox == null) {
+			includeLeavesCheckBox = new JCheckBox();
+			includeLeavesCheckBox.setText("Include data from leaves");
 		}
-		return includeLeafsCheckBox;
+		return includeLeavesCheckBox;
 	}
 
 }

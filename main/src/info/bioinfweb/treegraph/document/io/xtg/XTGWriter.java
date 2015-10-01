@@ -106,7 +106,7 @@ public class XTGWriter extends AbstractDocumentWriter implements XTGConstants, D
 	
 	private void writeNodeBranchDataAdapters(Document document) throws XMLStreamException {
 		writer.writeStartElement(TAG_NODE_BRANCH_DATA_ADAPTERS.toString());
-		writeAdapter(document, document.getDefaultLeafAdapter(), VALUE_LEAFS_ADAPTER);
+		writeAdapter(document, document.getDefaultLeafAdapter(), VALUE_LEAVES_ADAPTER);
 		writeAdapter(document, document.getDefaultSupportAdapter(), VALUE_SUPPORT_VALUES_ADAPTER);
 		writer.writeEndElement();
 	}

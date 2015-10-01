@@ -123,11 +123,11 @@ public class LeafSet {
 	 * 
 	 * @param other - the leaf field to be compared
 	 * @param complement - defines whether the original of this field or its complement shall be compared
-	 * @return 0 if exactly the same leafs are contained in both fields, 
-	 *         -1 if the other field does not contain all leafs that this field contains (if so the 
+	 * @return 0 if exactly the same leaves are contained in both fields, 
+	 *         -1 if the other field does not contain all leaves that this field contains (if so the 
 	 *         complement of this field is also tested before -1 is returned)
-	 *         or a value greater than 0 if the other field contains more leafs than this one. (The return 
-	 *         value then indicates the additional number of leafs contained in the other fields.)  
+	 *         or a value greater than 0 if the other field contains more leaves than this one. (The return 
+	 *         value then indicates the additional number of leaves contained in the other fields.)  
 	 */
 	public int compareTo(LeafSet other, boolean complement) {
 		int additionalCount = 0;

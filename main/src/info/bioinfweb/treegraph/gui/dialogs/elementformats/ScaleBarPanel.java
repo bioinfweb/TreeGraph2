@@ -272,7 +272,7 @@ public class ScaleBarPanel extends JPanel implements ElementFormatTab {
 
 
 	/**
-	 * This method initializes leafsRadioButton	
+	 * This method initializes rightRadioButton	
 	 * 	
 	 * @return javax.swing.JRadioButton	
 	 */
@@ -287,7 +287,7 @@ public class ScaleBarPanel extends JPanel implements ElementFormatTab {
 
 
 	/**
-	 * This method initializes rightRadioButton	
+	 * This method initializes treeWidthRadioButton	
 	 * 	
 	 * @return javax.swing.JRadioButton	
 	 */

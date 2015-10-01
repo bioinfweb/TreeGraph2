@@ -46,7 +46,7 @@ public class RenameDataIDEdit extends DocumentEdit {
 	 * @param oldIDs - the old IDs that shall be renamed
 	 */
 	public RenameDataIDEdit(Document document, String[] newIDs, String[] oldIDs) {
-		super(document, DocumentChangeType.TOPOLOGICAL_BY_RENAMING);  // The ID of the default leafs adapter could be affected.
+		super(document, DocumentChangeType.TOPOLOGICAL_BY_RENAMING);  // The ID of the default leaves adapter could be affected.
 		this.newIDs = newIDs;
 		this.oldIDs = oldIDs;
 	}

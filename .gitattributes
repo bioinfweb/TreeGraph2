@@ -376,7 +376,7 @@ main/src/info/bioinfweb/treegraph/document/undo/edit/RerootEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/edit/RescaleNodeDataEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/edit/SeparateBranchEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/edit/SetColumnTypeEdit.java -text
-main/src/info/bioinfweb/treegraph/document/undo/edit/SortLeafsEdit.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/edit/SortLeavesEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/edit/TextElementEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/AbstractFunction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/DefaultValueIDFunction.java -text
@@ -535,7 +535,7 @@ main/src/info/bioinfweb/treegraph/gui/actions/edit/SeparateBranchAction.java -te
 main/src/info/bioinfweb/treegraph/gui/actions/edit/SetColumnToDecimalAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/edit/SetColumnToTextAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/edit/SetColumnTypeAction.java -text
-main/src/info/bioinfweb/treegraph/gui/actions/edit/SortLeafsAction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/gui/actions/edit/SortLeavesAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/actions/edit/TreeSelectionCompareParametersAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/actions/edit/UndoAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/edit/UndoRedoToAction.java -text
@@ -577,8 +577,8 @@ main/src/info/bioinfweb/treegraph/gui/actions/select/InvertSelectionAction.java 
 main/src/info/bioinfweb/treegraph/gui/actions/select/SelectAllAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/select/SelectLabelsInSubtreeAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/select/SelectLabelsWithIDAction.java -text
-main/src/info/bioinfweb/treegraph/gui/actions/select/SelectLeafsInDocumentAction.java -text
-main/src/info/bioinfweb/treegraph/gui/actions/select/SelectLeafsInSubtreeAction.java -text
+main/src/info/bioinfweb/treegraph/gui/actions/select/SelectLeavesInDocumentAction.java -text
+main/src/info/bioinfweb/treegraph/gui/actions/select/SelectLeavesInSubtreeAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/select/SelectLegendsAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/select/SelectLegendsInSubtreeAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/select/SelectLegendsWithPosIndexAction.java -text
@@ -614,7 +614,7 @@ main/src/info/bioinfweb/treegraph/gui/dialogs/ReplaceInNodeDataDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/ResolutionInput.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/ScaleBranchLengthsDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/SearchTextDialog.java -text
-main/src/info/bioinfweb/treegraph/gui/dialogs/SortLeafsDialog.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/gui/dialogs/SortLeavesDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/SynchronizeTreeSelectionParametersDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/editelement/AbstractTextElementDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/editelement/ChangeIDDialog.java -text

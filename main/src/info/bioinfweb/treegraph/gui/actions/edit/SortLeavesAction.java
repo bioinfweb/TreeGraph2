@@ -25,24 +25,24 @@ import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
-import info.bioinfweb.treegraph.document.undo.edit.SortLeafsEdit;
+import info.bioinfweb.treegraph.document.undo.edit.SortLeavesEdit;
 import info.bioinfweb.treegraph.gui.actions.EditDialogAction;
 import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
-import info.bioinfweb.treegraph.gui.dialogs.SortLeafsDialog;
+import info.bioinfweb.treegraph.gui.dialogs.SortLeavesDialog;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 
 
 
 /**
- * Action that opens the {@link SortLeafsDialog} to sort the terminal nodes of the tree.
+ * Action that opens the {@link SortLeavesDialog} to sort the terminal nodes of the tree.
  * 
  * @author BenStoever
  * @since 2.2.0
- * @see SortLeafsEdit
+ * @see SortLeavesEdit
  */
-public class SortLeafsAction extends EditDialogAction {
-	public SortLeafsAction(MainFrame mainFrame) {
+public class SortLeavesAction extends EditDialogAction {
+	public SortLeavesAction(MainFrame mainFrame) {
 	  super(mainFrame);
 		putValue(Action.NAME, "Sort terminal nodes..."); 
 	  //putValue(Action.MNEMONIC_KEY, KeyEvent.VK_O);  //TODO Possibly define unique key
@@ -51,7 +51,7 @@ public class SortLeafsAction extends EditDialogAction {
 	
 	@Override
   public EditDialog createDialog() {
-	  return new SortLeafsDialog(getMainFrame());
+	  return new SortLeavesDialog(getMainFrame());
   }
 
 	

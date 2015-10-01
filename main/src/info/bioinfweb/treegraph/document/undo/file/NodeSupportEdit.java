@@ -69,7 +69,7 @@ public class NodeSupportEdit extends AbstractTopologicalCalculationEdit {
 	
 	@Override
 	protected void performRedo() {
-		 getTopologicalCalculator().addLeafSets(getDocument().getTree().getPaintStart(), getTargetLeafsAdapter());	
+		 getTopologicalCalculator().addLeafSets(getDocument().getTree().getPaintStart(), getTargetLeavesAdapter());	
 		 createHashmap(getDocument().getTree().getPaintStart());
 		 initialiseSupportValues(getDocument().getTree().getPaintStart());
 		 try {

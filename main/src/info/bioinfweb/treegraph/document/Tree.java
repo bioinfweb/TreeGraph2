@@ -227,14 +227,14 @@ public class Tree {
 	 * 
 	 * @param adapter - the node/branch data adapter specifying the column to be compared
 	 * @param value - the sought-after value
-	 * @param leafsOnly - Specify {@code true} here if only terminal node shall be checked, {@code false} otherwise.
+	 * @param leavesOnly - Specify {@code true} here if only terminal node shall be checked, {@code false} otherwise.
 	 * @param parameters - the compare parameter object (If {@code null} is specified here only direct matches are found.)
 	 * @return the node containing the sought-after value or {@code null} if no according node has been found.
 	 */
-	public Node getFirstNodeByData(NodeBranchDataAdapter adapter, double value, boolean leafsOnly, 
+	public Node getFirstNodeByData(NodeBranchDataAdapter adapter, double value, boolean leavesOnly, 
 			CompareTextElementDataParameters parameters) {
 		
-		return getFirstNodeByData(adapter, new TextElementData(value), leafsOnly, parameters);
+		return getFirstNodeByData(adapter, new TextElementData(value), leavesOnly, parameters);
 	}
 	
 	
@@ -243,14 +243,14 @@ public class Tree {
 	 * 
 	 * @param adapter - the node/branch data adapter specifying the column to be compared
 	 * @param value - the sought-after value
-	 * @param leafsOnly - Specify {@code true} here if only terminal node shall be checked, {@code false} otherwise.
+	 * @param leavesOnly - Specify {@code true} here if only terminal node shall be checked, {@code false} otherwise.
 	 * @param parameters - the compare parameter object (If {@code null} is specified here only direct matches are found.)
 	 * @return the node containing the sought-after value or {@code null} if no according node has been found.
 	 */
-	public Node getFirstNodeByData(NodeBranchDataAdapter adapter, String value, boolean leafsOnly,
+	public Node getFirstNodeByData(NodeBranchDataAdapter adapter, String value, boolean leavesOnly,
 			CompareTextElementDataParameters parameters) {
 				
-		return getFirstNodeByData(adapter, new TextElementData(value), leafsOnly, parameters);
+		return getFirstNodeByData(adapter, new TextElementData(value), leavesOnly, parameters);
 	}
 	
 	
@@ -259,14 +259,14 @@ public class Tree {
 	 * 
 	 * @param adapter - the node/branch data adapter specifying the column to be compared
 	 * @param data - the sought-after value
-	 * @param leafsOnly - Specify {@code true} here if only terminal node shall be checked, {@code false} otherwise.
+	 * @param leavesOnly - Specify {@code true} here if only terminal node shall be checked, {@code false} otherwise.
 	 * @param parameters - the compare parameter object (If {@code null} is specified here only direct matches are found.)
 	 * @return the node containing the sought-after value or {@code null} if no according node has been found.
 	 */
-	public Node getFirstNodeByData(NodeBranchDataAdapter adapter, TextElementData data, boolean leafsOnly,
+	public Node getFirstNodeByData(NodeBranchDataAdapter adapter, TextElementData data, boolean leavesOnly,
 			CompareTextElementDataParameters parameters) {
 			
-		return getFirstNodeInSubtreeByData(getPaintStart(), adapter, data, leafsOnly, parameters);
+		return getFirstNodeInSubtreeByData(getPaintStart(), adapter, data, leavesOnly, parameters);
 	}
 	
 	
@@ -277,15 +277,15 @@ public class Tree {
 	 * @param root - the root of the subtree to be searched
 	 * @param adapter - the node/branch data adapter specifying the column to be compared
 	 * @param data - the sought-after value
-	 * @param leafsOnly - Specify {@code true} here if only terminal node shall be checked, {@code false} otherwise.
+	 * @param leavesOnly - Specify {@code true} here if only terminal node shall be checked, {@code false} otherwise.
 	 * @param parameters - the compare parameter object (If {@code null} is specified here only direct matches are found.)
 	 * @return the node containing the sought-after value or {@code null} if no according node has been found.
 	 */
 	public static Node getFirstNodeInSubtreeByData(Node root, NodeBranchDataAdapter adapter, TextElementData data, 
-			boolean leafsOnly, CompareTextElementDataParameters parameters) {
+			boolean leavesOnly, CompareTextElementDataParameters parameters) {
 		
 		TextElementData rootData = adapter.toTextElementData(root);
-		if ((!leafsOnly || root.isLeaf()) && (data.equals(rootData) ||  // First tries to compare without creating new objects
+		if ((!leavesOnly || root.isLeaf()) && (data.equals(rootData) ||  // First tries to compare without creating new objects
 				((parameters != null) && 
 						parameters.createEditedValue(data.toString()).equals(parameters.createEditedValue(rootData.toString()))))) {
 			
@@ -294,7 +294,7 @@ public class Tree {
 		else {
 			Iterator<Node> iterator = root.getChildren().iterator();
 			while (iterator.hasNext()) {
-				Node result = getFirstNodeInSubtreeByData(iterator.next(), adapter, data, leafsOnly, parameters);
+				Node result = getFirstNodeInSubtreeByData(iterator.next(), adapter, data, leavesOnly, parameters);
 				if (result != null) {
 					return result;
 				}

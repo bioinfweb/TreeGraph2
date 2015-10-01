@@ -24,9 +24,9 @@ import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 import info.bioinfweb.treegraph.document.undo.CompareTextElementDataParameters;
-import info.bioinfweb.treegraph.document.undo.edit.SortLeafsEdit;
+import info.bioinfweb.treegraph.document.undo.edit.SortLeavesEdit;
 import info.bioinfweb.treegraph.gui.CurrentDirectoryModel;
-import info.bioinfweb.treegraph.gui.actions.edit.SortLeafsAction;
+import info.bioinfweb.treegraph.gui.actions.edit.SortLeavesAction;
 import info.bioinfweb.treegraph.gui.dialogs.io.TextFileFilter;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeDataComboBoxModel;
 
@@ -64,12 +64,12 @@ import java.awt.Color;
 
 
 /**
- * Dialog used in combination with {@link SortLeafsEdit} and {@link SortLeafsAction}.
+ * Dialog used in combination with {@link SortLeavesEdit} and {@link SortLeavesAction}.
  * 
  * @author Ben St&ouml;ver
  * @since 2.2.0
  */
-public class SortLeafsDialog extends EditDialog {
+public class SortLeavesDialog extends EditDialog {
 	private JPanel jContentPane = null;
 	private JPanel leafAdapterPanel = null;
 	private JPanel openedDocumentPanel;
@@ -90,7 +90,7 @@ public class SortLeafsDialog extends EditDialog {
 	 * 
 	 * @param owner - the parent frame
 	 */
-	public SortLeafsDialog(Frame owner) {
+	public SortLeavesDialog(Frame owner) {
 	  super(owner);
 	  initialize();
   }
@@ -145,7 +145,7 @@ public class SortLeafsDialog extends EditDialog {
 				if (file.exists()) {
 					if (!file.isDirectory()) {
 						try {
-							newOrder = SortLeafsEdit.orderFromTextFile(file, parameters);
+							newOrder = SortLeavesEdit.orderFromTextFile(file, parameters);
 						}
 						catch (IOException e) {
 							JOptionPane.showMessageDialog(this, "The error \"" + e.toString() + "\" ocurred when trying to read the file \"" + 
@@ -167,12 +167,12 @@ public class SortLeafsDialog extends EditDialog {
 			}
 		}
 		else {  // Order from other document
-			newOrder = SortLeafsEdit.orderFromDocument(getOpenedDocumentsComboBoxModel().getSelectedItem(), 
+			newOrder = SortLeavesEdit.orderFromDocument(getOpenedDocumentsComboBoxModel().getSelectedItem(), 
 					getSourceAdapterModel().getSelectedItem(), parameters);
 		}
 		
 		if (newOrder != null) {
-			SortLeafsEdit edit = new SortLeafsEdit(getDocument(), getSelection().getFirstNodeBranchOrRoot(), newOrder, 
+			SortLeavesEdit edit = new SortLeavesEdit(getDocument(), getSelection().getFirstNodeBranchOrRoot(), newOrder, 
 					getTargetAdapterModel().getSelectedItem(), parameters);
 			getDocument().executeEdit(edit);
 			

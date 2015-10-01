@@ -447,7 +447,7 @@ public class MainFrame extends JFrame implements Runnable {
 			editMenu.add(getActionManagement().get("edit.moveSubtreeDown"));
 			editMenu.add(getActionManagement().get("edit.ladderizeUp"));
 			editMenu.add(getActionManagement().get("edit.ladderizeDown"));
-			editMenu.add(getActionManagement().get("edit.sortLeafs"));
+			editMenu.add(getActionManagement().get("edit.sortLeaves"));
 			editMenu.add(getActionManagement().get("edit.reroot"));
 			editMenu.add(getActionManagement().get("edit.rerootByLeafSet"));
 			editMenu.addSeparator();
@@ -594,8 +594,8 @@ public class MainFrame extends JFrame implements Runnable {
 			selectMenu.add(getActionManagement().get("select.typeInDocument"));
 			selectMenu.add(getActionManagement().get("select.typeInSubtree"));
 			selectMenu.addSeparator();
-			selectMenu.add(getActionManagement().get("select.leafsInDocument"));
-			selectMenu.add(getActionManagement().get("select.leafsInSubtree"));
+			selectMenu.add(getActionManagement().get("select.leavesInDocument"));
+			selectMenu.add(getActionManagement().get("select.leavesInSubtree"));
 			selectMenu.addSeparator();
 			selectMenu.add(getActionManagement().get("select.labelsWithID"));
 			selectMenu.add(getActionManagement().get("select.labelsInSubtree"));

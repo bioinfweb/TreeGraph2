@@ -45,7 +45,7 @@ import info.bioinfweb.treegraph.document.undo.file.AddSupportValuesEdit;
  */
 public class TopologicalCalculator {
 	public static final int MAX_TERMINAL_ERROR_COUNT = 10;
-	public static final NodeNameAdapter SOURCE_LEAFS_ADAPTER = NodeNameAdapter.getSharedInstance();
+	public static final NodeNameAdapter SOURCE_LEAVES_ADAPTER = NodeNameAdapter.getSharedInstance();
 	
 	
 	protected Map<TextElementData, Integer> leafValueToIndexMap = new TreeMap<TextElementData, Integer>();
@@ -124,9 +124,9 @@ public class TopologicalCalculator {
 	 * 
 	 * @return an error message, if the terminal nodes are not identical or <code>null</code> if they are
 	 */
-	public String compareLeafs(Document src) {
+	public String compareLeaves(Document src) {
 		Map<TextElementData, Integer> sourceLeafValues = new TreeMap<TextElementData, Integer>();
-		addToLeafValueToIndexMap(sourceLeafValues, src.getTree().getPaintStart(), SOURCE_LEAFS_ADAPTER);
+		addToLeafValueToIndexMap(sourceLeafValues, src.getTree().getPaintStart(), SOURCE_LEAVES_ADAPTER);
 		if (leafValueToIndexMap.size() != sourceLeafValues.size()) {
 			return "The selected tree has a different number of terminals than " +
 				"the opened document. No support values were added.";
@@ -234,13 +234,13 @@ public class TopologicalCalculator {
 	 * @return a node info describing the found subtree root or {@code null} if no according subtree could 
 	 *         be found. 
 	 */
-	public NodeInfo findSourceNodeWithAllLeafs(Tree tree, LeafSet leafSet) {
+	public NodeInfo findSourceNodeWithAllLeaves(Tree tree, LeafSet leafSet) {
 		leafSet = leafSet.and(getLeafSet(tree.getPaintStart()));
-		return findSourceNodeWithAllLeafsRecursive(tree.getPaintStart(), leafSet);
+		return findSourceNodeWithAllLeavesRecursive(tree.getPaintStart(), leafSet);
 	}
 	
 	
-	private NodeInfo findSourceNodeWithAllLeafsRecursive(Node root, LeafSet leafSet) {
+	private NodeInfo findSourceNodeWithAllLeavesRecursive(Node root, LeafSet leafSet) {
 		if (isLeafSetEmpty(leafSet)) {
 			return null;
 		}
@@ -255,7 +255,7 @@ public class TopologicalCalculator {
   	}
   	
 		for (int i = 0; i < root.getChildren().size(); i++) {
-			NodeInfo childResult = findSourceNodeWithAllLeafsRecursive(root.getChildren().get(i), leafSet);
+			NodeInfo childResult = findSourceNodeWithAllLeavesRecursive(root.getChildren().get(i), leafSet);
 			if (childResult != null) {
 				if (result == null) {
 					result = childResult;

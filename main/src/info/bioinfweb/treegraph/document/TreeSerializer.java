@@ -93,15 +93,15 @@ public class TreeSerializer {
   }
   
   
-  private static void addSubtree(List<? extends PaintableElement> list, Node root, boolean leafsOnly,
+  private static void addSubtree(List<? extends PaintableElement> list, Node root, boolean leavesOnly,
   		Class<? extends PaintableElement> elementClass) {
   	
-		if (root.isLeaf() || !leafsOnly) {
+		if (root.isLeaf() || !leavesOnly) {
 			addElementsOnNode(list, root, elementClass);
 		}
   	
 		for (int i = 0; i < root.getChildren().size(); i++) {
-			addSubtree(list, root.getChildren().get(i), leafsOnly, elementClass);
+			addSubtree(list, root.getChildren().get(i), leavesOnly, elementClass);
 		}
 	}
 	
@@ -111,37 +111,37 @@ public class TreeSerializer {
    * 
    * @param <T> - the type of the array to be returned
    * @param root - the node to which the returned elements are connected
-   * @param leafsOnly - determines whether only elements attached to leaf nodes (or the leaf nodes themselves) shall
+   * @param leavesOnly - determines whether only elements attached to leaf nodes (or the leaf nodes themselves) shall
    *        be included
    * @param elementClass - the class defining which elements should be returned
    * @param array - the array to store the result in (defines the return type and is recreated if it is too small)
    * @return the array of tree elements
    * @since 2.0.43
    */
-  public static <T extends PaintableElement> T[] getElementsInSubtree(Node root, boolean leafsOnly, 
+  public static <T extends PaintableElement> T[] getElementsInSubtree(Node root, boolean leavesOnly, 
   		Class<? extends PaintableElement> elementClass, T[] array) {
   	
-  	return getElementsInSubtreeAsList(root, leafsOnly, elementClass).toArray(array);
+  	return getElementsInSubtreeAsList(root, leavesOnly, elementClass).toArray(array);
   }
   
   
   /**
-   * Returns a list of tree elements in the subtree under {@code root}. The elements are returnes in pre-order.
+   * Returns a list of tree elements in the subtree under {@code root}. The elements are returns in pre-order.
    * 
    * @param <T> - the type of the array to be returned
    * @param root - the node to which the returned elements are connected
-   * @param leafsOnly - determines whether only elements attached to leaf nodes (or the leaf nodes themselves) shall
+   * @param leavesOnly - determines whether only elements attached to leaf nodes (or the leaf nodes themselves) shall
    *        be included
    * @param elementClass - the class defining which elements should be returned
    * @param array - the array to store the result in (defines the return type and is recreated if it is too small)
    * @return a list of tree elements
    * @since 2.2.0
    */
-  public static <T extends PaintableElement> List<T> getElementsInSubtreeAsList(Node root, boolean leafsOnly, 
+  public static <T extends PaintableElement> List<T> getElementsInSubtreeAsList(Node root, boolean leavesOnly, 
   		Class<T> elementClass) {
   	
   	List<T> list = new ArrayList<T>();
-  	addSubtree(list, root, leafsOnly, elementClass);
+  	addSubtree(list, root, leavesOnly, elementClass);
   	return list;
   }
   
@@ -150,21 +150,21 @@ public class TreeSerializer {
    * Returns an array of tree elements in the subtree under {@code root}. The elements are returnes in pre-order.
    * <p>
    * Calling this method is equivalent to 
-   * {@code getElementsInSubtree(root, leafsOnly, elementClass, (T[])Array.newInstance(elementClass, 0))}.
+   * {@code getElementsInSubtree(root, leavesOnly, elementClass, (T[])Array.newInstance(elementClass, 0))}.
    * 
    * @param <T> - the type of the array to be returned
    * @param root - the node to which the returned elements are connected
-   * @param leafsOnly - determines whether only elements attached to leaf nodes (or the leaf nodes themselves) shall
+   * @param leavesOnly - determines whether only elements attached to leaf nodes (or the leaf nodes themselves) shall
    *        be included
    * @param elementClass - the class defining which elements should be returned
    * @param array - the array to store the result in (defines the return type and is recreated if it is too small)
    * @return the array of tree elements
    * @since 2.0.43
    */
-  public static <T extends PaintableElement> T[] getElementsInSubtree(Node root, boolean leafsOnly, 
+  public static <T extends PaintableElement> T[] getElementsInSubtree(Node root, boolean leavesOnly, 
   		Class<T> elementClass) {
   	
-  	return getElementsInSubtree(root, leafsOnly, elementClass, (T[])Array.newInstance(elementClass, 0));
+  	return getElementsInSubtree(root, leavesOnly, elementClass, (T[])Array.newInstance(elementClass, 0));
   }
   
   

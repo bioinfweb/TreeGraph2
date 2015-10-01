@@ -71,7 +71,7 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
 			TextElementDataAdapter terminalsAdapter, TargetType targetType, String idPrefix,
 			NodeBranchDataAdapter sourceAdapter, boolean processRooted) {
 		
-		super(document, DocumentChangeType.TOPOLOGICAL_BY_RENAMING, terminalsAdapter, processRooted);  // Topological relevance only if the default leafs adapter ID is affected. 
+		super(document, DocumentChangeType.TOPOLOGICAL_BY_RENAMING, terminalsAdapter, processRooted);  // Topological relevance only if the default leaves adapter ID is affected. 
 		this.src = src;
 		this.sourceAdapter = sourceAdapter;
 		
@@ -155,10 +155,10 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
 	
 	@Override
 	protected void performRedo() {
-    String errorMsg = getTopologicalCalculator().compareLeafs(src);
+    String errorMsg = getTopologicalCalculator().compareLeaves(src);
     if (errorMsg == null) {  // The terminal nodes of both trees are identical.
-  		getTopologicalCalculator().addLeafSets(src.getTree().getPaintStart(), TopologicalCalculator.SOURCE_LEAFS_ADAPTER);
-  		getTopologicalCalculator().addLeafSets(getDocument().getTree().getPaintStart(), getTargetLeafsAdapter());
+  		getTopologicalCalculator().addLeafSets(src.getTree().getPaintStart(), TopologicalCalculator.SOURCE_LEAVES_ADAPTER);
+  		getTopologicalCalculator().addLeafSets(getDocument().getTree().getPaintStart(), getTargetLeavesAdapter());
   		processSubtree(getDocument().getTree().getPaintStart());
     }
     else {
@@ -186,7 +186,7 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
 			if (!(targetRoot.hasParent() && !targetRoot.getParent().hasParent() && !getTopologicalCalculator().isProcessRooted() && 
 					(targetRoot.getParent().getChildren().size() == 2) && targetRoot.isLast())) {  // Check if the current node is linked to the paint start which does not represent a root and the other linked branch already carries the same support value.
 				
-				NodeInfo bestSourceNode = getTopologicalCalculator().findSourceNodeWithAllLeafs(src.getTree(), 
+				NodeInfo bestSourceNode = getTopologicalCalculator().findSourceNodeWithAllLeaves(src.getTree(), 
 								getTopologicalCalculator().getLeafSet(targetRoot));
 				if (bestSourceNode.getAdditionalCount() == 0) {  // support found
   				if (sourceAdapter.isDecimal(bestSourceNode.getNode())) {  // if no value exists there
