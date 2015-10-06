@@ -21,14 +21,15 @@ package info.bioinfweb.treegraph.gui.dialogs.io.ancestralstate;
 
 import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.treegraph.document.Tree;
+import info.bioinfweb.treegraph.document.io.ancestralstate.AncestralStateData;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.PieChartLabelAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.VoidNodeBranchDataAdapter;
-import info.bioinfweb.treegraph.document.undo.file.ancestralstate.AncestralStateData;
 import info.bioinfweb.treegraph.document.undo.file.ancestralstate.AncestralStateImportParameters;
 import info.bioinfweb.treegraph.gui.dialogs.io.AssignImportColumnsDialog;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NewNodeBranchDataInput;
+
 
 
 

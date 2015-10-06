@@ -20,6 +20,7 @@ package info.bioinfweb.treegraph.gui.dialogs.io.imexporttable;
 
 
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.NodeType;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 
 import java.io.File;
@@ -29,19 +30,15 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.Vector;
+
 import javax.swing.table.AbstractTableModel;
 
 
 
 public class ExportNodeDataTableModel extends AbstractTableModel {
 	private Vector<NodeBranchDataAdapter> adapters = new Vector<NodeBranchDataAdapter>();
-	private Nodes nodes = null;
+	private NodeType nodeType = null;
 	private OutputStreamWriter writer = null;
-	
-	
-	public enum Nodes {
-		ALL, INTERNALS, LEAVES;
-	}
 
 	
 	public ExportNodeDataTableModel() {
@@ -192,7 +189,7 @@ public class ExportNodeDataTableModel extends AbstractTableModel {
 	 * @throws IOException
 	 */
 	private void writeSubtree(Node root) throws IOException {
-		if ((root.isLeaf() && !nodes.equals(Nodes.INTERNALS)) || (!root.isLeaf() && !nodes.equals(Nodes.LEAVES))) {
+		if ((root.isLeaf() && !nodeType.equals(NodeType.INTERNAL_NODES)) || (!root.isLeaf() && !nodeType.equals(NodeType.LEAVES))) {
 			String line = "";
 			if (adapters.size() > 0) {
 				for (int i = 0; i < adapters.size() - 1; i++) {
@@ -209,9 +206,9 @@ public class ExportNodeDataTableModel extends AbstractTableModel {
 	}
 	
 	
-	public void writeData(OutputStream stream, Node root, Nodes nodes) throws IOException {
+	public void writeData(OutputStream stream, Node root, NodeType nodeType) throws IOException {
 		writer = new OutputStreamWriter(stream);
-		this.nodes = nodes;
+		this.nodeType = nodeType;
 		try {
 			String headings = "";
 			if (adapters.size() > 0) {
@@ -236,7 +233,7 @@ public class ExportNodeDataTableModel extends AbstractTableModel {
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
-	public void writeData(File file, Node root, Nodes nodes) throws FileNotFoundException, IOException {
-		writeData(new FileOutputStream(file), root, nodes);
+	public void writeData(File file, Node root, NodeType nodeType) throws FileNotFoundException, IOException {
+		writeData(new FileOutputStream(file), root, nodeType);
 	}
 }

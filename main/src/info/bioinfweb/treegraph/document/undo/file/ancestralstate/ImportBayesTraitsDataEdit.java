@@ -28,6 +28,8 @@ import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.PieChartLabel;
 import info.bioinfweb.treegraph.document.change.DocumentChangeType;
+import info.bioinfweb.treegraph.document.io.ancestralstate.AncestralStateData;
+import info.bioinfweb.treegraph.document.io.ancestralstate.BayesTraitsReader;
 import info.bioinfweb.treegraph.document.nodebranchdata.IDElementAdapter;
 import info.bioinfweb.treegraph.document.topologicalcalculation.LeafSet;
 import info.bioinfweb.treegraph.document.undo.AbstractTopologicalCalculationEdit;

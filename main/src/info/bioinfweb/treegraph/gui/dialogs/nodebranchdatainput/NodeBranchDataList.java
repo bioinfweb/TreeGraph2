@@ -63,28 +63,29 @@ public class NodeBranchDataList extends JPanel {
 	public NodeBranchDataList() {
 	  super();
 	  initialize();
-	  setButtonStatus();
+	  refreshButtonStatus();
   }
 	
 	
 	public void setIDs(Document document) {
 	  listIDComboBox.setIDs(document);
+	  refreshButtonStatus();
   }
 	
 	
 	public boolean isEnabled() {
-		return getIDList().isEnabled();  // A button can't be used here, because setButtonStatus() would not work anymore than.
+		return getIDList().isEnabled();  // A button can't be used here, because setButtonStatus() would not work anymore then.
   }
 
 
 	public void setEnabled(boolean flag) {
 	  getListIDComboBox().setEnabled(flag);
 	  getIDList().setEnabled(flag);
-	  setButtonStatus();
+	  refreshButtonStatus();
   }
 	
 	
-	private void setButtonStatus() {
+	public void refreshButtonStatus() {
 		if (isEnabled()) {
 			boolean notEmpty = !getListModel().isEmpty();
 			getRemoveButton().setEnabled(notEmpty);
@@ -206,7 +207,7 @@ public class NodeBranchDataList extends JPanel {
 			idList = new JList<String>(new DefaultListModel<String>());
 			idList.addListSelectionListener(new ListSelectionListener() {
 						public void valueChanged(ListSelectionEvent e) {
-						  setButtonStatus();
+						  refreshButtonStatus();
 						}
 					});
 			idList.getSelectionModel().addListSelectionListener(new ListSelectionListener() {

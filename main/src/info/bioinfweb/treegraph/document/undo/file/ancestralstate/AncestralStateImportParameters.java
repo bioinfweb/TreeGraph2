@@ -21,6 +21,7 @@ package info.bioinfweb.treegraph.document.undo.file.ancestralstate;
 
 import java.util.Map;
 
+import info.bioinfweb.treegraph.document.io.ancestralstate.AncestralStateData;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.file.ImportDataColumnsParameters;
 

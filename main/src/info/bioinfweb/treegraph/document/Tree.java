@@ -193,7 +193,7 @@ public class Tree {
 		
 		if (!isEmpty()) {  // Avoid NullPointerException in getElementsInSubtree() if root is null.
 			PaintableElement[] elements = 
-				  TreeSerializer.getElementsInSubtree(getPaintStart(), false, PaintableElement.class);
+				  TreeSerializer.getElementsInSubtree(getPaintStart(), NodeType.BOTH, PaintableElement.class);
 			for (int i = 0; i < elements.length; i++) {
 				elementSet.add(elements[i]);
 			}

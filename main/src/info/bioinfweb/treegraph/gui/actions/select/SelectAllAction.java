@@ -29,6 +29,7 @@ import javax.swing.KeyStroke;
 import info.bioinfweb.treegraph.document.ConcretePaintableElement;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Legends;
+import info.bioinfweb.treegraph.document.NodeType;
 import info.bioinfweb.treegraph.document.TreeSerializer;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
@@ -53,7 +54,7 @@ public class SelectAllAction extends AbstractSelectionAction {
 			TreeSelection selection) {
 		
 		ConcretePaintableElement[] elements = TreeSerializer.getElementsInSubtree(
-				frame.getDocument().getTree().getPaintStart(), false, ConcretePaintableElement.class); 
+				frame.getDocument().getTree().getPaintStart(), NodeType.BOTH, ConcretePaintableElement.class); 
 		
 		selection.clear();
 		for (int i = 0; i < elements.length; i++) {

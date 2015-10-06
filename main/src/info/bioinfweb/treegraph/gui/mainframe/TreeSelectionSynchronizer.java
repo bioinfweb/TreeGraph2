@@ -20,14 +20,11 @@ package info.bioinfweb.treegraph.gui.mainframe;
 
 
 import info.bioinfweb.treegraph.document.Document;
-import info.bioinfweb.treegraph.document.IDManager;
 import info.bioinfweb.treegraph.document.Label;
 import info.bioinfweb.treegraph.document.Node;
-import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.change.DocumentChangeEvent;
 import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.change.DocumentListener;
-import info.bioinfweb.treegraph.document.nodebranchdata.GeneralIDAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.IDElementAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.VoidNodeBranchDataAdapter;
@@ -42,7 +39,6 @@ import info.bioinfweb.treegraph.gui.treeframe.TreeViewPanelListener;
 import java.awt.event.ContainerEvent;
 import java.awt.event.ContainerListener;
 import java.util.Iterator;
-import java.util.Map;
 
 import javax.swing.event.ChangeEvent;
 

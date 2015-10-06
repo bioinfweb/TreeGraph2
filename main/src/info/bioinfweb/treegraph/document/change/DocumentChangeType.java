@@ -26,7 +26,7 @@ import info.bioinfweb.treegraph.document.Document;
 /**
  * Enumerates different types of document changes.
  * <p>
- * The different change type have a hierarchical order, where a subsequent type automatically includes all 
+ * The different change types have a hierarchical order, where a subsequent type automatically includes all 
  * previous types except for {@link #TOPOLOGICAL_BY_RENAMING} and {@link #TOPOLOGICAL_LEAF_INVARIANT} which
  * are alternatives located on the same level. The hierarchical order would be the following:
  * <ol>

@@ -40,6 +40,11 @@ public class NodeBranchDataInput {
 
 	
 	public NodeBranchDataInput(JPanel panel, int x, int y) {
+		this(panel, x, y, 1);
+	}
+	
+	
+	public NodeBranchDataInput(JPanel panel, int x, int y, int gridWidth) {
 		super();
 
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -48,6 +53,7 @@ public class NodeBranchDataInput {
 		gbc.gridy = y;
 		gbc.insets = new Insets(2, 2, 2, 2);
 		gbc.weightx = 1.0;
+		gbc.gridwidth = gridWidth;
     panel.add(getComboBox(), gbc);
 	}
 	

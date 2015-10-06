@@ -32,6 +32,7 @@ import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.IDManager;
 import info.bioinfweb.treegraph.document.Label;
+import info.bioinfweb.treegraph.document.NodeType;
 import info.bioinfweb.treegraph.document.TreeSerializer;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.file.AddSupportValuesEdit;
@@ -96,7 +97,7 @@ public class AutoPositionLabelsAction extends DocumentAction {
 		TreeSelection selection = frame.getTreeViewPanel().getSelection();
 		Branch[] branches;
 		if (selection.isEmpty()) {
-			branches = TreeSerializer.getElementsInSubtree(frame.getDocument().getTree().getPaintStart(), false, Branch.class);
+			branches = TreeSerializer.getElementsInSubtree(frame.getDocument().getTree().getPaintStart(), NodeType.BOTH, Branch.class);
 		}
 		else {
 			branches = selection.toArray(new Branch[selection.size()]); 

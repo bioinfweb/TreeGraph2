@@ -19,6 +19,7 @@
 package info.bioinfweb.treegraph.gui.dialogs.io.imexporttable;
 
 
+import info.bioinfweb.treegraph.document.NodeType;
 import info.bioinfweb.treegraph.gui.CurrentDirectoryModel;
 import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataInput;
@@ -26,10 +27,15 @@ import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 
 import javax.swing.JPanel;
 import javax.swing.BoxLayout;
+
 import java.awt.GridBagLayout;
+
 import javax.swing.JScrollPane;
+
 import java.awt.GridBagConstraints;
+
 import javax.swing.JButton;
+
 import java.awt.Insets;
 
 import javax.swing.ButtonGroup;
@@ -41,19 +47,21 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
 import java.awt.Font;
 import java.awt.Color;
 import java.awt.Frame;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
 
 
 
 /**
- * Dialog used to export node/branch data columns to a table stored in a text file.
+ * Dialog to export node/branch data columns to a table stored in a text file.
  * 
  * @author Ben St&ouml;ver
  */
@@ -118,14 +126,14 @@ public class ExportTableDialog extends EditDialog {
 		
 		if (write) {
 			try {
-				ExportNodeDataTableModel.Nodes nodes = ExportNodeDataTableModel.Nodes.ALL;
+				NodeType nodeType = NodeType.BOTH;
 				if (getInternalsRadioButton().isSelected()) {
-					nodes = ExportNodeDataTableModel.Nodes.INTERNALS;
+					nodeType = NodeType.INTERNAL_NODES;
 				}
 				else if (getLeavesRadioButton().isSelected()) {
-					nodes = ExportNodeDataTableModel.Nodes.LEAVES;
+					nodeType = NodeType.LEAVES;
 				}
-				getTableModel().writeData(file, getDocument().getTree().getPaintStart(), nodes);
+				getTableModel().writeData(file, getDocument().getTree().getPaintStart(), nodeType);
 			}
 			catch (FileNotFoundException e) {
 				JOptionPane.showMessageDialog(this, "The path \"" + getFileTextField().getText() + 

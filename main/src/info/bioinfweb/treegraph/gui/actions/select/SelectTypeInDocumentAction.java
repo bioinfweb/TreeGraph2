@@ -30,6 +30,7 @@ import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Legend;
 import info.bioinfweb.treegraph.document.Legends;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.NodeType;
 import info.bioinfweb.treegraph.document.PaintableElement;
 import info.bioinfweb.treegraph.document.TreeSerializer;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
@@ -58,7 +59,7 @@ public class SelectTypeInDocumentAction extends AbstractSelectionAction {
 			PaintableElement element = iterator.next();
 			if (root != null) {
 				PaintableElement[] subelements = TreeSerializer.getElementsInSubtree(
-						root, false, element.getClass(), new PaintableElement[0]);
+						root, NodeType.BOTH, element.getClass(), new PaintableElement[0]);
 				
 				for (int j = 0; j < subelements.length; j++) {
 					list.add(subelements[j]);

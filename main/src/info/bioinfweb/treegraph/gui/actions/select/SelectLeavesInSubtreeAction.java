@@ -21,6 +21,7 @@ package info.bioinfweb.treegraph.gui.actions.select;
 
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.NodeType;
 import info.bioinfweb.treegraph.document.PaintableElement;
 import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.TreeElement;
@@ -65,7 +66,7 @@ public class SelectLeavesInSubtreeAction extends AbstractSelectionAction {
 			PaintableElement element = iterator.next();
 			Node root = Tree.getLinkedNode(element);
 			if (root != null) {
-				Node[] subelements = TreeSerializer.getElementsInSubtree(root, true, Node.class);
+				Node[] subelements = TreeSerializer.getElementsInSubtree(root, NodeType.LEAVES, Node.class);
 				for (int j = 0; j < subelements.length; j++) {
 					selection.add(subelements[j]);
 					selection.add(subelements[j].getAfferentBranch());

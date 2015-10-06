@@ -29,6 +29,7 @@ import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Label;
 import info.bioinfweb.treegraph.document.Legend;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.NodeType;
 import info.bioinfweb.treegraph.document.PaintableElement;
 import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.TreeSerializer;
@@ -66,7 +67,7 @@ public class SelectLabelsInSubtreeAction extends AbstractSelectionAction {
 			Node root = Tree.getLinkedNode(element);
 			if (root != null) {
 				Label[] subelements = 
-					  TreeSerializer.getElementsInSubtree(root, false, Label.class);  //TODO includeFirstBranch Parameter an TreeSerializer geben um ggf. Selektion der obersten Asts und seiner Label zu verhindern.
+					  TreeSerializer.getElementsInSubtree(root, NodeType.BOTH, Label.class);  //TODO includeFirstBranch Parameter an TreeSerializer geben um ggf. Selektion der obersten Asts und seiner Label zu verhindern.
 				
 				for (int j = 0; j < subelements.length; j++) {
 					selection.add(subelements[j]);

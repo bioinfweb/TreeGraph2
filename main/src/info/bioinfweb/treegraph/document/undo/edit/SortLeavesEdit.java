@@ -33,6 +33,7 @@ import javax.swing.undo.CannotUndoException;
 
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.NodeType;
 import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.TreeSerializer;
 import info.bioinfweb.treegraph.document.change.DocumentChangeType;
@@ -107,7 +108,7 @@ public class SortLeavesEdit extends DocumentEdit implements WarningMessageEdit {
 	  this.parameters = parameters;
 	  
 	  saveNewOrder(newOrder);
-		oldOrder = TreeSerializer.getElementsInSubtreeAsList(root, true, Node.class);
+		oldOrder = TreeSerializer.getElementsInSubtreeAsList(root, NodeType.LEAVES, Node.class);
   }
 
 	
@@ -259,7 +260,7 @@ public class SortLeavesEdit extends DocumentEdit implements WarningMessageEdit {
 	public static List<TextElementData> orderFromDocument(Document document, NodeBranchDataAdapter adapter,
 			CompareTextElementDataParameters parameters) {
 		
-		List<Node> leaves = TreeSerializer.getElementsInSubtreeAsList(document.getTree().getPaintStart(), true, Node.class);
+		List<Node> leaves = TreeSerializer.getElementsInSubtreeAsList(document.getTree().getPaintStart(), NodeType.LEAVES, Node.class);
 		List<TextElementData> result = new ArrayList<TextElementData>(leaves.size());
 		for (Node node : leaves) {
 	    result.add(parameters.createEditedValue(adapter.toTextElementData(node).toString()));

@@ -27,9 +27,9 @@ import javax.swing.Action;
 import javax.swing.JOptionPane;
 
 import info.bioinfweb.treegraph.document.Document;
+import info.bioinfweb.treegraph.document.io.ancestralstate.BayesTraitsReader;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.file.ancestralstate.AncestralStateImportParameters;
-import info.bioinfweb.treegraph.document.undo.file.ancestralstate.BayesTraitsReader;
 import info.bioinfweb.treegraph.document.undo.file.ancestralstate.ImportBayesTraitsDataEdit;
 import info.bioinfweb.treegraph.gui.actions.DocumentAction;
 import info.bioinfweb.treegraph.gui.dialogs.io.ancestralstate.AssignBayesTraitsImportColumnsDialog;

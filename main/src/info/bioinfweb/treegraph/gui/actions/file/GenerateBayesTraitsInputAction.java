@@ -23,7 +23,7 @@ import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.gui.actions.EditDialogAction;
 import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
-import info.bioinfweb.treegraph.gui.dialogs.io.ancestralstate.GenerateBayesTraitsCommandsDialog;
+import info.bioinfweb.treegraph.gui.dialogs.io.ancestralstate.GenerateBayesTraitsInputDialog;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 
@@ -33,17 +33,17 @@ import javax.swing.Action;
 
 
 
-public class GenerateBayesTraitsCommandsAction extends EditDialogAction {
-	public GenerateBayesTraitsCommandsAction(MainFrame mainFrame) {
+public class GenerateBayesTraitsInputAction extends EditDialogAction {
+	public GenerateBayesTraitsInputAction(MainFrame mainFrame) {
 		super(mainFrame);
-		putValue(Action.NAME, "Generate BayesTraits commands..."); 
+		putValue(Action.NAME, "Generate BayesTraits input..."); 
 	  putValue(Action.MNEMONIC_KEY, KeyEvent.VK_B);
 	}
 
 	
 	@Override
 	public EditDialog createDialog() {
-		return new GenerateBayesTraitsCommandsDialog(getMainFrame());
+		return new GenerateBayesTraitsInputDialog(getMainFrame());
 	}
 
 

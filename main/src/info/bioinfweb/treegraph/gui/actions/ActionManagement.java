@@ -26,7 +26,6 @@ import java.util.Vector;
 import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
-import javax.swing.JToggleButton;
 import javax.swing.undo.UndoableEdit;
 
 import info.bioinfweb.treegraph.document.*;
@@ -83,7 +82,7 @@ public class ActionManagement extends AbstractUndoActionManagement {
 		put("file.nodeFrequency", new NodeSupportAction(mainFrame));
 		put("file.importTable", new ImportTableAction(mainFrame));
 		put("file.exportTable", new ExportTableAction(mainFrame));
-		put("file.generateBayesTraitsCommandFile", new GenerateBayesTraitsCommandsAction(mainFrame));
+		put("file.generateBayesTraitsCommands", new GenerateBayesTraitsInputAction(mainFrame));
 		put("file.importBayesTraitsData", new ImportBayesTraitsDataAction(mainFrame));
 		put("file.exit", new ExitAction(mainFrame));
 		
