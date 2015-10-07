@@ -24,6 +24,7 @@ import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.NodeType;
 import info.bioinfweb.treegraph.document.TreeSerializer;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
+import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -43,7 +44,7 @@ public class BayesTraitsCommandsWriter {
 		Set<String> internalNodeNameSet = new HashSet<String>();
 		try {
 			for (Node node : nodes) {
-				if (!node.isLeaf()) {
+				if (!node.isLeaf() && !(node.equals(MainFrame.getInstance().getActiveTreeFrame().getTreeViewPanel().getDocument().getTree().getPaintStart()))) {
 					String internalNodeName = internalNodesAdapter.getText(node);
 					if (internalNodesAdapter.isDecimal(node)) {
 						internalNodeName = INTERNAL_NODE_NAME_PREFIX + INTERNAL_NODE_NAME_FORMAT.format(internalNodesAdapter.getDecimal(node));

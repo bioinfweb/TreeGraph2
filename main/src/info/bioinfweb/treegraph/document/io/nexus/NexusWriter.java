@@ -37,7 +37,6 @@ public class NexusWriter extends AbstractDocumentWriter {
 	
 	
 	public void write(Document document, OutputStream stream, ReadWriteParameterMap properties) throws Exception {
-		
 		OutputStreamWriter writer = new OutputStreamWriter(stream);
 		try {
 			writer.write(NexusParser.NAME_NEXUS.toUpperCase() + "\n");

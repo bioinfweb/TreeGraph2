@@ -206,19 +206,21 @@ public class ExportNodeDataTableModel extends AbstractTableModel {
 	}
 	
 	
-	public void writeData(OutputStream stream, Node root, NodeType nodeType) throws IOException {
+	public void writeData(OutputStream stream, Node root, NodeType nodeType, boolean exportHeadings) throws IOException {
 		writer = new OutputStreamWriter(stream);
 		this.nodeType = nodeType;
 		try {
-			String headings = "";
-			if (adapters.size() > 0) {
-				for (int i = 0; i < adapters.size() - 1; i++) {
-					headings += adapters.get(i).toString() + "\t";
+			if (exportHeadings) {
+				String headings = "";
+				if (adapters.size() > 0) {
+					for (int i = 0; i < adapters.size() - 1; i++) {
+						headings += adapters.get(i).toString() + "\t";
+					}
+					headings += adapters.get(adapters.size() - 1).toString() + System.getProperty("line.separator");
 				}
-				headings += adapters.get(adapters.size() - 1).toString() + System.getProperty("line.separator");
+				writer.write(headings);
 			}
-			writer.write(headings);
-
+			
 			writeSubtree(root);
 		}
 		finally {
@@ -233,7 +235,7 @@ public class ExportNodeDataTableModel extends AbstractTableModel {
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
-	public void writeData(File file, Node root, NodeType nodeType) throws FileNotFoundException, IOException {
-		writeData(new FileOutputStream(file), root, nodeType);
+	public void writeData(File file, Node root, NodeType nodeType, boolean exportHeadings) throws FileNotFoundException, IOException {
+		writeData(new FileOutputStream(file), root, nodeType, exportHeadings);
 	}
 }

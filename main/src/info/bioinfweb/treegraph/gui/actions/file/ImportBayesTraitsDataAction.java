@@ -18,6 +18,7 @@
  */
 package info.bioinfweb.treegraph.gui.actions.file;
 
+
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.FileNotFoundException;
@@ -37,6 +38,7 @@ import info.bioinfweb.treegraph.gui.dialogs.io.ancestralstate.ImportBayesTraitsD
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeInternalFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
+
 
 
 /**
@@ -91,10 +93,6 @@ public class ImportBayesTraitsDataAction extends DocumentAction {
 						JOptionPane.showMessageDialog(MainFrame.getInstance(), edit.getWarningText(), 
 						    "Warning", JOptionPane.WARNING_MESSAGE);
 					}
-					if (edit.hasNodeDataNotFoundWarnings()) {
-						JOptionPane.showMessageDialog(MainFrame.getInstance(), edit.getNodeDataNotFoundWarningText(), 
-						    "Warning", JOptionPane.WARNING_MESSAGE);
-					} 
 				}
 			}
 			catch (FileNotFoundException ex) {

@@ -225,7 +225,7 @@ public class TopologicalCalculator {
 	 * Searches the MRCA in {@code tree} containing all leaves defined in the specified leaf set.
 	 * <p>
 	 * This method will return {@code null} if either an empty leaf set is provided or the specified
-	 * leaf set contains one ore more terminals, that are not contained in {@code tree}. (The latter
+	 * leaf set contains only terminals, that are not contained in {@code tree}. (The latter
 	 * can only happen if trees with different leaves have been registered in this instance using
 	 * {@link #addToLeafValueToIndexMap(Node, NodeBranchDataAdapter)}.)
 	 * 

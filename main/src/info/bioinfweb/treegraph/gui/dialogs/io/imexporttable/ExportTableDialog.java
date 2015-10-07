@@ -39,6 +39,7 @@ import javax.swing.JButton;
 import java.awt.Insets;
 
 import javax.swing.ButtonGroup;
+import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -72,6 +73,7 @@ public class ExportTableDialog extends EditDialog {
 
 	
 	private JPanel jContentPane = null;
+	
 	private JPanel nodeDataPanel = null;
 	private NodeBranchDataInput nodeDataInput = null;
 	private JScrollPane tableScrollPane = null;
@@ -83,13 +85,18 @@ public class ExportTableDialog extends EditDialog {
 	private JButton clearButton = null;
 	private JButton upButton = null;
 	private JButton downButton = null;
+	
 	private JPanel filePanel = null;
 	private JTextField fileTextField = null;
 	private JButton fileButton = null;
 	private JFileChooser fileChooser = null;
-	private JPanel NodesPanel = null;
+	
+	private JPanel headingsPanel = null;
+	private JCheckBox exportHeadingsCheckBox = null;
+	
+	private JPanel nodesPanel = null;
 	private ButtonGroup nodesGroup = null;  //  @jve:decl-index=0:
-	private JRadioButton InternalsRadioButton = null;
+	private JRadioButton internalsRadioButton = null;
 	private JRadioButton leavesRadioButton = null;
   private JRadioButton bothRadioButton = null;
 
@@ -133,7 +140,8 @@ public class ExportTableDialog extends EditDialog {
 				else if (getLeavesRadioButton().isSelected()) {
 					nodeType = NodeType.LEAVES;
 				}
-				getTableModel().writeData(file, getDocument().getTree().getPaintStart(), nodeType);
+				boolean exportHeadings = getExportHeadingsCheckBox().isSelected();
+				getTableModel().writeData(file, getDocument().getTree().getPaintStart(), nodeType, exportHeadings);
 			}
 			catch (FileNotFoundException e) {
 				JOptionPane.showMessageDialog(this, "The path \"" + getFileTextField().getText() + 
@@ -203,6 +211,7 @@ public class ExportTableDialog extends EditDialog {
 			jContentPane = new JPanel();
 			jContentPane.setLayout(new BoxLayout(getJContentPane(), BoxLayout.Y_AXIS));
 			jContentPane.add(getNodeDataPanel(), null);
+			jContentPane.add(getHeadingsPanel(), null);
 			jContentPane.add(getNodesPanel(), null);
 			jContentPane.add(getFilePanel(), null);
 			jContentPane.add(getButtonsPanel(), null);
@@ -528,13 +537,41 @@ public class ExportTableDialog extends EditDialog {
 	}
 
 
+	private JPanel getHeadingsPanel() {
+		if (headingsPanel == null) {
+			headingsPanel = new JPanel();
+			headingsPanel.setLayout(new GridBagLayout());
+			headingsPanel.setBorder(BorderFactory.createTitledBorder(null, "Column headings", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, 
+					new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
+			
+			GridBagConstraints gbc_exportHeadingsCheckBox = new GridBagConstraints();
+			gbc_exportHeadingsCheckBox.weightx = 1.0;
+			gbc_exportHeadingsCheckBox.anchor = GridBagConstraints.WEST;
+			gbc_exportHeadingsCheckBox.gridx = 0;
+			gbc_exportHeadingsCheckBox.gridy = 0;
+			headingsPanel.add(getExportHeadingsCheckBox(), gbc_exportHeadingsCheckBox);
+		}
+		return headingsPanel;
+	}
+
+
+	private JCheckBox getExportHeadingsCheckBox() {
+		if (exportHeadingsCheckBox == null) {
+			exportHeadingsCheckBox = new JCheckBox();
+			exportHeadingsCheckBox.setText("Export column headings");
+			exportHeadingsCheckBox.setSelected(true);
+		}
+		return exportHeadingsCheckBox;
+	}
+
+
 	/**
 	 * This method initializes NodesPanel	
 	 * 	
 	 * @return javax.swing.JPanel	
 	 */
 	private JPanel getNodesPanel() {
-		if (NodesPanel == null) {
+		if (nodesPanel == null) {
 			GridBagConstraints gridBagConstraints11 = new GridBagConstraints();
 			gridBagConstraints11.gridx = 2;
 			gridBagConstraints11.weightx = 1.0;
@@ -551,15 +588,15 @@ public class ExportTableDialog extends EditDialog {
 			gridBagConstraints9.fill = GridBagConstraints.NONE;
 			gridBagConstraints9.weightx = 1.0;
 			gridBagConstraints9.gridy = 0;
-			NodesPanel = new JPanel();
-			NodesPanel.setLayout(new GridBagLayout());
-			NodesPanel.setBorder(BorderFactory.createTitledBorder(null, "Nodes to export", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
+			nodesPanel = new JPanel();
+			nodesPanel.setLayout(new GridBagLayout());
+			nodesPanel.setBorder(BorderFactory.createTitledBorder(null, "Nodes to export", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
 			getNodesGroup();
-			NodesPanel.add(getInternalsRadioButton(), gridBagConstraints9);
-			NodesPanel.add(getLeavesRadioButton(), gridBagConstraints10);
-			NodesPanel.add(getBothRadioButton(), gridBagConstraints11);
+			nodesPanel.add(getInternalsRadioButton(), gridBagConstraints9);
+			nodesPanel.add(getLeavesRadioButton(), gridBagConstraints10);
+			nodesPanel.add(getBothRadioButton(), gridBagConstraints11);
 		}
-		return NodesPanel;
+		return nodesPanel;
 	}
 
 
@@ -580,11 +617,11 @@ public class ExportTableDialog extends EditDialog {
 	 * @return javax.swing.JRadioButton	
 	 */
 	private JRadioButton getInternalsRadioButton() {
-		if (InternalsRadioButton == null) {
-			InternalsRadioButton = new JRadioButton();
-			InternalsRadioButton.setText("Internal nodes");
+		if (internalsRadioButton == null) {
+			internalsRadioButton = new JRadioButton();
+			internalsRadioButton.setText("Internal nodes");
 		}
-		return InternalsRadioButton;
+		return internalsRadioButton;
 	}
 
 
