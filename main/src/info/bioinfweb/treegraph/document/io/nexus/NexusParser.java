@@ -29,30 +29,40 @@ import java.util.regex.Pattern;
 public class NexusParser {
 	public static final int MAX_EXPECTED_COMMAND_LENGTH = 512 * 1024;
 	
-	public static final String NAME_NEXUS = "#nexus"; 
+	public static final String FIRST_LINE = "#nexus"; 
+	public static final String BEGIN_COMMAND = "begin";
+	public static final String END_COMMAND = "end";
+	public static final char COMMAND_END = ';';
 	public static final char COMMENT_START = '['; 
 	public static final char COMMENT_END = ']'; 
-	public static final char NAME_DELIMITER = '\''; 
+	public static final char KEY_VALUE_SEPERATOR = '=';
+	public static final char WORD_DELIMITER = '\''; 
+	
+	public static final String BLOCK_NAME_TAXA = "taxa";
+	public static final String BLOCK_NAME_TREES = "trees";
+	
+	public static final String DIMENSIONS_NAME = "dimensions";
+	public static final String TAXLABELS_NAME = "taxlabels";
+	public static final String TRANSL_TABLE_NAME = "translate";
+	public static final String TREE_NAME = "tree";
+	
+	public static final String DIMENSIONS_SUBCOMMAND_NTAX = "ntax";
+	
+	public static final String ROOTED_HOT_COMMENT = "&r";
+	public static final String UNROOTED_HOT_COMMENT = "&u";
+	
+	public static final Pattern BLOCK_BEGIN_PATTERN = Pattern.compile(BEGIN_COMMAND);
+	public static final Pattern BLOCK_END_PATTERN = Pattern.compile("(" + END_COMMAND + "|endblock)");
+	public static final Pattern COMMAND_PATTERN = Pattern.compile("" + COMMAND_END);
 	public static final Pattern NAME_SEPARATOR_PATTERN = Pattern.compile("'"); 
-	public static final Pattern ENCLOSED_NAME_PATTERN = Pattern.compile("\\s*'[^']'\\s*");
-	public static final char COMMAND_SEPARATOR = ';'; 
-	public static final Pattern COMMAND_PATTERN = Pattern.compile("" + COMMAND_SEPARATOR);
-	public static final String ROOTED_COMMAND = "&r";
-	public static final String UNROOTED_COMMAND = "&u";
-	public static final String NAME_BLOCK_BEGIN = "begin"; 
-	public static final Pattern BLOCK_BEGIN_PATTERN = Pattern.compile(NAME_BLOCK_BEGIN);
-	public static final String NAME_BLOCK_END = "end";
-	public static final Pattern BLOCK_END_PATTERN = Pattern.compile("(" + NAME_BLOCK_END + "|endblock)");
-	public static final String NAME_TREES = "trees";
-	public static final Pattern TREES_PATTERN = Pattern.compile("\\s*" + NAME_TREES + "\\s*");
-	public static final String NAME_TRANSL_TABLE = "translate"; 
-	public static final Pattern TRANSL_TABLE_PATTERN = Pattern.compile(NAME_TRANSL_TABLE);
+	public static final Pattern ENCLOSED_NAME_PATTERN = Pattern.compile("\\s*'[^']'\\s*");	
+	public static final Pattern TREES_PATTERN = Pattern.compile("\\s*" + BLOCK_NAME_TREES + "\\s*");
+	public static final Pattern TRANSL_TABLE_PATTERN = Pattern.compile(TRANSL_TABLE_NAME);
 	public static final Pattern TRANSL_TABLE_SEPARATOR_PATTERN = Pattern.compile(","); 
-	public static final String TREE_COMMAND = "tree";
-	public static final Pattern TREE_COMMAND_PATTERN = Pattern.compile("(" + TREE_COMMAND + "|utree)");
+	public static final Pattern TREE_COMMAND_PATTERN = Pattern.compile("(" + TREE_NAME + "|utree)");
 	public static final Pattern WHITESPACE_PATTERN = Pattern.compile("\\s+");
-	public static final Pattern EMPTY_PATTERN = Pattern.compile(".*", Pattern.DOTALL); 
-	public static final char TREE_NAME_SEPERATOR = '='; 
+	public static final Pattern EMPTY_PATTERN = Pattern.compile(".*", Pattern.DOTALL);
+	 
 	
 	
   /**
@@ -74,16 +84,16 @@ public class NexusParser {
   				}
   				command.append(COMMENT_END);
   				break;
-  			case NAME_DELIMITER:
+  			case WORD_DELIMITER:
   				i++;
-  				command.append(NAME_DELIMITER);
-  				while ((i < content.length()) && (content.charAt(i) != NAME_DELIMITER)) {
+  				command.append(WORD_DELIMITER);
+  				while ((i < content.length()) && (content.charAt(i) != WORD_DELIMITER)) {
   					command.append(content.charAt(i));
   					i++;
   				}
-  				command.append(NAME_DELIMITER);
+  				command.append(WORD_DELIMITER);
   				break;
-  			case COMMAND_SEPARATOR:
+  			case COMMAND_END:
   				result.add(new NexusCommand(command.toString()));
   				command.delete(0, command.length());  //TODO Warum gibt es kein clear()?
   				break;
@@ -201,7 +211,7 @@ public class NexusParser {
    * @param document
    */
   private static boolean readTree(String tokens, NexusDocument document) {
-  	int separatorPos = nextPosOutsideComment(tokens, 0, TREE_NAME_SEPERATOR);
+  	int separatorPos = nextPosOutsideComment(tokens, 0, KEY_VALUE_SEPERATOR);
   	boolean result = separatorPos != -1; 
   	if (result) {
   		document.add(tokens.substring(0, separatorPos).trim(), 
@@ -214,8 +224,8 @@ public class NexusParser {
   
   public static NexusDocument parse(String content) throws NexusException {
   	content = content.trim();
-  	if (content.toLowerCase().startsWith(NAME_NEXUS)) {
-  		NexusCommand[] commands = scan(content.substring(NAME_NEXUS.length()));
+  	if (content.toLowerCase().startsWith(FIRST_LINE)) {
+  		NexusCommand[] commands = scan(content.substring(FIRST_LINE.length()));
   		int treesStart = findCommand(
   				commands, 0, commands.length, BLOCK_BEGIN_PATTERN, TREES_PATTERN);
   		if (treesStart != -1) {

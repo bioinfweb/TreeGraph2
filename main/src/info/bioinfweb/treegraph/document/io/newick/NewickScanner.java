@@ -122,10 +122,10 @@ public class NewickScanner extends NewickStringChars {
 			throw NewickException.getUnterminatedCommentException(start, text);
 		}
 		else {
-			if (result.toLowerCase().equals(NexusParser.UNROOTED_COMMAND)) {
+			if (result.toLowerCase().equals(NexusParser.UNROOTED_HOT_COMMENT)) {
 				tokenList.add(new NewickToken(TokenType.UNROOTED_COMMAND, start));
 			}
-			else if (result.toLowerCase().equals(NexusParser.ROOTED_COMMAND)) {
+			else if (result.toLowerCase().equals(NexusParser.ROOTED_HOT_COMMENT)) {
 				tokenList.add(new NewickToken(TokenType.ROOTED_COMMAND, start));
 			}
 			else {

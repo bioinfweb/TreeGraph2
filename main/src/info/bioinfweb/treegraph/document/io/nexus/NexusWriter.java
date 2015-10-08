@@ -19,11 +19,17 @@
 package info.bioinfweb.treegraph.document.io.nexus;
 
 
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.Writer;
 
+import info.bioinfweb.commons.SystemUtils;
 import info.bioinfweb.treegraph.document.Document;
+import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.NodeType;
+import info.bioinfweb.treegraph.document.TreeSerializer;
 import info.bioinfweb.treegraph.document.io.AbstractDocumentWriter;
 import info.bioinfweb.treegraph.document.io.ReadWriteParameterMap;
 import info.bioinfweb.treegraph.document.io.newick.NewickStringWriter;
@@ -31,22 +37,67 @@ import info.bioinfweb.treegraph.document.io.newick.NewickStringWriter;
 
 
 public class NexusWriter extends AbstractDocumentWriter {
-	private void writeCommand(OutputStreamWriter writer, String content) throws IOException {
-		writer.write(content + NexusParser.COMMAND_SEPARATOR + "\n");
-	}
-	
+	private String indention = "";
+
 	
 	public void write(Document document, OutputStream stream, ReadWriteParameterMap properties) throws Exception {
-		OutputStreamWriter writer = new OutputStreamWriter(stream);
+		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(stream));
 		try {
-			writer.write(NexusParser.NAME_NEXUS.toUpperCase() + "\n");
-			writeCommand(writer, NexusParser.NAME_BLOCK_BEGIN + " " + NexusParser.NAME_TREES);
-			writer.write(NexusParser.TREE_COMMAND + " " + "tree1 = " + 
-					NewickStringWriter.write(document.getTree(), properties) + "\n");
-			writeCommand(writer, NexusParser.NAME_BLOCK_END);
+			writer.write(NexusParser.FIRST_LINE.toUpperCase() + SystemUtils.LINE_SEPARATOR);
+			
+			Node[] leavesInCurrentTree = TreeSerializer.getElementsInSubtree(document.getTree().getPaintStart(), NodeType.LEAVES, Node.class);
+			writeCommand(writer, NexusParser.BEGIN_COMMAND + " " + NexusParser.BLOCK_NAME_TAXA);
+			increaseIndention();
+			writeCommand(writer, NexusParser.DIMENSIONS_NAME + " " + NexusParser.DIMENSIONS_SUBCOMMAND_NTAX + NexusParser.KEY_VALUE_SEPERATOR + leavesInCurrentTree.length);
+			writeLine(writer, NexusParser.TAXLABELS_NAME + " ");
+			increaseIndention();
+			for (int i = 0; i < leavesInCurrentTree.length; i++) {
+				writeLine(writer, NewickStringWriter.formatName(leavesInCurrentTree[i], properties.getNodeBranchDataAdapter(ReadWriteParameterMap.KEY_LEAF_NODE_NAMES_ADAPTER, 
+			  		document.getDefaultLeafAdapter()), properties.getBoolean(ReadWriteParameterMap.KEY_SPACES_AS_UNDERSCORE, false)));
+			}
+			writeLine(writer, NexusParser.COMMAND_END + "");
+			decreaseIndention();
+			decreaseIndention();
+			writeCommand(writer, NexusParser.END_COMMAND);
+			
+			writeCommand(writer, NexusParser.BEGIN_COMMAND + " " + NexusParser.BLOCK_NAME_TREES);
+			increaseIndention();
+			writeLine(writer, NexusParser.TRANSL_TABLE_NAME + " ");
+			increaseIndention();
+			for (int i = 0; i < leavesInCurrentTree.length; i++) {
+				writeLine(writer, (i + 1) + " " + NewickStringWriter.formatName(leavesInCurrentTree[i], properties.getNodeBranchDataAdapter(ReadWriteParameterMap.KEY_LEAF_NODE_NAMES_ADAPTER, 
+			  		document.getDefaultLeafAdapter()), properties.getBoolean(ReadWriteParameterMap.KEY_SPACES_AS_UNDERSCORE, false)));
+			}
+			writeLine(writer, NexusParser.COMMAND_END + "");
+			decreaseIndention();
+			writeLine(writer, NexusParser.TREE_NAME + " " + "tree1 = " + NewickStringWriter.write(document.getTree(), properties));
+			decreaseIndention();
+			writeCommand(writer, NexusParser.END_COMMAND);
 		}
 		finally {
 			writer.close();
+		}
+	}
+	
+	
+	private void writeCommand(Writer writer, String content) throws IOException {
+		writer.write(indention + content + NexusParser.COMMAND_END + SystemUtils.LINE_SEPARATOR);
+	}
+	
+	
+	private void writeLine(Writer writer, String content) throws IOException {
+		writer.write(indention + content + SystemUtils.LINE_SEPARATOR);
+	}
+	
+	
+	private void increaseIndention() {
+		indention += "\t";
+	}
+	
+	
+	private void decreaseIndention() {
+		if (indention.length() > 0) {
+			indention = indention.substring(1);
 		}
 	}
 }

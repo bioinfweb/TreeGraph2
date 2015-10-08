@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.gui.dialogs.io;
+package info.bioinfweb.treegraph.gui.dialogs.io.exporttree;
 
 
 import info.bioinfweb.treegraph.document.io.DocumentFilter;
@@ -30,25 +30,34 @@ import info.bioinfweb.treegraph.document.nodebranchdata.HiddenDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.VoidNodeBranchDataAdapter;
+import info.bioinfweb.treegraph.gui.dialogs.io.FileDialog;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataInput;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
 import java.awt.Frame;
 import java.awt.GridBagLayout;
 
 import javax.swing.BoxLayout;
+
 import java.io.File;
+
 import javax.swing.JLabel;
 import javax.swing.BorderFactory;
 import javax.swing.border.TitledBorder;
+
 import java.awt.Font;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
+
 import javax.swing.JCheckBox;
+
 import java.awt.Insets;
+
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
 
@@ -72,6 +81,7 @@ public class ExportToNewickStringDialog extends FileDialog {
 	private JRadioButton singleQuotationRadioButton;
 	private JRadioButton spacesAsUnderscoresRadioButton;
 	private final ButtonGroup nodeNameFormatButtonGroup = new ButtonGroup();
+	private JPanel filePanel;
 
 
 	/**
@@ -95,14 +105,19 @@ public class ExportToNewickStringDialog extends FileDialog {
 			getFileChooser().setSelectedFile(new File(name));
 		}
 		
-		getInternalInput().setAdapters(getDocument().getTree(), true, true, true, false, false, "");
+		getInternalInput().setAdapters(getDocument().getTree(), true, true, true, false, false, "No internal node names");
 		if (!getInternalInput().setSelectedAdapter(TextLabelAdapter.class)) {
 			if (!getInternalInput().setSelectedAdapter(HiddenDataAdapter.class)) {
-				getInternalInput().setSelectedAdapter(NodeNameAdapter.class);
+				if (getDocument().getDefaultSupportAdapter() instanceof VoidNodeBranchDataAdapter) {  //TODO Remove when VoidAdapter naming was refactored.
+					getInternalInput().setSelectedAdapter(VoidNodeBranchDataAdapter.class);
+				}
+				else {
+					getInternalInput().setSelectedAdapter(getDocument().getDefaultSupportAdapter());
+				}
 			}
 		}
 		getLeafInput().setAdapters(getDocument().getTree(), true, true, true, false, false, "");
-		getLeafInput().setSelectedAdapter(NodeNameAdapter.class);
+		getLeafInput().setSelectedAdapter(getDocument().getDefaultLeafAdapter());
 		getBranchLengthInput().setAdapters(getDocument().getTree(), false, false, true, true, false, "");
 		
 		boolean branchLength = getBranchLengthInput().getModel().getSize() > 0;
@@ -182,7 +197,7 @@ public class ExportToNewickStringDialog extends FileDialog {
 		if (jContentPane == null) {
 			jContentPane = new JPanel();
 			jContentPane.setLayout(new BoxLayout(getJContentPane(), BoxLayout.Y_AXIS));
-			jContentPane.add(getFileChooser(), null);
+			jContentPane.add(getFilePanel());
 			jContentPane.add(getNodeNameFormatPanel());
 			jContentPane.add(getNodeDataPanel(), null);
 			getApplyButton().setVisible(false);
@@ -190,6 +205,17 @@ public class ExportToNewickStringDialog extends FileDialog {
 			jContentPane.add(getButtonsPanel(), null);
 		}
 		return jContentPane;
+	}
+	
+	
+	private JPanel getFilePanel() {
+		if (filePanel == null) {
+			filePanel = new JPanel();
+			filePanel.setBorder(BorderFactory.createTitledBorder(null, "File", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, 
+					new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
+			filePanel.add(getFileChooser());
+		}
+		return filePanel;
 	}
 
 
@@ -205,7 +231,7 @@ public class ExportToNewickStringDialog extends FileDialog {
 			fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
 			fileChooser.setControlButtonsAreShown(false);
 			
-			if (fileChooser.getFileFilter() != null) {  // "Alle Datein"-Filter entfernen
+			if (fileChooser.getFileFilter() != null) {  // "Alle Dateien"-Filter entfernen
 				fileChooser.removeChoosableFileFilter(fileChooser.getFileFilter());
 			}
 			nexusFilter = new NexusFilter();
@@ -243,7 +269,8 @@ public class ExportToNewickStringDialog extends FileDialog {
 			internalLabel.setText("Internal node names: ");
 			nodeDataPanel = new JPanel();
 			nodeDataPanel.setLayout(new GridBagLayout());
-			nodeDataPanel.setBorder(BorderFactory.createTitledBorder(null, "Source data", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
+			nodeDataPanel.setBorder(BorderFactory.createTitledBorder(null, "Source data", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, 
+					new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
 			nodeDataPanel.add(internalLabel, gridBagConstraints);
 			nodeDataPanel.add(leafLabel, gridBagConstraints1);
 			nodeDataPanel.add(getBranchLengthCheckBox(), gridBagConstraints2);
@@ -291,10 +318,13 @@ public class ExportToNewickStringDialog extends FileDialog {
 		}
 		return branchLengthCheckBox;
 	}
+	
+	
 	private JPanel getNodeNameFormatPanel() {
 		if (nodeNameFormatPanel == null) {
 			nodeNameFormatPanel = new JPanel();
-			nodeNameFormatPanel.setBorder(new TitledBorder(null, "Node name format", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+			nodeNameFormatPanel.setBorder(new TitledBorder(null, "Node name format", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, 
+					new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
 			GridBagLayout gbl_nodeNameFormatPanel = new GridBagLayout();
 			gbl_nodeNameFormatPanel.columnWidths = new int[]{0, 0, 0, 0};
 			gbl_nodeNameFormatPanel.rowHeights = new int[]{0, 0};

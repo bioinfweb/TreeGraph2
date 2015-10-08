@@ -88,7 +88,7 @@ public class ExportToGraphicDialog extends FileDialog {
 	private JTextField heightTextField = null;
 	private JComboBox unitComboBox = null;
 	private JLabel spacerLabel = null;
-	private JFileChooser fileChooser;  //  This field must not be set to anything (e.g. null) because the initialization performed by the super constructor (FileDialog) would be overwritten than.
+	private JFileChooser fileChooser;  //  This field must not be set to anything (e.g. null) because the initialization performed by the super constructor (FileDialog) would be overwritten then.
 	private JPanel fileChooserPanel = null;
 	private JPanel outerPreferencesPanel = null;
 	private JPanel commandPanel = null;

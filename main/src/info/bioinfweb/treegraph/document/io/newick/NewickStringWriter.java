@@ -28,11 +28,11 @@ import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 
 
 public class NewickStringWriter extends NewickStringChars {
-	private static boolean isFreeName(String name) {
+	private static boolean isFreeName(String name, boolean edited) {
 		if (name.length() == 0) {
 			return true;
 		}
-		else if (name.contains("_")) {
+		else if (!edited && name.contains("_")) {
 			return false;  // Always put in quotation marks to distinguish between space and underscore.
 		}
 		else if (isFreeNameFirstChar(name.charAt(0))) {
@@ -49,7 +49,7 @@ public class NewickStringWriter extends NewickStringChars {
 	}
 	
 	
-	private static String formatName(Node node, NodeBranchDataAdapter adapter, boolean spacesAsUnderscore) {
+	public static String formatName(Node node, NodeBranchDataAdapter adapter, boolean spacesAsUnderscore) {
 		String name = "";
     if (adapter.isDecimal(node)) {
     	name = "" + adapter.getDecimal(node);
@@ -58,15 +58,15 @@ public class NewickStringWriter extends NewickStringChars {
     	name = adapter.getText(node);
     }
 		
-		if (isFreeName(name)) {
+		if (isFreeName(name, false)) {
 			return name;
 		}
 		else {
-			String editedName = name.replaceAll(" ", "_"); 
-			if (spacesAsUnderscore && isFreeName(editedName)) { 
+			String editedName = name.replaceAll(" ", "_");
+			if (spacesAsUnderscore && isFreeName(editedName, true)) { 
 				return editedName;
 			}
-			else {  // Spaces are not replaced of other characters that make quotations necessary are present.
+			else {  // Spaces are not replaced if other characters that make quotations necessary are present.
 				StringBuffer result = new StringBuffer(name.length() * 2);
 				result.append(NAME_DELIMITER);
 				for (int i = 0; i < name.length(); i++) {
@@ -94,7 +94,7 @@ public class NewickStringWriter extends NewickStringChars {
 			for (int i = 0; i < size - 1; i++) {
 				result += writeSubtree(root.getChildren().get(i), internalAdapter, leafAdapter, 
 						branchLengthAdapter, spacesAsUnderscore);
-				result += ELEMENT_SEPERATOR + " ";
+				result += ELEMENT_SEPERATOR;
 			}
 			result += writeSubtree(root.getChildren().get(size - 1), internalAdapter, leafAdapter, 
 					branchLengthAdapter, spacesAsUnderscore);
@@ -109,7 +109,7 @@ public class NewickStringWriter extends NewickStringChars {
 			result += formatName(root, internalAdapter, spacesAsUnderscore);
 		}
 		
-		// Astl�nge schreiben:
+		// Astlänge schreiben:
 		if ((branchLengthAdapter != null) && branchLengthAdapter.isDecimal(root)) {
 			result += LENGTH_SEPERATOR + "" + branchLengthAdapter.getDecimal(root);
 		}
@@ -135,12 +135,12 @@ public class NewickStringWriter extends NewickStringChars {
   	
   	String result;
   	if (tree.getFormats().getShowRooted()) {
-  		result = NexusParser.COMMENT_START + NexusParser.ROOTED_COMMAND + 
-  		    NexusParser.COMMENT_END + " ";
+  		result = NexusParser.COMMENT_START + NexusParser.ROOTED_HOT_COMMENT + 
+  		    NexusParser.COMMENT_END;
   	}
   	else {
-  		result = NexusParser.COMMENT_START + NexusParser.UNROOTED_COMMAND + 
-  		    NexusParser.COMMENT_END + " ";
+  		result = NexusParser.COMMENT_START + NexusParser.UNROOTED_HOT_COMMENT + 
+  		    NexusParser.COMMENT_END;
   	}
   	
   	if (tree.isEmpty()) {
