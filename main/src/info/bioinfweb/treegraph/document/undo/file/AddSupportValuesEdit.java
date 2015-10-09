@@ -50,8 +50,8 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
 		  new DecimalFormat("[#.#######];[-#.#######]");
 	
 	
-	public Document src = null ; 
-
+	/** The document from which support values are imported */
+	private Document sourceDocument = null;
 	
 	/** The node/branch data to be imported (node names or branch lengths). */
 	private NodeBranchDataAdapter sourceAdapter = null;
@@ -67,12 +67,12 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
 	}
 
 
-	public AddSupportValuesEdit(Document document, Document src, 
+	public AddSupportValuesEdit(Document targetDocument, Document sourceDocument, 
 			TextElementDataAdapter terminalsAdapter, TargetType targetType, String idPrefix,
 			NodeBranchDataAdapter sourceAdapter, boolean processRooted) {
 		
-		super(document, DocumentChangeType.TOPOLOGICAL_BY_RENAMING, terminalsAdapter, processRooted);  // Topological relevance only if the default leaves adapter ID is affected. 
-		this.src = src;
+		super(targetDocument, DocumentChangeType.TOPOLOGICAL_BY_RENAMING, terminalsAdapter, processRooted);  // Topological relevance only if the default leaves adapter ID is affected. 
+		this.sourceDocument = sourceDocument;
 		this.sourceAdapter = sourceAdapter;
 		
 		switch (targetType) {
@@ -95,6 +95,7 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
 	/**
 	 * Tests if all internal nodes in the subtree under <code>root</code> contain 
 	 * decimal values.
+	 * 
 	 * @param root - the root of the subtree to be checked
 	 * @param adapter - the adapter to obtain the data from the nodes
 	 * @return <code>true</code> if only decimal values are found
@@ -155,9 +156,9 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
 	
 	@Override
 	protected void performRedo() {
-    String errorMsg = getTopologicalCalculator().compareLeaves(src);
+    String errorMsg = getTopologicalCalculator().compareLeaves(sourceDocument);
     if (errorMsg == null) {  // The terminal nodes of both trees are identical.
-  		getTopologicalCalculator().addLeafSets(src.getTree().getPaintStart(), TopologicalCalculator.SOURCE_LEAVES_ADAPTER);
+  		getTopologicalCalculator().addLeafSets(sourceDocument.getTree().getPaintStart(), TopologicalCalculator.SOURCE_LEAVES_ADAPTER);
   		getTopologicalCalculator().addLeafSets(getDocument().getTree().getPaintStart(), getTargetLeavesAdapter());
   		processSubtree(getDocument().getTree().getPaintStart());
     }
@@ -186,7 +187,7 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
 			if (!(targetRoot.hasParent() && !targetRoot.getParent().hasParent() && !getTopologicalCalculator().isProcessRooted() && 
 					(targetRoot.getParent().getChildren().size() == 2) && targetRoot.isLast())) {  // Check if the current node is linked to the paint start which does not represent a root and the other linked branch already carries the same support value.
 				
-				NodeInfo bestSourceNode = getTopologicalCalculator().findSourceNodeWithAllLeaves(src.getTree(), 
+				NodeInfo bestSourceNode = getTopologicalCalculator().findSourceNodeWithAllLeaves(sourceDocument.getTree(), 
 								getTopologicalCalculator().getLeafSet(targetRoot));
 				if (bestSourceNode.getAdditionalCount() == 0) {  // support found
   				if (sourceAdapter.isDecimal(bestSourceNode.getNode())) {  // if no value exists there
@@ -207,7 +208,7 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
 					throw new InternalError("-1 RETURNED");  // Should not happen.
 				}
 				else {  // conflict found
-					double value = getSupportValue(getTopologicalCalculator().findHighestConflict(src.getTree(), 
+					double value = getSupportValue(getTopologicalCalculator().findHighestConflict(sourceDocument.getTree(), 
 							getDocument().getTree(), bestSourceNode.getNode(), getTopologicalCalculator().getLeafSet(targetRoot), 
 							getTopologicalCalculator().getLeafSet(bestSourceNode.getNode()), sourceAdapter));
 					if (!Double.isNaN(value) && (value != 0)) {
