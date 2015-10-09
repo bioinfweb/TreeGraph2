@@ -24,6 +24,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.util.Map;
+import java.util.TreeMap;
 
 import info.bioinfweb.commons.SystemUtils;
 import info.bioinfweb.treegraph.document.Document;
@@ -64,13 +66,24 @@ public class NexusWriter extends AbstractDocumentWriter {
 			increaseIndention();
 			writeLine(writer, NexusParser.TRANSL_TABLE_NAME + " ");
 			increaseIndention();
+			Map<String, Integer> nameToKeyMap = new TreeMap<String, Integer>();
 			for (int i = 0; i < leavesInCurrentTree.length; i++) {
-				writeLine(writer, (i + 1) + " " + NewickStringWriter.formatName(leavesInCurrentTree[i], properties.getNodeBranchDataAdapter(ReadWriteParameterMap.KEY_LEAF_NODE_NAMES_ADAPTER, 
-			  		document.getDefaultLeafAdapter()), properties.getBoolean(ReadWriteParameterMap.KEY_SPACES_AS_UNDERSCORE, false)));
+				nameToKeyMap.put(leavesInCurrentTree[i].getUniqueName(), i + 1);
+				String line = (i + 1) + " " + NewickStringWriter.formatName(leavesInCurrentTree[i], 
+						properties.getNodeBranchDataAdapter(ReadWriteParameterMap.KEY_LEAF_NODE_NAMES_ADAPTER, 
+						document.getDefaultLeafAdapter()), properties.getBoolean(ReadWriteParameterMap.KEY_SPACES_AS_UNDERSCORE, false));
+				if (i < leavesInCurrentTree.length - 1) {
+					line += ",";
+				}
+				writeLine(writer, line);
 			}
+			
+			TranslTableAdapter translTableAdapter = new TranslTableAdapter(nameToKeyMap);
+			ReadWriteParameterMap translationProperties = properties;
+			translationProperties.put(ReadWriteParameterMap.KEY_LEAF_NODE_NAMES_ADAPTER, translTableAdapter);
 			writeLine(writer, NexusParser.COMMAND_END + "");
 			decreaseIndention();
-			writeLine(writer, NexusParser.TREE_NAME + " " + "tree1 = " + NewickStringWriter.write(document.getTree(), properties));
+			writeLine(writer, NexusParser.TREE_NAME + " " + "tree1 = " + NewickStringWriter.write(document.getTree(), translationProperties));
 			decreaseIndention();
 			writeCommand(writer, NexusParser.END_COMMAND);
 		}

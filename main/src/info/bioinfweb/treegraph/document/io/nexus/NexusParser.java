@@ -55,7 +55,7 @@ public class NexusParser {
 	public static final Pattern BLOCK_END_PATTERN = Pattern.compile("(" + END_COMMAND + "|endblock)");
 	public static final Pattern COMMAND_PATTERN = Pattern.compile("" + COMMAND_END);
 	public static final Pattern NAME_SEPARATOR_PATTERN = Pattern.compile("'"); 
-	public static final Pattern ENCLOSED_NAME_PATTERN = Pattern.compile("\\s*'[^']'\\s*");	
+	public static final Pattern ENCLOSED_NAME_PATTERN = Pattern.compile("\\s*'[^']'\\s*");	//TODO funktioniert nicht bei ''
 	public static final Pattern TREES_PATTERN = Pattern.compile("\\s*" + BLOCK_NAME_TREES + "\\s*");
 	public static final Pattern TRANSL_TABLE_PATTERN = Pattern.compile(TRANSL_TABLE_NAME);
 	public static final Pattern TRANSL_TABLE_SEPARATOR_PATTERN = Pattern.compile(","); 
@@ -67,6 +67,7 @@ public class NexusParser {
 	
   /**
    * Splits the passed text into Nexus commands. Comments are not removed.
+   * 
    * @param content
    * @return
    */
@@ -109,6 +110,7 @@ public class NexusParser {
   /**
    * Returns the index of the next occurrence of <code>character</code> after <code>start</code>
    * which is not located inside a comment.
+   * 
    * @param text - the text to be searched
    * @param start - the position to start searching
    * @param character - the sought-after character
@@ -152,7 +154,7 @@ public class NexusParser {
   
   /**
    * Searches for the first occurrence of the given command.
-   * @param commands - the list if all commands
+   * @param commands - the list of all commands
    * @param start - the command index to start the search
    * @param end - the command index to stop the search
    * @param namePattern - the name of the command (The pattern should describe all 
@@ -180,8 +182,24 @@ public class NexusParser {
   
   
   private static String parseName(String name) {
-  	if (ENCLOSED_NAME_PATTERN.matcher(name).matches()) {
-  		return NAME_SEPARATOR_PATTERN.split(name)[1];  // Nur die Mitte zur�ckgeben
+//  	if (ENCLOSED_NAME_PATTERN.matcher(name).matches()) {
+//  		return NAME_SEPARATOR_PATTERN.split(name)[1];  // Nur die Mitte zur�ckgeben
+//  	}
+//  	else {
+//  		return name.replaceAll(Character.toString(NewickStringChars.FREE_NAME_BLANK), " ");
+//  	}
+//  	System.out.println("Name: " + name);
+  	if (name.contains(Character.toString(WORD_DELIMITER))) {
+  		String result = "";
+  		for (int i = 1; i < name.length(); i++) {  // WORD_DELIMITER am Anfang überspringen.
+  			if (name.charAt(i) != WORD_DELIMITER) {
+  				result += name.charAt(i);
+  			}
+  			if ((i + 1 < name.length()) && name.charAt(i + 1) == WORD_DELIMITER) {
+  				result += WORD_DELIMITER;  // Ermöglichen von 'abc'''
+  			}
+  		}
+  		return result;
   	}
   	else {
   		return name.replaceAll(Character.toString(NewickStringChars.FREE_NAME_BLANK), " ");
@@ -198,8 +216,17 @@ public class NexusParser {
   private static void readTranslTable(NexusCommand command, TranslTable translTable) {
   	String[] entrys = TRANSL_TABLE_SEPARATOR_PATTERN.split(removeComments(command.getTokens()));
   	for (int i = 0; i < entrys.length; i++) {
-			String[] parts = WHITESPACE_PATTERN.split(entrys[i].trim());
-			translTable.add(parseName(parts[0]), parseName(parts[1]));
+  		String[] parts;
+  		if (entrys[i].contains(Character.toString(WORD_DELIMITER))) {
+//  			System.out.println("Parsed: " + parseName(entrys[i]));
+  			parts = WHITESPACE_PATTERN.split(parseName(entrys[i]).trim());
+//  			System.out.println(parts[1]);
+  			translTable.add(parseName(parts[0].trim()), parts[1]);
+  		}
+  		else {
+  			parts = WHITESPACE_PATTERN.split(entrys[i].trim());
+  			translTable.add(parseName(parts[0].trim()), parseName(parts[1]));
+  		}			
 		}
   }
   

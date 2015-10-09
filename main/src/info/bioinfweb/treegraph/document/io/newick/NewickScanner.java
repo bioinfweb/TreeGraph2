@@ -50,7 +50,7 @@ public class NewickScanner extends NewickStringChars {
 	
 	
 	private static int readDelimitedName(final String text, int start, NewickToken token) {
-		start++;  // NAME_DELIMITER am Anfang �berspringen.
+		start++;  // NAME_DELIMITER am Anfang überspringen.
 		int pos = start;
 		String result = "";
 		do {
@@ -59,8 +59,8 @@ public class NewickScanner extends NewickStringChars {
 				pos++;
 			}
 			if ((pos + 1 < text.length()) && (text.charAt(pos + 1) == NAME_DELIMITER)) {
-				result += NAME_DELIMITER;  // Erm�glichen von 'abc'''
-				pos +=2;  
+				result += NAME_DELIMITER;  // Ermöglichen von 'abc'''
+				pos +=2;
 			}
 		} while (pos < text.length() && (text.charAt(pos) != NAME_DELIMITER));
 		
@@ -77,9 +77,10 @@ public class NewickScanner extends NewickStringChars {
 	
 	/**
 	 * Reads a length statement in an Newick string.
+	 * 
 	 * @param token the token where the length value shall be stored
 	 * @param text the Newick string
-	 * @param start ste start position of the length statement
+	 * @param start the start position of the length statement
 	 * @return the position to go on tokenizing
 	 */
 	private static int readBranchLength(final String text, int start, NewickToken token) {
@@ -103,6 +104,7 @@ public class NewickScanner extends NewickStringChars {
 	/**
 	 * Reads a comment and adds it to last token in the passed list. If the comment is a rooted- or 
 	 * unrooted-command the according token is added.
+	 * 
 	 * @param text
 	 * @param start
 	 * @param tokenList
@@ -135,6 +137,7 @@ public class NewickScanner extends NewickStringChars {
 		}
 	}
 		
+	
  	public static List<NewickToken> parse(final String text) {
 		List<NewickToken> result = new Vector<NewickToken>();
 		
@@ -153,9 +156,9 @@ public class NewickScanner extends NewickStringChars {
   		  	break;
   		  case LENGTH_SEPERATOR:
   		  	token = new NewickToken(TokenType.LENGTH, pos);
-  		  	pos++; // LENGTH_SEPERATOR selbst �berspringen
-  		  	if (text.charAt(pos) == COMMENT_START) {  // Sonderfall: Kommentar zwischen LENGTH_SEPERATOR und L�ngenangabe 
-    		  	pos = readComment(text, pos, result) + 1;  // Zus�tzlich COMMENT_END �berspringen
+  		  	pos++; // LENGTH_SEPERATOR selbst überspringen
+  		  	if (text.charAt(pos) == COMMENT_START) {  // Sonderfall: Kommentar zwischen LENGTH_SEPERATOR und Längenangabe 
+    		  	pos = readComment(text, pos, result) + 1;  // Zusätzlich COMMENT_END überspringen
   		  	}
   		  	pos = readBranchLength(text, pos, token);
   		  	result.add(token);

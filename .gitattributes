@@ -278,6 +278,7 @@ main/src/info/bioinfweb/treegraph/document/io/nexus/NexusParser.java -text
 main/src/info/bioinfweb/treegraph/document/io/nexus/NexusReader.java -text
 main/src/info/bioinfweb/treegraph/document/io/nexus/NexusWriter.java -text
 main/src/info/bioinfweb/treegraph/document/io/nexus/TranslTable.java -text
+main/src/info/bioinfweb/treegraph/document/io/nexus/TranslTableAdapter.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/io/nexus/package.html -text
 main/src/info/bioinfweb/treegraph/document/io/package.html -text
 main/src/info/bioinfweb/treegraph/document/io/phyloxml/PhyloXMLConstants.java -text

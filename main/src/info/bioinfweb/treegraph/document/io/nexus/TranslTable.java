@@ -19,23 +19,26 @@
 package info.bioinfweb.treegraph.document.io.nexus;
 
 
-import java.util.HashMap;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 
 
 /**
  * Stores the content of a taxon table in a nexus document. It is possible to access taxon
  * names by their identifier or their position.
+ * 
  * @author Ben St&ouml;ver
  */
 public class TranslTable {
-  private HashMap<String, Integer> keyHash = new HashMap<String, Integer>();
-  private Vector<String> nameList = new Vector<String>();
+  private Map<String, Integer> keyMap = new TreeMap<String, Integer>();
+  private List<String> nameList = new ArrayList<String>();
   
   
   public void add(String key, String value) {
-  	keyHash.put(key, new Integer(size()));
+  	keyMap.put(key, new Integer(size()));
   	nameList.add(value);
   }
   
@@ -51,7 +54,7 @@ public class TranslTable {
   
   
   public String get(String key) {
-  	Integer index = keyHash.get(key);
+  	Integer index = keyMap.get(key);
   	if (index != null) {
   		return get(index.intValue());
   	}
@@ -62,7 +65,7 @@ public class TranslTable {
   
   
   public void clear() {
-  	keyHash.clear();
+  	keyMap.clear();
   	nameList.clear();
   }
 }
