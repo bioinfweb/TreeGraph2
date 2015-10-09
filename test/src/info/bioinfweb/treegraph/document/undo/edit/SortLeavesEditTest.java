@@ -22,6 +22,7 @@ package info.bioinfweb.treegraph.document.undo.edit;
 import info.bioinfweb.commons.SystemUtils;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.NodeType;
 import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.TreeSerializer;
 import info.bioinfweb.treegraph.document.io.xtg.XTGReader;
@@ -97,7 +98,7 @@ public class SortLeavesEditTest {
   			NodeNameAdapter.getSharedInstance(), new CompareTextElementDataParameters());
   	document.executeEdit(edit);
   	
-  	List<Node> leaves = TreeSerializer.getElementsInSubtreeAsList(document.getTree().getPaintStart(), true, Node.class);
+  	List<Node> leaves = TreeSerializer.getElementsInSubtreeAsList(document.getTree().getPaintStart(), NodeType.LEAVES, Node.class);
   	for (int i = 0; i < order.size(); i++) {
 	    assertEquals(order.get(i).getText(), leaves.get(i).getData().getText());
     }
@@ -126,7 +127,7 @@ public class SortLeavesEditTest {
   			NodeNameAdapter.getSharedInstance(), new CompareTextElementDataParameters());
   	document.executeEdit(edit);
   	
-  	List<Node> leaves = TreeSerializer.getElementsInSubtreeAsList(document.getTree().getPaintStart(), true, Node.class);
+  	List<Node> leaves = TreeSerializer.getElementsInSubtreeAsList(document.getTree().getPaintStart(), NodeType.LEAVES, Node.class);
     assertEquals("A", leaves.get(0).getData().getText());
     assertEquals("B", leaves.get(1).getData().getText());
   	for (int i = 2; i < order.size(); i++) {
@@ -157,7 +158,7 @@ public class SortLeavesEditTest {
   			NodeNameAdapter.getSharedInstance(), new CompareTextElementDataParameters());
   	document.executeEdit(edit);
   	
-  	List<Node> leaves = TreeSerializer.getElementsInSubtreeAsList(document.getTree().getPaintStart(), true, Node.class);
+  	List<Node> leaves = TreeSerializer.getElementsInSubtreeAsList(document.getTree().getPaintStart(), NodeType.LEAVES, Node.class);
     assertEquals("B", leaves.get(0).getData().getText());
     assertEquals("C", leaves.get(1).getData().getText());
     assertEquals("D", leaves.get(2).getData().getText());
