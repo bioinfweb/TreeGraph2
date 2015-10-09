@@ -41,6 +41,13 @@ import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 
 
 
+/**
+ * Edit that imports support values from another tree into the current document. Supporting and conflicting
+ * values are imported.
+ * 
+ * @author Ben St&ouml;ver
+ * @author Sarah Wiechers
+ */
 public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
 	public static final String SUPPORT_NAME = "Support";
 	public static final String CONFLICT_NAME = "Conflict";
@@ -50,6 +57,12 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
 		  new DecimalFormat("[#.#######];[-#.#######]");
 	
 	
+	/** The type of node/branch data column to import the support values to. */
+	public enum TargetType {
+		LABEL, HIDDEN_NODE_DATA, HIDDEN_BRANCH_DATA;
+	}
+
+
 	/** The document from which support values are imported */
 	private Document sourceDocument = null;
 	
@@ -62,11 +75,7 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
 	/** The node/branch data column to write imported conflict values to. */
 	private AbstractTextElementDataAdapter conflictAdapter = null;
 	
-	public enum TargetType {
-		LABEL, HIDDEN_NODE_DATA, HIDDEN_BRANCH_DATA;
-	}
-
-
+	
 	public AddSupportValuesEdit(Document targetDocument, Document sourceDocument, 
 			TextElementDataAdapter terminalsAdapter, TargetType targetType, String idPrefix,
 			NodeBranchDataAdapter sourceAdapter, boolean processRooted) {
@@ -164,7 +173,7 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
     }
     else {
 			JOptionPane.showMessageDialog(MainFrame.getInstance(), errorMsg, 
-					"Incompatible trees", JOptionPane.ERROR_MESSAGE);
+					"Incompatible trees", JOptionPane.ERROR_MESSAGE);  //TODO Remove this, when different leaf sets are supported. (Dialogs should anyway not be displayed in edits!)
     }
 	}
 
