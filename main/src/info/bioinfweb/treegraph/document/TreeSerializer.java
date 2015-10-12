@@ -148,12 +148,12 @@ public class TreeSerializer {
    * Calling this method is equivalent to 
    * {@code getElementsInSubtree(root, leavesOnly, elementClass, (T[])Array.newInstance(elementClass, 0))}.
    * 
-   * @param <T> - the type of the array to be returned
-   * @param root - the node to which the returned elements are connected
-   * @param leavesOnly - determines whether only elements attached to leaf nodes (or the leaf nodes themselves) shall
+   * @param <T> the type of the array to be returned
+   * @param root the node to which the returned elements are connected
+   * @param leavesOnly determines whether only elements attached to leaf nodes (or the leaf nodes themselves) shall
    *        be included
-   * @param elementClass - the class defining which elements should be returned
-   * @param array - the array to store the result in (defines the return type and is recreated if it is too small)
+   * @param elementClass the class defining which elements should be returned
+   * @param array the array to store the result in (defines the return type and is recreated if it is too small)
    * @return the array of tree elements
    * @since 2.0.43
    */

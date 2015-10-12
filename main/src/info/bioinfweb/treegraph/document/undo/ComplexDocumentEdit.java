@@ -86,6 +86,10 @@ public abstract class ComplexDocumentEdit extends DocumentEdit {
 	@Override
 	public void redo() throws CannotRedoException {
 		getDocument().getTree().setPaintStart(newRoot);
+		
+		getDocument().getTree().updateElementSet();  // This is done again in super.redo(), but should also be done before performRedo(), so that these collections contain values according to the copied tree this method works on.
+		getDocument().getTree().assignUniqueNames();
+		
   	if (!firstRedone) {
 			performRedo();  // Can't be called in the constructor already
 			newRoot = getDocument().getTree().getPaintStart();  // In case the root changed in performRedo()

@@ -145,7 +145,8 @@ public class TreeSelection implements Collection<PaintableElement> {
 			}
 		}
 		else {
-			throw new IllegalArgumentException("An element can only be selected if it is contained in the associated tree.");
+			throw new IllegalArgumentException("The element \"" + element + 
+							"\" can only be selected if it is contained in the associated tree.");
 		}
 	}
 	
@@ -154,7 +155,7 @@ public class TreeSelection implements Collection<PaintableElement> {
 	public boolean add(PaintableElement element) {
 		if (!owner.getDocument().getTree().contains(element)) {
 			throw new IllegalArgumentException(
-					"An element can only be added to the selection if it is contained in the associated tree.");
+					"The element \"" + element + "\" can only be added to the selection if it is contained in the associated tree.");
 		}
 		else if (element != null) {
 			boolean result = true;
