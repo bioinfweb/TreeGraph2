@@ -85,6 +85,9 @@ public class GenerateBayesTraitsInputDialog extends EditDialog {
 	private JLabel internalNodeNamesInputLabel = null;
 	private NodeBranchDataInput internalNodeNamesColumnInput = null;
 	
+	private JPanel helpTextPanel = null;
+	private JLabel helpTextLabel = null;
+	
 	private JPanel copyButtonPanel = null;
 	private JButton copyButton = null;
 
@@ -174,6 +177,7 @@ public class GenerateBayesTraitsInputDialog extends EditDialog {
 			jContentPane.add(getNodesPanel());
 			jContentPane.add(getCommandTypePanel());
 			jContentPane.add(getNodeNamesPanel());
+			jContentPane.add(getHelpTextPanel());
 			jContentPane.add(getCopyButtonPanel());
 			jContentPane.add(getButtonsPanel(), null);
 			getApplyButton().setVisible(false);
@@ -436,5 +440,24 @@ public class GenerateBayesTraitsInputDialog extends EditDialog {
 			});
 		}
 		return copyButton;
+	}
+
+
+	private JPanel getHelpTextPanel() {
+		if (helpTextPanel == null) {
+			helpTextPanel = new JPanel();
+			helpTextPanel.add(getHelpTextLabel());
+		}
+		return helpTextPanel;
+	}
+
+
+	private JLabel getHelpTextLabel() {
+		if (helpTextLabel == null) {
+			helpTextLabel = new JLabel();
+			helpTextLabel.setText("<html><body>To see how to create a tree file and character table that can be<br>"
+					+ "used in a BayesTraits analysis click the \"Help\" button.<br></body></html>");
+		}
+		return helpTextLabel;
 	}
 }
