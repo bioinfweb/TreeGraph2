@@ -89,8 +89,8 @@ public class ExportToGraphicDialog extends FileDialog {
 	private JComboBox unitComboBox = null;
 	private JLabel spacerLabel = null;
 	private JFileChooser fileChooser;  //  This field must not be set to anything (e.g. null) because the initialization performed by the super constructor (FileDialog) would be overwritten then.
-	private JPanel fileChooserPanel = null;
-	private JPanel outerPreferencesPanel = null;
+	private JPanel fileChooserPanel;
+	private JPanel outerPreferencesPanel;   //  This field must not be set to anything (e.g. null).
 	private JPanel commandPanel = null;
 	private JRadioButton openRadioButton = null;
 	private JRadioButton printRadioButton = null;
@@ -173,7 +173,7 @@ public class ExportToGraphicDialog extends FileDialog {
 		float result = Math2.parseFloat(text);
 		if (getUnitComboBox().getSelectedItem().equals(UNIT_POINTS)) {
 			result = DistanceValue.pointsToMillimeters(result);
-		}  // Millimeter oder Pixel m�ssen nicht konvertiret werden.
+		}  // Millimeter oder Pixel müssen nicht konvertiert werden.
 		return result;
 	}
 	
@@ -348,7 +348,7 @@ public class ExportToGraphicDialog extends FileDialog {
 	}
 	
 	
-	private void setPereferencesPanel(GraphicFormat format) {
+	private void setPreferencesPanel(GraphicFormat format) {
 		preferencesPanel = null;
 		if (format != null) {
 			preferencesPanel = PreferencesPanelFactory.getInstance().getPanel(format);
@@ -362,8 +362,7 @@ public class ExportToGraphicDialog extends FileDialog {
 			gridBagConstraints.fill = GridBagConstraints.BOTH;
 			gridBagConstraints.weightx = 1.0;
 			gridBagConstraints.weighty = 1.0;
-			getOuterPreferencesPanel().add((JComponent)preferencesPanel, 
-					gridBagConstraints);
+			getOuterPreferencesPanel().add((JComponent)preferencesPanel, gridBagConstraints);
 			getOuterPreferencesPanel().setVisible(true);
 		}
 		else {
@@ -563,16 +562,16 @@ public class ExportToGraphicDialog extends FileDialog {
   			fileChooser.addChoosableFileFilter(filters[i]);
 			}
   		fileChooser.setFileFilter(filters[0]);
-			setPereferencesPanel((filters[0]).getFormat());
+			setPreferencesPanel((filters[0]).getFormat());
   		
 			fileChooser.addPropertyChangeListener(new PropertyChangeListener() {
 				public void propertyChange(PropertyChangeEvent e) {
 					if (e.getPropertyName().equals(JFileChooser.FILE_FILTER_CHANGED_PROPERTY)) {
 						if (e.getNewValue() instanceof GraphicFilter) {
-							setPereferencesPanel(((GraphicFilter)e.getNewValue()).getFormat());
+							setPreferencesPanel(((GraphicFilter)e.getNewValue()).getFormat());
 						}
 						else {
-							setPereferencesPanel(null);
+							setPreferencesPanel(null);
 						}
 					}
 				}

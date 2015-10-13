@@ -20,11 +20,19 @@ package info.bioinfweb.treegraph.document.io.newick;
 
 
 import info.bioinfweb.treegraph.document.io.AbstractFilter;
+import info.bioinfweb.treegraph.document.io.ReadWriteFormat;
+import info.bioinfweb.treegraph.document.io.TreeFilter;
 
 
 
-public class NewickFilter extends AbstractFilter {
-  public static final String[] EXTENSIONS 
+public class NewickFilter extends AbstractFilter implements TreeFilter {
+	@Override
+	public ReadWriteFormat getFormat() {
+		return ReadWriteFormat.NEWICK;
+	}
+
+
+	public static final String[] EXTENSIONS 
       = {".tre", ".tree", ".trees", ".nwk", ".con"};
   
 

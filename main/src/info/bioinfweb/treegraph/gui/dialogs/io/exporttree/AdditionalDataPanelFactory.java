@@ -16,37 +16,42 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.document.io.tgf;
+package info.bioinfweb.treegraph.gui.dialogs.io.exporttree;
 
 
-import info.bioinfweb.treegraph.document.io.AbstractFilter;
 import info.bioinfweb.treegraph.document.io.ReadWriteFormat;
-import info.bioinfweb.treegraph.document.io.TreeFilter;
+import java.util.EnumMap;
 
 
 
-public class TGFFilter extends AbstractFilter implements TreeFilter {
-  @Override
-	public ReadWriteFormat getFormat() {
-  	return ReadWriteFormat.TGF;
-	}
-
-
-	public static final String EXTENSION = ".tgf";
+public class AdditionalDataPanelFactory {
+	private static AdditionalDataPanelFactory firstInstance = null;
 	
-	
-	public boolean validExtension(String name) {
-		return name.toLowerCase().endsWith(EXTENSION);
+	private EnumMap<ReadWriteFormat, TreeFormatPanel> panels = 
+  	  new EnumMap<ReadWriteFormat, TreeFormatPanel>(ReadWriteFormat.class);
+
+  
+	private AdditionalDataPanelFactory() {
+		super();
+		fillList();
 	}
 	
 	
-	@Override
-	public String getDescription() {
-		return "TreeGraph format from version 1.x (*.tgf)";
+	public static AdditionalDataPanelFactory getInstance() {
+		if (firstInstance == null) {
+			firstInstance = new AdditionalDataPanelFactory();
+		}
+		return firstInstance;
 	}
+  
+	
+  private void fillList() {
+  	panels.put(ReadWriteFormat.NEXUS, new NexusCommandsPanel());
+  	panels.put(ReadWriteFormat.NEWICK, new NewickPanel());
+  }
+  
 
-
-	public String getDefaultExtension() {
-		return EXTENSION;
-	}
+  public TreeFormatPanel getPanel(ReadWriteFormat format) {
+  	return panels.get(format);
+  }
 }

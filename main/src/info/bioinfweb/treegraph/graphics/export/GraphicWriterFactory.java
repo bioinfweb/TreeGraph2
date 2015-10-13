@@ -19,7 +19,6 @@
 package info.bioinfweb.treegraph.graphics.export;
 
 
-import info.bioinfweb.treegraph.document.io.AbstractFilter;
 import info.bioinfweb.treegraph.graphics.export.emf.EMFFactory;
 import info.bioinfweb.treegraph.graphics.export.jpeg.JPEGFactory;
 import info.bioinfweb.treegraph.graphics.export.pdf.PDFFactory;

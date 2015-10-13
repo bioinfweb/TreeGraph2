@@ -32,6 +32,8 @@ public class ReadWriteParameterMap extends ApplicationLoggerParameterMap {
 	public static final String KEY_BRANCH_LENGTH_ADAPTER = "branchLengthAdapter";
 	public static final String KEY_TRANSLATE_INTERNAL_NODE_NAMES = "translateInternalNodeNames";
 	public static final String KEY_REGISTER_FILE_CHOOSER_OF_DOCUMENT = "registerFileChooser";
+	public static final String KEY_EXPORT_TAXA_BLOCK = "exportTaxaBlock";
+	public static final String KEY_USE_TRANSL_TABLE = "useTranslTable";
 	
 	
 	/**

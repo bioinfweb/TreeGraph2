@@ -21,7 +21,9 @@ package info.bioinfweb.treegraph.document.io.nexus;
 
 import info.bioinfweb.treegraph.document.io.newick.NewickStringChars;
 
+import java.io.IOException;
 import java.util.Vector;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
@@ -36,7 +38,8 @@ public class NexusParser {
 	public static final char COMMENT_START = '['; 
 	public static final char COMMENT_END = ']'; 
 	public static final char KEY_VALUE_SEPERATOR = '=';
-	public static final char WORD_DELIMITER = '\''; 
+	public static final char WORD_DELIMITER = '\'';
+	public static final char WHITESPACE = ' ';
 	
 	public static final String BLOCK_NAME_TAXA = "taxa";
 	public static final String BLOCK_NAME_TREES = "trees";
@@ -54,8 +57,9 @@ public class NexusParser {
 	public static final Pattern BLOCK_BEGIN_PATTERN = Pattern.compile(BEGIN_COMMAND);
 	public static final Pattern BLOCK_END_PATTERN = Pattern.compile("(" + END_COMMAND + "|endblock)");
 	public static final Pattern COMMAND_PATTERN = Pattern.compile("" + COMMAND_END);
-	public static final Pattern NAME_SEPARATOR_PATTERN = Pattern.compile("'"); 
-	public static final Pattern ENCLOSED_NAME_PATTERN = Pattern.compile("\\s*'[^']'\\s*");	//TODO funktioniert nicht bei ''
+	public static final Pattern NAME_SEPARATOR_PATTERN = Pattern.compile("'");
+	public static final Pattern ENTRY_PATTERN = Pattern.compile("\\s*(\\d*)\\s*(.*)\\s*");
+	public static final Pattern ENCLOSED_NAME_PATTERN = Pattern.compile("\\s*(\\d*)\\s*'(.*)'\\s*");  // Can only be used for substrings containing not more than one name.
 	public static final Pattern TREES_PATTERN = Pattern.compile("\\s*" + BLOCK_NAME_TREES + "\\s*");
 	public static final Pattern TRANSL_TABLE_PATTERN = Pattern.compile(TRANSL_TABLE_NAME);
 	public static final Pattern TRANSL_TABLE_SEPARATOR_PATTERN = Pattern.compile(","); 
@@ -182,16 +186,9 @@ public class NexusParser {
   
   
   private static String parseName(String name) {
-//  	if (ENCLOSED_NAME_PATTERN.matcher(name).matches()) {
-//  		return NAME_SEPARATOR_PATTERN.split(name)[1];  // Nur die Mitte zur�ckgeben
-//  	}
-//  	else {
-//  		return name.replaceAll(Character.toString(NewickStringChars.FREE_NAME_BLANK), " ");
-//  	}
-//  	System.out.println("Name: " + name);
   	if (name.contains(Character.toString(WORD_DELIMITER))) {
   		String result = "";
-  		for (int i = 1; i < name.length(); i++) {  // WORD_DELIMITER am Anfang überspringen.
+  		for (int i = 0; i < name.length(); i++) {
   			if (name.charAt(i) != WORD_DELIMITER) {
   				result += name.charAt(i);
   			}
@@ -210,30 +207,42 @@ public class NexusParser {
   /**
    * Reads the content of the passed translation table from the passed command. The command 
    * tokens-string may contain comments.
+   * 
    * @param command
    * @param translTable
    */
-  private static void readTranslTable(NexusCommand command, TranslTable translTable) {
+  private static void readTranslTable(NexusCommand command, TranslTable translTable) throws IOException {
   	String[] entrys = TRANSL_TABLE_SEPARATOR_PATTERN.split(removeComments(command.getTokens()));
+  	Matcher entryPatternMatcher;
+  	Matcher enclosedPatternMatcher;
+  	String resultKey = "";
+  	String resultName = "";
   	for (int i = 0; i < entrys.length; i++) {
-  		String[] parts;
-  		if (entrys[i].contains(Character.toString(WORD_DELIMITER))) {
-//  			System.out.println("Parsed: " + parseName(entrys[i]));
-  			parts = WHITESPACE_PATTERN.split(parseName(entrys[i]).trim());
-//  			System.out.println(parts[1]);
-  			translTable.add(parseName(parts[0].trim()), parts[1]);
+  		entryPatternMatcher = ENTRY_PATTERN.matcher(entrys[i]);
+  		enclosedPatternMatcher = ENCLOSED_NAME_PATTERN.matcher(entrys[i]);
+  		if (entryPatternMatcher.matches() && !enclosedPatternMatcher.matches()) {
+  			resultKey = entryPatternMatcher.group(1);
+  			resultName = entryPatternMatcher.group(2);  			
   		}
-  		else {
-  			parts = WHITESPACE_PATTERN.split(entrys[i].trim());
-  			translTable.add(parseName(parts[0].trim()), parseName(parts[1]));
-  		}			
+  		else if (enclosedPatternMatcher.matches()) {
+				resultKey = enclosedPatternMatcher.group(1);
+  			resultName = enclosedPatternMatcher.group(2);
+			}
+			else {
+				throw new IOException("Line " + (i + 1) + " of the translation table contains invalid entries.");
+			}  			
+			if (resultKey.isEmpty()) {
+				resultKey = String.valueOf(i + 1);
+			}
+			translTable.add(parseName(resultKey), parseName(resultName));
 		}
   }
   
   
   /**
-   * Reads a tree from the passed nexus command tokens and adds it to the passed document.
+   * Reads a tree from the passed Nexus command tokens and adds it to the passed document.
    * Comments are left inside both the name and the tree string.
+   * 
    * @param tokens
    * @param document
    */
@@ -249,7 +258,7 @@ public class NexusParser {
   }
   
   
-  public static NexusDocument parse(String content) throws NexusException {
+  public static NexusDocument parse(String content) throws NexusException, IOException {
   	content = content.trim();
   	if (content.toLowerCase().startsWith(FIRST_LINE)) {
   		NexusCommand[] commands = scan(content.substring(FIRST_LINE.length()));

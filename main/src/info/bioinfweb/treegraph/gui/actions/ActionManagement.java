@@ -77,7 +77,7 @@ public class ActionManagement extends AbstractUndoActionManagement {
 		put("file.close", new CloseAction(mainFrame));
 		put("file.exportGraphic", new ExportToGraphicAction(mainFrame));
 		put("file.exportPDF", new ExportToPDFAction(mainFrame));
-		put("file.exportNewickNexus", new ExportToNewickNexusAction(mainFrame));
+		put("file.exportTreeFormat", new ExportToTreeFormatAction(mainFrame));
 		put("file.addSupportValues", new AddSupportValuesAction(mainFrame));
 		put("file.nodeFrequency", new NodeSupportAction(mainFrame));
 		put("file.importTable", new ImportTableAction(mainFrame));

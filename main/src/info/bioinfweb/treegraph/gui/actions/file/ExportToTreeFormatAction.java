@@ -28,25 +28,25 @@ import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.gui.actions.EditDialogAction;
 import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
-import info.bioinfweb.treegraph.gui.dialogs.io.exporttree.ExportToNewickStringDialog;
+import info.bioinfweb.treegraph.gui.dialogs.io.exporttree.ExportToTreeDialog;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 
 
 
-public class ExportToNewickNexusAction extends EditDialogAction {
-	public ExportToNewickNexusAction(MainFrame mainFrame) {
+public class ExportToTreeFormatAction extends EditDialogAction {
+	public ExportToTreeFormatAction(MainFrame mainFrame) {
 		super(mainFrame);
-		putValue(Action.NAME, "Export to Newick / Nexus..."); 
+		putValue(Action.NAME, "Export to tree format..."); 
 	  putValue(Action.MNEMONIC_KEY, KeyEvent.VK_P);
-		putValue(Action.SHORT_DESCRIPTION, "Export to Newick / Nexus"); 
+		putValue(Action.SHORT_DESCRIPTION, "Export to tree format"); 
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F11, 0));
 	}
 
 	
 	@Override
 	public EditDialog createDialog() {
-		return new ExportToNewickStringDialog(getMainFrame());
+		return new ExportToTreeDialog(getMainFrame());
 	}
 
 

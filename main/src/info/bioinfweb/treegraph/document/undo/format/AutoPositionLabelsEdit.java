@@ -53,7 +53,7 @@ public class AutoPositionLabelsEdit extends DocumentEdit {
 	
 	private Branch[] branches;
 	private List<String> ids;
-	private boolean equalSupportConflictPosition;
+	private boolean equalSupportConflictPosition;  //TODO Remove this field or implement according behavior.
 	private Vector<LabelFormats>[] oldFormats;
 		
 	

@@ -20,17 +20,24 @@ package info.bioinfweb.treegraph.document.io.xtg;
 
 
 import info.bioinfweb.treegraph.document.io.AbstractXMLFilter;
-import info.bioinfweb.treegraph.document.io.DocumentFilter;
+import info.bioinfweb.treegraph.document.io.ReadWriteFormat;
+import info.bioinfweb.treegraph.document.io.TreeFilter;
 
 
 
 /**
  * @author Ben St&ouml;ver
  */
-public class XTGFilter extends AbstractXMLFilter implements DocumentFilter, XTGConstants {
+public class XTGFilter extends AbstractXMLFilter implements TreeFilter, XTGConstants {
   public static final String EXTENSION = ".xtg";
 
   
+	@Override
+	public ReadWriteFormat getFormat() {
+  	return ReadWriteFormat.XTG;
+	}
+
+
 	public XTGFilter() {
 		super(TAG_ROOT);
 	}

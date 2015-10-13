@@ -26,12 +26,14 @@ import info.bioinfweb.commons.collections.ParameterMap;
 /**
  * This interface should be implemented by all panels that are used to edit format specific 
  * preferences in the <code>ExportToGraphics</code>-dialog.
+ * 
  * @author Ben St&ouml;ver
  */
 public interface PreferencesPanel {
   /**
    * This method should add the graphic writer hints that are specified by the components
    * contained in the particular implementation
+   * 
    * @param hints - the map to add the hints to
    */
   public void addHints(ParameterMap hints);

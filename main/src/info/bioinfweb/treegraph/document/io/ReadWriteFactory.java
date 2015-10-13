@@ -62,6 +62,7 @@ public class ReadWriteFactory {
 	/**
 	 * Returns the file format guessed from the file extension. (If several formats with the same extension 
 	 * exist the first in the list is returned.)
+	 * 
 	 * @param name
 	 * @return
 	 */

@@ -27,6 +27,7 @@ import java.awt.Insets;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.border.TitledBorder;
@@ -44,6 +45,8 @@ public class SynchronizeTreeSelectionParametersDialog extends EditDialog {
 	private JRadioButton unrootedRadioButton = null;
 	private ButtonGroup processTreeAsGroup = null;
 	private CompareTextElementDataParametersPanel compareTextElementDataParametersPanel = null;
+	private JPanel helpTextPanel = null;
+	private JLabel helpTextLabel = null;
 	
 	
 	public SynchronizeTreeSelectionParametersDialog(MainFrame mainFrame) {
@@ -92,6 +95,7 @@ public class SynchronizeTreeSelectionParametersDialog extends EditDialog {
 			jContentPane.setLayout(new BoxLayout(getJContentPane(), BoxLayout.Y_AXIS));
 			jContentPane.add(getProcessRootedPanel(), null);
 			jContentPane.add(getCompareTextElementDataParametersPanel(), null);
+			jContentPane.add(getHelpTextPanel());
 			jContentPane.add(getButtonsPanel(), null);
 			getApplyButton().setVisible(false);
 		}
@@ -144,5 +148,24 @@ public class SynchronizeTreeSelectionParametersDialog extends EditDialog {
 					new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
 		}
 		return compareTextElementDataParametersPanel;
+	}
+	
+	
+	private JPanel getHelpTextPanel() {
+		if (helpTextPanel == null) {
+			helpTextPanel = new JPanel();
+			helpTextPanel.add(getHelpTextLabel());
+		}
+		return helpTextPanel;
+	}
+	
+
+	private JLabel getHelpTextLabel() {
+		if (helpTextLabel == null) {
+			helpTextLabel = new JLabel();
+			helpTextLabel.setText("<html><body>The default node/branch data columns containing support values have to be selected for all trees that shall be compared.<br>"
+					+ "This can be done in the submenu \"Node/branch data\" of the edit menu.</body></html>");
+		}
+		return helpTextLabel;
 	}
 }

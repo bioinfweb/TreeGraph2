@@ -23,7 +23,8 @@ import java.io.File;
 import java.io.FileReader;
 
 import info.bioinfweb.treegraph.document.io.AbstractFilter;
-import info.bioinfweb.treegraph.document.io.DocumentFilter;
+import info.bioinfweb.treegraph.document.io.ReadWriteFormat;
+import info.bioinfweb.treegraph.document.io.TreeFilter;
 
 
 
@@ -33,8 +34,14 @@ import info.bioinfweb.treegraph.document.io.DocumentFilter;
  * @author Ben St&ouml;ver
  *
  */
-public class NexusFilter extends AbstractFilter implements DocumentFilter {
-  public static final String[] EXTENSIONS 
+public class NexusFilter extends AbstractFilter implements TreeFilter {
+  @Override
+	public ReadWriteFormat getFormat() {
+  	return ReadWriteFormat.NEXUS;
+	}
+
+
+	public static final String[] EXTENSIONS 
       = {".tre", ".tree", ".trees", ".con", ".nex", ".nexus"};
 
   

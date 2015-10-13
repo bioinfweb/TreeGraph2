@@ -21,6 +21,8 @@ package info.bioinfweb.treegraph.document.io.phyloxml;
 
 import info.bioinfweb.treegraph.document.io.AbstractXMLFilter;
 import info.bioinfweb.treegraph.document.io.DocumentFilter;
+import info.bioinfweb.treegraph.document.io.ReadWriteFormat;
+import info.bioinfweb.treegraph.document.io.TreeFilter;
 
 
 
@@ -28,7 +30,13 @@ import info.bioinfweb.treegraph.document.io.DocumentFilter;
  * @author Ben St&ouml;ver
  * @since 2.0.35
  */
-public class PhyloXMLFilter extends AbstractXMLFilter implements DocumentFilter, PhyloXMLConstants {
+public class PhyloXMLFilter extends AbstractXMLFilter implements TreeFilter, PhyloXMLConstants {
+	@Override
+	public ReadWriteFormat getFormat() {
+		return ReadWriteFormat.PHYLO_XML;
+	}
+
+
 	public PhyloXMLFilter() {
 		super(TAG_ROOT.getLocalPart());
 	}

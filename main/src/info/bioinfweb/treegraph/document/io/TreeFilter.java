@@ -16,37 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.document.io.tgf;
-
-
-import info.bioinfweb.treegraph.document.io.AbstractFilter;
-import info.bioinfweb.treegraph.document.io.ReadWriteFormat;
-import info.bioinfweb.treegraph.document.io.TreeFilter;
+package info.bioinfweb.treegraph.document.io;
 
 
 
-public class TGFFilter extends AbstractFilter implements TreeFilter {
-  @Override
-	public ReadWriteFormat getFormat() {
-  	return ReadWriteFormat.TGF;
-	}
-
-
-	public static final String EXTENSION = ".tgf";
-	
-	
-	public boolean validExtension(String name) {
-		return name.toLowerCase().endsWith(EXTENSION);
-	}
-	
-	
-	@Override
-	public String getDescription() {
-		return "TreeGraph format from version 1.x (*.tgf)";
-	}
-
-
-	public String getDefaultExtension() {
-		return EXTENSION;
-	}
+public interface TreeFilter extends DocumentFilter {	 
+		public abstract ReadWriteFormat getFormat();
 }

@@ -48,43 +48,50 @@ public class NexusWriter extends AbstractDocumentWriter {
 			writer.write(NexusParser.FIRST_LINE.toUpperCase() + SystemUtils.LINE_SEPARATOR);
 			
 			Node[] leavesInCurrentTree = TreeSerializer.getElementsInSubtree(document.getTree().getPaintStart(), NodeType.LEAVES, Node.class);
-			writeCommand(writer, NexusParser.BEGIN_COMMAND + " " + NexusParser.BLOCK_NAME_TAXA);
-			increaseIndention();
-			writeCommand(writer, NexusParser.DIMENSIONS_NAME + " " + NexusParser.DIMENSIONS_SUBCOMMAND_NTAX + NexusParser.KEY_VALUE_SEPERATOR + leavesInCurrentTree.length);
-			writeLine(writer, NexusParser.TAXLABELS_NAME + " ");
-			increaseIndention();
-			for (int i = 0; i < leavesInCurrentTree.length; i++) {
-				writeLine(writer, NewickStringWriter.formatName(leavesInCurrentTree[i], properties.getNodeBranchDataAdapter(ReadWriteParameterMap.KEY_LEAF_NODE_NAMES_ADAPTER, 
-			  		document.getDefaultLeafAdapter()), properties.getBoolean(ReadWriteParameterMap.KEY_SPACES_AS_UNDERSCORE, false)));
+			if (properties.getBoolean(ReadWriteParameterMap.KEY_EXPORT_TAXA_BLOCK, true)) {
+				writeCommand(writer, NexusParser.BEGIN_COMMAND + " " + NexusParser.BLOCK_NAME_TAXA);
+				increaseIndention();
+				writeCommand(writer, NexusParser.DIMENSIONS_NAME + " " + NexusParser.DIMENSIONS_SUBCOMMAND_NTAX + NexusParser.KEY_VALUE_SEPERATOR + leavesInCurrentTree.length);
+				writeLine(writer, NexusParser.TAXLABELS_NAME + " ");
+				increaseIndention();
+				for (int i = 0; i < leavesInCurrentTree.length; i++) {
+					writeLine(writer, NewickStringWriter.formatName(leavesInCurrentTree[i], properties.getNodeBranchDataAdapter(ReadWriteParameterMap.KEY_LEAF_NODE_NAMES_ADAPTER, 
+				  		document.getDefaultLeafAdapter()), properties.getBoolean(ReadWriteParameterMap.KEY_SPACES_AS_UNDERSCORE, false)));
+				}
+				writeLine(writer, NexusParser.COMMAND_END + "");
+				decreaseIndention();
+				decreaseIndention();
+				writeCommand(writer, NexusParser.END_COMMAND);
 			}
-			writeLine(writer, NexusParser.COMMAND_END + "");
-			decreaseIndention();
-			decreaseIndention();
-			writeCommand(writer, NexusParser.END_COMMAND);
 			
 			writeCommand(writer, NexusParser.BEGIN_COMMAND + " " + NexusParser.BLOCK_NAME_TREES);
 			increaseIndention();
-			writeLine(writer, NexusParser.TRANSL_TABLE_NAME + " ");
-			increaseIndention();
-			Map<String, Integer> nameToKeyMap = new TreeMap<String, Integer>();
-			for (int i = 0; i < leavesInCurrentTree.length; i++) {
-				nameToKeyMap.put(leavesInCurrentTree[i].getUniqueName(), i + 1);
-				String line = (i + 1) + " " + NewickStringWriter.formatName(leavesInCurrentTree[i], 
-						properties.getNodeBranchDataAdapter(ReadWriteParameterMap.KEY_LEAF_NODE_NAMES_ADAPTER, 
-						document.getDefaultLeafAdapter()), properties.getBoolean(ReadWriteParameterMap.KEY_SPACES_AS_UNDERSCORE, false));
-				if (i < leavesInCurrentTree.length - 1) {
-					line += ",";
+			if (properties.getBoolean(ReadWriteParameterMap.KEY_USE_TRANSL_TABLE, true)) {				
+				writeLine(writer, NexusParser.TRANSL_TABLE_NAME + " ");
+				increaseIndention();
+				Map<String, Integer> nameToKeyMap = new TreeMap<String, Integer>();
+				for (int i = 0; i < leavesInCurrentTree.length; i++) {
+					nameToKeyMap.put(leavesInCurrentTree[i].getUniqueName(), i + 1);
+					String line = (i + 1) + " " + NewickStringWriter.formatName(leavesInCurrentTree[i], 
+							properties.getNodeBranchDataAdapter(ReadWriteParameterMap.KEY_LEAF_NODE_NAMES_ADAPTER, 
+							document.getDefaultLeafAdapter()), properties.getBoolean(ReadWriteParameterMap.KEY_SPACES_AS_UNDERSCORE, false));
+					if (i < leavesInCurrentTree.length - 1) {
+						line += ",";
+					}
+					writeLine(writer, line);
 				}
-				writeLine(writer, line);
+				writeLine(writer, NexusParser.COMMAND_END + "");
+				decreaseIndention();
+				TranslTableAdapter translTableAdapter = new TranslTableAdapter(nameToKeyMap);
+				ReadWriteParameterMap translationProperties = properties;
+				translationProperties.put(ReadWriteParameterMap.KEY_LEAF_NODE_NAMES_ADAPTER, translTableAdapter);
+				writeLine(writer, NexusParser.TREE_NAME + " " + "tree1 = " + NewickStringWriter.write(document.getTree(), translationProperties));
 			}
+			else {
+				writeLine(writer, NexusParser.TREE_NAME + " " + "tree1 = " + NewickStringWriter.write(document.getTree(), properties));
+			}			
+			decreaseIndention();
 			
-			TranslTableAdapter translTableAdapter = new TranslTableAdapter(nameToKeyMap);
-			ReadWriteParameterMap translationProperties = properties;
-			translationProperties.put(ReadWriteParameterMap.KEY_LEAF_NODE_NAMES_ADAPTER, translTableAdapter);
-			writeLine(writer, NexusParser.COMMAND_END + "");
-			decreaseIndention();
-			writeLine(writer, NexusParser.TREE_NAME + " " + "tree1 = " + NewickStringWriter.write(document.getTree(), translationProperties));
-			decreaseIndention();
 			writeCommand(writer, NexusParser.END_COMMAND);
 		}
 		finally {

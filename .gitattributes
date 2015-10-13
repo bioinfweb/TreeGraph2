@@ -249,6 +249,7 @@ main/src/info/bioinfweb/treegraph/document/io/SingleDocumentIterator.java -text 
 main/src/info/bioinfweb/treegraph/document/io/SingleReadWriteFactory.java -text
 main/src/info/bioinfweb/treegraph/document/io/SupportedFormatsFilter.java -text
 main/src/info/bioinfweb/treegraph/document/io/TextStreamReader.java -text
+main/src/info/bioinfweb/treegraph/document/io/TreeFilter.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/io/TreeSelector.java -text
 main/src/info/bioinfweb/treegraph/document/io/ancestralstate/AncestralStateData.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/io/ancestralstate/BayesTraitsCommandsWriter.java -text svneol=unset#text/plain
@@ -548,8 +549,8 @@ main/src/info/bioinfweb/treegraph/gui/actions/file/CloseAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/file/ExitAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/file/ExportTableAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/file/ExportToGraphicAction.java -text
-main/src/info/bioinfweb/treegraph/gui/actions/file/ExportToNewickNexusAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/file/ExportToPDFAction.java -text
+main/src/info/bioinfweb/treegraph/gui/actions/file/ExportToTreeFormatAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/file/GenerateBayesTraitsInputAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/actions/file/ImportBayesTraitsDataAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/actions/file/ImportTableAction.java -text
@@ -667,7 +668,11 @@ main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttographic/PreferencesPane
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttographic/PreferencesPanelFactory.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttographic/TIFFPrefPanel.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttographic/TransparentBgPrefPanel.java -text
-main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttree/ExportToNewickStringDialog.java -text
+main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttree/AdditionalDataPanelFactory.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttree/ExportToTreeDialog.java -text
+main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttree/NewickPanel.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttree/NexusCommandsPanel.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttree/TreeFormatPanel.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/imexporttable/AssignImportTableColumnsDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/imexporttable/ExportNodeDataTableModel.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/imexporttable/ExportTableDialog.java -text

@@ -68,6 +68,7 @@ public class JPEGPrefPanel extends JPanel implements PreferencesPanel {
 		gridBagConstraints4.gridy = 0;
 		bestQualityLabel = new JLabel();
 		bestQualityLabel.setText("best quality");
+		
 		GridBagConstraints gridBagConstraints3 = new GridBagConstraints();
 		gridBagConstraints3.gridx = 1;
 		gridBagConstraints3.anchor = GridBagConstraints.WEST;
@@ -75,18 +76,21 @@ public class JPEGPrefPanel extends JPanel implements PreferencesPanel {
 		gridBagConstraints3.gridy = 0;
 		highestComprLabel = new JLabel();
 		highestComprLabel.setText("highest compression");
+		
 		GridBagConstraints gridBagConstraints1 = new GridBagConstraints();
 		gridBagConstraints1.fill = GridBagConstraints.HORIZONTAL;
 		gridBagConstraints1.gridy = 1;
 		gridBagConstraints1.weightx = 1.0;
 		gridBagConstraints1.gridwidth = 2;
 		gridBagConstraints1.gridx = 1;
+		
 		GridBagConstraints gridBagConstraints = new GridBagConstraints();
 		gridBagConstraints.gridx = 0;
 		gridBagConstraints.anchor = GridBagConstraints.WEST;
 		gridBagConstraints.gridy = 1;
 		qualityLabel = new JLabel();
 		qualityLabel.setText("Quality [%]: ");
+		
 		this.setSize(300, 200);
 		this.setLayout(new GridBagLayout());
 		this.add(qualityLabel, gridBagConstraints);
