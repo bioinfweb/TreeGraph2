@@ -46,8 +46,8 @@ public class AdditionalDataPanelFactory {
   
 	
   private void fillList() {
-  	panels.put(ReadWriteFormat.NEXUS, new NexusCommandsPanel());
-  	panels.put(ReadWriteFormat.NEWICK, new NewickPanel());
+  	panels.put(ReadWriteFormat.NEXUS, new NexusFormatPanel());
+  	panels.put(ReadWriteFormat.NEWICK, new NewickFormatPanel());
   }
   
 

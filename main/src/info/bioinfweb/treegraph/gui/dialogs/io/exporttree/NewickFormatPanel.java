@@ -44,7 +44,7 @@ import javax.swing.border.TitledBorder;
 
 
 
-public class NewickPanel extends JPanel implements TreeFormatPanel {
+public class NewickFormatPanel extends JPanel implements TreeFormatPanel {
 	private JPanel sourceDataPanel = null;
 	private NodeBranchDataInput internalInput = null;
 	private NodeBranchDataInput leafInput = null;
@@ -59,7 +59,7 @@ public class NewickPanel extends JPanel implements TreeFormatPanel {
 	private final ButtonGroup nodeNameFormatButtonGroup = new ButtonGroup();
 	
 	
-	public NewickPanel() {
+	public NewickFormatPanel() {
 		super();
 		initialize();
 	}
@@ -78,13 +78,12 @@ public class NewickPanel extends JPanel implements TreeFormatPanel {
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		this.add(getNodeNameFormatPanel());
-		this.add(getSourceDataPanel());		
+		this.add(getSourceDataPanel());
 	}
 	
 
 	@Override
 	public void initializeContents(Document document) {
-		System.out.println("Initialize Newick contents");
 		if (document != null) {
 			getInternalInput().setAdapters(document.getTree(), true, true, true, false, false, "Do not export internal node names");
 			if (!getInternalInput().setSelectedAdapter(TextLabelAdapter.class)) {

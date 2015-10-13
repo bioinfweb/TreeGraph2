@@ -670,8 +670,8 @@ main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttographic/TIFFPrefPanel.j
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttographic/TransparentBgPrefPanel.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttree/AdditionalDataPanelFactory.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttree/ExportToTreeDialog.java -text
-main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttree/NewickPanel.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttree/NexusCommandsPanel.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttree/NewickFormatPanel.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttree/NexusFormatPanel.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttree/TreeFormatPanel.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/imexporttable/AssignImportTableColumnsDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/imexporttable/ExportNodeDataTableModel.java -text

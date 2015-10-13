@@ -5,9 +5,9 @@
 <!-- XTG is the XML format used by the phylogenetic tree editor TreeGraph 2. -->
 <!-- <http://treegraph.bioinfweb.info/>                                      -->
 <!--                                                                         -->
-<!-- Copyright (C) 2007-2010 Ben Stöver                                      -->
-<!-- Version: 1.2 (corrected version)                                        -->
-<!-- Last modified: 2010-08-12 by Ben Stöver                                 -->
+<!-- Copyright (C) 2007-2015 Ben Stöver                                      -->
+<!-- Version: 1.4 (corrected version)                                        -->
+<!-- Last modified: 2015-10-13 by Ben Stöver                                 -->
 <!--                                                                         -->
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xtg="http://bioinfweb.info/xmlns/xtg" 
     targetNamespace="http://bioinfweb.info/xmlns/xtg" elementFormDefault="qualified" 
@@ -109,9 +109,9 @@
 	  </xsd:annotation>
     <xsd:complexContent>
       <xsd:restriction base="xsd:anyType">
-        <xsd:attribute name="Name" type="xtg:string" use="required"/>
-        <xsd:attribute name="ID" type="xtg:string" />
-        <xsd:attribute name="Purpose" type="xtg:string" use="required"/>
+        <xsd:attribute name="Name" type="xsd:string" use="required"/>
+        <xsd:attribute name="ID" type="xsd:string" />
+        <xsd:attribute name="Purpose" type="xsd:string" use="required"/>
       </xsd:restriction>
     </xsd:complexContent>
   </xsd:complexType>

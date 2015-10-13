@@ -109,7 +109,7 @@ public class NewickStringWriter extends NewickStringChars {
 			result += formatName(root, internalAdapter, spacesAsUnderscore);
 		}
 		
-		// Astlänge schreiben:
+		// Write branch length:
 		if ((branchLengthAdapter != null) && branchLengthAdapter.isDecimal(root)) {
 			result += LENGTH_SEPERATOR + "" + branchLengthAdapter.getDecimal(root);
 		}

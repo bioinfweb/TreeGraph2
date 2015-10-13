@@ -36,13 +36,13 @@ import javax.swing.border.TitledBorder;
 
 
 
-public class NexusCommandsPanel extends NewickPanel implements TreeFormatPanel {
+public class NexusFormatPanel extends NewickFormatPanel implements TreeFormatPanel {
 	private JPanel nexusOptionsPanel = null;
 	private JCheckBox exportTaxaTable = null;
 	private JCheckBox useTranslTable = null;
 
 	
-	public NexusCommandsPanel() {
+	public NexusFormatPanel() {
 		super();
 		initialize();
 	}
@@ -58,9 +58,7 @@ public class NexusCommandsPanel extends NewickPanel implements TreeFormatPanel {
 
 	@Override
 	public void initializeContents(Document document) {
-		super.initializeContents(document);
-		exportTaxaTable.setSelected(true);
-		useTranslTable.setSelected(true);
+		super.initializeContents(document);		
 	}
 
 
@@ -69,6 +67,8 @@ public class NexusCommandsPanel extends NewickPanel implements TreeFormatPanel {
 		this.add(getNodeNameFormatPanel());
 		this.add(getNexusOptionsPanel());
 		this.add(getSourceDataPanel());
+		exportTaxaTable.setSelected(true);
+		useTranslTable.setSelected(true);
 	}
 
 
