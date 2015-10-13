@@ -25,9 +25,7 @@ import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.nodebranchdata.*;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 import java.util.Vector;
 
@@ -96,15 +94,15 @@ public class NodeDataComboBoxModel extends AbstractListModel<NodeBranchDataAdapt
    * @param newIDSelectable If true an adaptor for a new user defined label ID is 
    *        added. Note that the label ID has still to be set. This adapters are also added if 
    *        <code>decimalOnly</code> is <code>true</code>.
-   * @param noImportAdapterSelectable TODO
+   * @param voidAdapterName the name to be displayed for instances of {@link VoidNodeBranchDataAdapter}
    */
   public void setAdapters(Tree tree, boolean uniqueNamesSelectable, boolean nodeNamesSelectable, 
-  		boolean branchLengthSelectable,	boolean decimalOnly, boolean newIDSelectable,	String noImportAdapterSelectable) {
+  		boolean branchLengthSelectable,	boolean decimalOnly, boolean newIDSelectable,	String voidAdapterName) {
 
   	clear();
   	
-  	if ((noImportAdapterSelectable != null) && !noImportAdapterSelectable.equals("")) {
-			adapters.add(new VoidNodeBranchDataAdapter(noImportAdapterSelectable));
+  	if ((voidAdapterName != null) && !voidAdapterName.equals("")) {
+			adapters.add(new VoidNodeBranchDataAdapter(voidAdapterName));
 		}  	
   	if (uniqueNamesSelectable) {
   		adapters.add(UniqueNameAdapter.getSharedInstance());
@@ -238,8 +236,19 @@ public class NodeDataComboBoxModel extends AbstractListModel<NodeBranchDataAdapt
 	/**
 	 * Selects the adapter which is an instance (not instance of a subclass) of same class as the 
 	 * given adapter and has the same ID (if it is an adapter for ID elements).
-	 * @param adapter
-	 * @return <code>true</code>, if one adapter was selected, <code>false</code>, if 
+	 * <p>
+	 * The selected adapter will be equal to the specified adapter, but it is not necessarily the
+	 * same instance.
+	 * <p>
+	 * This is especially relevant for instances of {@link VoidNodeBranchDataAdapter}.
+	 * Each instance of this class will use its own instance of {@link VoidNodeBranchDataAdapter}
+	 * internally, therefore the text displayed for such adapters will be equal to the text passed
+	 * to the last call of {@link #setSelectedAdapter(NodeBranchDataAdapter)} of this instance and
+	 * not to the text stored in the adapter passed to this method. This allows using different
+	 * string representations of {@link VoidNodeBranchDataAdapter} in different combo boxes. 
+	 * 
+	 * @param adapter the adapter prototype for the adapter to be selected
+	 * @return {@code true}, if one adapter was selected, {@code false}, if 
 	 *         no adapter of the given class (with the given ID) was found
 	 */
 	public boolean setSelectedAdapter(NodeBranchDataAdapter adapter) {

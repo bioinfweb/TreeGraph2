@@ -228,6 +228,7 @@ public class TreeSelection implements Collection<PaintableElement> {
 	
 	/**
 	 * Tests if at least one elements of the specified type is selected.
+	 * 
 	 * @param elementClass - defines the element type
 	 * @return <code>true</code> at least one is selected
 	 * @since 2.0.43
@@ -396,6 +397,7 @@ public class TreeSelection implements Collection<PaintableElement> {
   
 	/**
 	 * Returns the number of all selected elements of the specified type.
+	 * 
 	 * @param elementClass - the class of the elements to be counted
 	 * @return the number of elements
 	 * @since 2.0.43
