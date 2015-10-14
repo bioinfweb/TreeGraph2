@@ -22,17 +22,19 @@ package info.bioinfweb.treegraph.gui.dialogs;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.border.TitledBorder;
 
+import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
+import info.bioinfweb.wikihelp.client.JHTMLLabel;
 
 import java.awt.FlowLayout;
 
@@ -46,7 +48,7 @@ public class SynchronizeTreeSelectionParametersDialog extends EditDialog {
 	private ButtonGroup processTreeAsGroup = null;
 	private CompareTextElementDataParametersPanel compareTextElementDataParametersPanel = null;
 	private JPanel helpTextPanel = null;
-	private JLabel helpTextLabel = null;
+	private JHTMLLabel helpTextLabel = null;
 	
 	
 	public SynchronizeTreeSelectionParametersDialog(MainFrame mainFrame) {
@@ -154,17 +156,28 @@ public class SynchronizeTreeSelectionParametersDialog extends EditDialog {
 	private JPanel getHelpTextPanel() {
 		if (helpTextPanel == null) {
 			helpTextPanel = new JPanel();
-			helpTextPanel.add(getHelpTextLabel());
+			GridBagLayout gbl_helpTextPanel = new GridBagLayout();
+			gbl_helpTextPanel.columnWeights = new double[]{1.0, Double.MIN_VALUE};
+			gbl_helpTextPanel.rowWeights = new double[]{1.0, Double.MIN_VALUE};
+			helpTextPanel.setLayout(gbl_helpTextPanel);
+			
+			GridBagConstraints gbc_helpTextLabel = new GridBagConstraints();
+			gbc_helpTextLabel.fill = GridBagConstraints.BOTH;
+			gbc_helpTextLabel.insets = new Insets(2, 5, 2, 5);
+			gbc_helpTextLabel.gridx = 0;
+			gbc_helpTextLabel.gridy = 0;
+			helpTextPanel.add(getHelpTextLabel(), gbc_helpTextLabel);
 		}
 		return helpTextPanel;
 	}
 	
-
-	private JLabel getHelpTextLabel() {
+	
+	private JHTMLLabel getHelpTextLabel() {
 		if (helpTextLabel == null) {
-			helpTextLabel = new JLabel();
-			helpTextLabel.setText("<html><body>The default node/branch data columns containing support values have to be selected for all trees that shall be compared.<br>"
-					+ "This can be done in the submenu \"Node/branch data\" of the edit menu.</body></html>");
+			helpTextLabel = new JHTMLLabel(Main.getInstance().getWikiHelp());
+			helpTextLabel.setHTMLContent(
+					"If you want to compare conflicts in tree topologies the default support value columns<br>"
+					+ "have to be selected for all of these trees. See <a href='wikihelp://79'>Default node/branch data columns</a> on how to do this.");
 		}
 		return helpTextLabel;
 	}

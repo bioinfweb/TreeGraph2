@@ -19,7 +19,6 @@
 package info.bioinfweb.treegraph.gui.dialogs.editelement;
 
 
-import info.bioinfweb.treegraph.document.ConcretePaintableElement;
 import info.bioinfweb.treegraph.document.Label;
 import info.bioinfweb.treegraph.document.undo.edit.ChangeLabelIDEdit;
 import info.bioinfweb.treegraph.gui.dialogs.DataIDComboBox;
@@ -30,8 +29,6 @@ import java.awt.Frame;
 import javax.swing.BoxLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
-import java.util.Iterator;
-import java.util.LinkedList;
 
 
 

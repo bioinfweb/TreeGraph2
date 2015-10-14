@@ -45,6 +45,6 @@ public class TreeSelectionCompareParametersAction extends EditDialogAction {
 
 	@Override
 	public void setEnabled(Document document, TreeSelection selection, NodeBranchDataAdapter tableAdapter) {
-		setEnabled((document != null) && !document.getTree().isEmpty());
+		setEnabled((document != null));
 	}
 }

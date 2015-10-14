@@ -290,7 +290,7 @@ public class CollidingIDsDialog extends OkCancelApplyWikiHelpDialog {
 			gridBagConstraints.insets = new Insets(3, 3, 16, 3);
 			gridBagConstraints.gridy = 0;
 			messageLabel = new JLabel();
-			messageLabel.setText("<html><body>An element (label, hidden node/brnach data) with the IDs you selected already exists on this branch. Select \"Overwrite\" if you want to delete the element currently present or select \"Change IDs\" to renome one or both of the conflicting IDs.</body></html>");
+			messageLabel.setText("<html><body>An element (label, hidden node/branch data) with the IDs you selected already exists on this branch. Select \"Overwrite\" if you want to delete the element currently present or select \"Change IDs\" to rename one or both of the conflicting IDs.</body></html>");
 			messageLabel.setEnabled(true);
 			inputPanel = new JPanel();
 			inputPanel.setLayout(new GridBagLayout());

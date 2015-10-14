@@ -67,7 +67,7 @@ public class ExportToTreeDialog extends FileDialog {
 		super(owner, FileDialog.Option.ASK_TO_OVERWRITE);
 		
 		initialize();
-		setHelpCode(10);
+		setHelpCode(82);
 		setLocationRelativeTo(owner);
 	}
 

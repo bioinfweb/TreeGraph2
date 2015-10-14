@@ -92,7 +92,7 @@ public class NodeDataComboBoxModel extends AbstractListModel<NodeBranchDataAdapt
    *        element are included (This flag overwrites <code>nodeNamesSelectable</code> and
    *        <code>branchLengthSelectable</code>.)
    * @param newIDSelectable If true an adaptor for a new user defined label ID is 
-   *        added. Note that the label ID has still to be set. This adapters are also added if 
+   *        added. Note that the label ID has still to be set. These adapters are also added if 
    *        <code>decimalOnly</code> is <code>true</code>.
    * @param voidAdapterName the name to be displayed for instances of {@link VoidNodeBranchDataAdapter}
    */

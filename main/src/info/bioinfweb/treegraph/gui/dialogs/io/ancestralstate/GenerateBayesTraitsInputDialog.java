@@ -32,6 +32,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.UIManager;
 import javax.swing.JRadioButton;
 
+import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.NodeType;
 import info.bioinfweb.treegraph.document.TreeSerializer;
@@ -40,6 +41,7 @@ import info.bioinfweb.treegraph.gui.CurrentDirectoryModel;
 import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataInput;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
+import info.bioinfweb.wikihelp.client.JHTMLLabel;
 
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -86,7 +88,7 @@ public class GenerateBayesTraitsInputDialog extends EditDialog {
 	private NodeBranchDataInput internalNodeNamesColumnInput = null;
 	
 	private JPanel helpTextPanel = null;
-	private JLabel helpTextLabel = null;
+	private JHTMLLabel helpTextLabel;
 	
 	private JPanel copyButtonPanel = null;
 	private JButton copyButton = null;
@@ -172,7 +174,7 @@ public class GenerateBayesTraitsInputDialog extends EditDialog {
 	private JPanel getJContentPane() {
 		if (jContentPane == null) {
 			jContentPane = new JPanel();
-			jContentPane.setLayout(new BoxLayout(getJContentPane(), BoxLayout.Y_AXIS));
+			jContentPane.setLayout(new BoxLayout(jContentPane, BoxLayout.Y_AXIS));
 			jContentPane.add(getFilesPanel());
 			jContentPane.add(getNodesPanel());
 			jContentPane.add(getCommandTypePanel());
@@ -446,17 +448,28 @@ public class GenerateBayesTraitsInputDialog extends EditDialog {
 	private JPanel getHelpTextPanel() {
 		if (helpTextPanel == null) {
 			helpTextPanel = new JPanel();
-			helpTextPanel.add(getHelpTextLabel());
+			GridBagLayout gbl_helpTextPanel = new GridBagLayout();
+			gbl_helpTextPanel.columnWeights = new double[]{1.0, Double.MIN_VALUE};
+			gbl_helpTextPanel.rowWeights = new double[]{1.0, Double.MIN_VALUE};
+			helpTextPanel.setLayout(gbl_helpTextPanel);
+			
+			GridBagConstraints gbc_helpTextLabel = new GridBagConstraints();
+			gbc_helpTextLabel.fill = GridBagConstraints.BOTH;
+			gbc_helpTextLabel.insets = new Insets(2, 5, 2, 5);
+			gbc_helpTextLabel.gridx = 0;
+			gbc_helpTextLabel.gridy = 0;
+			helpTextPanel.add(getHelpTextLabel(), gbc_helpTextLabel);
 		}
 		return helpTextPanel;
 	}
-
-
-	private JLabel getHelpTextLabel() {
+	
+	
+	private JHTMLLabel getHelpTextLabel() {
 		if (helpTextLabel == null) {
-			helpTextLabel = new JLabel();
-			helpTextLabel.setText("<html><body>To see how to create a tree file and character table that can be<br>"
-					+ "used in a BayesTraits analysis click the \"Help\" button.<br></body></html>");
+			helpTextLabel = new JHTMLLabel(Main.getInstance().getWikiHelp());
+			helpTextLabel.setHTMLContent(
+					"If you also want to create a tree file or a character table see <a href='wikihelp://82'>Exporting trees as Newick/Nexus files</a> <br>"
+					+ "and <a href='wikihelp://67'>Exporting node/branch data</a> or click the help button.");
 		}
 		return helpTextLabel;
 	}
