@@ -37,7 +37,8 @@ public class BayesTraitsReader {
 	public static final String ROOT_NAME = "Root";	
 	private static final String MRCA_COMMAND = "MRCA:";
 	private static final String NODE_COMMAND = "Node:";
-	private static final String TABLE_START = "Iteration\t";
+	private static final String BAYESIAN_TABLE_START = "Iteration\t";
+	private static final String LIKELIHOOD_TABLE_START = "Tree No\t";
 	
 	private static final Pattern LEAF_NAME_PATTERN = Pattern.compile("\\s*\\d+\\s+(\\S+)\\s*");
 	private static final Pattern HEADING = Pattern.compile("(\\S+)\\s\\-\\s(.+)");
@@ -53,7 +54,7 @@ public class BayesTraitsReader {
 		String[] characterStates = new String[2];
 		Matcher matcher = CHARACTER_STATE_PATTERN.matcher(heading);
 		if (matcher.matches()) {
-			characterStates[0] = matcher.group(1);
+			characterStates[0] = matcher.group(1);			
 			characterStates[1] = matcher.group(2);
 		}
 		return characterStates;
@@ -88,7 +89,7 @@ public class BayesTraitsReader {
 			Matcher matcher = HEADING.matcher(parts[i]);
 			if (matcher.matches()) {
 				nodeNames.add(matcher.group(1));
-				probabilityKeys.add(matcher.group(2));			
+				probabilityKeys.add(matcher.group(2));
 			}
 			else {
 				nodeNames.add(null);
@@ -129,7 +130,7 @@ public class BayesTraitsReader {
 					AncestralStateData data = readMRCA(reader);
 					result.put(data.getName(), data);
 				}
-				else if (reader.isNext(TABLE_START)) {
+				else if (reader.isNext(BAYESIAN_TABLE_START) || reader.isNext(LIKELIHOOD_TABLE_START)) {
 					readTable(reader, result);
 				}
 				else {

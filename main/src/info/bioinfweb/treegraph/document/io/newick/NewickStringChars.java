@@ -40,7 +40,7 @@ public class NewickStringChars {
 	public static boolean isFreeNameFirstChar(char c) {
 		return (c != SUBTREE_END) && (c != LENGTH_SEPERATOR) && (c != ELEMENT_SEPERATOR) && (c != COMMENT_START) && (c != TERMINAL_SYMBOL) && !Character.isWhitespace(c); 
 		//return Character.isLetter(c) || (c == FREE_NAME_BLANK) || (c == '.') || (c == '-') || (c == '/') || Character.isDigit(c);
-	}	
+	}
 	
 	
 	public static boolean isCharAfterLength(char c) {

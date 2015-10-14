@@ -99,6 +99,7 @@ public class ExportTableDialog extends EditDialog {
 	private JRadioButton internalsRadioButton = null;
 	private JRadioButton leavesRadioButton = null;
   private JRadioButton bothRadioButton = null;
+  private JCheckBox chckbxReplaceSpacesBy;
 
 	
 	/**
@@ -141,7 +142,8 @@ public class ExportTableDialog extends EditDialog {
 					nodeType = NodeType.LEAVES;
 				}
 				boolean exportHeadings = getExportHeadingsCheckBox().isSelected();
-				getTableModel().writeData(file, getDocument().getTree().getPaintStart(), nodeType, exportHeadings);
+				boolean replaceSpaces = getChckbxReplaceSpacesBy().isSelected();
+				getTableModel().writeData(file, getDocument().getTree().getPaintStart(), nodeType, exportHeadings, replaceSpaces);
 			}
 			catch (FileNotFoundException e) {
 				JOptionPane.showMessageDialog(this, "The path \"" + getFileTextField().getText() + 
@@ -541,15 +543,24 @@ public class ExportTableDialog extends EditDialog {
 		if (headingsPanel == null) {
 			headingsPanel = new JPanel();
 			headingsPanel.setLayout(new GridBagLayout());
-			headingsPanel.setBorder(BorderFactory.createTitledBorder(null, "Column headings", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, 
+			headingsPanel.setBorder(BorderFactory.createTitledBorder(null, "Table settings", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, 
 					new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
 			
 			GridBagConstraints gbc_exportHeadingsCheckBox = new GridBagConstraints();
+			gbc_exportHeadingsCheckBox.insets = new Insets(0, 0, 0, 5);
 			gbc_exportHeadingsCheckBox.weightx = 1.0;
 			gbc_exportHeadingsCheckBox.anchor = GridBagConstraints.WEST;
 			gbc_exportHeadingsCheckBox.gridx = 0;
 			gbc_exportHeadingsCheckBox.gridy = 0;
 			headingsPanel.add(getExportHeadingsCheckBox(), gbc_exportHeadingsCheckBox);
+			
+			GridBagConstraints gbc_chckbxReplaceSpacesBy = new GridBagConstraints();
+			gbc_chckbxReplaceSpacesBy.insets = new Insets(0, 0, 0, 5);
+			gbc_chckbxReplaceSpacesBy.weightx = 1.0;
+			gbc_chckbxReplaceSpacesBy.anchor = GridBagConstraints.WEST;
+			gbc_chckbxReplaceSpacesBy.gridx = 1;
+			gbc_chckbxReplaceSpacesBy.gridy = 0;
+			headingsPanel.add(getChckbxReplaceSpacesBy(), gbc_chckbxReplaceSpacesBy);
 		}
 		return headingsPanel;
 	}
@@ -562,6 +573,14 @@ public class ExportTableDialog extends EditDialog {
 			exportHeadingsCheckBox.setSelected(true);
 		}
 		return exportHeadingsCheckBox;
+	}
+	
+	
+	private JCheckBox getChckbxReplaceSpacesBy() {
+		if (chckbxReplaceSpacesBy == null) {
+			chckbxReplaceSpacesBy = new JCheckBox("Replace spaces in node names with underscores");
+		}
+		return chckbxReplaceSpacesBy;
 	}
 
 

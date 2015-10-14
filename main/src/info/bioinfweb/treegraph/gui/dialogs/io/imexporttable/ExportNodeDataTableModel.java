@@ -21,6 +21,7 @@ package info.bioinfweb.treegraph.gui.dialogs.io.imexporttable;
 
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.NodeType;
+import info.bioinfweb.treegraph.document.io.ancestralstate.BayesTraitsCommandsWriter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 
 import java.io.File;
@@ -142,7 +143,7 @@ public class ExportNodeDataTableModel extends AbstractTableModel {
 		if (col == 0) {
 			return "Column";
 		}
-		else {  // nur noch 1 m�glich
+		else {  // nur noch 1 möglich
 			return "Data";
 		}
 	}
@@ -162,18 +163,24 @@ public class ExportNodeDataTableModel extends AbstractTableModel {
 		if (col == 0) {
 			return "" + row;
 		}
-		else {  // nur noch 1 m�glich
+		else {  // nur noch 1 möglich
 			return adapters.get(row).toString();
 		}
 	}
 	
 	
-	private String getValue(NodeBranchDataAdapter adapter, Node node) {
+	private String getValue(NodeBranchDataAdapter adapter, Node node, boolean replaceSpaces) {
 		if (adapter.isString(node)) {
-			return adapter.getText(node);
+			String nodeName = adapter.getText(node);
+			if (replaceSpaces && nodeName.contains(" ")) {
+				return nodeName.replaceAll(" ", "_");
+			}
+			else {
+				return nodeName;
+			}
 		}
 		else if (adapter.isDecimal(node)) {
-			return "" + adapter.getDecimal(node);
+			return BayesTraitsCommandsWriter.DECIMAL_INTEGER_FORMAT.format(adapter.getDecimal(node));
 		}
 		else {
 			return "";
@@ -188,25 +195,25 @@ public class ExportNodeDataTableModel extends AbstractTableModel {
 	 * @param root - the root node of the subtree to be written
 	 * @throws IOException
 	 */
-	private void writeSubtree(Node root) throws IOException {
+	private void writeSubtree(Node root, boolean replaceSpaces) throws IOException {
 		if ((root.isLeaf() && !nodeType.equals(NodeType.INTERNAL_NODES)) || (!root.isLeaf() && !nodeType.equals(NodeType.LEAVES))) {
 			String line = "";
 			if (adapters.size() > 0) {
 				for (int i = 0; i < adapters.size() - 1; i++) {
-					line += getValue(adapters.get(i), root) + "\t";
+					line += getValue(adapters.get(i), root, replaceSpaces) + "\t";
 				}
-				line += getValue(adapters.get(adapters.size() - 1), root) + System.getProperty("line.separator");
+				line += getValue(adapters.get(adapters.size() - 1), root, replaceSpaces) + System.getProperty("line.separator");
 			}
   		writer.write(line);
 		}
 		
 		for (int i = 0; i < root.getChildren().size(); i++) {
-			writeSubtree(root.getChildren().get(i));
+			writeSubtree(root.getChildren().get(i), replaceSpaces);
 		}
 	}
 	
 	
-	public void writeData(OutputStream stream, Node root, NodeType nodeType, boolean exportHeadings) throws IOException {
+	public void writeData(OutputStream stream, Node root, NodeType nodeType, boolean exportHeadings, boolean replaceSpaces) throws IOException {
 		writer = new OutputStreamWriter(stream);
 		this.nodeType = nodeType;
 		try {
@@ -221,7 +228,7 @@ public class ExportNodeDataTableModel extends AbstractTableModel {
 				writer.write(headings);
 			}
 			
-			writeSubtree(root);
+			writeSubtree(root, replaceSpaces);
 		}
 		finally {
 			writer.close();
@@ -235,7 +242,7 @@ public class ExportNodeDataTableModel extends AbstractTableModel {
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
-	public void writeData(File file, Node root, NodeType nodeType, boolean exportHeadings) throws FileNotFoundException, IOException {
-		writeData(new FileOutputStream(file), root, nodeType, exportHeadings);
+	public void writeData(File file, Node root, NodeType nodeType, boolean exportHeadings, boolean replaceSpaces) throws FileNotFoundException, IOException {
+		writeData(new FileOutputStream(file), root, nodeType, exportHeadings, replaceSpaces);
 	}
 }

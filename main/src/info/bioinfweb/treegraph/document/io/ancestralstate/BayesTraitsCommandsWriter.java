@@ -36,7 +36,7 @@ import java.util.Set;
 
 public class BayesTraitsCommandsWriter {
 	public static final String INTERNAL_NODE_NAME_PREFIX = "internalNode";
-	public static final DecimalFormat INTERNAL_NODE_NAME_FORMAT = new DecimalFormat("#.########");
+	public static final DecimalFormat DECIMAL_INTEGER_FORMAT = new DecimalFormat("#.########");
 	
 	
 	public void write(Writer writer, String commandName, Node[] nodes, NodeBranchDataAdapter leavesAdapter, NodeBranchDataAdapter internalNodesAdapter) throws IOException {
@@ -47,8 +47,8 @@ public class BayesTraitsCommandsWriter {
 				if (!node.isLeaf() && !(node.equals(MainFrame.getInstance().getActiveTreeFrame().getTreeViewPanel().getDocument().getTree().getPaintStart()))) {
 					String internalNodeName = internalNodesAdapter.getText(node);
 					if (internalNodesAdapter.isDecimal(node)) {
-						internalNodeName = INTERNAL_NODE_NAME_PREFIX + INTERNAL_NODE_NAME_FORMAT.format(internalNodesAdapter.getDecimal(node));
-					}					
+						internalNodeName = INTERNAL_NODE_NAME_PREFIX + DECIMAL_INTEGER_FORMAT.format(internalNodesAdapter.getDecimal(node));
+					}
 					if ((internalNodeName != null) && !internalNodeName.equals("")) {
 						if (internalNodeNameSet.add(internalNodeName)) {
 							writeCommand(writer, commandName, node, internalNodeName, leavesAdapter, internalNodesAdapter);
