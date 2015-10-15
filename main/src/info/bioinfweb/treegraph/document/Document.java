@@ -245,10 +245,10 @@ public class Document extends SwingSaver
 
 
 	public void executeEdit(DocumentEdit edit) {
-		if (!getUndoManager().addEdit(edit)) {  // Muss vor Ausf�hrung erfolgen da sonst Undo-Schalter ggf. nicht aktiviert werden.
+		if (!getUndoManager().addEdit(edit)) {  // Muss vor Ausführung erfolgen da sonst Undo-Schalter ggf. nicht aktiviert werden.
 			throw new RuntimeException("The edit could not be executed.");
 		}
-		edit.redo();  // Tats�chlich ausf�hren.
+		edit.redo();  // Tatsächlich ausführen.
 	}
 	
 	

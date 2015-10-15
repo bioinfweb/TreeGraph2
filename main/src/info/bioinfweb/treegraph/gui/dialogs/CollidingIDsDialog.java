@@ -152,7 +152,7 @@ public class CollidingIDsDialog extends OkCancelApplyWikiHelpDialog {
 	
 	
 	public String checkConflicts(Branch[] selection, String id, List<String> additionalReservedIDs) {
-		if (IDManager.idConflict(id, selection)){
+		if (IDManager.idConflict(id, selection)) {
 			CollidingIDsDialog dialog = CollidingIDsDialog.getInstance();
 			if (!dialog.promt(id, selection, additionalReservedIDs)){
 				for (int i = 0; i < selection.length; i++) {
@@ -374,10 +374,9 @@ public class CollidingIDsDialog extends OkCancelApplyWikiHelpDialog {
 					
 					getNewIDTextField().setEnabled(getChangeIDRadioButton().isSelected());
 					getPresentIDTextField().setEnabled(getChangeIDRadioButton().isSelected());
-					overwriteLabel.setEnabled(getChangeIDRadioButton().isSelected());
-					changeIDLabel.setEnabled(getChangeIDRadioButton().isSelected());
-					
-					}
+					changeID1Label.setEnabled(getChangeIDRadioButton().isSelected());
+					changeID2Label.setEnabled(getChangeIDRadioButton().isSelected());
+				}
 			});
 		}
 		return changeIDRadioButton;

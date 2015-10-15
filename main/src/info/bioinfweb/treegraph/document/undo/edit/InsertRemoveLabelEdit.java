@@ -52,6 +52,7 @@ public abstract class InsertRemoveLabelEdit extends DocumentEdit {
 		}
 		else {
 			throw new DuplicateIDException(label.getID(), owner.getHoldingBranch().getTargetNode());
+			//TODO Remove this exception, because CollidingIDsDialog allows overwriting of labels. Before removal overwritten labels must be saved by this edit in order to restore them in undo().
 		}
 	}
 	

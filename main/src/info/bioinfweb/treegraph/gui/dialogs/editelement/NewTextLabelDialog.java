@@ -89,7 +89,7 @@ public class NewTextLabelDialog extends AbstractTextElementDialog {
 		else {
 			Branch branch = getSelection().getFirstElementOfType(Branch.class); 
 			label.setID(CollidingIDsDialog.getInstance().checkConflicts(new Branch[]{branch}, 
-					(String)getIDComboBox().getSelectedItem()));		
+					(String)getIDComboBox().getSelectedItem()));
 			label.getFormats().setTextColor(FormatUtils.getTextColor(getDocument()));
 			getDocument().executeEdit(new InsertLabelEdit(getDocument(), label, 
 					branch.getLabels()));

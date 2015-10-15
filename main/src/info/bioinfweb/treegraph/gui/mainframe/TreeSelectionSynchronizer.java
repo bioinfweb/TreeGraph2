@@ -171,7 +171,7 @@ public class TreeSelectionSynchronizer implements TreeViewPanelListener, Documen
 					changeType == DocumentChangeType.TOPOLOGICAL_BY_OBJECT_CHANGE) {				
 				reset();				
 			}
-		}		
+		}
 	}
 
 
