@@ -46,7 +46,7 @@ import java.util.*;
  *   <div>Length --> &epsilon; | LENGTH</div>
  * </samp> 
  * &nbsp;<br />
- * <div>Note that this grammar differs from the usual Newick grammar becuase it allows
+ * <div>Note that this grammar differs from the usual Newick grammar because it allows
  * the root node to have a branch length.</div>
  * &nbsp;<br />
  * 
@@ -65,6 +65,7 @@ public class NewickStringReader extends NewickStringChars {
 	private TranslTable translTable; 
 	private boolean translateInternals;
 	private boolean hiddenDataAdded = false;
+	private boolean internalNamesAdded = false;
 	private CommentDataReader commentDataReader = new CommentDataReader();
 	private BranchLengthsScaler branchLengthsScaler = new BranchLengthsScaler();
   
@@ -77,7 +78,7 @@ public class NewickStringReader extends NewickStringChars {
 			}
 			else if (type.equals(TokenType.SUBTREE_START)) {
 				pos = searchSubtreeEnd(pos + 1, end);
-				if (pos == -1) {  // Sonst w�rde diese Rekursionsebene die Suche wieder von neum beginnen.
+				if (pos == -1) {  // Sonst würde diese Rekursionsebene die Suche wieder von Neuem beginnen.
 					return -1;
 				}
 			}
@@ -167,14 +168,16 @@ public class NewickStringReader extends NewickStringChars {
   			
   			try {
     			adapter.setDecimal(root, Double.parseDouble(text));
+    			internalNamesAdded = true;
   			}
   			catch (NumberFormatException e) {
     			adapter.setText(root, text);
+    			internalNamesAdded = true;
   			}
   		}
   	}
   	else if (previousEnd != end) {  // kein Name angegeben aber trotzdem Token vorhanden  
-  		throw new NewickException(tokens.get(previousEnd + 2), newickDescription);  //TODO vorher stand hier "+ 1". So in Funktion z.B. f�r direkt aufeinander folgende Namen, aber was war mit Kommentar oben gemeint?
+  		throw new NewickException(tokens.get(previousEnd + 2), newickDescription);  //TODO vorher stand hier "+ 1". So in Funktion z.B. für direkt aufeinander folgende Namen, aber was war mit Kommentar oben gemeint?
   	}
   }
  	
@@ -226,7 +229,7 @@ public class NewickStringReader extends NewickStringChars {
   		return result;  // empty tree
   	}
   	else if (tokens.size() < 3) {
-  		throw new NewickException(0, newickDescription, "Incomplete Newick string");  // "();" ist mindestens drei zeichen lang.
+  		throw new NewickException(0, newickDescription, "Incomplete Newick string");  // "();" ist mindestens drei Zeichen lang.
   	}
   	else if (!(tokens.get(0).getType().equals(TokenType.SUBTREE_START) || 
   			(tokens.get(0).getType().equals(TokenType.UNROOTED_COMMAND) && 
@@ -284,19 +287,24 @@ public class NewickStringReader extends NewickStringChars {
 	}
 
 
-	public Tree read(final String newick) throws NewickException {
+	private boolean getInternalNamesAdded() {
+		return internalNamesAdded;
+	}
+	
+
+	protected Tree read(final String newick) throws NewickException {  // does not provide information about hidden data or internal names that could have been read
   	return read(newick, LEAF_ADAPTER, BRANCH_LENGTH_ADAPTER, null, false);
   }
   
   
-  public Tree read(final String newick, NodeBranchDataAdapter internalAdapter, 
-  		NodeBranchDataAdapter branchLengthsAdapter) throws NewickException {
+	protected Tree read(final String newick, NodeBranchDataAdapter internalAdapter, 
+  		NodeBranchDataAdapter branchLengthsAdapter) throws NewickException {  // does not provide information about hidden data or internal names that could have been read
   	
   	return read(newick, internalAdapter, branchLengthsAdapter, null, false);
   }
   
   
-  public Tree read(final String newick, NodeBranchDataAdapter internalAdapter, 
+	protected Tree read(final String newick, NodeBranchDataAdapter internalAdapter, 
   		NodeBranchDataAdapter branchLengthsAdapter, TranslTable translTable, 
   		boolean translateInternals) throws NewickException {
   	
@@ -307,6 +315,7 @@ public class NewickStringReader extends NewickStringChars {
   	this.translTable = translTable;
   	this.translateInternals = translateInternals;
   	hiddenDataAdded = false;
+  	internalNamesAdded = false;
   	
   	Tree tree = readTree();
   	branchLengthsScaler.setDefaultAverageScale(tree);
@@ -320,12 +329,14 @@ public class NewickStringReader extends NewickStringChars {
 
 		Tree[] trees = new Tree[newick.length];
 		boolean[] hiddenDataAdded = new boolean[newick.length];
+		boolean[] internalNamesAdded = new boolean[newick.length];
 		NewickStringReader reader = new NewickStringReader(); 
 		for (int i = 0; i < newick.length; i++) {
 			trees[i] = reader.read(newick[i], internalAdapter, 
 					branchLengthsAdapter, translTable, translateInternals);
 			hiddenDataAdded[i] = reader.getHiddenDataAdded();
+			internalNamesAdded[i] = reader.getInternalNamesAdded();
 		}
-		return new NewickTreeList(trees, hiddenDataAdded);  	
+		return new NewickTreeList(trees, hiddenDataAdded, internalNamesAdded);
   }
 }

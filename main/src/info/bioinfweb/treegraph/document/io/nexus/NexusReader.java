@@ -22,13 +22,13 @@ package info.bioinfweb.treegraph.document.io.nexus;
 import java.io.BufferedInputStream;
 
 import info.bioinfweb.treegraph.document.Document;
-import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.io.DocumentIterator;
 import info.bioinfweb.treegraph.document.io.ReadWriteParameterMap;
 import info.bioinfweb.treegraph.document.io.TextStreamReader;
 import info.bioinfweb.treegraph.document.io.newick.NewickReader;
 import info.bioinfweb.treegraph.document.io.newick.NewickTreeList;
 import info.bioinfweb.treegraph.document.nodebranchdata.BranchLengthAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 
 
@@ -63,6 +63,10 @@ public class NexusReader extends TextStreamReader {
 		Document result = createEmptyDocument();
 		result.setTree(trees.getTree(treePos));
 		
+		NodeBranchDataAdapter supportAdapter = parameterMap.getNodeBranchDataAdapter(ReadWriteParameterMap.KEY_INTERNAL_NODE_NAMES_ADAPTER, 
+				NodeNameAdapter.getSharedInstance());
+		NewickReader.setDefaultSupportAdapter(result, supportAdapter, treePos, trees);
+			
 		if (trees.getHiddenDataAdded(treePos)) {
 			NewickReader.displayHiddenDataMessage(parameterMap.getApplicationLogger(), 76);
 		}

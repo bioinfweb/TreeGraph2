@@ -112,6 +112,7 @@ public abstract class AbstractDocumentReader implements DocumentReader {
 	@Override
   public Document read(File file, ReadWriteParameterMap properties) throws Exception {
 		Document result = read(new FileInputStream(file), properties);
+		
 		if (saveFileName) {
 			result.setFile(file);
 		}

@@ -92,7 +92,7 @@ public class ImportBayesTraitsDataDialog extends FileDialog {
 	@Override
 	protected boolean onExecute() {
 		getKeyColumnInput().setAdapters(getDocument().getTree(), true, true, true, false, false, "");
-		getKeyColumnInput().setSelectedAdapter(NodeNameAdapter.class);
+		getKeyColumnInput().setSelectedAdapter(getDocument().getDefaultLeafAdapter());
 		return true;
 	}
 
@@ -179,7 +179,7 @@ public class ImportBayesTraitsDataDialog extends FileDialog {
 	private JPanel getKeyColumnPanel() {
 		if (keyColumnPanel == null) {
 			keyColumnPanel = new JPanel();
-			keyColumnPanel.setBorder(new TitledBorder(null, "Key column", TitledBorder.LEADING, TitledBorder.TOP, new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
+			keyColumnPanel.setBorder(new TitledBorder(null, "Node names", TitledBorder.LEADING, TitledBorder.TOP, new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
 			GridBagLayout gbl_keyColumnPanel = new GridBagLayout();
 			gbl_keyColumnPanel.rowWeights = new double[]{0.0, 1.0};
 			gbl_keyColumnPanel.columnWeights = new double[]{0.0, 1.0};

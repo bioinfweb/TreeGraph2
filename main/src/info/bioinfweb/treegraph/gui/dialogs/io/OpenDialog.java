@@ -240,7 +240,7 @@ public class OpenDialog extends FileDialog {
 					else if (e.getPropertyName().equals(JFileChooser.SELECTED_FILE_CHANGED_PROPERTY)) {
 						boolean enableAdapters = (file != null) && 
 						    nexusFilter.validExtension(file.getAbsolutePath()) &&
-						    newickFilter.validExtension(file.getAbsolutePath());  // nur validExtension() um �ffnen jder Datei zu verhindern
+						    newickFilter.validExtension(file.getAbsolutePath());  // only validExtension() to avoid opening of every file
 						getNodeNamesDataInput().setEnabled(enableAdapters);
 						getTranslateInternalNodesCheckBox().setEnabled((file != null) && 
 								nexusFilter.accept(file));

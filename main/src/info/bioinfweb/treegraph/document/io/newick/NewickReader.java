@@ -25,6 +25,9 @@ import java.io.InputStreamReader;
 import java.util.LinkedList;
 
 
+
+
+
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.io.AbstractDocumentIterator;
 import info.bioinfweb.treegraph.document.io.DocumentIterator;
@@ -33,8 +36,10 @@ import info.bioinfweb.treegraph.document.io.ReadWriteParameterMap;
 import info.bioinfweb.treegraph.document.io.TextStreamReader;
 import info.bioinfweb.treegraph.document.io.nexus.NexusParser;
 import info.bioinfweb.treegraph.document.nodebranchdata.BranchLengthAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.NewNodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.VoidNodeBranchDataAdapter;
 import info.bioinfweb.commons.log.ApplicationLogger;
 
 
@@ -73,8 +78,8 @@ public class NewickReader extends TextStreamReader implements DocumentReader {
 				Document result = createEmptyDocument();
 				result.setTree(newickStringReader.read(
 						tree, 
-						getParameterMap().getNodeBranchDataAdapter(ReadWriteParameterMap.KEY_INTERNAL_NODE_NAMES_ADAPTER, null),  // Default value is null because a values has to be specified in the constructor.  
-						getParameterMap().getNodeBranchDataAdapter(ReadWriteParameterMap.KEY_BRANCH_LENGTH_ADAPTER, null),  // Default value is null because a values has to be specified in the constructor.  
+						getParameterMap().getNodeBranchDataAdapter(ReadWriteParameterMap.KEY_INTERNAL_NODE_NAMES_ADAPTER, null),  // Default value is null because a value has to be specified in the constructor.  
+						getParameterMap().getNodeBranchDataAdapter(ReadWriteParameterMap.KEY_BRANCH_LENGTH_ADAPTER, null),  // Default value is null because a value has to be specified in the constructor.  
 						null, false));
 			  return result;
 			}
@@ -103,7 +108,7 @@ public class NewickReader extends TextStreamReader implements DocumentReader {
 	
 	private String readNextTree(InputStreamReader reader) throws IOException {
 		int code = reader.read();
-		if (code == -1) {  //TODO Wird hier wirklich -1 zur�ckgegeben, wenn Ende des Streams erreicht ist.
+		if (code == -1) {  //TODO Wird hier wirklich -1 zurückgegeben, wenn Ende des Streams erreicht ist?
 			return null;
 		}
 		else {
@@ -141,10 +146,10 @@ public class NewickReader extends TextStreamReader implements DocumentReader {
 			}
 			String newick = result.toString().trim();
 			if (newick.equals("")) {
-				return null;  // null should be returned already here,  because the file could end with whitespaces
+				return null;  // null should be returned already here, because the file could end with whitespaces
 			}
 			else {
-				return terminateNewick(newick);  // If end of file was reached without a terminal symbol, the sequence until than is returned.
+				return terminateNewick(newick);  // If end of file was reached without a terminal symbol, the sequence until then is returned.
 			}
 		}
 	}
@@ -169,6 +174,21 @@ public class NewickReader extends TextStreamReader implements DocumentReader {
 	}
 	
 	
+	public static void setDefaultSupportAdapter(Document document, NodeBranchDataAdapter supportAdapter, int treePos, NewickTreeList trees) {
+		if (!(supportAdapter instanceof NodeNameAdapter) && trees.getInternalNamesAdded(treePos)) {
+			if (supportAdapter instanceof NewNodeBranchDataAdapter) {
+				document.setDefaultSupportAdapter(((NewNodeBranchDataAdapter)supportAdapter).getPermanentAdapter());
+			}
+			else {
+				document.setDefaultSupportAdapter(supportAdapter);
+			}
+		}
+		else {
+			document.setDefaultSupportAdapter(new VoidNodeBranchDataAdapter("No support values available"));
+		}
+	}
+	
+	
 	@Override
   public Document readDocument(BufferedInputStream stream) throws Exception {
 		String[] parts = splitDocument(new InputStreamReader(stream));
@@ -183,11 +203,15 @@ public class NewickReader extends TextStreamReader implements DocumentReader {
 						NodeNameAdapter.getSharedInstance()),
 				parameterMap.getNodeBranchDataAdapter(ReadWriteParameterMap.KEY_BRANCH_LENGTH_ADAPTER, 
 						BranchLengthAdapter.getSharedInstance()),
-				null, false);  // no translation table in available Newick format 
+				null, false);  // no translation table available in Newick format 
 		
 		Document result = createEmptyDocument();
 		int index = parameterMap.getTreeSelector().select(names, trees.treesAsList());
 		result.setTree(trees.getTree(index));
+		
+		NodeBranchDataAdapter supportAdapter = parameterMap.getNodeBranchDataAdapter(ReadWriteParameterMap.KEY_INTERNAL_NODE_NAMES_ADAPTER, 
+				NodeNameAdapter.getSharedInstance());
+		setDefaultSupportAdapter(result, supportAdapter, index, trees);
 		
 		if (trees.getHiddenDataAdded(index)) {
 			displayHiddenDataMessage(parameterMap.getApplicationLogger(), 75);

@@ -107,6 +107,7 @@ public class SelectImportTableDialog extends FileDialog {
 	@Override
 	protected boolean onExecute() {
 		getKeyColumnInput().setAdapters(getDocument().getTree(), true, true, true, false, false, "");
+		getKeyColumnInput().setSelectedAdapter(getDocument().getDefaultLeafAdapter());
 		return true;
 	}
 
@@ -193,7 +194,9 @@ public class SelectImportTableDialog extends FileDialog {
 	private JPanel getNodeIdentificationPanel() {
 		if (nodeIdentificationPanel == null) {
 			nodeIdentificationPanel = new JPanel();
-			nodeIdentificationPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Table preferences", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+			nodeIdentificationPanel.setBorder(BorderFactory.createTitledBorder(null, "Table preferences", 
+					TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, 
+					new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
 			GridBagLayout gbl_nodeIdentificationPanel = new GridBagLayout();
 			gbl_nodeIdentificationPanel.columnWidths = new int[]{0, 0, 0};
 			gbl_nodeIdentificationPanel.rowHeights = new int[]{0, 0, 0, 0, 0};
@@ -289,7 +292,9 @@ public class SelectImportTableDialog extends FileDialog {
 	private JPanel getKeyColumnPanel() {
 		if (keyColumnPanel == null) {
 			keyColumnPanel = new JPanel();
-			keyColumnPanel.setBorder(new TitledBorder(null, "Key column", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+			keyColumnPanel.setBorder(BorderFactory.createTitledBorder(null, "Key column", 
+					TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, 
+					new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
 			GridBagLayout gbl_keyColumnPanel = new GridBagLayout();
 			gbl_keyColumnPanel.rowWeights = new double[]{0.0, 1.0};
 			gbl_keyColumnPanel.columnWeights = new double[]{0.0, 1.0};

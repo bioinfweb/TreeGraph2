@@ -59,4 +59,10 @@ public class NewTextLabelAdapter extends TextLabelAdapter implements NewNodeBran
 	public String toString() {
 		return "New labels with the specified ID";
 	}
+
+
+	@Override
+	public NodeBranchDataAdapter getPermanentAdapter() {
+		return new TextLabelAdapter(getID());	
+	}  
 }

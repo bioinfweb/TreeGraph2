@@ -40,8 +40,8 @@ public class DefaultDocumentAdapterDialog extends EditDialog {
 	private JPanel jContentPane = null;
 	private JPanel defaultDocumentAdaptersPanel = null;
 	private JLabel defaultSupportAdapterLabel = null;
-	private NodeBranchDataInput defaultLeafAdapterInput = null;
-	private NodeBranchDataInput defaultSupportAdapterInput = null;
+	private NodeBranchDataInput defaultLeafAdapterInput;
+	private NodeBranchDataInput defaultSupportAdapterInput;
 	
 	
 	public DefaultDocumentAdapterDialog(MainFrame mainFrame) {

@@ -51,5 +51,11 @@ public class NewHiddenBranchDataAdapter extends HiddenBranchDataAdapter
 	@Override
 	public String toString() {
 		return "New hidden branch data with the specified ID";
+	}
+
+
+	@Override
+	public NodeBranchDataAdapter getPermanentAdapter() {
+		return new HiddenBranchDataAdapter(getID());	
 	}  
 }

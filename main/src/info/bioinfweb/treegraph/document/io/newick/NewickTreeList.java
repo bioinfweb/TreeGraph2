@@ -36,9 +36,10 @@ import info.bioinfweb.treegraph.document.Tree;
 public class NewickTreeList {
   private Tree[] trees;
   private boolean[] hiddenDataAdded;
+  private boolean[] internalNamesAdded;
   
   
-	public NewickTreeList(Tree[] trees, boolean[] hiddenDataAdded) {
+	public NewickTreeList(Tree[] trees, boolean[] hiddenDataAdded, boolean[] internalNamesAdded) {
 	  super();
 	  if (trees.length != hiddenDataAdded.length) {
 	  	throw new IllegalArgumentException("The two specified fields contain a different number of elements (" + trees.length + 
@@ -47,6 +48,7 @@ public class NewickTreeList {
 	  else {
 	  	this.trees = trees;
 		  this.hiddenDataAdded = hiddenDataAdded;
+		  this.internalNamesAdded = internalNamesAdded;
 	  }
   }
 	
@@ -68,5 +70,10 @@ public class NewickTreeList {
 	
 	public int size() {
 		return trees.length;
+	}
+
+
+	public boolean getInternalNamesAdded(int index) {
+		return internalNamesAdded[index];
 	}
 }

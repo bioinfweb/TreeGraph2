@@ -77,7 +77,7 @@ public class Document extends SwingSaver
   	  new EnumMap<PositionPaintType, Boolean>(PositionPaintType.class);
   
   private NodeBranchDataAdapter defaultLeafAdapter = new NodeNameAdapter();
-  private NodeBranchDataAdapter defaultSupportAdapter = new VoidNodeBranchDataAdapter("No support values available");
+  private NodeBranchDataAdapter defaultSupportAdapter = new VoidNodeBranchDataAdapter("Not specified.");
   
     
   /**

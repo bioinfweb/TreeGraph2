@@ -41,7 +41,7 @@ import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
  * 
  * @author Ben St&ouml;ver
  */
-public class NodeSupportEdit extends AbstractTopologicalCalculationEdit {
+public class NodeSupportEdit extends AbstractTopologicalCalculationEdit {  // is not able to get information about default support adapters
 	private double treeCounter = 0; 
 	private double normalisationBorder = 0;
 	private DocumentIterator documentIterator = null; 

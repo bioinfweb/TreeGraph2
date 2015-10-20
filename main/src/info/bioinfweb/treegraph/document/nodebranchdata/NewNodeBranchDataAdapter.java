@@ -33,4 +33,7 @@ public interface NewNodeBranchDataAdapter extends IDElementAdapter {
 	 * @param id - the new ID
 	 */
 	public void setID(String id);
+	
+	
+	public NodeBranchDataAdapter getPermanentAdapter();
 }

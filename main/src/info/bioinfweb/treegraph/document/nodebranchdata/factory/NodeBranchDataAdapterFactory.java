@@ -101,7 +101,7 @@ public class NodeBranchDataAdapterFactory {
 		factories.put(new VoidNodeBranchDataAdapter("").getName(), new SingleNodeBranchDataAdapterFactory<NodeBranchDataAdapter>() {
 			@Override
 			public NodeBranchDataAdapter newInstance(String id) {
-				return new VoidNodeBranchDataAdapter("No support values available"); //TODO find way to customize text (Possibly move text property to NodeBranchDataInput and do not model in adapter.)
+				return new VoidNodeBranchDataAdapter("No support values available");  // Each input will display its own text.
 			}
 		});
 	}

@@ -52,4 +52,10 @@ public class NewHiddenNodeDataAdapter extends HiddenNodeDataAdapter
 	public String toString() {
 		return "New hidden node data with the specified ID";
 	}  
+
+
+	@Override
+	public NodeBranchDataAdapter getPermanentAdapter() {
+		return new HiddenNodeDataAdapter(getID());	
+	}  
 }
