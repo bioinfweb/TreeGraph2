@@ -126,7 +126,7 @@ public class SortLeavesDialog extends EditDialog {
 		
 		// Refresh adapters:
 		getTargetAdapterModel().setAdapters(getDocument().getTree(), true, true, true, false, false, "");
-		getTargetAdapterModel().setSelectedAdapter(NodeNameAdapter.class);
+		getTargetAdapterModel().setSelectedAdapter(getDocument().getDefaultLeafAdapter());
 		updateSourceAdapters();
 		
 	  return true;

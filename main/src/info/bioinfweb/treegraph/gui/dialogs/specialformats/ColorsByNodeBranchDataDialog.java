@@ -49,7 +49,7 @@ public class ColorsByNodeBranchDataDialog extends FormatsByNodeBranchDataDialog 
 	
 	
 	/**
-	 * This field is necessary to acces this intance from the action listeners.
+	 * This field is necessary to access this instance from the action listeners.
 	 */
 	private ColorsByNodeBranchDataDialog self = this; 
 	

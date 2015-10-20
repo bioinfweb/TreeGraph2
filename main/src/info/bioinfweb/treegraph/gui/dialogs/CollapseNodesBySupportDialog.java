@@ -26,6 +26,7 @@ import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.nodebranchdata.HiddenDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.VoidNodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.edit.CollapseNodesBySupportEdit;
 import info.bioinfweb.treegraph.gui.actions.edit.CollapseNodesBySupportAction;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataInput;
@@ -159,7 +160,10 @@ public class CollapseNodesBySupportDialog extends EditDialog {
   protected boolean onExecute() {
 		adapterInput.setAdapters(getDocument().getTree(), false, true, true, true, false, "");
 		if (adapterInput.getModel().getSize() > 0) {
-			if (!adapterInput.setSelectedAdapter(TextLabelAdapter.class)) {
+			if (!(getDocument().getDefaultSupportAdapter() instanceof VoidNodeBranchDataAdapter)) {
+				adapterInput.setSelectedAdapter(getDocument().getDefaultSupportAdapter());
+			}
+			else if (!adapterInput.setSelectedAdapter(TextLabelAdapter.class)) {
 				adapterInput.setSelectedAdapter(HiddenDataAdapter.class);
 			}
 		  return true;

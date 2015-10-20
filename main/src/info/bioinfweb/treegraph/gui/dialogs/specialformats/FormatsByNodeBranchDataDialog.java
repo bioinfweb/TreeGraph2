@@ -80,6 +80,7 @@ public abstract class FormatsByNodeBranchDataDialog extends SpecialFormatsDialog
 	protected boolean onExecute() {
 		((NodeDataComboBoxModel)getSourceComboBox().getModel()).setAdapters(
 				getDocument().getTree(), false, true, true, true, false, "");
+		((NodeDataComboBoxModel)getSourceComboBox().getModel()).setSelectedAdapter(getDocument().getDefaultSupportAdapter());
 		
 		boolean result = getSourceComboBox().getModel().getSize() > 0; 
 		if (result) {
