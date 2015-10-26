@@ -108,7 +108,7 @@ public class NewickStringReader extends NewickStringChars {
  	private void readHotComment(String comment, Node node, boolean isOnNode) {
   	try {
   		commentDataReader.read(comment, node, isOnNode);
-  		hiddenDataAdded = !node.getAfferentBranch().getHiddenDataMap().isEmpty() || !node.getHiddenDataMap().isEmpty();
+  		hiddenDataAdded = hiddenDataAdded || !node.getAfferentBranch().getHiddenDataMap().isEmpty() || !node.getHiddenDataMap().isEmpty();
   	}
   	catch (Exception e) {}  // comment was not of the expected format
  	}
