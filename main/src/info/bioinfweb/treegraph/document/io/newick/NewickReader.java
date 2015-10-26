@@ -168,7 +168,7 @@ public class NewickReader extends TextStreamReader implements DocumentReader {
 	
 	public static void displayHiddenDataMessage(ApplicationLogger logger, int helpCode) {
 		logger.addMessage("The imported Newick string contained comments inside the tree " +
-						"definitions which have been imported as hidden branch data column(s). (See table left of the tree.) You can select " +
+						"definitions which have been imported as hidden branch data column(s). (See table right of the tree.) You can select " +
 						"\"Edit\" -> \"Node/branch data\" -> \"Copy column...\" from the main menu if you want to store the imported data in " +
 						"another type of node/branch data column instead.", helpCode);
 	}

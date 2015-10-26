@@ -79,7 +79,7 @@ public class TreeSelectionSynchronizer implements TreeViewPanelListener, Documen
 	public void reset() {
 		topologicalCalculator = new TopologicalCalculator(compareParameters.isProcessRooted(), KEY_LEAF_REFERENCE, compareParameters);
 		
-		// Add leaves from other documents to map (First document was already added in the constructor):
+		// Add leaves from documents to map:
 		Iterator<TreeViewPanel> iterator = getTreeSource().iterator();
 		while(iterator.hasNext()) {
 			Document document = iterator.next().getDocument();

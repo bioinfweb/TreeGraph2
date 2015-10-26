@@ -19,6 +19,7 @@
 package info.bioinfweb.treegraph.gui.actions.file;
 
 
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.Action;
@@ -26,15 +27,22 @@ import javax.swing.KeyStroke;
 
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
-import info.bioinfweb.treegraph.gui.actions.EditDialogAction;
-import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
+import info.bioinfweb.treegraph.document.undo.file.AddSupportValuesEdit;
+import info.bioinfweb.treegraph.document.undo.file.AddSupportValuesParameters;
+import info.bioinfweb.treegraph.gui.actions.DocumentAction;
+import info.bioinfweb.treegraph.gui.dialogs.io.AddSupportValueColumnsDialog;
 import info.bioinfweb.treegraph.gui.dialogs.io.AddSupportValuesDialog;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
+import info.bioinfweb.treegraph.gui.treeframe.TreeInternalFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 
 
 
-public class AddSupportValuesAction extends EditDialogAction {
+public class AddSupportValuesAction extends DocumentAction {
+	private AddSupportValuesDialog addSupportValuesDialog;
+	private AddSupportValueColumnsDialog addSupportValueColumnsDialog;
+	
+	
 	public AddSupportValuesAction(MainFrame mainFrame) {
 		super(mainFrame);
 		putValue(Action.NAME, "Add support values..."); 
@@ -45,13 +53,43 @@ public class AddSupportValuesAction extends EditDialogAction {
 
 	
 	@Override
-	public EditDialog createDialog() {
-		return new AddSupportValuesDialog(getMainFrame());
+	protected void onActionPerformed(ActionEvent e, TreeInternalFrame frame) {
+		if (getAddSupportValuesDialog().execute(frame.getDocument(), frame.getTreeViewPanel().getSelection(), 
+				frame.getSelectedAdapter())) {
+			AddSupportValuesParameters addSupportValuesParameters = new AddSupportValuesParameters();
+			getAddSupportValuesDialog().assignParameters(addSupportValuesParameters);
+		
+			if (getAddSupportValueColumnsDialog().execute(addSupportValuesParameters, addSupportValuesParameters.getSourceDocument().getTree())) {
+				AddSupportValuesEdit edit = AddSupportValuesEdit.createInstance(
+					frame.getDocument(), addSupportValuesParameters.getSourceDocument(), addSupportValuesParameters.getTerminalsAdapter(), 
+					addSupportValuesParameters.getTargetType(), addSupportValuesParameters.getIdPrefix(),
+					addSupportValuesParameters.getSupportColumn(),	addSupportValuesParameters.isRooted(), addSupportValuesParameters.isParseNumericValues());
+					frame.getDocument().executeEdit(edit);
+			}
+		}
 	}
 
 
 	@Override
 	public void setEnabled(Document document, TreeSelection selection, NodeBranchDataAdapter tableAdapter) {
 		setEnabled((document != null) && !document.getTree().isEmpty());
+	}
+
+
+	private AddSupportValuesDialog getAddSupportValuesDialog() {
+		if (addSupportValuesDialog == null) {
+			addSupportValuesDialog = new AddSupportValuesDialog(getMainFrame());
+			return addSupportValuesDialog;
+		}
+		return addSupportValuesDialog;
+	}
+
+
+	private AddSupportValueColumnsDialog getAddSupportValueColumnsDialog() {
+		if (addSupportValueColumnsDialog == null) {
+			addSupportValueColumnsDialog = new AddSupportValueColumnsDialog(getMainFrame());
+			return addSupportValueColumnsDialog;
+		}
+		return addSupportValueColumnsDialog;
 	}
 }

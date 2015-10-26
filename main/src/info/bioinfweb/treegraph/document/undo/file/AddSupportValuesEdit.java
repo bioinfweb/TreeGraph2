@@ -21,23 +21,18 @@ package info.bioinfweb.treegraph.document.undo.file;
 
 import java.text.DecimalFormat;
 
-import javax.swing.JOptionPane;
-
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.change.DocumentChangeType;
-import info.bioinfweb.treegraph.document.nodebranchdata.BranchLengthAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.HiddenBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.HiddenNodeDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.AbstractTextElementDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextElementDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;
 import info.bioinfweb.treegraph.document.topologicalcalculation.NodeInfo;
 import info.bioinfweb.treegraph.document.topologicalcalculation.TopologicalCalculator;
 import info.bioinfweb.treegraph.document.undo.AbstractTopologicalCalculationEdit;
-import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 
 
 
@@ -66,7 +61,7 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
 	/** The document from which support values are imported */
 	private Document sourceDocument = null;
 	
-	/** The node/branch data to be imported (node names or branch lengths). */
+	/** The node/branch data adapter containing support values to be imported. */
 	private NodeBranchDataAdapter sourceAdapter = null;
 	
 	/** The node/branch data column to write imported support values to. */
@@ -75,14 +70,17 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
 	/** The node/branch data column to write imported conflict values to. */
 	private AbstractTextElementDataAdapter conflictAdapter = null;
 	
+	private boolean parseNumericValues;
+	
 	
 	public AddSupportValuesEdit(Document targetDocument, Document sourceDocument, 
 			TextElementDataAdapter terminalsAdapter, TargetType targetType, String idPrefix,
-			NodeBranchDataAdapter sourceAdapter, boolean processRooted) {
+			NodeBranchDataAdapter sourceAdapter, boolean processRooted, boolean parseNumericValues) {
 		
 		super(targetDocument, DocumentChangeType.TOPOLOGICAL_BY_RENAMING, terminalsAdapter, processRooted);  // Topological relevance only if the default leaves adapter ID is affected. 
 		this.sourceDocument = sourceDocument;
 		this.sourceAdapter = sourceAdapter;
+		this.parseNumericValues = parseNumericValues;
 		
 		switch (targetType) {
 			case LABEL:
@@ -109,13 +107,23 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
 	 * @param adapter - the adapter to obtain the data from the nodes
 	 * @return <code>true</code> if only decimal values are found
 	 */
-	private static boolean internalsAreDecimal(Node root, NodeBranchDataAdapter adapter) {
+	private static boolean internalsAreDecimal(Node root, NodeBranchDataAdapter adapter, boolean parseNumericValues) { 
 		if ((!root.isLeaf()) && !adapter.isDecimal(root)) {
-			return false;
+			if (parseNumericValues) {
+				try {
+					Double.parseDouble(adapter.getText(root));
+				}
+				catch (Exception e) {
+					return false;
+				}
+			}
+			else {
+				return false;
+			}
 		}
 		
 		for (int i = 0; i < root.getChildren().size(); i++) {
-			if (!internalsAreDecimal(root.getChildren().get(i), adapter)) {
+			if (!internalsAreDecimal(root.getChildren().get(i), adapter, parseNumericValues)) {
 				return false;
 			}
 		}
@@ -141,21 +149,12 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
 	 *        (no matter if the specified documents are rooted or not)
 	 * @return a new instance of <code>AddSupportValuesEdit</code> or <code>null</code>
 	 */
-	public static AddSupportValuesEdit createInstance(Document document, Document src, 
-			TextElementDataAdapter terminalsAdapter, TargetType targetType, String idPrefix, 
-			boolean importNodeNames, boolean processRooted) {
+	public static AddSupportValuesEdit createInstance(Document document, Document src, TextElementDataAdapter terminalsAdapter, TargetType targetType, String idPrefix, 
+			NodeBranchDataAdapter sourceAdapter, boolean processRooted, boolean parseNumericValues) {
 		
-    NodeBranchDataAdapter sourceAdapter;
-		if (importNodeNames) {		
-			sourceAdapter = new NodeNameAdapter();
-		}
-		else {
-			sourceAdapter = new BranchLengthAdapter();
-		}
-		
-		if (internalsAreDecimal(src.getTree().getPaintStart(), sourceAdapter) || true) {  //TODO Diese Bedingung ist nicht wirklich sinnvoll! Was war hier eigentlich geplant?
+		if (internalsAreDecimal(src.getTree().getPaintStart(), sourceAdapter, parseNumericValues) || true) {  //TODO Diese Bedingung ist nicht wirklich sinnvoll! Was war hier eigentlich geplant? Evtl. weil nicht alle internal values decimal sein müssen um zu importieren
 			return new AddSupportValuesEdit(document, src, terminalsAdapter, targetType, 
-					idPrefix, sourceAdapter, processRooted);
+					idPrefix, sourceAdapter, processRooted, parseNumericValues);
 		}
 		else {
 			return null;
@@ -164,17 +163,12 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
 	
 	
 	@Override
-	protected void performRedo() {
-    String errorMsg = getTopologicalCalculator().compareLeaves(sourceDocument);
-    if (errorMsg == null) {  // The terminal nodes of both trees are identical.
-  		getTopologicalCalculator().addLeafSets(sourceDocument.getTree().getPaintStart(), TopologicalCalculator.SOURCE_LEAVES_ADAPTER);
-  		getTopologicalCalculator().addLeafSets(getDocument().getTree().getPaintStart(), getTargetLeavesAdapter());
-  		processSubtree(getDocument().getTree().getPaintStart());
-    }
-    else {
-			JOptionPane.showMessageDialog(MainFrame.getInstance(), errorMsg, 
-					"Incompatible trees", JOptionPane.ERROR_MESSAGE);  //TODO Remove this, when different leaf sets are supported. (Dialogs should anyway not be displayed in edits!)
-    }
+	protected void performRedo() {	    
+		topologicalCalculator.addToLeafValueToIndexMap(sourceDocument.getTree().getPaintStart(), TopologicalCalculator.SOURCE_LEAVES_ADAPTER);
+		topologicalCalculator.addToLeafValueToIndexMap(getDocument().getTree().getPaintStart(), getTargetLeavesAdapter());
+		getTopologicalCalculator().addLeafSets(sourceDocument.getTree().getPaintStart(), TopologicalCalculator.SOURCE_LEAVES_ADAPTER);
+		getTopologicalCalculator().addLeafSets(getDocument().getTree().getPaintStart(), getTargetLeavesAdapter());
+		processSubtree(getDocument().getTree().getPaintStart());
 	}
 
 	
@@ -198,30 +192,46 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
 				
 				NodeInfo bestSourceNode = getTopologicalCalculator().findSourceNodeWithAllLeaves(sourceDocument.getTree(), 
 								getTopologicalCalculator().getLeafSet(targetRoot));
-				if (bestSourceNode.getAdditionalCount() == 0) {  // support found
-  				if (sourceAdapter.isDecimal(bestSourceNode.getNode())) {  // if no value exists there
-	  				supportAdapter.setDecimal(targetRoot, sourceAdapter.getDecimal(bestSourceNode.getNode()));  // Only decimal values can appear here.
+				if (bestSourceNode != null) {
+					Node conflict = getTopologicalCalculator().findHighestConflict(getDocument().getTree(), 
+							sourceDocument.getTree(), bestSourceNode.getNode(), getTopologicalCalculator().getLeafSet(targetRoot), 
+							getTopologicalCalculator().getLeafSet(bestSourceNode.getNode()), sourceAdapter);
+					
+					if (conflict == null) {  // support found
+	  				if (sourceAdapter.isDecimal(bestSourceNode.getNode())) {  // if no value exists there
+		  				supportAdapter.setDecimal(targetRoot, sourceAdapter.getDecimal(bestSourceNode.getNode()));  // Only decimal values can appear here.
+						}
+	  				else if (checkOtherPaintStartBranch(bestSourceNode.getNode())) {
+							int index = 1;
+							if (bestSourceNode.getNode().isLast()) {
+								index = 0;
+							}
+							Node other = bestSourceNode.getNode().getParent().getChildren().get(index);
+							if (sourceAdapter.isDecimal(other)) {
+			  				supportAdapter.setDecimal(targetRoot, sourceAdapter.getDecimal(other));  // Only decimal values can appear here.
+							}
+							else if (parseNumericValues) {
+								try {
+									supportAdapter.setDecimal(targetRoot, Double.parseDouble(sourceAdapter.getText(other)));
+								}
+								catch (Exception e) {}
+							}
+	  				}
+	  				else if (parseNumericValues) {
+	  					try {
+								supportAdapter.setDecimal(targetRoot, Double.parseDouble(sourceAdapter.getText(bestSourceNode.getNode())));
+							}
+							catch (Exception e) {}
+	  				}
 					}
-  				else if (checkOtherPaintStartBranch(bestSourceNode.getNode())) {
-						int index = 1;
-						if (bestSourceNode.getNode().isLast()) {
-							index = 0;
+					else if (bestSourceNode.getAdditionalCount() == -1) {
+						throw new InternalError("-1 RETURNED");  // Should not happen.
+					}
+					else {  // conflict found
+						double value = getSupportValue(conflict);
+						if (!Double.isNaN(value) && (value != 0)) {
+		  				conflictAdapter.setDecimal(targetRoot, value);
 						}
-						Node other = bestSourceNode.getNode().getParent().getChildren().get(index);
-						if (sourceAdapter.isDecimal(other)) {
-		  				supportAdapter.setDecimal(targetRoot, sourceAdapter.getDecimal(other));  // Only decimal values can appear here.
-						}
-  				}
-				}
-				else if (bestSourceNode.getAdditionalCount() == -1) {
-					throw new InternalError("-1 RETURNED");  // Should not happen.
-				}
-				else {  // conflict found
-					double value = getSupportValue(getTopologicalCalculator().findHighestConflict(sourceDocument.getTree(), 
-							getDocument().getTree(), bestSourceNode.getNode(), getTopologicalCalculator().getLeafSet(targetRoot), 
-							getTopologicalCalculator().getLeafSet(bestSourceNode.getNode()), sourceAdapter));
-					if (!Double.isNaN(value) && (value != 0)) {
-	  				conflictAdapter.setDecimal(targetRoot, value);
 					}
 				}
 			}
@@ -229,11 +239,25 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
 				processSubtree(targetRoot.getChildren().get(i));
 			}
 		}
-	}	
+	}
 	
 	
 	public double getSupportValue(Node node) {
-		return sourceAdapter.getDecimal(node);
+		if (sourceAdapter.isDecimal(node)) {
+			return sourceAdapter.getDecimal(node);
+		}
+		else if (parseNumericValues) {
+			try {
+				Double supportValue = Double.parseDouble(sourceAdapter.getText(node));
+				return supportValue;
+			}
+			catch (Exception e) {
+				return Double.NaN;
+			}
+		}
+		else {
+			return Double.NaN;
+		}
 	}
 	
 	

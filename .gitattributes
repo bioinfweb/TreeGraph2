@@ -409,6 +409,7 @@ main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/vararg/SumF
 main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/vararg/VarArgFunction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/vararg/WholeColumnFunction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/file/AddSupportValuesEdit.java -text
+main/src/info/bioinfweb/treegraph/document/undo/file/AddSupportValuesParameters.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/file/ImportDataColumnsParameters.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/file/NodeSupportEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/file/ancestralstate/AncestralStateImportParameters.java -text svneol=unset#text/plain
@@ -649,6 +650,7 @@ main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/ScaleValueInput.jav
 main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/piecolor/PieColorCellRenderer.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/piecolor/PieColorIcon.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/piecolor/PieColorListEntry.java -text
+main/src/info/bioinfweb/treegraph/gui/dialogs/io/AddSupportValueColumnsDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/AddSupportValuesDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/AssignImportColumnsDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/FileDialog.java -text

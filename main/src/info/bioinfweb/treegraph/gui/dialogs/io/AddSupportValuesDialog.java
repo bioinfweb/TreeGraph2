@@ -25,26 +25,36 @@ import info.bioinfweb.treegraph.document.io.DocumentReader;
 import info.bioinfweb.treegraph.document.io.ReadWriteFactory;
 import info.bioinfweb.treegraph.document.io.ReadWriteFormat;
 import info.bioinfweb.treegraph.document.io.ReadWriteParameterMap;
+import info.bioinfweb.treegraph.document.io.SupportedFormatsFilter;
 import info.bioinfweb.treegraph.document.io.nexus.NexusFilter;
+import info.bioinfweb.treegraph.document.io.phyloxml.PhyloXMLFilter;
+import info.bioinfweb.treegraph.document.io.xtg.XTGFilter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextElementDataAdapter;
-import info.bioinfweb.treegraph.document.undo.file.AddSupportValuesEdit;
+import info.bioinfweb.treegraph.document.undo.file.AddSupportValuesParameters;
 import info.bioinfweb.treegraph.document.undo.file.AddSupportValuesEdit.TargetType;
 import info.bioinfweb.treegraph.gui.dialogs.io.loadlogger.LoadLoggerDialog;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataInput;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 
 import javax.swing.JPanel;
+
 import java.awt.Frame;
+
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+
 import java.awt.GridBagLayout;
+
 import javax.swing.BorderFactory;
 import javax.swing.border.TitledBorder;
+
 import java.awt.Font;
 import java.awt.Color;
+
 import javax.swing.JTextField;
+
 import java.awt.GridBagConstraints;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -53,11 +63,12 @@ import java.io.File;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import javax.swing.JCheckBox;
+import java.awt.Insets;
 
 
 
 public class AddSupportValuesDialog extends FileDialog {
-	private static final long serialVersionUID = 1L;
+	private File file;
 	
 	
 	private JPanel jContentPane = null;
@@ -74,14 +85,14 @@ public class AddSupportValuesDialog extends FileDialog {
 	private JPanel terminalsPanel = null;
 	private JLabel terminalsLabel = null;
 	private ButtonGroup targetDataButtonGroup = null;  //  @jve:decl-index=0:
-	private ButtonGroup importButtonGroup = null;  //  @jve:decl-index=0:
 	private JCheckBox translateInternalsCheckBox = null;
+	private JCheckBox parseNumericValuesCheckBox;
 	private JPanel importPanel = null;
-	private JRadioButton nodeNamesRadioButton = null;
-	private JRadioButton branchLengthsRadioButton = null;
 
 	private NexusFilter nexusFilter;  // This field must not be set to anything (e.g. null)
-
+	private XTGFilter xtgFilter;
+	private PhyloXMLFilter phyloXMLFilter;
+	
 
 	/**
 	 * Creates a new instance of this class.
@@ -112,9 +123,8 @@ public class AddSupportValuesDialog extends FileDialog {
 		}
 	}
 
-
-	@Override
-	protected boolean onApply(File file) {
+	
+	public void assignParameters(AddSupportValuesParameters parameters) {
 		if (getIDNameTextField().getText().length() > 1) {
       DocumentReader reader = ReadWriteFactory.getInstance().getReader(file);
 			TargetType targetType = TargetType.LABEL;
@@ -124,7 +134,6 @@ public class AddSupportValuesDialog extends FileDialog {
 			else if (getNodeDataRadioButton().isSelected()) {
 				targetType = TargetType.HIDDEN_NODE_DATA;
 			}
-			
 			try {
 				ReadWriteParameterMap parameterMap = new ReadWriteParameterMap();
 				parameterMap.putApplicationLogger(LoadLoggerDialog.getInstance());
@@ -147,41 +156,34 @@ public class AddSupportValuesDialog extends FileDialog {
 					  case 1:
 					  	rooted = true;
 	  				  break;
-					  default:
-					  	return false;
-		  		}
+					}
 				}
-				
-				AddSupportValuesEdit edit = AddSupportValuesEdit.createInstance(
-  					getDocument(), sourceDoc,
-	  				(TextElementDataAdapter)getTerminalDataInput().getSelectedAdapter(), targetType,
-	  				getIDNameTextField().getText(),	getNodeNamesRadioButton().isSelected(), rooted);
-				
-  			if (edit != null) {
-  				getDocument().executeEdit(edit);
-					LoadLoggerDialog.getInstance().display();
-  				return true;
-  			}
-  			else {
-  				JOptionPane.showMessageDialog(this, "The selected document contains " +
-  						"non-decimal data on its internal nodes. Only decimal support " +
-  						"values can be processed.", "Invalid source document", 
-  						JOptionPane.ERROR_MESSAGE);
-  			}
-  		}
-  		catch (Exception e) {
-  			e.printStackTrace();
+				parameters.setSourceDocument(sourceDoc);
+				parameters.setIdPrefix(getIDNameTextField().getText());
+				parameters.setRooted(rooted);
+				parameters.setTerminalsAdapter((TextElementDataAdapter)getTerminalDataInput().getSelectedAdapter());
+				parameters.setTargetType(targetType);
+				parameters.setParseNumericValues(parseNumericValuesCheckBox.isSelected());
+			}
+			catch (Exception e) {
+				e.printStackTrace();
 				JOptionPane.showMessageDialog(null, "The error \"" + e.getMessage() + 
 						"\" occured when trying to open the file \"" + file.getAbsolutePath() + 
 						"\"", "Error", JOptionPane.ERROR_MESSAGE);
-				return false;
-  		}
-		}
+			}
+	  }			
 		else {
 			JOptionPane.showMessageDialog(MainFrame.getInstance(), "There was no label ID" +
 					" specified.", "Error", JOptionPane.ERROR_MESSAGE);
-		}
-		return false;
+		}		
+	}
+	
+
+	@Override
+	protected boolean onApply(File file) {
+		this.file = file;
+		return true;
+		
 	}
 
 
@@ -212,6 +214,8 @@ public class AddSupportValuesDialog extends FileDialog {
 			jContentPane.add(getTerminalsPanel(), null);
 			jContentPane.add(getIdNamePanel(), null);
 			jContentPane.add(getButtonsPanel(), null);
+			getApplyButton().setVisible(false);
+			getOkButton().setText("Next >");
 		}
 		return jContentPane;
 	}
@@ -247,23 +251,30 @@ public class AddSupportValuesDialog extends FileDialog {
 			fileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
 			fileChooser.setControlButtonsAreShown(false);
 			
-			nexusFilter = new NexusFilter();
-			if (fileChooser.getFileFilter() != null) {  // "Alle Datein"-Filter entfernen
+			if (fileChooser.getFileFilter() != null) {  // "Alle Dateien"-Filter entfernen
 				fileChooser.removeChoosableFileFilter(fileChooser.getFileFilter());
 			}
+			SupportedFormatsFilter supportedFormatsFilter = new SupportedFormatsFilter();
+			fileChooser.addChoosableFileFilter(supportedFormatsFilter);
+			nexusFilter = new NexusFilter();
 			fileChooser.addChoosableFileFilter(nexusFilter);
 			fileChooser.addChoosableFileFilter(ReadWriteFactory.getInstance().getFilter(ReadWriteFormat.NEWICK));
-			fileChooser.setFileFilter(nexusFilter);
+			xtgFilter = new XTGFilter();
+			fileChooser.addChoosableFileFilter(xtgFilter);
+			phyloXMLFilter = new PhyloXMLFilter();
+			fileChooser.addChoosableFileFilter(phyloXMLFilter);
+			fileChooser.setFileFilter(supportedFormatsFilter);			
 			
 			fileChooser.addPropertyChangeListener(new PropertyChangeListener() {
 						public void propertyChange(PropertyChangeEvent e) {
 							if (e.getPropertyName().equals(JFileChooser.FILE_FILTER_CHANGED_PROPERTY)) {
 								getTranslateInternalsCheckBox().setEnabled(e.getNewValue() instanceof NexusFilter);
+								getParseNumericValuesCheckBox().setEnabled(e.getNewValue() instanceof XTGFilter);
 							}
 							else if (e.getPropertyName().equals(JFileChooser.SELECTED_FILE_CHANGED_PROPERTY)) {
 								File file = getFileChooser().getSelectedFile();
-								getTranslateInternalsCheckBox().setEnabled((file != null) && 
-										nexusFilter.accept(file));
+								getTranslateInternalsCheckBox().setEnabled((file != null) && nexusFilter.accept(file));
+								getParseNumericValuesCheckBox().setEnabled((file != null) && xtgFilter.accept(file));
 							}
 						}
 					});
@@ -403,16 +414,6 @@ public class AddSupportValuesDialog extends FileDialog {
 	}
 
 
-	private ButtonGroup getImportButtonGroup() {
-		if (importButtonGroup == null) {
-			importButtonGroup = new ButtonGroup();
-			importButtonGroup.add(getNodeNamesRadioButton());
-			importButtonGroup.add(getBranchLengthsRadioButton());
-		}
-		return targetDataButtonGroup;
-	}
-
-
 	/**
 	 * This method initializes terminalsPanel	
 	 * 	
@@ -462,66 +463,30 @@ public class AddSupportValuesDialog extends FileDialog {
 	 */
 	private JPanel getImportPanel() {
 		if (importPanel == null) {
-			GridBagConstraints gridBagConstraints9 = new GridBagConstraints();
-			gridBagConstraints9.gridx = 1;
-			gridBagConstraints9.anchor = GridBagConstraints.WEST;
-			gridBagConstraints9.weightx = 1.0;
-			gridBagConstraints9.gridy = 0;
-			GridBagConstraints gridBagConstraints8 = new GridBagConstraints();
-			gridBagConstraints8.gridx = 0;
-			gridBagConstraints8.anchor = GridBagConstraints.WEST;
-			gridBagConstraints8.weightx = 1.0;
-			gridBagConstraints8.gridy = 0;
 			GridBagConstraints gridBagConstraints7 = new GridBagConstraints();
+			gridBagConstraints7.gridx = 0;
 			gridBagConstraints7.weightx = 1.0;
-			gridBagConstraints7.fill = GridBagConstraints.HORIZONTAL;
-			gridBagConstraints7.anchor = GridBagConstraints.CENTER;
-			gridBagConstraints7.gridy = 1;
-			gridBagConstraints7.gridwidth = 1;
-			gridBagConstraints7.weighty = 0.0;
+			gridBagConstraints7.anchor = GridBagConstraints.WEST;
+			gridBagConstraints7.gridy = 0;
+			gridBagConstraints7.insets = new Insets(2, 2, 2, 2);
 			importPanel = new JPanel();
 			importPanel.setLayout(new GridBagLayout());
 			importPanel.setBorder(BorderFactory.createTitledBorder(null, "Import", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
+			GridBagConstraints gbc_chckbxNewCheckBox = new GridBagConstraints();
+			gbc_chckbxNewCheckBox.anchor = GridBagConstraints.WEST;
+			gbc_chckbxNewCheckBox.insets = new Insets(2, 2, 2, 2);
+			gbc_chckbxNewCheckBox.weightx = 1.0;
+			gbc_chckbxNewCheckBox.gridx = 1;
+			gbc_chckbxNewCheckBox.gridy = 0;
+			importPanel.add(getParseNumericValuesCheckBox(), gbc_chckbxNewCheckBox);
 			importPanel.add(getTranslateInternalsCheckBox(), gridBagConstraints7);
-			importPanel.add(getNodeNamesRadioButton(), gridBagConstraints8);
-			importPanel.add(getBranchLengthsRadioButton(), gridBagConstraints9);
-			getImportButtonGroup();
 		}
 		return importPanel;
 	}
-
-
-	/**
-	 * This method initializes nodeNamesRadioButton	
-	 * 	
-	 * @return javax.swing.JRadioButton	
-	 */
-	private JRadioButton getNodeNamesRadioButton() {
-		if (nodeNamesRadioButton == null) {
-			nodeNamesRadioButton = new JRadioButton();
-			nodeNamesRadioButton.setText("Node names");
-			nodeNamesRadioButton.setSelected(true);
-			nodeNamesRadioButton.addItemListener(new java.awt.event.ItemListener() {
-				public void itemStateChanged(java.awt.event.ItemEvent e) {
-					getTranslateInternalsCheckBox().setEnabled(
-							getNodeNamesRadioButton().isSelected());
-				}
-			});
+	private JCheckBox getParseNumericValuesCheckBox() {
+		if (parseNumericValuesCheckBox == null) {
+			parseNumericValuesCheckBox = new JCheckBox("Try to import textual values as numerical support");
 		}
-		return nodeNamesRadioButton;
-	}
-
-
-	/**
-	 * This method initializes branchLengthsRadioButton	
-	 * 	
-	 * @return javax.swing.JRadioButton	
-	 */
-	private JRadioButton getBranchLengthsRadioButton() {
-		if (branchLengthsRadioButton == null) {
-			branchLengthsRadioButton = new JRadioButton();
-			branchLengthsRadioButton.setText("Branch length");
-		}
-		return branchLengthsRadioButton;
+		return parseNumericValuesCheckBox;
 	}
 }

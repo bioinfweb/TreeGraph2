@@ -274,7 +274,6 @@ public class TopologicalCalculator {
 	public Node findHighestConflict(Tree referenceTree, Tree searchedTree, Node searchRoot, LeafSet conflictingReferenceLeafSet, 
 			LeafSet completeSearchedLeafSet, NodeBranchDataAdapter searchedSupportAdapter) {
 		
-		//Node searchRoot = searchedTree.getPaintStart();  //TODO Replace by parameter, to start search already and the found according node.
 		LeafSet referenceRootLeafSet = getLeafSet(referenceTree.getPaintStart());
 	
 		completeSearchedLeafSet = completeSearchedLeafSet.and(referenceRootLeafSet);
@@ -297,9 +296,9 @@ public class TopologicalCalculator {
 	 * @param conflictingReferenceLeafSet a leaf set describing the node from the reference tree that is in conflict with the searched
 	 *        tree (For {@link AddSupportValuesEdit}: The node in the target document to attach a support value to)
 	 * @param completeSearchedLeafSet a leaf set describing the MRCA in the searched tree of all leaves under the conflicting 
-	 *        node in the reference tree (described by {@code conflictingReferenceLeafSet})  
+	 *        node in the reference tree (described by {@code conflictingReferenceLeafSet})
 	 * @param info information about the node in the source document which contains all terminals of
-	 *        {@code targetNode} in its subtree 
+	 *        {@code targetNode} in its subtree
 	 * @return the node with the highest support value found (in the source document)
 	 */
 	private Node findHighestConflictRecursive(Node currentSearchRoot, LeafSet referenceRootLeafSet, Node highestConflictingNode, 
