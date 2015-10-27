@@ -30,7 +30,6 @@ import info.bioinfweb.treegraph.document.format.GlobalFormats;
 import info.bioinfweb.treegraph.document.io.AbstractDocumentReader;
 import info.bioinfweb.treegraph.document.io.DocumentIterator;
 import info.bioinfweb.treegraph.document.io.newick.BranchLengthsScaler;
-import info.bioinfweb.treegraph.document.io.newick.NewickTreeList;
 import info.bioinfweb.treegraph.document.undo.format.AutoPositionLabelsEdit;
 import info.bioinfweb.commons.io.XMLUtils;
 
@@ -330,18 +329,16 @@ public class PhyloXMLReader extends AbstractDocumentReader implements PhyloXMLCo
         }
         else if (element.getName().equals(TAG_CLADE)) {
         	result.setPaintStart(readSubtree(element, null));
-        	result.assignUniqueNames();  // If nodes without an unique name were present.
+        	result.assignUniqueNames();  // If nodes without a unique name were present.
         	result.updateElementSet();
           reader.nextEvent();
         }
-        else {  // evtl. zus�tzlich vorhandenes Element, dass nicht gelesen wird
+        else {  // evtl. zusätzlich vorhandenes Element, dass nicht gelesen wird
           XMLUtils.reachElementEnd(reader);  
         }
       }
       event = reader.nextEvent();
     }
-    
-  	branchLengthsScaler.setDefaultAverageScale(phylogenies.lastElement());
   	return result;
   }
 	
@@ -353,6 +350,7 @@ public class PhyloXMLReader extends AbstractDocumentReader implements PhyloXMLCo
       	StartElement element = event.asStartElement();
         if (element.getName().equals(TAG_PHYLOGENY)) {
       		phylogenies.add(readPhylogeny(element));
+        	branchLengthsScaler.setDefaultAverageScale(phylogenies.lastElement());
         }
         else {  // evtl. zus�tzlich vorhandenes Element, dass nicht gelesen wird
           XMLUtils.reachElementEnd(reader);  
