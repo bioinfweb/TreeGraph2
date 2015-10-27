@@ -20,7 +20,6 @@ package info.bioinfweb.treegraph.document.io.phyloxml;
 
 
 import info.bioinfweb.treegraph.document.io.AbstractXMLFilter;
-import info.bioinfweb.treegraph.document.io.DocumentFilter;
 import info.bioinfweb.treegraph.document.io.ReadWriteFormat;
 import info.bioinfweb.treegraph.document.io.TreeFilter;
 
@@ -31,6 +30,11 @@ import info.bioinfweb.treegraph.document.io.TreeFilter;
  * @since 2.0.35
  */
 public class PhyloXMLFilter extends AbstractXMLFilter implements TreeFilter, PhyloXMLConstants {
+	public static final String PHYLOXML_EXTENSION = ".phyloxml";
+	public static final String PHYLO_XML_EXTENSION = ".phylo.xml";
+	public static final String PXML_EXTENSION = ".pxml";
+	
+	
 	@Override
 	public ReadWriteFormat getFormat() {
 		return ReadWriteFormat.PHYLO_XML;
@@ -43,17 +47,18 @@ public class PhyloXMLFilter extends AbstractXMLFilter implements TreeFilter, Phy
 
 
 	public boolean validExtension(String name) {
-		return name.toLowerCase().endsWith(XML_EXTENSION);
+		name = name.toLowerCase();
+		return name.endsWith(PHYLOXML_EXTENSION) || name.endsWith(PHYLO_XML_EXTENSION) || name.endsWith(PXML_EXTENSION) || name.endsWith(XML_EXTENSION);
 	}
 	
 	
 	@Override
 	public String getDescription() {
-		return "phyloXML (*.xml)";
+		return "phyloXML (*.phyloxml; *.phylo.xml; *.pxml; *.xml)";
 	}
 
 
 	public String getDefaultExtension() {
-		return XML_EXTENSION;
+		return PHYLOXML_EXTENSION;
 	}
 }

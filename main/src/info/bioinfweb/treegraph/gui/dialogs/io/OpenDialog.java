@@ -26,6 +26,7 @@ import info.bioinfweb.treegraph.document.io.SupportedFormatsFilter;
 import info.bioinfweb.treegraph.document.io.newick.NewickException;
 import info.bioinfweb.treegraph.document.io.newick.NewickFilter;
 import info.bioinfweb.treegraph.document.io.nexus.NexusFilter;
+import info.bioinfweb.treegraph.document.io.phyloxml.PhyloXMLFilter;
 import info.bioinfweb.treegraph.document.io.xtg.XTGFilter;
 import info.bioinfweb.treegraph.document.nodebranchdata.BranchLengthAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NewTextLabelAdapter;
@@ -34,11 +35,15 @@ import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NewNodeBranchDat
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 
 import javax.swing.JPanel;
+
 import java.awt.Frame;
+
 import javax.swing.BoxLayout;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+
 import java.awt.GridBagLayout;
+
 import javax.swing.BorderFactory;
 import javax.swing.border.TitledBorder;
 
@@ -48,6 +53,7 @@ import java.awt.GridBagConstraints;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+
 import javax.swing.JCheckBox;
 
 
@@ -71,6 +77,7 @@ public class OpenDialog extends FileDialog {
 	private XTGFilter xtgFilter;  //  This field must not be set to anything (e.g. null). See above.
 	private NexusFilter nexusFilter;  //  This field must not be set to anything (e.g. null). See above.
 	private NewickFilter newickFilter;  //  This field must not be set to anything (e.g. null). See above.
+	private PhyloXMLFilter phyloxmlFilter;  //  This field must not be set to anything (e.g. null). See above.
 	private NewickExceptionDialog newickExceptionDialog = null;
 
 
@@ -219,6 +226,8 @@ public class OpenDialog extends FileDialog {
 			fileChooser.addChoosableFileFilter(supportedFormatsFilter);
 			xtgFilter = new XTGFilter();
 			fileChooser.addChoosableFileFilter(xtgFilter);
+			phyloxmlFilter = new PhyloXMLFilter();
+			fileChooser.addChoosableFileFilter(phyloxmlFilter);
 			nexusFilter = new NexusFilter();
 			fileChooser.addChoosableFileFilter(nexusFilter);
 			newickFilter = new NewickFilter();
