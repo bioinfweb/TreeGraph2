@@ -379,7 +379,6 @@ main/src/info/bioinfweb/treegraph/document/undo/edit/RenameDataIDEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/edit/ReplaceInNodeDataEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/edit/RerootByLeafSetEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/edit/RerootEdit.java -text
-main/src/info/bioinfweb/treegraph/document/undo/edit/RescaleNodeDataEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/edit/SeparateBranchEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/edit/SetColumnTypeEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/edit/SortLeavesEdit.java -text svneol=unset#text/plain
