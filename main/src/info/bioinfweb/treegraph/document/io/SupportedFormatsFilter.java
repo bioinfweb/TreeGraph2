@@ -22,7 +22,7 @@ package info.bioinfweb.treegraph.document.io;
 
 public class SupportedFormatsFilter extends AbstractFilter {
   public static final String[] EXTENSIONS 
-      = {".tre", ".tree", ".trees", ".nwk", ".con", ".nex", ".nexus", ".xtg", ".xml"};  // ".tgf"
+      = {".tre", ".tree", ".trees", ".nwk", ".con", ".nex", ".nexus", ".xtg", ".xml", ".phyloxml", ".phylo.xml", ".pxml"};  // ".tgf"
 
 
 	public boolean validExtension(String name) {
