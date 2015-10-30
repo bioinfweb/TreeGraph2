@@ -21,7 +21,6 @@ package info.bioinfweb.treegraph.gui.dialogs.io;
 
 import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.treegraph.document.Tree;
-import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 import info.bioinfweb.treegraph.document.undo.file.AddSupportValuesParameters;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataInput;
 import info.bioinfweb.wikihelp.client.OkCancelApplyWikiHelpDialog;
@@ -49,7 +48,7 @@ public class AddSupportValueColumnsDialog extends OkCancelApplyWikiHelpDialog {
 	
 	public AddSupportValueColumnsDialog(Frame owner) {
 		super(owner, true, Main.getInstance().getWikiHelp());
-		setHelpCode(12);
+		setHelpCode(84);
 		initialize();
 		setLocationRelativeTo(owner);
 	}

@@ -101,7 +101,7 @@ public class AddSupportValuesDialog extends FileDialog {
 	 */
 	public AddSupportValuesDialog(Frame owner) {
 		super(owner, FileDialog.Option.FILE_MUST_EXIST);
-		setHelpCode(12);
+		setHelpCode(85);
 		initialize();
 		setLocationRelativeTo(owner);
   }
