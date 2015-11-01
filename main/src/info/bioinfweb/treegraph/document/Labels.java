@@ -183,6 +183,7 @@ public class Labels implements Cloneable {
 	
 	/**
 	 * Returns the label at the specified position
+	 * 
 	 * @param above indicates whether the label is above the branch
 	 * @param lineNo the number of the line the label in located in (below or above the branch) The first line has the index 0.
 	 * @param lineIndex the position in the line counted from the left (Does not equal the linePosition value.)
@@ -257,6 +258,7 @@ public class Labels implements Cloneable {
 	/**
 	 * Tests if the specified label is contained in the specified block (above or below the
 	 * branch).
+	 * 
 	 * @param above
 	 * @param label
 	 * @return <code>true</code> if the label is contained
@@ -274,6 +276,7 @@ public class Labels implements Cloneable {
 	
 	/**
 	 * Tests if the specified label is contained in this object.
+	 * 
 	 * @param label
 	 * @return <code>true</code> if the label is contained
 	 */
@@ -288,11 +291,12 @@ public class Labels implements Cloneable {
 	
 	
 	public double getLastLinePos(boolean above, int lineNumber) {
-		if (isEmpty()){
-			return 0; 
+		int labelCount = labelCount(above, lineNumber);
+		if (labelCount > 0) {
+			return get(above, lineNumber, labelCount - 1).getFormats().getLinePosition() + DEFAULT_LINE_INDEX_INCREMENT;
 		}
 		else {
-			return get(above, lineNumber, labelCount(above, lineNumber) - 1).getFormats().getLinePosition() + DEFAULT_LINE_INDEX_INCREMENT;
+			return 0;
 		}
 	}
 	
@@ -377,10 +381,20 @@ public class Labels implements Cloneable {
 	/**Returns the number of labels in the specified line. */
 	public int labelCount(boolean above, int lineNo) {
 		if (above) {
-			return labelLinesAbove.get(lineNo).size();
+			if (labelLinesAbove.size() <= lineNo) {
+				return 0;
+			}
+			else {
+				return labelLinesAbove.get(lineNo).size();
+			}
 		}
 		else {
-			return labelLinesBelow.get(lineNo).size();
+			if (labelLinesBelow.size() <= lineNo) {
+				return 0;
+			}
+			else {
+				return labelLinesBelow.get(lineNo).size();
+			}
 		}
 	}
 	
