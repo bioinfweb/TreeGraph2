@@ -60,6 +60,6 @@ public abstract class InsertRemoveLabelEdit extends DocumentEdit {
 	protected void remove() {
 		owner.remove(label);
 		label.setLabels(null);
-		//label.getFormats().setOwner(null);  //TODO Ist owner=null �berall auf Zugriffsfehler gesichert?
+		//label.getFormats().setOwner(null);  //TODO Ist owner=null überall auf Zugriffsfehler gesichert?
 	}
 }

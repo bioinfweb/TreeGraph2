@@ -378,7 +378,7 @@ public class Labels implements Cloneable {
 	}
 	
 	
-	/**Returns the number of labels in the specified line. */
+	/** Returns the number of labels in the specified line. */
 	public int labelCount(boolean above, int lineNo) {
 		if (above) {
 			if (labelLinesAbove.size() <= lineNo) {
