@@ -31,10 +31,10 @@ import java.util.*;
 
 
 /**
- * <div>This class converts a tree in the Newick format to a <code>Document</code>. First
+ * This class converts a tree in the Newick format to a <code>Document</code>. First
  * the string is decomposed into Tokens by a <code>NewickParser</code> and then the
- * developed token list is syntactically analyzed. The following grammar is used:</div>
- * &nbsp;<br />
+ * developed token list is syntactically analyzed. The following grammar is used:
+ * <p>
  * <samp>
  *   <div>Tree --> Branch TERMINAL_SYMBOL</div>
  *   <div>Subtree --> Leaf | Internal</div>
@@ -45,10 +45,9 @@ import java.util.*;
  *   <div>Name --> &epsilon; | NAME</div>
  *   <div>Length --> &epsilon; | LENGTH</div>
  * </samp> 
- * &nbsp;<br />
- * <div>Note that this grammar differs from the usual Newick grammar because it allows
- * the root node to have a branch length.</div>
- * &nbsp;<br />
+ * <p>
+ * Note that this grammar differs from the usual Newick grammar because it allows
+ * the root node to have a branch length.
  * 
  * @author Ben St&ouml;ver
  */
@@ -236,6 +235,7 @@ public class NewickStringReader extends NewickStringChars {
   					tokens.get(1).getType().equals(TokenType.SUBTREE_START)) ||
   			(tokens.get(0).getType().equals(TokenType.ROOTED_COMMAND) && 
   					tokens.get(1).getType().equals(TokenType.SUBTREE_START)))) {
+  		
   		if (tokens.get(0).getType().equals(TokenType.UNROOTED_COMMAND)) {
   			throw new NewickException(tokens.get(1).getTextPos(), newickDescription, TokenType.SUBTREE_START, 
   					tokens.get(1).getType());
