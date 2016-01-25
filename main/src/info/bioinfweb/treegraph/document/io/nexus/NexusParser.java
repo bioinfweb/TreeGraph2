@@ -212,14 +212,14 @@ public class NexusParser {
    * @param translTable
    */
   private static void readTranslTable(NexusCommand command, TranslTable translTable) throws IOException {
-  	String[] entrys = TRANSL_TABLE_SEPARATOR_PATTERN.split(removeComments(command.getTokens()));
+  	String[] entries = TRANSL_TABLE_SEPARATOR_PATTERN.split(removeComments(command.getTokens()));
   	Matcher entryPatternMatcher;
   	Matcher enclosedPatternMatcher;
   	String resultKey = "";
   	String resultName = "";
-  	for (int i = 0; i < entrys.length; i++) {
-  		entryPatternMatcher = ENTRY_PATTERN.matcher(entrys[i]);
-  		enclosedPatternMatcher = ENCLOSED_NAME_PATTERN.matcher(entrys[i]);
+  	for (int i = 0; i < entries.length; i++) {
+  		entryPatternMatcher = ENTRY_PATTERN.matcher(entries[i]);
+  		enclosedPatternMatcher = ENCLOSED_NAME_PATTERN.matcher(entries[i]);
   		if (entryPatternMatcher.matches() && !enclosedPatternMatcher.matches()) {
   			resultKey = entryPatternMatcher.group(1);
   			resultName = entryPatternMatcher.group(2);  			
