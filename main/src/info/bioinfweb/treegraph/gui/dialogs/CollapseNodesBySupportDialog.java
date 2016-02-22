@@ -22,8 +22,6 @@ package info.bioinfweb.treegraph.gui.dialogs;
 import info.bioinfweb.commons.Math2;
 import info.bioinfweb.commons.text.StringUtils;
 import info.bioinfweb.treegraph.Main;
-import info.bioinfweb.treegraph.document.Branch;
-import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.nodebranchdata.HiddenDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.VoidNodeBranchDataAdapter;
@@ -73,7 +71,7 @@ public class CollapseNodesBySupportDialog extends EditDialog {
 	 * @return void
 	 */
 	private void initialize() {
-		setHelpCode(71);  //TODO Link this ID to concrete Wiki page (ID is already registered)
+		setHelpCode(71);
 		setMinimumSize(new Dimension(400, 150));
 		setTitle("Collapse nodes by support value");
 		setContentPane(getJContentPane());
@@ -166,6 +164,7 @@ public class CollapseNodesBySupportDialog extends EditDialog {
 			else if (!adapterInput.setSelectedAdapter(TextLabelAdapter.class)) {
 				adapterInput.setSelectedAdapter(HiddenDataAdapter.class);
 			}
+			pack();
 		  return true;
 		}
 		else {
