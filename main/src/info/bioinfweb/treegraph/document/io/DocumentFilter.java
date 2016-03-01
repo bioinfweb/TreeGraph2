@@ -19,7 +19,6 @@
 package info.bioinfweb.treegraph.document.io;
 
 
-import java.io.File;
 import java.io.FileFilter;
 
 import javax.swing.JFileChooser;
@@ -33,8 +32,6 @@ import javax.swing.JFileChooser;
  */
 public interface DocumentFilter extends FileFilter {
 	public boolean validExtension(String name);
-
-	public boolean accept(File f);
 
 	public String getDescription();
 	

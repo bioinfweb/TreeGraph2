@@ -44,7 +44,7 @@ public class ReadWriteFactory {
   
   private void fillList() {
   	factories.put(ReadWriteFormat.XTG, new XTGFactory());
-  	factories.put(ReadWriteFormat.NEWICK, new NewickFactory());   // Muss vor NEXUS eingef�gt werden
+  	factories.put(ReadWriteFormat.NEWICK, new NewickFactory());   // Muss vor NEXUS eingef�gt werden (Why should this help? The map is not sorted.)
   	factories.put(ReadWriteFormat.NEXUS, new NexusFactory());
   	factories.put(ReadWriteFormat.TGF, new TGFFactory());  //TODO Warum steht das hier? Ist doch noch gar nicht fertig.
   	factories.put(ReadWriteFormat.PHYLO_XML, new PhyloXMLFactory());

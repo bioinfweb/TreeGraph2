@@ -32,7 +32,7 @@ import javax.xml.stream.XMLStreamException;
  * @author Ben St&ouml;ver
  * @since 2.0.35
  */
-public abstract class AbstractXMLFilter extends AbstractFilter{
+public abstract class AbstractXMLFilter extends AbstractFilter {
 	public static final String XML_EXTENSION = ".xml";
 	
 	
