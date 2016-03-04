@@ -91,15 +91,18 @@ public class BayesTraitsReader {
 				nodeNames.add(matcher.group(1));
 				probabilityKeys.add(matcher.group(2));
 			}
-			else {
+			else {				
 				nodeNames.add(null);
 				probabilityKeys.add(null);		
 			}
 		}
 		
-		line = reader.peekLine().getSequence().toString();
+//		line = reader.peekLine().getSequence().toString();
+		
 		while (reader.peek() != -1) {
-			parts = line.split("\\t");			
+			line = reader.readLine().getSequence().toString(); //line is now read here
+			parts = line.split("\\t");
+			System.out.println(parts.length);
 			for (int i = 0; i < parts.length; i++) {
 				if (nodeNames.get(i) != null) {
 					String[] headingParts = getHeadingParts(probabilityKeys.get(i));				
@@ -107,7 +110,7 @@ public class BayesTraitsReader {
 				}
 			}		
 			lineCounter += 1;
-			line = reader.readLine().getSequence().toString();
+//			line = reader.readLine().getSequence().toString(); 
 		}
 		
 		for (int i = 0; i < nodeNames.size(); i++) {
