@@ -33,7 +33,8 @@ public class AncestralStateData {
 	private String name;
 	private List<String> leafNames = new ArrayList<String>();
 	private SortedMap<String, SortedMap<String, Double>> characterMap = new TreeMap<String, SortedMap<String, Double>>();
-		
+	
+	
 	public AncestralStateData(String name) {
 		super();
 		this.name = name;

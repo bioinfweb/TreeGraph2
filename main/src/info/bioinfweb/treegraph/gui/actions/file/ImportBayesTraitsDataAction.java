@@ -26,7 +26,9 @@ import java.io.IOException;
 
 import javax.swing.Action;
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 
+import info.bioinfweb.commons.swing.ProgressDialog;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.io.ancestralstate.BayesTraitsReader;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
@@ -76,7 +78,7 @@ public class ImportBayesTraitsDataAction extends DocumentAction {
 	
 	
 	@Override
-	protected void onActionPerformed(ActionEvent e, TreeInternalFrame frame) {
+	protected void onActionPerformed(ActionEvent e, final TreeInternalFrame frame) {
 		if (getImportBayesTraitsDataDialog().execute(frame.getDocument(), frame.getTreeViewPanel().getSelection(), 
 				frame.getSelectedAdapter())) {
 			
@@ -86,13 +88,27 @@ public class ImportBayesTraitsDataAction extends DocumentAction {
 			try {
 				BayesTraitsReader bayesTraitsReader = new BayesTraitsReader();
 				parameters.setData(bayesTraitsReader.read(parameters.getTableFile().getAbsolutePath()));
+				
 				if (getAssignBayesTraitsImportColumnsDialog().execute(parameters, parameters.getData().get("Root"), frame.getDocument().getTree())) {
-					ImportBayesTraitsDataEdit edit = new ImportBayesTraitsDataEdit(frame.getDocument(), parameters);
-					frame.getDocument().executeEdit(edit);
-					if (edit.hasWarnings()) {
-						JOptionPane.showMessageDialog(MainFrame.getInstance(), edit.getWarningText(), 
-						    "Warning", JOptionPane.WARNING_MESSAGE);
-					}
+					final ProgressDialog progressDialog = new ProgressDialog(getMainFrame(), "Importing data...");
+					final ImportBayesTraitsDataEdit edit = new ImportBayesTraitsDataEdit(frame.getDocument(), parameters, progressDialog);
+					new SwingWorker<Void, Void>() {
+						@Override
+						protected Void doInBackground() throws Exception {
+							frame.getDocument().executeEdit(edit);
+							return null;
+						}
+						
+						@Override
+						protected void done() {
+						 progressDialog.dispose();
+							if (edit.hasWarnings()) {
+								JOptionPane.showMessageDialog(MainFrame.getInstance(), edit.getWarningText(), 
+								    "Warning", JOptionPane.WARNING_MESSAGE);
+							}
+						}
+					}.execute();  // Start processing in a separate thread.
+					progressDialog.setVisible(true);  // Show modal dialog.
 				}
 			}
 			catch (FileNotFoundException ex) {

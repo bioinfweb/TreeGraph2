@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import info.bioinfweb.commons.progress.ProgressMonitor;
 import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
@@ -42,18 +43,23 @@ import info.bioinfweb.treegraph.document.undo.WarningMessageEdit;
 
 public class ImportBayesTraitsDataEdit extends AbstractTopologicalCalculationEdit implements WarningMessageEdit {
 	private AncestralStateImportParameters parameters;
-	
 	private Map<Node, LeafSet> internalNodes = new HashMap<Node, LeafSet>();
-
 	private Set<String> terminalNodesNotFound = new TreeSet<String>();
 	private Set<String> internalDataNotAdded = new TreeSet<String>();
 	private Set<String> nodeDataNotFound = new TreeSet<String>();
+	private ProgressMonitor progressMonitor;
 	
 
 
-	public ImportBayesTraitsDataEdit(Document document,	AncestralStateImportParameters parameters) {
+	public ImportBayesTraitsDataEdit(Document document,	AncestralStateImportParameters parameters, ProgressMonitor progressMonitor) {
 		super(document, DocumentChangeType.TOPOLOGICAL_BY_RENAMING, parameters.getKeyAdapter(), true);  //BayesTraits supposedly does not support unrooted trees
 		this.parameters = parameters;
+		this.progressMonitor = progressMonitor;
+	}
+	
+	
+	public ImportBayesTraitsDataEdit(Document document,	AncestralStateImportParameters parameters) {
+		this(document, parameters, null);
 	}
 	
 	
@@ -202,7 +208,8 @@ public class ImportBayesTraitsDataEdit extends AbstractTopologicalCalculationEdi
 	@Override
 	protected void performRedo() {
 		getTopologicalCalculator().addLeafSets(getDocument().getTree().getPaintStart(), parameters.getKeyAdapter());		
-		
+
+		double progressInterval = 1 / (double)parameters.getData().size();
 		for (String internalNodeName : parameters.getData().keySet()) {
 			Node internalNode = findReconstructedNode(parameters.getData().get(internalNodeName));
 			
@@ -243,6 +250,10 @@ public class ImportBayesTraitsDataEdit extends AbstractTopologicalCalculationEdi
 					}
 					characterIndex += 1;
 				}
+			}
+			
+			if (progressMonitor != null) {
+				progressMonitor.addToProgressValue(progressInterval);
 			}
 		}
 	}

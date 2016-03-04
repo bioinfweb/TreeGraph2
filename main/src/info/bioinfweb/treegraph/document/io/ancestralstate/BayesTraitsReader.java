@@ -34,7 +34,10 @@ import java.util.regex.Pattern;
 
 
 public class BayesTraitsReader {
-	public static final String ROOT_NAME = "Root";	
+	private static final int PEEK_BUFFER_SIZE = 1024 * 1024;
+	
+	public static final String ROOT_NAME = "Root";
+	
 	private static final String MRCA_COMMAND = "MRCA:";
 	private static final String NODE_COMMAND = "Node:";
 	private static final String BAYESIAN_TABLE_START = "Iteration\t";
@@ -97,12 +100,9 @@ public class BayesTraitsReader {
 			}
 		}
 		
-//		line = reader.peekLine().getSequence().toString();
-		
 		while (reader.peek() != -1) {
-			line = reader.readLine().getSequence().toString(); //line is now read here
+			line = reader.readLine().getSequence().toString();
 			parts = line.split("\\t");
-			System.out.println(parts.length);
 			for (int i = 0; i < parts.length; i++) {
 				if (nodeNames.get(i) != null) {
 					String[] headingParts = getHeadingParts(probabilityKeys.get(i));				
@@ -110,7 +110,6 @@ public class BayesTraitsReader {
 				}
 			}		
 			lineCounter += 1;
-//			line = reader.readLine().getSequence().toString(); 
 		}
 		
 		for (int i = 0; i < nodeNames.size(); i++) {
@@ -123,7 +122,7 @@ public class BayesTraitsReader {
 	
 	
 	public Map<String, AncestralStateData> read(String fileName) throws IOException {
-		PeekReader reader = new PeekReader(new BufferedReader(new FileReader(fileName)));
+		PeekReader reader = new PeekReader(new BufferedReader(new FileReader(fileName)), PEEK_BUFFER_SIZE);
 		
 		Map<String, AncestralStateData> result = new TreeMap<String, AncestralStateData>();
 		result.put(ROOT_NAME, new AncestralStateData(ROOT_NAME));
