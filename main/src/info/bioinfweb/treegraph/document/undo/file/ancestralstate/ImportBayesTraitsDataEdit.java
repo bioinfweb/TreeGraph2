@@ -253,7 +253,7 @@ public class ImportBayesTraitsDataEdit extends AbstractTopologicalCalculationEdi
 			}
 			
 			if (progressMonitor != null) {
-				progressMonitor.addToProgressValue(progressInterval);
+				progressMonitor.addToProgressValue(progressInterval, "Writing data to \"" + internalNodeName + "\".");
 			}
 		}
 	}
