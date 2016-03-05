@@ -101,8 +101,9 @@ public class SVGTranscodeWriter extends AbstractGraphicWriter implements Graphic
 	 * 
 	 * @see info.bioinfweb.treegraph.graphics.export.GraphicWriter#write(info.bioinfweb.treegraph.document.Document, info.bioinfweb.treegraph.graphics.positionpaint.TreePainter, ParameterMap, java.io.OutputStream)
 	 */
+	@Override
 	public void write(Document document, TreePainter painter, ParameterMap hints, 
-			OutputStream stream) {
+			OutputStream stream) throws Exception {
 		
 	  DistanceDimension paintDim = document.getTree().getPaintDimension(
 				PositionPaintFactory.getInstance().getType(painter));
@@ -133,51 +134,27 @@ public class SVGTranscodeWriter extends AbstractGraphicWriter implements Graphic
 	  painter.paintTree(svgGenerator, document, null, paintResolution, 
 	  		hints.getBoolean(KEY_TRANSPARENT, false));
 	  StringWriter stringWriter = new StringWriter();
-	  try {
-	  	svgGenerator.stream(stringWriter);
+  	svgGenerator.stream(stringWriter);
+  	
+  	Transcoder t = transcoderClass.newInstance();
+  	
+	  t.addTranscodingHint(SVGAbstractTranscoder.KEY_PIXEL_UNIT_TO_MILLIMETER, 
+	  		new Float(1f / pixelsPerMillimeter));
+	  t.addTranscodingHint(SVGAbstractTranscoder.KEY_WIDTH, width);
+	  t.addTranscodingHint(SVGAbstractTranscoder.KEY_HEIGHT, height);
+	  addTranscodingHints(t, hints);
+	
+	  TranscoderInput input = new TranscoderInput(new StringReader(stringWriter.getBuffer().toString()));
+	  TranscoderOutput output;
+	  if (t instanceof SVGTranscoder) {  // Workaround notwendig, weil die verschiedenen Transcoder scheinbar nicht mit der jeweils anderen Form arbeiten.
+	  	output = new TranscoderOutput(new OutputStreamWriter(stream, "UTF-8"));
 	  }
-	  catch (SVGGraphics2DIOException e) {
-	  	e.printStackTrace();
+	  else {
+	  	output = new TranscoderOutput(new BufferedOutputStream(stream));
 	  }
-	  try {
-	  	Transcoder t = transcoderClass.newInstance();
-	  	
-		  t.addTranscodingHint(SVGAbstractTranscoder.KEY_PIXEL_UNIT_TO_MILLIMETER, 
-		  		new Float(1f / pixelsPerMillimeter));
-		  t.addTranscodingHint(SVGAbstractTranscoder.KEY_WIDTH, width);
-		  t.addTranscodingHint(SVGAbstractTranscoder.KEY_HEIGHT, height);
-		  addTranscodingHints(t, hints);
-		
-		  TranscoderInput input = new TranscoderInput(new StringReader(stringWriter.getBuffer().toString()));
-		  TranscoderOutput output;
-		  if (t instanceof SVGTranscoder) {  // Workaround notwendig, weil die verschiedenen Transcoder scheinbar nicht mit der jeweils anderen Form arbeiten.
-		  	output = new TranscoderOutput(new OutputStreamWriter(stream, "UTF-8"));
-		  }
-		  else {
-		  	output = new TranscoderOutput(new BufferedOutputStream(stream));
-		  }
-		  try {
-		  	t.transcode(input, output);
-		  }
-		  catch (TranscoderException e) {
-		  	e.printStackTrace();
-		  }
-		  try {
-		  	stream.flush();
-		  	stream.close();
-		  }
-		  catch (IOException e) {
-		  	e.printStackTrace();
-		  }
-	  }
-	  catch (IllegalAccessException e) {
-	  	e.printStackTrace();
-	  } 
-	  catch (InstantiationException e) {
-			e.printStackTrace();
-		}
-	  catch (UnsupportedEncodingException e) {
-	  	e.printStackTrace();
-	  }
+	  
+  	t.transcode(input, output);
+  	stream.flush();
+  	stream.close();
 	}
 }

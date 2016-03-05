@@ -203,7 +203,7 @@ public class RectangularCladogramPainter implements TreePainter {
 						for (int j = 0; j < angles.length; j++) {
 							if (f.getShowNullLines() || (!Double.isNaN(angles[j]) && (angles[j] > 0))) {
 								arcs[j] = new Arc2D.Double(x, y, width, height, 
-										Math.round(startAngle), Math.round(angles[j]), Arc2D.PIE);  // Rounding is necessary, as a workaround for rendering errors in SVG, if too small angles are written. (A higher precision of 0.1° already leads to deformed arcs.)
+										Math.round(startAngle), Math.round(angles[j]), Arc2D.PIE);  // Rounding is necessary, as a workaround for rendering errors in SVG, if too small angles are written (see bug #104). (A higher precision of 0.1° already leads to deformed arcs.)
 								g.setColor(f.getPieColor(j));
 								g.fill(arcs[j]);
 								startAngle += angles[j];

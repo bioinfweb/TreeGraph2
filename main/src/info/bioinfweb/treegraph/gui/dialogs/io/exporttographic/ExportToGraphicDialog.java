@@ -291,20 +291,22 @@ public class ExportToGraphicDialog extends FileDialog {
     					"Commands not supported",JOptionPane.ERROR_MESSAGE);
       	}
 			}
-      catch (IOException ex) {
+			catch (OutOfMemoryError ex) {
+				WikiHelpOptionPane.showMessageDialog(MainFrame.getInstance(), 
+						"There is not enough memory avialable. This may happen, when trying to create large raster images.\n\n" + 
+						"You can try to run TreeGraph with the following command line options for " +
+						"the Java Virtual Machine from the TreeGraph installation directory:\n" + 
+						"\"java -Xms64m -Xmx1024m -jar TreeGraph.jar\"\n\n" +
+						"Alternatively you can export a high resolution SVG and convert the SVG to a raster graphic using a " +
+						"third party tool (e.g. Inkscape).", 
+						Main.getInstance().getWikiHelp(), 33);
+				return false;
+			}
+      catch (Exception ex) {
       	JOptionPane.showMessageDialog(this, "The excpeption \"" + ex.getMessage() + 
       			"\" occurred when trying to write to the file \"" + file.getAbsolutePath() + "\".", "Error", 
       			JOptionPane.ERROR_MESSAGE);
       }
-			catch (OutOfMemoryError ex) {
-				WikiHelpOptionPane.showMessageDialog(MainFrame.getInstance(), 
-						"There is not enough memory avialable.\n" + 
-						"You can try to run TreeGraph with the following command line options for " +
-						"the Java Virtual Machine from the TreeGraph installation directory:\n" + 
-						"\"java -Xms64m -Xmx1024m -jar TreeGraph.jar\"", 
-						Main.getInstance().getWikiHelp(), 33);
-				return false;
-			}
 		}
 		finally {
 			MainFrame.getInstance().setCursor(cursor);

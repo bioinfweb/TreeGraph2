@@ -25,12 +25,11 @@ import info.bioinfweb.commons.collections.ParameterMap;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 
 
 
 public abstract class AbstractGraphicWriter implements GraphicWriter {
-	public void write(Document document, TreePainter painter, ParameterMap hints, File file) throws IOException {
+	public void write(Document document, TreePainter painter, ParameterMap hints, File file) throws Exception {
 		
 		FileOutputStream stream = new FileOutputStream(file);
 		try {

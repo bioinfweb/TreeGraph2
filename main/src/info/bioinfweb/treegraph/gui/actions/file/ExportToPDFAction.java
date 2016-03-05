@@ -63,7 +63,7 @@ public class ExportToPDFAction extends DocumentAction {
 		  			new ParameterMap(), file);
 	    	Desktop.getDesktop().open(file);
 			}
-			catch (IOException ex) {
+			catch (Exception ex) {
 				JOptionPane.showMessageDialog(MainFrame.getInstance(), "The error \"" + ex.getMessage() + 
 						"\" occured when trying to create the PDF file.", "IO Error", JOptionPane.ERROR_MESSAGE);
 			}

@@ -35,10 +35,8 @@ public interface GraphicWriter {
 	public static final String KEY_HEIGHT = "height";
 	public static final String KEY_DIMENSIONS_IN_PIXELS = "dimensionsInPixels";
 	public static final String KEY_TRANSPARENT = "transparent";
-	
-	
-	public void write(Document document, TreePainter painter, ParameterMap hints, OutputStream stream) throws IOException;
+		
+	public void write(Document document, TreePainter painter, ParameterMap hints, OutputStream stream) throws Exception;
 
-	
-  public void write(Document document, TreePainter painter, ParameterMap hints,	File file)  throws IOException;
+  public void write(Document document, TreePainter painter, ParameterMap hints,	File file)  throws Exception;
 }
