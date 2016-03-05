@@ -668,6 +668,7 @@ main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttographic/ExportToGraphic
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttographic/JPEGPrefPanel.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttographic/PreferencesPanel.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttographic/PreferencesPanelFactory.java -text
+main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttographic/SVGPrefPanel.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttographic/TIFFPrefPanel.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttographic/TransparentBgPrefPanel.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttree/AdditionalDataPanelFactory.java -text svneol=unset#text/plain

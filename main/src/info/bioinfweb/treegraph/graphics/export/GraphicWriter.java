@@ -20,7 +20,6 @@ package info.bioinfweb.treegraph.graphics.export;
 
 
 import java.io.File;
-import java.io.IOException;
 import java.io.OutputStream;
 
 import info.bioinfweb.treegraph.document.Document;
@@ -29,12 +28,18 @@ import info.bioinfweb.commons.collections.ParameterMap;
 
 
 
+/**
+ * Interface to be implemented by all classes that can export trees to graphic formats.
+ * 
+ * @author Ben St&ouml;ver
+ */
 public interface GraphicWriter {
 	public static final String KEY_PIXELS_PER_MILLIMETER = "ppm";
 	public static final String KEY_WIDTH = "width";
 	public static final String KEY_HEIGHT = "height";
 	public static final String KEY_DIMENSIONS_IN_PIXELS = "dimensionsInPixels";
 	public static final String KEY_TRANSPARENT = "transparent";
+	public static final String KEY_TEXT_AS_SHAPES = "textAsShapes";
 		
 	public void write(Document document, TreePainter painter, ParameterMap hints, OutputStream stream) throws Exception;
 

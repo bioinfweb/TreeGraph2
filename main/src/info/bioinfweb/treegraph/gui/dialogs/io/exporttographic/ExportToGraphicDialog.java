@@ -103,7 +103,7 @@ public class ExportToGraphicDialog extends FileDialog {
 	private int lastSelection = -1;
   private DecimalFormat decimalFormat = new DecimalFormat("##########.######");  // Bei zu vielen Nachkommastellen entstehen Rundungsfehler, da DecimalFormat double verwendet und nur float gespeichert wird.  //  @jve:decl-index=0:
   private float aspectRatio = 1;
-  private PreferencesPanel preferencesPanel = null;  //  @jve:decl-index=0:
+  private PreferencesPanel preferencesPanel;  // This field must not be set to anything (e.g. null).
   private TreeInternalFrame treeFrame = null;
 	
 	
@@ -132,6 +132,7 @@ public class ExportToGraphicDialog extends FileDialog {
 	/**
 	 * This method should be called instead of 
 	 * {@link ExportToGraphicDialog#execute(Document, TreeSelection)}.
+	 * 
 	 * @param frame
 	 * @return
 	 * @see info.bioinfweb.treegraph.gui.dialogs.EditDialog#execute(info.bioinfweb.treegraph.document.Document, info.bioinfweb.treegraph.gui.treeframe.TreeSelection)
@@ -180,7 +181,8 @@ public class ExportToGraphicDialog extends FileDialog {
 	
 	/** 
 	 * Returns the width entered by the user in pixels or millimeters. (Use 
-	 * <code>dimensionsInPixels()</code> to dertermine the unit.)
+	 * <code>dimensionsInPixels()</code> to determine the unit.)
+	 * 
 	 * @return the width the image should have
 	 */
 	private float getImageWidth() {
@@ -190,7 +192,8 @@ public class ExportToGraphicDialog extends FileDialog {
 	
 	/** 
 	 * Return the height entered by the user in pixels or millimeters. (Use 
-	 * <code>dimensionsInPixels()</code> to dertermine the unit.)
+	 * <code>dimensionsInPixels()</code> to determine the unit.)
+	 * 
 	 * @return the height the image should have
 	 */
 	private float getImageHeight() {
@@ -220,6 +223,7 @@ public class ExportToGraphicDialog extends FileDialog {
 	/**
 	 * Returns the graphic writer hints that have been specified by the user. This also includes format
 	 * specific hints.
+	 * 
 	 * @return
 	 */
 	private ParameterMap getHints() {
@@ -233,6 +237,9 @@ public class ExportToGraphicDialog extends FileDialog {
 		
 		if (preferencesPanel != null) {
 			preferencesPanel.addHints(result);
+		}
+		else {
+			System.out.println("is null");
 		}
 		return result;
 	}
@@ -351,12 +358,13 @@ public class ExportToGraphicDialog extends FileDialog {
 	
 	
 	private void setPreferencesPanel(GraphicFormat format) {
+		getOuterPreferencesPanel().removeAll();
+		
 		preferencesPanel = null;
 		if (format != null) {
 			preferencesPanel = PreferencesPanelFactory.getInstance().getPanel(format);
 		}
 		
-		getOuterPreferencesPanel().removeAll();
 		if (preferencesPanel != null) {
 			GridBagConstraints gridBagConstraints = new GridBagConstraints();
 			gridBagConstraints.gridx = 0;

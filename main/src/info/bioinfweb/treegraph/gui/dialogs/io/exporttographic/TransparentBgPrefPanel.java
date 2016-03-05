@@ -46,8 +46,7 @@ public class TransparentBgPrefPanel extends JPanel implements PreferencesPanel {
 
 	
 	public void addHints(ParameterMap hints) {
-		hints.put(GraphicWriter.KEY_TRANSPARENT, 
-				new Boolean(getTransparentCheckBox().isSelected()));
+		hints.put(GraphicWriter.KEY_TRANSPARENT, new Boolean(getTransparentCheckBox().isSelected()));
 	}
 
 

@@ -26,8 +26,9 @@ import java.util.EnumMap;
 
 
 /**
- * This class provides instances of the accordant preferences panels to the different graphic formats
+ * This class provides instances of the according preferences panels to the different graphic formats
  * TreeGraph can export data to.
+ * 
  * @author Ben St&ouml;ver
  */
 public class PreferencesPanelFactory {
@@ -53,7 +54,7 @@ public class PreferencesPanelFactory {
 	
   private void fillList() {
   	TransparentBgPrefPanel transparenrtBgPrefPanel = new TransparentBgPrefPanel();
-  	panels.put(GraphicFormat.SVG, transparenrtBgPrefPanel);
+  	panels.put(GraphicFormat.SVG, new SVGPrefPanel());
 	  panels.put(GraphicFormat.PNG, transparenrtBgPrefPanel);
 	  panels.put(GraphicFormat.EMF, transparenrtBgPrefPanel);
 	  panels.put(GraphicFormat.TIFF, new TIFFPrefPanel());

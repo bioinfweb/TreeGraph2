@@ -20,8 +20,11 @@ package info.bioinfweb.treegraph.gui.dialogs.io.exporttographic;
 
 
 import java.awt.GridBagConstraints;
+
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+
+import org.apache.batik.ext.awt.image.codec.tiff.TIFFEncodeParam;
 
 import info.bioinfweb.treegraph.graphics.export.tiff.TIFFWriter;
 import info.bioinfweb.commons.collections.ParameterMap;
@@ -30,7 +33,7 @@ import info.bioinfweb.commons.collections.ParameterMap;
 
 public class TIFFPrefPanel extends TransparentBgPrefPanel {
 	private JLabel compressionMethodLabel = null;
-	private JComboBox compressionMethodComboBox = null;
+	private JComboBox<String> compressionMethodComboBox = null;
 	
 	
 	@Override
@@ -67,12 +70,12 @@ public class TIFFPrefPanel extends TransparentBgPrefPanel {
 	 * 	
 	 * @return javax.swing.JComboBox	
 	 */
-	private JComboBox getCompressionMethodComboBox() {
+	private JComboBox<String> getCompressionMethodComboBox() {
 		if (compressionMethodComboBox == null) {
-			compressionMethodComboBox = new JComboBox();
-			compressionMethodComboBox.addItem("none");
+			compressionMethodComboBox = new JComboBox<String>();
+			compressionMethodComboBox.addItem("none");  //TODO Where can valid values be obtained from?
 			compressionMethodComboBox.addItem("packbits");
-			compressionMethodComboBox.addItem("packbits");
+			compressionMethodComboBox.addItem("jpeg");
 		}
 		return compressionMethodComboBox;
 	}
