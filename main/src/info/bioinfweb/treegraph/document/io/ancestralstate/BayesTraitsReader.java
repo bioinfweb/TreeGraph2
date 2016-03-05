@@ -25,9 +25,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -64,17 +64,29 @@ public class BayesTraitsReader {
 	}
 
 
+	private CharSequence peekMRCALine(PeekReader reader) throws IOException {
+		PeekReader.ReadResult result = reader.peekLine();
+		if (result.isCompletelyRead()) {
+			return result.getSequence();
+		}
+		else {  //TODO Is there a better way for solving this? Is it at all likely, that MRCA lines are that long?
+			throw new IOException("A line in the input file containing a MRCA definition was longer then the reader buffer. "
+					+ "Please send a bug report or contact the developers, if your input file was correct.");
+		}
+	}
+	
+	
 	private AncestralStateData readMRCA(PeekReader reader) throws IOException {
 		String line = reader.readLine().getSequence().toString();		
 		String[] parts = line.split("\\s+");
 		AncestralStateData result = new AncestralStateData(parts[1]);
 		
-		line = reader.peekLine().getSequence().toString();  //TODO Later: Handle reader.peekLine().isCompletelyRead() == false (buffer size exceeded or use very high buffer size) 
+		line = peekMRCALine(reader).toString(); 
 		Matcher matcher = LEAF_NAME_PATTERN.matcher(line);
 		while (matcher.matches()) {	
 			result.getLeafNames().add(matcher.group(1));
 			reader.readLine();
-			line = reader.peekLine().getSequence().toString();  //TODO Later: Handle reader.peekLine().isCompletelyRead() == false (buffer size exceeded or use very high buffer size)
+			line = peekMRCALine(reader).toString();
 			matcher = LEAF_NAME_PATTERN.matcher(line);
 		}
 		return result;
@@ -124,7 +136,7 @@ public class BayesTraitsReader {
 	public Map<String, AncestralStateData> read(String fileName) throws IOException {
 		PeekReader reader = new PeekReader(new BufferedReader(new FileReader(fileName)), PEEK_BUFFER_SIZE);
 		
-		Map<String, AncestralStateData> result = new TreeMap<String, AncestralStateData>();
+		Map<String, AncestralStateData> result = new HashMap<String, AncestralStateData>();
 		result.put(ROOT_NAME, new AncestralStateData(ROOT_NAME));
 		try {
 			while (reader.peek() != -1) {
