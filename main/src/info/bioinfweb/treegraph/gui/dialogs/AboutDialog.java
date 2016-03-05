@@ -360,12 +360,13 @@ public class AboutDialog extends JDialog {
 							"Sarah Wiechers, " + 
 					    "<a href='http://bioinfweb.info/People/Mueller'>Kai M&uuml;ller</a><br />" +
 					"Website: <a href='http://treegraph.bioinfweb.info/'>treegraph.bioinfweb.info</a><br />" +
-					"Copyright 2007-2015 Ben St&ouml;ver, Sarah Wiechers, Kai M&uuml;ller. All rights reserved.</p>" +
+					"Copyright 2007-2016 Ben St&ouml;ver, Sarah Wiechers, Kai M&uuml;ller. All rights reserved.</p>" +
 					
 					"<p><b>Publication:</b><br /> St&ouml;ver B C, M&uuml;ller K F: " +
 					    "<a href='http://dx.doi.org/10.1186/1471-2105-11-7'>TreeGraph 2: Combining and " +
 					    "visualizing evidence from different phylogenetic analyses.</a> " +
-					    "<i>BMC Bioinformatics</i> 2010, <b>11</b>:7</p>" +
+					    "<i>BMC Bioinformatics</i> 2010, <b>11</b>:7<br/>" +
+					    "More publications can be found on the <a href='http://treegraph.bioinfweb.info/Publications'>website</a>.</p>" +
 					
 					"<p>This program is free software: you can redistribute it and/or modify it " +
 					"under the terms of the GNU General Public License (see General Public " +
