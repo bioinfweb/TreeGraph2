@@ -107,7 +107,8 @@ public class PieChartLabel extends GraphicalLabel implements LineElement {
 	
 	
 	/**
-	 * Returns an array with angles the single value would make up in a resulting pie chart in degrees. 
+	 * Returns an array with angles the single value would make up in a resulting pie chart in degrees.
+	 * 
 	 * @return a array with the length {@link #valueCount()}
 	 * @throws NoLinkedNodeException - if this label has no linked node (no linked {@link Labels} object).
 	 */

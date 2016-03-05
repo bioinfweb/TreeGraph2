@@ -29,6 +29,7 @@ import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 import info.bioinfweb.treegraph.gui.treeframe.TreeViewPanel;
 import info.bioinfweb.commons.Math2;
 import info.bioinfweb.commons.graphics.FontCalculator;
+
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Font;
@@ -195,22 +196,32 @@ public class RectangularCladogramPainter implements TreePainter {
 				    float x = pd.getLeft().getInPixels(pixelsPerMillimeter);
 				    float y = pd.getTop().getInPixels(pixelsPerMillimeter);
 				    float width = pd.getWidth().getInPixels(pixelsPerMillimeter);
-				    float height = pd.getHeight().getInPixels(pixelsPerMillimeter); 
+				    float height = pd.getHeight().getInPixels(pixelsPerMillimeter);
+				    
+				    // Draw arc areas:
+				    Arc2D.Double[] arcs = new Arc2D.Double[angles.length];
 						for (int j = 0; j < angles.length; j++) {
 							if (f.getShowNullLines() || (!Double.isNaN(angles[j]) && (angles[j] > 0))) {
-								Arc2D.Float arc = new Arc2D.Float(x, y, width, height, 
-										(float)startAngle, (float)angles[j], Arc2D.PIE);
+								arcs[j] = new Arc2D.Double(x, y, width, height, 
+										Math.round(startAngle), Math.round(angles[j]), Arc2D.PIE);  // Rounding is necessary, as a workaround for rendering errors in SVG, if too small angles are written. (A higher precision of 0.1° already leads to deformed arcs.)
 								g.setColor(f.getPieColor(j));
-								g.fill(arc);
-								if (f.getShowInternalLines() && (twoValid || f.getShowNullLines())) {
-									g.setColor(f.getLineColor());
-									g.draw(arc);
-								}
+								g.fill(arcs[j]);
 								startAngle += angles[j];
 							}
 						}
+						
+						// Draw arc borders:
 						g.setColor(f.getLineColor());
-						g.draw(new Ellipse2D.Float(x, y, width, height));
+						if (f.getShowInternalLines() && (twoValid || f.getShowNullLines())) {
+							startAngle = 0.0;
+							for (int j = 0; j < arcs.length; j++) {  // Borders need to be drawn after all areas, because borders of null wide parts would be hidden in SVG otherwise.
+								if (f.getShowNullLines() || (!Double.isNaN(angles[j]) && (angles[j] > 0))) {
+									g.draw(arcs[j]);
+									startAngle += angles[j];
+								}
+							}
+						}
+						g.draw(new Ellipse2D.Float(x, y, width, height));  // In some cases the whole border may already have been painted, but not always.
 					}
 					finally {
 						g.setStroke(stroke);
