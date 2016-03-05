@@ -182,13 +182,16 @@ public class XTGWriter extends AbstractDocumentWriter implements XTGConstants, D
 	    		writer.writeAttribute(ATTR_ICON.toString(), f.getIcon());
 		    	writer.writeAttribute(ATTR_ICON_FILLED.toString(), "" + f.getIconFilled());
 	    	}
-				else {  // PieChartLabel
+				else if (l instanceof PieChartLabel) {
 					writer.writeStartElement(TAG_PIE_CHART_LABEL);
 					PieChartLabelFormats f = ((PieChartLabel)l).getFormats();
 					writeLineAttr(f);
 		    	writeLabelDimensions(f);
 					writer.writeAttribute(ATTR_SHOW_INTERNAL_LINES.toString(), "" + f.getShowInternalLines());
 					writer.writeAttribute(ATTR_SHOW_NULL_LINES.toString(), "" + f.getShowNullLines());
+				}
+				else {
+					throw new InternalError("Unsupported label of type " + l.getClass().getCanonicalName() + " found.");
 				}
 	    	writer.writeAttribute(ATTR_ID.toString(), l.getID());
 	    	writer.writeAttribute(ATTR_LABEL_ABOVE.toString(), "" + l.getFormats().isAbove());

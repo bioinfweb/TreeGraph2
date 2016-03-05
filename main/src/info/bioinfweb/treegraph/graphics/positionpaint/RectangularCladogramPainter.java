@@ -178,13 +178,13 @@ public class RectangularCladogramPainter implements TreePainter {
 							pd.getTop().getInPixels(pixelsPerMillimeter) + 
 							g.getFontMetrics(f.getFont(pixelsPerMillimeter)).getAscent());
 				}
-				else if (label instanceof IconLabel) {  // IconLabel
+				else if (label instanceof IconLabel) {
 					IconLabelFormats f = ((IconLabel)label).getFormats();
 					LabelIconMap.getInstance().get(f.getIcon()).paint(g, 
 							pd.getLeft().getInPixels(pixelsPerMillimeter), 
 							pd.getTop().getInPixels(pixelsPerMillimeter), f, pixelsPerMillimeter);
 				}
-				else {  // PieChartLabel
+				else if (label instanceof PieChartLabel) {
 					PieChartLabel l = (PieChartLabel)label;
 					double[] angles = l.getPieChartAngles();
 					double startAngle = 0;
@@ -226,6 +226,9 @@ public class RectangularCladogramPainter implements TreePainter {
 					finally {
 						g.setStroke(stroke);
 					}
+				}
+				else {
+					throw new InternalError("Unsupported label of type " + label.getClass().getCanonicalName() + " found.");
 				}
 				
   			paintSelection(label);

@@ -19,7 +19,7 @@
 package info.bioinfweb.treegraph.document.format.adapters.color;
 
 
-import info.bioinfweb.treegraph.document.IconLabel;
+import info.bioinfweb.treegraph.document.GraphicalLabel;
 import info.bioinfweb.treegraph.document.Label;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.gui.dialogs.specialformats.AbstractLabelAdapter;
@@ -40,16 +40,16 @@ public class LabelLineColorAdapter extends AbstractLabelAdapter implements Color
 	
 	public void setColor(Color color, Node node) {
 		Label label = node.getAfferentBranch().getLabels().get(getID());
-		if ((label != null) && (label instanceof IconLabel)) {
-			((IconLabel)label).getFormats().setLineColor(color);
+		if ((label != null) && (label instanceof GraphicalLabel)) {
+			((GraphicalLabel)label).getFormats().setLineColor(color);
 		}
 	}
 
 	
 	public Color getColor(Node node) {
 		Label label = node.getAfferentBranch().getLabels().get(getID());
-		if ((label != null) && (label instanceof IconLabel)) {
-			return ((IconLabel)label).getFormats().getLineColor();
+		if ((label != null) && (label instanceof GraphicalLabel)) {
+			return ((GraphicalLabel)label).getFormats().getLineColor();
 		}
 		else {
 			return null;

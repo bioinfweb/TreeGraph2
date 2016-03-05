@@ -32,6 +32,7 @@ import javax.swing.JOptionPane;
 /**
  * Ensures that document elements (that are e.g. pasted from the clipboard) have a 
  * sufficient contrast to the document background.
+ * 
  * @author Ben St&ouml;ver
  * @since 2.0.20-140
  */
@@ -46,6 +47,7 @@ public class ContrastManager {
 	
 	/**
 	 * Asks the user whether to change any colors if this was not already done.
+	 * 
 	 * @return <code>false</code> if the user aborted the operation during the call of this
 	 *         method
 	 */
@@ -73,7 +75,8 @@ public class ContrastManager {
 
 
 	/**
-	 * Checks if two colors have an unsifficient contast.
+	 * Checks if two colors have an insufficient contrast.
+	 * 
 	 * @param foreground
 	 * @param background
 	 * @return <code>false</code> if the user aborted the operation during the call of this
@@ -92,8 +95,8 @@ public class ContrastManager {
 				if (label instanceof TextLabel) {
 					color = ((TextLabel)label).getFormats().getTextColor();
 				}
-				else {  // IconLabel
-					color = ((IconLabel)label).getFormats().getLineColor();
+				else {  // graphical label
+					color = ((GraphicalLabel)label).getFormats().getLineColor();
 				}
 				
 				if (checkColor(color, bgColor)) {
@@ -102,8 +105,8 @@ public class ContrastManager {
 							if (label instanceof TextLabel) {
 								((TextLabel)label).getFormats().setTextColor(defaultColor);
 							}
-							else {  // IconLabel
-								((IconLabel)label).getFormats().setLineColor(defaultColor);
+							else {  // graphical label
+								((GraphicalLabel)label).getFormats().setLineColor(defaultColor);
 							}
 						}
 					}
@@ -118,7 +121,8 @@ public class ContrastManager {
 	
 	
 	/**
-	 * Rekursive method which contains the actual implementation.
+	 * Recursive method which contains the actual implementation.
+	 * 
 	 * @param document - the document where the subtree shall be inserted to
 	 * @param root - the root node of the subtree
 	 * @return <code>false</code> if the user aborted the operation during the call of this
@@ -181,9 +185,10 @@ public class ContrastManager {
 	 * Checks the colors of all elements in the subtree under <code>root</code> (including 
 	 * <code>root</code> and its afferent branch) regarding to their contrast to the 
 	 * background color of the document. 
+	 * 
 	 * @param document - the document where the subtree shall be inserted to
 	 * @param root - the root node of the subtree
-	 * @param defaultColor - the color which shall be set to elements with an unsufficient contrast
+	 * @param defaultColor - the color which shall be set to elements with an insufficient contrast
 	 * @return <code>false</code> if the subtree shall not be pasted
 	 */
 	public boolean ensureContrast(Document document, Node root, Legend[] legends) {
@@ -200,6 +205,7 @@ public class ContrastManager {
 	
 	/**
 	 * Internal method which does not set <code>state = State.UNDEFINED</code>.
+	 * 
 	 * @param document - the document where the label shall be inserted to
 	 * @param label
 	 * @return <code>false</code> if the user aborted the operation during the call of this
@@ -231,10 +237,11 @@ public class ContrastManager {
 	
 	/**
 	 * Checks the text color of the specified label regarding to its contrast to the 
-	 * background color of the document. 
+	 * background color of the document.
+	 * 
 	 * @param document - the document where the subtree shall be inserted to
 	 * @param label - the label to be inserted
-	 * @param defaultColor - the color which shall be set to elements with an unsufficient contrast
+	 * @param defaultColor - the color which shall be set to elements with an insufficient contrast
 	 * @return <code>false</code> if the label shall not be pasted
 	 */
 	public boolean ensureContrast(Document document, Label label) {
@@ -245,7 +252,8 @@ public class ContrastManager {
 	
 	/**
 	 * Checks the text color of the specified labels regarding to their contrast to the 
-	 * background color of the document. 
+	 * background color of the document.
+	 * 
 	 * @param document - the document where the subtree shall be inserted to
 	 * @param labels - the labels to be inserted
 	 * @return <code>false</code> if the labels shall not be pasted
@@ -263,7 +271,8 @@ public class ContrastManager {
 	
 	/**
 	 * Checks the text color of the specified legend regarding to its contrast to the 
-	 * background color of the document. 
+	 * background color of the document.
+	 * 
 	 * @param document - the document where the subtree shall be inserted to
 	 * @param legend - the legend to be inserted
 	 * @return <code>false</code> if the legend shall not be pasted
