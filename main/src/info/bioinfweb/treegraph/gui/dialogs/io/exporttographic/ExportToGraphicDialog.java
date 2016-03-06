@@ -224,7 +224,7 @@ public class ExportToGraphicDialog extends FileDialog {
 	 * Returns the graphic writer hints that have been specified by the user. This also includes format
 	 * specific hints.
 	 * 
-	 * @return
+	 * @return a new parameter map instance with the according entries
 	 */
 	private ParameterMap getHints() {
 		ParameterMap result = new ParameterMap();
@@ -237,9 +237,6 @@ public class ExportToGraphicDialog extends FileDialog {
 		
 		if (preferencesPanel != null) {
 			preferencesPanel.addHints(result);
-		}
-		else {
-			System.out.println("is null");
 		}
 		return result;
 	}

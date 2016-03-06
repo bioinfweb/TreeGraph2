@@ -30,6 +30,7 @@ import javax.swing.JOptionPane;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.graphics.export.GraphicFormat;
+import info.bioinfweb.treegraph.graphics.export.GraphicWriter;
 import info.bioinfweb.treegraph.graphics.export.GraphicWriterFactory;
 import info.bioinfweb.treegraph.graphics.positionpaint.PositionPaintFactory;
 import info.bioinfweb.treegraph.gui.actions.DocumentAction;
@@ -58,9 +59,11 @@ public class ExportToPDFAction extends DocumentAction {
   	if (Desktop.isDesktopSupported()) {
 			try {
 				File file = File.createTempFile(FILE_PREFIX, FILE_SUFFIX);
+				ParameterMap hints = new ParameterMap();
+				hints.put(GraphicWriter.KEY_DIMENSIONS_IN_PIXELS, true);  // Otherwise PDFs of large trees are empty. (Why?)
 		  	GraphicWriterFactory.getInstance().getWriter(GraphicFormat.PDF).write(frame.getDocument(), 
 		  			PositionPaintFactory.getInstance().getPainter(frame.getTreeViewPanel().getPainterType()), 
-		  			new ParameterMap(), file);
+		  			hints, file);
 	    	Desktop.getDesktop().open(file);
 			}
 			catch (Exception ex) {

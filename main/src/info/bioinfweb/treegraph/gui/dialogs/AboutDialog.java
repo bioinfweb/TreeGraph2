@@ -357,7 +357,7 @@ public class AboutDialog extends JDialog {
 					"<body>" +
 					"<h1>TreeGraph " + Main.getInstance().getVersion().toString() + "</h1>" +
 					"<p>Development: <a href='http://bioinfweb.info/People/Stoever'>Ben St&ouml;ver</a>, " +
-							"Sarah Wiechers, " + 
+							"<a href='http://bioinfweb.info/People/Wiechers'>Sarah Wiechers</a>, " + 
 					    "<a href='http://bioinfweb.info/People/Mueller'>Kai M&uuml;ller</a><br />" +
 					"Website: <a href='http://treegraph.bioinfweb.info/'>treegraph.bioinfweb.info</a><br />" +
 					"Copyright 2007-2016 Ben St&ouml;ver, Sarah Wiechers, Kai M&uuml;ller. All rights reserved.</p>" +
