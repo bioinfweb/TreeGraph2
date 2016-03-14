@@ -291,7 +291,7 @@ public class Labels implements Cloneable {
 	
 	
 	public double getLastLinePos(boolean above, int lineNumber) {
-		int labelCount = labelCount(above, lineNumber);
+		int labelCount = labelCount(above, lineNumber);  //TODO Can the line number from the format object provided here be out of range? (See error report 20160213_083017_5552959635752161353.xml) 
 		if (labelCount > 0) {
 			return get(above, lineNumber, labelCount - 1).getFormats().getLinePosition() + DEFAULT_LINE_INDEX_INCREMENT;
 		}

@@ -49,6 +49,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.border.TitledBorder;
+import javax.swing.text.NumberFormatter;
 
 
 
@@ -277,7 +278,11 @@ public class LabelPanel extends JPanel implements ElementFormatTab {
 	 */
 	private JFormattedTextField getLineNoTextField() {
 		if (lineNoTextField == null) {
-			lineNoTextField = new JFormattedTextField(StringUtils.INTEGER_FORMAT);
+			NumberFormatter format = new NumberFormatter(StringUtils.INTEGER_FORMAT);
+			format.setValueClass(Integer.class);
+			format.setMinimum(new Integer(0));
+			format.setAllowsInvalid(false);
+			lineNoTextField = new JFormattedTextField(format);
 			lineNoTextField.getDocument().addDocumentListener(lineNoMonitor);
 		}
 		return lineNoTextField;

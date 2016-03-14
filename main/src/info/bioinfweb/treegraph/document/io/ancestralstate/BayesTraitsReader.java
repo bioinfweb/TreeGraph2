@@ -107,7 +107,7 @@ public class BayesTraitsReader {
 				probabilityKeys.add(matcher.group(2));
 			}
 			else {				
-				nodeNames.add(null);
+				nodeNames.add(null);  //TODO matcher.group(1) would anyway return null in such cases. 
 				probabilityKeys.add(null);		
 			}
 		}
@@ -117,11 +117,11 @@ public class BayesTraitsReader {
 			parts = line.split("\\t");
 			for (int i = 0; i < parts.length; i++) {
 				if (nodeNames.get(i) != null) {
-					String[] headingParts = getHeadingParts(probabilityKeys.get(i));				
+					String[] headingParts = getHeadingParts(probabilityKeys.get(i));  //TODO It seems to be possible, that probabilityKeys.get(i) is null although nodeNames.get(i) is not. This causes that headingParts[0] is null and a NullPointerException occurs in the first line of addToProbability, because its parameter is null. (See error report 20160207_091425_1422917272968902567.xml) How can the matcher above return null for a group, although matches() returned true?
 					nodes.get(nodeNames.get(i)).addToProbability(headingParts[0], headingParts[1], parts[i]);
 				}
 			}		
-			lineCounter += 1;
+			lineCounter++;
 		}
 		
 		for (int i = 0; i < nodeNames.size(); i++) {
