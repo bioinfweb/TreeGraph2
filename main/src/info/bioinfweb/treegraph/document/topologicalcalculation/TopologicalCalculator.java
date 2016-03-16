@@ -124,36 +124,36 @@ public class TopologicalCalculator {
 	 * 
 	 * @return an error message, if the terminal nodes are not identical or <code>null</code> if they are
 	 */
-	public String compareLeaves(Document src) {
+	public String compareLeaves(Document src) {  //TODO Refactor method and use it for warning message generation.
 		Map<TextElementData, Integer> sourceLeafValues = new TreeMap<TextElementData, Integer>();
 		addToLeafValueToIndexMap(sourceLeafValues, src.getTree().getPaintStart(), SOURCE_LEAVES_ADAPTER);
 		if (leafValueToIndexMap.size() != sourceLeafValues.size()) {
-			return "The selected tree has a different number of terminals than " +
+			return "The selected tree has a different number of terminals than " +  //TODO Change to warning message for imported trees that do not contain all taxa.
 				"the opened document. No support values were added.";
 		}
 		else {
-			String errorMsg = "";
+			StringBuffer errorMsg = new StringBuffer();
 			int errorCount = 0;
 			for (TextElementData data : sourceLeafValues.keySet()) {
 				if (!getLeafValueToIndexMap().containsKey(parameters.createEditedValue(data.toString()))) {
 					if (errorCount < MAX_TERMINAL_ERROR_COUNT) {
 						if (!errorMsg.equals("")) {
-							errorMsg += ",\n";
+							errorMsg.append(",\n");
 						}
-						errorMsg += "\"" + data + "\"";
+						errorMsg.append("\"" + data + "\"");
 					}
 					errorCount++;
 				}
 			}
-			if (errorMsg.equals("")) {
+			if (errorMsg.length() == 0) {
 				return null;
 			}
-			errorMsg = "The selected tree contains the following terminals which are " +
-					"not present in the opened document:\n\n" + errorMsg;
 			if (errorCount > MAX_TERMINAL_ERROR_COUNT) {
-				errorMsg += ", ...\n(" + (errorCount - MAX_TERMINAL_ERROR_COUNT) + " more)";
+				errorMsg.append(", ...\n(" + (errorCount - MAX_TERMINAL_ERROR_COUNT) + " more)");
 			}
-			return errorMsg + "\n\nNo support values were added.";
+			errorMsg.append("\n\nNo support values were added.");
+			return "The selected tree contains the following terminals which are " +
+					"not present in the opened document:\n\n" + errorMsg.toString();
 		}
 	}
 
