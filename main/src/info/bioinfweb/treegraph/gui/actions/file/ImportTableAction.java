@@ -24,8 +24,6 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Iterator;
 
 import javax.swing.Action;
 import javax.swing.JOptionPane;
@@ -54,8 +52,6 @@ import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
  * @since 2.0.24
  */
 public class ImportTableAction extends DocumentAction {
-	public static final int MISSING_KEY_OUTPUT_CHARS_PER_LINE = 100;	
-	public static final int MAX_MISSING_KEY_OUTPUT_LINES = 10;
 	public static final String PARAMETER_MESSAGE = 
 			"Note that the parameter settings (e.g. whitespace treatment, case sensitivity)\n" +
 			"influences if two entries are considered equal.";
@@ -87,35 +83,6 @@ public class ImportTableAction extends DocumentAction {
 			assignImportColumnsDialog = new AssignImportTableColumnsDialog(getMainFrame());
 		}
 		return assignImportColumnsDialog;
-	}	
-
-	
-	public static String createKeyList(Collection<String> collection) {
-		Iterator<String> iterator = collection.iterator();
-		StringBuffer result = new StringBuffer((MAX_MISSING_KEY_OUTPUT_LINES + 1) * MISSING_KEY_OUTPUT_CHARS_PER_LINE);  // one line more because single lines might be longer than MISSING_KEY_OUTPUT_CHARS_PER_LINE if keys overlap 
-		int charCount = 0;
-		int lineCount = 0;
-		while (iterator.hasNext() && (lineCount < MAX_MISSING_KEY_OUTPUT_LINES)) {
-			String key = iterator.next().toString();
-			result.append("\"");
-			result.append(key);
-			result.append("\"");
-			charCount += key.length();
-			if (iterator.hasNext()) {
-				if (charCount >= MISSING_KEY_OUTPUT_CHARS_PER_LINE) {
-					result.append("\n");
-					charCount = 0;
-					lineCount++;
-				}
-				else {
-					result.append(", ");
-				}
-			}
-		}
-		if (iterator.hasNext()) {
-			result.append("... (More missing keys not shown here.)");
-		}
-		return result.toString();
 	}
 	
 	
@@ -157,7 +124,7 @@ public class ImportTableAction extends DocumentAction {
 			catch (DuplicateKeyException ex) {
 				JOptionPane.showMessageDialog(MainFrame.getInstance(),
 						"The first column of the imported table file (keys to identify nodes) contained the\n" +
-				    "follwing entries multiple times:\n\n" + createKeyList(ex.getKeys()) + "\n\n" +
+				    "follwing entries multiple times:\n\n" + createElementList(ex.getKeys()) + "\n\n" +
 						PARAMETER_MESSAGE, "Error", JOptionPane.ERROR_MESSAGE);
 			}
 			catch (InsufficientTableSizeException ex) {

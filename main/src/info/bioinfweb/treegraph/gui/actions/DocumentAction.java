@@ -20,6 +20,9 @@ package info.bioinfweb.treegraph.gui.actions;
 
 
 import java.awt.event.ActionEvent;
+import java.util.Collection;
+import java.util.Iterator;
+
 import javax.swing.JOptionPane;
 
 import info.bioinfweb.treegraph.document.Document;
@@ -37,6 +40,9 @@ import info.bioinfweb.commons.swing.ExtendedAbstractAction;
  * @author Ben St&ouml;ver
  */
 public abstract class DocumentAction extends ExtendedAbstractAction {
+	public static final int MISSING_KEY_OUTPUT_CHARS_PER_LINE = 100;	
+	public static final int MAX_MISSING_KEY_OUTPUT_LINES = 10;
+	
 	private MainFrame mainFrame = null;
 	
 	
@@ -90,5 +96,37 @@ public abstract class DocumentAction extends ExtendedAbstractAction {
 		else {
 			JOptionPane.showMessageDialog(frame, "There is no document selected.", "Error", JOptionPane.ERROR_MESSAGE);
 		}
+	}
+	
+	
+	public static String createElementList(Collection<String> collection) {
+		Iterator<String> iterator = collection.iterator();
+		StringBuffer result = new StringBuffer((MAX_MISSING_KEY_OUTPUT_LINES + 1) * MISSING_KEY_OUTPUT_CHARS_PER_LINE);  // one line more because single lines might be longer than MISSING_KEY_OUTPUT_CHARS_PER_LINE if keys overlap 
+		int charCount = 0;
+		int lineCount = 0;
+		int elementCount = 0;
+		
+		while (iterator.hasNext() && (lineCount < MAX_MISSING_KEY_OUTPUT_LINES)) {
+			String element = iterator.next();
+			elementCount++;
+			result.append("\"");
+			result.append(element);
+			result.append("\"");
+			charCount += element.length();
+			if (iterator.hasNext()) {
+				if (charCount >= MISSING_KEY_OUTPUT_CHARS_PER_LINE) {
+					result.append("\n");
+					charCount = 0;
+					lineCount++;
+				}
+				else {
+					result.append(", ");
+				}
+			}
+		}
+		if (iterator.hasNext()) {
+			result.append("... (" + (collection.size() - elementCount) + "more missing keys not shown here.)");
+		}
+		return result.toString();
 	}
 }
