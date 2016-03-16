@@ -45,7 +45,7 @@ import javax.swing.JTextField;
 
 
 /**
- * Collection of GUI elements used to define the import target for information associated with character
+ * Collection of GUI elements used to define the import target for information associated with sites
  * in ancestral state reconstruction.
  * 
  * @author Sarah Wiechers 
@@ -79,7 +79,7 @@ public class CharacterInput {
 	
 	
 	private int createCharacterInput(JPanel panel, int y, AncestralStateData data, Tree tree, String prefixIDText) {
-		int usedRows = y + FIXED_ROWS_PER_CHARACTER + data.getStateCountPerCharacter(prefixIDText);
+		int usedRows = y + FIXED_ROWS_PER_CHARACTER + data.getStateCountPerSite(prefixIDText);
 		
 		GridBagConstraints importCharacterCheckboxGBC = new GridBagConstraints();
 		importCharacterCheckboxGBC.gridx = 0;
@@ -94,7 +94,7 @@ public class CharacterInput {
 		prefixGBC.gridy =  y;
 		prefixGBC.insets = new Insets(2, 0, 2, 2);
 		prefixLabel = new JLabel();
-		prefixLabel.setText("Import character state data for character " + "\"" + prefixIDText + "\"");
+		prefixLabel.setText("Import ancestral state data for site " + "\"" + prefixIDText + "\"");
 //		GridBagConstraints prefixIDGBC = new GridBagConstraints();
 //		prefixIDGBC.gridx = 2;
 //		prefixIDGBC.anchor = GridBagConstraints.WEST;
@@ -123,7 +123,7 @@ public class CharacterInput {
 		panel.add(typeHeadingLabel, typeHeadingGBC);
 		panel.add(idHeadingLabel, idHeadingGBC);			
 		
-		Iterator<String> keySetIterator = data.getCharacterMap().get(prefixIDText).keySet().iterator();
+		Iterator<String> keySetIterator = data.getSiteMap().get(prefixIDText).keySet().iterator();
 		int counter = 1;
 		while (keySetIterator.hasNext()) {	
 			NewNodeBranchDataInput input = new NewNodeBranchDataInput(panel, 1, y + counter + HEADING_ROWS_COUNT - 1, true);

@@ -216,7 +216,7 @@ public class ImportBayesTraitsDataEdit extends AbstractTopologicalCalculationEdi
 			if (internalNode != null) {
 				Branch branch = internalNode.getAfferentBranch();
 				int importAdapterIndex = 0;
-				Iterator<String> characterIterator = parameters.getData().get(internalNodeName).getCharacterMap().keySet().iterator();
+				Iterator<String> characterIterator = parameters.getData().get(internalNodeName).getSiteMap().keySet().iterator();
 				int characterIndex = 0;
 				parameters.getInternalNodeNamesAdapter().setText(internalNode, internalNodeName);
 				while (characterIterator.hasNext()) {
@@ -228,13 +228,13 @@ public class ImportBayesTraitsDataEdit extends AbstractTopologicalCalculationEdi
 					}
 					
 					String characterKey = characterIterator.next();
-					Iterator<String> stateIterator = parameters.getData().get(internalNodeName).getCharacterMap().get(characterKey).keySet().iterator();
+					Iterator<String> stateIterator = parameters.getData().get(internalNodeName).getSiteMap().get(characterKey).keySet().iterator();
 					while (stateIterator.hasNext()) {
 						if (labelID != null) {
 							label.addValueID(((IDElementAdapter)parameters.getImportAdapters()[importAdapterIndex]).getID());
 						}
 						
-						Double probability = parameters.getData().get(internalNodeName).getCharacterMap().get(characterKey).get(stateIterator.next());
+						Double probability = parameters.getData().get(internalNodeName).getSiteMap().get(characterKey).get(stateIterator.next());
 						if (probability != null) {
 							parameters.getImportAdapters()[importAdapterIndex].setDecimal(internalNode, probability);
 						}

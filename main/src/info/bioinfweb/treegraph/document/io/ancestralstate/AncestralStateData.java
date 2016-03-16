@@ -51,7 +51,7 @@ public class AncestralStateData {
 	}
 	
 	
-	public SortedMap<String, SortedMap<String, Double>> getCharacterMap() {
+	public SortedMap<String, SortedMap<String, Double>> getSiteMap() {
 		return characterMap;
 	}
 
@@ -66,41 +66,41 @@ public class AncestralStateData {
 	}
 	
 	
-	public int getStateCountPerCharacter (String character) {
+	public int getStateCountPerSite (String character) {
 		return characterMap.get(character).size();
 	}
 	
 	
-	public int getCharacterCount() {
+	public int getSiteCount() {
 		return characterMap.size();
 	}
 	
 	
-	public void normalizeProbability(String characterName, String characterStateName, double lineCounter) {
-		Double value = characterMap.get(characterName).get(characterStateName);
+	public void normalizeProbability(String siteName, String stateName, double lineCounter) {
+		Double value = characterMap.get(siteName).get(stateName);
 		if (value != null) {
 			value /= lineCounter;
-			characterMap.get(characterName).put(characterStateName, value);
+			characterMap.get(siteName).put(stateName, value);
 		}
 	}
 	
 	
-	public void addToProbability(String characterName, String characterStateName, String addend) {		
-		if (characterMap.get(characterName) == null) {			
-			characterMap.put(characterName, new TreeMap<String, Double>());
+	public void addToProbability(String siteName, String stateName, String addend) {		
+		if (characterMap.get(siteName) == null) {			
+			characterMap.put(siteName, new TreeMap<String, Double>());
 		}
 		if (!addend.equals("--")) {
 			double addValue = Math2.parseDouble(addend);
-			Double value = characterMap.get(characterName).get(characterStateName);
+			Double value = characterMap.get(siteName).get(stateName);
 			if (value == null) {
 				value = 0.0;
-				characterMap.get(characterName).put(characterStateName, value);
+				characterMap.get(siteName).put(stateName, value);
 			}
 			value += addValue;
-			characterMap.get(characterName).put(characterStateName, value);
+			characterMap.get(siteName).put(stateName, value);
 		}
 		else {
-			characterMap.get(characterName).put(characterStateName, null);
+			characterMap.get(siteName).put(stateName, null);
 		}
 	}
 }

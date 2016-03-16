@@ -45,7 +45,8 @@ public class BayesTraitsReader {
 	
 	private static final Pattern LEAF_NAME_PATTERN = Pattern.compile("\\s*\\d+\\s+(\\S+)\\s*");
 	private static final Pattern HEADING = Pattern.compile("(\\S+)\\s\\-\\s(.+)");
-	private static final Pattern CHARACTER_STATE_PATTERN = Pattern.compile("S\\((.+)\\)\\s\\-\\sP\\((.+)\\)");
+	private static final Pattern STATE_PATTERN = Pattern.compile("P\\((.+)\\)");
+	private static final Pattern SITE_AND_STATE_PATTERN = Pattern.compile("S\\((.+)\\)\\s-\\sP\\((.+)\\)");
 	
 	
 	public BayesTraitsReader() {
@@ -53,14 +54,29 @@ public class BayesTraitsReader {
 	}
 	
 	
-	public String[] getHeadingParts(String heading) {
-		String[] characterStates = new String[2];
-		Matcher matcher = CHARACTER_STATE_PATTERN.matcher(heading);
-		if (matcher.matches()) {
-			characterStates[0] = matcher.group(1);			
-			characterStates[1] = matcher.group(2);
+	public String[] getHeadingParts(String heading) throws IOException {
+		String[] siteAndState = new String[2];
+		Matcher stateMatcher = STATE_PATTERN.matcher(heading);
+		Matcher siteAndStateMatcher = SITE_AND_STATE_PATTERN.matcher(heading);
+		
+		if (siteAndStateMatcher.matches()){
+			siteAndState[0] = siteAndStateMatcher.group(1);
+			siteAndState[1] = siteAndStateMatcher.group(2);
 		}
-		return characterStates;
+		else if (stateMatcher.matches()) {
+			siteAndState[0] = "0";
+			siteAndState[1] = stateMatcher.group(1);			
+		}
+		else {
+			throw new IOException("No character states could be identified in the input file.\n\n"
+					+ "Please send a bug report or contact the developers, if your input file was correct.");
+		}	
+		
+		if (siteAndState[1].contains(",")) {
+			siteAndState[1] = "(" + siteAndState[1] +")";
+		}
+		
+		return siteAndState;
 	}
 
 
@@ -93,7 +109,7 @@ public class BayesTraitsReader {
 	}
 	
 	
-	private void readTable(PeekReader reader, Map<String, AncestralStateData> nodes) throws IOException{
+	private void readTable(PeekReader reader, Map<String, AncestralStateData> nodes) throws IOException {
 		String line = reader.readLine().getSequence().toString();		
 		String[] parts = line.split("\\t");
 		List<String> nodeNames = new ArrayList<String>();
@@ -107,7 +123,7 @@ public class BayesTraitsReader {
 				probabilityKeys.add(matcher.group(2));
 			}
 			else {				
-				nodeNames.add(null);  //TODO matcher.group(1) would anyway return null in such cases. 
+				nodeNames.add(null);
 				probabilityKeys.add(null);		
 			}
 		}
@@ -117,12 +133,12 @@ public class BayesTraitsReader {
 			parts = line.split("\\t");
 			for (int i = 0; i < parts.length; i++) {
 				if (nodeNames.get(i) != null) {
-					String[] headingParts = getHeadingParts(probabilityKeys.get(i));  //TODO It seems to be possible, that probabilityKeys.get(i) is null although nodeNames.get(i) is not. This causes that headingParts[0] is null and a NullPointerException occurs in the first line of addToProbability, because its parameter is null. (See error report 20160207_091425_1422917272968902567.xml) How can the matcher above return null for a group, although matches() returned true?
+					String[] headingParts = getHeadingParts(probabilityKeys.get(i));
 					nodes.get(nodeNames.get(i)).addToProbability(headingParts[0], headingParts[1], parts[i]);
 				}
 			}		
 			lineCounter++;
-		}
+		}		
 		
 		for (int i = 0; i < nodeNames.size(); i++) {
 			if (nodeNames.get(i) != null) {

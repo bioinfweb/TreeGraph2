@@ -90,10 +90,10 @@ public class AssignBayesTraitsImportColumnsDialog extends AssignImportColumnsDia
 		importCharacterDataLabelGBC.gridwidth = GridBagConstraints.RELATIVE;
 		importCharacterDataLabelGBC.weighty = 2.0;
 		importCharacterDataLabel = new JLabel();
-		importCharacterDataLabel.setText("Import character data");
+		importCharacterDataLabel.setText("Import ancestral state data");
 		getImportPanel().add(importCharacterDataLabel, importCharacterDataLabelGBC);
 		
-		Iterator<String> keySetIterator = data.getCharacterMap().keySet().iterator();
+		Iterator<String> keySetIterator = data.getSiteMap().keySet().iterator();
 		bottomY = 1;
 		while (keySetIterator.hasNext()) {
 			CharacterInput input = new CharacterInput(getImportPanel(), bottomY, data, tree, keySetIterator.next());
@@ -133,15 +133,15 @@ public class AssignBayesTraitsImportColumnsDialog extends AssignImportColumnsDia
 	@Override
 	protected boolean apply() {
 		NodeBranchDataAdapter[] importAdapters = new NodeBranchDataAdapter[data.getCharacterStateCount()];
-		String[] labelIDs = new String[data.getCharacterCount()];
+		String[] labelIDs = new String[data.getSiteCount()];
 		parameters.setImportAdapters(importAdapters);
 		parameters.setPieChartLabelIDs(labelIDs);
-		Iterator<String> keySetIterator = data.getCharacterMap().keySet().iterator();
+		Iterator<String> keySetIterator = data.getSiteMap().keySet().iterator();
 		int importAdapterIndexStart = 0;
 		int labelIDsIndexStart = 0;
 		while (keySetIterator.hasNext()) {
 			characterInputs.get(labelIDsIndexStart).assignParameters(parameters, importAdapterIndexStart, labelIDsIndexStart);
-			importAdapterIndexStart += data.getStateCountPerCharacter(keySetIterator.next());
+			importAdapterIndexStart += data.getStateCountPerSite(keySetIterator.next());
 			labelIDsIndexStart += 1;
 		}
 		parameters.setInternalNodeNamesAdapter(internalNodeNames.getSelectedAdapter());		
