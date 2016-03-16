@@ -24,6 +24,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Iterator;
 
 import javax.swing.Action;
@@ -89,7 +90,8 @@ public class ImportTableAction extends DocumentAction {
 	}	
 
 	
-	public static String createKeyList(Iterator<String> iterator) {
+	public static String createKeyList(Collection<String> collection) {
+		Iterator<String> iterator = collection.iterator();
 		StringBuffer result = new StringBuffer((MAX_MISSING_KEY_OUTPUT_LINES + 1) * MISSING_KEY_OUTPUT_CHARS_PER_LINE);  // one line more because single lines might be longer than MISSING_KEY_OUTPUT_CHARS_PER_LINE if keys overlap 
 		int charCount = 0;
 		int lineCount = 0;
@@ -155,7 +157,7 @@ public class ImportTableAction extends DocumentAction {
 			catch (DuplicateKeyException ex) {
 				JOptionPane.showMessageDialog(MainFrame.getInstance(),
 						"The first column of the imported table file (keys to identify nodes) contained the\n" +
-				    "follwing entries multiple times:\n\n" + createKeyList(ex.getKeys().iterator()) + "\n\n" +
+				    "follwing entries multiple times:\n\n" + createKeyList(ex.getKeys()) + "\n\n" +
 						PARAMETER_MESSAGE, "Error", JOptionPane.ERROR_MESSAGE);
 			}
 			catch (InsufficientTableSizeException ex) {
