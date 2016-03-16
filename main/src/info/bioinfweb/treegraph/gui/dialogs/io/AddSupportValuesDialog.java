@@ -156,6 +156,8 @@ public class AddSupportValuesDialog extends FileDialog {
 					  case 1:
 					  	rooted = true;
 	  				  break;
+	  				default:
+	  					rooted = false;
 					}
 				}
 				parameters.setSourceDocument(sourceDoc);

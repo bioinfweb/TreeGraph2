@@ -19,7 +19,9 @@
 package info.bioinfweb.treegraph.document.topologicalcalculation;
 
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -34,6 +36,7 @@ import info.bioinfweb.treegraph.document.topologicalcalculation.LeafSet;
 import info.bioinfweb.treegraph.document.topologicalcalculation.NodeInfo;
 import info.bioinfweb.treegraph.document.undo.CompareTextElementDataParameters;
 import info.bioinfweb.treegraph.document.undo.file.AddSupportValuesEdit;
+import info.bioinfweb.treegraph.gui.actions.DocumentAction;
 
 
 
@@ -44,7 +47,6 @@ import info.bioinfweb.treegraph.document.undo.file.AddSupportValuesEdit;
  * @author Ben St&ouml;ver
  */
 public class TopologicalCalculator {
-	public static final int MAX_TERMINAL_ERROR_COUNT = 10;
 	public static final NodeNameAdapter SOURCE_LEAVES_ADAPTER = NodeNameAdapter.getSharedInstance();
 	
 	
@@ -126,34 +128,30 @@ public class TopologicalCalculator {
 	 */
 	public String compareLeaves(Document src) {  //TODO Refactor method and use it for warning message generation.
 		Map<TextElementData, Integer> sourceLeafValues = new TreeMap<TextElementData, Integer>();
+		List<String> elementsNotFound = new ArrayList<String>();
+		
 		addToLeafValueToIndexMap(sourceLeafValues, src.getTree().getPaintStart(), SOURCE_LEAVES_ADAPTER);
-		if (leafValueToIndexMap.size() != sourceLeafValues.size()) {
-			return "The selected tree has a different number of terminals than " +  //TODO Change to warning message for imported trees that do not contain all taxa.
-				"the opened document. No support values were added.";
+		if (leafValueToIndexMap.size() > sourceLeafValues.size()) {
+			return "The selected tree has a smaller number of terminals than the opened document. "
+					+ "It was therefore not possible to map a support value to every node of the opened tree.";
 		}
 		else {
-			StringBuffer errorMsg = new StringBuffer();
-			int errorCount = 0;
+			StringBuffer warningMessage = new StringBuffer();
+			
 			for (TextElementData data : sourceLeafValues.keySet()) {
 				if (!getLeafValueToIndexMap().containsKey(parameters.createEditedValue(data.toString()))) {
-					if (errorCount < MAX_TERMINAL_ERROR_COUNT) {
-						if (!errorMsg.equals("")) {
-							errorMsg.append(",\n");
-						}
-						errorMsg.append("\"" + data + "\"");
-					}
-					errorCount++;
+					elementsNotFound.add(data.toString());
 				}
 			}
-			if (errorMsg.length() == 0) {
+			
+			if (elementsNotFound.isEmpty()) {
 				return null;
 			}
-			if (errorCount > MAX_TERMINAL_ERROR_COUNT) {
-				errorMsg.append(", ...\n(" + (errorCount - MAX_TERMINAL_ERROR_COUNT) + " more)");
-			}
-			errorMsg.append("\n\nNo support values were added.");
+			
+			warningMessage.append(DocumentAction.createElementList(elementsNotFound, true));
+			warningMessage.append("\n\nIt was therefore not possible to map a support value to every node of the opened tree.");
 			return "The selected tree contains the following terminals which are " +
-					"not present in the opened document:\n\n" + errorMsg.toString();
+					"not present in the opened document:\n\n" + warningMessage.toString();
 		}
 	}
 

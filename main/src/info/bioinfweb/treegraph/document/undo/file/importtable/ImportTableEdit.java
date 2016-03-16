@@ -85,7 +85,7 @@ public class ImportTableEdit extends DocumentEdit implements WarningMessageEdit 
 	@Override
   public String getWarningText() {
 	  return "The following entries in the key column of the table could not be found in the specified\n" + 
-		    "node/branch data column of the tree:\n\n" + DocumentAction.createElementList(getKeysNotInTree()) + "\n\n" +
+		    "node/branch data column of the tree:\n\n" + DocumentAction.createElementList(getKeysNotInTree(), true) + "\n\n" +
 		    "The cells in the according lines have not been imported.\n(" + ImportTableAction.PARAMETER_MESSAGE + ")";
   }
 

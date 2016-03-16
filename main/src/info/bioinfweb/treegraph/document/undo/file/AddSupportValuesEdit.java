@@ -100,39 +100,6 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
 	
 	
 	/**
-	 * Tests if all internal nodes in the subtree under <code>root</code> contain 
-	 * decimal values.
-	 * 
-	 * @param root - the root of the subtree to be checked
-	 * @param adapter - the adapter to obtain the data from the nodes
-	 * @return <code>true</code> if only decimal values are found
-	 */
-	private static boolean internalsAreDecimal(Node root, NodeBranchDataAdapter adapter, boolean parseNumericValues) { 
-		if ((!root.isLeaf()) && !adapter.isDecimal(root)) {
-			if (parseNumericValues) {
-				try {
-					Double.parseDouble(adapter.getText(root));
-				}
-				catch (Exception e) {
-					return false;
-				}
-			}
-			else {
-				return false;
-			}
-		}
-		
-		for (int i = 0; i < root.getChildren().size(); i++) {
-			if (!internalsAreDecimal(root.getChildren().get(i), adapter, parseNumericValues)) {
-				return false;
-			}
-		}
-		
-		return true;
-	}
-	
-	
-	/**
 	 * Returns a new instance of <code>AddSupportValuesEdit</code> or <code>null</code>
 	 * if the given source document contains internal node names that are not decimal.
 	 * 
@@ -152,13 +119,7 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
 	public static AddSupportValuesEdit createInstance(Document document, Document src, TextElementDataAdapter terminalsAdapter, TargetType targetType, String idPrefix, 
 			NodeBranchDataAdapter sourceAdapter, boolean processRooted, boolean parseNumericValues) {
 		
-		if (internalsAreDecimal(src.getTree().getPaintStart(), sourceAdapter, parseNumericValues) || true) {  //TODO Diese Bedingung ist nicht wirklich sinnvoll! Was war hier eigentlich geplant? Evtl. weil nicht alle internal values decimal sein müssen um zu importieren
-			return new AddSupportValuesEdit(document, src, terminalsAdapter, targetType, 
-					idPrefix, sourceAdapter, processRooted, parseNumericValues);
-		}
-		else {
-			return null;
-		}
+		return new AddSupportValuesEdit(document, src, terminalsAdapter, targetType, idPrefix, sourceAdapter, processRooted, parseNumericValues);
 	}
 	
 	

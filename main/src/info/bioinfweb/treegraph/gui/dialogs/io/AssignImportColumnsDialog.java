@@ -21,7 +21,9 @@ package info.bioinfweb.treegraph.gui.dialogs.io;
 
 import java.awt.Frame;
 import java.awt.GridBagLayout;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.swing.JOptionPane;
@@ -33,6 +35,7 @@ import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.nodebranchdata.IDElementAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.VoidNodeBranchDataAdapter;
+import info.bioinfweb.treegraph.gui.actions.DocumentAction;
 import info.bioinfweb.wikihelp.client.OkCancelApplyWikiHelpDialog;
 import info.bioinfweb.wikihelp.client.WikiHelp;
 
@@ -51,8 +54,10 @@ public abstract class AssignImportColumnsDialog extends OkCancelApplyWikiHelpDia
 	
 	protected boolean checkSelectedAdapters(NodeBranchDataAdapter[] adapterArray) {
 		StringBuffer message = new StringBuffer();
+		List<String> duplicateColumns = new ArrayList<String>();	//TODO probably use DocumentAction.createElementList() here?
+		
 		message.append("The following node/branch data columns were selected more than once:\n\n");
-		Set<String> adapterTypes = new HashSet<String>();		
+		Set<String> adapterTypes = new HashSet<String>();
 		
 		boolean cancel = false;
 		boolean idExists = false;
@@ -61,27 +66,28 @@ public abstract class AssignImportColumnsDialog extends OkCancelApplyWikiHelpDia
 			NodeBranchDataAdapter adapter = adapterArray[i];
 			if (!(adapter instanceof VoidNodeBranchDataAdapter)) {	
 				if (adapter instanceof IDElementAdapter) {
-					String name = "Node/branch data columns with the ID \"" + ((IDElementAdapter)adapter).getID();
+					String name = "Node/branch data columns with the ID \"" + ((IDElementAdapter)adapter).getID() + "\"";
 					if (!adapterTypes.add(name)) {
 						idExists = true;
-						message.append(name);
-						message.append("\"\n");
+						duplicateColumns.add(name);
 					}
 				}
 				else if (!adapterTypes.add(adapter.toString())) {
 					idExists = true;
-					message.append(adapter);
-					message.append('\n');
+					duplicateColumns.add(adapter.toString());
 				}
 			}
 			cancel = cancel || idExists;
 		}
+		message.append(DocumentAction.createElementList(duplicateColumns, false));
 		message.append("\nPlease select different node/branch data columns.");		
 		if (cancel) {
 			JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
 		}
 		else {
 			message.delete(0, message.length());
+			duplicateColumns.clear();
+			
 			message.append("The following node/branch data columns already exist in the tree:\n\n");
 			for (int i = 0; i < adapterArray.length; i++) {
 				NodeBranchDataAdapter adapter = adapterArray[i];
@@ -90,19 +96,17 @@ public abstract class AssignImportColumnsDialog extends OkCancelApplyWikiHelpDia
 					if (adapter instanceof IDElementAdapter) {
 						columnExists = IDManager.idExistsInSubtree(tree.getPaintStart(), ((IDElementAdapter)adapter).getID());
 						if (columnExists) {
-							message.append("Node/branch data columns with the ID \"");
-							message.append(((IDElementAdapter)adapter).getID());
-							message.append("\"\n");
+							duplicateColumns.add("Node/branch data columns with the ID \"" + ((IDElementAdapter)adapter).getID() + "\"");
 						}						
 					}
 					else {
 						columnExists = true;
-						message.append(adapter.toString());
-						message.append('\n');
+						duplicateColumns.add(adapter.toString());
 					}
 				}
 				cancel = cancel || columnExists;
 			}
+			message.append(DocumentAction.createElementList(duplicateColumns, false));
 			
 			message.append("\n\nDo you want to possibly overwrite entries in these columns?\n");
 			message.append("(Only data of those nodes that are referenced in the imported file will be affected.)");

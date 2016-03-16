@@ -99,7 +99,7 @@ public abstract class DocumentAction extends ExtendedAbstractAction {
 	}
 	
 	
-	public static String createElementList(Collection<String> collection) {
+	public static String createElementList(Collection<String> collection, boolean delimitElements) {
 		Iterator<String> iterator = collection.iterator();
 		StringBuffer result = new StringBuffer((MAX_MISSING_KEY_OUTPUT_LINES + 1) * MISSING_KEY_OUTPUT_CHARS_PER_LINE);  // one line more because single lines might be longer than MISSING_KEY_OUTPUT_CHARS_PER_LINE if keys overlap 
 		int charCount = 0;
@@ -109,9 +109,16 @@ public abstract class DocumentAction extends ExtendedAbstractAction {
 		while (iterator.hasNext() && (lineCount < MAX_MISSING_KEY_OUTPUT_LINES)) {
 			String element = iterator.next();
 			elementCount++;
-			result.append("\"");
-			result.append(element);
-			result.append("\"");
+			
+			if (delimitElements) {
+				result.append("\"");
+				result.append(element);
+				result.append("\"");
+			}
+			else {
+				result.append(element);
+			}			
+			
 			charCount += element.length();
 			if (iterator.hasNext()) {
 				if (charCount >= MISSING_KEY_OUTPUT_CHARS_PER_LINE) {

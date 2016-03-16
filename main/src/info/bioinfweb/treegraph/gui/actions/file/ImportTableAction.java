@@ -124,7 +124,7 @@ public class ImportTableAction extends DocumentAction {
 			catch (DuplicateKeyException ex) {
 				JOptionPane.showMessageDialog(MainFrame.getInstance(),
 						"The first column of the imported table file (keys to identify nodes) contained the\n" +
-				    "follwing entries multiple times:\n\n" + createElementList(ex.getKeys()) + "\n\n" +
+				    "following entries multiple times:\n\n" + createElementList(ex.getKeys(), true) + "\n\n" +
 						PARAMETER_MESSAGE, "Error", JOptionPane.ERROR_MESSAGE);
 			}
 			catch (InsufficientTableSizeException ex) {

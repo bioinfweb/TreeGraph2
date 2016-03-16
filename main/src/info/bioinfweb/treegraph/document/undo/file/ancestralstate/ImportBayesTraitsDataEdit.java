@@ -101,7 +101,7 @@ public class ImportBayesTraitsDataEdit extends AbstractTopologicalCalculationEdi
 		if (hasTerminalsNotFoundWarnings()) {
 			message.append("The following MRCA/node definitions could not be reconstructed, because one or more\n");
 			message.append("of the referenced terminal nodes is not contained in the current tree document:\n\n");
-			message.append(DocumentAction.createElementList(terminalNodesNotFound));
+			message.append(DocumentAction.createElementList(terminalNodesNotFound, true));
 		}
 		
 		if (hasInternalDataNotAddedWarnings()) {
@@ -116,13 +116,13 @@ public class ImportBayesTraitsDataEdit extends AbstractTopologicalCalculationEdi
 			}
 			else {
 				message.append("Unique node names of the affected nodes are listed below.)\n\n");
-				message.append(DocumentAction.createElementList(internalDataNotAdded));
+				message.append(DocumentAction.createElementList(internalDataNotAdded, true));
 			}
 		}
 		
 		if (hasNodeDataNotFoundWarnings()) {
 			message.append("No probability data for the following internal nodes could be found:\n\n");
-			message.append(DocumentAction.createElementList(nodeDataNotFound));
+			message.append(DocumentAction.createElementList(nodeDataNotFound, true));
 			message.append("\nMake sure the BayesTraits analysis worked correctly.");
 		}
 		

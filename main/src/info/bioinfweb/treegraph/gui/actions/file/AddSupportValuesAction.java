@@ -64,7 +64,8 @@ public class AddSupportValuesAction extends DocumentAction {
 					frame.getDocument(), addSupportValuesParameters.getSourceDocument(), addSupportValuesParameters.getTerminalsAdapter(), 
 					addSupportValuesParameters.getTargetType(), addSupportValuesParameters.getIdPrefix(),
 					addSupportValuesParameters.getSupportColumn(),	addSupportValuesParameters.isRooted(), addSupportValuesParameters.isParseNumericValues());
-					frame.getDocument().executeEdit(edit);
+				
+				frame.getDocument().executeEdit(edit);
 			}
 		}
 	}
