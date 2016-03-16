@@ -38,6 +38,7 @@ import info.bioinfweb.treegraph.document.nodebranchdata.VoidNodeBranchDataAdapte
 import info.bioinfweb.treegraph.document.topologicalcalculation.LeafSet;
 import info.bioinfweb.treegraph.document.undo.AbstractTopologicalCalculationEdit;
 import info.bioinfweb.treegraph.document.undo.WarningMessageEdit;
+import info.bioinfweb.treegraph.gui.actions.DocumentAction;
 
 
 
@@ -96,14 +97,13 @@ public class ImportBayesTraitsDataEdit extends AbstractTopologicalCalculationEdi
 	@Override
 	public String getWarningText() {
 		StringBuffer message = new StringBuffer();
+		
 		if (hasTerminalsNotFoundWarnings()) {
 			message.append("The following MRCA/node definitions could not be reconstructed, because one or more\n");
 			message.append("of the referenced terminal nodes is not contained in the current tree document:\n\n");
-			Iterator<String> iterator = terminalNodesNotFound.iterator(); 
-			while (iterator.hasNext()) {
-				message.append("\"" + iterator.next() + "\"" + "\n");
-			}
+			message.append(DocumentAction.createElementList(terminalNodesNotFound));
 		}
+		
 		if (hasInternalDataNotAddedWarnings()) {
 			message.append("More than one BayesTraits node/MRCA definitions were found for the following node(s). \n");
 			message.append("(Only the data of the MRCA definition(s) containing the highest number of terminal taxa were imported.\n");
@@ -111,24 +111,21 @@ public class ImportBayesTraitsDataEdit extends AbstractTopologicalCalculationEdi
 			if (!(parameters.getInternalNodeNamesAdapter() instanceof VoidNodeBranchDataAdapter)) {
 				message.append("The names of the imported Node/MRCA definitions are listed below.)\n\n");
 				while (iterator.hasNext()) {
-					message.append("\"" + parameters.getInternalNodeNamesAdapter().getText(getDocument().getTree().getNodeByUniqueName(iterator.next())) + "\"" + "\n");
+					message.append("\"" + parameters.getInternalNodeNamesAdapter().getText(getDocument().getTree().getNodeByUniqueName(iterator.next())) + "\"" + "\n"); //TODO use DocumentAction.createElementList() here
 				}
 			}
 			else {
 				message.append("Unique node names of the affected nodes are listed below.)\n\n");
-				while (iterator.hasNext()) {
-					message.append("\"" + iterator.next() + "\"" + "\n");
-				}
+				message.append(DocumentAction.createElementList(internalDataNotAdded));
 			}
 		}
+		
 		if (hasNodeDataNotFoundWarnings()) {
 			message.append("No probability data for the following internal nodes could be found:\n\n");
-			Iterator<String> iterator = nodeDataNotFound.iterator(); 
-			while (iterator.hasNext()) {
-				message.append("\"" + iterator.next() + "\"" + "\n");
-			}
+			message.append(DocumentAction.createElementList(nodeDataNotFound));
 			message.append("\nMake sure the BayesTraits analysis worked correctly.");
 		}
+		
 	  return message.toString();
 	}
   

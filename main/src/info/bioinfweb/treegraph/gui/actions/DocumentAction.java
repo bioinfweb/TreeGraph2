@@ -125,7 +125,7 @@ public abstract class DocumentAction extends ExtendedAbstractAction {
 			}
 		}
 		if (iterator.hasNext()) {
-			result.append("... (" + (collection.size() - elementCount) + "more missing keys not shown here.)");
+			result.append("... (" + (collection.size() - elementCount) + " more missing elements not shown here.)");
 		}
 		return result.toString();
 	}
