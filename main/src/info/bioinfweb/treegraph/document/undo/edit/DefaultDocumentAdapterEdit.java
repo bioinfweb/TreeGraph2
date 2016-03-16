@@ -18,6 +18,7 @@
  */
 package info.bioinfweb.treegraph.document.undo.edit;
 
+
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 
@@ -25,6 +26,8 @@ import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
+
+
 
 public class DefaultDocumentAdapterEdit extends DocumentEdit {
 	private NodeBranchDataAdapter oldDefaultLeafAdapter = getDocument().getDefaultLeafAdapter();

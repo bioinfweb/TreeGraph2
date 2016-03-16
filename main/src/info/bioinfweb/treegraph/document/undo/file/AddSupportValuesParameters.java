@@ -30,7 +30,8 @@ public class AddSupportValuesParameters {
 	private TextElementDataAdapter terminalsAdapter;
 	private TargetType targetType;
 	private String idPrefix;
-	private NodeBranchDataAdapter supportColumn;
+	private NodeBranchDataAdapter sourceSupportColumn;
+	private NodeBranchDataAdapter sourceLeavesColumn;
 	private boolean rooted;
 	private boolean parseNumericValues;
 	
@@ -65,7 +66,7 @@ public class AddSupportValuesParameters {
 	}
 	
 	
-	public String getIdPrefix() {
+	public String getIDPrefix() {
 		return idPrefix;
 	}
 	
@@ -75,16 +76,26 @@ public class AddSupportValuesParameters {
 	}
 	
 	
-	public NodeBranchDataAdapter getSupportColumn() {
-		return supportColumn;
+	public NodeBranchDataAdapter getSourceSupportColumn() {
+		return sourceSupportColumn;
 	}
 	
 	
-	public void setSupportColumn(NodeBranchDataAdapter supportcolumn) {
-		this.supportColumn = supportcolumn;
+	public void setSourceSupportColumn(NodeBranchDataAdapter supportcolumn) {
+		this.sourceSupportColumn = supportcolumn;
 	}
 	
 	
+	public NodeBranchDataAdapter getSourceLeavesColumn() {
+		return sourceLeavesColumn;
+	}
+
+
+	public void setSourceLeavesColumn(NodeBranchDataAdapter sourceLeavesColumn) {
+		this.sourceLeavesColumn = sourceLeavesColumn;
+	}
+
+
 	public boolean isRooted() {
 		return rooted;
 	}

@@ -60,12 +60,7 @@ public class AddSupportValuesAction extends DocumentAction {
 			getAddSupportValuesDialog().assignParameters(addSupportValuesParameters);
 		
 			if (getAddSupportValueColumnsDialog().execute(addSupportValuesParameters, addSupportValuesParameters.getSourceDocument().getTree())) {
-				AddSupportValuesEdit edit = AddSupportValuesEdit.createInstance(
-					frame.getDocument(), addSupportValuesParameters.getSourceDocument(), addSupportValuesParameters.getTerminalsAdapter(), 
-					addSupportValuesParameters.getTargetType(), addSupportValuesParameters.getIdPrefix(),
-					addSupportValuesParameters.getSupportColumn(),	addSupportValuesParameters.isRooted(), addSupportValuesParameters.isParseNumericValues());
-				
-				frame.getDocument().executeEdit(edit);
+				frame.getDocument().executeEdit(new AddSupportValuesEdit(frame.getDocument(), addSupportValuesParameters));
 			}
 		}
 	}
@@ -80,7 +75,6 @@ public class AddSupportValuesAction extends DocumentAction {
 	private AddSupportValuesDialog getAddSupportValuesDialog() {
 		if (addSupportValuesDialog == null) {
 			addSupportValuesDialog = new AddSupportValuesDialog(getMainFrame());
-			return addSupportValuesDialog;
 		}
 		return addSupportValuesDialog;
 	}
@@ -89,7 +83,6 @@ public class AddSupportValuesAction extends DocumentAction {
 	private AddSupportValueColumnsDialog getAddSupportValueColumnsDialog() {
 		if (addSupportValueColumnsDialog == null) {
 			addSupportValueColumnsDialog = new AddSupportValueColumnsDialog(getMainFrame());
-			return addSupportValueColumnsDialog;
 		}
 		return addSupportValueColumnsDialog;
 	}

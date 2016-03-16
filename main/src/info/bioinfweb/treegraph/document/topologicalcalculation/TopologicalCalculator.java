@@ -124,7 +124,7 @@ public class TopologicalCalculator {
 	/**
 	 * Checks if both the loaded and the imported tree contain exactly the same terminals.
 	 * 
-	 * @return an error message, if the terminal nodes are not identical or <code>null</code> if they are
+	 * @return an error message, if the terminal nodes are not identical or {@code null} if they are
 	 */
 	public String compareLeaves(Document src) {  //TODO Refactor method and use it for warning message generation.
 		Map<TextElementData, Integer> sourceLeafValues = new TreeMap<TextElementData, Integer>();

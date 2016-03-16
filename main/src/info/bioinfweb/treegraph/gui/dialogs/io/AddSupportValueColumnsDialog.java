@@ -21,6 +21,7 @@ package info.bioinfweb.treegraph.gui.dialogs.io;
 
 import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.treegraph.document.Tree;
+import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 import info.bioinfweb.treegraph.document.undo.file.AddSupportValuesParameters;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataInput;
 import info.bioinfweb.wikihelp.client.OkCancelApplyWikiHelpDialog;
@@ -42,6 +43,8 @@ public class AddSupportValueColumnsDialog extends OkCancelApplyWikiHelpDialog {
 	private JPanel importSupportValuesPanel;
 	private JLabel supportColumnLabel;
 	private NodeBranchDataInput supportColumnInput;
+	private JLabel leavesColumnLabel;
+	private NodeBranchDataInput leavesColumnInput;
 	
 	private AddSupportValuesParameters addSupportValuesParameters;
 	
@@ -59,14 +62,18 @@ public class AddSupportValueColumnsDialog extends OkCancelApplyWikiHelpDialog {
 		
 		supportColumnInput.setAdapters(tree, false, true, true, false, false, "");
 		supportColumnInput.setSelectedAdapter(addSupportValuesParameters.getSourceDocument().getDefaultSupportAdapter());
+		leavesColumnInput.setAdapters(tree, true, true, false, false, false, "");
+		leavesColumnInput.setSelectedAdapter(NodeNameAdapter.class);
 		
+		pack();	
 		return execute();
 	}
 
 
 	@Override
 	protected boolean apply() {
-		addSupportValuesParameters.setSupportColumn(supportColumnInput.getSelectedAdapter());
+		addSupportValuesParameters.setSourceSupportColumn(supportColumnInput.getSelectedAdapter());
+		addSupportValuesParameters.setSourceLeavesColumn(leavesColumnInput.getSelectedAdapter());
 		return true;
 	}
 	
@@ -77,7 +84,7 @@ public class AddSupportValueColumnsDialog extends OkCancelApplyWikiHelpDialog {
 	 * @return void
 	 */
 	private void initialize() {
-		setTitle("Add support value columns");
+		setTitle("Select columns for import");
 		getApplyButton().setVisible(false);
 		setContentPane(getJContentPane());
 		pack();
@@ -104,15 +111,22 @@ public class AddSupportValueColumnsDialog extends OkCancelApplyWikiHelpDialog {
 		if (importSupportValuesPanel == null) {
 			importSupportValuesPanel = new JPanel();
 			importSupportValuesPanel.setLayout(new GridBagLayout());
+			
 			GridBagConstraints gbc_supportColumnLabel = new GridBagConstraints();	
 			gbc_supportColumnLabel.gridx = 0;
 			gbc_supportColumnLabel.anchor = GridBagConstraints.WEST;
 			gbc_supportColumnLabel.gridy =  0;
-			gbc_supportColumnLabel.insets = new Insets(4, 6, 4, 0);
-			gbc_supportColumnLabel.gridwidth = GridBagConstraints.RELATIVE;
+			gbc_supportColumnLabel.insets = new Insets(4, 6, 5, 0);
 			importSupportValuesPanel.add(getSupportColumnLabel(), gbc_supportColumnLabel);
+			supportColumnInput = new NodeBranchDataInput(importSupportValuesPanel, 1, 0);
 			
-			supportColumnInput = new NodeBranchDataInput(importSupportValuesPanel, 0, 1);
+			GridBagConstraints gbc_lblNodebranchDataColumn = new GridBagConstraints();
+			gbc_lblNodebranchDataColumn.anchor = GridBagConstraints.WEST;
+			gbc_lblNodebranchDataColumn.gridx = 0;
+			gbc_lblNodebranchDataColumn.gridy = 1;
+			gbc_lblNodebranchDataColumn.insets = new Insets(4, 6, 5, 0);
+			importSupportValuesPanel.add(getLeavesColumnLabel(), gbc_lblNodebranchDataColumn);
+			leavesColumnInput = new NodeBranchDataInput(importSupportValuesPanel, 1, 1);
 		}
 		return importSupportValuesPanel;
 	}
@@ -124,5 +138,13 @@ public class AddSupportValueColumnsDialog extends OkCancelApplyWikiHelpDialog {
 			supportColumnLabel.setText("Column in imported document containing support values: ");
 		}
 		return supportColumnLabel;
+	}
+	
+	
+	private JLabel getLeavesColumnLabel() {
+		if (leavesColumnLabel == null) {
+			leavesColumnLabel = new JLabel("Node/branch data column in imported document identifying the leaves: ");
+		}
+		return leavesColumnLabel;
 	}
 }
