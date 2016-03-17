@@ -21,8 +21,8 @@ package info.bioinfweb.treegraph.document;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Vector;
 
 
 
@@ -32,9 +32,7 @@ import java.util.Vector;
  * @author Ben St&ouml;ver
  */
 public class TreeSerializer {
-	
-	
-	private static void addLabelBlock(Vector<PaintableElement> list, Labels labels, boolean above) {
+	private static void addLabelBlock(Collection<PaintableElement> list, Labels labels, boolean above) {
 		for (int lineNo = 0; lineNo < labels.lineCount(above); lineNo++) {
 			for (int lineIndex = 0; lineIndex < labels.labelCount(above, lineNo); lineIndex++) {
 				list.add(labels.get(above, lineNo, lineIndex));
@@ -43,18 +41,19 @@ public class TreeSerializer {
 	}
 	
 	
-	private static <T extends PaintableElement> void addElementsOnNode(List list, Node node, Class<T> c) {
+	@SuppressWarnings("unchecked")
+	public static <T extends PaintableElement> void addElementsOnNode(Collection<T> list, Node node, Class<T> c) {
   	if (c.isInstance(node)) {
-  		list.add(node);
+  		list.add((T)node);  // Conversion is checked.
   	}
   	if (c.isInstance(node.getAfferentBranch())) {
-  		list.add(node.getAfferentBranch());
+  		list.add((T)node.getAfferentBranch());  // Conversion is checked.
   	}
   	
     Label[] labels = node.getAfferentBranch().getLabels().toLabelArray();
     for (int i = 0; i < labels.length; i++) {
     	if (c.isInstance(labels[i])) {
-    		list.add(labels[i]);
+    		list.add((T)labels[i]);  // Conversion is checked.
     	}
 		}
 	}
@@ -70,10 +69,8 @@ public class TreeSerializer {
    * @return the array of tree elements
    * @since 2.0.43
    */
-  public static <T extends PaintableElement> T[] getElementsOnNode(Node node, Class<? extends PaintableElement> c,
-  		T[] array) {
-  	
-  	Vector<PaintableElement> list = new Vector<PaintableElement>();
+  public static <T extends PaintableElement> T[] getElementsOnNode(Node node, Class<T> c,	T[] array) {
+  	List<T> list = new ArrayList<T>();
   	addElementsOnNode(list, node, c);
     return list.toArray(array);
   }
@@ -90,23 +87,24 @@ public class TreeSerializer {
    * @return the array of tree elements
    * @since 2.0.43
    */
-  public static <T extends PaintableElement> T[] getElementsOnNode(Node node, Class<T> c) {
+  @SuppressWarnings("unchecked")
+	public static <T extends PaintableElement> T[] getElementsOnNode(Node node, Class<T> c) {
   	return getElementsOnNode(node, c, (T[])Array.newInstance(c, 0));
   }
   
   
-  private static void addSubtree(List<? extends PaintableElement> list, Node root, NodeType nodeType,	Class<? extends PaintableElement> elementClass) {	
+  public static <T extends PaintableElement> void addElementsInSubtree(Collection<T> list, Node root, NodeType nodeType,	Class<T> elementClass) {	
 		if (root.isLeaf() || (nodeType != NodeType.LEAVES)) {
 			addElementsOnNode(list, root, elementClass);
 		}  	
 		for (int i = 0; i < root.getChildren().size(); i++) {
-			addSubtree(list, root.getChildren().get(i), nodeType, elementClass);
+			addElementsInSubtree(list, root.getChildren().get(i), nodeType, elementClass);
 		}
 	}
 	
 	
   /**
-   * Returns an array of tree elements in the subtree under {@code root}. The elements are returnes in pre-order.
+   * Returns an array of tree elements in the subtree under {@code root}. The elements are returns in pre-order.
    * 
    * @param <T> - the type of the array to be returned
    * @param root - the node to which the returned elements are connected
@@ -117,7 +115,7 @@ public class TreeSerializer {
    * @return the array of tree elements
    * @since 2.0.43
    */
-  public static <T extends PaintableElement> T[] getElementsInSubtree(Node root, NodeType nodeType, Class<? extends PaintableElement> elementClass, T[] array) {
+  public static <T extends PaintableElement> T[] getElementsInSubtree(Node root, NodeType nodeType, Class<T> elementClass, T[] array) {
   	return getElementsInSubtreeAsList(root, nodeType, elementClass).toArray(array);
   }
   
@@ -137,7 +135,7 @@ public class TreeSerializer {
 
   public static <T extends PaintableElement> List<T> getElementsInSubtreeAsList(Node root, NodeType nodeType, Class<T> elementClass) {  	
   	List<T> list = new ArrayList<T>();
-  	addSubtree(list, root, nodeType, elementClass);
+  	addElementsInSubtree(list, root, nodeType, elementClass);
   	return list;
   }
   
@@ -157,12 +155,13 @@ public class TreeSerializer {
    * @return the array of tree elements
    * @since 2.0.43
    */
-  public static <T extends PaintableElement> T[] getElementsInSubtree(Node root, NodeType nodeType, Class<T> elementClass) {
+  @SuppressWarnings("unchecked")
+	public static <T extends PaintableElement> T[] getElementsInSubtree(Node root, NodeType nodeType, Class<T> elementClass) {
   	return getElementsInSubtree(root, nodeType, elementClass, (T[])Array.newInstance(elementClass, 0));
   }
   
   
-  private static void addLeafNodesBetween(Vector<Node> list, Node root, int level, TreePath upperPath, 
+  private static void addLeafNodesBetween(Collection<Node> list, Node root, int level, TreePath upperPath, 
   		TreePath lowerPath) {
   	
   	if (root.isLeaf()) {
@@ -199,7 +198,7 @@ public class TreeSerializer {
   		throw new IllegalArgumentException("The specified nodes are not part of the same tree.");
   	}
   	else {
-	  	Vector<Node> list = new Vector<Node>();
+	  	List<Node> list = new ArrayList<Node>();
 	  	TreePath upperPath = new TreePath(upperLeaf, ancestor);
 	  	TreePath lowerPath = new TreePath(lowerLeaf, ancestor);
 	  	addLeafNodesBetween(list, ancestor, 0, upperPath, lowerPath);
@@ -208,7 +207,7 @@ public class TreeSerializer {
   }
   
   
-  private static void getLabelsWithIDInBlock(Vector<Label> list, Labels labels, 
+  private static void getLabelsWithIDInBlock(Collection<Label> list, Labels labels, 
   		boolean above, String id) {
   	
 		for (int lineNo = 0; lineNo < labels.lineCount(above); lineNo++) {
@@ -222,7 +221,7 @@ public class TreeSerializer {
   }
   
   
-  private static void addLabelsWithID(Vector<Label> list, Node root, String id) {
+  private static void addLabelsWithID(Collection<Label> list, Node root, String id) {
   	if (root.hasAfferentBranch()) {
 			Labels labels = root.getAfferentBranch().getLabels();
 			getLabelsWithIDInBlock(list, labels, true, id);
@@ -236,7 +235,7 @@ public class TreeSerializer {
   
   
   public static Label[] getLabelsWithID(Node root, String id) {
-  	Vector<Label> list = new Vector<Label>();
+  	List<Label> list = new ArrayList<Label>();
   	addLabelsWithID(list, root, id);
   	return list.toArray(new Label[list.size()]);
   }
@@ -257,7 +256,7 @@ public class TreeSerializer {
   				"specified tree.");
   	}
   	else {
-  		List<Legend> result = new Vector<Legend>();
+  		List<Legend> result = new ArrayList<Legend>();
   		for (int i = 0; i < tree.getLegends().size(); i++) {
   			Legend l = tree.getLegends().get(i);
     		if (root.containedInSubtree(l)) {
