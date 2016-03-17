@@ -493,8 +493,8 @@ public class MainFrame extends JFrame implements Runnable {
 			helpMenu = new JMenu();
 			helpMenu.setText("Help");
 			helpMenu.setMnemonic(KeyEvent.VK_H);
-			helpMenu.add(getActionManagement().get("help.contents"));
 			helpMenu.add(getActionManagement().get("help.index"));
+			helpMenu.add(getActionManagement().get("help.contents"));
 			helpMenu.add(getActionManagement().get("help.aboutMenu"));
 			helpMenu.addSeparator();
 			helpMenu.add(getActionManagement().get("help.homepage"));

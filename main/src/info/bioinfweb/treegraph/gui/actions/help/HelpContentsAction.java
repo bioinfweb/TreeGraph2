@@ -18,6 +18,7 @@
  */
 package info.bioinfweb.treegraph.gui.actions.help;
 
+import java.awt.Toolkit;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
@@ -32,7 +33,8 @@ public class HelpContentsAction extends HelpTopicAction {
 		putValue(Action.NAME, "Contents"); 
 	  putValue(Action.MNEMONIC_KEY, KeyEvent.VK_C);
 		putValue(Action.SHORT_DESCRIPTION, "Help contents"); 
-		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
+		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F1, 
+				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 	  loadSymbols("Help");
 	}
 }

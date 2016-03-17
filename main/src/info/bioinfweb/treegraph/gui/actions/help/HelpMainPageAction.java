@@ -37,8 +37,7 @@ public class HelpMainPageAction extends HelpTopicAction {
 		putValue(Action.NAME, "Main Page"); 
 	  putValue(Action.MNEMONIC_KEY, KeyEvent.VK_M);
 		putValue(Action.SHORT_DESCRIPTION, "Help Main Page"); 
-		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F1, 
-				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
 	  loadSymbols("Help");
 	}
 }

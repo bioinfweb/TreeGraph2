@@ -42,7 +42,7 @@ public class TreeSerializer {
 	
 	
 	@SuppressWarnings("unchecked")
-	public static <T extends PaintableElement> void addElementsOnNode(Collection<T> list, Node node, Class<T> c) {
+	public static <T extends PaintableElement> void addElementsOnNode(Collection<T> list, Node node, Class<? extends T> c) {
   	if (c.isInstance(node)) {
   		list.add((T)node);  // Conversion is checked.
   	}
@@ -93,8 +93,10 @@ public class TreeSerializer {
   }
   
   
-  public static <T extends PaintableElement> void addElementsInSubtree(Collection<T> list, Node root, NodeType nodeType,	Class<T> elementClass) {	
-		if (root.isLeaf() || (nodeType != NodeType.LEAVES)) {
+  public static <T extends PaintableElement> void addElementsInSubtree(Collection<T> list, Node root, NodeType nodeType,
+  		Class<? extends T> elementClass) {
+  	
+		if (root.isLeaf() || (!nodeType.equals(NodeType.LEAVES))) {
 			addElementsOnNode(list, root, elementClass);
 		}  	
 		for (int i = 0; i < root.getChildren().size(); i++) {
@@ -115,7 +117,7 @@ public class TreeSerializer {
    * @return the array of tree elements
    * @since 2.0.43
    */
-  public static <T extends PaintableElement> T[] getElementsInSubtree(Node root, NodeType nodeType, Class<T> elementClass, T[] array) {
+  public static <T extends PaintableElement> T[] getElementsInSubtree(Node root, NodeType nodeType, Class<? extends T> elementClass, T[] array) {
   	return getElementsInSubtreeAsList(root, nodeType, elementClass).toArray(array);
   }
   
@@ -133,7 +135,7 @@ public class TreeSerializer {
    * @since 2.2.0
    */
 
-  public static <T extends PaintableElement> List<T> getElementsInSubtreeAsList(Node root, NodeType nodeType, Class<T> elementClass) {  	
+  public static <T extends PaintableElement> List<T> getElementsInSubtreeAsList(Node root, NodeType nodeType, Class<? extends T> elementClass) {  	
   	List<T> list = new ArrayList<T>();
   	addElementsInSubtree(list, root, nodeType, elementClass);
   	return list;
@@ -244,6 +246,7 @@ public class TreeSerializer {
   /**
    * Returns an array of all legends which are completely anchored inside the subtree under 
    * <code>root</code>.
+   * 
    * @param tree - the tree that contains the legends and <code>root</code>
    * @param root - the root node of the subtree
    * @throws IllegalArgumentException if <code>root</code> is not contained in <code>tree</code>.
@@ -252,8 +255,7 @@ public class TreeSerializer {
    */
   public static Legend[] getLegendsInSubtree(Tree tree, Node root) {
   	if (!tree.contains(root)) {
-  		throw new IllegalArgumentException("The specified root is not contained in the " +
-  				"specified tree.");
+  		throw new IllegalArgumentException("The specified root is not contained in the specified tree.");
   	}
   	else {
   		List<Legend> result = new ArrayList<Legend>();

@@ -262,24 +262,20 @@ public class NexusParser {
   	content = content.trim();
   	if (content.toLowerCase().startsWith(FIRST_LINE)) {
   		NexusCommand[] commands = scan(content.substring(FIRST_LINE.length()));
-  		int treesStart = findCommand(
-  				commands, 0, commands.length, BLOCK_BEGIN_PATTERN, TREES_PATTERN);
+  		int treesStart = findCommand(commands, 0, commands.length, BLOCK_BEGIN_PATTERN, TREES_PATTERN);
   		if (treesStart != -1) {
   			int treesEnd = findBlockEnd(commands, treesStart + 1, commands.length);
   			if (treesEnd != -1) {
   				NexusDocument result = new NexusDocument();
-  				int translPos = findCommand(
-  						commands, treesStart, treesEnd, TRANSL_TABLE_PATTERN, EMPTY_PATTERN);
+  				int translPos = findCommand(commands, treesStart, treesEnd, TRANSL_TABLE_PATTERN, EMPTY_PATTERN);
   				if (translPos != -1) {
   					readTranslTable(commands[translPos], result.getTranslTable());
   				}
   				
-  				int treePos = findCommand(
-  						commands, treesStart, treesEnd, TREE_COMMAND_PATTERN, EMPTY_PATTERN);
+  				int treePos = findCommand(commands, treesStart, treesEnd, TREE_COMMAND_PATTERN, EMPTY_PATTERN);
   				while (treePos != -1) {
   					readTree(commands[treePos].getTokens(), result);
-    				treePos = findCommand(
-    						commands, treePos + 1, treesEnd, TREE_COMMAND_PATTERN, EMPTY_PATTERN);
+    				treePos = findCommand(commands, treePos + 1, treesEnd, TREE_COMMAND_PATTERN, EMPTY_PATTERN);
   				}
   				
   				return result;
