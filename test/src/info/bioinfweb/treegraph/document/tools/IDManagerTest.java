@@ -16,17 +16,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.document;
+package info.bioinfweb.treegraph.document.tools;
 
 
 import info.bioinfweb.commons.testing.TestTools;
+import info.bioinfweb.treegraph.document.GraphicalLabel;
+import info.bioinfweb.treegraph.document.IconLabel;
+import info.bioinfweb.treegraph.document.Label;
+import info.bioinfweb.treegraph.document.Labels;
+import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.PieChartLabel;
+import info.bioinfweb.treegraph.document.TextLabel;
+import info.bioinfweb.treegraph.document.Tree;
 
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Vector;
 
 import org.junit.* ;
-
 
 import static org.junit.Assert.* ;
 
