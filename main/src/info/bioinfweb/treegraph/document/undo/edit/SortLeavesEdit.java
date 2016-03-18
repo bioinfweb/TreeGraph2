@@ -93,10 +93,10 @@ public class SortLeavesEdit extends DocumentEdit implements WarningMessageEdit {
 	/**
 	 * Creates a new instance of this class.
 	 * 
-	 * @param document - the document where the leafs shall be sorted
-	 * @param newOrder - the new order of the leaf nodes (Should contain most of the values the document contains on 
+	 * @param document the document where the leafs shall be sorted
+	 * @param newOrder the new order of the leaf nodes (Should contain most of the values the document contains on 
 	 *        its leaves in the specified node/branch data column.)
-	 * @param leafAdapter - the node/branch data column used to combine the document leaf nodes with the specified 
+	 * @param leafAdapter the node/branch data column used to combine the document leaf nodes with the specified 
 	 *        order elements
 	 */
 	public SortLeavesEdit(Document document, Node root, List<TextElementData> newOrder, NodeBranchDataAdapter leafAdapter,

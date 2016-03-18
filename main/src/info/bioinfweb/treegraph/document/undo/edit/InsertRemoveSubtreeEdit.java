@@ -54,7 +54,7 @@ public abstract class InsertRemoveSubtreeEdit extends SaveLegendsEdit {
 	
 	protected void insert() {
 		root.setParent(parent);
-		if (parent == null) {  // => Einf�gen als Wurzel. Baum muss daf�r leer sein.
+		if (parent == null) {  // Insert as root. Tree needs to be empty.
 			getDocument().getTree().setPaintStart(root);
 		}
 		else {

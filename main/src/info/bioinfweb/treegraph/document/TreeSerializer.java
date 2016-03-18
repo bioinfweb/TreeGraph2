@@ -95,8 +95,8 @@ public class TreeSerializer {
   
   public static <T extends PaintableElement> void addElementsInSubtree(Collection<T> list, Node root, NodeType nodeType,
   		Class<? extends T> elementClass) {
-  	
-		if (root.isLeaf() || (!nodeType.equals(NodeType.LEAVES))) {
+
+  	if ((root.isLeaf() && !nodeType.equals(NodeType.INTERNAL_NODES)) || (!root.isLeaf() && !nodeType.equals(NodeType.LEAVES))) {
 			addElementsOnNode(list, root, elementClass);
 		}  	
 		for (int i = 0; i < root.getChildren().size(); i++) {
