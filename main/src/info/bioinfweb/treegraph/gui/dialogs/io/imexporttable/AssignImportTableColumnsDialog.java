@@ -32,12 +32,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import info.bioinfweb.treegraph.Main;
-import info.bioinfweb.treegraph.document.IDManager;
 import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.nodebranchdata.NewHiddenBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NewNodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.VoidNodeBranchDataAdapter;
+import info.bioinfweb.treegraph.document.tools.IDManager;
 import info.bioinfweb.treegraph.document.undo.file.importtable.ImportTableData;
 import info.bioinfweb.treegraph.document.undo.file.importtable.ImportTableParameters;
 import info.bioinfweb.treegraph.gui.dialogs.io.AssignImportColumnsDialog;

@@ -20,8 +20,8 @@ package info.bioinfweb.treegraph.gui.dialogs;
 
 
 import info.bioinfweb.treegraph.document.Document;
-import info.bioinfweb.treegraph.document.IDManager;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.tools.IDManager;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataInput;
 
 import javax.swing.DefaultComboBoxModel;

@@ -19,6 +19,8 @@
 package info.bioinfweb.treegraph.document;
 
 
+import info.bioinfweb.treegraph.document.tools.IDManager;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;

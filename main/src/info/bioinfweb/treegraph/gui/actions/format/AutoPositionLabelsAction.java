@@ -30,10 +30,10 @@ import javax.swing.JOptionPane;
 
 import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Document;
-import info.bioinfweb.treegraph.document.IDManager;
 import info.bioinfweb.treegraph.document.Label;
 import info.bioinfweb.treegraph.document.NodeType;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
+import info.bioinfweb.treegraph.document.tools.IDManager;
 import info.bioinfweb.treegraph.document.tools.TreeSerializer;
 import info.bioinfweb.treegraph.document.undo.file.AddSupportValuesEdit;
 import info.bioinfweb.treegraph.document.undo.format.AutoPositionLabelsEdit;

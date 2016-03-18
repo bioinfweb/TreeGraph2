@@ -24,6 +24,7 @@ import java.util.Vector;
 
 import info.bioinfweb.treegraph.document.format.ElementFormats;
 import info.bioinfweb.treegraph.document.format.PieChartLabelFormats;
+import info.bioinfweb.treegraph.document.tools.IDManager;
 
 
 

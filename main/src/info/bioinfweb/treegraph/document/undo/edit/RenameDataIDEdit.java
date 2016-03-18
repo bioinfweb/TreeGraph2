@@ -23,8 +23,8 @@ import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 
 import info.bioinfweb.treegraph.document.Document;
-import info.bioinfweb.treegraph.document.IDManager;
 import info.bioinfweb.treegraph.document.change.DocumentChangeType;
+import info.bioinfweb.treegraph.document.tools.IDManager;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
 
 

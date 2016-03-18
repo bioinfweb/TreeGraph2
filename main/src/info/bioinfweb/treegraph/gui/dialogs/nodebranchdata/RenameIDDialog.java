@@ -20,26 +20,32 @@ package info.bioinfweb.treegraph.gui.dialogs.nodebranchdata;
 
 
 import info.bioinfweb.treegraph.document.Document;
-import info.bioinfweb.treegraph.document.IDManager;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.tools.IDManager;
 import info.bioinfweb.treegraph.document.undo.edit.RenameDataIDEdit;
 import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
 import info.bioinfweb.commons.Math2;
 
 import javax.swing.JPanel;
+
 import java.awt.Frame;
 import java.awt.GridBagLayout;
+
 import javax.swing.BoxLayout;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
+
 import java.awt.Font;
 import java.awt.Color;
+
 import javax.swing.JTextField;
+
 import java.awt.GridBagConstraints;
 import java.util.Vector;
+
 import javax.swing.JButton;
 import javax.swing.JList;
 

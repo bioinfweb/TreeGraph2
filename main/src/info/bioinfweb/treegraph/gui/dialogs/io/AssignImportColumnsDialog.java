@@ -30,11 +30,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import info.bioinfweb.treegraph.document.IDManager;
 import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.nodebranchdata.IDElementAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.VoidNodeBranchDataAdapter;
+import info.bioinfweb.treegraph.document.tools.IDManager;
 import info.bioinfweb.treegraph.gui.actions.DocumentAction;
 import info.bioinfweb.wikihelp.client.OkCancelApplyWikiHelpDialog;
 import info.bioinfweb.wikihelp.client.WikiHelp;

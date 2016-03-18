@@ -20,7 +20,6 @@ package info.bioinfweb.treegraph.gui.dialogs.io;
 
 
 import info.bioinfweb.treegraph.document.Document;
-import info.bioinfweb.treegraph.document.IDManager;
 import info.bioinfweb.treegraph.document.io.DocumentReader;
 import info.bioinfweb.treegraph.document.io.ReadWriteFactory;
 import info.bioinfweb.treegraph.document.io.ReadWriteFormat;
@@ -30,6 +29,7 @@ import info.bioinfweb.treegraph.document.io.nexus.NexusFilter;
 import info.bioinfweb.treegraph.document.io.phyloxml.PhyloXMLFilter;
 import info.bioinfweb.treegraph.document.io.xtg.XTGFilter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextElementDataAdapter;
+import info.bioinfweb.treegraph.document.tools.IDManager;
 import info.bioinfweb.treegraph.document.undo.file.AddSupportValuesParameters;
 import info.bioinfweb.treegraph.document.undo.file.AddSupportValuesEdit.TargetType;
 import info.bioinfweb.treegraph.gui.dialogs.io.loadlogger.LoadLoggerDialog;
@@ -63,6 +63,7 @@ import java.io.File;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import javax.swing.JCheckBox;
+
 import java.awt.Insets;
 
 
@@ -110,8 +111,8 @@ public class AddSupportValuesDialog extends FileDialog {
 	@Override
 	protected boolean onExecute() {
 		if (!getDocument().getTree().isEmpty()) {
-			getIDNameTextField().setText(IDManager.newID(
-					IDManager.getIDListFromSubtree(getDocument().getTree().getPaintStart())));
+//			getIDNameTextField().setText(IDManager.newID(
+//					IDManager.getIDListFromSubtree(getDocument().getTree().getPaintStart())));
 			getTerminalDataInput().setAdapters(getDocument().getTree(), false, true, false, false, false, "");
 			getTerminalDataInput().setSelectedAdapter(getDocument().getDefaultLeafAdapter());
 			return true;
@@ -124,68 +125,76 @@ public class AddSupportValuesDialog extends FileDialog {
 	}
 
 	
-	public void assignParameters(AddSupportValuesParameters parameters) {
-		if (getIDNameTextField().getText().length() > 1) {
-      DocumentReader reader = ReadWriteFactory.getInstance().getReader(file);
-			TargetType targetType = TargetType.LABEL;
-			if (getBranchDataRadioButton().isSelected()) {
-				targetType = TargetType.HIDDEN_BRANCH_DATA;
-			}
-			else if (getNodeDataRadioButton().isSelected()) {
-				targetType = TargetType.HIDDEN_NODE_DATA;
-			}
-			try {
-				ReadWriteParameterMap parameterMap = new ReadWriteParameterMap();
-				parameterMap.putApplicationLogger(LoadLoggerDialog.getInstance());
-				parameterMap.put(ReadWriteParameterMap.KEY_TREE_SELECTOR, TreeSelectionDialog.getInstance());
-				parameterMap.put(ReadWriteParameterMap.KEY_TRANSLATE_INTERNAL_NODE_NAMES, 
-						getTranslateInternalsCheckBox().isSelected());
-				Document sourceDoc = reader.read(getFileChooser().getSelectedFile(), parameterMap);
+	/**
+	 * Assigns the parameters collected by this dialog. This includes loading the source document.
+	 * 
+	 * @param parameters the parameters object to store the data in
+	 * @return {@code true} if processing can go on or {@code false} if the user canceled or an error occured
+	 */
+	public boolean assignParameters(AddSupportValuesParameters parameters) {
+    DocumentReader reader = ReadWriteFactory.getInstance().getReader(file);
+		TargetType targetType = TargetType.LABEL;
+		if (getBranchDataRadioButton().isSelected()) {
+			targetType = TargetType.HIDDEN_BRANCH_DATA;
+		}
+		else if (getNodeDataRadioButton().isSelected()) {
+			targetType = TargetType.HIDDEN_NODE_DATA;
+		}
+		try {
+			ReadWriteParameterMap parameterMap = new ReadWriteParameterMap();
+			parameterMap.putApplicationLogger(LoadLoggerDialog.getInstance());
+			parameterMap.put(ReadWriteParameterMap.KEY_TREE_SELECTOR, TreeSelectionDialog.getInstance());
+			parameterMap.put(ReadWriteParameterMap.KEY_TRANSLATE_INTERNAL_NODE_NAMES, 
+					getTranslateInternalsCheckBox().isSelected());
+			Document sourceDoc = reader.read(getFileChooser().getSelectedFile(), parameterMap);
+			
+			boolean rooted = sourceDoc.getTree().getFormats().getShowRooted();
+			if (rooted != getDocument().getTree().getFormats().getShowRooted()) {
+				String[] options = {"Regard both trees as unrooted", "Regard both trees as rooted", "Cancel"};
+				switch (JOptionPane.showOptionDialog(this, "The source and the target are incompatible because " +
+						"they are not both rooted or both unrooted.\n\nWhat do you want to do?", 
+						"Incompatible trees",	JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, 
+						null, options, options[0])) {
 				
-				boolean rooted = sourceDoc.getTree().getFormats().getShowRooted();
-				if (rooted != getDocument().getTree().getFormats().getShowRooted()) {
-					String[] options = {"Regard both trees as unrooted", "Regard both trees as rooted", "Cancel"};
-					switch (JOptionPane.showOptionDialog(this, "The source and the target are incompatible because " +
-							"they are not both rooted or both unrooted.\n\nWhat do you want to do?", 
-							"Incompatible trees",	JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, 
-							null, options, options[0])) {
-					
-					  case 0:
-					  	rooted = false;
-	  				  break;
-					  case 1:
-					  	rooted = true;
-	  				  break;
-	  				default:
-	  					rooted = false;
-					}
+				  case 0:
+				  	rooted = false;
+  				  break;
+				  case 1:
+				  	rooted = true;
+  				  break;
+  				default:  // Cancel
+  					return false;
 				}
-				parameters.setSourceDocument(sourceDoc);
-				parameters.setIdPrefix(getIDNameTextField().getText());
-				parameters.setRooted(rooted);
-				parameters.setTerminalsAdapter((TextElementDataAdapter)getTerminalDataInput().getSelectedAdapter());
-				parameters.setTargetType(targetType);
-				parameters.setParseNumericValues(parseNumericValuesCheckBox.isSelected());
 			}
-			catch (Exception e) {
-				e.printStackTrace();
-				JOptionPane.showMessageDialog(null, "The error \"" + e.getMessage() + 
-						"\" occured when trying to open the file \"" + file.getAbsolutePath() + 
-						"\"", "Error", JOptionPane.ERROR_MESSAGE);
-			}
-	  }			
-		else {
-			JOptionPane.showMessageDialog(MainFrame.getInstance(), "There was no label ID" +
-					" specified.", "Error", JOptionPane.ERROR_MESSAGE);
-		}		
+			parameters.setSourceDocument(sourceDoc);
+			parameters.setIdPrefix(getIDNameTextField().getText());
+			parameters.setRooted(rooted);
+			parameters.setTerminalsAdapter((TextElementDataAdapter)getTerminalDataInput().getSelectedAdapter());
+			parameters.setTargetType(targetType);
+			parameters.setParseNumericValues(parseNumericValuesCheckBox.isSelected());
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "The error \"" + e.getMessage() + 
+					"\" occured when trying to open the file \"" + file.getAbsolutePath() + 
+					"\"", "Error", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		return true;
 	}
 	
 
 	@Override
 	protected boolean onApply(File file) {
 		this.file = file;
-		return true;
-		
+		if (getIDNameTextField().getText().length() == 0) {
+			JOptionPane.showMessageDialog(this, "A target node/branch data ID prefix must be specified.", "Missing target ID prefix", 
+					JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		else {
+			return true;
+		}
 	}
 
 

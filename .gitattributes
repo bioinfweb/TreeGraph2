@@ -83,7 +83,6 @@ main/src/info/bioinfweb/treegraph/document/DuplicateIDException.java -text svneo
 main/src/info/bioinfweb/treegraph/document/GraphicalLabel.java -text
 main/src/info/bioinfweb/treegraph/document/HiddenDataElement.java -text
 main/src/info/bioinfweb/treegraph/document/HiddenDataMap.java -text
-main/src/info/bioinfweb/treegraph/document/IDManager.java -text
 main/src/info/bioinfweb/treegraph/document/IconLabel.java -text
 main/src/info/bioinfweb/treegraph/document/Label.java -text
 main/src/info/bioinfweb/treegraph/document/LabelLine.java -text
@@ -326,6 +325,7 @@ main/src/info/bioinfweb/treegraph/document/position/LegendPositionData.java -tex
 main/src/info/bioinfweb/treegraph/document/position/NodePositionData.java -text
 main/src/info/bioinfweb/treegraph/document/position/PositionData.java -text
 main/src/info/bioinfweb/treegraph/document/position/package.html -text
+main/src/info/bioinfweb/treegraph/document/tools/IDManager.java -text
 main/src/info/bioinfweb/treegraph/document/tools/TextElementDataAsStringIterator.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/tools/TreeSerializer.java -text
 main/src/info/bioinfweb/treegraph/document/topologicalcalculation/LeafSet.java -text

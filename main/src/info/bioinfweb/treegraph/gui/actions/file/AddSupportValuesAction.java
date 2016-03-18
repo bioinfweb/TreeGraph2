@@ -59,15 +59,15 @@ public class AddSupportValuesAction extends DocumentAction {
 	protected void onActionPerformed(ActionEvent e, TreeInternalFrame frame) {
 		if (getAddSupportValuesDialog().execute(frame.getDocument(), frame.getTreeViewPanel().getSelection(), frame.getSelectedAdapter())) {
 			AddSupportValuesParameters addSupportValuesParameters = new AddSupportValuesParameters();
-			getAddSupportValuesDialog().assignParameters(addSupportValuesParameters);
-			
-			if (getAddSupportValueColumnsDialog().execute(addSupportValuesParameters, addSupportValuesParameters.getSourceDocument().getTree())) {
-				AddSupportValuesEdit edit = new AddSupportValuesEdit(frame.getDocument(), addSupportValuesParameters);
-				frame.getDocument().executeEdit(edit);
-				
-				if (edit.hasWarnings()) {
-					WikiHelpOptionPane.showMessageDialog(MainFrame.getInstance(), edit.getWarningText(), "Some leaf nodes did not match",	
-							JOptionPane.WARNING_MESSAGE, Main.getInstance().getWikiHelp(), 86);
+			if (getAddSupportValuesDialog().assignParameters(addSupportValuesParameters)) {  // Will return false, if user canceled an error occurs e.g. while loading the source document.
+				if (getAddSupportValueColumnsDialog().execute(addSupportValuesParameters, addSupportValuesParameters.getSourceDocument().getTree())) {
+					AddSupportValuesEdit edit = new AddSupportValuesEdit(frame.getDocument(), addSupportValuesParameters);
+					frame.getDocument().executeEdit(edit);
+					
+					if (edit.hasWarnings()) {
+						WikiHelpOptionPane.showMessageDialog(MainFrame.getInstance(), edit.getWarningText(), "Some leaf nodes did not match",	
+								JOptionPane.WARNING_MESSAGE, Main.getInstance().getWikiHelp(), 86);
+					}
 				}
 			}
 		}

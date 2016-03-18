@@ -20,13 +20,13 @@ package info.bioinfweb.treegraph.gui.dialogs.specialformats;
 
 
 import info.bioinfweb.treegraph.document.GraphicalLabel;
-import info.bioinfweb.treegraph.document.IDManager;
 import info.bioinfweb.treegraph.document.IconLabel;
 import info.bioinfweb.treegraph.document.Label;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextLabel;
 import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.format.adapters.distance.*;
+import info.bioinfweb.treegraph.document.tools.IDManager;
 import info.bioinfweb.treegraph.document.tools.TreeSerializer;
 
 import java.util.List;

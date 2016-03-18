@@ -20,10 +20,10 @@ package info.bioinfweb.treegraph.gui.dialogs.nodebranchdata;
 
 
 import info.bioinfweb.treegraph.Main;
-import info.bioinfweb.treegraph.document.IDManager;
 import info.bioinfweb.treegraph.document.nodebranchdata.NewTextLabelAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NewNodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
+import info.bioinfweb.treegraph.document.tools.IDManager;
 import info.bioinfweb.treegraph.document.undo.edit.CopyColumnEdit;
 import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NewNodeBranchDataInput;
@@ -31,10 +31,14 @@ import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataIn
 import info.bioinfweb.wikihelp.client.WikiHelpOptionPane;
 
 import javax.swing.JPanel;
+
 import java.awt.Frame;
 import java.awt.GridBagLayout;
+
 import javax.swing.JLabel;
+
 import java.awt.GridBagConstraints;
+
 import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;

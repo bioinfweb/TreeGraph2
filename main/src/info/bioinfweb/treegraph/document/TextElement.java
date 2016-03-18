@@ -20,6 +20,7 @@ package info.bioinfweb.treegraph.document;
 
 
 import info.bioinfweb.treegraph.document.format.TextFormats;
+import info.bioinfweb.treegraph.document.tools.IDManager;
 
 
 

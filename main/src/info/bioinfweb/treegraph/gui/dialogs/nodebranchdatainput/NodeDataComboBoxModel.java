@@ -19,10 +19,10 @@
 package info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput;
 
 
-import info.bioinfweb.treegraph.document.IDManager;
 import info.bioinfweb.treegraph.document.TextLabel;
 import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.nodebranchdata.*;
+import info.bioinfweb.treegraph.document.tools.IDManager;
 
 import java.util.Collection;
 import java.util.Map;

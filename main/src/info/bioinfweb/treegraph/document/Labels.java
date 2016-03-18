@@ -20,6 +20,7 @@ package info.bioinfweb.treegraph.document;
 
 
 import info.bioinfweb.treegraph.document.format.*;
+import info.bioinfweb.treegraph.document.tools.IDManager;
 import info.bioinfweb.commons.Math2;
 
 import java.util.*;

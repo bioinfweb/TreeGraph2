@@ -21,7 +21,7 @@ package info.bioinfweb.treegraph.gui.dialogs;
 
 import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.treegraph.document.Branch;
-import info.bioinfweb.treegraph.document.IDManager;
+import info.bioinfweb.treegraph.document.tools.IDManager;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.wikihelp.client.OkCancelApplyWikiHelpDialog;
 

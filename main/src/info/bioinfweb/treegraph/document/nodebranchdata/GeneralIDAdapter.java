@@ -20,11 +20,11 @@ package info.bioinfweb.treegraph.document.nodebranchdata;
 
 
 import info.bioinfweb.treegraph.document.ConcretePaintableElement;
-import info.bioinfweb.treegraph.document.IDManager;
 import info.bioinfweb.treegraph.document.Label;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.TextLabel;
+import info.bioinfweb.treegraph.document.tools.IDManager;
 
 import java.text.DecimalFormat;
 

@@ -31,11 +31,11 @@ import org.nfunk.jep.JEP;
 import org.nfunk.jep.ParseException;
 
 import info.bioinfweb.treegraph.document.Document;
-import info.bioinfweb.treegraph.document.IDManager;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextLabel;
 import info.bioinfweb.treegraph.document.format.TextFormats;
 import info.bioinfweb.treegraph.document.nodebranchdata.*;
+import info.bioinfweb.treegraph.document.tools.IDManager;
 import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.*;
 import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.topology.IndexInParentFunction;
 import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.topology.IsLeafFunction;

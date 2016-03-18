@@ -16,10 +16,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.document;
+package info.bioinfweb.treegraph.document.tools;
 
 
 import info.bioinfweb.commons.RandomValues;
+import info.bioinfweb.treegraph.document.Branch;
+import info.bioinfweb.treegraph.document.Document;
+import info.bioinfweb.treegraph.document.HiddenDataElement;
+import info.bioinfweb.treegraph.document.Label;
+import info.bioinfweb.treegraph.document.Labels;
+import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.PieChartLabel;
+import info.bioinfweb.treegraph.document.TextElementData;
+import info.bioinfweb.treegraph.document.TextLabel;
 import info.bioinfweb.treegraph.document.nodebranchdata.IDElementAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 
