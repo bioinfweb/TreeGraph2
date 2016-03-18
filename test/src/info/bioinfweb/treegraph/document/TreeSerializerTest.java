@@ -19,8 +19,15 @@
 package info.bioinfweb.treegraph.document;
 
 
-import org.junit.* ;
+import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+
+import org.junit.* ;
 
 import static org.junit.Assert.* ;
 
@@ -64,11 +71,11 @@ public class TreeSerializerTest {
 	public void test_getElementsInSubtree_leaves() {
 		Tree tree = createTree();
 		
-		Node[] internals = TreeSerializer.getElementsInSubtree(tree.getPaintStart(), NodeType.LEAVES, Node.class);
-		assertEquals(3, internals.length);
-		assertEquals("A", internals[0].getData().getText());
-		assertEquals("B", internals[1].getData().getText());
-		assertEquals("C", internals[2].getData().getText());
+		Node[] leaves = TreeSerializer.getElementsInSubtree(tree.getPaintStart(), NodeType.LEAVES, Node.class);
+		assertEquals(3, leaves.length);
+		assertEquals("A", leaves[0].getData().getText());
+		assertEquals("B", leaves[1].getData().getText());
+		assertEquals("C", leaves[2].getData().getText());
 	}
 	
 	
@@ -76,12 +83,83 @@ public class TreeSerializerTest {
 	public void test_getElementsInSubtree_both() {
 		Tree tree = createTree();
 		
-		Node[] internals = TreeSerializer.getElementsInSubtree(tree.getPaintStart(), NodeType.BOTH, Node.class);
-		assertEquals(5, internals.length);
-		assertEquals("root", internals[0].getData().getText());
-		assertEquals("n1", internals[1].getData().getText());
-		assertEquals("A", internals[2].getData().getText());
-		assertEquals("B", internals[3].getData().getText());
-		assertEquals("C", internals[4].getData().getText());
+		Node[] nodes = TreeSerializer.getElementsInSubtree(tree.getPaintStart(), NodeType.BOTH, Node.class);
+		assertEquals(5, nodes.length);
+		assertEquals("root", nodes[0].getData().getText());
+		assertEquals("n1", nodes[1].getData().getText());
+		assertEquals("A", nodes[2].getData().getText());
+		assertEquals("B", nodes[3].getData().getText());
+		assertEquals("C", nodes[4].getData().getText());
+	}
+	
+	
+	@Test
+	public void test_addTextElementDataFromSubtree_both() {
+		Tree tree = createTree();
+		
+		Set<TextElementData> ignoredElements = new TreeSet<TextElementData>();
+		ignoredElements.add(new TextElementData("n1"));
+		ignoredElements.add(new TextElementData("B"));
+		
+		List<TextElementData> list = TreeSerializer.addTextElementDataFromSubtree(new ArrayList<TextElementData>(), tree.getPaintStart(), 
+				NodeType.BOTH, new NodeNameAdapter(), ignoredElements);
+		
+		assertEquals(3, list.size());
+		Iterator<TextElementData> iterator = list.iterator();
+		assertEquals("root", iterator.next().getText());
+		assertEquals("A", iterator.next().getText());
+		assertEquals("C", iterator.next().getText());
+	}
+	
+	
+	@Test
+	public void test_addTextElementDataFromSubtree_internals() {
+		Tree tree = createTree();
+		
+		Set<TextElementData> ignoredElements = new TreeSet<TextElementData>();
+		ignoredElements.add(new TextElementData("n1"));
+		ignoredElements.add(new TextElementData("B"));
+		
+		List<TextElementData> list = TreeSerializer.addTextElementDataFromSubtree(new ArrayList<TextElementData>(), tree.getPaintStart(), 
+				NodeType.INTERNAL_NODES, new NodeNameAdapter(), ignoredElements);
+		
+		assertEquals(1, list.size());
+		Iterator<TextElementData> iterator = list.iterator();
+		assertEquals("root", iterator.next().getText());
+	}
+	
+	
+	@Test
+	public void test_addTextElementDataFromSubtree_leaves() {
+		Tree tree = createTree();
+		
+		Set<TextElementData> ignoredElements = new TreeSet<TextElementData>();
+		ignoredElements.add(new TextElementData("n1"));
+		ignoredElements.add(new TextElementData("B"));
+		
+		List<TextElementData> list = TreeSerializer.addTextElementDataFromSubtree(new ArrayList<TextElementData>(), tree.getPaintStart(), 
+				NodeType.LEAVES, new NodeNameAdapter(), ignoredElements);
+		
+		assertEquals(2, list.size());
+		Iterator<TextElementData> iterator = list.iterator();
+		assertEquals("A", iterator.next().getText());
+		assertEquals("C", iterator.next().getText());
+	}
+	
+	
+	@Test
+	public void test_addTextElementDataFromSubtree_noIgnored() {
+		Tree tree = createTree();
+		
+		List<TextElementData> list = TreeSerializer.addTextElementDataFromSubtree(new ArrayList<TextElementData>(), tree.getPaintStart(), 
+				NodeType.BOTH, new NodeNameAdapter(), null);
+		
+		assertEquals(5, list.size());
+		Iterator<TextElementData> iterator = list.iterator();
+		assertEquals("root", iterator.next().getText());
+		assertEquals("n1", iterator.next().getText());
+		assertEquals("A", iterator.next().getText());
+		assertEquals("B", iterator.next().getText());
+		assertEquals("C", iterator.next().getText());
 	}
 }
