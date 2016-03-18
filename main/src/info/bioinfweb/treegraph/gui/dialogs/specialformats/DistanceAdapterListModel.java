@@ -26,8 +26,8 @@ import info.bioinfweb.treegraph.document.Label;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextLabel;
 import info.bioinfweb.treegraph.document.Tree;
-import info.bioinfweb.treegraph.document.TreeSerializer;
 import info.bioinfweb.treegraph.document.format.adapters.distance.*;
+import info.bioinfweb.treegraph.document.tools.TreeSerializer;
 
 import java.util.List;
 import java.util.Vector;

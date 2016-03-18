@@ -22,8 +22,8 @@ package info.bioinfweb.treegraph.document.io.ancestralstate;
 import info.bioinfweb.commons.SystemUtils;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.NodeType;
-import info.bioinfweb.treegraph.document.TreeSerializer;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
+import info.bioinfweb.treegraph.document.tools.TreeSerializer;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 
 import java.io.IOException;

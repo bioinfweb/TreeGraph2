@@ -28,13 +28,13 @@ import javax.swing.undo.CannotUndoException;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Legend;
 import info.bioinfweb.treegraph.document.Node;
-import info.bioinfweb.treegraph.document.TreeSerializer;
 import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.format.DistanceValue;
 import info.bioinfweb.treegraph.document.format.adapters.distance.AbstractLegendAdapter;
 import info.bioinfweb.treegraph.document.format.adapters.distance.DistanceAdapter;
 import info.bioinfweb.treegraph.document.format.adapters.distance.LegendLineWidthAdapter;
 import info.bioinfweb.treegraph.document.format.adapters.distance.LegendTextHeightAdapter;
+import info.bioinfweb.treegraph.document.tools.TreeSerializer;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
 
 

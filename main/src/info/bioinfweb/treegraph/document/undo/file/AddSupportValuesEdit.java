@@ -20,19 +20,26 @@ package info.bioinfweb.treegraph.document.undo.file;
 
 
 import java.text.DecimalFormat;
+import java.util.HashSet;
+import java.util.Set;
 
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.NodeType;
+import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.nodebranchdata.HiddenBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.HiddenNodeDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.AbstractTextElementDataAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.TextElementDataAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;
+import info.bioinfweb.treegraph.document.tools.TextElementDataAsStringIterator;
+import info.bioinfweb.treegraph.document.tools.TreeSerializer;
 import info.bioinfweb.treegraph.document.topologicalcalculation.NodeInfo;
-import info.bioinfweb.treegraph.document.topologicalcalculation.TopologicalCalculator;
 import info.bioinfweb.treegraph.document.undo.AbstractTopologicalCalculationEdit;
+import info.bioinfweb.treegraph.document.undo.WarningMessageEdit;
+import info.bioinfweb.treegraph.gui.actions.DocumentAction;
 
 
 
@@ -43,7 +50,7 @@ import info.bioinfweb.treegraph.document.undo.AbstractTopologicalCalculationEdit
  * @author Ben St&ouml;ver
  * @author Sarah Wiechers
  */
-public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
+public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit implements WarningMessageEdit {
 	public static final String SUPPORT_NAME = "Support";
 	public static final String CONFLICT_NAME = "Conflict";
 	public static final DecimalFormat SUPPORT_DECIMAL_FORMAT = 
@@ -74,6 +81,7 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
 	private AbstractTextElementDataAdapter targetConflictAdapter = null;
 	
 	private boolean parseNumericValues;
+	private String warningMessage = null;
 	
 	
 	/**
@@ -102,17 +110,23 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
 				targetSupportAdapter = new HiddenNodeDataAdapter(parameters.getIDPrefix() + SUPPORT_NAME);
 				targetConflictAdapter = new HiddenNodeDataAdapter(parameters.getIDPrefix() + CONFLICT_NAME);
 				break;
+			default:
+				throw new InternalError("Unsupported target type " + parameters.getTargetType() + " encountered. "
+						+ "Please inform the TreeGraph developers on this bug.");
 		}
+		
+		getTopologicalCalculator().addSubtreeToLeafValueToIndexMap(sourceDocument.getTree().getPaintStart(), sourceLeavesAdapter);  //TODO Must be a different calculator then used in the inherited constructor. Otherwise the indices for the target document are wrong, if the order differs.
 	}
 	
 	
 	@Override
 	protected void performRedo() {
-		topologicalCalculator.addToLeafValueToIndexMap(sourceDocument.getTree().getPaintStart(), sourceLeavesAdapter);
-		topologicalCalculator.addToLeafValueToIndexMap(getDocument().getTree().getPaintStart(), getTargetLeavesAdapter());
+		//topologicalCalculator.addLeafValueToIndexMap(getDocument().getTree().getPaintStart(), getTargetLeavesAdapter());  // Is already done in the inherited constructor.
 		getTopologicalCalculator().addLeafSets(sourceDocument.getTree().getPaintStart(), sourceLeavesAdapter);
 		getTopologicalCalculator().addLeafSets(getDocument().getTree().getPaintStart(), getTargetLeavesAdapter());
 		processSubtree(getDocument().getTree().getPaintStart());
+		
+		warningMessage = createWarningMessage();
 	}
 
 	
@@ -207,5 +221,37 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit {
 	
 	public String getPresentationName() {
 		return "Add more support values";
+	}
+
+
+	@Override
+	public String getWarningText() {
+		return warningMessage;
+	}
+
+
+	@Override
+	public boolean hasWarnings() {
+		return warningMessage != null;
+	}
+	
+	
+	private String createWarningMessage() {
+		Set<TextElementData> targetLeaves = TreeSerializer.addTextElementDataCopiesFromSubtree(new HashSet<TextElementData>(), 
+				getDocument().getTree().getPaintStart(), NodeType.LEAVES, targetLeavesAdapter, null);
+		Set<TextElementData> remainingSourceLeaves = TreeSerializer.addTextElementDataCopiesFromSubtree(new HashSet<TextElementData>(), 
+				sourceDocument.getTree().getPaintStart(), NodeType.LEAVES, sourceLeavesAdapter, targetLeaves);
+		
+		if (remainingSourceLeaves.isEmpty()) {
+			return null;
+		}
+		else {
+			return "There were no according terminal nodes in the target document for the following terminal nodes from the source "
+					+ "document found:\n\n" + DocumentAction.createElementList(new TextElementDataAsStringIterator(
+							remainingSourceLeaves.iterator()), remainingSourceLeaves.size(), true)
+					+ "\n\nAccordingly some support values may not have been imported from the source tree (which may have been desired).\n"
+					+ "(Note that matching also may have failed because the specified leaf node/branch data columns for the source or "
+					+ "target document were not correct.)";
+		}
 	}
 }

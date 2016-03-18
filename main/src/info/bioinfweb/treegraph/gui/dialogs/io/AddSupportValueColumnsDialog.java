@@ -116,7 +116,7 @@ public class AddSupportValueColumnsDialog extends OkCancelApplyWikiHelpDialog {
 			gbc_supportColumnLabel.gridx = 0;
 			gbc_supportColumnLabel.anchor = GridBagConstraints.WEST;
 			gbc_supportColumnLabel.gridy =  0;
-			gbc_supportColumnLabel.insets = new Insets(4, 6, 5, 0);
+			gbc_supportColumnLabel.insets = new Insets(5, 0, 5, 0);
 			importSupportValuesPanel.add(getSupportColumnLabel(), gbc_supportColumnLabel);
 			supportColumnInput = new NodeBranchDataInput(importSupportValuesPanel, 1, 0);
 			
@@ -124,7 +124,7 @@ public class AddSupportValueColumnsDialog extends OkCancelApplyWikiHelpDialog {
 			gbc_lblNodebranchDataColumn.anchor = GridBagConstraints.WEST;
 			gbc_lblNodebranchDataColumn.gridx = 0;
 			gbc_lblNodebranchDataColumn.gridy = 1;
-			gbc_lblNodebranchDataColumn.insets = new Insets(4, 6, 5, 0);
+			gbc_lblNodebranchDataColumn.insets = new Insets(5, 0, 5, 0);
 			importSupportValuesPanel.add(getLeavesColumnLabel(), gbc_lblNodebranchDataColumn);
 			leavesColumnInput = new NodeBranchDataInput(importSupportValuesPanel, 1, 1);
 		}
@@ -135,7 +135,7 @@ public class AddSupportValueColumnsDialog extends OkCancelApplyWikiHelpDialog {
 	private JLabel getSupportColumnLabel() {
 		if (supportColumnLabel == null) {
 			supportColumnLabel = new JLabel();
-			supportColumnLabel.setText("Column in imported document containing support values: ");
+			supportColumnLabel.setText("Node/branch data column in imported document containing support values: ");
 		}
 		return supportColumnLabel;
 	}

@@ -35,7 +35,7 @@ import info.bioinfweb.treegraph.document.topologicalcalculation.TopologicalCalcu
 public abstract class AbstractTopologicalCalculationEdit extends ComplexDocumentEdit {
 	public static final String KEY_LEAF_REFERENCE = AbstractTopologicalCalculationEdit.class.getName() + ".LeafSet";
 	
-	protected TopologicalCalculator topologicalCalculator = null;
+	private TopologicalCalculator topologicalCalculator = null;
 
 	/** The column that contains the terminal identifiers in the target document (usually nodes names) */
 	protected NodeBranchDataAdapter targetLeavesAdapter = null;
@@ -48,7 +48,7 @@ public abstract class AbstractTopologicalCalculationEdit extends ComplexDocument
 		this.targetLeavesAdapter = targetLeavesAdapter;
 		topologicalCalculator = new TopologicalCalculator(processRooted, KEY_LEAF_REFERENCE, 
 				new CompareTextElementDataParameters());
-		topologicalCalculator.addToLeafValueToIndexMap(document.getTree().getPaintStart(), targetLeavesAdapter);
+		topologicalCalculator.addSubtreeToLeafValueToIndexMap(document.getTree().getPaintStart(), targetLeavesAdapter);
 	}
 
 	

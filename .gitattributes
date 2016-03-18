@@ -105,7 +105,6 @@ main/src/info/bioinfweb/treegraph/document/TextLabel.java -text
 main/src/info/bioinfweb/treegraph/document/Tree.java -text
 main/src/info/bioinfweb/treegraph/document/TreeElement.java -text
 main/src/info/bioinfweb/treegraph/document/TreePath.java -text
-main/src/info/bioinfweb/treegraph/document/TreeSerializer.java -text
 main/src/info/bioinfweb/treegraph/document/change/DocumentChangeEvent.java -text
 main/src/info/bioinfweb/treegraph/document/change/DocumentChangeType.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/change/DocumentListener.java -text
@@ -327,6 +326,8 @@ main/src/info/bioinfweb/treegraph/document/position/LegendPositionData.java -tex
 main/src/info/bioinfweb/treegraph/document/position/NodePositionData.java -text
 main/src/info/bioinfweb/treegraph/document/position/PositionData.java -text
 main/src/info/bioinfweb/treegraph/document/position/package.html -text
+main/src/info/bioinfweb/treegraph/document/tools/TextElementDataAsStringIterator.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/tools/TreeSerializer.java -text
 main/src/info/bioinfweb/treegraph/document/topologicalcalculation/LeafSet.java -text
 main/src/info/bioinfweb/treegraph/document/topologicalcalculation/NodeInfo.java -text
 main/src/info/bioinfweb/treegraph/document/topologicalcalculation/TopologicalCalculator.java -text svneol=unset#text/plain

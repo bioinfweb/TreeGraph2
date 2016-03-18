@@ -24,6 +24,7 @@ import info.bioinfweb.treegraph.document.format.*;
 import info.bioinfweb.treegraph.document.position.LegendPositionData;
 import info.bioinfweb.treegraph.document.position.NodePositionData;
 import info.bioinfweb.treegraph.document.position.PositionData;
+import info.bioinfweb.treegraph.document.tools.TreeSerializer;
 import info.bioinfweb.commons.*;
 import info.bioinfweb.commons.graphics.*;
 

@@ -22,6 +22,7 @@ package info.bioinfweb.treegraph.document;
 import info.bioinfweb.treegraph.document.format.DistanceDimension;
 import info.bioinfweb.treegraph.document.format.GlobalFormats;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
+import info.bioinfweb.treegraph.document.tools.TreeSerializer;
 import info.bioinfweb.treegraph.document.undo.CompareTextElementDataParameters;
 import info.bioinfweb.treegraph.graphics.positionpaint.PositionPaintType;
 import info.bioinfweb.commons.RandomValues;

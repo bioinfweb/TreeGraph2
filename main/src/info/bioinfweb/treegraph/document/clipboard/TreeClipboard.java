@@ -22,6 +22,7 @@ package info.bioinfweb.treegraph.document.clipboard;
 import java.util.Vector;
 
 import info.bioinfweb.treegraph.document.*;
+import info.bioinfweb.treegraph.document.tools.TreeSerializer;
 
 
 

@@ -31,10 +31,10 @@ import info.bioinfweb.commons.SystemUtils;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.NodeType;
-import info.bioinfweb.treegraph.document.TreeSerializer;
 import info.bioinfweb.treegraph.document.io.AbstractDocumentWriter;
 import info.bioinfweb.treegraph.document.io.ReadWriteParameterMap;
 import info.bioinfweb.treegraph.document.io.newick.NewickStringWriter;
+import info.bioinfweb.treegraph.document.tools.TreeSerializer;
 
 
 

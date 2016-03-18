@@ -19,24 +19,19 @@
 package info.bioinfweb.treegraph.document.topologicalcalculation;
 
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 import info.bioinfweb.commons.Math2;
-import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 import info.bioinfweb.treegraph.document.topologicalcalculation.LeafSet;
 import info.bioinfweb.treegraph.document.topologicalcalculation.NodeInfo;
 import info.bioinfweb.treegraph.document.undo.CompareTextElementDataParameters;
 import info.bioinfweb.treegraph.document.undo.file.AddSupportValuesEdit;
-import info.bioinfweb.treegraph.gui.actions.DocumentAction;
 
 
 
@@ -47,9 +42,6 @@ import info.bioinfweb.treegraph.gui.actions.DocumentAction;
  * @author Ben St&ouml;ver
  */
 public class TopologicalCalculator {
-	public static final NodeNameAdapter SOURCE_LEAVES_ADAPTER = NodeNameAdapter.getSharedInstance();
-	
-	
 	protected Map<TextElementData, Integer> leafValueToIndexMap = new TreeMap<TextElementData, Integer>();
 	protected boolean processRooted;
 	protected String keyLeafReference;
@@ -60,11 +52,6 @@ public class TopologicalCalculator {
 		this.processRooted = processRooted;
 		this.keyLeafReference = keyLeafReference;
 		this.parameters = parameters;
-	}
-
-
-	private Map<TextElementData, Integer> getLeafValueToIndexMap() {
-		return leafValueToIndexMap;
 	}
 
 
@@ -86,15 +73,18 @@ public class TopologicalCalculator {
 
 	/**
 	 * Registers the leaf values of the subtree under {@code root} to the leaf value map of this instance.
-	 * This map is used to map leaves to indices in a leaf set internally. Therefore all terminal under nodes 
+	 * This map is used to map leaves to indices in a leaf set internally. Therefore all terminals under nodes 
 	 * for which leaf sets shall be calculated using this instance in the future must be registered using this
-	 * method. 
+	 * method.
+	 * <p>
+	 * Note that the leaf set index assigned to each text element data does not need to be related to the index of that leaf in
+	 * a concrete tree. Therefore it is possible to add taxa from multiple trees to the leaf map of this instance.
 	 * 
 	 * @param root the root of the subtree in which all leaves shall be registered
 	 * @param adapter the adapter to be used to obtain leaf values from the terminals
 	 */
-	public void addToLeafValueToIndexMap(Node root, NodeBranchDataAdapter adapter) {
-		addToLeafValueToIndexMap(leafValueToIndexMap, root, adapter);
+	public void addSubtreeToLeafValueToIndexMap(Node root, NodeBranchDataAdapter adapter) {
+		addSubtreeToLeafValueToIndexMap(leafValueToIndexMap, root, adapter);
 	}
 	
 	
@@ -105,7 +95,7 @@ public class TopologicalCalculator {
 	 * @param root
 	 * @param adapter
 	 */
-	private void addToLeafValueToIndexMap(Map<TextElementData, Integer> leafMap, Node root, NodeBranchDataAdapter adapter) {
+	private void addSubtreeToLeafValueToIndexMap(Map<TextElementData, Integer> leafMap, Node root, NodeBranchDataAdapter adapter) {
 		if (root.isLeaf()) {
 			TextElementData data = parameters.createEditedValue(adapter.toTextElementData(root).toString());
 			if (!leafMap.containsKey(data)) {
@@ -115,47 +105,12 @@ public class TopologicalCalculator {
 		else {
 			Iterator<Node> iterator = root.getChildren().iterator();
 			while (iterator.hasNext()) {
-				addToLeafValueToIndexMap(leafMap, iterator.next(), adapter);
+				addSubtreeToLeafValueToIndexMap(leafMap, iterator.next(), adapter);
 			}
 		}
 	}
 
 	
-	/**
-	 * Checks if both the loaded and the imported tree contain exactly the same terminals.
-	 * 
-	 * @return an error message, if the terminal nodes are not identical or {@code null} if they are
-	 */
-	public String compareLeaves(Document src) {  //TODO Refactor method and use it for warning message generation.
-		Map<TextElementData, Integer> sourceLeafValues = new TreeMap<TextElementData, Integer>();
-		List<String> elementsNotFound = new ArrayList<String>();
-		
-		addToLeafValueToIndexMap(sourceLeafValues, src.getTree().getPaintStart(), SOURCE_LEAVES_ADAPTER);
-		if (leafValueToIndexMap.size() > sourceLeafValues.size()) {
-			return "The selected tree has a smaller number of terminals than the opened document. "
-					+ "It was therefore not possible to map a support value to every node of the opened tree.";
-		}
-		else {
-			StringBuffer warningMessage = new StringBuffer();
-			
-			for (TextElementData data : sourceLeafValues.keySet()) {
-				if (!getLeafValueToIndexMap().containsKey(parameters.createEditedValue(data.toString()))) {
-					elementsNotFound.add(data.toString());
-				}
-			}
-			
-			if (elementsNotFound.isEmpty()) {
-				return null;
-			}
-			
-			warningMessage.append(DocumentAction.createElementList(elementsNotFound, true));
-			warningMessage.append("\n\nIt was therefore not possible to map a support value to every node of the opened tree.");
-			return "The selected tree contains the following terminals which are " +
-					"not present in the opened document:\n\n" + warningMessage.toString();
-		}
-	}
-
-
 	/**
 	 * Returns the leaf field attribute of {@code node} if it has one attached. If not an according object
 	 * is created first and than returned.
@@ -225,7 +180,7 @@ public class TopologicalCalculator {
 	 * This method will return {@code null} if either an empty leaf set is provided or the specified
 	 * leaf set contains only terminals, that are not contained in {@code tree}. (The latter
 	 * can only happen if trees with different leaves have been registered in this instance using
-	 * {@link #addToLeafValueToIndexMap(Node, NodeBranchDataAdapter)}.)
+	 * {@link #addSubtreeToLeafValueToIndexMap(Node, NodeBranchDataAdapter)}.)
 	 * 
 	 * @param tree the tree to be searched
 	 * @param leafSet the leaves that shall be contained in the sought-after subtree

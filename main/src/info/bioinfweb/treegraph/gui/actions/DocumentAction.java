@@ -100,7 +100,11 @@ public abstract class DocumentAction extends ExtendedAbstractAction {
 	
 	
 	public static String createElementList(Collection<String> collection, boolean delimitElements) {
-		Iterator<String> iterator = collection.iterator();
+		return createElementList(collection.iterator(), collection.size(), delimitElements);
+	}
+	
+	
+	public static String createElementList(Iterator<String> iterator, int size, boolean delimitElements) {
 		StringBuffer result = new StringBuffer((MAX_MISSING_KEY_OUTPUT_LINES + 1) * MISSING_KEY_OUTPUT_CHARS_PER_LINE);  // one line more because single lines might be longer than MISSING_KEY_OUTPUT_CHARS_PER_LINE if keys overlap 
 		int charCount = 0;
 		int lineCount = 0;
@@ -132,7 +136,7 @@ public abstract class DocumentAction extends ExtendedAbstractAction {
 			}
 		}
 		if (iterator.hasNext()) {
-			result.append("... (" + (collection.size() - elementCount) + " more missing elements not shown here.)");
+			result.append("... (" + (size - elementCount) + " more missing elements not shown here.)");
 		}
 		return result.toString();
 	}

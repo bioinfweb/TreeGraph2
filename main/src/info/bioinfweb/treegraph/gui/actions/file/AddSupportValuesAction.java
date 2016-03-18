@@ -23,8 +23,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.Action;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
+import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.file.AddSupportValuesEdit;
@@ -35,6 +37,7 @@ import info.bioinfweb.treegraph.gui.dialogs.io.AddSupportValuesDialog;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeInternalFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
+import info.bioinfweb.wikihelp.client.WikiHelpOptionPane;
 
 
 
@@ -54,13 +57,18 @@ public class AddSupportValuesAction extends DocumentAction {
 	
 	@Override
 	protected void onActionPerformed(ActionEvent e, TreeInternalFrame frame) {
-		if (getAddSupportValuesDialog().execute(frame.getDocument(), frame.getTreeViewPanel().getSelection(), 
-				frame.getSelectedAdapter())) {
+		if (getAddSupportValuesDialog().execute(frame.getDocument(), frame.getTreeViewPanel().getSelection(), frame.getSelectedAdapter())) {
 			AddSupportValuesParameters addSupportValuesParameters = new AddSupportValuesParameters();
 			getAddSupportValuesDialog().assignParameters(addSupportValuesParameters);
-		
+			
 			if (getAddSupportValueColumnsDialog().execute(addSupportValuesParameters, addSupportValuesParameters.getSourceDocument().getTree())) {
-				frame.getDocument().executeEdit(new AddSupportValuesEdit(frame.getDocument(), addSupportValuesParameters));
+				AddSupportValuesEdit edit = new AddSupportValuesEdit(frame.getDocument(), addSupportValuesParameters);
+				frame.getDocument().executeEdit(edit);
+				
+				if (edit.hasWarnings()) {
+					WikiHelpOptionPane.showMessageDialog(MainFrame.getInstance(), edit.getWarningText(), "Some leaf nodes did not match",	
+							JOptionPane.WARNING_MESSAGE, Main.getInstance().getWikiHelp(), 86);
+				}
 			}
 		}
 	}

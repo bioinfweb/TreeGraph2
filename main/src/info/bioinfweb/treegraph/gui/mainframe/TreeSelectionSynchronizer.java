@@ -84,7 +84,7 @@ public class TreeSelectionSynchronizer implements TreeViewPanelListener, Documen
 		while(iterator.hasNext()) {
 			Document document = iterator.next().getDocument();
 			if (!document.getTree().isEmpty()) {
-				topologicalCalculator.addToLeafValueToIndexMap(document.getTree().getPaintStart(), document.getDefaultLeafAdapter());
+				topologicalCalculator.addSubtreeToLeafValueToIndexMap(document.getTree().getPaintStart(), document.getDefaultLeafAdapter());
 			}
 		}
 		
