@@ -19,6 +19,9 @@
 package info.bioinfweb.treegraph.document;
 
 
+import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.TextElementDataAdapter;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,6 +35,9 @@ import java.util.List;
  * @author Ben St&ouml;ver
  */
 public class TreeSerializer {
+	//TODO Serializing large trees could be done by returning iterators instead of collections, to avoid storing references to each element.
+	
+	
 	private static void addLabelBlock(Collection<PaintableElement> list, Labels labels, boolean above) {
 		for (int lineNo = 0; lineNo < labels.lineCount(above); lineNo++) {
 			for (int lineIndex = 0; lineIndex < labels.labelCount(above, lineNo); lineIndex++) {
@@ -268,4 +274,64 @@ public class TreeSerializer {
   		return result.toArray(new Legend[result.size()]);
   	}
   }
+
+  
+	/**
+	 * Adds all text element data in the subtree under {@code root} returned by the specified adapter to the specified collection.
+	 * The collection will be filled with references to the data objects.
+	 * 
+	 * @param collection the collection to add the elements to
+	 * @param root the root node of the subtree to be processed
+	 * @param nodeType the type of nodes to be taken into account
+	 * @param adapter the adapter provide the text element data references
+	 * @param ignoredElements a collection of elements that shall not be added to {@code collection} if they are encountered
+	 *        (Maybe {@code null} if no elements shall be ignored.)
+	 * @return a reference to {@code collection}
+	 * @since 2.9.0
+	 * @see #addTextElementDataCopiesFromSubtree(Collection, Node, NodeType, NodeBranchDataAdapter, Collection)
+	 */
+	public static <C extends Collection<TextElementData>> C addTextElementDataFromSubtree(C collection, Node root, NodeType nodeType, 
+			TextElementDataAdapter adapter, Collection<TextElementData> ignoredElements) {
+		
+		if ((root.isLeaf() && !nodeType.equals(NodeType.INTERNAL_NODES)) || (!root.isLeaf() && !nodeType.equals(NodeType.LEAVES))) {
+			TextElementData data = adapter.getData(root);
+			if ((ignoredElements == null) || !ignoredElements.contains(data)) {
+				collection.add(data);
+			}
+		}  	
+		for (Node child : root.getChildren()) {
+			addTextElementDataFromSubtree(collection, child, nodeType, adapter, ignoredElements);
+		}
+		return collection;
+	}
+
+  
+	/**
+	 * Adds all text element data in the subtree under {@code root} returned by the specified adapter to the specified collection.
+	 * The collection will be filled with copies of the data objects.
+	 * 
+	 * @param collection the collection to add the elements to
+	 * @param root the root node of the subtree to be processed
+	 * @param nodeType the type of nodes to be taken into account
+	 * @param adapter the adapter provide the text element data copies
+	 * @param ignoredElements a collection of elements that shall not be added to {@code collection} if they are encountered
+	 *        (Maybe {@code null} if no elements shall be ignored.)
+	 * @return a reference to {@code collection}
+	 * @since 2.9.0
+	 * @see #addTextElementDataFromSubtree(Collection, Node, NodeType, TextElementDataAdapter, Collection)
+	 */
+	public static <C extends Collection<TextElementData>> C addTextElementDataCopiesFromSubtree(C collection, Node root, NodeType nodeType, 
+			NodeBranchDataAdapter adapter, Collection<TextElementData> ignoredElements) {
+		
+		if ((root.isLeaf() && !nodeType.equals(NodeType.INTERNAL_NODES)) || (!root.isLeaf() && !nodeType.equals(NodeType.LEAVES))) {
+			TextElementData data = adapter.toTextElementData(root);  // Creates a copy of the data object.
+			if ((ignoredElements == null) || !ignoredElements.contains(data)) {
+				collection.add(data);
+			}
+		}  	
+		for (Node child : root.getChildren()) {
+			addTextElementDataCopiesFromSubtree(collection, child, nodeType, adapter, ignoredElements);
+		}
+		return collection;
+	}
 }
