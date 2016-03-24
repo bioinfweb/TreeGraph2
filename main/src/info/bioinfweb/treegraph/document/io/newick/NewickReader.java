@@ -191,30 +191,36 @@ public class NewickReader extends TextStreamReader implements DocumentReader {
 	
 	@Override
   public Document readDocument(BufferedInputStream stream) throws Exception {
-		String[] parts = splitDocument(new InputStreamReader(stream));
-
-	  String[] names = new String[parts.length];
-		for (int i = 0; i < names.length; i++) {
-			names[i] = "Tree " + i;
-		}
-		NewickTreeList trees = NewickStringReader.read(
-				parts,
-				parameterMap.getNodeBranchDataAdapter(ReadWriteParameterMap.KEY_INTERNAL_NODE_NAMES_ADAPTER, 
-						NodeNameAdapter.getSharedInstance()),
-				parameterMap.getNodeBranchDataAdapter(ReadWriteParameterMap.KEY_BRANCH_LENGTH_ADAPTER, 
-						BranchLengthAdapter.getSharedInstance()),
-				null, false);  // no translation table available in Newick format 
-		
 		Document result = createEmptyDocument();
-		int index = parameterMap.getTreeSelector().select(names, trees.treesAsList());
-		result.setTree(trees.getTree(index));
-		
-		NodeBranchDataAdapter supportAdapter = parameterMap.getNodeBranchDataAdapter(ReadWriteParameterMap.KEY_INTERNAL_NODE_NAMES_ADAPTER, 
-				NodeNameAdapter.getSharedInstance());
-		setDefaultSupportAdapter(result, supportAdapter, index, trees);
-		
-		if (trees.getHiddenDataAdded(index)) {
-			displayHiddenDataMessage(parameterMap.getApplicationLogger(), 75);
+		InputStreamReader reader = new InputStreamReader(stream);
+		try {
+			String[] parts = splitDocument(reader);
+	
+		  String[] names = new String[parts.length];
+			for (int i = 0; i < names.length; i++) {
+				names[i] = "Tree " + i;
+			}
+			NewickTreeList trees = NewickStringReader.read(
+					parts,
+					parameterMap.getNodeBranchDataAdapter(ReadWriteParameterMap.KEY_INTERNAL_NODE_NAMES_ADAPTER, 
+							NodeNameAdapter.getSharedInstance()),
+					parameterMap.getNodeBranchDataAdapter(ReadWriteParameterMap.KEY_BRANCH_LENGTH_ADAPTER, 
+							BranchLengthAdapter.getSharedInstance()),
+					null, false);  // no translation table available in Newick format 
+			
+			int index = parameterMap.getTreeSelector().select(names, trees.treesAsList());
+			result.setTree(trees.getTree(index));
+			
+			NodeBranchDataAdapter supportAdapter = parameterMap.getNodeBranchDataAdapter(ReadWriteParameterMap.KEY_INTERNAL_NODE_NAMES_ADAPTER, 
+					NodeNameAdapter.getSharedInstance());
+			setDefaultSupportAdapter(result, supportAdapter, index, trees);
+			
+			if (trees.getHiddenDataAdded(index)) {
+				displayHiddenDataMessage(parameterMap.getApplicationLogger(), 75);
+			}
+		}
+		finally {
+			reader.close();
 		}
 		return result;
 	}
