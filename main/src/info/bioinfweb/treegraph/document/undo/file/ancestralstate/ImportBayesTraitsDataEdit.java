@@ -213,7 +213,7 @@ public class ImportBayesTraitsDataEdit extends AbstractTopologicalCalculationEdi
 			if (internalNode != null) {
 				Branch branch = internalNode.getAfferentBranch();
 				int importAdapterIndex = 0;
-				Iterator<String> characterIterator = parameters.getData().get(internalNodeName).getSiteMap().keySet().iterator();
+				Iterator<String> characterIterator = parameters.getData().get(internalNodeName).getSiteIterator();
 				int characterIndex = 0;
 				parameters.getInternalNodeNamesAdapter().setText(internalNode, internalNodeName);
 				while (characterIterator.hasNext()) {
@@ -224,15 +224,15 @@ public class ImportBayesTraitsDataEdit extends AbstractTopologicalCalculationEdi
 						label.setID(parameters.getPieChartLabelIDs()[characterIndex]);
 					}
 					
-					String characterKey = characterIterator.next();
-					Iterator<String> stateIterator = parameters.getData().get(internalNodeName).getSiteMap().get(characterKey).keySet().iterator();
+					String siteKey = characterIterator.next();
+					Iterator<String> stateIterator = parameters.getData().get(internalNodeName).getKeyIterator(siteKey);
 					while (stateIterator.hasNext()) {
 						if (labelID != null) {
 							label.addValueID(((IDElementAdapter)parameters.getImportAdapters()[importAdapterIndex]).getID());
 						}
 						
-						Double probability = parameters.getData().get(internalNodeName).getSiteMap().get(characterKey).get(stateIterator.next());
-						if (probability != null) {
+						double probability = parameters.getData().get(internalNodeName).getProbability(siteKey, stateIterator.next());
+						if (!Double.isNaN(probability)) {
 							parameters.getImportAdapters()[importAdapterIndex].setDecimal(internalNode, probability);
 						}
 						else {

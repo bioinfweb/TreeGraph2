@@ -31,6 +31,7 @@ Class-Path: lib/bioinfweb-commons-core-2-SNAPSHOT.jar
             lib/errorReporter/jdom-2.0.5.jar
             lib/errorReporter/jaxen-1.1.6.jar
             lib/commons-lang3-3.1.jar
+            lib/commons-collections4-4.1.jar
             lib/freehep-base.jar
             lib/freehep-graphics2d.jar
             lib/freehep-graphicsio.jar

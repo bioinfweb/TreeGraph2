@@ -93,7 +93,7 @@ public class AssignBayesTraitsImportColumnsDialog extends AssignImportColumnsDia
 		importCharacterDataLabel.setText("Import ancestral state data");
 		getImportPanel().add(importCharacterDataLabel, importCharacterDataLabelGBC);
 		
-		Iterator<String> keySetIterator = data.getSiteMap().keySet().iterator();
+		Iterator<String> keySetIterator = data.getSiteIterator();
 		bottomY = 1;
 		while (keySetIterator.hasNext()) {
 			CharacterInput input = new CharacterInput(getImportPanel(), bottomY, data, tree, keySetIterator.next());
@@ -136,7 +136,7 @@ public class AssignBayesTraitsImportColumnsDialog extends AssignImportColumnsDia
 		String[] labelIDs = new String[data.getSiteCount()];
 		parameters.setImportAdapters(importAdapters);
 		parameters.setPieChartLabelIDs(labelIDs);
-		Iterator<String> keySetIterator = data.getSiteMap().keySet().iterator();
+		Iterator<String> keySetIterator = data.getSiteIterator();
 		int importAdapterIndexStart = 0;
 		int labelIDsIndexStart = 0;
 		while (keySetIterator.hasNext()) {

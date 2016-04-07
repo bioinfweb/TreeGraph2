@@ -24,15 +24,22 @@ import info.bioinfweb.commons.Math2;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.SortedMap;
-import java.util.TreeMap;
+
+import org.apache.commons.collections4.map.ListOrderedMap;
 
 
 
 public class AncestralStateData {
+	private static class ProbabilityData {
+		public double probability = 0.0;
+		public long elementCount = 0;
+	}
+	
+	
 	private String name;
 	private List<String> leafNames = new ArrayList<String>();
-	private SortedMap<String, SortedMap<String, Double>> characterMap = new TreeMap<String, SortedMap<String, Double>>();
+	private ListOrderedMap<String, ListOrderedMap<String, ProbabilityData>> siteMap = 
+			new ListOrderedMap<String, ListOrderedMap<String, ProbabilityData>>();
 	
 	
 	public AncestralStateData(String name) {
@@ -51,56 +58,75 @@ public class AncestralStateData {
 	}
 	
 	
-	public SortedMap<String, SortedMap<String, Double>> getSiteMap() {
-		return characterMap;
+	public Iterator<String> getSiteIterator() {
+		return siteMap.keySet().iterator();
 	}
-
-
+	
+	
+	public Iterator<String> getKeyIterator(String siteName) {
+		return siteMap.get(siteName).keySet().iterator();
+	}
+	
+	
+	public double getProbability(String siteName, String stateName) {
+		ProbabilityData data = siteMap.get(siteName).get(stateName);
+		if (data == null) {
+			return Double.NaN;
+		}
+		else {
+			return data.probability;
+		}
+	}
+	
+	
 	public int getCharacterStateCount() {
 		int count = 0;
-		Iterator<String> iterator = characterMap.keySet().iterator(); 
+		Iterator<String> iterator = siteMap.keySet().iterator(); 
 		while (iterator.hasNext()) {
-			count += characterMap.get(iterator.next()).size();			
+			count += siteMap.get(iterator.next()).size();			
 		}
 		return count;
 	}
 	
 	
 	public int getStateCountPerSite (String character) {
-		return characterMap.get(character).size();
+		return siteMap.get(character).size();
 	}
 	
 	
 	public int getSiteCount() {
-		return characterMap.size();
+		return siteMap.size();
 	}
 	
 	
-	public void normalizeProbability(String siteName, String stateName, double lineCounter) {
-		Double value = characterMap.get(siteName).get(stateName);
-		if (value != null) {
-			value /= lineCounter;
-			characterMap.get(siteName).put(stateName, value);
+	public void normalizeProbability(String siteName, String stateName) {
+		ProbabilityData data = siteMap.get(siteName).get(stateName);
+		if (data != null) {
+			data.probability /= data.elementCount;
+			data.elementCount = -1;
 		}
 	}
 	
 	
 	public void addToProbability(String siteName, String stateName, String addend) {		
-		if (characterMap.get(siteName) == null) {			
-			characterMap.put(siteName, new TreeMap<String, Double>());
+		if (siteMap.get(siteName) == null) {			
+			siteMap.put(siteName, new ListOrderedMap<String, ProbabilityData>());
 		}
 		if (!addend.equals("--")) {
 			double addValue = Math2.parseDouble(addend);
-			Double value = characterMap.get(siteName).get(stateName);
-			if (value == null) {
-				value = 0.0;
-				characterMap.get(siteName).put(stateName, value);
+			ProbabilityData data = siteMap.get(siteName).get(stateName);
+			if (data == null) {
+				data = new ProbabilityData();
+				siteMap.get(siteName).put(stateName, data);
 			}
-			value += addValue;
-			characterMap.get(siteName).put(stateName, value);
-		}
-		else {
-			characterMap.get(siteName).put(stateName, null);
+			
+			if (data.elementCount == -1) {
+				throw new IllegalStateException("Value is already normalized.");
+			}
+			else {
+				data.probability += addValue;
+				data.elementCount++;
+			}
 		}
 	}
 }

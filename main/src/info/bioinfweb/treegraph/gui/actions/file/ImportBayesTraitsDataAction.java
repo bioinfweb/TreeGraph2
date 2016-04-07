@@ -89,6 +89,8 @@ public class ImportBayesTraitsDataAction extends DocumentAction {
 				BayesTraitsReader bayesTraitsReader = new BayesTraitsReader();
 				parameters.setData(bayesTraitsReader.read(parameters.getTableFile().getAbsolutePath()));
 				
+				//TODO Check is any data was loaded from the file, before displaying the next dialog.
+				
 				if (getAssignBayesTraitsImportColumnsDialog().execute(parameters, parameters.getData().get("Root"), frame.getDocument().getTree())) {
 					final ProgressDialog progressDialog = new ProgressDialog(getMainFrame(), "Importing data...", null, true, null);
 					final ImportBayesTraitsDataEdit edit = new ImportBayesTraitsDataEdit(frame.getDocument(), parameters, progressDialog);

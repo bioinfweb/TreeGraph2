@@ -44,7 +44,7 @@ public class BayesTraitsReader {
 	private static final String LIKELIHOOD_TABLE_START = "Tree No\t";
 	
 	private static final Pattern LEAF_NAME_PATTERN = Pattern.compile("\\s*\\d+\\s+(\\S+)\\s*");
-	private static final Pattern HEADING = Pattern.compile("(\\S+)\\s\\-\\s(.+)");
+	private static final Pattern HEADING = Pattern.compile("(\\S+)\\s(?:\\-\\s)?(\\w\\(.+\\))");  // Headings may have one of the following forms: "name - S(n) - P(n)", "name - P(n)", "name - P(n, m)", "name P(n)". (At least this are the forms observed until now.)  
 	private static final Pattern STATE_PATTERN = Pattern.compile("P\\((.+)\\)");
 	private static final Pattern SITE_AND_STATE_PATTERN = Pattern.compile("S\\((.+)\\)\\s-\\sP\\((.+)\\)");
 	
@@ -114,7 +114,6 @@ public class BayesTraitsReader {
 		String[] parts = line.split("\\t");
 		List<String> nodeNames = new ArrayList<String>();
 		List<String> probabilityKeys = new ArrayList<String>();
-		int lineCounter = 0;
 		
 		for (int i = 0; i < parts.length; i++) {
 			Matcher matcher = HEADING.matcher(parts[i]);
@@ -137,13 +136,12 @@ public class BayesTraitsReader {
 					nodes.get(nodeNames.get(i)).addToProbability(headingParts[0], headingParts[1], parts[i]);
 				}
 			}		
-			lineCounter++;
 		}		
 		
 		for (int i = 0; i < nodeNames.size(); i++) {
 			if (nodeNames.get(i) != null) {
 				String[] headingParts = getHeadingParts(probabilityKeys.get(i));
-				nodes.get(nodeNames.get(i)).normalizeProbability(headingParts[0], headingParts[1], lineCounter);
+				nodes.get(nodeNames.get(i)).normalizeProbability(headingParts[0], headingParts[1]);
 			}
 		}		
 	}

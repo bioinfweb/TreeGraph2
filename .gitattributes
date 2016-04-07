@@ -53,6 +53,7 @@ main/include/lib/batik/xml-apis-ext.jar -text
 main/include/lib/batik/xml-apis.jar -text
 main/include/lib/bioinfweb-commons-core-2-SNAPSHOT.jar -text
 main/include/lib/bioinfweb-commons-swing-2-SNAPSHOT.jar -text
+main/include/lib/commons-collections4-4.1.jar -text
 main/include/lib/commons-lang3-3.1.jar -text
 main/include/lib/errorReporter/ErrorReporter.jar -text
 main/include/lib/errorReporter/jaxen-1.1.6.LICENSE.txt -text svneol=unset#text/plain

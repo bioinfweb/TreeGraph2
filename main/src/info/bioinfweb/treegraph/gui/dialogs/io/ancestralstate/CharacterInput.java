@@ -123,7 +123,7 @@ public class CharacterInput {
 		panel.add(typeHeadingLabel, typeHeadingGBC);
 		panel.add(idHeadingLabel, idHeadingGBC);			
 		
-		Iterator<String> keySetIterator = data.getSiteMap().get(prefixIDText).keySet().iterator();
+		Iterator<String> keySetIterator = data.getKeyIterator(prefixIDText);
 		int counter = 1;
 		while (keySetIterator.hasNext()) {	
 			NewNodeBranchDataInput input = new NewNodeBranchDataInput(panel, 1, y + counter + HEADING_ROWS_COUNT - 1, true);
