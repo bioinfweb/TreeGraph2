@@ -378,12 +378,13 @@ public class AboutDialog extends JDialog {
 					"or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for " +
 					"more details.</p>" +
 					
-  				"<p>The included Apache Batic and l2fprod-common Libraries are distributed under " +
+  				"<p>The included Apache Commons, Batic and l2fprod-common Libraries are distributed under " +
 					"Apache Public Licence (see Apache Public Licence tab).</p>" +
 					
 					"<p><b>The following libraries are used by TreeGraph 2:</b></p>" +
 					"<ul>" +
 						"<li>bioinfweb.commons.java (<a href='http://commons.bioinfweb.info/Java/'>http://commons.bioinfweb.info/Java/</a>)</li>" +
+					  "<li>Apache Commons (<a href='http://commons.apache.org/'>http://commons.apache.org/</a>)</li>" +
 					  "<li>Apache Batik SVG Toolkit (<a href='http://xmlgraphics.apache.org/batik/'>http://xmlgraphics.apache.org/batik/</a>)</li>" +
 					  "<li>FreeHEP Java Libraries (<a href='http://java.freehep.org/'>http://java.freehep.org/</a>)</li>" +
 					  "<li>Java Math Expression Parser (<a href='http://sourceforge.net/projects/jep/'>http://sourceforge.net/projects/jep/</a>)</li>" +
