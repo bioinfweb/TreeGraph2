@@ -62,7 +62,7 @@ public class AddSupportValueColumnsDialog extends OkCancelApplyWikiHelpDialog {
 		
 		supportColumnInput.setAdapters(tree, false, true, true, false, false, "");
 		supportColumnInput.setSelectedAdapter(addSupportValuesParameters.getSourceDocument().getDefaultSupportAdapter());
-		leavesColumnInput.setAdapters(tree, true, true, false, false, false, "");
+		leavesColumnInput.setAdapters(tree, true, true, false, false, false, "");  //TODO Ideally unique node names would only be selectable, if the XTG is the imported format. In all other cases the unique node names have just been generated and were not present in the source file.
 		leavesColumnInput.setSelectedAdapter(NodeNameAdapter.class);
 		
 		pack();	
