@@ -57,18 +57,6 @@
 			<edge id="edge19" source="node22" target="node23" length="0.98"/>
 			<edge id="edge20" source="node22" target="node21"/>
 		</tree>
-		<network id="network1" xsi:type="nex:FloatNetwork">
-			<node id="node24" otu="taxon1"/>
-			<node id="node25" otu="taxon2"/>
-			<node id="node26" otu="taxon3"/>
-			<node id="node27"/>
-			<node id="node28"/>
-			<edge id="edge21" source="node9" target="node10" length="0.44"/>
-			<edge id="edge22" source="node9" target="node8" length="0.67"/>
-			<edge id="edge23" source="node10" target="node6"/>
-			<edge id="edge24" source="node10" target="node7"/>
-			<edge id="edge25" source="node7" target="node8"/>
-		</network>		
 	</trees>
 	<trees id="treegroup2" otus="taxonlist2">
 		<tree id="tree3" label="third tree" xsi:type="nex:FloatTree">
