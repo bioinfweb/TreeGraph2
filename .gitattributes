@@ -828,6 +828,12 @@ test/data/importTable/Tree.xtg -text
 test/data/importTable/Tree_numbersAsText.xtg -text
 test/data/importTable/Tree_numbersAsText_german.xtg -text
 test/data/importTable/Tree_options.xtg -text
+test/data/jPhyloIO/MultipleElements.xml -text svneol=unset#text/plain
+test/data/jPhyloIO/NeXML_Network.xml -text svneol=unset#text/plain
+test/data/jPhyloIO/NeXML_multipleTrees.xml -text svneol=unset#text/plain
+test/data/jPhyloIO/SimpleDocument.xml -text svneol=unset#text/plain
+test/data/jPhyloIO/SimpleDocumentWithMetadata.xml -text svneol=unset#text/plain
+test/data/jPhyloIO/nexml_treebase_example.xml -text svneol=unset#text/plain
 test/data/sortLeaves/ConflictingOrderingChanged.txt -text svneol=unset#text/plain
 test/data/sortLeaves/ConflictingOrderingUnchanged.txt -text svneol=unset#text/plain
 test/data/sortLeaves/DistinctOrdering.txt -text svneol=unset#text/plain
@@ -839,6 +845,7 @@ test/src/info/bioinfweb/treegraph/document/LabelsTest.java -text svneol=unset#te
 test/src/info/bioinfweb/treegraph/document/TextElementDataTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/TreeTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/io/ancestralstate/BayesTraitsReaderTest.java -text svneol=unset#text/plain
+test/src/info/bioinfweb/treegraph/document/io/jphyloio/JPhyloIOReaderTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/tools/IDManagerTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/tools/TreeSerializerTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/topologicalcalculation/LeafSetTest.java -text svneol=unset#text/plain

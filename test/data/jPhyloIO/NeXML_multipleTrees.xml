@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nex:nexml  id="test" version="0.9" xmlns:nex="http://www.nexml.org/2009" xmlns="http://www.nexml.org/2009" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<otus id="taxonlist1">
+		<otu id="taxon1" label="species1"/>
+		<otu id="taxon2" label="species2"/>
+		<otu id="taxon3" label="species3"/>
+		<otu id="taxon4" label="species4"/>	
+		<otu id="taxon5" label="species5"/>	
+	</otus>
+	<trees id="treegroup1" otus="taxonlist1">
+		<tree id="tree1" label="first tree" xsi:type="nex:FloatTree">
+			<node id="node1" otu="taxon1"/>
+			<node id="node2" otu="taxon2"/>
+			<node id="node3" otu="taxon3"/>
+			<node id="node4" otu="taxon4"/>
+			<node id="node5" otu="taxon5"/>			
+			<node id="node6"/>
+			<node id="node7"/>
+			<node id="node8"/>
+			<node id="node9" root="true"/>			
+			<rootedge id="rootedge" target="node9" length="0.778"/>
+			<edge id="edge1" source="node6" target="node1"/>
+			<edge id="edge2" source="node6" target="node2"/>
+			<edge id="edge3" source="node7" target="node4"/>
+			<edge id="edge4" source="node7" target="node5"/>
+			<edge id="edge5" source="node8" target="node6"/>
+			<edge id="edge6" source="node8" target="node3"/>
+			<edge id="edge7" source="node9" target="node7"/>
+			<edge id="edge8" source="node9" target="node8"/>
+		</tree>
+		<tree id="tree1" label="second tree" xsi:type="nex:FloatTree">
+			<node id="node10" otu="taxon1"/>
+			<node id="node11" otu="taxon2"/>
+			<node id="node12" otu="taxon3"/>
+			<node id="node13" otu="taxon4"/>
+			<node id="node14" otu="taxon5"/>		
+			<node id="node15"/>
+			<node id="node16"/>
+			<node id="node17"/>
+			<node id="node18" root="true"/>			
+			<node id="node19" otu="taxon1"/>			
+			<node id="node20" otu="taxon2"/>
+			<node id="node21" otu="taxon3"/>
+			<node id="node22" root="true"/>
+			<node id="node23"/>			
+			<rootedge id="rootedge" target="node18" length="0.778"/>
+			<edge id="edge9" source="node15" target="node10"/>
+			<edge id="edge10" source="node15" target="node11"/>
+			<edge id="edge11" source="node16" target="node13"/>
+			<edge id="edge12" source="node16" target="node14"/>
+			<edge id="edge13" source="node17" target="node15"/>
+			<edge id="edge14" source="node17" target="node12"/>
+			<edge id="edge15" source="node18" target="node16"/>
+			<edge id="edge16" source="node18" target="node17"/>			
+			<edge id="edge17" source="node23" target="node19" length="1"/>
+			<edge id="edge18" source="node23" target="node20"/>
+			<edge id="edge19" source="node22" target="node23" length="0.98"/>
+			<edge id="edge20" source="node22" target="node21"/>
+		</tree>
+		<network id="network1" xsi:type="nex:FloatNetwork">
+			<node id="node24" otu="taxon1"/>
+			<node id="node25" otu="taxon2"/>
+			<node id="node26" otu="taxon3"/>
+			<node id="node27"/>
+			<node id="node28"/>
+			<edge id="edge21" source="node9" target="node10" length="0.44"/>
+			<edge id="edge22" source="node9" target="node8" length="0.67"/>
+			<edge id="edge23" source="node10" target="node6"/>
+			<edge id="edge24" source="node10" target="node7"/>
+			<edge id="edge25" source="node7" target="node8"/>
+		</network>		
+	</trees>
+	<trees id="treegroup2" otus="taxonlist2">
+		<tree id="tree3" label="third tree" xsi:type="nex:FloatTree">
+			<node id="node29" otu="taxon1"/>
+			<node id="node30" otu="taxon2"/>
+			<node id="node31" otu="taxon3"/>
+			<node id="node32" root="true"/>
+			<node id="node33"/>
+			<edge id="edge26" source="node33" target="node29" length="1"/>
+			<edge id="edge27" source="node33" target="node31"/>
+			<edge id="edge28" source="node32" target="node33" length="0.98"/>
+			<edge id="edge29" source="node32" target="node30"/>
+		</tree>
+	</trees>
+</nex:nexml>
