@@ -67,6 +67,7 @@ main/include/lib/freehep-graphicsio.jar -text
 main/include/lib/jep-2.4.1.jar -text
 main/include/lib/l2fprod-common-directorychooser-7.3.jar -text
 main/include/lib/org.jdesktop.swingx.scrollpaneselector.jar -text
+main/include/lib/owlapi-XMLUtils-4.1.4.jar -text
 main/src/config/RecentlyUsedExpressions.txt -text
 main/src/info/bioinfweb/treegraph/AWTExceptionHandler.java -text
 main/src/info/bioinfweb/treegraph/Main.java -text
@@ -254,6 +255,9 @@ main/src/info/bioinfweb/treegraph/document/io/TreeSelector.java -text
 main/src/info/bioinfweb/treegraph/document/io/ancestralstate/AncestralStateData.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/io/ancestralstate/BayesTraitsCommandsWriter.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/io/ancestralstate/BayesTraitsReader.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/io/jphyloio/JPhyloIOReader.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/io/jphyloio/NeXMLFactory.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/io/jphyloio/NeXMLFilter.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/io/newick/BranchLengthsScaler.java -text
 main/src/info/bioinfweb/treegraph/document/io/newick/CommentDataReader.java -text
 main/src/info/bioinfweb/treegraph/document/io/newick/NewickException.java -text

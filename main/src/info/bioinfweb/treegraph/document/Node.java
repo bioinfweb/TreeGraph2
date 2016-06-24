@@ -139,7 +139,7 @@ public class Node extends AbstractTextElement
 	
 	
 	/** 
-	 * @return true, if this element is the fist
+	 * @return true, if this element is the first
 	 */
 	public boolean isFirst() {
 		if (!hasParent()) {

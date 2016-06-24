@@ -43,8 +43,6 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import org.lsmp.djep.vectorJep.function.GetDiagonal;
-
 
 
 /**
@@ -573,7 +571,7 @@ public class XTGReader extends AbstractDocumentReader implements XTGConstants {
       	StartElement element = event.asStartElement();
         if (element.getName().getLocalPart().equals(TAG_NODE)) {
         	document.getTree().setPaintStart(readSubtree(element));
-        	document.getTree().assignUniqueNames();  // If nodes without an unique name were present.
+        	document.getTree().assignUniqueNames();  // If nodes without a unique name were present.
         }
         else if (element.getName().getLocalPart().equals(TAG_SCALE_BAR)) {
         	readScaleBar(element, document.getTree().getScaleBar());

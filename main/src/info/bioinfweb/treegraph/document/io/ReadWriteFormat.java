@@ -25,5 +25,6 @@ public enum ReadWriteFormat {
   NEXUS,
   NEWICK,
   TGF,
-  PHYLO_XML;
+  PHYLO_XML,
+  NEXML;
 }

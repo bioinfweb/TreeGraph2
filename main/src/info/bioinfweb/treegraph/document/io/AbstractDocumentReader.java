@@ -35,6 +35,7 @@ import javax.xml.stream.events.StartElement;
 
 /**
  * Implements basic functionality (especially method delegation) for document readers.
+ * 
  * @author Ben St&ouml;ver
  */
 public abstract class AbstractDocumentReader implements DocumentReader {

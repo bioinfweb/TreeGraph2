@@ -42,6 +42,9 @@
 	<classpathentry kind="lib" path="include/lib/batik/xalan-2.6.0.jar"/>
 	<classpathentry kind="lib" path="include/lib/batik/xml-apis-ext.jar"/>
 	<classpathentry kind="lib" path="include/lib/batik/xml-apis.jar"/>
+	<classpathentry kind="lib" path="/info.bioinfweb.commons.bio/bin"/>
+	<classpathentry kind="lib" path="/JPhyloIO/bin" sourcepath="/JPhyloIO/src"/>
+	<classpathentry kind="lib" path="include/lib/owlapi-XMLUtils-4.1.4.jar"/>
 	<classpathentry kind="lib" path="include/lib/commons-collections4-4.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

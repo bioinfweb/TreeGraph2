@@ -73,7 +73,7 @@ public class TreeSelectionDialog extends OkCancelApplyWikiHelpDialog
 	}
 
 
-	private int getSelctedIndex() {
+	private int getSelectedIndex() {
 		return getTreeComboBox().getSelectedIndex();
 	}
 	
@@ -91,7 +91,7 @@ public class TreeSelectionDialog extends OkCancelApplyWikiHelpDialog
 			}
 			
 			execute();
-			return getSelctedIndex();  //Always return index, even if canceled
+			return getSelectedIndex();  //Always return index, even if canceled
 		}
 		else {
 			return 0;  // Nur ein Baum vorhanden.
@@ -167,9 +167,9 @@ public class TreeSelectionDialog extends OkCancelApplyWikiHelpDialog
 			treeComboBox = new JComboBox();
 			treeComboBox.addItemListener(new java.awt.event.ItemListener() {
 				public void itemStateChanged(java.awt.event.ItemEvent e) {
-					if (currentTree != getSelctedIndex()) {
-						currentTree = getSelctedIndex();
-						getTreeViewPanel().getDocument().setTree(trees.get(getSelctedIndex()));
+					if (currentTree != getSelectedIndex()) {
+						currentTree = getSelectedIndex();
+						getTreeViewPanel().getDocument().setTree(trees.get(getSelectedIndex()));
 					}
 				}
 			});

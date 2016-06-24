@@ -25,6 +25,7 @@ import info.bioinfweb.treegraph.document.format.*;
 
 /**
  * The entity for a branch.
+ * 
  * @author Ben St&ouml;ver
  */
 public class Branch extends ConcretePaintableElement 
