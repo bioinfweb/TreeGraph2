@@ -90,8 +90,11 @@ public class JPhyloIOReader extends AbstractDocumentReader {
 		          	Tree tree = trees.get(parameterMap.getTreeSelector().select(names.toArray(new String[names.size()]), trees));
 		          	document.setTree(tree);
 		          }
+		          else {
+		          	parameterMap.getApplicationLogger().addMessage("No tree could be read from the document.");
+		          }
 		          
-		          return document;
+		          return document; //TODO do not return an empty document if no tree could be read
 	      		}
 	      		break;
 	      	case TREE_NETWORK_GROUP:
@@ -186,25 +189,23 @@ public class JPhyloIOReader extends AbstractDocumentReader {
 	
 	private void readEdge(EdgeEvent edgeEvent) throws XMLStreamException, IOException {
 		Node targetNode = idToNodeMap.get(edgeEvent.getTargetID());
-		Node sourceNode = idToNodeMap.get(edgeEvent.getSourceID());
+		Node sourceNode = idToNodeMap.get(edgeEvent.getSourceID());		
 		
-		branchLengthAdapter.setDecimal(targetNode, edgeEvent.getLength());
-		
-		if (targetNode.getParent() != null) {
+		if (targetNode.getParent() == null) {
 			targetNode.setParent(sourceNode);
+			branchLengthAdapter.setDecimal(targetNode, edgeEvent.getLength());
+			
+			if (sourceNode != null) {
+				sourceNode.getChildren().add(targetNode);
+				possiblePaintStartIDs.remove(edgeEvent.getTargetID()); // Nodes that were not referenced as target are possible paint starts
+			}
+			else {
+				rootNodeIDs.add(edgeEvent.getTargetID()); // Nodes without source node are root nodes
+			}
 		}
 		else { // Edge is network edge
-			System.out.println(targetNode.getParent() + " " + sourceNode);
 			parameterMap.getApplicationLogger().addWarning("Multiple parent nodes were specified for the node \"" + edgeEvent.getTargetID() + "\". "
 					+ "This can not be displayed in TreeGraph 2, therefore it is possible that some information was lost. ");
-		}
-		
-		if (sourceNode != null) {
-			sourceNode.getChildren().add(targetNode);
-			possiblePaintStartIDs.remove(edgeEvent.getTargetID()); // Nodes that were not referenced as target are possible paint starts
-		}
-		else {
-			rootNodeIDs.add(edgeEvent.getTargetID()); // Nodes without source node are root nodes
 		}
 		
 		JPhyloIOEvent event = reader.next();
