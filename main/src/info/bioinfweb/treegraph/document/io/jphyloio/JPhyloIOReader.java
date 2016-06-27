@@ -69,10 +69,7 @@ public class JPhyloIOReader extends AbstractDocumentReader {
 	@Override
 	public Document readDocument(BufferedInputStream stream) throws Exception {
 		document = null;
-		reader = new NeXMLEventReader(stream, new ReadWriteParameterMap()); //TODO are some entries to the parameter map necessary here?
-		
-//		JPhyloIOReaderWriterFactory factory = new JPhyloIOReaderWriterFactory(); //TODO file a bug, buffer size seems to be not large enough to read larger files (like the treebase example file)
-//		reader = factory.guessReader(stream, new ReadWriteParameterMap());		
+		reader = new NeXMLEventReader(stream, new ReadWriteParameterMap()); //TODO are some entries to the parameter map necessary here?		
 		
 		try {
 			JPhyloIOEvent event;			
@@ -118,7 +115,7 @@ public class JPhyloIOReader extends AbstractDocumentReader {
 	private void readDocument(LinkedLabeledIDEvent treeGroupEvent) throws XMLStreamException, IOException {
     JPhyloIOEvent event = reader.next();   
     while (!event.getType().getTopologyType().equals(EventTopologyType.END)) {
-    	if (event.getType().getContentType().equals(EventContentType.TREE) || event.getType().getContentType().equals(EventContentType.NETWORK)) {    		
+    	if (event.getType().getContentType().equals(EventContentType.TREE)) { // Networks can not be displayed by TG and are therefore not read  		
     		readTree(event.asLabeledIDEvent());
     	}
       else { // possible additional element, which is not read      	
@@ -204,8 +201,10 @@ public class JPhyloIOReader extends AbstractDocumentReader {
 			}
 		}
 		else { // Edge is network edge
-			parameterMap.getApplicationLogger().addWarning("Multiple parent nodes were specified for the node \"" + edgeEvent.getTargetID() + "\". "
-					+ "This can not be displayed in TreeGraph 2, therefore it is possible that some information was lost. ");
+			throw new IOException("Multiple parent nodes were specified for the node \"" + edgeEvent.getTargetID() + "\". "
+					+ "Networks can not be displayed in TreeGraph 2."); //TODO what kind of exception should be thrown here? 
+//		parameterMap.getApplicationLogger().addError("Multiple parent nodes were specified for the node \"" + edgeEvent.getTargetID() + "\". "
+//					+ "Networks can not be displayed in TreeGraph 2.");
 		}
 		
 		JPhyloIOEvent event = reader.next();
