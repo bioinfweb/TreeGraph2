@@ -52,11 +52,13 @@ import javax.xml.stream.XMLStreamException;
 
 public class JPhyloIOReader extends AbstractDocumentReader {
 	private JPhyloIOEventReader reader;
+	
+	private String currentTreeName;
 	private List<Tree> trees = new ArrayList<Tree>();
 	private List<String> names = new ArrayList<String>();
 	private Map<String, Node> idToNodeMap = new HashMap<String, Node>();
 	private List<String> possiblePaintStartIDs = new ArrayList<String>();
-	private List<String> rootNodeIDs = new ArrayList<String>(); //TODO mark all root nodes with icon label or something similar
+	private List<String> rootNodeIDs = new ArrayList<String>(); //TODO Mark all root nodes with icon label or something similar
 	private NodeBranchDataAdapter nodeNameAdapter = NodeNameAdapter.getSharedInstance();
 	private BranchLengthAdapter branchLengthAdapter = BranchLengthAdapter.getSharedInstance();
 	
@@ -69,7 +71,7 @@ public class JPhyloIOReader extends AbstractDocumentReader {
 	@Override
 	public Document readDocument(BufferedInputStream stream) throws Exception {
 		document = null;
-		reader = new NeXMLEventReader(stream, new ReadWriteParameterMap()); //TODO are some entries to the parameter map necessary here?		
+		reader = new NeXMLEventReader(stream, new ReadWriteParameterMap()); //TODO Use JPhyloIOReader for other formats
 		
 		try {
 			JPhyloIOEvent event;			
@@ -88,16 +90,16 @@ public class JPhyloIOReader extends AbstractDocumentReader {
 		          	document.setTree(tree);
 		          }
 		          else {
-		          	parameterMap.getApplicationLogger().addMessage("No tree could be read from the document.");
+		          	throw new IOException("The document did not contain any tree or no valid tree could be read from the document.");
 		          }
 		          
-		          return document; //TODO do not return an empty document if no tree could be read
+		          return document;
 	      		}
 	      		break;
 	      	case TREE_NETWORK_GROUP:
 	      		readDocument(event.asLinkedLabeledIDEvent());
 	        	break;
-	        default: // possible additional element, which is not read
+	        default:  // Possible additional element, which is not read
 	        	JPhyloIOUtils.reachElementEnd(reader);
 	        	break;
 	      }
@@ -118,7 +120,7 @@ public class JPhyloIOReader extends AbstractDocumentReader {
     	if (event.getType().getContentType().equals(EventContentType.TREE)) { // Networks can not be displayed by TG and are therefore not read  		
     		readTree(event.asLabeledIDEvent());
     	}
-      else { // possible additional element, which is not read      	
+      else {  // Possible additional element, which is not read      	
         JPhyloIOUtils.reachElementEnd(reader);
       }
       event = reader.next();
@@ -127,12 +129,11 @@ public class JPhyloIOReader extends AbstractDocumentReader {
 	
 	
 	private void readTree(LabeledIDEvent treeEvent) throws XMLStreamException, IOException {
-		String treeName;
 		if ((treeEvent.getLabel() != null) && !treeEvent.getLabel().isEmpty()) {
-			treeName = treeEvent.getLabel();
+			currentTreeName = treeEvent.getLabel();
     }
 		else {
-			treeName = treeEvent.getID();
+			currentTreeName = treeEvent.getID();
 		}
 		
 		possiblePaintStartIDs.clear();
@@ -146,7 +147,7 @@ public class JPhyloIOReader extends AbstractDocumentReader {
     	else if (event.getType().getContentType().equals(EventContentType.EDGE)) {
     		readEdge(event.asEdgeEvent());
     	}
-      else { // possible additional element, which is not read
+      else {  // Possible additional element, which is not read
       	JPhyloIOUtils.reachElementEnd(reader);
       }
       event = reader.next();
@@ -164,7 +165,7 @@ public class JPhyloIOReader extends AbstractDocumentReader {
 	    tree.assignUniqueNames();
 	    trees.add(tree);
 
-	    names.add(treeName);
+	    names.add(currentTreeName);
     }
   }
 	
@@ -178,7 +179,7 @@ public class JPhyloIOReader extends AbstractDocumentReader {
 		
 		JPhyloIOEvent event = reader.next();
     while (!event.getType().getTopologyType().equals(EventTopologyType.END)) {
-    	JPhyloIOUtils.reachElementEnd(reader); // Events nested under node are not read
+    	JPhyloIOUtils.reachElementEnd(reader);  // Events nested under node are not read
       event = reader.next();
     }
   }
@@ -194,22 +195,20 @@ public class JPhyloIOReader extends AbstractDocumentReader {
 			
 			if (sourceNode != null) {
 				sourceNode.getChildren().add(targetNode);
-				possiblePaintStartIDs.remove(edgeEvent.getTargetID()); // Nodes that were not referenced as target are possible paint starts
+				possiblePaintStartIDs.remove(edgeEvent.getTargetID());  // Nodes that were not referenced as target are possible paint starts
 			}
 			else {
-				rootNodeIDs.add(edgeEvent.getTargetID()); // Nodes without source node are root nodes
+				rootNodeIDs.add(edgeEvent.getTargetID());  // Nodes without source node are root nodes
 			}
 		}
-		else { // Edge is network edge
-			throw new IOException("Multiple parent nodes were specified for the node \"" + edgeEvent.getTargetID() + "\". "
-					+ "Networks can not be displayed in TreeGraph 2."); //TODO what kind of exception should be thrown here? 
-//		parameterMap.getApplicationLogger().addError("Multiple parent nodes were specified for the node \"" + edgeEvent.getTargetID() + "\". "
-//					+ "Networks can not be displayed in TreeGraph 2.");
+		else {  // Edge is network edge
+			parameterMap.getApplicationLogger().addWarning("Multiple parent nodes were specified for the node \"" + edgeEvent.getTargetID() + "\" in the tree \"" + currentTreeName 
+					+ "\", but networks can not be displayed by TreeGraph 2.");
 		}
 		
 		JPhyloIOEvent event = reader.next();
     while (!event.getType().getTopologyType().equals(EventTopologyType.END)) {
-    	JPhyloIOUtils.reachElementEnd(reader); // Events nested under edge are not read
+    	JPhyloIOUtils.reachElementEnd(reader);  // Events nested under edge are not read
       event = reader.next();
     }
   }
