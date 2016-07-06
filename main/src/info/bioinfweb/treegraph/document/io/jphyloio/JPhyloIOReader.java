@@ -28,7 +28,7 @@ import info.bioinfweb.jphyloio.events.LinkedLabeledIDEvent;
 import info.bioinfweb.jphyloio.events.type.EventContentType;
 import info.bioinfweb.jphyloio.events.type.EventTopologyType;
 import info.bioinfweb.jphyloio.formats.nexml.NeXMLEventReader;
-import info.bioinfweb.jphyloio.tools.JPhyloIOUtils;
+import info.bioinfweb.jphyloio.utils.JPhyloIOUtils;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.Tree;
@@ -153,20 +153,15 @@ public class JPhyloIOReader extends AbstractDocumentReader {
       event = reader.next();
     }
     
-    Tree tree;
     if (possiblePaintStartIDs.size() > 1) {
-    	parameterMap.getApplicationLogger().addWarning("More than one tree was constructed from the data in this file. "
-    			+ "It is possible that some information was lost during this process.");
+    	throw new IOException("More than one root node was found for the tree \"" + currentTreeName + "\", but this can not be displayed in TreeGraph 2.");
     }
     
-    for (String nodeID : possiblePaintStartIDs) {
-	    tree = new Tree();
-	    tree.setPaintStart(idToNodeMap.get(nodeID));
-	    tree.assignUniqueNames();
-	    trees.add(tree);
-
-	    names.add(currentTreeName);
-    }
+    Tree tree = new Tree();
+    tree.setPaintStart(idToNodeMap.get(possiblePaintStartIDs.get(0)));
+    tree.assignUniqueNames();
+    trees.add(tree);
+    names.add(currentTreeName);    
   }
 	
 	
@@ -202,7 +197,7 @@ public class JPhyloIOReader extends AbstractDocumentReader {
 			}
 		}
 		else {  // Edge is network edge
-			parameterMap.getApplicationLogger().addWarning("Multiple parent nodes were specified for the node \"" + edgeEvent.getTargetID() + "\" in the tree \"" + currentTreeName 
+			throw new IOException("Multiple parent nodes were specified for the node \"" + edgeEvent.getTargetID() + "\" in the tree \"" + currentTreeName 
 					+ "\", but networks can not be displayed by TreeGraph 2.");
 		}
 		
