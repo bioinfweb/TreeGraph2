@@ -58,6 +58,8 @@ import java.io.IOException;
 
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 
 
@@ -100,6 +102,7 @@ public class ExportTableDialog extends EditDialog {
 	private JRadioButton leavesRadioButton = null;
   private JRadioButton bothRadioButton = null;
   private JCheckBox chckbxReplaceSpacesBy;
+  private JButton addAllButton;
 
 	
 	/**
@@ -267,22 +270,22 @@ public class ExportTableDialog extends EditDialog {
 			gridBagConstraints6.gridx = 0;
 			gridBagConstraints6.fill = GridBagConstraints.HORIZONTAL;
 			gridBagConstraints6.insets = new Insets(0, 4, 4, 4);
-			gridBagConstraints6.gridy = 5;
+			gridBagConstraints6.gridy = 6;
 			GridBagConstraints gridBagConstraints5 = new GridBagConstraints();
 			gridBagConstraints5.gridx = 0;
 			gridBagConstraints5.fill = GridBagConstraints.HORIZONTAL;
 			gridBagConstraints5.insets = new Insets(0, 4, 6, 4);
-			gridBagConstraints5.gridy = 4;
+			gridBagConstraints5.gridy = 5;
 			GridBagConstraints gridBagConstraints4 = new GridBagConstraints();
 			gridBagConstraints4.gridx = 0;
 			gridBagConstraints4.fill = GridBagConstraints.HORIZONTAL;
 			gridBagConstraints4.insets = new Insets(0, 4, 16, 4);
-			gridBagConstraints4.gridy = 3;
+			gridBagConstraints4.gridy = 4;
 			GridBagConstraints gridBagConstraints3 = new GridBagConstraints();
 			gridBagConstraints3.gridx = 0;
 			gridBagConstraints3.fill = GridBagConstraints.HORIZONTAL;
 			gridBagConstraints3.insets = new Insets(0, 4, 6, 4);
-			gridBagConstraints3.gridy = 2;
+			gridBagConstraints3.gridy = 3;
 			GridBagConstraints gridBagConstraints2 = new GridBagConstraints();
 			gridBagConstraints2.gridx = 0;
 			gridBagConstraints2.fill = GridBagConstraints.HORIZONTAL;
@@ -297,6 +300,12 @@ public class ExportTableDialog extends EditDialog {
 			nodeDataButtonsPanel.setLayout(new GridBagLayout());
 			nodeDataButtonsPanel.add(getAddButton(), gridBagConstraints1);
 			nodeDataButtonsPanel.add(getReplaceButton(), gridBagConstraints2);
+			GridBagConstraints gbc_btnAddAll = new GridBagConstraints();
+			gbc_btnAddAll.fill = GridBagConstraints.HORIZONTAL;
+			gbc_btnAddAll.insets = new Insets(0, 4, 16, 4);
+			gbc_btnAddAll.gridx = 0;
+			gbc_btnAddAll.gridy = 2;
+			nodeDataButtonsPanel.add(getAddAllButton(), gbc_btnAddAll);
 			nodeDataButtonsPanel.add(getRemoveButton(), gridBagConstraints3);
 			nodeDataButtonsPanel.add(getUpButton(), gridBagConstraints5);
 			nodeDataButtonsPanel.add(getClearButton(), gridBagConstraints4);
@@ -371,8 +380,15 @@ public class ExportTableDialog extends EditDialog {
 			replaceButton.setText("Replace");
 			replaceButton.addActionListener(new java.awt.event.ActionListener() {
 						public void actionPerformed(java.awt.event.ActionEvent e) {
-							getTableModel().set(getTable().getSelectedRow(), 
-									getNodeDataInput().getSelectedAdapter());
+							int replacedIndex = getTable().getSelectedRow();
+							getTableModel().set(replacedIndex, getNodeDataInput().getSelectedAdapter());
+							
+							int[] rows = getTable().getSelectedRows();
+							for (int i = 0; i < rows.length; i++) {
+								if (rows[i] != replacedIndex) {
+									getTableModel().remove(rows[i]);
+								}
+							}
 						}
 					});
 		}
@@ -380,6 +396,22 @@ public class ExportTableDialog extends EditDialog {
 	}
 
 
+	private JButton getAddAllButton() {
+		if (addAllButton == null) {
+			addAllButton = new JButton("Add all");
+			addAllButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					//getTableModel().clear();  // Avoid duplicate entries.
+					int start = getTableModel().size() - 1;
+					getTableModel().addAll(getNodeDataInput().getModel().getAdapters());
+					getTable().getSelectionModel().setSelectionInterval(start, getTableModel().size() - 1);
+				}
+			});
+		}
+		return addAllButton;
+	}
+
+	
 	/**
 	 * This method initializes removeButton	
 	 * 	
@@ -391,7 +423,10 @@ public class ExportTableDialog extends EditDialog {
 			removeButton.setText("Remove");
 			removeButton.addActionListener(new java.awt.event.ActionListener() {
 						public void actionPerformed(java.awt.event.ActionEvent e) {
-							getTableModel().remove(getTable().getSelectedRow());
+							int[] rows = getTable().getSelectedRows();
+							for (int i = 0; i < rows.length; i++) {
+								getTableModel().remove(rows[i]);
+							}
 						}
 					});
 		}
@@ -429,10 +464,15 @@ public class ExportTableDialog extends EditDialog {
 			upButton.setText("Move up");
 			upButton.addActionListener(new java.awt.event.ActionListener() {
 						public void actionPerformed(java.awt.event.ActionEvent e) {
-							int selRow = getTable().getSelectedRow();
-							getTableModel().moveUp(selRow);
-							getTable().getSelectionModel().setSelectionInterval(
-									selRow - 1, selRow - 1);
+							int[] rows = getTable().getSelectedRows();
+							for (int i = 0; i < rows.length; i++) {
+								getTableModel().moveUp(rows[i]);
+							}
+							
+							getTable().getSelectionModel().clearSelection();
+							for (int i = 0; i < rows.length; i++) {
+								getTable().getSelectionModel().addSelectionInterval(rows[i] - 1, rows[i] - 1);
+							}
 						}
 					});
 		}
@@ -451,10 +491,21 @@ public class ExportTableDialog extends EditDialog {
 			downButton.setText("Move down");
 			downButton.addActionListener(new java.awt.event.ActionListener() {
 						public void actionPerformed(java.awt.event.ActionEvent e) {
-							int selRow = getTable().getSelectedRow();
-							getTableModel().moveDown(getTable().getSelectedRow());
-							getTable().getSelectionModel().setSelectionInterval(
-									selRow + 1, selRow + 1);
+							int[] rows = getTable().getSelectedRows();
+							for (int i = rows.length - 1; i >= 0; i--) {
+								getTableModel().moveDown(rows[i]);
+							}
+							
+							getTable().getSelectionModel().clearSelection();
+							for (int i = 0; i < rows.length; i++) {
+								getTable().getSelectionModel().addSelectionInterval(rows[i] + 1, rows[i] + 1);
+							}
+
+							
+//							int selRow = getTable().getSelectedRow();
+//							getTableModel().moveDown(getTable().getSelectedRow());
+//							getTable().getSelectionModel().setSelectionInterval(
+//									selRow + 1, selRow + 1);
 						}
 					});
 		}

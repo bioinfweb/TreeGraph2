@@ -30,6 +30,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.util.Collection;
 import java.util.Vector;
 
 import javax.swing.table.AbstractTableModel;
@@ -57,6 +58,16 @@ public class ExportNodeDataTableModel extends AbstractTableModel {
 		if (result) {
 			int index = size() - 1;
 			fireTableRowsInserted(index, index);
+		}
+		return result;
+	}
+
+
+	public boolean addAll(Collection<? extends NodeBranchDataAdapter> otherAdapters) {
+		int start = adapters.size() - 1;
+		boolean result = adapters.addAll(otherAdapters);
+		if (result) {
+			fireTableRowsInserted(start, size() - 1);
 		}
 		return result;
 	}
@@ -96,28 +107,30 @@ public class ExportNodeDataTableModel extends AbstractTableModel {
 	}
 	
 	
-	public void moveUp(int index) {
+	public boolean moveUp(int index) {
 		if ((index >= 1) && (index < size())) {
 			NodeBranchDataAdapter save = get(index - 1);
 			set(index - 1, get(index));
 			set(index, save);
 			fireTableRowsUpdated(index - 1, index);
+			return true;
 		}
 		else {
-			throw new IllegalArgumentException("The index " + index + " is not valid.");
+			return false;
 		}
 	}
 
 
-	public void moveDown(int index) {
+	public boolean moveDown(int index) {
 		if ((index >= 0) && (index < size() - 1)) {
 			NodeBranchDataAdapter save = get(index + 1);
 			set(index + 1, get(index));
 			set(index, save);
 			fireTableRowsUpdated(index, index + 1);
+			return true;
 		}
 		else {
-			throw new IllegalArgumentException("The index " + index + " is not valid.");
+			return false;
 		}
 	}
 

@@ -24,10 +24,12 @@ import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.nodebranchdata.*;
 import info.bioinfweb.treegraph.document.tools.IDManager;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.Vector;
 
 import javax.swing.AbstractListModel;
 import javax.swing.ComboBoxModel;
@@ -42,7 +44,7 @@ import javax.swing.ComboBoxModel;
 public class NodeDataComboBoxModel extends AbstractListModel<NodeBranchDataAdapter> 
     implements ComboBoxModel<NodeBranchDataAdapter> {
 	
-	private Vector<NodeBranchDataAdapter> adapters = new Vector<NodeBranchDataAdapter>();
+	private List<NodeBranchDataAdapter> adapters = new ArrayList<NodeBranchDataAdapter>();
 	private NodeBranchDataAdapter selected = null;
 	
 
@@ -214,6 +216,11 @@ public class NodeDataComboBoxModel extends AbstractListModel<NodeBranchDataAdapt
   }
 
 
+	public List<NodeBranchDataAdapter> getAdapters() {
+		return Collections.unmodifiableList(adapters);  //TODO Would it be a problem, if the result would be modifiable?
+	}
+	
+	
 	/**
 	 * Selects the adapter which is an instance (not instance of a subclass) of the 
 	 * given class.
