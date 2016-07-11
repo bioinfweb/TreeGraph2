@@ -57,10 +57,10 @@ public class LabelIconMap {
 		put(new RoundRectangleIcon());
 		put(new EllipseIcon());
 		put(new HexagonIcon());
-		put(new TitedHexagonIcon());
+		put(new TiltedHexagonIcon());
 		put(new OctagonIcon());
 		put(new CrossIcon());
-		put(new TitedCrossIcon());
+		put(new TiltedCrossIcon());
 		put(new StarIcon());
 		// Add more icons here
 	}

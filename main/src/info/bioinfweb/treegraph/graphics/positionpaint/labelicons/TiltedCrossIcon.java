@@ -30,31 +30,36 @@ import java.awt.geom.Path2D;
  * @author Ben St&ouml;ver
  * @since 2.0.25
  */
-public class TitedHexagonIcon extends ShapeLabelIcon implements LabelIcon {
+public class TiltedCrossIcon extends ShapeLabelIcon implements LabelIcon {
 	@Override
 	public Shape getShape(float x, float y, IconLabelFormats formats, float pixelsPerMillimeter) {
 		float lineWidth = formats.getLineWidth().getInPixels(pixelsPerMillimeter);
 		x += 0.5f * lineWidth;
 		y += 0.5f * lineWidth;
 		float width = formats.getWidth().getInPixels(pixelsPerMillimeter) - lineWidth;
-		float edgeLengthX = width / 2f;
+		float lengthX = width / 4f;
 		float height = formats.getHeight().getInPixels(pixelsPerMillimeter) - lineWidth;
-		float cornerLengthY = height / 4f;
-		float edgeLengthY = height / 2f;
+		float lengthY = height / 4f;
 		
 		Path2D result = new Path2D.Float();
-		result.moveTo(x + edgeLengthX, y);
-		result.lineTo(x + width, y + cornerLengthY);
-		result.lineTo(x + width, y + edgeLengthY + cornerLengthY);
-		result.lineTo(x + edgeLengthX, y + height);
-		result.lineTo(x, y + edgeLengthY + cornerLengthY);
-		result.lineTo(x, y + cornerLengthY);
+		result.moveTo(x + lengthX, y);
+		result.lineTo(x + 2 * lengthX, y + lengthY);
+		result.lineTo(x + 3 * lengthX, y);
+		result.lineTo(x + width, y + lengthY);
+		result.lineTo(x + 3 * lengthX, y + 2 * lengthY);
+		result.lineTo(x + width, y + 3 * lengthY);
+		result.lineTo(x + 3 * lengthX, y + height);
+		result.lineTo(x + 2 * lengthX, y + 3 * lengthY);
+		result.lineTo(x + lengthX, y + height);
+		result.lineTo(x, y + 3 * lengthY);
+		result.lineTo(x + lengthX, y + 2 * lengthY);
+		result.lineTo(x, y + lengthY);
 		result.closePath();
 		return result;
 	}
 
 	
 	public String id() {
-		return "Tited hexagon";
+		return "Tilted cross";
 	}
 }

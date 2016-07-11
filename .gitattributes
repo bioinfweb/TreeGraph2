@@ -498,8 +498,8 @@ main/src/info/bioinfweb/treegraph/graphics/positionpaint/labelicons/RectangleIco
 main/src/info/bioinfweb/treegraph/graphics/positionpaint/labelicons/RoundRectangleIcon.java -text
 main/src/info/bioinfweb/treegraph/graphics/positionpaint/labelicons/ShapeLabelIcon.java -text
 main/src/info/bioinfweb/treegraph/graphics/positionpaint/labelicons/StarIcon.java -text
-main/src/info/bioinfweb/treegraph/graphics/positionpaint/labelicons/TitedCrossIcon.java -text
-main/src/info/bioinfweb/treegraph/graphics/positionpaint/labelicons/TitedHexagonIcon.java -text
+main/src/info/bioinfweb/treegraph/graphics/positionpaint/labelicons/TiltedCrossIcon.java -text
+main/src/info/bioinfweb/treegraph/graphics/positionpaint/labelicons/TiltedHexagonIcon.java -text
 main/src/info/bioinfweb/treegraph/graphics/positionpaint/labelicons/TriangleIcon.java -text
 main/src/info/bioinfweb/treegraph/graphics/positionpaint/labelicons/UnknownIcon.java -text
 main/src/info/bioinfweb/treegraph/graphics/positionpaint/package.html -text
