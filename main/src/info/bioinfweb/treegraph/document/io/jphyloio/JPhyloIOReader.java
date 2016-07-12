@@ -25,12 +25,17 @@ import info.bioinfweb.jphyloio.events.EdgeEvent;
 import info.bioinfweb.jphyloio.events.JPhyloIOEvent;
 import info.bioinfweb.jphyloio.events.LabeledIDEvent;
 import info.bioinfweb.jphyloio.events.LinkedLabeledIDEvent;
+import info.bioinfweb.jphyloio.events.NodeEvent;
+import info.bioinfweb.jphyloio.events.meta.LiteralMetadataContentEvent;
+import info.bioinfweb.jphyloio.events.meta.LiteralMetadataEvent;
+import info.bioinfweb.jphyloio.events.meta.ResourceMetadataEvent;
 import info.bioinfweb.jphyloio.events.type.EventContentType;
 import info.bioinfweb.jphyloio.events.type.EventTopologyType;
 import info.bioinfweb.jphyloio.formats.nexml.NeXMLEventReader;
 import info.bioinfweb.jphyloio.utils.JPhyloIOUtils;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.io.AbstractDocumentReader;
 import info.bioinfweb.treegraph.document.io.DocumentIterator;
@@ -59,6 +64,7 @@ public class JPhyloIOReader extends AbstractDocumentReader {
 	private Map<String, Node> idToNodeMap = new HashMap<String, Node>();
 	private List<String> possiblePaintStartIDs = new ArrayList<String>();
 	private List<String> rootNodeIDs = new ArrayList<String>(); //TODO Mark all root nodes with icon label or something similar
+	private String currentColumnID = null;
 	private NodeBranchDataAdapter nodeNameAdapter = NodeNameAdapter.getSharedInstance();
 	private BranchLengthAdapter branchLengthAdapter = BranchLengthAdapter.getSharedInstance();
 	
@@ -142,9 +148,9 @@ public class JPhyloIOReader extends AbstractDocumentReader {
     JPhyloIOEvent event = reader.next();
     while (!event.getType().getTopologyType().equals(EventTopologyType.END)) {    	
     	if (event.getType().getContentType().equals(EventContentType.NODE)) {
-    		readNode(event.asLinkedLabeledIDEvent());
+    		readNode(event.asNodeEvent());
     	}
-    	else if (event.getType().getContentType().equals(EventContentType.EDGE)) {
+    	else if (event.getType().getContentType().equals(EventContentType.EDGE) || event.getType().getContentType().equals(EventContentType.ROOT_EDGE)) {
     		readEdge(event.asEdgeEvent());
     	}
       else {  // Possible additional element, which is not read
@@ -160,17 +166,24 @@ public class JPhyloIOReader extends AbstractDocumentReader {
     Tree tree = new Tree();
     tree.setPaintStart(idToNodeMap.get(possiblePaintStartIDs.get(0)));
     tree.assignUniqueNames();
+    if (!rootNodeIDs.isEmpty()) {
+    	tree.getFormats().setShowRooted(true);
+    }
     trees.add(tree);
     names.add(currentTreeName);    
   }
 	
 	
-	private void readNode(LinkedLabeledIDEvent nodeEvent) throws XMLStreamException, IOException {
+	private void readNode(NodeEvent nodeEvent) throws XMLStreamException, IOException {
 		Node node = Node.newInstanceWithBranch();
 
 		nodeNameAdapter.setText(node, nodeEvent.getLabel());
 		idToNodeMap.put(nodeEvent.getID(), node);
 		possiblePaintStartIDs.add(nodeEvent.getID());
+		
+		if (nodeEvent.isRootNode()) {
+			rootNodeIDs.add(nodeEvent.getID());
+		}
 		
 		JPhyloIOEvent event = reader.next();
     while (!event.getType().getTopologyType().equals(EventTopologyType.END)) {
@@ -192,9 +205,6 @@ public class JPhyloIOReader extends AbstractDocumentReader {
 				sourceNode.getChildren().add(targetNode);
 				possiblePaintStartIDs.remove(edgeEvent.getTargetID());  // Nodes that were not referenced as target are possible paint starts
 			}
-			else {
-				rootNodeIDs.add(edgeEvent.getTargetID());  // Nodes without source node are root nodes
-			}
 		}
 		else {  // Edge is network edge
 			throw new IOException("Multiple parent nodes were specified for the node \"" + edgeEvent.getTargetID() + "\" in the tree \"" + currentTreeName 
@@ -203,10 +213,63 @@ public class JPhyloIOReader extends AbstractDocumentReader {
 		
 		JPhyloIOEvent event = reader.next();
     while (!event.getType().getTopologyType().equals(EventTopologyType.END)) {
-    	JPhyloIOUtils.reachElementEnd(reader);  // Events nested under edge are not read
+    	if (event.getType().getContentType().equals(EventContentType.META_LITERAL) || event.getType().getContentType().equals(EventContentType.META_RESOURCE)) {
+    		readMetadata(event, targetNode);
+    	}
+    	else if (event.getType().getContentType().equals(EventContentType.META_LITERAL_CONTENT)) {
+    		readLiteralContent(event.asLiteralMetadataContentEvent(), targetNode);
+    	}
+      else {  // Possible additional element, which is not read
+      	JPhyloIOUtils.reachElementEnd(reader);
+      }
       event = reader.next();
     }
   }
+	
+	
+	private void readMetadata(JPhyloIOEvent metaEvent, Node targetNode) throws IOException {
+		if (metaEvent.getType().getTopologyType().equals(EventTopologyType.START)) {
+			if (metaEvent.getType().getContentType().equals(EventContentType.META_RESOURCE)) {
+				ResourceMetadataEvent resourceMeta = metaEvent.asResourceMetadataEvent();
+				if (resourceMeta.getHRef() != null) {
+					targetNode.getHiddenDataMap().put(resourceMeta.getRel().getURI().getLocalPart(), 
+							new TextElementData(resourceMeta.getHRef().toString())); //TODO check if URI of predicate is null
+				}
+			}
+			else if (metaEvent.getType().getContentType().equals(EventContentType.META_LITERAL)) {
+				LiteralMetadataEvent literalMeta = metaEvent.asLiteralMetadataEvent();
+				if (literalMeta.getPredicate().getURI() != null) {
+					currentColumnID = literalMeta.getPredicate().getURI().toString();
+				}
+			}
+		}
+		
+		JPhyloIOEvent event = reader.next();
+    while (!event.getType().getTopologyType().equals(EventTopologyType.END)) {
+    	if (event.getType().getContentType().equals(EventContentType.META_LITERAL) || event.getType().getContentType().equals(EventContentType.META_RESOURCE)) {
+    		readMetadata(event, targetNode);
+    	}
+    	else if (event.getType().getContentType().equals(EventContentType.META_LITERAL_CONTENT)) {
+    		readLiteralContent(event.asLiteralMetadataContentEvent(), targetNode);
+    	}
+      else {  // Possible additional element, which is not read
+      	JPhyloIOUtils.reachElementEnd(reader);
+      }
+      event = reader.next();
+    }
+	}
+	
+	
+	private void readLiteralContent(LiteralMetadataContentEvent literalEvent, Node targetNode) throws IOException {
+		String value = literalEvent.getStringValue();
+		
+		JPhyloIOEvent event = reader.peek();
+    while (event.getType().getContentType().equals(EventContentType.META_LITERAL_CONTENT)) {    	
+      event = reader.next(); //TODO process additional values
+    }
+		
+		targetNode.getHiddenDataMap().put(currentColumnID, new TextElementData(value));
+	}
 	
 
 	@Override
