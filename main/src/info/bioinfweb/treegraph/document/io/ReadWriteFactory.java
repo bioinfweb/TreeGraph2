@@ -19,7 +19,6 @@
 package info.bioinfweb.treegraph.document.io;
 
 
-import info.bioinfweb.treegraph.document.io.jphyloio.NeXMLFactory;
 import info.bioinfweb.treegraph.document.io.newick.NewickFactory;
 import info.bioinfweb.treegraph.document.io.nexus.NexusFactory;
 import info.bioinfweb.treegraph.document.io.phyloxml.PhyloXMLFactory;
@@ -49,7 +48,6 @@ public class ReadWriteFactory {
   	factories.put(ReadWriteFormat.NEXUS, new NexusFactory());
   	factories.put(ReadWriteFormat.TGF, new TGFFactory());  //TODO Warum steht das hier? Ist doch noch gar nicht fertig.
   	factories.put(ReadWriteFormat.PHYLO_XML, new PhyloXMLFactory());
-  	factories.put(ReadWriteFormat.NEXML, new NeXMLFactory());
   }
   
   
@@ -96,9 +94,6 @@ public class ReadWriteFactory {
 				}
 				else if (getFilter(ReadWriteFormat.PHYLO_XML).accept(file)) {
 					result = ReadWriteFormat.PHYLO_XML;
-				}
-				else if (getFilter(ReadWriteFormat.NEXML).accept(file)) {
-					result = ReadWriteFormat.NEXML;
 				}
 				else {
 					result = null;
