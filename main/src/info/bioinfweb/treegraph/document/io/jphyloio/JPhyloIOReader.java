@@ -32,7 +32,7 @@ import info.bioinfweb.jphyloio.events.meta.ResourceMetadataEvent;
 import info.bioinfweb.jphyloio.events.type.EventContentType;
 import info.bioinfweb.jphyloio.events.type.EventTopologyType;
 import info.bioinfweb.jphyloio.formats.nexml.NeXMLEventReader;
-import info.bioinfweb.jphyloio.utils.JPhyloIOUtils;
+import info.bioinfweb.jphyloio.utils.JPhyloIOReadingUtils;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextElementData;
@@ -106,7 +106,7 @@ public class JPhyloIOReader extends AbstractDocumentReader {
 	      		readDocument(event.asLinkedLabeledIDEvent());
 	        	break;
 	        default:  // Possible additional element, which is not read
-	        	JPhyloIOUtils.reachElementEnd(reader);
+	        	JPhyloIOReadingUtils.reachElementEnd(reader);
 	        	break;
 	      }
 	    }
@@ -127,7 +127,7 @@ public class JPhyloIOReader extends AbstractDocumentReader {
     		readTree(event.asLabeledIDEvent());
     	}
       else {  // Possible additional element, which is not read      	
-        JPhyloIOUtils.reachElementEnd(reader);
+        JPhyloIOReadingUtils.reachElementEnd(reader);
       }
       event = reader.next();
     }
@@ -154,7 +154,7 @@ public class JPhyloIOReader extends AbstractDocumentReader {
     		readEdge(event.asEdgeEvent());
     	}
       else {  // Possible additional element, which is not read
-      	JPhyloIOUtils.reachElementEnd(reader);
+      	JPhyloIOReadingUtils.reachElementEnd(reader);
       }
       event = reader.next();
     }
@@ -187,7 +187,7 @@ public class JPhyloIOReader extends AbstractDocumentReader {
 		
 		JPhyloIOEvent event = reader.next();
     while (!event.getType().getTopologyType().equals(EventTopologyType.END)) {
-    	JPhyloIOUtils.reachElementEnd(reader);  // Events nested under node are not read
+    	JPhyloIOReadingUtils.reachElementEnd(reader);  // Events nested under node are not read
       event = reader.next();
     }
   }
@@ -220,7 +220,7 @@ public class JPhyloIOReader extends AbstractDocumentReader {
     		readLiteralContent(event.asLiteralMetadataContentEvent(), targetNode);
     	}
       else {  // Possible additional element, which is not read
-      	JPhyloIOUtils.reachElementEnd(reader);
+      	JPhyloIOReadingUtils.reachElementEnd(reader);
       }
       event = reader.next();
     }
@@ -253,7 +253,7 @@ public class JPhyloIOReader extends AbstractDocumentReader {
     		readLiteralContent(event.asLiteralMetadataContentEvent(), targetNode);
     	}
       else {  // Possible additional element, which is not read
-      	JPhyloIOUtils.reachElementEnd(reader);
+      	JPhyloIOReadingUtils.reachElementEnd(reader);
       }
       event = reader.next();
     }
