@@ -160,7 +160,9 @@ public class SVGTranscodeWriter extends AbstractGraphicWriter implements Graphic
 	  }
 	  
   	t.transcode(input, output);
-  	output.getOutputStream().close();
+  	if (output.getOutputStream() != null) {
+  		output.getOutputStream().close();
+  	}
   	//stream.flush();
   	stream.close();
 	}
