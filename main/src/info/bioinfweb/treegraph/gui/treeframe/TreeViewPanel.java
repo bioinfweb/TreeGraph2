@@ -24,6 +24,7 @@ import info.bioinfweb.treegraph.document.change.DocumentChangeEvent;
 import info.bioinfweb.treegraph.document.change.DocumentListener;
 import info.bioinfweb.treegraph.document.format.DistanceDimension;
 import info.bioinfweb.treegraph.document.format.DistanceValue;
+import info.bioinfweb.treegraph.document.format.PieChartLabelFormats;
 import info.bioinfweb.treegraph.graphics.positionpaint.PositionPaintFactory;
 import info.bioinfweb.treegraph.graphics.positionpaint.PositionPaintType;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
@@ -304,10 +305,32 @@ public class TreeViewPanel extends JPanel implements DocumentListener, Scrollabl
 		}
 		else if (element instanceof Label) {
 			String id = ((Label)element).getID();
+			StringBuilder result = new StringBuilder();
 			if (id.equals("")) {
-				return "No label ID defined for this label.";
+				result.append("<html>No label ID defined for this label.");
 			}
-			return "Label ID: \"" + id + "\"";
+			result.append("<html>Label ID: \"" + id + "\"");
+			
+			if (element instanceof PieChartLabel) {
+				PieChartLabel label = (PieChartLabel)element;
+				if (label.valueCount() > 0) {
+					result.append(" (states: ");
+					PieChartLabelFormats formats = label.getFormats();
+					for (int i = 0; i < label.valueCount(); i++) {
+						result.append("<span style='color: ");
+						result.append(GraphicsUtils.colorToHexString(formats.getPieColor(i)));
+						result.append(";'>");
+						result.append(label.getValueID(i));
+						result.append("</span>");
+						if (i < label.valueCount() - 1) {
+							result.append(", ");
+						}
+					}
+					result.append(")");
+				}
+			}
+			result.append("</html>");
+			return result.toString();
 		}
 		return null;
 	}
@@ -319,9 +342,7 @@ public class TreeViewPanel extends JPanel implements DocumentListener, Scrollabl
 	
 	
 	public static Color selectionColor(Color bgColor) {
-		if (GraphicsUtils.brightnessDifference(bgColor, DEFAULT_SELECTION_COLOR) 
-		    > MAX_SELECTION_COLOR_DIF) {
-			
+		if (GraphicsUtils.brightnessDifference(bgColor, DEFAULT_SELECTION_COLOR) > MAX_SELECTION_COLOR_DIF) {
 			return DEFAULT_SELECTION_COLOR;
 		}
 		else {
