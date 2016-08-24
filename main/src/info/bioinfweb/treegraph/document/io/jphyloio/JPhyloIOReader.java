@@ -33,6 +33,7 @@ import info.bioinfweb.jphyloio.events.type.EventContentType;
 import info.bioinfweb.jphyloio.events.type.EventTopologyType;
 import info.bioinfweb.jphyloio.formats.nexml.NeXMLEventReader;
 import info.bioinfweb.jphyloio.utils.JPhyloIOReadingUtils;
+import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextElementData;
@@ -77,7 +78,7 @@ public class JPhyloIOReader extends AbstractDocumentReader {
 	@Override
 	public Document readDocument(BufferedInputStream stream) throws Exception {
 		document = null;
-		reader = new NeXMLEventReader(stream, new ReadWriteParameterMap()); //TODO Use JPhyloIOReader for other formats
+		reader = new NeXMLEventReader(stream, new ReadWriteParameterMap()); //TODO Use JPhyloIOReader for other formats (currently not possible, due to exceptions)
 		
 		try {
 			JPhyloIOEvent event;			
@@ -187,7 +188,15 @@ public class JPhyloIOReader extends AbstractDocumentReader {
 		
 		JPhyloIOEvent event = reader.next();
     while (!event.getType().getTopologyType().equals(EventTopologyType.END)) {
-    	JPhyloIOReadingUtils.reachElementEnd(reader);  // Events nested under node are not read
+    	if (event.getType().getContentType().equals(EventContentType.META_LITERAL) || event.getType().getContentType().equals(EventContentType.META_RESOURCE)) {
+    		readMetadata(event, node, null);
+    	}
+    	else if (event.getType().getContentType().equals(EventContentType.META_LITERAL_CONTENT)) {
+    		readLiteralContent(event.asLiteralMetadataContentEvent(), node, null);  // It is assumed that events are correctly nested 
+    	}
+      else {  // Possible additional element, which is not read
+      	JPhyloIOReadingUtils.reachElementEnd(reader);
+      }
       event = reader.next();
     }
   }
@@ -212,12 +221,12 @@ public class JPhyloIOReader extends AbstractDocumentReader {
 		}
 		
 		JPhyloIOEvent event = reader.next();
-    while (!event.getType().getTopologyType().equals(EventTopologyType.END)) {
+    while (!event.getType().getTopologyType().equals(EventTopologyType.END)) {  // It is assumed that events are correctly nested
     	if (event.getType().getContentType().equals(EventContentType.META_LITERAL) || event.getType().getContentType().equals(EventContentType.META_RESOURCE)) {
-    		readMetadata(event, targetNode);
+    		readMetadata(event, null, targetNode.getAfferentBranch());
     	}
     	else if (event.getType().getContentType().equals(EventContentType.META_LITERAL_CONTENT)) {
-    		readLiteralContent(event.asLiteralMetadataContentEvent(), targetNode);
+    		readLiteralContent(event.asLiteralMetadataContentEvent(), null, targetNode.getAfferentBranch()); 
     	}
       else {  // Possible additional element, which is not read
       	JPhyloIOReadingUtils.reachElementEnd(reader);
@@ -227,13 +236,19 @@ public class JPhyloIOReader extends AbstractDocumentReader {
   }
 	
 	
-	private void readMetadata(JPhyloIOEvent metaEvent, Node targetNode) throws IOException {
+	private void readMetadata(JPhyloIOEvent metaEvent, Node node, Branch branch) throws IOException {
 		if (metaEvent.getType().getTopologyType().equals(EventTopologyType.START)) {
 			if (metaEvent.getType().getContentType().equals(EventContentType.META_RESOURCE)) {
 				ResourceMetadataEvent resourceMeta = metaEvent.asResourceMetadataEvent();
-				if (resourceMeta.getHRef() != null) {
-					targetNode.getHiddenDataMap().put(resourceMeta.getRel().getURI().getLocalPart(), 
-							new TextElementData(resourceMeta.getHRef().toString())); //TODO check if URI of predicate is null
+				if ((resourceMeta.getHRef() != null) && (resourceMeta.getRel().getURI() != null)) {
+					if (node != null) {
+						node.getHiddenDataMap().put(resourceMeta.getRel().getURI().toString(), 
+								new TextElementData(resourceMeta.getHRef().toString()));  // The whole predicate URI is used as a key here
+				    }
+				    else if (branch != null) {
+				    	branch.getHiddenDataMap().put(resourceMeta.getRel().getURI().toString(), 
+								new TextElementData(resourceMeta.getHRef().toString()));  // The whole predicate URI is used as a key here
+				    }					
 				}
 			}
 			else if (metaEvent.getType().getContentType().equals(EventContentType.META_LITERAL)) {
@@ -245,31 +260,50 @@ public class JPhyloIOReader extends AbstractDocumentReader {
 		}
 		
 		JPhyloIOEvent event = reader.next();
-    while (!event.getType().getTopologyType().equals(EventTopologyType.END)) {
-    	if (event.getType().getContentType().equals(EventContentType.META_LITERAL) || event.getType().getContentType().equals(EventContentType.META_RESOURCE)) {
-    		readMetadata(event, targetNode);
-    	}
-    	else if (event.getType().getContentType().equals(EventContentType.META_LITERAL_CONTENT)) {
-    		readLiteralContent(event.asLiteralMetadataContentEvent(), targetNode);
-    	}
-      else {  // Possible additional element, which is not read
-      	JPhyloIOReadingUtils.reachElementEnd(reader);
-      }
-      event = reader.next();
-    }
+	    while (!event.getType().getTopologyType().equals(EventTopologyType.END)) {
+	    	if (event.getType().getContentType().equals(EventContentType.META_LITERAL) || event.getType().getContentType().equals(EventContentType.META_RESOURCE)) {
+	    		readMetadata(event, node, branch);
+	    	}
+	    	else if (event.getType().getContentType().equals(EventContentType.META_LITERAL_CONTENT)) {
+	    		readLiteralContent(event.asLiteralMetadataContentEvent(), node, branch);
+	    	}
+	      else {  // Possible additional element, which is not read
+	      	JPhyloIOReadingUtils.reachElementEnd(reader);
+	      }
+	      event = reader.next();
+	    }
 	}
 	
 	
-	private void readLiteralContent(LiteralMetadataContentEvent literalEvent, Node targetNode) throws IOException {
-		String value = literalEvent.getStringValue();
+	private void readLiteralContent(LiteralMetadataContentEvent literalEvent, Node node, Branch branch) throws IOException {
+		StringBuffer content = new StringBuffer();
+		
+		if (literalEvent.getStringValue() != null) {
+			content.append(literalEvent.getStringValue());
+		}
+		else {
+			content.append(literalEvent.getObjectValue().toString());  //TODO Use ObjectTranslator here?
+		}
 		
 		JPhyloIOEvent event = reader.peek();
-    while (event.getType().getContentType().equals(EventContentType.META_LITERAL_CONTENT)) {    	
-      event = reader.next(); //TODO process additional values
-    }
+	    while (event.getType().getContentType().equals(EventContentType.META_LITERAL_CONTENT)) {    	
+	      event = reader.next();
+	      
+	      if (literalEvent.getStringValue() != null) {
+	    	  content.append(event.asLiteralMetadataContentEvent().getStringValue());
+	      }
+	      else {
+	    	  content.append(event.asLiteralMetadataContentEvent().getObjectValue().toString());  //TODO Use ObjectTranslator here?
+	      }
+	    }
 		
-		targetNode.getHiddenDataMap().put(currentColumnID, new TextElementData(value));
-	}
+	    if (node != null) {
+	    	node.getHiddenDataMap().put(currentColumnID, new TextElementData(content.toString()));
+	    }
+	    else if (branch != null) {
+	    	branch.getHiddenDataMap().put(currentColumnID, new TextElementData(content.toString()));
+	    }
+	    }
 	
 
 	@Override

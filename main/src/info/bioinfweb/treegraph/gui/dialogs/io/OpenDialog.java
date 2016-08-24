@@ -23,6 +23,7 @@ import info.bioinfweb.treegraph.document.io.DocumentReader;
 import info.bioinfweb.treegraph.document.io.ReadWriteFactory;
 import info.bioinfweb.treegraph.document.io.ReadWriteParameterMap;
 import info.bioinfweb.treegraph.document.io.SupportedFormatsFilter;
+import info.bioinfweb.treegraph.document.io.jphyloio.NeXMLFilter;
 import info.bioinfweb.treegraph.document.io.newick.NewickException;
 import info.bioinfweb.treegraph.document.io.newick.NewickFilter;
 import info.bioinfweb.treegraph.document.io.nexus.NexusFilter;
@@ -77,6 +78,7 @@ public class OpenDialog extends FileDialog {
 	private XTGFilter xtgFilter;  //  This field must not be set to anything (e.g. null). See above.
 	private NexusFilter nexusFilter;  //  This field must not be set to anything (e.g. null). See above.
 	private NewickFilter newickFilter;  //  This field must not be set to anything (e.g. null). See above.
+	private NeXMLFilter nexmlFilter;  //  This field must not be set to anything (e.g. null). See above.
 	private PhyloXMLFilter phyloxmlFilter;  //  This field must not be set to anything (e.g. null). See above.
 	private NewickExceptionDialog newickExceptionDialog = null;
 
@@ -228,6 +230,8 @@ public class OpenDialog extends FileDialog {
 			fileChooser.addChoosableFileFilter(xtgFilter);
 			phyloxmlFilter = new PhyloXMLFilter();
 			fileChooser.addChoosableFileFilter(phyloxmlFilter);
+			nexmlFilter = new NeXMLFilter();
+			fileChooser.addChoosableFileFilter(nexmlFilter);
 			nexusFilter = new NexusFilter();
 			fileChooser.addChoosableFileFilter(nexusFilter);
 			newickFilter = new NewickFilter();
