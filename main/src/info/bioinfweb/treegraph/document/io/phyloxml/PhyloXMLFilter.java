@@ -54,7 +54,7 @@ public class PhyloXMLFilter extends AbstractXMLFilter implements TreeFilter, Phy
 	
 	@Override
 	public String getDescription() {
-		return "phyloXML (*.phyloxml; *.phylo.xml; *.pxml; *.xml)";
+		return "PhyloXML (*.phyloxml; *.phylo.xml; *.pxml; *.xml)";
 	}
 
 

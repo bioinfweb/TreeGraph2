@@ -18,10 +18,20 @@
  */
 package info.bioinfweb.treegraph.document.io.jphyloio;
 
+
 import info.bioinfweb.treegraph.document.io.AbstractXMLFilter;
 import info.bioinfweb.treegraph.document.io.ReadWriteFormat;
 import info.bioinfweb.treegraph.document.io.TreeFilter;
 
+
+
+/**
+ * Temporary file filter implementation for NeXML files until a general JPhyloIO support is implemented.
+ * 
+ * @author Sarah Wiechers
+ * @author Ben St&ouml;ver
+ * @since 2.11.0
+ */
 public class NeXMLFilter extends AbstractXMLFilter implements TreeFilter {
 	public static final String NEXML_EXTENSION = ".nexml";
 	
@@ -45,7 +55,7 @@ public class NeXMLFilter extends AbstractXMLFilter implements TreeFilter {
 	
 	@Override
 	public String getDescription() {
-		return "neXML (*.nexml; *.xml)";
+		return "NeXML (*.nexml; *.xml)";
 	}
 
 
