@@ -10,6 +10,7 @@ main/include/TreeGraph.exe -text
 main/include/icons/Nexus.ico -text
 main/include/icons/TreeGraph.ico -text
 main/include/icons/XTG.ico -text
+main/include/lib/JPhyloIO-0-SNAPSHOT.jar -text
 main/include/lib/UpdateCenterShared.jar -text
 main/include/lib/WikiHelp.jar -text
 main/include/lib/batik/LICENSE.dom-documentation.txt -text svneol=unset#text/plain
@@ -51,8 +52,10 @@ main/include/lib/batik/xalan-2.6.0.jar -text
 main/include/lib/batik/xerces_2_5_0.jar -text
 main/include/lib/batik/xml-apis-ext.jar -text
 main/include/lib/batik/xml-apis.jar -text
+main/include/lib/bioinfweb-commons-bio-2-SNAPSHOT.jar -text
 main/include/lib/bioinfweb-commons-core-2-SNAPSHOT.jar -text
 main/include/lib/bioinfweb-commons-swing-2-SNAPSHOT.jar -text
+main/include/lib/commons-collections-3.2.1.jar -text
 main/include/lib/commons-collections4-4.1.jar -text
 main/include/lib/commons-lang3-3.1.jar -text
 main/include/lib/errorReporter/ErrorReporter.jar -text
@@ -64,6 +67,7 @@ main/include/lib/freehep-base.jar -text
 main/include/lib/freehep-graphics2d.jar -text
 main/include/lib/freehep-graphicsio-emf.jar -text
 main/include/lib/freehep-graphicsio.jar -text
+main/include/lib/guava-13.0.1.jar -text
 main/include/lib/jep-2.4.1.jar -text
 main/include/lib/l2fprod-common-directorychooser-7.3.jar -text
 main/include/lib/org.jdesktop.swingx.scrollpaneselector.jar -text

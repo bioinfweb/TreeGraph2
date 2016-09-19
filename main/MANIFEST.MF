@@ -3,6 +3,7 @@ Main-Class: info.bioinfweb.treegraph.Main
 SplashScreen-Image: resources/Splash.png
 Class-Path: lib/bioinfweb-commons-core-2-SNAPSHOT.jar
             lib/bioinfweb-commons-swing-2-SNAPSHOT.jar
+            lib/bioinfweb-commons-bio-2-SNAPSHOT.jar
             lib/batik/batik-anim.jar
             lib/batik/batik-awt-util.jar
             lib/batik/batik-bridge.jar
@@ -32,6 +33,7 @@ Class-Path: lib/bioinfweb-commons-core-2-SNAPSHOT.jar
             lib/errorReporter/jaxen-1.1.6.jar
             lib/commons-lang3-3.1.jar
             lib/commons-collections4-4.1.jar
+            lib/commons-collections-3.2.1.jar
             lib/freehep-base.jar
             lib/freehep-graphics2d.jar
             lib/freehep-graphicsio.jar
@@ -41,4 +43,7 @@ Class-Path: lib/bioinfweb-commons-core-2-SNAPSHOT.jar
             lib/ext-1.1.1.jar
             lib/jep-2.4.1.jar
             lib/UpdateCenterShared.jar
+            lib/JPhyloIO-0-SNAPSHOT.jar
+            lib/guava-13.0.1.jar
+            lib/owlapi-XMLUtils-4.1.4.jar
             lib/l2fprod-common-directorychooser-7.3.jar
