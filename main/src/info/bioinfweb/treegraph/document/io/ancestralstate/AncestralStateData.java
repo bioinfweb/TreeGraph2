@@ -38,8 +38,7 @@ public class AncestralStateData {
 	
 	private String name;
 	private List<String> leafNames = new ArrayList<String>();
-	private ListOrderedMap<String, ListOrderedMap<String, ProbabilityData>> siteMap = 
-			new ListOrderedMap<String, ListOrderedMap<String, ProbabilityData>>();
+	private ListOrderedMap<String, ListOrderedMap<String, ProbabilityData>> siteMap = new ListOrderedMap<String, ListOrderedMap<String, ProbabilityData>>();
 	
 	
 	public AncestralStateData(String name) {

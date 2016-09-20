@@ -33,7 +33,6 @@ import info.bioinfweb.jphyloio.events.type.EventContentType;
 import info.bioinfweb.jphyloio.events.type.EventTopologyType;
 import info.bioinfweb.jphyloio.formats.nexml.NeXMLEventReader;
 import info.bioinfweb.jphyloio.utils.JPhyloIOReadingUtils;
-import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.HiddenDataMap;
 import info.bioinfweb.treegraph.document.Node;
@@ -54,7 +53,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.StartElement;
 
 
 
@@ -80,7 +78,9 @@ public class JPhyloIOReader extends AbstractDocumentReader {
 	@Override
 	public Document readDocument(BufferedInputStream stream) throws Exception {
 		document = null;
-		reader = new NeXMLEventReader(stream, new ReadWriteParameterMap()); //TODO Use JPhyloIOReader for other formats (currently not possible, due to exceptions)
+		ReadWriteParameterMap parameters = new ReadWriteParameterMap();
+		parameters.put(ReadWriteParameterMap.KEY_NEXML_USE_OTU_LABEL, true);
+		reader = new NeXMLEventReader(stream, parameters);  //TODO Use JPhyloIOReader for other formats (currently not possible, due to exceptions)
 		
 		try {
 			JPhyloIOEvent event;			

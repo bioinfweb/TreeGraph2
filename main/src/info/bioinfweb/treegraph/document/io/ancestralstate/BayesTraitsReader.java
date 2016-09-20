@@ -44,7 +44,7 @@ public class BayesTraitsReader {
 	private static final String LIKELIHOOD_TABLE_START = "Tree No\t";
 	
 	private static final Pattern LEAF_NAME_PATTERN = Pattern.compile("\\s*\\d+\\s+(\\S+)\\s*");
-	private static final Pattern HEADING = Pattern.compile("(\\S+)\\s(?:\\-\\s)?(\\w\\(.+\\))");  // Headings may have one of the following forms: "name - S(n) - P(n)", "name - P(n)", "name - P(n, m)", "name P(n)". (At least this are the forms observed until now.)  
+	private static final Pattern HEADING = Pattern.compile("(\\S+)\\s(?:\\-\\s)?(\\w\\(.+\\))");  // Headings may have one of the following forms: "name - S(n) - P(n)", "name - P(n)", "name - P(n, m)", "name P(n)". (At least these are the forms observed until now.)  
 	private static final Pattern STATE_PATTERN = Pattern.compile("P\\((.+)\\)");
 	private static final Pattern SITE_AND_STATE_PATTERN = Pattern.compile("S\\((.+)\\)\\s-\\sP\\((.+)\\)");
 	
@@ -86,7 +86,7 @@ public class BayesTraitsReader {
 			return result.getSequence();
 		}
 		else {  //TODO Is there a better way for solving this? Is it at all likely, that MRCA lines are that long?
-			throw new IOException("A line in the input file containing a MRCA definition was longer then the reader buffer. "
+			throw new IOException("A line in the input file containing an MRCA definition was longer than the reader buffer. "
 					+ "Please send a bug report or contact the developers, if your input file was correct.");
 		}
 	}
