@@ -245,7 +245,7 @@ public class OpenDialog extends FileDialog {
 					if (e.getPropertyName().equals(JFileChooser.FILE_FILTER_CHANGED_PROPERTY)) {
 						boolean enableAdapters = (file != null) &&	!(e.getNewValue() instanceof XTGFilter);
 						getNodeNamesDataInput().setEnabled(enableAdapters);
-						getTranslateInternalNodesCheckBox().setEnabled((file != null) &&	
+						getTranslateInternalNodesCheckBox().setEnabled((file != null) && 
 								((e.getNewValue() instanceof NexusFilter) || 
 										(e.getNewValue() instanceof SupportedFormatsFilter)));
 						getBranchLengthsDataInput().setEnabled(enableAdapters);
