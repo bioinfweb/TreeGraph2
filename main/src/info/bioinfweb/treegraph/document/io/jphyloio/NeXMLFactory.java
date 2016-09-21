@@ -33,7 +33,7 @@ public class NeXMLFactory implements SingleReadWriteFactory {
 	
 
 	public DocumentReader getReader() {
-		return new JPhyloIOReader();
+		return new NeXMLReader();
 	}
 
 	

@@ -29,9 +29,11 @@ import info.bioinfweb.jphyloio.events.NodeEvent;
 import info.bioinfweb.jphyloio.events.meta.LiteralMetadataContentEvent;
 import info.bioinfweb.jphyloio.events.meta.LiteralMetadataEvent;
 import info.bioinfweb.jphyloio.events.meta.ResourceMetadataEvent;
+import info.bioinfweb.jphyloio.events.meta.URIOrStringIdentifier;
 import info.bioinfweb.jphyloio.events.type.EventContentType;
 import info.bioinfweb.jphyloio.events.type.EventTopologyType;
 import info.bioinfweb.jphyloio.formats.nexml.NeXMLEventReader;
+import info.bioinfweb.jphyloio.formats.xml.JPhyloIOXMLEventReader;
 import info.bioinfweb.jphyloio.utils.JPhyloIOReadingUtils;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.HiddenDataMap;
@@ -56,9 +58,8 @@ import javax.xml.stream.XMLStreamException;
 
 
 
-public class JPhyloIOReader extends AbstractDocumentReader {
+public class NeXMLReader extends AbstractDocumentReader {
 	private JPhyloIOEventReader reader;
-	
 	private String currentTreeName;
 	private List<Tree> trees = new ArrayList<Tree>();
 	private List<String> names = new ArrayList<String>();
@@ -70,7 +71,7 @@ public class JPhyloIOReader extends AbstractDocumentReader {
 	private BranchLengthAdapter branchLengthAdapter = BranchLengthAdapter.getSharedInstance();
 	
 
-	public JPhyloIOReader() {
+	public NeXMLReader() {
 		super(false);
 	}
 
@@ -238,18 +239,24 @@ public class JPhyloIOReader extends AbstractDocumentReader {
   }
 	
 	
+	private String extractMetadataKey(URIOrStringIdentifier predicate) {
+		return predicate.getURI().getNamespaceURI() + predicate.getURI().getLocalPart();
+		//TODO Extend functionality of this method when more formats are supported. (Make use of string representation alternatively.)
+	}
+	
+	
 	private void readMetadata(JPhyloIOEvent metaEvent, HiddenDataMap map) throws IOException {
 		if (metaEvent.getType().getTopologyType().equals(EventTopologyType.START)) {
 			if (metaEvent.getType().getContentType().equals(EventContentType.META_RESOURCE)) {
 				ResourceMetadataEvent resourceMeta = metaEvent.asResourceMetadataEvent();
 				if ((resourceMeta.getHRef() != null) && (resourceMeta.getRel().getURI() != null)) {
-					storeMetaData(map, resourceMeta.getRel().getURI().toString(), new TextElementData(resourceMeta.getHRef().toString()));  // The whole predicate URI is used as a key here
+					storeMetaData(map, extractMetadataKey(resourceMeta.getRel()), new TextElementData(resourceMeta.getHRef().toString()));  // The whole predicate URI is used as a key here
 				}
 			}
 			else if (metaEvent.getType().getContentType().equals(EventContentType.META_LITERAL)) {
 				LiteralMetadataEvent literalMeta = metaEvent.asLiteralMetadataEvent();
 				if (literalMeta.getPredicate().getURI() != null) {
-					currentColumnID = literalMeta.getPredicate().getURI().toString();
+					currentColumnID = extractMetadataKey(literalMeta.getPredicate());
 				}
 			}
 		}
