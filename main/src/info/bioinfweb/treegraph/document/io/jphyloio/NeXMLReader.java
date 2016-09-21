@@ -242,6 +242,7 @@ public class NeXMLReader extends AbstractDocumentReader {
 	private String extractMetadataKey(URIOrStringIdentifier predicate) {
 		return predicate.getURI().getNamespaceURI() + predicate.getURI().getLocalPart();
 		//TODO Extend functionality of this method when more formats are supported. (Make use of string representation alternatively.)
+		//TODO Will a '/' separating namespace URI and local part always be present/necessary? 
 	}
 	
 	
