@@ -30,7 +30,7 @@ import org.junit.Test;
 public class JPhyloIOReaderTest {
 	@Test
 	public void testOutput() {
-		JPhyloIOReader reader = new JPhyloIOReader();
+		NeXMLReader reader = new NeXMLReader();
 		try {
 			reader.read(new File("data" + SystemUtils.FILE_SEPARATOR + "jPhyloIO" + SystemUtils.FILE_SEPARATOR + "NeXML_Network.xml"));
 		}
