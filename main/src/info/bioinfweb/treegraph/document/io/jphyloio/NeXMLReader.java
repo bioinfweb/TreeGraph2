@@ -107,7 +107,7 @@ public class NeXMLReader extends AbstractDocumentReader {
 	      		}
 	      		break;
 	      	case TREE_NETWORK_GROUP:
-	      		readDocument(event.asLinkedLabeledIDEvent());
+	      		readTreeNetworkGroup(event.asLinkedLabeledIDEvent());
 	        	break;
 	        default:  // Possible additional element, which is not read
 	        	JPhyloIOReadingUtils.reachElementEnd(reader);
@@ -124,7 +124,7 @@ public class NeXMLReader extends AbstractDocumentReader {
 	}
 	
 	
-	private void readDocument(LinkedLabeledIDEvent treeGroupEvent) throws XMLStreamException, IOException {
+	private void readTreeNetworkGroup(LinkedLabeledIDEvent treeGroupEvent) throws XMLStreamException, IOException {
     JPhyloIOEvent event = reader.next();   
     while (!event.getType().getTopologyType().equals(EventTopologyType.END)) {
     	if (event.getType().getContentType().equals(EventContentType.TREE)) { // Networks can not be displayed by TG and are therefore not read  		
