@@ -33,7 +33,6 @@ import info.bioinfweb.jphyloio.events.meta.URIOrStringIdentifier;
 import info.bioinfweb.jphyloio.events.type.EventContentType;
 import info.bioinfweb.jphyloio.events.type.EventTopologyType;
 import info.bioinfweb.jphyloio.formats.nexml.NeXMLEventReader;
-import info.bioinfweb.jphyloio.formats.xml.JPhyloIOXMLEventReader;
 import info.bioinfweb.jphyloio.utils.JPhyloIOReadingUtils;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.HiddenDataMap;
@@ -86,7 +85,7 @@ public class NeXMLReader extends AbstractDocumentReader {
 		try {
 			JPhyloIOEvent event;			
 			while (reader.hasNextEvent()) {
-	      event = reader.next();	      
+	      event = reader.next();
 	      switch (event.getType().getContentType()) {
 	      	case DOCUMENT:
 	      		if (event.getType().getTopologyType().equals(EventTopologyType.START)) {
@@ -109,8 +108,10 @@ public class NeXMLReader extends AbstractDocumentReader {
 	      	case TREE_NETWORK_GROUP:
 	      		readTreeNetworkGroup(event.asLinkedLabeledIDEvent());
 	        	break;
-	        default:  // Possible additional element, which is not read
-	        	JPhyloIOReadingUtils.reachElementEnd(reader);
+	        default:
+	        	if (event.getType().getTopologyType().equals(EventTopologyType.START)) {  // Possible additional element, which is not read. SOLE and END events do not have to be processed here, because they have no further content.
+	        		JPhyloIOReadingUtils.reachElementEnd(reader);
+	      		}
 	        	break;
 	      }
 	    }
@@ -118,7 +119,7 @@ public class NeXMLReader extends AbstractDocumentReader {
 		finally {
 	    reader.close();
 	    stream.close();
-		}
+		}		
 		trees.clear();
 		return null;
 	}
@@ -130,8 +131,10 @@ public class NeXMLReader extends AbstractDocumentReader {
     	if (event.getType().getContentType().equals(EventContentType.TREE)) { // Networks can not be displayed by TG and are therefore not read  		
     		readTree(event.asLabeledIDEvent());
     	}
-      else {  // Possible additional element, which is not read      	
-        JPhyloIOReadingUtils.reachElementEnd(reader);
+    	else {  // Possible additional element, which is not read
+      	if (event.getType().getTopologyType().equals(EventTopologyType.START)) {  // SOLE and END events do not have to be processed here, because they have no further content.
+      		JPhyloIOReadingUtils.reachElementEnd(reader);
+    		}
       }
       event = reader.next();
     }
@@ -157,8 +160,10 @@ public class NeXMLReader extends AbstractDocumentReader {
     	else if (event.getType().getContentType().equals(EventContentType.EDGE) || event.getType().getContentType().equals(EventContentType.ROOT_EDGE)) {
     		readEdge(event.asEdgeEvent());
     	}
-      else {  // Possible additional element, which is not read
-      	JPhyloIOReadingUtils.reachElementEnd(reader);
+    	else {  // Possible additional element, which is not read
+      	if (event.getType().getTopologyType().equals(EventTopologyType.START)) {  // SOLE and END events do not have to be processed here, because they have no further content.
+      		JPhyloIOReadingUtils.reachElementEnd(reader);
+    		}
       }
       event = reader.next();
     }
@@ -198,7 +203,9 @@ public class NeXMLReader extends AbstractDocumentReader {
     		readLiteralContent(event.asLiteralMetadataContentEvent(), node.getHiddenDataMap()); 
     	}
       else {  // Possible additional element, which is not read
-      	JPhyloIOReadingUtils.reachElementEnd(reader);
+      	if (event.getType().getTopologyType().equals(EventTopologyType.START)) {  // SOLE and END events do not have to be processed here, because they have no further content.
+      		JPhyloIOReadingUtils.reachElementEnd(reader);
+    		}
       }
       event = reader.next();
     }
@@ -231,8 +238,10 @@ public class NeXMLReader extends AbstractDocumentReader {
     	else if (event.getType().getContentType().equals(EventContentType.META_LITERAL_CONTENT)) {
     		readLiteralContent(event.asLiteralMetadataContentEvent(), targetNode.getAfferentBranch().getHiddenDataMap()); 
     	}
-      else {  // Possible additional element, which is not read
-      	JPhyloIOReadingUtils.reachElementEnd(reader);
+    	else {  // Possible additional element, which is not read
+      	if (event.getType().getTopologyType().equals(EventTopologyType.START)) {  // SOLE and END events do not have to be processed here, because they have no further content.
+      		JPhyloIOReadingUtils.reachElementEnd(reader);
+    		}
       }
       event = reader.next();
     }
@@ -270,8 +279,10 @@ public class NeXMLReader extends AbstractDocumentReader {
 	    	else if (event.getType().getContentType().equals(EventContentType.META_LITERAL_CONTENT)) {
 	    		readLiteralContent(event.asLiteralMetadataContentEvent(), map);
 	    	}
-	      else {  // Possible additional element, which is not read
-	      	JPhyloIOReadingUtils.reachElementEnd(reader);
+	    	else {  // Possible additional element, which is not read
+	      	if (event.getType().getTopologyType().equals(EventTopologyType.START)) {  // SOLE and END events do not have to be processed here, because they have no further content.
+	      		JPhyloIOReadingUtils.reachElementEnd(reader);
+	    		}
 	      }
 	      event = reader.next();
 	    }
