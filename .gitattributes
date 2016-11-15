@@ -833,6 +833,7 @@ test/data/importTable/Tree_numbersAsText.xtg -text
 test/data/importTable/Tree_numbersAsText_german.xtg -text
 test/data/importTable/Tree_options.xtg -text
 test/data/jPhyloIO/MultipleElements.xml -text svneol=unset#text/plain
+test/data/jPhyloIO/NPE-Causing-Output.xml -text svneol=unset#text/plain
 test/data/jPhyloIO/NeXML_Network.xml -text svneol=unset#text/plain
 test/data/jPhyloIO/NeXML_multipleTrees.xml -text svneol=unset#text/plain
 test/data/jPhyloIO/SimpleDocument.xml -text svneol=unset#text/plain
