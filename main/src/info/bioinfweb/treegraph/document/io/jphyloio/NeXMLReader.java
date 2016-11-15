@@ -79,7 +79,7 @@ public class NeXMLReader extends AbstractDocumentReader {
 	public Document readDocument(BufferedInputStream stream) throws Exception {
 		document = null;
 		ReadWriteParameterMap parameters = new ReadWriteParameterMap();
-		parameters.put(ReadWriteParameterMap.KEY_NEXML_USE_OTU_LABEL, true);
+		parameters.put(ReadWriteParameterMap.KEY_USE_OTU_LABEL, true);
 		reader = new NeXMLEventReader(stream, parameters);  //TODO Use JPhyloIOReader for other formats (currently not possible, due to exceptions)
 		
 		try {
@@ -196,10 +196,10 @@ public class NeXMLReader extends AbstractDocumentReader {
 		
 		JPhyloIOEvent event = reader.next();
     while (!event.getType().getTopologyType().equals(EventTopologyType.END)) {  // It is assumed that events are correctly nested
-    	if (event.getType().getContentType().equals(EventContentType.META_LITERAL) || event.getType().getContentType().equals(EventContentType.META_RESOURCE)) {
+    	if (event.getType().getContentType().equals(EventContentType.LITERAL_META) || event.getType().getContentType().equals(EventContentType.RESOURCE_META)) {
     		readMetadata(event, node.getHiddenDataMap());
     	}
-    	else if (event.getType().getContentType().equals(EventContentType.META_LITERAL_CONTENT)) {
+    	else if (event.getType().getContentType().equals(EventContentType.LITERAL_META_CONTENT)) {
     		readLiteralContent(event.asLiteralMetadataContentEvent(), node.getHiddenDataMap()); 
     	}
       else {  // Possible additional element, which is not read
@@ -232,10 +232,10 @@ public class NeXMLReader extends AbstractDocumentReader {
 		
 		JPhyloIOEvent event = reader.next();
     while (!event.getType().getTopologyType().equals(EventTopologyType.END)) {  // It is assumed that events are correctly nested
-    	if (event.getType().getContentType().equals(EventContentType.META_LITERAL) || event.getType().getContentType().equals(EventContentType.META_RESOURCE)) {
+    	if (event.getType().getContentType().equals(EventContentType.LITERAL_META) || event.getType().getContentType().equals(EventContentType.RESOURCE_META)) {
     		readMetadata(event, targetNode.getAfferentBranch().getHiddenDataMap());
     	}
-    	else if (event.getType().getContentType().equals(EventContentType.META_LITERAL_CONTENT)) {
+    	else if (event.getType().getContentType().equals(EventContentType.LITERAL_META_CONTENT)) {
     		readLiteralContent(event.asLiteralMetadataContentEvent(), targetNode.getAfferentBranch().getHiddenDataMap()); 
     	}
     	else {  // Possible additional element, which is not read
@@ -257,13 +257,13 @@ public class NeXMLReader extends AbstractDocumentReader {
 	
 	private void readMetadata(JPhyloIOEvent metaEvent, HiddenDataMap map) throws IOException {
 		if (metaEvent.getType().getTopologyType().equals(EventTopologyType.START)) {
-			if (metaEvent.getType().getContentType().equals(EventContentType.META_RESOURCE)) {
+			if (metaEvent.getType().getContentType().equals(EventContentType.RESOURCE_META)) {
 				ResourceMetadataEvent resourceMeta = metaEvent.asResourceMetadataEvent();
 				if ((resourceMeta.getHRef() != null) && (resourceMeta.getRel().getURI() != null)) {
 					storeMetaData(map, extractMetadataKey(resourceMeta.getRel()), new TextElementData(resourceMeta.getHRef().toString()));  // The whole predicate URI is used as a key here
 				}
 			}
-			else if (metaEvent.getType().getContentType().equals(EventContentType.META_LITERAL)) {
+			else if (metaEvent.getType().getContentType().equals(EventContentType.LITERAL_META)) {
 				LiteralMetadataEvent literalMeta = metaEvent.asLiteralMetadataEvent();
 				if (literalMeta.getPredicate().getURI() != null) {
 					currentColumnID = extractMetadataKey(literalMeta.getPredicate());
@@ -273,10 +273,10 @@ public class NeXMLReader extends AbstractDocumentReader {
 		
 		JPhyloIOEvent event = reader.next();
 	    while (!event.getType().getTopologyType().equals(EventTopologyType.END)) {
-	    	if (event.getType().getContentType().equals(EventContentType.META_LITERAL) || event.getType().getContentType().equals(EventContentType.META_RESOURCE)) {
+	    	if (event.getType().getContentType().equals(EventContentType.LITERAL_META) || event.getType().getContentType().equals(EventContentType.RESOURCE_META)) {
 	    		readMetadata(event, map);
 	    	}
-	    	else if (event.getType().getContentType().equals(EventContentType.META_LITERAL_CONTENT)) {
+	    	else if (event.getType().getContentType().equals(EventContentType.LITERAL_META_CONTENT)) {
 	    		readLiteralContent(event.asLiteralMetadataContentEvent(), map);
 	    	}
 	    	else {  // Possible additional element, which is not read
@@ -306,7 +306,7 @@ public class NeXMLReader extends AbstractDocumentReader {
     }
 		
 		JPhyloIOEvent event = reader.peek();
-    while (event.getType().getContentType().equals(EventContentType.META_LITERAL_CONTENT)) {    	
+    while (event.getType().getContentType().equals(EventContentType.LITERAL_META_CONTENT)) {    	
       event = reader.next();
       content.append(event.asLiteralMetadataContentEvent().getStringValue());  // Content can only be continued if it has only a string value      
     }
