@@ -72,6 +72,9 @@ main/include/lib/jep-2.4.1.jar -text
 main/include/lib/l2fprod-common-directorychooser-7.3.jar -text
 main/include/lib/org.jdesktop.swingx.scrollpaneselector.jar -text
 main/include/lib/owlapi-XMLUtils-4.1.4.jar -text
+main/src/APACHE-LICENSE.txt -text svneol=unset#text/plain
+main/src/GPL.txt -text svneol=unset#text/plain
+main/src/NOTICE.txt -text svneol=unset#text/plain
 main/src/config/RecentlyUsedExpressions.txt -text
 main/src/info/bioinfweb/treegraph/AWTExceptionHandler.java -text
 main/src/info/bioinfweb/treegraph/Main.java -text
