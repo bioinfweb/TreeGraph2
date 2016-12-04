@@ -361,6 +361,7 @@ main/src/info/bioinfweb/treegraph/document/undo/edit/ChangeTextualValueEdit.java
 main/src/info/bioinfweb/treegraph/document/undo/edit/CollapseNodeEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/edit/CollapseNodesBySupportEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/edit/CopyColumnEdit.java -text
+main/src/info/bioinfweb/treegraph/document/undo/edit/CreatePieChartDataColumnsEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/edit/CutEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/edit/DefaultDocumentAdapterEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/edit/DeleteColumnEdit.java -text
