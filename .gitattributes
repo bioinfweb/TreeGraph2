@@ -848,6 +848,9 @@ test/data/sortLeaves/DistinctOrdering.txt -text svneol=unset#text/plain
 test/data/sortLeaves/DistinctOrderingAdditionalElement.txt -text svneol=unset#text/plain
 test/data/sortLeaves/SortLeaves.xtg -text
 test/lib/junit-4.9b1.jar -text
+test/src/APACHE-LICENSE.txt -text svneol=unset#text/plain
+test/src/GPL.txt -text svneol=unset#text/plain
+test/src/NOTICE.txt -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/LabelLineTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/LabelsTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/TextElementDataTest.java -text svneol=unset#text/plain
