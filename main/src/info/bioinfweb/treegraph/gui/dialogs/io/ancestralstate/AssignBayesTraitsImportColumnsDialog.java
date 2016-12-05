@@ -30,10 +30,6 @@ import info.bioinfweb.treegraph.document.undo.file.ancestralstate.AncestralState
 import info.bioinfweb.treegraph.gui.dialogs.io.AssignImportColumnsDialog;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NewNodeBranchDataInput;
 
-
-
-
-
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
