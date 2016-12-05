@@ -19,30 +19,24 @@
 package info.bioinfweb.treegraph.gui.dialogs.io.imexporttable;
 
 
+import info.bioinfweb.treegraph.Main;
+import info.bioinfweb.treegraph.document.Tree;
+import info.bioinfweb.treegraph.document.nodebranchdata.NewHiddenBranchDataAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
+import info.bioinfweb.treegraph.document.undo.file.importtable.ImportTableData;
+import info.bioinfweb.treegraph.document.undo.file.importtable.ImportTableParameters;
+import info.bioinfweb.treegraph.gui.dialogs.io.AssignImportColumnsDialog;
+import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NewNodeBranchDataInput;
+
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
-import info.bioinfweb.treegraph.Main;
-import info.bioinfweb.treegraph.document.Tree;
-import info.bioinfweb.treegraph.document.nodebranchdata.NewHiddenBranchDataAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.NewNodeBranchDataAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.VoidNodeBranchDataAdapter;
-import info.bioinfweb.treegraph.document.tools.IDManager;
-import info.bioinfweb.treegraph.document.undo.file.importtable.ImportTableData;
-import info.bioinfweb.treegraph.document.undo.file.importtable.ImportTableParameters;
-import info.bioinfweb.treegraph.gui.dialogs.io.AssignImportColumnsDialog;
-import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NewNodeBranchDataInput;
-import info.bioinfweb.wikihelp.client.OkCancelApplyWikiHelpDialog;
 
 
 
@@ -61,14 +55,15 @@ public class AssignImportTableColumnsDialog extends AssignImportColumnsDialog {
 	private JLabel typeLabel = null;
 	private JLabel idLabel = null;
 	private Vector<NewNodeBranchDataInput> inputs = new Vector<NewNodeBranchDataInput>();  //  @jve:decl-index=0:
-	NodeBranchDataAdapter[] inputAdapters = null;
+	private NodeBranchDataAdapter[] inputAdapters = null;
 	private JLabel firstLineLabel = null;
 	private JLabel keyColumnLabel = null;
 
 
 	/**
 	 * Creates a new instance of this dialog.
-	 * @param owner - the parent window
+	 * 
+	 * @param owner the parent window
 	 */
 	public AssignImportTableColumnsDialog(Frame owner) {
 		super(owner, true, Main.getInstance().getWikiHelp());
