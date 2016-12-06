@@ -48,9 +48,7 @@ public class CreatePieChartDataColumnsEdit extends DocumentEdit {
 	private List<NodeBranchDataColumnBackup> backups;
 	
 
-	public CreatePieChartDataColumnsEdit(Document document, NodeBranchDataAdapter source,
-          String idPrefix) {
-		
+	public CreatePieChartDataColumnsEdit(Document document, NodeBranchDataAdapter source, String idPrefix) {
 	  super(document, DocumentChangeType.TOPOLOGICAL_BY_RENAMING);
 	  this.source = source;
 	  this.idPrefix = idPrefix;

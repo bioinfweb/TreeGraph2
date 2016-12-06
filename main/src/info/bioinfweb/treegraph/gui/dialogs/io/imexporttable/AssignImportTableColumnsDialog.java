@@ -41,8 +41,8 @@ import javax.swing.JPanel;
 
 
 /**
- * Dialog that prompts the user for the node/branch data columns that shall hold the contents of
- * an imported table file. This dialog is displayed in a sequence after {@link SelectImportTableDialog}.
+ * Dialog that prompts the user for the node/branch data columns that shall contain the contents of
+ * an imported table file. This dialog is displayed after {@link SelectImportTableDialog}.
  * 
  * @author Ben St&ouml;ver
  */
