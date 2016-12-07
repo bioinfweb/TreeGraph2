@@ -84,6 +84,7 @@ public class ActionManagement extends AbstractUndoActionManagement {
 		put("file.exportTable", new ExportTableAction(mainFrame));
 		put("file.generateBayesTraitsCommands", new GenerateBayesTraitsInputAction(mainFrame));
 		put("file.importBayesTraitsData", new ImportBayesTraitsDataAction(mainFrame));
+		put("file.exportPieChartLabelColors", new ExportPieChartLabelColorsAction(mainFrame));
 		put("file.exit", new ExitAction(mainFrame));
 		
 		put("select.all", new SelectAllAction(mainFrame));
@@ -174,6 +175,8 @@ public class ActionManagement extends AbstractUndoActionManagement {
 	
 	
 	private void fillPopupActions() {
+		popupActions.add(get("file.exportPieChartLabelColors"));
+		popupActions.add(null);
 		popupActions.add(get("select.invert"));
 		popupActions.add(get("select.wholeSubtree"));
 		popupActions.add(get("select.typeInDocument"));
