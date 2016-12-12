@@ -29,7 +29,7 @@ import info.bioinfweb.treegraph.document.undo.CompareTextElementDataParameters;
 public class ImportDataColumnsParameters extends CompareTextElementDataParameters {
 	private File tableFile = null;
 	private NodeBranchDataAdapter keyAdapter = null;
-  private NodeBranchDataAdapter[] importAdapters = new NodeBranchDataAdapter[0];   
+	private NodeBranchDataAdapter[] importAdapters = new NodeBranchDataAdapter[0];
   
 
 	public File getTableFile() {

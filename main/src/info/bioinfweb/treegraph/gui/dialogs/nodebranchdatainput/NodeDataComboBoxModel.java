@@ -99,7 +99,7 @@ public class NodeDataComboBoxModel extends AbstractListModel<NodeBranchDataAdapt
    * @param voidAdapterName the name to be displayed for instances of {@link VoidNodeBranchDataAdapter}
    */
   public void setAdapters(Tree tree, boolean uniqueNamesSelectable, boolean nodeNamesSelectable, 
-  		boolean branchLengthSelectable,	boolean decimalOnly, boolean newIDSelectable,	String voidAdapterName) {
+  		boolean branchLengthSelectable,	boolean decimalOnly, boolean newIDSelectable, String voidAdapterName) {
 
   	clear();
   	
@@ -269,7 +269,7 @@ public class NodeDataComboBoxModel extends AbstractListModel<NodeBranchDataAdapt
 	}
   
   
-  public NodeBranchDataAdapter getSelectedItem() {
+	public NodeBranchDataAdapter getSelectedItem() {
 		return selected;
 	}
 
