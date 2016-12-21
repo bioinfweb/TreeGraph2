@@ -83,7 +83,7 @@ public class NeXMLReader extends AbstractDocumentReader {
 		reader = new NeXMLEventReader(stream, parameters);  //TODO Use JPhyloIOReader for other formats (currently not possible, due to exceptions)
 		
 		try {
-			JPhyloIOEvent event;			
+			JPhyloIOEvent event;
 			while (reader.hasNextEvent()) {
 	      event = reader.next();
 	      switch (event.getType().getContentType()) {

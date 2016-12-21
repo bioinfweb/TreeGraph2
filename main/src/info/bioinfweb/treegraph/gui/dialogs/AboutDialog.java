@@ -355,7 +355,7 @@ public class AboutDialog extends JDialog {
 					"<head><link rel='stylesheet' type='text/css' href='" + 
 					    getResourcePath("Style.css") + "'></head>" +
 					"<body>" +
-					"<h1>TreeGraph " + Main.getInstance().getVersion().toString() + "</h1>" +
+					"<h1><i>TreeGraph " + Main.getInstance().getVersion().toString() + "</i></h1>" +
 					"<p>Development: <a href='http://bioinfweb.info/People/Stoever'>Ben St&ouml;ver</a>, " +
 							"<a href='http://bioinfweb.info/People/Wiechers'>Sarah Wiechers</a>, " + 
 					    "<a href='http://bioinfweb.info/People/Mueller'>Kai M&uuml;ller</a><br />" +
@@ -381,14 +381,15 @@ public class AboutDialog extends JDialog {
   				"<p>The included Apache Commons, Batic and l2fprod-common Libraries are distributed under " +
 					"Apache Public Licence (see Apache Public Licence tab).</p>" +
 					
-					"<p><b>The following libraries are used by TreeGraph 2:</b></p>" +
+					"<p><b>The following libraries are used by <i>TreeGraph 2</i>:</b></p>" +
 					"<ul>" +
-						"<li>bioinfweb.commons.java (<a href='http://commons.bioinfweb.info/Java/'>http://commons.bioinfweb.info/Java/</a>)</li>" +
-					  "<li>Apache Commons (<a href='http://commons.apache.org/'>http://commons.apache.org/</a>)</li>" +
-					  "<li>Apache Batik SVG Toolkit (<a href='http://xmlgraphics.apache.org/batik/'>http://xmlgraphics.apache.org/batik/</a>)</li>" +
-					  "<li>FreeHEP Java Libraries (<a href='http://java.freehep.org/'>http://java.freehep.org/</a>)</li>" +
-					  "<li>Java Math Expression Parser (<a href='http://sourceforge.net/projects/jep/'>http://sourceforge.net/projects/jep/</a>)</li>" +
-					  "<li>Tango Desktop Project (<a href='http://tango.freedesktop.org/'>http://tango.freedesktop.org/</a>)</li>" +
+					  "<li><i>bioinfweb.commons.java</i> (<a href='http://commons.bioinfweb.info/Java/'>http://commons.bioinfweb.info/Java/</a>)</li>" +
+					  "<li><i>JPhyloIO</i> (<a href='http://bioinfweb.info/JPhyloIO/'>http://bioinfweb.info/JPhyloIO/</a>)</li>" +
+					  "<li><i>Apache Commons</i> (<a href='http://commons.apache.org/'>http://commons.apache.org/</a>)</li>" +
+					  "<li><i>Apache Batik SVG Toolkit</i> (<a href='http://xmlgraphics.apache.org/batik/'>http://xmlgraphics.apache.org/batik/</a>)</li>" +
+					  "<li><i>FreeHEP Java Libraries</i> (<a href='http://java.freehep.org/'>http://java.freehep.org/</a>)</li>" +
+					  "<li><i>Java Math Expression Parser</i> (<a href='http://sourceforge.net/projects/jep/'>http://sourceforge.net/projects/jep/</a>)</li>" +
+					  "<li><i>Tango Desktop Project</i> (<a href='http://tango.freedesktop.org/'>http://tango.freedesktop.org/</a>)</li>" +
 					"</ul>" +
 					"<p>See <a href='http://treegraph.bioinfweb.info/Development/Libraries'>here</a> for more information." +
 					"</body></html>");			
