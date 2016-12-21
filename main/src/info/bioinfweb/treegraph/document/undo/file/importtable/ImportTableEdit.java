@@ -19,8 +19,10 @@
 package info.bioinfweb.treegraph.document.undo.file.importtable;
 
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.Vector;
@@ -52,7 +54,7 @@ import info.bioinfweb.commons.Math2;
 public class ImportTableEdit extends DocumentEdit implements WarningMessageEdit {
   private ImportTableParameters parameters;
   private ImportTableData data;
-  private NodeBranchDataColumnBackup[] backups;
+  private List<NodeBranchDataColumnBackup> backups;
   private Set<String> keysNotInTree = new TreeSet<String>();
   
   
@@ -60,7 +62,7 @@ public class ImportTableEdit extends DocumentEdit implements WarningMessageEdit 
 		super(document, DocumentChangeType.TOPOLOGICAL_BY_RENAMING);
 		this.parameters = parameters;
 		this.data = data;
-		backups = createBackups();
+		backups = createBackups(data.getKeyColumnIndex());
 	}
 	
 	
@@ -96,10 +98,12 @@ public class ImportTableEdit extends DocumentEdit implements WarningMessageEdit 
   }
 
 
-	private NodeBranchDataColumnBackup[] createBackups() {
-		NodeBranchDataColumnBackup[] result = new NodeBranchDataColumnBackup[parameters.getImportAdapters().length];
-		for (int i = 0; i < result.length; i++) {
-			result[i] = new NodeBranchDataColumnBackup(parameters.getImportAdapters()[i], getDocument().getTree().getPaintStart());
+	private List<NodeBranchDataColumnBackup> createBackups(int keyColumnIndex) {
+		List<NodeBranchDataColumnBackup> result = new ArrayList<>(parameters.getImportAdapters().length - 1);
+		for (int i = 0; i < parameters.getImportAdapters().length; i++) {
+			if (i != keyColumnIndex) {
+				result.add(new NodeBranchDataColumnBackup(parameters.getImportAdapters()[i], getDocument().getTree().getPaintStart()));
+			}
 		}
 		return result;
 	}
@@ -121,7 +125,7 @@ public class ImportTableEdit extends DocumentEdit implements WarningMessageEdit 
 	
 	
 	private Collection<Node> getNodesByData(TextElementData data) {
-		Collection<Node> result = new Vector<Node>(8);
+		Collection<Node> result = new ArrayList<Node>();
 		addNodesByData(result, getDocument().getTree().getPaintStart(), data);
 		return result;
 	}
@@ -143,18 +147,20 @@ public class ImportTableEdit extends DocumentEdit implements WarningMessageEdit 
 					while (nodeIterator.hasNext()) {  // iterate over all nodes affected by the current row
 						Node currentNode = nodeIterator.next();
 						for (int column = 0; column < parameters.getImportAdapters().length; column++) {  // iterate over columns
-							String value = data.getTableValue(column, row);
-							if (parameters.isParseNumericValues() && Math2.isDecimal(value)) {
-								parameters.getImportAdapters()[column].setDecimal(currentNode, Math2.parseDouble(value));
-							}
-							else {
-								parameters.getImportAdapters()[column].setText(currentNode, value);
+							if (column != data.getKeyColumnIndex()) {
+								String value = data.getTableValue(column, row);
+								if (parameters.isParseNumericValues() && Math2.isDecimal(value)) {
+									parameters.getImportAdapters()[column].setDecimal(currentNode, Math2.parseDouble(value));
+								}
+								else {
+									parameters.getImportAdapters()[column].setText(currentNode, value);
+								}
 							}
 	          }
 					}
 				}
 				else {
-					keysNotInTree.add(data.getUnprocessedKey(data.getRowByKey(key)));
+					keysNotInTree.add(data.getKeyColumnEntry(data.getRowByKey(key)));
 				}
   		}
   	}
@@ -173,8 +179,8 @@ public class ImportTableEdit extends DocumentEdit implements WarningMessageEdit 
 
 	@Override
 	public void undo() throws CannotUndoException {
-		for (int i = 0; i < backups.length; i++) {
-			backups[i].restore(getDocument().getTree().getPaintStart());
+		for (NodeBranchDataColumnBackup backup : backups) {
+			backup.restore(getDocument().getTree().getPaintStart());
 		}
 		super.undo();
 	}

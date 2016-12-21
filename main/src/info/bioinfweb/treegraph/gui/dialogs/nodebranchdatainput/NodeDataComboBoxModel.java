@@ -96,15 +96,15 @@ public class NodeDataComboBoxModel extends AbstractListModel<NodeBranchDataAdapt
    * @param newIDSelectable If true an adaptor for a new user defined label ID is 
    *        added. Note that the label ID has still to be set. These adapters are also added if 
    *        <code>decimalOnly</code> is <code>true</code>.
-   * @param voidAdapterName the name to be displayed for instances of {@link VoidNodeBranchDataAdapter}
+   * @param voidAdapterText the name to be displayed for instances of {@link VoidNodeBranchDataAdapter}
    */
   public void setAdapters(Tree tree, boolean uniqueNamesSelectable, boolean nodeNamesSelectable, 
-  		boolean branchLengthSelectable,	boolean decimalOnly, boolean newIDSelectable, String voidAdapterName) {
+  		boolean branchLengthSelectable,	boolean decimalOnly, boolean newIDSelectable, String voidAdapterText) {
 
   	clear();
   	
-  	if ((voidAdapterName != null) && !voidAdapterName.equals("")) {
-			adapters.add(new VoidNodeBranchDataAdapter(voidAdapterName));
+  	if ((voidAdapterText != null) && !voidAdapterText.equals("")) {
+			adapters.add(new VoidNodeBranchDataAdapter(voidAdapterText));
 		}  	
   	if (uniqueNamesSelectable) {
   		adapters.add(UniqueNameAdapter.getSharedInstance());

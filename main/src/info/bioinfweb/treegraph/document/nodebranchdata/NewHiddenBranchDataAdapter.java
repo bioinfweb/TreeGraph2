@@ -21,12 +21,11 @@ package info.bioinfweb.treegraph.document.nodebranchdata;
 
 
 /**
- * Creates a new hidden branch data column.
+ * Node/branch data adapter that creates a new hidden branch data column.
+ * 
  * @author Ben St&ouml;ver
  */
-public class NewHiddenBranchDataAdapter extends HiddenBranchDataAdapter 
-    implements NewNodeBranchDataAdapter {
-	
+public class NewHiddenBranchDataAdapter extends HiddenBranchDataAdapter implements NewNodeBranchDataAdapter {
   public NewHiddenBranchDataAdapter() {
   	super("");
   }

@@ -24,6 +24,7 @@ import java.awt.Insets;
 
 import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.VoidNodeBranchDataAdapter;
 
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
@@ -109,13 +110,15 @@ public class NodeBranchDataInput {
    * @param newIDSelectable If true an adaptor for a new user defined label ID is 
    *        added. Note that the label ID has still to be set. This adapters are also added if 
    *        <code>decimalOnly</code> is <code>true</code>. 
-   * @param noImportAdapterSelectable TODO
+   * @param voidAdapterText Specify the text here, that shall be be displayed if no adapter is selected.
+   *        Specify {@code null} if the user shall be forced to decide for one concrete adapter. If selecting no
+   *        adapter is allowed, an instance of {@link VoidNodeBranchDataAdapter} will be returned in such cases.
    */
   public void setAdapters(Tree tree, boolean uniqueNamesSelectable, boolean nodeNamesSelectable, 
-  		boolean branchLengthSelectable,	boolean decimalOnly, boolean newIDSelectable, String noImportAdapterSelectable) {
+  		boolean branchLengthSelectable,	boolean decimalOnly, boolean newIDSelectable, String voidAdapterText) {
   	
   	((NodeDataComboBoxModel)getComboBox().getModel()).setAdapters(tree, uniqueNamesSelectable,
-  			nodeNamesSelectable, branchLengthSelectable, decimalOnly, newIDSelectable, noImportAdapterSelectable);
+  			nodeNamesSelectable, branchLengthSelectable, decimalOnly, newIDSelectable, voidAdapterText);
   }
   
   
@@ -123,9 +126,8 @@ public class NodeBranchDataInput {
 	 * Selects the adapter which is an instance (not instance of a subclass) of the 
 	 * given class.
 	 * 
-	 * @param adapterClass
-	 * @return <code>true</code>, if one adapter was selected, <code>false</code>, if 
-	 *         no adapter of the given class was found
+	 * @param adapterClass the class of adapter that shall be selected
+	 * @return {@code true}, if one adapter was selected, {@code false}, if no adapter of the given class was found
 	 */
 	public boolean setSelectedAdapter(Class<? extends NodeBranchDataAdapter> adapterClass) {
 		return ((NodeDataComboBoxModel)getComboBox().getModel()).setSelectedAdapter(
@@ -137,9 +139,9 @@ public class NodeBranchDataInput {
 	 * Selects the adapter which is an instance (not instance of a subclass) of same class as the 
 	 * given adapter and has the same ID (if it is an adapter for ID elements).
 	 * 
-	 * @param adapter
-	 * @return <code>true</code>, if one adapter was selected, <code>false</code>, if 
-	 *         no adapter of the given class (with the given ID) was found
+	 * @param adapter the instance defining the class of adapter that shall be selected
+	 * @return {@code true}, if one adapter was selected, {@code false}, if no adapter of the given class (with the given ID) 
+	 *         was found
 	 */
 	public boolean setSelectedAdapter(NodeBranchDataAdapter adapter) {
 		return ((NodeDataComboBoxModel)getComboBox().getModel()).setSelectedAdapter(adapter);

@@ -667,7 +667,6 @@ main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/piecolor/PieColorIc
 main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/piecolor/PieColorListEntry.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/AddSupportValueColumnsDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/AddSupportValuesDialog.java -text
-main/src/info/bioinfweb/treegraph/gui/dialogs/io/AssignImportColumnsDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/FileDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/NewickExceptionDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/NodeSupportDialog.java -text svneol=unset#text/plain
@@ -691,16 +690,18 @@ main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttree/ExportToTreeDialog.j
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttree/NewickFormatPanel.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttree/NexusFormatPanel.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/exporttree/TreeFormatPanel.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/treegraph/gui/dialogs/io/imexporttable/AssignImportTableColumnsDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/imexporttable/ExportNodeDataTableModel.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/imexporttable/ExportTableDialog.java -text
+main/src/info/bioinfweb/treegraph/gui/dialogs/io/imexporttable/KeyColumnDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/imexporttable/SelectImportTableDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/loadlogger/LoadLoggerDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/loadlogger/MessagesListModel.java -text
+main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/AbstractNodeBranchDataColumnsDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/CalculateColumnDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/CopyColumnDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/DefaultDocumentAdapterDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/IntervalDialog.java -text
+main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/NodeBranchDataColumnsDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/RecentlyUsedExpressionsListModel.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/RenameIDDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdatainput/NewNodeBranchDataInput.java -text

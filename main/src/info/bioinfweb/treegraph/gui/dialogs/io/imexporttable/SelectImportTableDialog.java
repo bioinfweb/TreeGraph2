@@ -19,42 +19,36 @@
 package info.bioinfweb.treegraph.gui.dialogs.io.imexporttable;
 
 
-import info.bioinfweb.treegraph.document.undo.CompareTextElementDataParameters;
 import info.bioinfweb.treegraph.document.undo.file.importtable.ImportTableParameters;
-import info.bioinfweb.treegraph.gui.dialogs.CompareTextElementDataParametersPanel;
 import info.bioinfweb.treegraph.gui.dialogs.io.FileDialog;
 import info.bioinfweb.treegraph.gui.dialogs.io.TableSeparatorPanel;
 import info.bioinfweb.treegraph.gui.dialogs.io.TextFileFilter;
-import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataInput;
+import info.bioinfweb.treegraph.gui.dialogs.nodebranchdata.NodeBranchDataColumnsDialog;
 
-import javax.swing.JPanel;
-import javax.swing.BoxLayout;
-import javax.swing.JFileChooser;
-import javax.swing.BorderFactory;
-import javax.swing.border.TitledBorder;
-import javax.swing.filechooser.FileFilter;
-
-import java.awt.Frame;
-import java.awt.Font;
 import java.awt.Color;
-import java.io.File;
-import java.awt.GridBagLayout;
-
-import javax.swing.JLabel;
-
+import java.awt.Font;
+import java.awt.Frame;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.io.File;
 
-import javax.swing.UIManager;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.border.TitledBorder;
+import javax.swing.filechooser.FileFilter;
 
 
 
 /**
  * Dialog that prompts the user for a table file to be imported to node/branch data columns as well as
- * several import options. This dialog is displayed in a sequence before {@link AssignImportTableColumnsDialog}.
+ * several import options. This dialog is displayed in a sequence before {@link NodeBranchDataColumnsDialog}.
  * 
  * @author Ben St&ouml;ver
  */
@@ -68,13 +62,9 @@ public class SelectImportTableDialog extends FileDialog {
 	private JFileChooser fileChooser;  //  This field must not be set to anything (e.g. null) because the initialization performed by the super constructor (FileDialog) would be overwritten than.
 	private JPanel nodeIdentificationPanel;
 	private JLabel separatorLabel;
-	private JLabel nodeIdentifierLabel;
 	private JLabel linesToSkipLabel;
 	private JCheckBox columnHeadingsCheckBox;
 	private JSpinner linesToSkipSpinner;
-	private NodeBranchDataInput keyColumnInput;
-	private JPanel keyColumnPanel;
-	private CompareTextElementDataParametersPanel textElementDataParametersPanel;
 
 
 	/**
@@ -92,9 +82,6 @@ public class SelectImportTableDialog extends FileDialog {
 		parameters.setColumnSeparator(getSeparatorPanel().getSeparator());
 		parameters.setLinesToSkip((Integer)getLinesToSkipSpinner().getValue());
 		parameters.setHeadingContained(getColumnHeadingsCheckBox().isSelected());
-		
-		parameters.setKeyAdapter(getKeyColumnInput().getSelectedAdapter());
-		getTextElementDataParametersPanel().assignToParameters(parameters);
   }
 
 
@@ -106,8 +93,6 @@ public class SelectImportTableDialog extends FileDialog {
 
 	@Override
 	protected boolean onExecute() {
-		getKeyColumnInput().setAdapters(getDocument().getTree(), true, true, true, false, false, "");
-		getKeyColumnInput().setSelectedAdapter(getDocument().getDefaultLeafAdapter());
 		return true;
 	}
 
@@ -118,7 +103,7 @@ public class SelectImportTableDialog extends FileDialog {
 	 * @return void
 	 */
 	private void initialize() {
-		setHelpCode(65);
+		setHelpCode(88);
 		setTitle("Import table as node/branch data");
 		setContentPane(getJContentPane());
 		pack();
@@ -150,7 +135,6 @@ public class SelectImportTableDialog extends FileDialog {
 			jContentPane.setLayout(new BoxLayout(getJContentPane(), BoxLayout.Y_AXIS));
 			jContentPane.add(getFilePanel(), null);
 			jContentPane.add(getNodeIdentificationPanel());
-			jContentPane.add(getKeyColumnPanel());
 			jContentPane.add(getButtonsPanel(), null);
 			getApplyButton().setVisible(false);
 			getOkButton().setText("Next >");
@@ -248,14 +232,6 @@ public class SelectImportTableDialog extends FileDialog {
 	}
 	
 	
-	private JLabel getNodeIdentifierLabel() {
-		if (nodeIdentifierLabel == null) {
-			nodeIdentifierLabel = new JLabel("Column in tree to identify nodes: ");
-		}
-		return nodeIdentifierLabel;
-	}
-	
-	
 	private JLabel getLinesToSkipLabel() {
 		if (linesToSkipLabel == null) {
 			linesToSkipLabel = new JLabel("Number of lines to skip before heading or data:");
@@ -278,49 +254,5 @@ public class SelectImportTableDialog extends FileDialog {
 			linesToSkipSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
 		}
 		return linesToSkipSpinner;
-	}
-	
-	
-	private NodeBranchDataInput getKeyColumnInput() {
-		if (keyColumnInput == null) {
-			getKeyColumnPanel();
-		}
-		return keyColumnInput;
-	}
-	
-	
-	private JPanel getKeyColumnPanel() {
-		if (keyColumnPanel == null) {
-			keyColumnPanel = new JPanel();
-			keyColumnPanel.setBorder(BorderFactory.createTitledBorder(null, "Key column", 
-					TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, 
-					new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
-			GridBagLayout gbl_keyColumnPanel = new GridBagLayout();
-			gbl_keyColumnPanel.rowWeights = new double[]{0.0, 1.0};
-			gbl_keyColumnPanel.columnWeights = new double[]{0.0, 1.0};
-			keyColumnPanel.setLayout(gbl_keyColumnPanel);
-			keyColumnInput = new NodeBranchDataInput(keyColumnPanel, 1, 0);
-			GridBagConstraints gbc_nodeIdentifierLabel = new GridBagConstraints();
-			gbc_nodeIdentifierLabel.anchor = GridBagConstraints.WEST;
-			gbc_nodeIdentifierLabel.insets = new Insets(0, 0, 5, 0);
-			gbc_nodeIdentifierLabel.gridx = 0;
-			gbc_nodeIdentifierLabel.gridy = 0;
-			keyColumnPanel.add(getNodeIdentifierLabel(), gbc_nodeIdentifierLabel);			
-			GridBagConstraints gbc_textElementDataParametersPanel = new GridBagConstraints();
-			gbc_textElementDataParametersPanel.gridwidth = 2;
-			gbc_textElementDataParametersPanel.fill = GridBagConstraints.BOTH;
-			gbc_textElementDataParametersPanel.gridx = 0;
-			gbc_textElementDataParametersPanel.gridy = 1;
-			keyColumnPanel.add(getTextElementDataParametersPanel(), gbc_textElementDataParametersPanel);
-  	}
-		return keyColumnPanel;
-	}
-	
-	
-	private CompareTextElementDataParametersPanel getTextElementDataParametersPanel() {
-		if (textElementDataParametersPanel == null) {
-			textElementDataParametersPanel = new CompareTextElementDataParametersPanel();
-		}
-		return textElementDataParametersPanel;
 	}
 }

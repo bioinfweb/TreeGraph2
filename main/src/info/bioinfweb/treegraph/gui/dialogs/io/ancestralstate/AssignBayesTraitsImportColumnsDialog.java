@@ -27,7 +27,7 @@ import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.PieChartLabelAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.VoidNodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.file.ancestralstate.AncestralStateImportParameters;
-import info.bioinfweb.treegraph.gui.dialogs.io.AssignImportColumnsDialog;
+import info.bioinfweb.treegraph.gui.dialogs.nodebranchdata.AbstractNodeBranchDataColumnsDialog;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NewNodeBranchDataInput;
 
 import java.awt.Frame;
@@ -46,7 +46,7 @@ import javax.swing.JPanel;
 
 
 
-public class AssignBayesTraitsImportColumnsDialog extends AssignImportColumnsDialog {	
+public class AssignBayesTraitsImportColumnsDialog extends AbstractNodeBranchDataColumnsDialog {	
 	private JPanel jContentPane = null;
 	
 	private JPanel importInternalNodeNamesPanel = null;
@@ -158,7 +158,7 @@ public class AssignBayesTraitsImportColumnsDialog extends AssignImportColumnsDia
 				allAdapters[i + importAdapterCount + 1] = new VoidNodeBranchDataAdapter("");
 			}
 		}
-		return checkSelectedAdapters(allAdapters);
+		return checkSelectedAdapters(allAdapters, null);
 	}
 
 

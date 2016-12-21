@@ -25,6 +25,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import info.bioinfweb.treegraph.document.TextElementData;
+import info.bioinfweb.treegraph.document.undo.CompareTextElementDataParameters;
 import info.bioinfweb.commons.Math2;
 import info.bioinfweb.commons.io.TableReader;
 
@@ -40,6 +41,7 @@ public class ImportTableData {
   private String[][] data;
   private int rowOffset = 0;
   private boolean containsHeadings = false;
+  private int keyColumn = -1;
   private Map<TextElementData, Integer> keyToLineMap = new TreeMap<TextElementData, Integer>();
 
   
@@ -65,34 +67,47 @@ public class ImportTableData {
 	  	rowOffset++;
 	  }
 	  
-	  if ((columnCount() >= 1) && (rowCount() >= 1)) {
-	  	processKeyColumn(parameters);
-	  }
-	  else {
+	  if ((columnCount() <= 1) || (rowCount() == 0)) {
 	  	throw new InsufficientTableSizeException(columnCount(), rowCount());
 	  }
   }
 	
 	
-	private void processKeyColumn(ImportTableParameters parameters) throws DuplicateKeyException {
-		keyToLineMap.clear();
-		DuplicateKeyException exception = null;
-		for (int row = 0; row < rowCount(); row++) {
-			TextElementData key = parameters.createEditedValue(data[0][row + rowOffset]);
-			if (keyToLineMap.containsKey(key)) {  // Duplicate key value
-				if (exception == null) {
-					exception = new DuplicateKeyException();
+	public void processKeyColumn(int columnIndex, CompareTextElementDataParameters parameters) throws DuplicateKeyException {
+		if (Math2.isBetween(columnIndex, 0, columnCount()  -1)) {
+			keyColumn = columnIndex;
+			keyToLineMap.clear();
+			DuplicateKeyException exception = null;
+			for (int rowIndex = 0; rowIndex < rowCount(); rowIndex++) {
+				TextElementData key = parameters.createEditedValue(data[columnIndex][rowIndex + rowOffset]);
+				if (keyToLineMap.containsKey(key)) {  // Duplicate key value
+					if (exception == null) {
+						exception = new DuplicateKeyException();
+					}
+					exception.addKey(key.toString());
 				}
-				exception.addKey(key.toString());
+				else {
+					keyToLineMap.put(key, rowIndex);
+				}
+	    }
+			
+			if (exception != null) {
+				throw exception;
 			}
-			else {
-				keyToLineMap.put(key, row);
-			}
-    }
-		
-		if (exception != null) {
-			throw exception;
 		}
+		else {
+			throw new IndexOutOfBoundsException("The column index (" + columnIndex + ") must be between 0 and " + (columnCount() - 1) + ".");
+		}
+	}
+	
+
+	public int getKeyColumnIndex() {
+		return keyColumn;
+	}
+
+
+	public boolean containsHeadings() {
+		return containsHeadings;
 	}
 	
 	
@@ -115,12 +130,12 @@ public class ImportTableData {
 	/**
 	 * Returns a cell value from the loaded table.
 	 * 
-	 * @param column - the column index of the cell (The first column after the key column has the index 0.)
-	 * @param row - the row index of the cell (starting with 0)
+	 * @param column the column index of the cell
+	 * @param row the row index of the cell (starting with 0)
 	 */
 	public String getTableValue(int column, int row) {
 		if (Math2.isBetween(column, 0, columnCount() - 1) && Math2.isBetween(row, 0, rowCount() - 1)) {
-			return data[column + 1][row + rowOffset];  // first column contains the unprocessed keys
+			return data[column][row + rowOffset];
 		}
 		else {
 			throw new IllegalArgumentException("Invalid column " + column + " and/or invalid row " + row + ".");
@@ -128,12 +143,15 @@ public class ImportTableData {
 	}
 	
 	
-	public String getUnprocessedKey(int row) {
-		if (Math2.isBetween(row, 0, rowCount() - 1)) {
-			return data[0][row + rowOffset];  // first column contains the unprocessed keys
+	public String getKeyColumnEntry(int row) {
+		if (keyColumn == -1) {
+			throw new IllegalStateException("No key column is currently defined.");
+		}
+		else if (!Math2.isBetween(row, 0, rowCount() - 1)) {
+			throw new IllegalArgumentException("Invalid row index " + row + ".");
 		}
 		else {
-			throw new IllegalArgumentException("Invalid row index " + row + ".");
+			return data[keyColumn][row + rowOffset];
 		}
 	}
 	
@@ -141,7 +159,7 @@ public class ImportTableData {
 	public String getHeading(int column) {
 		if (containsHeadings()) {
 			if (Math2.isBetween(column, 0, columnCount() - 1)) {
-				return data[column + 1][rowOffset - 1];
+				return data[column][rowOffset - 1];
 			}
 			else {
 				throw new IllegalArgumentException("Invalid column index " + column + ".");
@@ -154,7 +172,7 @@ public class ImportTableData {
 	
 	
 	public int columnCount() {
-		return Math.max(data.length - 1, 0);
+		return data.length;
 	}
 	
 	
@@ -165,10 +183,5 @@ public class ImportTableData {
 		else {
 			return 0;
 		}
-	}
-
-
-	public boolean containsHeadings() {
-		return containsHeadings;
 	}
 }

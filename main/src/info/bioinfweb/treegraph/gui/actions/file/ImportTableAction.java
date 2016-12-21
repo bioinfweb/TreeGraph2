@@ -30,6 +30,7 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 import info.bioinfweb.treegraph.document.Document;
+import info.bioinfweb.treegraph.document.nodebranchdata.NewHiddenBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.file.importtable.DuplicateKeyException;
 import info.bioinfweb.treegraph.document.undo.file.importtable.ImportTableData;
@@ -37,8 +38,9 @@ import info.bioinfweb.treegraph.document.undo.file.importtable.ImportTableEdit;
 import info.bioinfweb.treegraph.document.undo.file.importtable.ImportTableParameters;
 import info.bioinfweb.treegraph.document.undo.file.importtable.InsufficientTableSizeException;
 import info.bioinfweb.treegraph.gui.actions.DocumentAction;
-import info.bioinfweb.treegraph.gui.dialogs.io.imexporttable.AssignImportTableColumnsDialog;
+import info.bioinfweb.treegraph.gui.dialogs.io.imexporttable.KeyColumnDialog;
 import info.bioinfweb.treegraph.gui.dialogs.io.imexporttable.SelectImportTableDialog;
+import info.bioinfweb.treegraph.gui.dialogs.nodebranchdata.NodeBranchDataColumnsDialog;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeInternalFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
@@ -58,7 +60,8 @@ public class ImportTableAction extends DocumentAction {
 	
 	
 	private SelectImportTableDialog importTableDialog = null;
-	private AssignImportTableColumnsDialog assignImportColumnsDialog = null;
+	private NodeBranchDataColumnsDialog assignImportColumnsDialog = null;
+	private KeyColumnDialog keyColumnDialog = null;
 	
 	
 	
@@ -78,11 +81,48 @@ public class ImportTableAction extends DocumentAction {
 	}	
 
 	
-	private AssignImportTableColumnsDialog getAssignImportColumnsDialog() {
+	private NodeBranchDataColumnsDialog getAssignImportColumnsDialog() {
 		if (assignImportColumnsDialog == null) {
-			assignImportColumnsDialog = new AssignImportTableColumnsDialog(getMainFrame());
+			assignImportColumnsDialog = new NodeBranchDataColumnsDialog(getMainFrame(), "Import table as node/branch data", 89);
 		}
 		return assignImportColumnsDialog;
+	}
+	
+	
+	private KeyColumnDialog getKeyColumnDialog() {
+		if (keyColumnDialog == null) {
+			keyColumnDialog = new KeyColumnDialog(getMainFrame());
+		}
+		return keyColumnDialog;
+	}
+	
+	
+	private boolean showImportColumnsDialog(Document document, ImportTableParameters parameters, ImportTableData data) {
+		boolean[] allowEdit = new boolean[data.columnCount()];
+		for (int i = 0; i < allowEdit.length; i++) {
+			allowEdit[i] = true;
+		}
+		allowEdit[data.getKeyColumnIndex()] = false;
+		
+		NodeBranchDataAdapter[] adapters = new NodeBranchDataAdapter[data.columnCount()];
+		for (int i = 0; i < adapters.length; i++) {
+			if (i == data.getKeyColumnIndex()) {
+				adapters[i] = parameters.getKeyAdapter();
+			}
+			else {
+				String heading = data.getHeading(i);
+				if (heading.isEmpty()) {
+					heading = "Column " + i;
+				}
+				adapters[i] = new NewHiddenBranchDataAdapter(heading);
+			}
+		}
+		
+		boolean result = getAssignImportColumnsDialog().execute(document.getTree(), adapters, null, allowEdit, "Do not import this column");
+		if (result) {
+			parameters.setImportAdapters(adapters);  // The key adapter is also included in this list.
+		}
+		return result;
 	}
 	
 	
@@ -97,13 +137,17 @@ public class ImportTableAction extends DocumentAction {
 			try {
 				ImportTableData data = new ImportTableData(parameters);
 				if (data != null) {
-					getAssignImportColumnsDialog().execute(parameters, data, frame.getDocument().getTree());
-					if ((parameters.getImportAdapters() != null) && (parameters.getImportAdapters().length > 0)) {  // parameters.getImportAdapters().length == 0, if the user canceled in the second dialog
-						ImportTableEdit edit = new ImportTableEdit(frame.getDocument(), parameters, data);
-						frame.getDocument().executeEdit(edit);
-						if (edit.hasWarnings()) {
-							JOptionPane.showMessageDialog(MainFrame.getInstance(), edit.getWarningText(), 
-							    "Warning", JOptionPane.WARNING_MESSAGE);
+					if (getKeyColumnDialog().execute(frame.getDocument(), data)) {
+						getKeyColumnDialog().assignParameters(parameters);
+						data.processKeyColumn(getKeyColumnDialog().getSelectedTableKeyColumn(), parameters);
+						
+						if (showImportColumnsDialog(frame.getDocument(), parameters, data)) {
+							ImportTableEdit edit = new ImportTableEdit(frame.getDocument(), parameters, data);
+							frame.getDocument().executeEdit(edit);
+							if (edit.hasWarnings()) {
+								JOptionPane.showMessageDialog(MainFrame.getInstance(), edit.getWarningText(), 
+								    "Warning", JOptionPane.WARNING_MESSAGE);
+							}
 						}
 					}
 				}

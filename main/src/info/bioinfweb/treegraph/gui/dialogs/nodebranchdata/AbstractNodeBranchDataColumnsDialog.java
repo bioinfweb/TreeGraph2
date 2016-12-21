@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.gui.dialogs.io;
+package info.bioinfweb.treegraph.gui.dialogs.nodebranchdata;
 
 
 import java.awt.Frame;
@@ -41,18 +41,18 @@ import info.bioinfweb.wikihelp.client.WikiHelp;
 
 
 
-public abstract class AssignImportColumnsDialog extends OkCancelApplyWikiHelpDialog {
+public abstract class AbstractNodeBranchDataColumnsDialog extends OkCancelApplyWikiHelpDialog {
 	protected JPanel importPanel = null;
 	protected JScrollPane scrollPane;
 	protected Tree tree = null;
 
 	
-	public AssignImportColumnsDialog(Frame owner, boolean modal, WikiHelp wikiHelp) {
+	public AbstractNodeBranchDataColumnsDialog(Frame owner, boolean modal, WikiHelp wikiHelp) {
 		super(owner, modal, wikiHelp);
 	}
 	
 	
-	protected boolean checkSelectedAdapters(NodeBranchDataAdapter[] adapterArray) {
+	protected boolean checkSelectedAdapters(NodeBranchDataAdapter[] adapterArray, boolean[] excludedAdapters) {
 		StringBuffer message = new StringBuffer();
 		List<String> duplicateColumns = new ArrayList<String>();	//TODO probably use DocumentAction.createElementList() here?
 		
@@ -63,21 +63,23 @@ public abstract class AssignImportColumnsDialog extends OkCancelApplyWikiHelpDia
 		boolean idExists = false;
 		
 		for (int i = 0; i < adapterArray.length; i++) {
-			NodeBranchDataAdapter adapter = adapterArray[i];
-			if (!(adapter instanceof VoidNodeBranchDataAdapter)) {	
-				if (adapter instanceof IDElementAdapter) {
-					String name = "Node/branch data columns with the ID \"" + ((IDElementAdapter)adapter).getID() + "\"";
-					if (!adapterTypes.add(name)) {
+			if ((excludedAdapters == null) || excludedAdapters[i]) {
+				NodeBranchDataAdapter adapter = adapterArray[i];
+				if (!(adapter instanceof VoidNodeBranchDataAdapter)) {	
+					if (adapter instanceof IDElementAdapter) {
+						String name = "Node/branch data columns with the ID \"" + ((IDElementAdapter)adapter).getID() + "\"";
+						if (!adapterTypes.add(name)) {
+							idExists = true;
+							duplicateColumns.add(name);
+						}
+					}
+					else if (!adapterTypes.add(adapter.toString())) {
 						idExists = true;
-						duplicateColumns.add(name);
+						duplicateColumns.add(adapter.toString());
 					}
 				}
-				else if (!adapterTypes.add(adapter.toString())) {
-					idExists = true;
-					duplicateColumns.add(adapter.toString());
-				}
+				cancel = cancel || idExists;
 			}
-			cancel = cancel || idExists;
 		}
 		message.append(DocumentAction.createElementList(duplicateColumns, false));
 		message.append("\nPlease select different node/branch data columns.");		
@@ -90,21 +92,23 @@ public abstract class AssignImportColumnsDialog extends OkCancelApplyWikiHelpDia
 			
 			message.append("The following node/branch data columns already exist in the tree:\n\n");
 			for (int i = 0; i < adapterArray.length; i++) {
-				NodeBranchDataAdapter adapter = adapterArray[i];
-				boolean columnExists = false;
-				if (!(adapter instanceof VoidNodeBranchDataAdapter)) {	
-					if (adapter instanceof IDElementAdapter) {
-						columnExists = IDManager.idExistsInSubtree(tree.getPaintStart(), ((IDElementAdapter)adapter).getID());
-						if (columnExists) {
-							duplicateColumns.add("Node/branch data columns with the ID \"" + ((IDElementAdapter)adapter).getID() + "\"");
-						}						
+				if ((excludedAdapters == null) || excludedAdapters[i]) {
+					NodeBranchDataAdapter adapter = adapterArray[i];
+					boolean columnExists = false;
+					if (!(adapter instanceof VoidNodeBranchDataAdapter)) {	
+						if (adapter instanceof IDElementAdapter) {
+							columnExists = IDManager.idExistsInSubtree(tree.getPaintStart(), ((IDElementAdapter)adapter).getID());
+							if (columnExists) {
+								duplicateColumns.add("Node/branch data columns with the ID \"" + ((IDElementAdapter)adapter).getID() + "\"");
+							}						
+						}
+						else {
+							columnExists = true;
+							duplicateColumns.add(adapter.toString());
+						}
 					}
-					else {
-						columnExists = true;
-						duplicateColumns.add(adapter.toString());
-					}
+					cancel = cancel || columnExists;
 				}
-				cancel = cancel || columnExists;
 			}
 			message.append(DocumentAction.createElementList(duplicateColumns, false));
 			

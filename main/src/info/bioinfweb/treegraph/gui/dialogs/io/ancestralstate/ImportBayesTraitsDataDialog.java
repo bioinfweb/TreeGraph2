@@ -23,7 +23,7 @@ import info.bioinfweb.treegraph.document.undo.file.ancestralstate.AncestralState
 import info.bioinfweb.treegraph.gui.dialogs.CompareTextElementDataParametersPanel;
 import info.bioinfweb.treegraph.gui.dialogs.io.FileDialog;
 import info.bioinfweb.treegraph.gui.dialogs.io.TextFileFilter;
-import info.bioinfweb.treegraph.gui.dialogs.io.imexporttable.AssignImportTableColumnsDialog;
+import info.bioinfweb.treegraph.gui.dialogs.nodebranchdata.NodeBranchDataColumnsDialog;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataInput;
 
 import java.awt.Color;
@@ -46,7 +46,7 @@ import javax.swing.filechooser.FileFilter;
 
 /**
  * Dialog that prompts the user for a table file to be imported to node/branch data columns as well as
- * several import options. This dialog is displayed in a sequence before {@link AssignImportTableColumnsDialog}.
+ * several import options. This dialog is displayed in a sequence before {@link NodeBranchDataColumnsDialog}.
  * 
  * @author Ben St&ouml;ver
  */

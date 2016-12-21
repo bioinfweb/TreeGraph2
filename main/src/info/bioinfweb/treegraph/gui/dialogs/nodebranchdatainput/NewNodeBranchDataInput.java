@@ -74,6 +74,19 @@ public class NewNodeBranchDataInput extends NodeBranchDataInput {
 
 
 	@Override
+	public boolean setSelectedAdapter(NodeBranchDataAdapter adapter) {
+		boolean result = super.setSelectedAdapter(adapter);
+		if (!result && (adapter instanceof NewNodeBranchDataAdapter)) {  // In this case the IDs do not have to match.
+			result = setSelectedAdapter(adapter.getClass());
+			if (result) {
+				setID(((NewNodeBranchDataAdapter)adapter).getID());
+			}
+		}
+		return result;
+	}
+
+
+	@Override
 	protected JComboBox<NodeBranchDataAdapter> getComboBox() {
 		if (comboBox == null) {
 			super.getComboBox().addItemListener(new ItemListener() {
