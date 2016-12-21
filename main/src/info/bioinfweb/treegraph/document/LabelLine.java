@@ -72,6 +72,16 @@ public class LabelLine implements Cloneable {
   public boolean contains(Label label) {
   	return line.contains(label);
   }
+  
+  
+  public boolean contains(Class<? extends Label> labelClass) {
+  	for (Label label : line) {
+			if (labelClass.isInstance(label)) {
+				return true;
+			}
+		}
+  	return false;
+  }
 	
 	
 	public int size() {

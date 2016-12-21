@@ -291,6 +291,27 @@ public class Labels implements Cloneable {
 	}
 	
 	
+	private boolean contains(boolean above, Class<? extends Label> labelClass) {
+		List<LabelLine> lines = getLines(above);
+		for (LabelLine line : lines) {
+			if (line.contains(labelClass)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
+	public boolean contains(Class<? extends Label> labelClass) {
+		if (contains(true, labelClass)) {
+			return true;
+		}
+		else {
+			return contains(false, labelClass);
+		}
+	}
+	
+	
 	public double getLastLinePos(boolean above, int lineNumber) {
 		int labelCount = labelCount(above, lineNumber);  //TODO Can the line number from the format object provided here be out of range? (See error report 20160213_083017_5552959635752161353.xml) 
 		if (labelCount > 0) {

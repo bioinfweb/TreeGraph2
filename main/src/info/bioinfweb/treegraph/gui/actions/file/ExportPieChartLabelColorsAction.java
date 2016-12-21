@@ -18,20 +18,6 @@
  */
 package info.bioinfweb.treegraph.gui.actions.file;
 
-import java.awt.Color;
-import java.awt.event.ActionEvent;
-
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-
-import javax.swing.Action;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Document;
@@ -44,6 +30,18 @@ import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeInternalFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.swing.Action;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 
 
 public class ExportPieChartLabelColorsAction extends DocumentAction {
@@ -53,7 +51,7 @@ public class ExportPieChartLabelColorsAction extends DocumentAction {
 	
 	public ExportPieChartLabelColorsAction(MainFrame mainFrame) {
 		super(mainFrame);
-		putValue(Action.NAME, "Export pie chart label colors"); 
+		putValue(Action.NAME, "Export pie chart label colors..."); 
 		putValue(Action.SHORT_DESCRIPTION, "Export pie chart label colors");
 	}
 	
@@ -136,6 +134,7 @@ public class ExportPieChartLabelColorsAction extends DocumentAction {
 	
 	@Override
 	public void setEnabled(Document document, TreeSelection selection, NodeBranchDataAdapter tableAdapter) {
-		setEnabled(oneElementSelected(selection) && selection.containsType(Branch.class));
+		setEnabled(oneElementSelected(selection) && selection.containsType(Branch.class) && 
+				selection.getFirstElementOfType(Branch.class).getLabels().contains(PieChartLabel.class));
 	}
 }
