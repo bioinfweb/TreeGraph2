@@ -20,6 +20,7 @@ package info.bioinfweb.treegraph.document.undo.file.importtable;
 
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
@@ -28,7 +29,6 @@ import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.commons.SystemUtils;
 
 import org.junit.* ;
-
 
 import static org.junit.Assert.* ;
 
@@ -48,7 +48,7 @@ public class ImportTableDataTest {
 	}
 	
 	
-	private void test_tableUnique(String fileName, boolean containsHeadings, int linesToSkip) {
+	private void test_tableUnique(String fileName, boolean containsHeadings, int linesToSkip) throws Exception {
   	ImportTableParameters parameters = new ImportTableParameters();
   	parameters.setTableFile(new File("data" + SystemUtils.FILE_SEPARATOR + "importTable" + 
   	    SystemUtils.FILE_SEPARATOR + fileName));
@@ -56,72 +56,67 @@ public class ImportTableDataTest {
   	parameters.setHeadingContained(containsHeadings);
   	parameters.setLinesToSkip(linesToSkip);
   	
-  	try {
-  		final int columnCount = 2;
-  		final int rowCount = 7;
-  		
-  		ImportTableData data = new ImportTableData(parameters);
-  		
-  		// Test size:
-  		assertEquals(columnCount, data.columnCount());
-  		assertEquals(rowCount, data.rowCount());
-  		
-  		// Test headings:
-  		assertEquals(containsHeadings, data.containsHeadings());
-  		if (containsHeadings) {
-  			assertEquals("Data1", data.getHeading(0));
-  			assertEquals("Data2", data.getHeading(1));
-  		}
-  		
-  		// Test keys:
-  		Map<TextElementData, Integer> keyMap = createUniqueNamesKeyMap();
-  		assertEquals(keyMap.keySet(), data.keySet());
-  		Iterator<TextElementData> keyIterator = keyMap.keySet().iterator();
-  		while (keyIterator.hasNext()) {
-  			TextElementData key = keyIterator.next();
-  			assertEquals((int)keyMap.get(key), data.getRowByKey(key));
-  		}
-  		
-  		// Test contents:
-  		for (int row = 0; row < rowCount; row++) {
-	      assertEquals("V0" + row, data.getTableValue(0, row));
-      }
-      assertEquals("V12", data.getTableValue(1, 2));
-      assertEquals("V14", data.getTableValue(1, 4));
-  	}
-  	catch (Exception e) {
-  		e.printStackTrace();
-  		fail(e.getMessage());
-  	}
+		final int columnCount = 3;
+		final int rowCount = 7;
+		
+		ImportTableData data = new ImportTableData(parameters);
+		data.processKeyColumn(0, parameters);
+		
+		// Test size:
+		assertEquals(columnCount, data.columnCount());
+		assertEquals(rowCount, data.rowCount());
+		
+		// Test headings:
+		assertEquals(containsHeadings, data.containsHeadings());
+		if (containsHeadings) {
+			assertEquals("Data1", data.getHeading(1));
+			assertEquals("Data2", data.getHeading(2));
+		}
+		
+		// Test keys:
+		Map<TextElementData, Integer> keyMap = createUniqueNamesKeyMap();
+		assertEquals(keyMap.keySet(), data.keySet());
+		Iterator<TextElementData> keyIterator = keyMap.keySet().iterator();
+		while (keyIterator.hasNext()) {
+			TextElementData key = keyIterator.next();
+			assertEquals((int)keyMap.get(key), data.getRowByKey(key));
+		}
+		
+		// Test contents:
+		for (int row = 0; row < rowCount; row++) {
+      assertEquals("V0" + row, data.getTableValue(1, row));
+    }
+    assertEquals("V12", data.getTableValue(2, 2));
+    assertEquals("V14", data.getTableValue(2, 4));
 	}
 	
 	
   @Test
-  public void test_constructor_noHeadings_noSkipped() {
+  public void test_constructor_noHeadings_noSkipped() throws Exception {
   	test_tableUnique("TableUnique_noHeadings_noSkipped.txt", false, 0);
   }
 	
 	
   @Test
-  public void test_constructor_noHeadings_3skipped() {
+  public void test_constructor_noHeadings_3skipped() throws Exception {
   	test_tableUnique("TableUnique_noHeadings_3skipped.txt", false, 3);
   }
 	
 	
   @Test
-  public void test_constructor_headings_noSkipped() {
+  public void test_constructor_headings_noSkipped() throws Exception {
   	test_tableUnique("TableUnique_headings_noSkipped.txt", true, 0);
   }
 	
 	
   @Test
-  public void test_constructor_headings_3skipped() {
+  public void test_constructor_headings_3skipped() throws Exception {
   	test_tableUnique("TableUnique_headings_3skipped.txt", true, 3);
   }
   
   
-  @Test
-  public void test_constructor_diplucateKey() {
+  @Test(expected=DuplicateKeyException.class)
+  public void test_constructor_diplucateKey() throws Exception {
   	ImportTableParameters parameters = new ImportTableParameters();
   	parameters.setTableFile(new File("data" + SystemUtils.FILE_SEPARATOR + "importTable" + 
   	    SystemUtils.FILE_SEPARATOR + "TableUnique_noHeadings_noSkipped_diplicateKey.txt"));
@@ -129,20 +124,12 @@ public class ImportTableDataTest {
   	parameters.setHeadingContained(false);
   	parameters.setLinesToSkip(0);
   	
-  	try {
-  		new ImportTableData(parameters);
-  		fail("DuplicateKeyException not thrown.");
-  	}
-  	catch (DuplicateKeyException e) {}  // expected program flow, nothing to do
-  	catch (Exception e) {
-  		e.printStackTrace();
-  		fail(e.getMessage());
-  	}
+ 		new ImportTableData(parameters).processKeyColumn(0, parameters);;
   }	
   
   
-  @Test
-  public void test_constructor_insufficientTableSize() {
+  @Test(expected=InsufficientTableSizeException.class)
+  public void test_constructor_insufficientTableSize() throws Exception {
   	ImportTableParameters parameters = new ImportTableParameters();
   	parameters.setTableFile(new File("data" + SystemUtils.FILE_SEPARATOR + "importTable" + 
   	    SystemUtils.FILE_SEPARATOR + "TableUnique_noHeadings_noSkipped_noDataColumns.txt"));
@@ -150,20 +137,12 @@ public class ImportTableDataTest {
   	parameters.setHeadingContained(false);
   	parameters.setLinesToSkip(0);
   	
-  	try {
-  		new ImportTableData(parameters);
-  		fail("InsufficientTableSizeException not thrown.");
-  	}
-  	catch (InsufficientTableSizeException e) {}  // expected program flow, nothing to do
-  	catch (Exception e) {
-  		e.printStackTrace();
-  		fail(e.getMessage());
-  	}
+ 		new ImportTableData(parameters);
   }	
   
   
   @Test
-  public void test_constructor_emptyDataColumn() {
+  public void test_constructor_emptyDataColumn() throws Exception {
   	ImportTableParameters parameters = new ImportTableParameters();
   	parameters.setTableFile(new File("data" + SystemUtils.FILE_SEPARATOR + "importTable" + 
   	    SystemUtils.FILE_SEPARATOR + "TableUnique_noHeadings_noSkipped_emptyDataColumn.txt"));
@@ -171,27 +150,21 @@ public class ImportTableDataTest {
   	parameters.setHeadingContained(false);
   	parameters.setLinesToSkip(0);
   	
-  	try {
-  		final int columnCount = 1;
-  		final int rowCount = 7;
-  		
-  		ImportTableData data = new ImportTableData(parameters);
-  		
-  		// Test size:
-  		assertEquals(columnCount, data.columnCount());
-  		assertEquals(rowCount, data.rowCount());
-  		
-  		// Test headings:
-  		assertFalse(data.containsHeadings());
-  		
-  		// Test contents:
-  		for (int row = 0; row < rowCount; row++) {
-	      assertEquals("", data.getTableValue(0, row));
-      }
-  	}
-  	catch (Exception e) {
-  		e.printStackTrace();
-  		fail(e.getMessage());
-  	}
+		final int columnCount = 2;
+		final int rowCount = 7;
+		
+		ImportTableData data = new ImportTableData(parameters);
+		
+		// Test size:
+		assertEquals(columnCount, data.columnCount());
+		assertEquals(rowCount, data.rowCount());
+		
+		// Test headings:
+		assertFalse(data.containsHeadings());
+		
+		// Test contents:
+		for (int row = 0; row < rowCount; row++) {
+      assertEquals("", data.getTableValue(1, row));
+    }
   }	
 }
