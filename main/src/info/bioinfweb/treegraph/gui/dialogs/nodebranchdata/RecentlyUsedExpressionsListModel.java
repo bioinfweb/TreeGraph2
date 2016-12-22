@@ -28,8 +28,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import javax.swing.AbstractListModel;
 import javax.swing.ListModel;
@@ -41,12 +41,12 @@ import javax.swing.ListModel;
  * @author Ben St&ouml;ver
  * @since 2.0.24
  */
-public class RecentlyUsedExpressionsListModel extends AbstractListModel implements ListModel {
+public class RecentlyUsedExpressionsListModel extends AbstractListModel<String> implements ListModel<String> {
 	public static final String FILE_NAME = "RecentlyUsedExpressions.txt";
 	public static final int MAXIMAL_COUNT = 25;
 	
 	
-	private List<String> expressions = new Vector<String>();
+	private List<String> expressions = new ArrayList<String>();
 	
 	
 	public RecentlyUsedExpressionsListModel() {

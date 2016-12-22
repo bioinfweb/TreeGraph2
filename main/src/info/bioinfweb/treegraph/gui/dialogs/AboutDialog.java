@@ -352,8 +352,7 @@ public class AboutDialog extends JDialog {
 			generalEditorPane = new JEditorPane();
 			generalEditorPane.setContentType("text/html");
 			generalEditorPane.setText("<html>" +
-					"<head><link rel='stylesheet' type='text/css' href='" + 
-					    getResourcePath("Style.css") + "'></head>" +
+					"<head><link rel='stylesheet' type='text/css' href='" + getResourcePath("Style.css") + "'></head>" +
 					"<body>" +
 					"<h1><i>TreeGraph " + Main.getInstance().getVersion().toString() + "</i></h1>" +
 					"<p>Development: <a href='http://bioinfweb.info/People/Stoever'>Ben St&ouml;ver</a>, " +
@@ -369,17 +368,17 @@ public class AboutDialog extends JDialog {
 					    "More publications can be found on the <a href='http://treegraph.bioinfweb.info/Publications'>website</a>.</p>" +
 					
 					"<p>This program is free software: you can redistribute it and/or modify it " +
-					"under the terms of the GNU General Public License (see General Public " +
-					"License tab) as published by the Free Software Foundation, either version 3 " +
-					"of the License, or (at your option) any later version.</p>" +
+					    "under the terms of the GNU General Public License (see General Public " +
+					    "License tab) as published by the Free Software Foundation, either version 3 " +
+					    "of the License, or (at your option) any later version.</p>" +
 					
 					"<p>This program is distributed in the hope that it will be useful, but " +
-					"WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY " +
-					"or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for " +
-					"more details.</p>" +
+					    "WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY " +
+					    "or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for " +
+					    "more details.</p>" +
 					
   				"<p>The included Apache Commons, Batic and l2fprod-common Libraries are distributed under " +
-					"Apache Public Licence (see Apache Public Licence tab).</p>" +
+					    "Apache Public Licence (see Apache Public Licence tab).</p>" +
 					
 					"<p><b>The following libraries are used by <i>TreeGraph 2</i>:</b></p>" +
 					"<ul>" +

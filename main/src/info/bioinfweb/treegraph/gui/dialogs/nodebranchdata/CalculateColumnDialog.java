@@ -66,7 +66,7 @@ public class CalculateColumnDialog extends EditDialog {
 	private JTextField expressionTextField = null;
 	private JPanel recentlyUsedPanel = null;
 	private JScrollPane recentlyUsedScrollPane = null;
-	private JList recentlyUsedList = null;
+	private JList<String> recentlyUsedList = null;
 	private JPanel columnPanel = null;
 	private NewNodeBranchDataInput columnInput = null;
 
@@ -225,7 +225,7 @@ public class CalculateColumnDialog extends EditDialog {
 	 * 	
 	 * @return javax.swing.JList	
 	 */
-	private JList getRecentlyUsedList() {
+	private JList<String> getRecentlyUsedList() {
 		if (recentlyUsedList == null) {
 			RecentlyUsedExpressionsListModel model = new RecentlyUsedExpressionsListModel();
 			try {
@@ -236,7 +236,7 @@ public class CalculateColumnDialog extends EditDialog {
 						"configuration file.",	"IO Error", JOptionPane.ERROR_MESSAGE);
 			}
 			
-			recentlyUsedList = new JList(model);
+			recentlyUsedList = new JList<String>(model);
 			recentlyUsedList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			recentlyUsedList.addListSelectionListener(
 					new javax.swing.event.ListSelectionListener() {
