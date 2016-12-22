@@ -20,15 +20,15 @@ package info.bioinfweb.treegraph.document.undo.file;
 
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.TextIDElementType;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextElementDataAdapter;
-import info.bioinfweb.treegraph.document.undo.file.AddSupportValuesEdit.TargetType;
 
 import java.io.File;
 
 public class AddSupportValuesParameters {
 	private Document sourceDocument;
 	private TextElementDataAdapter terminalsAdapter;
-	private TargetType targetType;
+	private TextIDElementType targetType;
 	private String idPrefix;
 	private NodeBranchDataAdapter sourceSupportColumn;
 	private NodeBranchDataAdapter sourceLeavesColumn;
@@ -56,12 +56,12 @@ public class AddSupportValuesParameters {
 	}
 	
 	
-	public TargetType getTargetType() {
+	public TextIDElementType getTargetType() {
 		return targetType;
 	}
 	
 	
-	public void setTargetType(TargetType targetType) {
+	public void setTargetType(TextIDElementType targetType) {
 		this.targetType = targetType;
 	}
 	

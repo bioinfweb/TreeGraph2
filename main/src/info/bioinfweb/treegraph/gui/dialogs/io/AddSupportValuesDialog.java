@@ -29,49 +29,35 @@ import info.bioinfweb.treegraph.document.io.nexus.NexusFilter;
 import info.bioinfweb.treegraph.document.io.phyloxml.PhyloXMLFilter;
 import info.bioinfweb.treegraph.document.io.xtg.XTGFilter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextElementDataAdapter;
-import info.bioinfweb.treegraph.document.tools.IDManager;
 import info.bioinfweb.treegraph.document.undo.file.AddSupportValuesParameters;
-import info.bioinfweb.treegraph.document.undo.file.AddSupportValuesEdit.TargetType;
 import info.bioinfweb.treegraph.gui.dialogs.io.loadlogger.LoadLoggerDialog;
+import info.bioinfweb.treegraph.gui.dialogs.nodebranchdata.TextIDElementTypeInput;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataInput;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 
-import javax.swing.JPanel;
-
-import java.awt.Frame;
-
-import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-
-import java.awt.GridBagLayout;
-
-import javax.swing.BorderFactory;
-import javax.swing.border.TitledBorder;
-
-import java.awt.Font;
 import java.awt.Color;
-
-import javax.swing.JTextField;
-
+import java.awt.Font;
+import java.awt.Frame;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 
-import javax.swing.JLabel;
-import javax.swing.JRadioButton;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
-
-import java.awt.Insets;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.TitledBorder;
 
 
 
 public class AddSupportValuesDialog extends FileDialog {
-	private File file;
-	
-	
 	private JPanel jContentPane = null;
 	private JPanel fileChooserPanel = null;
 	private JFileChooser fileChooser;  // This field must not be set to anything (e.g. null) because the initialization performed by the super constructor (FileDialog) would be overwritten than.
@@ -79,17 +65,14 @@ public class AddSupportValuesDialog extends FileDialog {
 	private JTextField idNameTextField = null;
 	private NodeBranchDataInput terminalDataInput = null;
 	private JLabel prefixLabel = null;
-	private JPanel targetTypePanel = null;
-	private JRadioButton labelRadioButton = null;
-	private JRadioButton branchDataRadioButton = null;
-	private JRadioButton nodeDataRadioButton = null;
+	private TextIDElementTypeInput targetTypePanel = null;
 	private JPanel terminalsPanel = null;
 	private JLabel terminalsLabel = null;
-	private ButtonGroup targetDataButtonGroup = null;  //  @jve:decl-index=0:
 	private JCheckBox translateInternalsCheckBox = null;
 	private JCheckBox parseNumericValuesCheckBox;
 	private JPanel importPanel = null;
 
+	private File file;
 	private NexusFilter nexusFilter;  // This field must not be set to anything (e.g. null)
 	private XTGFilter xtgFilter;
 	private PhyloXMLFilter phyloXMLFilter;
@@ -133,13 +116,6 @@ public class AddSupportValuesDialog extends FileDialog {
 	 */
 	public boolean assignParameters(AddSupportValuesParameters parameters) {
     DocumentReader reader = ReadWriteFactory.getInstance().getReader(file);
-		TargetType targetType = TargetType.LABEL;
-		if (getBranchDataRadioButton().isSelected()) {
-			targetType = TargetType.HIDDEN_BRANCH_DATA;
-		}
-		else if (getNodeDataRadioButton().isSelected()) {
-			targetType = TargetType.HIDDEN_NODE_DATA;
-		}
 		try {
 			ReadWriteParameterMap parameterMap = new ReadWriteParameterMap();
 			parameterMap.putApplicationLogger(LoadLoggerDialog.getInstance());
@@ -170,7 +146,7 @@ public class AddSupportValuesDialog extends FileDialog {
 			parameters.setIdPrefix(getIDNameTextField().getText());
 			parameters.setRooted(rooted);
 			parameters.setTerminalsAdapter((TextElementDataAdapter)getTerminalDataInput().getSelectedAdapter());
-			parameters.setTargetType(targetType);
+			parameters.setTargetType(getTargetTypePanel().getSelectedType());
 			parameters.setParseNumericValues(parseNumericValuesCheckBox.isSelected());
 		}
 		catch (Exception e) {
@@ -223,7 +199,7 @@ public class AddSupportValuesDialog extends FileDialog {
 			jContentPane.add(getFileChooserPanel(), null);
 			jContentPane.add(getImportPanel(), null);
 			jContentPane.add(getTerminalsPanel(), null);
-			jContentPane.add(getIdNamePanel(), null);
+			jContentPane.add(getIDNamePanel(), null);
 			jContentPane.add(getButtonsPanel(), null);
 			getApplyButton().setVisible(false);
 			getOkButton().setText("Next >");
@@ -299,7 +275,7 @@ public class AddSupportValuesDialog extends FileDialog {
 	 * 	
 	 * @return javax.swing.JPanel	
 	 */
-	private JPanel getIdNamePanel() {
+	private JPanel getIDNamePanel() {
 		if (idNamePanel == null) {
 			GridBagConstraints gridBagConstraints2 = new GridBagConstraints();
 			gridBagConstraints2.gridx = 0;
@@ -346,82 +322,11 @@ public class AddSupportValuesDialog extends FileDialog {
 	 * 	
 	 * @return javax.swing.JPanel	
 	 */
-	private JPanel getTargetTypePanel() {
+	private TextIDElementTypeInput getTargetTypePanel() {
 		if (targetTypePanel == null) {
-			GridBagConstraints gridBagConstraints5 = new GridBagConstraints();
-			gridBagConstraints5.gridx = 2;
-			gridBagConstraints5.weightx = 1.0;
-			gridBagConstraints5.anchor = GridBagConstraints.EAST;
-			gridBagConstraints5.gridy = 0;
-			GridBagConstraints gridBagConstraints4 = new GridBagConstraints();
-			gridBagConstraints4.gridx = 1;
-			gridBagConstraints4.weightx = 1.0;
-			gridBagConstraints4.gridy = 0;
-			GridBagConstraints gridBagConstraints3 = new GridBagConstraints();
-			gridBagConstraints3.anchor = GridBagConstraints.WEST;
-			gridBagConstraints3.weightx = 1.0;
-			targetTypePanel = new JPanel();
-			targetTypePanel.setLayout(new GridBagLayout());
-			targetTypePanel.add(getLabelRadioButton(), gridBagConstraints3);
-			targetTypePanel.add(getBranchDataRadioButton(), gridBagConstraints4);
-			targetTypePanel.add(getNodeDataRadioButton(), gridBagConstraints5);
-			getTargetDataButtonGroup();
+			targetTypePanel = new TextIDElementTypeInput();
 		}
 		return targetTypePanel;
-	}
-
-
-	/**
-	 * This method initializes labelRadioButton	
-	 * 	
-	 * @return javax.swing.JRadioButton	
-	 */
-	private JRadioButton getLabelRadioButton() {
-		if (labelRadioButton == null) {
-			labelRadioButton = new JRadioButton();
-			labelRadioButton.setText("New labels");
-			labelRadioButton.setSelected(true);
-		}
-		return labelRadioButton;
-	}
-
-
-	/**
-	 * This method initializes branchDataRadioButton	
-	 * 	
-	 * @return javax.swing.JRadioButton	
-	 */
-	private JRadioButton getBranchDataRadioButton() {
-		if (branchDataRadioButton == null) {
-			branchDataRadioButton = new JRadioButton();
-			branchDataRadioButton.setText("New hidden branch data");
-		}
-		return branchDataRadioButton;
-	}
-
-
-	/**
-	 * This method initializes nodeDataRadioButton	
-	 * 	
-	 * @return javax.swing.JRadioButton	
-	 */
-	private JRadioButton getNodeDataRadioButton() {
-		if (nodeDataRadioButton == null) {
-			nodeDataRadioButton = new JRadioButton();
-			nodeDataRadioButton.setText("New hidden node data");
-		}
-		return nodeDataRadioButton;
-	}
-
-
-	private ButtonGroup getTargetDataButtonGroup() {
-		if (targetDataButtonGroup == null) {
-			targetDataButtonGroup = new ButtonGroup();
-			targetDataButtonGroup.add(getLabelRadioButton());
-			targetDataButtonGroup.add(getBranchDataRadioButton());
-			targetDataButtonGroup.add(getNodeDataRadioButton());
-		}
-		return targetDataButtonGroup;
 	}
 
 

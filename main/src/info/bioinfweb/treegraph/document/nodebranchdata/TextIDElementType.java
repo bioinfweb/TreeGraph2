@@ -26,22 +26,28 @@ import info.bioinfweb.treegraph.document.TextElementData;
 
 
 
-/**
- * This interface should be implemented by all node/branch data adapters that rely on document elements
- * that contain instances of {@link TextElementData}. 
+/** 
+ * Enumerates all types of annotations that attach an instance of {@link TextElementData} to a {@link Node}. 
  * 
- * @author Ben St&ouml;ver
+ *  @author Ben St&ouml;ver
  */
-public interface TextElementDataAdapter extends NodeBranchDataAdapter {
-	public static final DecimalFormat DEFAULT_DECIMAL_FORMAT = new DecimalFormat();
-		
-	/**
-	 * Returns original the instance of the underlying {@link TextElementData} object.
-	 *  
-	 * @param node - the node that carries the data
-	 * @see NodeBranchDataAdapter#toTextElementData(Node)
-	 */
-	public TextElementData getData(Node node);
-
-	public boolean assignData(Node node, TextElementData data);
+public enum TextIDElementType {
+	TEXT_LABEL, 
+	HIDDEN_NODE_DATA, 
+	HIDDEN_BRANCH_DATA;
+	
+	
+	public TextIDElementDataAdapter createAdapterInstance(String id, DecimalFormat decimalFormat) {
+		switch (this) {
+			case TEXT_LABEL:
+				return new TextLabelAdapter(id, decimalFormat);
+			case HIDDEN_BRANCH_DATA:
+				return new HiddenBranchDataAdapter(id);
+			case HIDDEN_NODE_DATA:
+				return new HiddenNodeDataAdapter(id);
+			default:
+				throw new InternalError("Unsupported target type " + this + " encountered. "
+						+ "Please inform the TreeGraph developers on this bug.");
+		}
+	}
 }

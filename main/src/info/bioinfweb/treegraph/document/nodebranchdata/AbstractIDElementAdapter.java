@@ -27,9 +27,7 @@ import java.text.DecimalFormat;
  * Node data adapters that need to store an ID can be inherited from this abstract class.
  * @author Ben St&ouml;ver
  */
-public abstract class AbstractIDElementAdapter extends AbstractTextElementDataAdapter 
-    implements IDElementAdapter {
-	
+public abstract class AbstractIDElementAdapter extends AbstractTextElementDataAdapter implements TextIDElementDataAdapter {
 	protected String id = "";
 	
 	

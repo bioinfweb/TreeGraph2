@@ -99,7 +99,7 @@ public class WholeColumnFunction extends IDFunction {
 		}
 		else if (idValue instanceof NodeBranchDataAdapter) {
 			NodeBranchDataAdapter adapter = (NodeBranchDataAdapter)idValue;
-			if (getEdit().getAdapter() != adapter) {
+			if (adapter.equals(getEdit().getCurrentTargetAdapter())) {
 				stack.push(calculate(adapter));
 			}
 			else {

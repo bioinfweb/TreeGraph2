@@ -26,7 +26,8 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
@@ -41,7 +42,7 @@ import javax.swing.JTextField;
  */ 
 public class NewNodeBranchDataInput extends NodeBranchDataInput {
 	private JTextField textField = null;
-	private Vector<NodeDataInputListener> inputListeners = new Vector<NodeDataInputListener>();
+	private List<NodeDataInputListener> inputListeners = new ArrayList<NodeDataInputListener>();
 	
 	
 	public NewNodeBranchDataInput(JPanel panel, int x, int y, boolean horizontal) {

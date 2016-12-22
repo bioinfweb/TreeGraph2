@@ -36,10 +36,6 @@ import info.bioinfweb.commons.Math2;
 public abstract class AbstractTextElementDataAdapter extends AbstractNodeBranchDataAdapter 
     implements NodeBranchDataAdapter, TextElementDataAdapter {
 	
-	
-	public static final DecimalFormat DEFAULT_DECIMAL_FORMAT = new DecimalFormat();
-	
-	
 	private DecimalFormat defaultDecimalFormat;
 	
 	

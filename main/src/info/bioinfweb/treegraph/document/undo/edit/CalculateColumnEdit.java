@@ -19,24 +19,25 @@
 package info.bioinfweb.treegraph.document.undo.edit;
 
 
-import java.text.DecimalFormat;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Vector;
-
-import javax.swing.undo.CannotRedoException;
-
-import org.nfunk.jep.JEP;
-import org.nfunk.jep.ParseException;
-
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextLabel;
+import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.format.TextFormats;
-import info.bioinfweb.treegraph.document.nodebranchdata.*;
+import info.bioinfweb.treegraph.document.nodebranchdata.BranchLengthAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.HiddenBranchDataAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.HiddenNodeDataAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.NewNodeBranchDataAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.TextElementDataAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.TextIDElementType;
+import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.UniqueNameAdapter;
 import info.bioinfweb.treegraph.document.tools.IDManager;
-import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.*;
+import info.bioinfweb.treegraph.document.undo.DocumentEdit;
+import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.AbstractFunction;
+import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.UndefinedIDException;
 import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.topology.IndexInParentFunction;
 import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.topology.IsLeafFunction;
 import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.topology.IsRootFunction;
@@ -51,7 +52,18 @@ import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.vararg.Produc
 import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.vararg.SumFunction;
 import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.vararg.VarArgFunction;
 import info.bioinfweb.treegraph.document.undo.nodebranchdata.NodeBranchDataColumnBackup;
-import info.bioinfweb.treegraph.document.undo.nodebranchdata.NodeBranchDataEdit;
+
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.swing.undo.CannotRedoException;
+import javax.swing.undo.CannotUndoException;
+
+import org.nfunk.jep.JEP;
+import org.nfunk.jep.ParseException;
 
 
 
@@ -61,7 +73,7 @@ import info.bioinfweb.treegraph.document.undo.nodebranchdata.NodeBranchDataEdit;
  * @author Ben St&ouml;ver
  * @since 2.0.24
  */
-public class CalculateColumnEdit extends NodeBranchDataEdit {
+public class CalculateColumnEdit extends DocumentEdit {
 	public static final String CURRENT_VALUE_VAR = "THIS";
 	public static final String UNIQUE_NODE_NAMES_VAR = "UNIQUE";
 	public static final String NODE_NAMES_VAR = "NAME";
@@ -70,21 +82,44 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 	public static final String UNKNOWN_FUNCTION_NAME_ERROR = "Syntax Error (implicit multiplication not enabled)";
 	
 	
-  private String expression;
   private JEP parser;
+  private String valueExpression;
+  private NodeBranchDataAdapter targetAdapter;
+  private String targetColumnExpression;
+  private TextIDElementType targetType;
   private Map<String, NodeBranchDataAdapter> adapterMap;
   private boolean isEvaluating = false;
   private boolean isEvaluatingDecimal = true;
   private Node position = null;
-  private List<String> errors = new Vector<String>();
+  private List<String> errors = new ArrayList<String>();
+  private Map<String, NodeBranchDataColumnBackup> backups = new HashMap<>();
 	
 	
-	public CalculateColumnEdit(Document document, NodeBranchDataAdapter targetAdapter, String expression) {
-		super(document, targetAdapter);
-		this.expression = expression;
+	public CalculateColumnEdit(Document document, NodeBranchDataAdapter targetAdapter, String targetColumnExpression, 
+			TextIDElementType targetType, String valueExpression) {
+		
+		super(document, DocumentChangeType.TOPOLOGICAL_BY_RENAMING);
+		this.targetAdapter = targetAdapter;
+		this.targetColumnExpression = targetColumnExpression;
+		this.targetType = targetType;
+		this.valueExpression = valueExpression;
+		
 		parser = createParser();
 		adapterMap = createAdapterMap();
-		backup = new NodeBranchDataColumnBackup(targetAdapter, document.getTree().getPaintStart());
+		
+		if (targetAdapter != null) {
+			parser.addVariable(CURRENT_VALUE_VAR, targetAdapter);
+			backups.put(getAdapterName(targetAdapter), new NodeBranchDataColumnBackup(targetAdapter, document.getTree().getPaintStart()));
+		}
+	}
+	
+	
+	//TODO Possibly move this method to a general tool class.
+	private String getAdapterName(NodeBranchDataAdapter adapter) {
+		if (adapter instanceof NewNodeBranchDataAdapter) {
+			adapter = ((NewNodeBranchDataAdapter)adapter).getPermanentAdapter();  // Necessary to include the ID in the name.
+		}
+		return adapter.toString();
 	}
 	
 	
@@ -105,7 +140,7 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 		result.addStandardConstants();
 		result.addStandardFunctions();
 		
-		result.addVariable(CURRENT_VALUE_VAR, getAdapter());
+		//result.addVariable(CURRENT_VALUE_VAR, getAdapter());
 		result.addVariable(UNIQUE_NODE_NAMES_VAR, UniqueNameAdapter.getSharedInstance());
 		result.addVariable(NODE_NAMES_VAR, NodeNameAdapter.getSharedInstance());
 		result.addVariable(BRANCH_LENGTH_VAR, BranchLengthAdapter.getSharedInstance());
@@ -129,8 +164,8 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 	}
 	
 	
-	private HashMap<String, NodeBranchDataAdapter> createAdapterMap() {
-		HashMap<String, NodeBranchDataAdapter> result = new HashMap<String, NodeBranchDataAdapter>();
+	private Map<String, NodeBranchDataAdapter> createAdapterMap() {
+		Map<String, NodeBranchDataAdapter> result = new HashMap<String, NodeBranchDataAdapter>();
 		
 		String[] ids = IDManager.getLabelIDs(getDocument().getTree().getPaintStart(), TextLabel.class);
 		for (int i = 0; i < ids.length; i++) {
@@ -175,16 +210,11 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 	}
 
 
-	/**
-	 * Returns the expression that is executed by this edit.
-	 * 
-	 * @return the expression that has been passed to the constructor
-	 */
-	public String getExpression() {
-		return expression;
+	public NodeBranchDataAdapter getCurrentTargetAdapter() {
+		return (NodeBranchDataAdapter)parser.getVarValue(CURRENT_VALUE_VAR);
 	}
-
-
+	
+	
 	/**
 	 * Evaluates the expression with one set of variable values.
 	 * 
@@ -193,7 +223,7 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 	private String evaluationStep() {
 		String result = null;
 		try {
-			parser.evaluate(parser.parse(expression));
+			parser.evaluate(parser.parse(valueExpression));
 		}
 		catch (ParseException e) {
 			result = e.getErrorInfo();
@@ -209,6 +239,8 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 	 * @return {@code true} if the expression contained no errors.
 	 */
 	public boolean evaluate() {
+		//TODO Also evaluate target expression
+		
 		isEvaluating = true;
 		boolean result = false;
 		try {
@@ -304,32 +336,86 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 	}
 	
 	
+	private NodeBranchDataAdapter calculateTargetAdapter() {
+		if (targetAdapter == null) {
+	  	parser.removeVariable(CURRENT_VALUE_VAR);  // Remove since it is not available when calculating the target ID.
+	  	
+	    parser.parseExpression(targetColumnExpression);
+	    if (parser.hasError()) {
+	  		errors.add("Calculating a value for the node " + position.getUniqueName() + 
+	  				" was skipped because of the following error in calulating the target columns ID: \"" + 
+	  				parser.getErrorInfo());
+	  		return null;
+	    }
+	    else {
+	    	NodeBranchDataAdapter result;
+	    	Object value = parser.getValueAsObject();
+	    	if (value instanceof NodeBranchDataAdapter) {
+	    		result = (NodeBranchDataAdapter)value;
+	    	}
+	    	else if (value instanceof String) {
+	    		String id = (String)value;
+	    		result = getAdapterByID(id);
+	    		if (result == null) {
+	    			result = targetType.createAdapterInstance(id, TextElementDataAdapter.DEFAULT_DECIMAL_FORMAT);
+	    			adapterMap.put(getAdapterName(result), result);
+	    		}
+	    	}
+	    	else {
+		  		errors.add("Calculating a value for the node " + position.getUniqueName() + 
+		  				" was skipped because the column ID expression did not result in a adapter or string (" + value.getClass() + ").");
+		  		return null;
+	    	}
+	    	
+		  	parser.addVariable(CURRENT_VALUE_VAR, result);
+		  	return result;
+	    }
+		}
+		else {
+			return targetAdapter;
+		}
+	}
+	
+	
+	private void backupColumn(NodeBranchDataAdapter adapter) {
+		String key = getAdapterName(adapter);
+		if (!backups.containsKey(key)) {
+			backups.put(key, new NodeBranchDataColumnBackup(adapter, getDocument().getTree().getPaintStart()));
+		}
+	}
+	
+	
   private void calculateSubtree(Node root) {
   	position = root;
-    parser.parseExpression(expression);
-    if (parser.hasError()) {
-    	errors.add(parser.getErrorInfo());
-    }
-    else {
-    	Object result = parser.getValueAsObject();
-    	if (result instanceof Double) {
-    		getAdapter().setDecimal(root, (Double)result);
-    	}
-    	else if (result instanceof String) {
-    		getAdapter().setText(root, (String)result);
-    	}
-    	else if (result instanceof Boolean) {
-    		double value = 0d;
-    		if ((Boolean)result) {
-    			value = 1d;
-    		}
-    		getAdapter().setDecimal(root, value);
-    	}
-    	else {
-    		getAdapter().delete(root);
-    		errors.add("Invalid result type (Must be decimal or string.)");
-    	}
-    }
+  	NodeBranchDataAdapter adapter = calculateTargetAdapter();
+  	if (adapter != null) {
+  		backupColumn(adapter);  // Make a column backup, if this column has been edited on another node before.
+  		
+	    parser.parseExpression(valueExpression);
+	    if (parser.hasError()) {
+	    	errors.add(parser.getErrorInfo());
+	    }
+	    else {
+	    	Object result = parser.getValueAsObject();
+	    	if (result instanceof Double) {
+	    		adapter.setDecimal(root, (Double)result);
+	    	}
+	    	else if (result instanceof String) {
+	    		adapter.setText(root, (String)result);
+	    	}
+	    	else if (result instanceof Boolean) {
+	    		double value = 0d;
+	    		if ((Boolean)result) {
+	    			value = 1d;
+	    		}
+	    		adapter.setDecimal(root, value);
+	    	}
+	    	else {
+	    		adapter.delete(root);
+	    		errors.add("Invalid result type (Must be decimal or string.)");
+	    	}
+	    }
+  	}
   	
   	for (int i = 0; i < root.getChildren().size(); i++) {
   		calculateSubtree(root.getChildren().get(i));
@@ -345,8 +431,24 @@ public class CalculateColumnEdit extends NodeBranchDataEdit {
 	}
 
 	
+	@Override
+	public void undo() throws CannotUndoException {
+		for (NodeBranchDataColumnBackup backup : backups.values()) {
+			backup.restore(getDocument().getTree().getPaintStart());
+		}
+		super.undo();
+	}
+
+
 	public String getPresentationName() {
-		return "Calculate \"" + getAdapter().toString() + "\"";
+		String name;
+		if (targetAdapter == null) {
+			name = "node/branch data";
+		}
+		else {
+			name = "\"" + getAdapterName(targetAdapter) + "\"";
+		}
+		return "Calculate " + name;
 	}
 	
 	

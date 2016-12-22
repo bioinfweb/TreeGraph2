@@ -19,29 +19,15 @@
 package info.bioinfweb.treegraph.document.nodebranchdata;
 
 
-import java.text.DecimalFormat;
-
-import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextElementData;
 
 
 
 /**
- * This interface should be implemented by all node/branch data adapters that rely on document elements
- * that contain instances of {@link TextElementData}. 
+ * Interface to be implemented by node/branch data adapters that edit instances of {@link TextElementData} and model columns
+ * identified by IDs.
  * 
  * @author Ben St&ouml;ver
+ * @since 2.13.0
  */
-public interface TextElementDataAdapter extends NodeBranchDataAdapter {
-	public static final DecimalFormat DEFAULT_DECIMAL_FORMAT = new DecimalFormat();
-		
-	/**
-	 * Returns original the instance of the underlying {@link TextElementData} object.
-	 *  
-	 * @param node - the node that carries the data
-	 * @see NodeBranchDataAdapter#toTextElementData(Node)
-	 */
-	public TextElementData getData(Node node);
-
-	public boolean assignData(Node node, TextElementData data);
-}
+public interface TextIDElementDataAdapter extends IDElementAdapter, TextElementDataAdapter {}

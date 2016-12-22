@@ -19,20 +19,16 @@
 package info.bioinfweb.treegraph.document.undo.file;
 
 
-import java.text.DecimalFormat;
-import java.util.HashSet;
-import java.util.Set;
-
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.NodeType;
 import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.change.DocumentChangeType;
+import info.bioinfweb.treegraph.document.nodebranchdata.AbstractTextElementDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.HiddenBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.HiddenNodeDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.AbstractTextElementDataAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.TextElementDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;
 import info.bioinfweb.treegraph.document.tools.TextElementDataAsStringIterator;
 import info.bioinfweb.treegraph.document.tools.TreeSerializer;
@@ -40,6 +36,10 @@ import info.bioinfweb.treegraph.document.topologicalcalculation.NodeInfo;
 import info.bioinfweb.treegraph.document.undo.AbstractTopologicalCalculationEdit;
 import info.bioinfweb.treegraph.document.undo.WarningMessageEdit;
 import info.bioinfweb.treegraph.gui.actions.DocumentAction;
+
+import java.text.DecimalFormat;
+import java.util.HashSet;
+import java.util.Set;
 
 
 
@@ -59,12 +59,6 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit imp
 		  new DecimalFormat("[#.#######];[-#.#######]");
 	
 	
-	/** The type of node/branch data column to import the support values to. */
-	public enum TargetType {
-		LABEL, HIDDEN_NODE_DATA, HIDDEN_BRANCH_DATA;
-	}
-
-
 	/** The document from which support values are imported */
 	private Document sourceDocument = null;
 	
@@ -75,10 +69,10 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit imp
 	private NodeBranchDataAdapter sourceLeavesAdapter = null;
 	
 	/** The node/branch data column to write imported support values to. */
-	private AbstractTextElementDataAdapter targetSupportAdapter = null;
+	private TextElementDataAdapter targetSupportAdapter = null;
 	
 	/** The node/branch data column to write imported conflict values to. */
-	private AbstractTextElementDataAdapter targetConflictAdapter = null;
+	private TextElementDataAdapter targetConflictAdapter = null;
 	
 	private boolean parseNumericValues;
 	private String warningMessage = null;
@@ -97,24 +91,10 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit imp
 		this.sourceLeavesAdapter = parameters.getSourceLeavesColumn();
 		this.parseNumericValues = parameters.isParseNumericValues();
 		
-		switch (parameters.getTargetType()) {
-			case LABEL:
-				targetSupportAdapter = new TextLabelAdapter(parameters.getIDPrefix() + SUPPORT_NAME, SUPPORT_DECIMAL_FORMAT);
-				targetConflictAdapter = new TextLabelAdapter(parameters.getIDPrefix() + CONFLICT_NAME, CONFLICT_DECIMAL_FORMAT);
-				break;
-			case HIDDEN_BRANCH_DATA:
-				targetSupportAdapter = new HiddenBranchDataAdapter(parameters.getIDPrefix() + SUPPORT_NAME);
-				targetConflictAdapter = new HiddenBranchDataAdapter(parameters.getIDPrefix() + CONFLICT_NAME);
-				break;
-			case HIDDEN_NODE_DATA:
-				targetSupportAdapter = new HiddenNodeDataAdapter(parameters.getIDPrefix() + SUPPORT_NAME);
-				targetConflictAdapter = new HiddenNodeDataAdapter(parameters.getIDPrefix() + CONFLICT_NAME);
-				break;
-			default:
-				throw new InternalError("Unsupported target type " + parameters.getTargetType() + " encountered. "
-						+ "Please inform the TreeGraph developers on this bug.");
-		}
-		
+		targetSupportAdapter = parameters.getTargetType().createAdapterInstance(
+				parameters.getIDPrefix() + SUPPORT_NAME, SUPPORT_DECIMAL_FORMAT);
+		targetConflictAdapter = parameters.getTargetType().createAdapterInstance(
+				parameters.getIDPrefix() + CONFLICT_NAME, CONFLICT_DECIMAL_FORMAT);
 		getTopologicalCalculator().addSubtreeToLeafValueToIndexMap(sourceDocument.getTree().getPaintStart(), sourceLeavesAdapter);  //TODO Must be a different calculator then used in the inherited constructor. Otherwise the indices for the target document are wrong, if the order differs.
 	}
 	
