@@ -31,6 +31,9 @@ import java.util.Map;
  * @since 2.0.25
  */
 public class LabelIconMap {
+	public static final LabelIcon UNKNOWN_ICON = new UnknownIcon();
+	
+	
 	private static LabelIconMap firstInstance = null;
 	
 	
@@ -80,7 +83,11 @@ public class LabelIconMap {
 
 
 	public LabelIcon get(String id) {
-		return map.get(id);
+		LabelIcon result = map.get(id);
+		if (result == null) {
+			result = UNKNOWN_ICON;
+		}
+		return result;
 	}
 
 

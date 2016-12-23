@@ -29,6 +29,7 @@ import java.awt.Graphics2D;
 /**
  * This icon shall be displayed if an unknown icon ID was specified (e.g. in a document created with a newer
  * version of TreeGraph 2).
+ * 
  * @author Ben St&ouml;ver
  * @since 2.0.25
  */
@@ -37,7 +38,8 @@ public class UnknownIcon implements LabelIcon {
 	
 	
 	/**
-	 * Displays a questionmark.
+	 * Displays a question mark.
+	 * 
 	 * @see info.bioinfweb.treegraph.graphics.positionpaint.labelicons.LabelIcon#paint(java.awt.Graphics2D, float, float, info.bioinfweb.treegraph.document.format.LabelFormats, float)
 	 */
 	public void paint(Graphics2D g, float x, float y, IconLabelFormats formats, float pixelsPerMillimeter) {
