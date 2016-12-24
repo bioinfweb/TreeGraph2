@@ -140,8 +140,6 @@ public class CalculateColumnEdit extends DocumentEdit {
 		result.addStandardConstants();
 		result.addStandardFunctions();
 		
-		//result.addVariable(CURRENT_VALUE_VAR, getAdapter());
-		result.addVariable(UNIQUE_NODE_NAMES_VAR, UniqueNameAdapter.getSharedInstance());
 		result.addVariable(NODE_NAMES_VAR, NodeNameAdapter.getSharedInstance());
 		result.addVariable(BRANCH_LENGTH_VAR, BranchLengthAdapter.getSharedInstance());
 		
@@ -220,10 +218,10 @@ public class CalculateColumnEdit extends DocumentEdit {
 	 * 
 	 * @return the error information or {@code null} if no error occurred.
 	 */
-	private String evaluationStep() {
+	private String evaluationStep(String expression) {
 		String result = null;
 		try {
-			parser.evaluate(parser.parse(valueExpression));
+			parser.evaluate(parser.parse(expression));
 		}
 		catch (ParseException e) {
 			result = e.getErrorInfo();
@@ -239,21 +237,43 @@ public class CalculateColumnEdit extends DocumentEdit {
 	 * @return {@code true} if the expression contained no errors.
 	 */
 	public boolean evaluate() {
-		//TODO Also evaluate target expression
-		
 		isEvaluating = true;
-		boolean result = false;
+		boolean result = true;
 		try {
 			errors.clear();
-			isEvaluatingDecimal = true;
-			String error = evaluationStep();
-			result = (error == null);
-			if (!result) {
-				isEvaluatingDecimal = false;
-				error = evaluationStep();
-				result = error == null;
+			String error;
+			
+			// Evaluate target ID expression:
+			if (targetAdapter == null) {
+				isEvaluatingDecimal = false;  // Target column expression may never result in decimal values.
+				error = evaluationStep(targetColumnExpression);
+				result = (error == null);
 				if (!result) {
-					errors.add(error);
+					errors.add("Error in target column expression: " + error);
+				}
+			}
+			
+			// Evaluate value expression:
+			if (result) {
+				parser.addVariable(UNIQUE_NODE_NAMES_VAR, UniqueNameAdapter.getSharedInstance());  // Was removed when target column expression was evaluated.
+				if (targetAdapter != null) {
+					parser.addVariable(CURRENT_VALUE_VAR, targetAdapter);  // Set any column for evaluation. (Later the column may vary for every line.)
+				}
+				else {
+					parser.addVariable(CURRENT_VALUE_VAR, NodeNameAdapter.getSharedInstance());  // Set any column for evaluation. (Later the column may vary for every line.)
+				}
+				
+				isEvaluatingDecimal = true;
+				error = evaluationStep(valueExpression);
+				result = (error == null);
+				
+				if (!result) {
+					isEvaluatingDecimal = false;
+					error = evaluationStep(valueExpression);
+					result = (error == null);
+					if (!result) {
+						errors.add("Error in value expression: " + error);
+					}
 				}
 			}
 		}
@@ -339,6 +359,7 @@ public class CalculateColumnEdit extends DocumentEdit {
 	private NodeBranchDataAdapter calculateTargetAdapter() {
 		if (targetAdapter == null) {
 	  	parser.removeVariable(CURRENT_VALUE_VAR);  // Remove since it is not available when calculating the target ID.
+	  	parser.removeVariable(UNIQUE_NODE_NAMES_VAR);  // Remove since unique node names may not be modified.
 	  	
 	    parser.parseExpression(targetColumnExpression);
 	    if (parser.hasError()) {
@@ -362,12 +383,17 @@ public class CalculateColumnEdit extends DocumentEdit {
 	    		}
 	    	}
 	    	else {
+	    		String valueType = "null";
+	    		if (value != null) {
+	    			valueType = value.getClass().getCanonicalName();
+	    		}
 		  		errors.add("Calculating a value for the node " + position.getUniqueName() + 
-		  				" was skipped because the column ID expression did not result in a adapter or string (" + value.getClass() + ").");
+		  				" was skipped because the column ID expression did not result in a adapter or string (" + valueType + ").");
 		  		return null;
 	    	}
 	    	
 		  	parser.addVariable(CURRENT_VALUE_VAR, result);
+		  	parser.addVariable(UNIQUE_NODE_NAMES_VAR, UniqueNameAdapter.getSharedInstance()); 
 		  	return result;
 	    }
 		}
@@ -459,13 +485,18 @@ public class CalculateColumnEdit extends DocumentEdit {
 	 * @return a string possibly containing line breaks
 	 */
 	public String getErrors() {
-		StringBuffer result = new StringBuffer(errors.size() * 64);
-		for (String line : errors) {
-			if (UNKNOWN_FUNCTION_NAME_ERROR.equals(line)) {
-				line += ". This error can also occur if a misspelled function name was used.";
-			}
-	    result.append(line + "\n");
-    }
-		return result.substring(0, result.length() - 1);  // Cut off last line break.
+		if (errors.isEmpty()) {
+			return "";
+		}
+		else {
+			StringBuffer result = new StringBuffer(errors.size() * 64);
+			for (String line : errors) {
+				if (UNKNOWN_FUNCTION_NAME_ERROR.equals(line)) {
+					line += ". This error can also occur if a misspelled function name was used.";
+				}
+		    result.append(line + "\n");
+	    }
+			return result.substring(0, result.length() - 1);  // Cut off last line break.
+		}
 	}
 }
