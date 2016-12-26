@@ -19,7 +19,7 @@
 package info.bioinfweb.treegraph.gui.dialogs.nodebranchdata;
 
 
-import info.bioinfweb.commons.io.IOUtils;
+import info.bioinfweb.commons.SystemUtils;
 import info.bioinfweb.treegraph.Main;
 
 import java.io.BufferedReader;
@@ -28,87 +28,84 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.DosFileAttributes;
 
-import javax.swing.AbstractListModel;
-import javax.swing.ListModel;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.MutableComboBoxModel;
 
 
 
 /**
  * Manages the list of recently used expressions.
+ * 
  * @author Ben St&ouml;ver
  * @since 2.0.24
  */
-public class RecentlyUsedExpressionsListModel extends AbstractListModel<String> implements ListModel<String> {
-	public static final String FILE_NAME = "RecentlyUsedExpressions.txt";
+public class RecentlyUsedExpressionsListModel extends DefaultComboBoxModel<String> implements MutableComboBoxModel<String> {
+	public static final String FILE_NAME_PREFIX = "RecentlyUsedExpressions";
+	public static final String FILE_NAME_EXTENSION = ".txt";
 	public static final int MAXIMAL_COUNT = 25;
 	
 	
-	private List<String> expressions = new ArrayList<String>();
+	private String fileName = "RecentlyUsedExpressions.txt";
 	
 	
-	public RecentlyUsedExpressionsListModel() {
-		super();
-	}
-	
-	
+	public RecentlyUsedExpressionsListModel(String fileNameSuffix) {
+	  super();
+	  this.fileName = FILE_NAME_PREFIX + fileNameSuffix + FILE_NAME_EXTENSION;
+  }
+
+
 	public String getFileName() {
-		return IOUtils.getClassDir(getClass()) + System.getProperty("file.separator") + Main.CONFIG_DIR + 
-		    FILE_NAME;
+		return Main.CONFIG_DIR + System.getProperty("file.separator") + fileName;
 	}
 	
 	
 	private void cutToSize() {
-		if (expressions.size() > MAXIMAL_COUNT) {
-			int formerSize = expressions.size();
-			for (int i = expressions.size() - 1; i >= MAXIMAL_COUNT; i--) {
-				expressions.remove(i);
+		if (getSize() > MAXIMAL_COUNT) {
+			for (int i = getSize() - 1; i >= MAXIMAL_COUNT; i--) {
+				removeElementAt(i);
 			}
-			fireIntervalRemoved(this, expressions.size(), formerSize - 1);
 		}
 	}
 	
 	
 	/**
-	 * Adds <code>expression</code> to the list. If it is already contained, it will be moved to the front.
-	 * @param expression
+	 * Adds a new element to the list. If an equal element is already contained, it will be removed and the new element added to 
+	 * the front.
 	 */
-	public void addExpression(String expression) {
-		int pos = expressions.indexOf(expression);
-		if (pos != -1) {
-			expressions.remove(pos);
-			fireIntervalRemoved(this, pos, pos);
-		}
-		expressions.add(0, expression);
-		fireIntervalAdded(this, 0, 0);
+	@Override
+  public void addElement(String expression) {
+		removeElement(expression);  // Possibly remove the element, if it is already contained at another position.
+	  super.addElement(expression);  // Add the element to the top of the list.
 		cutToSize();
-	}
-	
-	
+  }
+  
+  
 	/**
 	 * Loads the list of recently used expressions from the TreeGraph configuration directory if the according
-	 * file exists. 
+	 * file exists.
+	 * 
 	 * @throws IOException
 	 */
 	public void loadList() throws IOException {
-		int size = getSize();
-		expressions.clear();
-		fireIntervalRemoved(this, 0, size - 1);
+		removeAllElements();
 		
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(getFileName()));
 			try {
 				String line = reader.readLine();
 				while (line != null) {
-					expressions.add(line);
+					addElement(line);
 					line = reader.readLine();
 				}
 				cutToSize();
 			}
 			finally {
-				fireIntervalAdded(this, 0, getSize() - 1);
 				reader.close();
 			}
 		}
@@ -117,30 +114,28 @@ public class RecentlyUsedExpressionsListModel extends AbstractListModel<String> 
 	
 	
 	/**
-	 * Writes the list of recently used expressions to the TreeGraph configuration directory. 
+	 * Writes the list of recently used expressions to the TreeGraph configuration directory.
+	 *  
 	 * @throws IOException
 	 */
 	public void saveList() throws IOException {
 		File file = new File(getFileName());
-		file.getParentFile().mkdirs();
+		if (file.getParentFile().mkdirs() && SystemUtils.IS_OS_WINDOWS) {
+			Path path = Paths.get(file.getParent());
+			try {
+				Files.setAttribute(path, "dos:hidden", true);
+			}
+			catch (UnsupportedOperationException e) {}
+		}
+		
 		PrintWriter writer = new PrintWriter(file);
 		try {
-			for (int i = 0; i < expressions.size(); i++) {
-				writer.println(expressions.get(i));
+			for (int i = 0; i < getSize(); i++) {
+				writer.println(getElementAt(i));
 			}
 		}
 		finally {
 			writer.close();
 		}
-	}
-	
-
-	public String getElementAt(int pos) {
-		return expressions.get(pos);
-	}
-
-	
-	public int getSize() {
-		return expressions.size();
 	}
 }

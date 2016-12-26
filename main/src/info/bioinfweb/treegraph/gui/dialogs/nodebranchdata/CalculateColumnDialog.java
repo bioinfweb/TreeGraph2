@@ -23,6 +23,7 @@ import info.bioinfweb.treegraph.document.nodebranchdata.NewHiddenBranchDataAdapt
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.edit.CalculateColumnEdit;
 import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
+import info.bioinfweb.treegraph.gui.dialogs.editelement.TextElementDataInput;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NewNodeBranchDataInput;
 
 import java.awt.Dimension;
@@ -47,6 +48,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.TitledBorder;
 import javax.swing.JCheckBox;
 import javax.swing.UIManager;
+import javax.swing.JComboBox;
 
 
 
@@ -64,15 +66,12 @@ public class CalculateColumnDialog extends EditDialog {
 	
 	private JPanel jContentPane = null;
 	private JPanel expressionPanel = null;
-	private JTextField expressionTextField = null;
-	private JPanel recentlyUsedPanel = null;
-	private JScrollPane recentlyUsedScrollPane = null;
-	private JList<String> recentlyUsedList = null;
+	private JComboBox<String> expressionComboBox = null;
 	private JPanel columnPanel = null;
 	private NewNodeBranchDataInput columnInput = null;
 	private JRadioButton singleTargetRB;
 	private JRadioButton calculatedTargetRB;
-	private JTextField columnIDExpressionTextField;
+	private JComboBox<String> columnIDExpressionComboBox;
 	private JLabel spacerLabel;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private JLabel expressionStartLabel;
@@ -81,7 +80,7 @@ public class CalculateColumnDialog extends EditDialog {
 	private JPanel columnIDExpressionPanel;
 	private JLabel columnIDExpressionLabel;
 	private JCheckBox defaultValueCheckBox;
-	private JTextField defaultValueTextField;
+	private TextElementDataInput defaultValueInput;
 
 	
 	/**
@@ -112,18 +111,21 @@ public class CalculateColumnDialog extends EditDialog {
 			singleSelectedAdapter = getColumnInput().getSelectedAdapter();
 		}
 		CalculateColumnEdit edit = new CalculateColumnEdit(getDocument(), singleSelectedAdapter, 
-				getColumnIDExpressionTextField().getText(), getColumnIDTypeInput().getSelectedType(), getExpressionTextField().getText());
+				(String)getColumnIDExpressionComboBox().getSelectedItem(), getColumnIDTypeInput().getSelectedType(), 
+				(String)getExpressionComboBox().getSelectedItem());
 		
 		boolean result = edit.evaluate();
 		if (result) {
 			getDocument().executeEdit(edit);
-			getRecentlyUsedListModel().addExpression(getExpressionTextField().getText());
+			getValueExpressionsModel().addElement((String)getExpressionComboBox().getSelectedItem());
+			getColumnIDExpressionsModel().addElement((String)getColumnIDExpressionComboBox().getSelectedItem());
 			try {
-				getRecentlyUsedListModel().saveList();
+				getValueExpressionsModel().saveList();
+				getColumnIDExpressionsModel().saveList();
 			}
 			catch (IOException e) {
 				JOptionPane.showMessageDialog(this, "The error \"" + e.getLocalizedMessage() + "\" occured while " +
-						"trying to write the configuration file.",	"IO Error", JOptionPane.ERROR_MESSAGE);
+						"trying to write a configuration file.",	"I/O Error", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		else {
@@ -159,7 +161,6 @@ public class CalculateColumnDialog extends EditDialog {
 			jContentPane.setLayout(new BoxLayout(getJContentPane(), BoxLayout.Y_AXIS));
 			jContentPane.add(getColumnPanel(), null);
 			jContentPane.add(getExpressionPanel(), null);
-			jContentPane.add(getRecentlyUsedPanel(), null);
 			jContentPane.add(getButtonsPanel(), null);
 		}
 		return jContentPane;
@@ -173,15 +174,17 @@ public class CalculateColumnDialog extends EditDialog {
 	 */
 	private JPanel getExpressionPanel() {
 		if (expressionPanel == null) {
-			GridBagConstraints gridBagConstraints3 = new GridBagConstraints();
-			gridBagConstraints3.insets = new Insets(0, 0, 5, 0);
-			gridBagConstraints3.weighty = 1.0;
-			gridBagConstraints3.fill = GridBagConstraints.HORIZONTAL;
-			gridBagConstraints3.gridy = 0;
-			gridBagConstraints3.weightx = 10.0;
-			gridBagConstraints3.gridx = 1;
+			GridBagConstraints gbc_expressionComboBox = new GridBagConstraints();
+			gbc_expressionComboBox.insets = new Insets(0, 0, 5, 0);
+			gbc_expressionComboBox.weighty = 1.0;
+			gbc_expressionComboBox.fill = GridBagConstraints.HORIZONTAL;
+			gbc_expressionComboBox.gridy = 0;
+			gbc_expressionComboBox.weightx = 10.0;
+			gbc_expressionComboBox.gridx = 1;
 			expressionPanel = new JPanel();
 			GridBagLayout gbl_expressionPanel = new GridBagLayout();
+			gbl_expressionPanel.rowWeights = new double[]{0.0, 0.0, 1.0};
+			gbl_expressionPanel.columnWeights = new double[]{0.0, 1.0};
 			expressionPanel.setLayout(gbl_expressionPanel);
 			expressionPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Calculate value", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 			GridBagConstraints gbc_expressionStartLabel = new GridBagConstraints();
@@ -190,111 +193,63 @@ public class CalculateColumnDialog extends EditDialog {
 			gbc_expressionStartLabel.gridx = 0;
 			gbc_expressionStartLabel.gridy = 0;
 			expressionPanel.add(getExpressionStartLabel(), gbc_expressionStartLabel);
-			expressionPanel.add(getExpressionTextField(), gridBagConstraints3);
+			expressionPanel.add(getExpressionComboBox(), gbc_expressionComboBox);
 			GridBagConstraints gbc_defaultValueCheckBox = new GridBagConstraints();
 			gbc_defaultValueCheckBox.anchor = GridBagConstraints.WEST;
 			gbc_defaultValueCheckBox.gridwidth = 2;
-			gbc_defaultValueCheckBox.insets = new Insets(5, 0, 2, 2);
+			gbc_defaultValueCheckBox.insets = new Insets(5, 0, 5, 2);
 			gbc_defaultValueCheckBox.gridx = 0;
 			gbc_defaultValueCheckBox.gridy = 1;
 			expressionPanel.add(getDefaultValueCheckBox(), gbc_defaultValueCheckBox);
-			GridBagConstraints gbc_defaultValueTextField = new GridBagConstraints();
-			gbc_defaultValueTextField.gridwidth = 2;
-			gbc_defaultValueTextField.insets = new Insets(0, 25, 0, 2);
-			gbc_defaultValueTextField.gridx = 0;
-			gbc_defaultValueTextField.gridy = 2;
-			gbc_defaultValueTextField.fill = GridBagConstraints.HORIZONTAL;
-			expressionPanel.add(getDefaultValueTextField(), gbc_defaultValueTextField);
+			GridBagConstraints gbc_defaultValueInput = new GridBagConstraints();
+			gbc_defaultValueInput.gridwidth = 2;
+			gbc_defaultValueInput.insets = new Insets(0, 24, 0, 0);
+			gbc_defaultValueInput.fill = GridBagConstraints.BOTH;
+			gbc_defaultValueInput.gridx = 0;
+			gbc_defaultValueInput.gridy = 2;
+			expressionPanel.add(getDefaultValueInput(), gbc_defaultValueInput);
 		}
 		return expressionPanel;
 	}
 
+	
+	private JComboBox<String> createExpressionInput(String fileSuffix) {
+		RecentlyUsedExpressionsListModel model = new RecentlyUsedExpressionsListModel(fileSuffix);
+		try {
+			model.loadList();
+		}
+		catch (IOException e) {
+			JOptionPane.showMessageDialog(this, "An error occured while trying to read the configuration file.", 
+							"I/O Error", JOptionPane.ERROR_MESSAGE);
+		}
+		JComboBox<String> result = new JComboBox<String>(model);
+		result.setEditable(true);
+		result.setSelectedItem("");
+		result.setMinimumSize(new Dimension(MIN_EXPRESSION_FIELD_WIDTH, 20));
+		return result;
+	}
+	
 
 	/**
 	 * This method initializes expressionTextField	
 	 * 	
 	 * @return javax.swing.JTextField	
 	 */
-	private JTextField getExpressionTextField() {
-		if (expressionTextField == null) {
-			expressionTextField = new JTextField();
-			expressionTextField.setMinimumSize(
-					new Dimension(MIN_EXPRESSION_FIELD_WIDTH, 20));
+	private JComboBox<String> getExpressionComboBox() {
+		if (expressionComboBox == null) {
+			expressionComboBox = createExpressionInput("Value");
 		}
-		return expressionTextField;
-	}
-
-
-	/**
-	 * This method initializes recentlyUsedPanel	
-	 * 	
-	 * @return javax.swing.JPanel	
-	 */
-	private JPanel getRecentlyUsedPanel() {
-		if (recentlyUsedPanel == null) {
-			GridBagConstraints gridBagConstraints5 = new GridBagConstraints();
-			gridBagConstraints5.fill = GridBagConstraints.BOTH;
-			gridBagConstraints5.gridy = 0;
-			gridBagConstraints5.weightx = 1.0;
-			gridBagConstraints5.weighty = 1.0;
-			gridBagConstraints5.gridx = 0;
-			recentlyUsedPanel = new JPanel();
-			recentlyUsedPanel.setLayout(new GridBagLayout());
-			recentlyUsedPanel.setBorder(new TitledBorder(null, "Recently used expressions", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-			recentlyUsedPanel.add(getRecentlyUsedScrollPane(), gridBagConstraints5);
-		}
-		return recentlyUsedPanel;
-	}
-
-
-	/**
-	 * This method initializes recentlyUsedScrollPane	
-	 * 	
-	 * @return javax.swing.JScrollPane	
-	 */
-	private JScrollPane getRecentlyUsedScrollPane() {
-		if (recentlyUsedScrollPane == null) {
-			recentlyUsedScrollPane = new JScrollPane();
-			recentlyUsedScrollPane.setViewportView(getRecentlyUsedList());
-		}
-		return recentlyUsedScrollPane;
-	}
-
-
-	/**
-	 * This method initializes recentlyUsedList	
-	 * 	
-	 * @return javax.swing.JList	
-	 */
-	private JList<String> getRecentlyUsedList() {
-		if (recentlyUsedList == null) {
-			RecentlyUsedExpressionsListModel model = new RecentlyUsedExpressionsListModel();
-			try {
-				model.loadList();
-			}
-			catch (IOException e) {
-				JOptionPane.showMessageDialog(this, "An error occured while trying to read a " +
-						"configuration file.",	"IO Error", JOptionPane.ERROR_MESSAGE);
-			}
-			
-			recentlyUsedList = new JList<String>(model);
-			recentlyUsedList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-			recentlyUsedList.addListSelectionListener(
-					new javax.swing.event.ListSelectionListener() {
-						public void valueChanged(javax.swing.event.ListSelectionEvent e) {
-							if (!e.getValueIsAdjusting() && recentlyUsedList.getSelectedIndex() != -1) {
-								getExpressionTextField().setText(
-										getRecentlyUsedListModel().getElementAt(recentlyUsedList.getSelectedIndex()));
-							}
-						}
-					});
-		}
-		return recentlyUsedList;
+		return expressionComboBox;
 	}
 	
 	
-	private RecentlyUsedExpressionsListModel getRecentlyUsedListModel() {
-		return (RecentlyUsedExpressionsListModel)getRecentlyUsedList().getModel();
+	private RecentlyUsedExpressionsListModel getValueExpressionsModel() {
+		return (RecentlyUsedExpressionsListModel)getExpressionComboBox().getModel();
+	}
+
+
+	private RecentlyUsedExpressionsListModel getColumnIDExpressionsModel() {
+		return (RecentlyUsedExpressionsListModel)getColumnIDExpressionComboBox().getModel();
 	}
 
 
@@ -339,8 +294,9 @@ public class CalculateColumnDialog extends EditDialog {
 			gbc_columnIDExpressionPanel.gridy = 3;
 			columnPanel.add(getColumnIDExpressionPanel(), gbc_columnIDExpressionPanel);
 			GridBagConstraints gbc_columnTypeLabel = new GridBagConstraints();
+			gbc_columnTypeLabel.anchor = GridBagConstraints.WEST;
 			gbc_columnTypeLabel.gridwidth = 2;
-			gbc_columnTypeLabel.insets = new Insets(5, 0, 5, 0);
+			gbc_columnTypeLabel.insets = new Insets(5, 0, 2, 0);
 			gbc_columnTypeLabel.gridx = 1;
 			gbc_columnTypeLabel.gridy = 4;
 			columnPanel.add(getColumnTypeLabel(), gbc_columnTypeLabel);
@@ -378,11 +334,11 @@ public class CalculateColumnDialog extends EditDialog {
 	
 	private JRadioButton getCalculatedTargetRB() {
 		if (calculatedTargetRB == null) {
-			calculatedTargetRB = new JRadioButton("Calculate column ID for each line");
+			calculatedTargetRB = new JRadioButton("Calculate (possibly different) target column ID for each line");
 			calculatedTargetRB.addItemListener(new ItemListener() {
 				public void itemStateChanged(ItemEvent e) {
 					getColumnIDExpressionLabel().setEnabled(calculatedTargetRB.isSelected());
-					getColumnIDExpressionTextField().setEnabled(calculatedTargetRB.isSelected());
+					getColumnIDExpressionComboBox().setEnabled(calculatedTargetRB.isSelected());
 					getColumnIDTypeInput().setEnabled(calculatedTargetRB.isSelected());
 					getColumnTypeLabel().setEnabled(calculatedTargetRB.isSelected());
 				}
@@ -393,12 +349,12 @@ public class CalculateColumnDialog extends EditDialog {
 	}
 	
 	
-	private JTextField getColumnIDExpressionTextField() {
-		if (columnIDExpressionTextField == null) {
-			columnIDExpressionTextField = new JTextField();
-			columnIDExpressionTextField.setEnabled(false);
+	private JComboBox<String> getColumnIDExpressionComboBox() {
+		if (columnIDExpressionComboBox == null) {
+			columnIDExpressionComboBox = createExpressionInput("TargetColumn");
+			columnIDExpressionComboBox.setEnabled(false);
 		}
-		return columnIDExpressionTextField;
+		return columnIDExpressionComboBox;
 	}
 	
 	
@@ -452,7 +408,7 @@ public class CalculateColumnDialog extends EditDialog {
 			gbc_columnIDExpressionTextField.anchor = GridBagConstraints.NORTH;
 			gbc_columnIDExpressionTextField.gridx = 1;
 			gbc_columnIDExpressionTextField.gridy = 0;
-			columnIDExpressionPanel.add(getColumnIDExpressionTextField(), gbc_columnIDExpressionTextField);
+			columnIDExpressionPanel.add(getColumnIDExpressionComboBox(), gbc_columnIDExpressionTextField);
 		}
 		return columnIDExpressionPanel;
 	}
@@ -469,10 +425,10 @@ public class CalculateColumnDialog extends EditDialog {
 	
 	private JCheckBox getDefaultValueCheckBox() {
 		if (defaultValueCheckBox == null) {
-			defaultValueCheckBox = new JCheckBox("Set the following value to all cells of calculates columns that contain no value after the calculation");
+			defaultValueCheckBox = new JCheckBox("Set the following value to all cells of the affected columns that contain no value after the calculation");
 			defaultValueCheckBox.addItemListener(new ItemListener() {
 				public void itemStateChanged(ItemEvent e) {
-					getDefaultValueTextField().setEnabled(defaultValueCheckBox.isSelected());
+					getDefaultValueInput().setEnabled(defaultValueCheckBox.isSelected());
 				}
 			});
 		}
@@ -480,12 +436,11 @@ public class CalculateColumnDialog extends EditDialog {
 	}
 	
 	
-	private JTextField getDefaultValueTextField() {
-		if (defaultValueTextField == null) {
-			defaultValueTextField = new JTextField();
-			defaultValueTextField.setEnabled(false);
-			defaultValueTextField.setColumns(10);
+	private TextElementDataInput getDefaultValueInput() {
+		if (defaultValueInput == null) {
+			defaultValueInput = new TextElementDataInput(true);
+			defaultValueInput.setEnabled(false);
 		}
-		return defaultValueTextField;
+		return defaultValueInput;
 	}
 }

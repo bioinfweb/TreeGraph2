@@ -46,7 +46,7 @@ import info.bioinfweb.wikihelp.client.WikiHelp;
  * @author Ben St&ouml;ver
  */
 public class Main extends ProgramMainClass {
-	public static final String CONFIG_DIR = "config" + System.getProperty("file.separator");
+	public static final String CONFIG_DIR = System.getProperty("user.home") + System.getProperty("file.separator") + ".TreeGraph2";
 	
 	public static final String TG_URL = "http://treegraph.bioinfweb.info/"; 
 	public static final String ERROR_URL = TG_URL + "errorreport/ApplicationReport.jsp"; 

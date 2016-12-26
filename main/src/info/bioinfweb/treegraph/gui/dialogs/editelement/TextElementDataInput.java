@@ -42,16 +42,15 @@ public class TextElementDataInput extends JPanel {
 	private List<ChangeListener> changeListeners = new ArrayList<ChangeListener>();
 	
 	
-	public TextElementDataInput() {
+	public TextElementDataInput(boolean horizontalLayout) {
+		super();
+		
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{0, 0};
-		gridBagLayout.rowHeights = new int[]{0, 0, 0};
-		gridBagLayout.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+		gridBagLayout.columnWeights = new double[]{1.0, 0.0};
 		setLayout(gridBagLayout);
 		
 		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.insets = new Insets(0, 0, 5, 0);
+		gbc_textField.insets = new Insets(0, 0, 0, 3);
 		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textField.gridx = 0;
 		gbc_textField.gridy = 0;
@@ -59,8 +58,14 @@ public class TextElementDataInput extends JPanel {
 		
 		GridBagConstraints gbc_decimalCheckBox = new GridBagConstraints();
 		gbc_decimalCheckBox.anchor = GridBagConstraints.WEST;
-		gbc_decimalCheckBox.gridx = 0;
-		gbc_decimalCheckBox.gridy = 1;
+		if (horizontalLayout) {
+			gbc_decimalCheckBox.gridx = 1;
+			gbc_decimalCheckBox.gridy = 0;
+		}
+		else {
+			gbc_decimalCheckBox.gridx = 0;
+			gbc_decimalCheckBox.gridy = 1;
+		}
 		add(getDecimalCheckBox(), gbc_decimalCheckBox);
 	}
 
@@ -80,7 +85,7 @@ public class TextElementDataInput extends JPanel {
 //					}
 //					getValueTextField().setText(text);  // Wert wurde durch Setzen neuer Factory gel�scht.
 					
-					//updatePreview();  //TODO Call change listener here instead
+					fireValueChanged();
 				}
 			});
 		}
@@ -95,7 +100,7 @@ public class TextElementDataInput extends JPanel {
 			textField.addKeyListener(new java.awt.event.KeyAdapter() {
 				public void keyReleased(java.awt.event.KeyEvent e) {
 					setDecimalCheckBoxStatus();
-					//updatePreview();  //TODO Call change listener here instead
+					fireValueChanged();
 				}
 			});
 		}
@@ -103,7 +108,20 @@ public class TextElementDataInput extends JPanel {
 	}
 	
 	
-  private void setDecimalCheckBoxStatus() {
+  @Override
+  public void setEnabled(boolean enabled) {
+  	getTextField().setEnabled(enabled);
+  	if (enabled) {
+  		setDecimalCheckBoxStatus();
+  	}
+  	else {
+  		getDecimalCheckBox().setEnabled(false);
+  	}
+	  super.setEnabled(enabled);
+  }
+
+
+	private void setDecimalCheckBoxStatus() {
   	boolean isDecimal = Math2.isDecimal(getTextField().getText());
   	if (!isDecimal) {
   		getDecimalCheckBox().setSelected(false);
@@ -113,8 +131,17 @@ public class TextElementDataInput extends JPanel {
   
   
 	public TextElementData getValue() {
-		//TODO Implement
-		return null;
+		if (getDecimalCheckBox().isSelected()) {
+			if (getTextField().getText().isEmpty()) {
+				return new TextElementData();
+			}
+			else {
+				return new TextElementData(Math2.parseDouble(getTextField().getText()));
+			}
+		}
+		else {
+			return new TextElementData(getTextField().getText());
+		}
 	}
 	
 	
