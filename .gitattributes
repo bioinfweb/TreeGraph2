@@ -645,6 +645,7 @@ main/src/info/bioinfweb/treegraph/gui/dialogs/editelement/NewGraphicalLabelsDial
 main/src/info/bioinfweb/treegraph/gui/dialogs/editelement/NewIconLabelsDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/editelement/NewPieChartLabelsDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/editelement/NewTextLabelDialog.java -text
+main/src/info/bioinfweb/treegraph/gui/dialogs/editelement/TextElementDataInput.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/BranchPanel.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/DecimalFormatPanel.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/DecimalFormatsTableModel.java -text

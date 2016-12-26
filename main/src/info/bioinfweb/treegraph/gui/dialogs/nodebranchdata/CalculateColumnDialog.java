@@ -45,6 +45,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.TitledBorder;
+import javax.swing.JCheckBox;
+import javax.swing.UIManager;
 
 
 
@@ -78,6 +80,8 @@ public class CalculateColumnDialog extends EditDialog {
 	private JLabel columnTypeLabel;
 	private JPanel columnIDExpressionPanel;
 	private JLabel columnIDExpressionLabel;
+	private JCheckBox defaultValueCheckBox;
+	private JTextField defaultValueTextField;
 
 	
 	/**
@@ -170,6 +174,7 @@ public class CalculateColumnDialog extends EditDialog {
 	private JPanel getExpressionPanel() {
 		if (expressionPanel == null) {
 			GridBagConstraints gridBagConstraints3 = new GridBagConstraints();
+			gridBagConstraints3.insets = new Insets(0, 0, 5, 0);
 			gridBagConstraints3.weighty = 1.0;
 			gridBagConstraints3.fill = GridBagConstraints.HORIZONTAL;
 			gridBagConstraints3.gridy = 0;
@@ -177,17 +182,29 @@ public class CalculateColumnDialog extends EditDialog {
 			gridBagConstraints3.gridx = 1;
 			expressionPanel = new JPanel();
 			GridBagLayout gbl_expressionPanel = new GridBagLayout();
-			gbl_expressionPanel.rowWeights = new double[]{1.0};
-			gbl_expressionPanel.columnWeights = new double[]{0.0, 1.0};
 			expressionPanel.setLayout(gbl_expressionPanel);
-			expressionPanel.setBorder(new TitledBorder(null, "Expression to caculate value", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+			expressionPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Calculate value", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 			GridBagConstraints gbc_expressionStartLabel = new GridBagConstraints();
-			gbc_expressionStartLabel.insets = new Insets(0, 2, 0, 2);
+			gbc_expressionStartLabel.insets = new Insets(0, 2, 5, 5);
 			gbc_expressionStartLabel.anchor = GridBagConstraints.WEST;
 			gbc_expressionStartLabel.gridx = 0;
 			gbc_expressionStartLabel.gridy = 0;
 			expressionPanel.add(getExpressionStartLabel(), gbc_expressionStartLabel);
 			expressionPanel.add(getExpressionTextField(), gridBagConstraints3);
+			GridBagConstraints gbc_defaultValueCheckBox = new GridBagConstraints();
+			gbc_defaultValueCheckBox.anchor = GridBagConstraints.WEST;
+			gbc_defaultValueCheckBox.gridwidth = 2;
+			gbc_defaultValueCheckBox.insets = new Insets(5, 0, 2, 2);
+			gbc_defaultValueCheckBox.gridx = 0;
+			gbc_defaultValueCheckBox.gridy = 1;
+			expressionPanel.add(getDefaultValueCheckBox(), gbc_defaultValueCheckBox);
+			GridBagConstraints gbc_defaultValueTextField = new GridBagConstraints();
+			gbc_defaultValueTextField.gridwidth = 2;
+			gbc_defaultValueTextField.insets = new Insets(0, 25, 0, 2);
+			gbc_defaultValueTextField.gridx = 0;
+			gbc_defaultValueTextField.gridy = 2;
+			gbc_defaultValueTextField.fill = GridBagConstraints.HORIZONTAL;
+			expressionPanel.add(getDefaultValueTextField(), gbc_defaultValueTextField);
 		}
 		return expressionPanel;
 	}
@@ -315,17 +332,20 @@ public class CalculateColumnDialog extends EditDialog {
 			gbc_calculatedTargetRB.gridy = 2;
 			columnPanel.add(getCalculatedTargetRB(), gbc_calculatedTargetRB);
 			GridBagConstraints gbc_columnIDExpressionPanel = new GridBagConstraints();
+			gbc_columnIDExpressionPanel.gridwidth = 2;
 			gbc_columnIDExpressionPanel.fill = GridBagConstraints.BOTH;
 			gbc_columnIDExpressionPanel.insets = new Insets(0, 0, 5, 0);
 			gbc_columnIDExpressionPanel.gridx = 1;
 			gbc_columnIDExpressionPanel.gridy = 3;
 			columnPanel.add(getColumnIDExpressionPanel(), gbc_columnIDExpressionPanel);
 			GridBagConstraints gbc_columnTypeLabel = new GridBagConstraints();
+			gbc_columnTypeLabel.gridwidth = 2;
 			gbc_columnTypeLabel.insets = new Insets(5, 0, 5, 0);
 			gbc_columnTypeLabel.gridx = 1;
 			gbc_columnTypeLabel.gridy = 4;
 			columnPanel.add(getColumnTypeLabel(), gbc_columnTypeLabel);
 			GridBagConstraints gbc_columnIDTypeInput = new GridBagConstraints();
+			gbc_columnIDTypeInput.gridwidth = 2;
 			gbc_columnIDTypeInput.fill = GridBagConstraints.BOTH;
 			gbc_columnIDTypeInput.gridx = 1;
 			gbc_columnIDTypeInput.gridy = 5;
@@ -444,5 +464,28 @@ public class CalculateColumnDialog extends EditDialog {
 			columnIDExpressionLabel.setEnabled(false);
 		}
 		return columnIDExpressionLabel;
+	}
+	
+	
+	private JCheckBox getDefaultValueCheckBox() {
+		if (defaultValueCheckBox == null) {
+			defaultValueCheckBox = new JCheckBox("Set the following value to all cells of calculates columns that contain no value after the calculation");
+			defaultValueCheckBox.addItemListener(new ItemListener() {
+				public void itemStateChanged(ItemEvent e) {
+					getDefaultValueTextField().setEnabled(defaultValueCheckBox.isSelected());
+				}
+			});
+		}
+		return defaultValueCheckBox;
+	}
+	
+	
+	private JTextField getDefaultValueTextField() {
+		if (defaultValueTextField == null) {
+			defaultValueTextField = new JTextField();
+			defaultValueTextField.setEnabled(false);
+			defaultValueTextField.setColumns(10);
+		}
+		return defaultValueTextField;
 	}
 }

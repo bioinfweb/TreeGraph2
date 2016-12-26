@@ -41,12 +41,13 @@ import info.bioinfweb.commons.Math2;
 
 
 /**
- * Implements basic functionalities for dialogs used to edit a textual document element.   
+ * Implements basic functionalities for dialogs used to edit a textual document element.
+ *  
  * @author Ben St&ouml;ver
  * @see TextElement
  */
 public abstract class AbstractTextElementDialog extends EditDialog {
-  private TextElement textElement = null;  //  @jve:decl-index=0:
+  private TextElement textElement = null;
 	private JPanel valuesPanel = null;
 	private JLabel textLabel = null;
 	private JFormattedTextField valueTextField = null;
@@ -112,7 +113,7 @@ public abstract class AbstractTextElementDialog extends EditDialog {
 			}
 		}
 		if (text.equals("")) {
-			text = " ";  // Vermeiden, dass Panel an H�he verliert.
+			text = " ";  // Make sure panel maintains its height.
 		}
 		getPreviewLabel().setText(text);
   }
