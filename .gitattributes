@@ -73,7 +73,6 @@ main/include/lib/owlapi-XMLUtils-4.1.4.jar -text
 main/src/APACHE-LICENSE.txt -text svneol=unset#text/plain
 main/src/GPL.txt -text svneol=unset#text/plain
 main/src/NOTICE.txt -text svneol=unset#text/plain
-main/src/config/RecentlyUsedExpressions.txt -text
 main/src/info/bioinfweb/treegraph/AWTExceptionHandler.java -text
 main/src/info/bioinfweb/treegraph/Main.java -text
 main/src/info/bioinfweb/treegraph/cmd/CmdLoadLogger.java -text
