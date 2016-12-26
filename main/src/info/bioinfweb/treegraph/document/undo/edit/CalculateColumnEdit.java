@@ -21,6 +21,7 @@ package info.bioinfweb.treegraph.document.undo.edit;
 
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.TextLabel;
 import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.format.TextFormats;
@@ -96,13 +97,14 @@ public class CalculateColumnEdit extends DocumentEdit {
 	
 	
 	public CalculateColumnEdit(Document document, NodeBranchDataAdapter targetAdapter, String targetColumnExpression, 
-			TextIDElementType targetType, String valueExpression) {
+			TextIDElementType targetType, String valueExpression, boolean clearTargetColumns, TextElementData defaultValue) {
 		
 		super(document, DocumentChangeType.TOPOLOGICAL_BY_RENAMING);
 		this.targetAdapter = targetAdapter;
 		this.targetColumnExpression = targetColumnExpression;
 		this.targetType = targetType;
 		this.valueExpression = valueExpression;
+		//TODO Make use of new parameters
 		
 		parser = createParser();
 		adapterMap = createAdapterMap();

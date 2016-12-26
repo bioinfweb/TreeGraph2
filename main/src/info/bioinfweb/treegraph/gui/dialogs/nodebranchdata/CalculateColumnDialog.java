@@ -37,18 +37,14 @@ import java.io.IOException;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
-import javax.swing.border.TitledBorder;
-import javax.swing.JCheckBox;
 import javax.swing.UIManager;
-import javax.swing.JComboBox;
+import javax.swing.border.TitledBorder;
 
 
 
@@ -81,6 +77,7 @@ public class CalculateColumnDialog extends EditDialog {
 	private JLabel columnIDExpressionLabel;
 	private JCheckBox defaultValueCheckBox;
 	private TextElementDataInput defaultValueInput;
+	private JCheckBox clearTargetColumnsCheckBox;
 
 	
 	/**
@@ -112,7 +109,8 @@ public class CalculateColumnDialog extends EditDialog {
 		}
 		CalculateColumnEdit edit = new CalculateColumnEdit(getDocument(), singleSelectedAdapter, 
 				(String)getColumnIDExpressionComboBox().getSelectedItem(), getColumnIDTypeInput().getSelectedType(), 
-				(String)getExpressionComboBox().getSelectedItem());
+				(String)getExpressionComboBox().getSelectedItem(), getClearTargetColumnsCheckBox().isSelected(), 
+				getDefaultValueCheckBox().isSelected() ? getDefaultValueInput().getValue() : null);
 		
 		boolean result = edit.evaluate();
 		if (result) {
@@ -183,30 +181,36 @@ public class CalculateColumnDialog extends EditDialog {
 			gbc_expressionComboBox.gridx = 1;
 			expressionPanel = new JPanel();
 			GridBagLayout gbl_expressionPanel = new GridBagLayout();
-			gbl_expressionPanel.rowWeights = new double[]{0.0, 0.0, 1.0};
 			gbl_expressionPanel.columnWeights = new double[]{0.0, 1.0};
 			expressionPanel.setLayout(gbl_expressionPanel);
 			expressionPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Calculate value", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+			expressionPanel.add(getExpressionComboBox(), gbc_expressionComboBox);
 			GridBagConstraints gbc_expressionStartLabel = new GridBagConstraints();
 			gbc_expressionStartLabel.insets = new Insets(0, 2, 5, 5);
 			gbc_expressionStartLabel.anchor = GridBagConstraints.WEST;
 			gbc_expressionStartLabel.gridx = 0;
 			gbc_expressionStartLabel.gridy = 0;
 			expressionPanel.add(getExpressionStartLabel(), gbc_expressionStartLabel);
-			expressionPanel.add(getExpressionComboBox(), gbc_expressionComboBox);
+			GridBagConstraints gbc_chckbxClearTargetColumns = new GridBagConstraints();
+			gbc_chckbxClearTargetColumns.anchor = GridBagConstraints.WEST;
+			gbc_chckbxClearTargetColumns.gridwidth = 2;
+			gbc_chckbxClearTargetColumns.insets = new Insets(0, 0, 2, 2);
+			gbc_chckbxClearTargetColumns.gridx = 0;
+			gbc_chckbxClearTargetColumns.gridy = 1;
+			expressionPanel.add(getClearTargetColumnsCheckBox(), gbc_chckbxClearTargetColumns);
 			GridBagConstraints gbc_defaultValueCheckBox = new GridBagConstraints();
 			gbc_defaultValueCheckBox.anchor = GridBagConstraints.WEST;
 			gbc_defaultValueCheckBox.gridwidth = 2;
-			gbc_defaultValueCheckBox.insets = new Insets(5, 0, 5, 2);
+			gbc_defaultValueCheckBox.insets = new Insets(2, 2, 2, 2);
 			gbc_defaultValueCheckBox.gridx = 0;
-			gbc_defaultValueCheckBox.gridy = 1;
+			gbc_defaultValueCheckBox.gridy = 2;
 			expressionPanel.add(getDefaultValueCheckBox(), gbc_defaultValueCheckBox);
 			GridBagConstraints gbc_defaultValueInput = new GridBagConstraints();
 			gbc_defaultValueInput.gridwidth = 2;
-			gbc_defaultValueInput.insets = new Insets(0, 24, 0, 0);
+			gbc_defaultValueInput.insets = new Insets(0, 24, 0, 2);
 			gbc_defaultValueInput.fill = GridBagConstraints.BOTH;
 			gbc_defaultValueInput.gridx = 0;
-			gbc_defaultValueInput.gridy = 2;
+			gbc_defaultValueInput.gridy = 3;
 			expressionPanel.add(getDefaultValueInput(), gbc_defaultValueInput);
 		}
 		return expressionPanel;
@@ -390,6 +394,8 @@ public class CalculateColumnDialog extends EditDialog {
 		}
 		return columnTypeLabel;
 	}
+	
+	
 	private JPanel getColumnIDExpressionPanel() {
 		if (columnIDExpressionPanel == null) {
 			columnIDExpressionPanel = new JPanel();
@@ -397,7 +403,7 @@ public class CalculateColumnDialog extends EditDialog {
 			gbl_columnIDExpressionPanel.columnWeights = new double[]{0.0, 1.0};
 			columnIDExpressionPanel.setLayout(gbl_columnIDExpressionPanel);
 			GridBagConstraints gbc_columnIDExpressionLabel = new GridBagConstraints();
-			gbc_columnIDExpressionLabel.insets = new Insets(0, 0, 0, 1);
+			gbc_columnIDExpressionLabel.insets = new Insets(0, 0, 0, 5);
 			gbc_columnIDExpressionLabel.anchor = GridBagConstraints.WEST;
 			gbc_columnIDExpressionLabel.gridx = 0;
 			gbc_columnIDExpressionLabel.gridy = 0;
@@ -425,7 +431,7 @@ public class CalculateColumnDialog extends EditDialog {
 	
 	private JCheckBox getDefaultValueCheckBox() {
 		if (defaultValueCheckBox == null) {
-			defaultValueCheckBox = new JCheckBox("Set the following value to all cells of the affected columns that contain no value after the calculation");
+			defaultValueCheckBox = new JCheckBox("Set the following value to all cells of the affected columns that contain no value after the calculation:");
 			defaultValueCheckBox.addItemListener(new ItemListener() {
 				public void itemStateChanged(ItemEvent e) {
 					getDefaultValueInput().setEnabled(defaultValueCheckBox.isSelected());
@@ -442,5 +448,13 @@ public class CalculateColumnDialog extends EditDialog {
 			defaultValueInput.setEnabled(false);
 		}
 		return defaultValueInput;
+	}
+	
+	
+	private JCheckBox getClearTargetColumnsCheckBox() {
+		if (clearTargetColumnsCheckBox == null) {
+			clearTargetColumnsCheckBox = new JCheckBox("Clear target column(s) before calculation");
+		}
+		return clearTargetColumnsCheckBox;
 	}
 }
