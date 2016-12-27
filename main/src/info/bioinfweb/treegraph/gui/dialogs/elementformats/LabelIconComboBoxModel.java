@@ -19,8 +19,8 @@
 package info.bioinfweb.treegraph.gui.dialogs.elementformats;
 
 
-import info.bioinfweb.treegraph.graphics.positionpaint.labelicons.LabelIcon;
-import info.bioinfweb.treegraph.graphics.positionpaint.labelicons.LabelIconMap;
+import info.bioinfweb.treegraph.graphics.positionpaint.label.icons.LabelIcon;
+import info.bioinfweb.treegraph.graphics.positionpaint.label.icons.LabelIconMap;
 
 import java.util.Iterator;
 import java.util.Vector;

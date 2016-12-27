@@ -16,30 +16,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.graphics.positionpaint.labelicons;
+package info.bioinfweb.treegraph.graphics.positionpaint.label;
 
 
-import info.bioinfweb.treegraph.document.format.IconLabelFormats;
-
-import java.awt.Shape;
-import java.awt.geom.Ellipse2D;
-
+import info.bioinfweb.treegraph.document.GraphicalLabel;
+import info.bioinfweb.treegraph.document.format.DistanceDimension;
+import info.bioinfweb.treegraph.document.format.GraphicalLabelFormats;
 
 
-/**
- * @author Ben St&ouml;ver
- * @since 2.0.25
- */
-public class EllipseIcon extends ShapeLabelIcon implements LabelIcon {
-	public Shape getShape(float x, float y, IconLabelFormats formats, float pixelsPerMillimeter) {
-		float lineWidth = formats.getLineWidth().getInPixels(pixelsPerMillimeter);
-		return new Ellipse2D.Float(x + 0.5f * lineWidth, y + 0.5f * lineWidth, 
-				formats.getWidth().getInPixels(pixelsPerMillimeter) - lineWidth, 
-				formats.getHeight().getInPixels(pixelsPerMillimeter) - lineWidth);
-	}
 
-	
-	public String id() {
-		return "Ellipse";
+public abstract class AbstractGraphicalLabelPainter<L extends GraphicalLabel> implements LabelPainter<L> {
+	@Override
+	public DistanceDimension calculateDimension(L label) {
+		GraphicalLabelFormats f = label.getFormats();
+		return new DistanceDimension(f.getWidth(), f.getHeight());
 	}
 }

@@ -16,13 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.graphics.positionpaint.labelicons;
+package info.bioinfweb.treegraph.graphics.positionpaint.label.icons;
 
 
 import info.bioinfweb.treegraph.document.format.IconLabelFormats;
 
 import java.awt.Shape;
-import java.awt.geom.Path2D;
+import java.awt.geom.Rectangle2D;
 
 
 
@@ -30,31 +30,18 @@ import java.awt.geom.Path2D;
  * @author Ben St&ouml;ver
  * @since 2.0.25
  */
-public class TiltedHexagonIcon extends ShapeLabelIcon implements LabelIcon {
-	@Override
+public class RectangleIcon extends ShapeLabelIcon implements LabelIcon {
 	public Shape getShape(float x, float y, IconLabelFormats formats, float pixelsPerMillimeter) {
 		float lineWidth = formats.getLineWidth().getInPixels(pixelsPerMillimeter);
-		x += 0.5f * lineWidth;
-		y += 0.5f * lineWidth;
-		float width = formats.getWidth().getInPixels(pixelsPerMillimeter) - lineWidth;
-		float edgeLengthX = width / 2f;
-		float height = formats.getHeight().getInPixels(pixelsPerMillimeter) - lineWidth;
-		float cornerLengthY = height / 4f;
-		float edgeLengthY = height / 2f;
-		
-		Path2D result = new Path2D.Float();
-		result.moveTo(x + edgeLengthX, y);
-		result.lineTo(x + width, y + cornerLengthY);
-		result.lineTo(x + width, y + edgeLengthY + cornerLengthY);
-		result.lineTo(x + edgeLengthX, y + height);
-		result.lineTo(x, y + edgeLengthY + cornerLengthY);
-		result.lineTo(x, y + cornerLengthY);
-		result.closePath();
+		Rectangle2D result = new Rectangle2D.Float();
+		result.setRect(x + 0.5f * lineWidth, y + 0.5f * lineWidth, 
+				formats.getWidth().getInPixels(pixelsPerMillimeter) - lineWidth, 
+				formats.getHeight().getInPixels(pixelsPerMillimeter) - lineWidth);
 		return result;
 	}
 
 	
 	public String id() {
-		return "Tilted hexagon";
+		return "Rectangle";
 	}
 }

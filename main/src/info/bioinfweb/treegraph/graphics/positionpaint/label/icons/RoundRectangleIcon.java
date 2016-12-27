@@ -16,13 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.graphics.positionpaint.labelicons;
+package info.bioinfweb.treegraph.graphics.positionpaint.label.icons;
 
 
 import info.bioinfweb.treegraph.document.format.IconLabelFormats;
 
 import java.awt.Shape;
-import java.awt.geom.Path2D;
+import java.awt.geom.RoundRectangle2D;
 
 
 
@@ -30,36 +30,20 @@ import java.awt.geom.Path2D;
  * @author Ben St&ouml;ver
  * @since 2.0.25
  */
-public class TiltedCrossIcon extends ShapeLabelIcon implements LabelIcon {
-	@Override
+public class RoundRectangleIcon extends ShapeLabelIcon implements LabelIcon {
+	public static final float EDGE_RADIUS_FACTOR = 0.15f;
+	
+	
 	public Shape getShape(float x, float y, IconLabelFormats formats, float pixelsPerMillimeter) {
 		float lineWidth = formats.getLineWidth().getInPixels(pixelsPerMillimeter);
-		x += 0.5f * lineWidth;
-		y += 0.5f * lineWidth;
 		float width = formats.getWidth().getInPixels(pixelsPerMillimeter) - lineWidth;
-		float lengthX = width / 4f;
-		float height = formats.getHeight().getInPixels(pixelsPerMillimeter) - lineWidth;
-		float lengthY = height / 4f;
-		
-		Path2D result = new Path2D.Float();
-		result.moveTo(x + lengthX, y);
-		result.lineTo(x + 2 * lengthX, y + lengthY);
-		result.lineTo(x + 3 * lengthX, y);
-		result.lineTo(x + width, y + lengthY);
-		result.lineTo(x + 3 * lengthX, y + 2 * lengthY);
-		result.lineTo(x + width, y + 3 * lengthY);
-		result.lineTo(x + 3 * lengthX, y + height);
-		result.lineTo(x + 2 * lengthX, y + 3 * lengthY);
-		result.lineTo(x + lengthX, y + height);
-		result.lineTo(x, y + 3 * lengthY);
-		result.lineTo(x + lengthX, y + 2 * lengthY);
-		result.lineTo(x, y + lengthY);
-		result.closePath();
-		return result;
+		float height = formats.getHeight().getInPixels(pixelsPerMillimeter) - lineWidth; 
+		return new RoundRectangle2D.Float(x + 0.5f * lineWidth, y + 0.5f * lineWidth, width, height, 
+				EDGE_RADIUS_FACTOR * width, EDGE_RADIUS_FACTOR * height);
 	}
 
 	
 	public String id() {
-		return "Tilted cross";
+		return "Rounded rectangle";
 	}
 }

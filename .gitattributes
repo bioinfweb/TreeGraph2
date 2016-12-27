@@ -496,20 +496,26 @@ main/src/info/bioinfweb/treegraph/graphics/positionpaint/RectangularCladogramPos
 main/src/info/bioinfweb/treegraph/graphics/positionpaint/SinglePositionPaintFactory.java -text
 main/src/info/bioinfweb/treegraph/graphics/positionpaint/TreePainter.java -text
 main/src/info/bioinfweb/treegraph/graphics/positionpaint/TreePositioner.java -text
-main/src/info/bioinfweb/treegraph/graphics/positionpaint/labelicons/CrossIcon.java -text
-main/src/info/bioinfweb/treegraph/graphics/positionpaint/labelicons/EllipseIcon.java -text
-main/src/info/bioinfweb/treegraph/graphics/positionpaint/labelicons/HexagonIcon.java -text
-main/src/info/bioinfweb/treegraph/graphics/positionpaint/labelicons/LabelIcon.java -text
-main/src/info/bioinfweb/treegraph/graphics/positionpaint/labelicons/LabelIconMap.java -text
-main/src/info/bioinfweb/treegraph/graphics/positionpaint/labelicons/OctagonIcon.java -text
-main/src/info/bioinfweb/treegraph/graphics/positionpaint/labelicons/RectangleIcon.java -text
-main/src/info/bioinfweb/treegraph/graphics/positionpaint/labelicons/RoundRectangleIcon.java -text
-main/src/info/bioinfweb/treegraph/graphics/positionpaint/labelicons/ShapeLabelIcon.java -text
-main/src/info/bioinfweb/treegraph/graphics/positionpaint/labelicons/StarIcon.java -text
-main/src/info/bioinfweb/treegraph/graphics/positionpaint/labelicons/TiltedCrossIcon.java -text
-main/src/info/bioinfweb/treegraph/graphics/positionpaint/labelicons/TiltedHexagonIcon.java -text
-main/src/info/bioinfweb/treegraph/graphics/positionpaint/labelicons/TriangleIcon.java -text
-main/src/info/bioinfweb/treegraph/graphics/positionpaint/labelicons/UnknownIcon.java -text
+main/src/info/bioinfweb/treegraph/graphics/positionpaint/label/AbstractGraphicalLabelPainter.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/graphics/positionpaint/label/IconLabelPainter.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/graphics/positionpaint/label/LabelPainter.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/graphics/positionpaint/label/LabelPainterMap.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/graphics/positionpaint/label/PieChartLabelPainter.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/graphics/positionpaint/label/TextLabelPainter.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/graphics/positionpaint/label/icons/CrossIcon.java -text
+main/src/info/bioinfweb/treegraph/graphics/positionpaint/label/icons/EllipseIcon.java -text
+main/src/info/bioinfweb/treegraph/graphics/positionpaint/label/icons/HexagonIcon.java -text
+main/src/info/bioinfweb/treegraph/graphics/positionpaint/label/icons/LabelIcon.java -text
+main/src/info/bioinfweb/treegraph/graphics/positionpaint/label/icons/LabelIconMap.java -text
+main/src/info/bioinfweb/treegraph/graphics/positionpaint/label/icons/OctagonIcon.java -text
+main/src/info/bioinfweb/treegraph/graphics/positionpaint/label/icons/RectangleIcon.java -text
+main/src/info/bioinfweb/treegraph/graphics/positionpaint/label/icons/RoundRectangleIcon.java -text
+main/src/info/bioinfweb/treegraph/graphics/positionpaint/label/icons/ShapeLabelIcon.java -text
+main/src/info/bioinfweb/treegraph/graphics/positionpaint/label/icons/StarIcon.java -text
+main/src/info/bioinfweb/treegraph/graphics/positionpaint/label/icons/TiltedCrossIcon.java -text
+main/src/info/bioinfweb/treegraph/graphics/positionpaint/label/icons/TiltedHexagonIcon.java -text
+main/src/info/bioinfweb/treegraph/graphics/positionpaint/label/icons/TriangleIcon.java -text
+main/src/info/bioinfweb/treegraph/graphics/positionpaint/label/icons/UnknownIcon.java -text
 main/src/info/bioinfweb/treegraph/graphics/positionpaint/package.html -text
 main/src/info/bioinfweb/treegraph/gui/CurrentDirectoryModel.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/ActionManagement.java -text

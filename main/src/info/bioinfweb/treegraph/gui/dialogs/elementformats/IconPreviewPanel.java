@@ -21,7 +21,7 @@ package info.bioinfweb.treegraph.gui.dialogs.elementformats;
 
 import info.bioinfweb.treegraph.document.format.DistanceValue;
 import info.bioinfweb.treegraph.document.format.IconLabelFormats;
-import info.bioinfweb.treegraph.graphics.positionpaint.labelicons.LabelIconMap;
+import info.bioinfweb.treegraph.graphics.positionpaint.label.icons.LabelIconMap;
 import info.bioinfweb.treegraph.gui.treeframe.TreeViewPanel;
 
 import java.awt.Color;

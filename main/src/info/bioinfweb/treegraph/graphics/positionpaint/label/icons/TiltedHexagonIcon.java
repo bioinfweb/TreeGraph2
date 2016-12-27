@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.graphics.positionpaint.labelicons;
+package info.bioinfweb.treegraph.graphics.positionpaint.label.icons;
 
 
 import info.bioinfweb.treegraph.document.format.IconLabelFormats;
@@ -30,31 +30,31 @@ import java.awt.geom.Path2D;
  * @author Ben St&ouml;ver
  * @since 2.0.25
  */
-public class HexagonIcon extends ShapeLabelIcon implements LabelIcon {
+public class TiltedHexagonIcon extends ShapeLabelIcon implements LabelIcon {
 	@Override
 	public Shape getShape(float x, float y, IconLabelFormats formats, float pixelsPerMillimeter) {
 		float lineWidth = formats.getLineWidth().getInPixels(pixelsPerMillimeter);
 		x += 0.5f * lineWidth;
 		y += 0.5f * lineWidth;
 		float width = formats.getWidth().getInPixels(pixelsPerMillimeter) - lineWidth;
-		float cornerLengthX = width / 4f;  // wg. sin(60�) = 0.5 
 		float edgeLengthX = width / 2f;
 		float height = formats.getHeight().getInPixels(pixelsPerMillimeter) - lineWidth;
+		float cornerLengthY = height / 4f;
 		float edgeLengthY = height / 2f;
 		
 		Path2D result = new Path2D.Float();
-		result.moveTo(x + cornerLengthX, y);
-		result.lineTo(x + cornerLengthX + edgeLengthX, y);
-		result.lineTo(x + width, y + edgeLengthY);
-		result.lineTo(x + cornerLengthX + edgeLengthX, y + height);
-		result.lineTo(x + cornerLengthX, y + height);
-		result.lineTo(x, y + edgeLengthY);
+		result.moveTo(x + edgeLengthX, y);
+		result.lineTo(x + width, y + cornerLengthY);
+		result.lineTo(x + width, y + edgeLengthY + cornerLengthY);
+		result.lineTo(x + edgeLengthX, y + height);
+		result.lineTo(x, y + edgeLengthY + cornerLengthY);
+		result.lineTo(x, y + cornerLengthY);
 		result.closePath();
 		return result;
 	}
 
 	
 	public String id() {
-		return "Hexagon";
+		return "Tilted hexagon";
 	}
 }

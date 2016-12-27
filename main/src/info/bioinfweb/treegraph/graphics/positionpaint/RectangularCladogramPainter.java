@@ -24,7 +24,9 @@ import info.bioinfweb.treegraph.document.format.*;
 import info.bioinfweb.treegraph.document.position.LegendPositionData;
 import info.bioinfweb.treegraph.document.position.NodePositionData;
 import info.bioinfweb.treegraph.document.position.PositionData;
-import info.bioinfweb.treegraph.graphics.positionpaint.labelicons.LabelIconMap;
+import info.bioinfweb.treegraph.graphics.positionpaint.label.LabelPainter;
+import info.bioinfweb.treegraph.graphics.positionpaint.label.LabelPainterMap;
+import info.bioinfweb.treegraph.graphics.positionpaint.label.icons.LabelIconMap;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 import info.bioinfweb.treegraph.gui.treeframe.TreeViewPanel;
 import info.bioinfweb.commons.Math2;
@@ -89,6 +91,11 @@ public class RectangularCladogramPainter implements TreePainter {
 		
 	
 	private float paintText(String text, TextFormats f, float x, float y) {
+		return paintText(g, pixelsPerMillimeter, text, f, x, y);
+	}
+	
+	
+	public static float paintText(Graphics2D g, float pixelsPerMillimeter, String text, TextFormats f, float x, float y) {
 		Font font = f.getFont(pixelsPerMillimeter);
 		g.setColor(f.getTextColor());
 		g.setFont(font);
@@ -151,8 +158,9 @@ public class RectangularCladogramPainter implements TreePainter {
 	
 	/**
 	 * Tests of at least two of the specified angles are valid floating point values greater than zero.
+	 * 
 	 * @param angles - the an array of angles
-	 * @return <code>true</code> if att least two valid angles were found
+	 * @return {@code true} if at least two valid angles were found
 	 */
 	private boolean twoSectorsNotNull(double[] angles) {
 		int count = 0;
@@ -170,6 +178,11 @@ public class RectangularCladogramPainter implements TreePainter {
 			for (int i = 0; i < labels.labelCount(above, lineNo); i++) {
 				Label label = labels.get(above, lineNo, i);
 				PositionData pd = label.getPosition(type);
+				
+				LabelPainter<?> painter = LabelPainterMap.getInstance().getLabelPainter(label);
+				if (painter != null) {
+					painter.paint(g, pixelsPerMillimeter, pd, label);
+				}
 				
 				if (label instanceof TextLabel) {
 					TextLabelFormats f = ((TextLabel)label).getFormats(); 

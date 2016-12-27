@@ -20,7 +20,7 @@ package info.bioinfweb.treegraph.document.format;
 
 
 import info.bioinfweb.treegraph.document.Label;
-import info.bioinfweb.treegraph.graphics.positionpaint.labelicons.LabelIconMap;
+import info.bioinfweb.treegraph.graphics.positionpaint.label.icons.LabelIconMap;
 
 
 

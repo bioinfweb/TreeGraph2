@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.graphics.positionpaint.labelicons;
+package info.bioinfweb.treegraph.graphics.positionpaint.label.icons;
 
 
 import info.bioinfweb.treegraph.document.format.IconLabelFormats;
@@ -39,7 +39,7 @@ public abstract class ShapeLabelIcon implements LabelIcon {
 	/**
 	 * Paints the shape of the implementing class depending on the specified formats and restores the current
 	 * {@link Stroke} after the operation.
-	 * @see info.bioinfweb.treegraph.graphics.positionpaint.labelicons.LabelIcon#paint(java.awt.Graphics2D, float, float, info.bioinfweb.treegraph.document.format.LabelFormats, float)
+	 * @see info.bioinfweb.treegraph.graphics.positionpaint.label.icons.LabelIcon#paint(java.awt.Graphics2D, float, float, info.bioinfweb.treegraph.document.format.LabelFormats, float)
 	 */
 	public void paint(Graphics2D g, float x, float y, IconLabelFormats formats, float pixelsPerMillimeter) {
 		Shape shape = getShape(x, y, formats, pixelsPerMillimeter);

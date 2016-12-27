@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.graphics.positionpaint.labelicons;
+package info.bioinfweb.treegraph.graphics.positionpaint.label.icons;
 
 
 import info.bioinfweb.treegraph.document.format.IconLabelFormats;
@@ -40,7 +40,7 @@ public class UnknownIcon implements LabelIcon {
 	/**
 	 * Displays a question mark.
 	 * 
-	 * @see info.bioinfweb.treegraph.graphics.positionpaint.labelicons.LabelIcon#paint(java.awt.Graphics2D, float, float, info.bioinfweb.treegraph.document.format.LabelFormats, float)
+	 * @see info.bioinfweb.treegraph.graphics.positionpaint.label.icons.LabelIcon#paint(java.awt.Graphics2D, float, float, info.bioinfweb.treegraph.document.format.LabelFormats, float)
 	 */
 	public void paint(Graphics2D g, float x, float y, IconLabelFormats formats, float pixelsPerMillimeter) {
 		Font font = new Font(Font.SANS_SERIF, Font.PLAIN, 
@@ -54,7 +54,7 @@ public class UnknownIcon implements LabelIcon {
 	
 	/**
 	 * Returns <code>null</code>.
-	 * @see info.bioinfweb.treegraph.graphics.positionpaint.labelicons.LabelIcon#id()
+	 * @see info.bioinfweb.treegraph.graphics.positionpaint.label.icons.LabelIcon#id()
 	 */
 	public String id() {
 		return null;

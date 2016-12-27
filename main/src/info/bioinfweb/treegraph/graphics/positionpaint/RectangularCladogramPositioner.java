@@ -36,7 +36,7 @@ public class RectangularCladogramPositioner implements TreePositioner {
 	
 	protected PositionPaintType type = PositionPaintFactory.getInstance().getType(this);
 	protected Document document;
-	private float maxLeafWidth = 0;  // Notwendig zur linksb�ndigen Positionierung der Bl�tter (w�ren sonst rechtsb�ndig)
+	private float maxLeafWidth = 0;  // Notwendig zur linksbündigen Positionierung der Blätter (wären sonst rechtsbündig)
 	protected float rescalingFactorX = 1f;
 	
 	
@@ -54,12 +54,12 @@ public class RectangularCladogramPositioner implements TreePositioner {
 	/**
 	 * Calculates the Dimensions of this text element. The height is already defined in
 	 * by the provided formats and the width will calculated from the the text length scaled
-	 * with the provided height. 
-	 * @param text the text of the element which dimensions shall be calculated
-	 * @param formats the text formats of the element
+	 * with the provided height.
+	 * 
+	 * @param textElement the text element for which the dimensions shall be calculated
 	 * @return the dimensions of the element not including optional margins
 	 */
-	private DistanceDimension calculateTextDimension(TextElement textElement) {
+	public static DistanceDimension calculateTextDimension(TextElement textElement) {
 		DistanceDimension result = new DistanceDimension();
 		
 		TextFormats formats = textElement.getFormats();
@@ -75,9 +75,9 @@ public class RectangularCladogramPositioner implements TreePositioner {
 	}
 	
 	
-	private DistanceDimension calculateTaxonDimension(Node taxon) {
-		DistanceDimension result = calculateTextDimension(taxon);
-		Margin m = taxon.getFormats().getLeafMargin();
+	private DistanceDimension calculateTaxonDimension(Node terminal) {
+		DistanceDimension result = calculateTextDimension(terminal);
+		Margin m = terminal.getFormats().getLeafMargin();
 		result.getWidth().add(m.getLeft());
 		result.getWidth().add(m.getRight());
 		result.getHeight().add(m.getTop());
