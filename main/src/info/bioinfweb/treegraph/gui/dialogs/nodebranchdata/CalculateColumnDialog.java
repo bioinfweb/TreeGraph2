@@ -86,7 +86,9 @@ public class CalculateColumnDialog extends EditDialog {
 	 */
 	public CalculateColumnDialog(Frame owner) {
 		super(owner);
+		setHelpCode(90);
 		initialize();
+		setLocationRelativeTo(owner);
 	}
 
 	
@@ -144,7 +146,6 @@ public class CalculateColumnDialog extends EditDialog {
 	 * @return void
 	 */
 	private void initialize() {
-		setHelpCode(77);
 		setContentPane(getJContentPane());
 		setTitle("Calculate node/branch data");
 		setMinimumSize(new Dimension(500, 50));

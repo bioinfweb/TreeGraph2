@@ -84,6 +84,7 @@ public class ActionManagement extends AbstractUndoActionManagement {
 		put("file.exportTable", new ExportTableAction(mainFrame));
 		put("file.generateBayesTraitsCommands", new GenerateBayesTraitsInputAction(mainFrame));
 		put("file.importBayesTraitsData", new ImportBayesTraitsDataAction(mainFrame));
+		put("file.exportBranchLabelCaption", new ExportBranchLabelCaptionAction(mainFrame));
 		put("file.exportPieChartLabelColors", new ExportPieChartLabelColorsAction(mainFrame));
 		put("file.exit", new ExitAction(mainFrame));
 		
@@ -175,8 +176,9 @@ public class ActionManagement extends AbstractUndoActionManagement {
 	
 	
 	private void fillPopupActions() {
+		popupActions.add(get("file.exportBranchLabelCaption"));
 		popupActions.add(get("file.exportPieChartLabelColors"));
-		popupActions.add(null);
+		popupActions.add(null);  // becomes a separator
 		popupActions.add(get("select.invert"));
 		popupActions.add(get("select.wholeSubtree"));
 		popupActions.add(get("select.typeInDocument"));
@@ -186,7 +188,7 @@ public class ActionManagement extends AbstractUndoActionManagement {
 		popupActions.add(get("select.labelsInSubtree"));
 		popupActions.add(get("select.legendsWithPosIndex"));
 		popupActions.add(get("select.legendsInSubtree"));
-		popupActions.add(null);  // becomes a separator
+		popupActions.add(null);
 		popupActions.add(get("edit.copyElement"));
 		popupActions.add(get("edit.copyAllLabels"));
 		popupActions.add(get("edit.cut"));
