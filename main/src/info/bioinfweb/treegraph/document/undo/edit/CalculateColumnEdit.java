@@ -99,10 +99,40 @@ public class CalculateColumnEdit extends DocumentEdit {
   private Map<String, NodeBranchDataColumnBackup> backups = new HashMap<>();
 	
 	
+	/**
+	 * Creates a new instance of this class.
+	 * 
+	 * @param document the document to perform the changes on
+	 * @param targetAdapter the single target adapter (Maybe {@code null} if {@code targetColumnExpression} and {@code targetType} are 
+	 *        specified.)
+	 * @param targetColumnExpression an expression to calculate the target column ID separately for each line (Maybe {@code null} and 
+	 *        will be ignored if {@code targetAdapter} is specified.)
+	 * @param targetType the type of new node/branch data column that shall be created if a new column needs to be created in this edit
+	 *        (Maybe {@code null} and will be ignored if {@code targetAdapter} is specified.)
+	 * @param valueExpression the expression to calculate the value from
+	 * @param clearTargetColumns Specify {@code true} if the previous values of all target columns (as defined by {@code targetAdapter}
+	 *        or {@code targetColumnExpression}) shall be deleted prior to the calculation or {@code false} if values in cells that are
+	 *        not calculated shall remain unchanged.
+	 * @param defaultValue a default value to be set to each cell that is empty after the calculation was performed (Maybe {@code null}.)
+	 * @throws NullPointerException if {@code targetColumnExpression} or {@code targetType} are {@code null} while {@code targetAdapter}
+	 *         is also null, or if {@code valueExpression} is {@code null}
+	 */
 	public CalculateColumnEdit(Document document, NodeBranchDataAdapter targetAdapter, String targetColumnExpression, 
 			TextIDElementType targetType, String valueExpression, boolean clearTargetColumns, TextElementData defaultValue) {
 		
 		super(document, DocumentChangeType.TOPOLOGICAL_BY_RENAMING);
+		if (targetAdapter == null) {
+			if (targetColumnExpression == null) {
+				throw new NullPointerException("targetColumnExpression must not be null while targetAdapter is also null.");
+			}
+			else if (targetType == null) {
+				throw new NullPointerException("targetType must not be null while targetAdapter is also null.");
+			}
+		}
+		if (valueExpression == null) {
+			throw new NullPointerException("valueExpression must not be null.");
+		}
+		
 		this.targetAdapter = targetAdapter;
 		this.targetColumnExpression = targetColumnExpression;
 		this.targetType = targetType;
