@@ -497,6 +497,7 @@ main/src/info/bioinfweb/treegraph/graphics/positionpaint/SinglePositionPaintFact
 main/src/info/bioinfweb/treegraph/graphics/positionpaint/TreePainter.java -text
 main/src/info/bioinfweb/treegraph/graphics/positionpaint/TreePositioner.java -text
 main/src/info/bioinfweb/treegraph/graphics/positionpaint/label/AbstractGraphicalLabelPainter.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/graphics/positionpaint/label/AbstractLabelPainter.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/graphics/positionpaint/label/IconLabelPainter.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/graphics/positionpaint/label/LabelPainter.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/graphics/positionpaint/label/LabelPainterMap.java -text svneol=unset#text/plain

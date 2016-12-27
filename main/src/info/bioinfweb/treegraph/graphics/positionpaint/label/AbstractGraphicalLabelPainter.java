@@ -25,9 +25,9 @@ import info.bioinfweb.treegraph.document.format.GraphicalLabelFormats;
 
 
 
-public abstract class AbstractGraphicalLabelPainter<L extends GraphicalLabel> implements LabelPainter<L> {
+public abstract class AbstractGraphicalLabelPainter<L extends GraphicalLabel> extends AbstractLabelPainter<L> {
 	@Override
-	public DistanceDimension calculateDimension(L label) {
+	protected DistanceDimension doCalculateDimension(L label) {
 		GraphicalLabelFormats f = label.getFormats();
 		return new DistanceDimension(f.getWidth(), f.getHeight());
 	}

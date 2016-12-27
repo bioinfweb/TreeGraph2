@@ -21,33 +21,27 @@ package info.bioinfweb.treegraph.graphics.positionpaint.label;
 
 import java.awt.Graphics2D;
 
-import info.bioinfweb.treegraph.document.TextLabel;
+import info.bioinfweb.treegraph.document.Label;
 import info.bioinfweb.treegraph.document.format.DistanceDimension;
-import info.bioinfweb.treegraph.document.format.TextLabelFormats;
 import info.bioinfweb.treegraph.document.position.PositionData;
-import info.bioinfweb.treegraph.graphics.positionpaint.RectangularCladogramPainter;
-import info.bioinfweb.treegraph.graphics.positionpaint.RectangularCladogramPositioner;
 
 
 
-public class TextLabelPainter extends AbstractLabelPainter<TextLabel> {
+public abstract class AbstractLabelPainter<L extends Label> implements LabelPainter<L> {
 	@Override
-	protected DistanceDimension doCalculateDimension(TextLabel label) {
-		return RectangularCladogramPositioner.calculateTextDimension(label);
+	public DistanceDimension calculateDimension(Label label) {
+		return doCalculateDimension(getLabelClass().cast(label));
 	}
+	
+	
+	protected abstract DistanceDimension doCalculateDimension(L label);
 
 	
 	@Override
-	protected void doPaint(Graphics2D g, float pixelsPerMillimeter, PositionData pd, TextLabel label) {
-		TextLabelFormats f = label.getFormats(); 
-		RectangularCladogramPainter.paintText(g, pixelsPerMillimeter, label.getData().formatValue(f.getDecimalFormat()), f, 
-				pd.getLeft().getInPixels(pixelsPerMillimeter), 
-				pd.getTop().getInPixels(pixelsPerMillimeter) + g.getFontMetrics(f.getFont(pixelsPerMillimeter)).getAscent());
+	public void paint(Graphics2D g, float pixelsPerMillimeter, PositionData pd, Label label) {
+		doPaint(g, pixelsPerMillimeter, pd, getLabelClass().cast(label));
 	}
 
-
-	@Override
-	public Class<TextLabel> getLabelClass() {
-		return TextLabel.class;
-	}
+	
+	protected abstract void doPaint(Graphics2D g, float pixelsPerMillimeter, PositionData pd, L label);
 }

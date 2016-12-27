@@ -25,6 +25,8 @@ import info.bioinfweb.treegraph.document.position.LegendPositionData;
 import info.bioinfweb.treegraph.document.position.NodePositionData;
 import info.bioinfweb.treegraph.document.position.PositionData;
 import info.bioinfweb.treegraph.document.tools.TreeSerializer;
+import info.bioinfweb.treegraph.graphics.positionpaint.label.LabelPainter;
+import info.bioinfweb.treegraph.graphics.positionpaint.label.LabelPainterMap;
 import info.bioinfweb.commons.*;
 import info.bioinfweb.commons.graphics.*;
 
@@ -92,14 +94,14 @@ public class RectangularCladogramPositioner implements TreePositioner {
 				Label l = labels.get(above, lineNo, pos);
 				PositionData pd = l.getPosition(type);
 				
-				if (l instanceof TextLabel) {
-					DistanceDimension d = calculateTextDimension((TextLabel)l);
+				LabelPainter<?> painter = LabelPainterMap.getInstance().getLabelPainter(l);
+				if (painter != null) {
+					DistanceDimension d = painter.calculateDimension(l);
 					pd.getWidth().assign(d.getWidth());
 					pd.getHeight().assign(d.getHeight());
 				}
-				else {  // GraphicalLabel
-					pd.getWidth().assign(((GraphicalLabel)l).getFormats().getWidth());
-					pd.getHeight().assign(((GraphicalLabel)l).getFormats().getHeight());
+				else {
+					throw new InternalError("Unsupported label of type " + l.getClass().getCanonicalName() + " found.");
 				}
 			}
 		}

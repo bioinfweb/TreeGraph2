@@ -50,7 +50,7 @@ public class PieChartLabelPainter extends AbstractGraphicalLabelPainter<PieChart
 	
 	
 	@Override
-	public void paint(Graphics2D g, float pixelsPerMillimeter, PositionData pd, PieChartLabel label) {
+	protected void doPaint(Graphics2D g, float pixelsPerMillimeter, PositionData pd, PieChartLabel label) {
 		PieChartLabel l = (PieChartLabel)label;
 		double[] angles = l.getPieChartAngles();
 		double startAngle = 0;

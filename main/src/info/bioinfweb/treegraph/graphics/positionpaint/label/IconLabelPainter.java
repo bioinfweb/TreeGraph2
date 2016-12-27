@@ -30,7 +30,7 @@ import info.bioinfweb.treegraph.graphics.positionpaint.label.icons.LabelIconMap;
 
 public class IconLabelPainter extends AbstractGraphicalLabelPainter<IconLabel> {
 	@Override
-	public void paint(Graphics2D g, float pixelsPerMillimeter, PositionData pd, IconLabel label) {
+	protected void doPaint(Graphics2D g, float pixelsPerMillimeter, PositionData pd, IconLabel label) {
 		IconLabelFormats f = ((IconLabel)label).getFormats();
 		LabelIconMap.getInstance().get(f.getIcon()).paint(g, 
 				pd.getLeft().getInPixels(pixelsPerMillimeter), 

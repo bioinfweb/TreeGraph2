@@ -36,9 +36,9 @@ import info.bioinfweb.treegraph.document.position.PositionData;
  * @param <L> the type of label to be painted
  */
 public interface LabelPainter<L extends Label> {
-	public DistanceDimension calculateDimension(L label);
+	public DistanceDimension calculateDimension(Label label);
 	
-	public void paint(Graphics2D g, float pixelsPerMillimeter, PositionData pd, L label);
+	public void paint(Graphics2D g, float pixelsPerMillimeter, PositionData pd, Label label);
 	// The position data is provided here, although it could also be determined from the label instance if the position/paint type would
 	// be specified instead. Since currently (and probably also in the future) painting of labels does not depend on the view mode the
 	// parameter set was chosen this way, which would e.g. allow to remove the position data property from labels in the future.
