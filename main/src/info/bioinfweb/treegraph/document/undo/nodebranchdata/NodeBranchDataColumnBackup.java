@@ -34,16 +34,23 @@ import java.util.List;
  * @since 2.0.24
  */
 public class NodeBranchDataColumnBackup {
+	private NodeBranchDataAdapter adapter;
   private List<NodeBranchDataElementBackup> list = null;
   
   
 	public NodeBranchDataColumnBackup(NodeBranchDataAdapter adapter, Node root) {
 		super();
+		this.adapter = adapter;
 		list = new ArrayList<NodeBranchDataElementBackup>();
 		backupSubtree(root, adapter);
 	}
   
   
+	public NodeBranchDataAdapter getAdapter() {
+		return adapter;
+	}
+
+
 	private void backupSubtree(Node root, NodeBranchDataAdapter adapter) {
 		list.add(new NodeBranchDataElementBackup(adapter, root));
 		
@@ -54,7 +61,7 @@ public class NodeBranchDataColumnBackup {
 	
 	
 	private int restoreSubtree(Node root, int index) {
-		list.get(index).restoreNode(root);
+		list.get(index).restoreNode(adapter, root);
 		index++;
 		
 		for (int i = 0; i < root.getChildren().size(); i++) {

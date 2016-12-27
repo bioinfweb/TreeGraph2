@@ -44,13 +44,11 @@ import info.bioinfweb.treegraph.document.tools.IDManager;
 public class NodeBranchDataElementBackup {
 	private TextElementData textElementData = null;
 	private Label label = null;
-	private NodeBranchDataAdapter adapter;
 	
 	
 	public NodeBranchDataElementBackup(NodeBranchDataAdapter adapter, Node node) {
 	  super();	  
-	  this.adapter = adapter;
-	  backupNode(node);
+	  backupNode(adapter, node);
   }
 	
 	
@@ -80,7 +78,7 @@ public class NodeBranchDataElementBackup {
 	}
 	
 	
-	private void backupAdapter(Node node) {
+	private void backupAdapter(NodeBranchDataAdapter adapter, Node node) {
 		if (adapter.isDecimal(node)) {
 			textElementData = new TextElementData(adapter.getDecimal(node));
 		}
@@ -90,17 +88,17 @@ public class NodeBranchDataElementBackup {
 	}
 	
 	
-	private void backupNode(Node node) {
+	private void backupNode(NodeBranchDataAdapter adapter, Node node) {
 		if (adapter instanceof IDElementAdapter) {
 			backupIDElement(((IDElementAdapter)adapter).getID(), node);
 		}
 		else if (!adapter.isEmpty(node)) {
-			backupAdapter(node);
+			backupAdapter(adapter, node);
 		}
 	}
 	
 	
-	public void restoreNode(Node node) {
+	public void restoreNode(NodeBranchDataAdapter adapter, Node node) {
 		// Remove possible other elements with the same ID:
 		if (adapter instanceof IDElementAdapter) {
 			IDManager.removeElementWithID(node, ((IDElementAdapter)adapter).getID());  // adapter.delete() would not delete elements in other columns with the same ID.

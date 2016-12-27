@@ -83,11 +83,14 @@ public class CalculateColumnEdit extends DocumentEdit {
 	public static final String UNKNOWN_FUNCTION_NAME_ERROR = "Syntax Error (implicit multiplication not enabled)";
 	
 	
-  private JEP parser;
-  private String valueExpression;
   private NodeBranchDataAdapter targetAdapter;
   private String targetColumnExpression;
   private TextIDElementType targetType;
+  private String valueExpression;
+  private boolean clearTargetColumns;
+  private TextElementData defaultValue;
+  
+  private JEP parser;
   private Map<String, NodeBranchDataAdapter> adapterMap;
   private boolean isEvaluating = false;
   private boolean isEvaluatingDecimal = true;
@@ -104,7 +107,8 @@ public class CalculateColumnEdit extends DocumentEdit {
 		this.targetColumnExpression = targetColumnExpression;
 		this.targetType = targetType;
 		this.valueExpression = valueExpression;
-		//TODO Make use of new parameters
+		this.clearTargetColumns = clearTargetColumns;
+		this.defaultValue = defaultValue;
 		
 		parser = createParser();
 		adapterMap = createAdapterMap();
@@ -405,10 +409,14 @@ public class CalculateColumnEdit extends DocumentEdit {
 	}
 	
 	
-	private void backupColumn(NodeBranchDataAdapter adapter) {
+	private void prepareColumn(NodeBranchDataAdapter adapter) {
 		String key = getAdapterName(adapter);
 		if (!backups.containsKey(key)) {
 			backups.put(key, new NodeBranchDataColumnBackup(adapter, getDocument().getTree().getPaintStart()));
+			
+			if (clearTargetColumns) {  // Clear column as soon as it is calculated as the target for the first time.
+				clearColumn(adapter, getDocument().getTree().getPaintStart());
+			}
 		}
 	}
 	
@@ -417,7 +425,7 @@ public class CalculateColumnEdit extends DocumentEdit {
   	position = root;
   	NodeBranchDataAdapter adapter = calculateTargetAdapter();
   	if (adapter != null) {
-  		backupColumn(adapter);  // Make a column backup, if this column has been edited on another node before.
+  		prepareColumn(adapter);  // Make a column backup and possibly clear, if this column has been edited on another node before.
   		
 	    parser.parseExpression(valueExpression);
 	    if (parser.hasError()) {
@@ -451,10 +459,48 @@ public class CalculateColumnEdit extends DocumentEdit {
   }
   
   
+	private void clearColumn(NodeBranchDataAdapter adapter, Node root) {
+		adapter.delete(root);
+		for (Node child : root.getChildren()) {
+			clearColumn(adapter, child);
+		}
+	}
+	
+	
+	private void setDefaultValue() {
+		if (defaultValue != null) {
+			if (targetAdapter != null) {
+				setDefaultValueInColumn(targetAdapter, getDocument().getTree().getPaintStart());
+			}
+			else {
+				for (NodeBranchDataColumnBackup backup : backups.values()) {
+					setDefaultValueInColumn(backup.getAdapter(), getDocument().getTree().getPaintStart());
+				}
+			}
+		}
+	}
+	
+	
+	private void setDefaultValueInColumn(NodeBranchDataAdapter adapter, Node root) {
+		if (adapter.isEmpty(root) || (adapter.isString(root) && adapter.getText(root).isEmpty())) {  // Currently deleting values in the node/branch data table leads to the storage of empty strings instead of null. Therefore such cells are also considered to be empty here.
+			adapter.setTextElementData(root, defaultValue);
+		}
+		for (Node child : root.getChildren()) {
+			setDefaultValueInColumn(adapter, child);
+		}
+	}
+	
+	
 	@Override
 	public void redo() throws CannotRedoException {
 		errors.clear();
+		if ((targetAdapter != null) && clearTargetColumns) {  // Clear single target column. Calculated target columns are cleared in prepareColumn().
+			clearColumn(targetAdapter, getDocument().getTree().getPaintStart());
+		}
+		
 		calculateSubtree(getDocument().getTree().getPaintStart());  // Keeps previously present labels and only changes their value.
+		setDefaultValue();
+		
 		super.redo();
 	}
 
