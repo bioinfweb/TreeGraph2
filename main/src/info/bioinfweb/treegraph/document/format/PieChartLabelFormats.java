@@ -20,6 +20,7 @@ package info.bioinfweb.treegraph.document.format;
 
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -36,12 +37,12 @@ import info.bioinfweb.treegraph.document.PieColorManager;
  */
 public class PieChartLabelFormats extends GraphicalLabelFormats implements LineFormats {
 	public static final boolean DEFAULT_SHOW_INTERNAL_LINES = true;
-	public static final boolean DEFAULT_SHOW_NULL_LINES = false;
+	public static final boolean DEFAULT_SHOW_LINES_FOR_ZERO = false;
 	
 	
-  private List<Color> pieColors = new Vector<Color>();
+  private List<Color> pieColors = new ArrayList<Color>();
   private boolean showInternalLines = DEFAULT_SHOW_INTERNAL_LINES;
-  private boolean showNullLines = DEFAULT_SHOW_NULL_LINES; 
+  private boolean showLinesForZero = DEFAULT_SHOW_LINES_FOR_ZERO; 
 
 
 	public PieChartLabelFormats(Label owner, boolean above, int line, int linePosition) {
@@ -101,13 +102,13 @@ public class PieChartLabelFormats extends GraphicalLabelFormats implements LineF
 	}
 
 
-	public boolean getShowNullLines() {
-		return showNullLines;
+	public boolean getShowLinesForZero() {
+		return showLinesForZero;
 	}
 
 
-	public void setShowNullLines(boolean showNullLines) {
-		this.showNullLines = showNullLines;
+	public void setShowLinesForZero(boolean showNullLines) {
+		this.showLinesForZero = showNullLines;
 	}
 
 
@@ -115,7 +116,7 @@ public class PieChartLabelFormats extends GraphicalLabelFormats implements LineF
   	pieColors.clear();
   	pieColors.addAll(other.pieColors);
   	setShowInternalLines(other.getShowInternalLines());
-  	setShowNullLines(other.getShowNullLines());
+  	setShowLinesForZero(other.getShowLinesForZero());
   }
 	
 	

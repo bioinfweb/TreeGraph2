@@ -23,21 +23,22 @@ import info.bioinfweb.treegraph.document.format.adapters.color.ColorAdapter;
 import info.bioinfweb.treegraph.document.undo.format.ColorsByNodeBranchDataEdit;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
-import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.JColorChooser;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JColorChooser;
 import javax.swing.JPanel;
-import javax.swing.ListModel;
 import javax.swing.border.TitledBorder;
+
 
 
 /**
@@ -117,7 +118,7 @@ public class ColorsByNodeBranchDataDialog extends FormatsByNodeBranchDataDialog 
 
 
 	@Override
-	protected ListModel createTargetListModel() {
+	protected ColorAdapterListModel createTargetListModel() {
 		return new ColorAdapterListModel();
 	}
 
@@ -178,6 +179,7 @@ public class ColorsByNodeBranchDataDialog extends FormatsByNodeBranchDataDialog 
 			colorPanel.add(getMinMaxPanel(), gridBagConstraints11);
 			colorPanel.add(getChangeUndefinedCheckBox(), gridBagConstraints31);
 			colorPanel.add(getInheritToTerminalsCheckBox(), gridBagConstraints4);
+			colorPanel.setMaximumSize(new Dimension(colorPanel.getMaximumSize().width, colorPanel.getMinimumSize().height));  // Otherwise this component would be enlarged if the dialog height is increased.
 		}
 		return colorPanel;
 	}

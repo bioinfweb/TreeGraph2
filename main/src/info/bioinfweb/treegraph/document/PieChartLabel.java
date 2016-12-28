@@ -19,12 +19,12 @@
 package info.bioinfweb.treegraph.document;
 
 
-import java.util.List;
-import java.util.Vector;
-
 import info.bioinfweb.treegraph.document.format.ElementFormats;
 import info.bioinfweb.treegraph.document.format.PieChartLabelFormats;
 import info.bioinfweb.treegraph.document.tools.IDManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 
@@ -35,12 +35,13 @@ import info.bioinfweb.treegraph.document.tools.IDManager;
  * @since 2.0.43
  */
 public class PieChartLabel extends GraphicalLabel implements LineElement {
-	private List<String> valueIDs = new Vector<String>();
-	private PieChartLabelFormats formats = new PieChartLabelFormats(this);
+	private List<String> valueIDs = new ArrayList<String>();
+	protected PieChartLabelFormats formats;
 	
 	
 	public PieChartLabel(Labels labels) {
 		super(labels);
+		formats = new PieChartLabelFormats(this);  // Must be done here in order to set a different instance in inherited classes. 
 	}
 	
 	

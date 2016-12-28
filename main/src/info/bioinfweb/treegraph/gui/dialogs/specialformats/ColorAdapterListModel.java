@@ -37,7 +37,7 @@ import javax.swing.ListModel;
  * @author Ben St&ouml;ver
  * @since 2.0.23
  */
-public class ColorAdapterListModel extends AbstractListModel implements ListModel {
+public class ColorAdapterListModel extends AbstractListModel<ColorAdapter> implements ListModel<ColorAdapter> {
 	private List<ColorAdapter> adapters = new Vector<ColorAdapter>();
 	
 

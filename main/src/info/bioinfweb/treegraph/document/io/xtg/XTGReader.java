@@ -394,8 +394,8 @@ public class XTGReader extends AbstractDocumentReader implements XTGConstants {
   	readGraphicalLabelDimensions(f, rootElement);
     f.setShowInternalLines(XMLUtils.readBooleanAttr(rootElement, ATTR_SHOW_INTERNAL_LINES, 
     		f.getShowInternalLines()));
-    f.setShowNullLines(XMLUtils.readBooleanAttr(rootElement, ATTR_SHOW_NULL_LINES, 
-    		f.getShowNullLines()));
+    f.setShowLinesForZero(XMLUtils.readBooleanAttr(rootElement, ATTR_SHOW_NULL_LINES, 
+    		f.getShowLinesForZero()));
     
     readLabelData(rootElement, l);
     labels.add(l);  // label.labels wird hier automatisch gesetzt

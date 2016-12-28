@@ -188,7 +188,7 @@ public class XTGWriter extends AbstractDocumentWriter implements XTGConstants, D
 					writeLineAttr(f);
 		    	writeLabelDimensions(f);
 					writer.writeAttribute(ATTR_SHOW_INTERNAL_LINES.toString(), "" + f.getShowInternalLines());
-					writer.writeAttribute(ATTR_SHOW_NULL_LINES.toString(), "" + f.getShowNullLines());
+					writer.writeAttribute(ATTR_SHOW_NULL_LINES.toString(), "" + f.getShowLinesForZero());
 				}
 				else {
 					throw new InternalError("Unsupported label of type " + l.getClass().getCanonicalName() + " found.");

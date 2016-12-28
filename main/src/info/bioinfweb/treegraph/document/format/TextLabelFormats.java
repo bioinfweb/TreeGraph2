@@ -56,86 +56,103 @@ public class TextLabelFormats extends LabelFormats implements TextFormats {
 	}
 
 
+	@Override
 	public void addTextStyle(int style) {
 		textFormats.addTextStyle(style);
 	}
 
 
+	@Override
 	public DecimalFormat getDecimalFormat() {
 		return textFormats.getDecimalFormat();
 	}
 
 
+	@Override
 	public float getDescent() {
 		return textFormats.getDescent();
 	}
 
 
+	@Override
 	public Font getFont(float pixelsPerMillimeter) {
 		return textFormats.getFont(pixelsPerMillimeter);
 	}
 
 
+	@Override
 	public String getFontName() {
 		return textFormats.getFontName();
 	}
 
 
+	@Override
 	public Locale getLocale() {
 		return textFormats.getLocale();
 	}
 
 
+	@Override
 	public Color getTextColor() {
 		return textFormats.getTextColor();
 	}
 
 
+	@Override
 	public DistanceValue getTextHeight() {
 		return textFormats.getTextHeight();
 	}
 
 
+	@Override
 	public int getTextStyle() {
 		return textFormats.getTextStyle();
 	}
 
 
+	@Override
 	public boolean hasTextStyle(int style) {
 		return textFormats.hasTextStyle(style);
 	}
 
 
+	@Override
 	public void removeTextStyle(int style) {
 		textFormats.removeTextStyle(style);
 	}
 
 
+	@Override
 	public void setDecimalFormat(DecimalFormat decimalFormat, Locale locale) {
 		textFormats.setDecimalFormat(decimalFormat, locale);
 	}
 
 
+	@Override
 	public void setFontName(String fontName) {
 		textFormats.setFontName(fontName);
 	}
 
 
+	@Override
 	public void setLocale(Locale locale) {
 		textFormats.setLocale(locale);
 	}
 
 
+	@Override
 	public void setTextColor(Color textColor) {
 		textFormats.setTextColor(textColor);
 	}
 
 
+	@Override
 	public void setTextStyle(int style) {
 		textFormats.setTextStyle(style);
 	}
 
 	
+	@Override
 	public void assignTextFormats(TextFormats other) {
 		textFormats.assignTextFormats(other);
 	}

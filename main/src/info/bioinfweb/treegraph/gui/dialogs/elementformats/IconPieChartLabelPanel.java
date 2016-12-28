@@ -38,7 +38,7 @@ import info.bioinfweb.treegraph.document.format.operate.InternalPieChartLinesOpe
 import info.bioinfweb.treegraph.document.format.operate.LabelHeightOperator;
 import info.bioinfweb.treegraph.document.format.operate.IconOperator;
 import info.bioinfweb.treegraph.document.format.operate.LabelWidthOperator;
-import info.bioinfweb.treegraph.document.format.operate.NullPieChartLinesOperator;
+import info.bioinfweb.treegraph.document.format.operate.ShowPieChartLinesForZeroOperator;
 import info.bioinfweb.treegraph.document.format.operate.PieColorOperator;
 import info.bioinfweb.treegraph.gui.dialogs.DistanceValueInput;
 import info.bioinfweb.treegraph.gui.dialogs.elementformats.piecolor.PieColorCellRenderer;
@@ -138,7 +138,7 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatTab {
 						f.getPieColor(i)));
 			}
 			getShowInternalLinesCheckBox().setSelected(f.getShowInternalLines());
-			getShowNullLinesCheckBox().setSelected(f.getShowNullLines());
+			getShowNullLinesCheckBox().setSelected(f.getShowLinesForZero());
 		}
 		return (iconLabelSel || pieChartLabelSel);
 	}
@@ -181,7 +181,7 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatTab {
 			operators.add(new InternalPieChartLinesOperator(getShowInternalLinesCheckBox().isSelected()));
 		}
 		if (nullLinesMonitor.hasChanged()) {
-			operators.add(new NullPieChartLinesOperator(getShowNullLinesCheckBox().isSelected()));
+			operators.add(new ShowPieChartLinesForZeroOperator(getShowNullLinesCheckBox().isSelected()));
 		}
 	}
 	
@@ -217,7 +217,7 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatTab {
 				pieChartFormats.setPieColor(i, colors[i]);
 			}
 			pieChartFormats.setShowInternalLines(getShowInternalLinesCheckBox().isSelected());
-			pieChartFormats.setShowNullLines(getShowNullLinesCheckBox().isSelected());
+			pieChartFormats.setShowLinesForZero(getShowNullLinesCheckBox().isSelected());
 		}
 	}
 	

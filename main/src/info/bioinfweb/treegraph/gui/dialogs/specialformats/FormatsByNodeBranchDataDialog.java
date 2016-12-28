@@ -21,6 +21,7 @@ package info.bioinfweb.treegraph.gui.dialogs.specialformats;
 
 import java.awt.Color;
 import java.awt.Dialog;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
@@ -113,6 +114,7 @@ public abstract class FormatsByNodeBranchDataDialog extends SpecialFormatsDialog
 			sourcePanel.setLayout(new GridBagLayout());
 			sourcePanel.setBorder(BorderFactory.createTitledBorder(null, "Source data", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
 			sourcePanel.add(getSourceComboBox(), gridBagConstraints1);
+			sourcePanel.setMaximumSize(new Dimension(sourcePanel.getMaximumSize().width, sourcePanel.getMinimumSize().height));  // Otherwise this component would be enlarged if the dialog height is increased.
 		}
 		return sourcePanel;
 	}

@@ -101,8 +101,8 @@ main/src/info/bioinfweb/treegraph/document/Node.java -text
 main/src/info/bioinfweb/treegraph/document/NodeLadderizeComparable.java -text
 main/src/info/bioinfweb/treegraph/document/NodeType.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/PaintableElement.java -text
+main/src/info/bioinfweb/treegraph/document/PieChartCaptionLabel.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/PieChartLabel.java -text
-main/src/info/bioinfweb/treegraph/document/PieChartLabelCaption.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/PieColorManager.java -text
 main/src/info/bioinfweb/treegraph/document/ScaleBar.java -text
 main/src/info/bioinfweb/treegraph/document/TextElement.java -text
@@ -135,6 +135,7 @@ main/src/info/bioinfweb/treegraph/document/format/LegendStyle.java -text
 main/src/info/bioinfweb/treegraph/document/format/LineFormats.java -text
 main/src/info/bioinfweb/treegraph/document/format/Margin.java -text
 main/src/info/bioinfweb/treegraph/document/format/NodeFormats.java -text
+main/src/info/bioinfweb/treegraph/document/format/PieChartCaptionLabelFormats.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/format/PieChartLabelFormats.java -text
 main/src/info/bioinfweb/treegraph/document/format/ScaleAlignment.java -text
 main/src/info/bioinfweb/treegraph/document/format/ScaleBarFormats.java -text
@@ -226,10 +227,10 @@ main/src/info/bioinfweb/treegraph/document/format/operate/MinLengthOperator.java
 main/src/info/bioinfweb/treegraph/document/format/operate/MinSpaceAboveOperator.java -text
 main/src/info/bioinfweb/treegraph/document/format/operate/MinSpaceBelowOperator.java -text
 main/src/info/bioinfweb/treegraph/document/format/operate/MinTreeDistanceOperator.java -text
-main/src/info/bioinfweb/treegraph/document/format/operate/NullPieChartLinesOperator.java -text
 main/src/info/bioinfweb/treegraph/document/format/operate/OperatorMap.java -text
 main/src/info/bioinfweb/treegraph/document/format/operate/PieColorOperator.java -text
 main/src/info/bioinfweb/treegraph/document/format/operate/ScaleBarFormatsOperator.java -text
+main/src/info/bioinfweb/treegraph/document/format/operate/ShowPieChartLinesForZeroOperator.java -text
 main/src/info/bioinfweb/treegraph/document/format/operate/TextColorOperator.java -text
 main/src/info/bioinfweb/treegraph/document/format/operate/TextHeightOperator.java -text
 main/src/info/bioinfweb/treegraph/document/format/operate/TextOrientationOperator.java -text
@@ -502,6 +503,7 @@ main/src/info/bioinfweb/treegraph/graphics/positionpaint/label/AbstractLabelPain
 main/src/info/bioinfweb/treegraph/graphics/positionpaint/label/IconLabelPainter.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/graphics/positionpaint/label/LabelPainter.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/graphics/positionpaint/label/LabelPainterMap.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/graphics/positionpaint/label/PieChartCaptionLabelPainter.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/graphics/positionpaint/label/PieChartLabelPainter.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/graphics/positionpaint/label/TextLabelPainter.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/graphics/positionpaint/label/icons/CrossIcon.java -text

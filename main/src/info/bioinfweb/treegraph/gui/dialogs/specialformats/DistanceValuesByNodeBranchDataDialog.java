@@ -24,14 +24,20 @@ import info.bioinfweb.treegraph.document.undo.format.DistanceValuesByNodeBranchD
 import info.bioinfweb.treegraph.gui.dialogs.DistanceValueInput;
 
 import javax.swing.JPanel;
+
 import java.awt.Frame;
+
 import javax.swing.BoxLayout;
+
+import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
+
 import javax.swing.JCheckBox;
 import javax.swing.BorderFactory;
 import javax.swing.ListModel;
 import javax.swing.border.TitledBorder;
+
 import java.awt.Font;
 import java.awt.Color;
 import java.util.Vector;
@@ -166,10 +172,13 @@ public class DistanceValuesByNodeBranchDataDialog extends FormatsByNodeBranchDat
 					new Color(51, 51, 51)));
 			distancesPanel.add(getChangeUndefinedCheckBox(), undefinedGBC);
 			distancesPanel.add(getInheritToTerminalsCheckBox(), gridBagConstraints);
+			
 			minWidthInput = new DistanceValueInput("Minimal value", distancesPanel, 1);
 			minWidthInput.setValue(DEFAULT_MIN_WIDTH_IN_MM);
 			maxWidthInput = new DistanceValueInput("Maximal value", distancesPanel, 3);
 			maxWidthInput.setValue(DEFAULT_MAX_WIDTH_IN_MM);
+			
+			distancesPanel.setMaximumSize(new Dimension(distancesPanel.getMaximumSize().width, distancesPanel.getMinimumSize().height));  // Otherwise this component would be enlarged if the dialog height is increased.
 		}
 		return distancesPanel;
 	}

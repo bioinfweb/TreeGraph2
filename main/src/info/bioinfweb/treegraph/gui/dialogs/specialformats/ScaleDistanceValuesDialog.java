@@ -29,11 +29,15 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import java.awt.Frame;
+
 import javax.swing.BoxLayout;
+
 import java.awt.GridBagLayout;
+
 import javax.swing.BorderFactory;
 import javax.swing.border.TitledBorder;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Color;
@@ -163,8 +167,12 @@ public class ScaleDistanceValuesDialog extends SpecialFormatsDialog {
 			scalePanel = new JPanel();
 			scalePanel.setLayout(new GridBagLayout());
 			scalePanel.setBorder(BorderFactory.createTitledBorder(null, "Scale factor", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
+			
 			scaleInput = new DecimalInput("", scalePanel, 0, DecimalInput.FLOAT_FORMAT);
 			scaleInput.setValue(DEFAULT_SCALE);
+			
+			scalePanel.setAlignmentY(Component.TOP_ALIGNMENT);
+			scalePanel.setMaximumSize(new Dimension(scalePanel.getMaximumSize().width, scalePanel.getMinimumSize().height));  // Otherwise this component would be enlarged if the dialog height is increased.
 		}
 		return scalePanel;
 	}

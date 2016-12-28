@@ -22,6 +22,7 @@ package info.bioinfweb.treegraph.gui.dialogs.specialformats;
 import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.Font;
 import java.awt.Frame;
@@ -100,6 +101,7 @@ public abstract class SpecialFormatsDialog extends EditDialog {
 					TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, 
 					new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
 			targetPanel.add(getTargetScrollPane(), gridBagConstraints);
+			targetPanel.setAlignmentY(Component.CENTER_ALIGNMENT);
 		}
 		return targetPanel;
 	}

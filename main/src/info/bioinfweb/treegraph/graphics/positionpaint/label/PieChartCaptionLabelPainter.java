@@ -16,30 +16,34 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.document.format.operate;
+package info.bioinfweb.treegraph.graphics.positionpaint.label;
 
 
-import info.bioinfweb.treegraph.document.format.ElementFormats;
-import info.bioinfweb.treegraph.document.format.PieChartLabelFormats;
+import info.bioinfweb.treegraph.document.PieChartCaptionLabel;
+import info.bioinfweb.treegraph.document.format.DistanceDimension;
+import info.bioinfweb.treegraph.document.position.PositionData;
+
+import java.awt.Graphics2D;
 
 
 
-/**
- * @author BenSt&ouml;ver
- * @since 2.0.43
- */
-public class NullPieChartLinesOperator extends AbstractPieChartLabelOperator {
-  private boolean show;
-
-  
-	public NullPieChartLinesOperator(boolean show) {
-		super();
-		this.show = show;
+public class PieChartCaptionLabelPainter extends AbstractGraphicalLabelPainter<PieChartCaptionLabel> {
+	@Override
+	protected DistanceDimension doCalculateDimension(PieChartCaptionLabel label) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
-
+	
 	@Override
-	protected void doApplyTo(ElementFormats format) {
-		((PieChartLabelFormats)format).setShowNullLines(show);
+	protected void doPaint(Graphics2D g, float pixelsPerMillimeter, PositionData pd, PieChartCaptionLabel label) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
+	@Override
+	public Class<PieChartCaptionLabel> getLabelClass() {
+		return PieChartCaptionLabel.class;
 	}
 }

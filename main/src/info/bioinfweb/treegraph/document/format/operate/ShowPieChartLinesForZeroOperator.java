@@ -16,30 +16,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.document;
+package info.bioinfweb.treegraph.document.format.operate;
+
+
+import info.bioinfweb.treegraph.document.format.ElementFormats;
+import info.bioinfweb.treegraph.document.format.PieChartLabelFormats;
 
 
 
+/**
+ * @author BenSt&ouml;ver
+ * @since 2.0.43
+ */
+public class ShowPieChartLinesForZeroOperator extends AbstractPieChartLabelOperator {
+  private boolean show;
 
-
-public class PieChartLabelCaption extends PieChartLabel {
-	public PieChartLabelCaption(Labels labels) {
-		super(labels);
+  
+	public ShowPieChartLinesForZeroOperator(boolean show) {
+		super();
+		this.show = show;
 	}
 
-	
+
 	@Override
-	public double[] getPieChartAngles() {
-		double[] result = new double[valueCount()];
-		double sum = 0;
-		for (int i = 0; i < result.length; i++) {
-			result[i] = 1;
-			sum += 1;
-		}
-		
-		for (int i = 0; i < result.length; i++) {
-			result[i] = result[i] / sum * 360.0;
-		}
-		return result;
+	protected void doApplyTo(ElementFormats format) {
+		((PieChartLabelFormats)format).setShowLinesForZero(show);
 	}
 }
