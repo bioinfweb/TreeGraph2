@@ -21,7 +21,7 @@ package info.bioinfweb.treegraph.graphics.positionpaint;
 
 import info.bioinfweb.commons.Math2;
 import info.bioinfweb.treegraph.document.Branch;
-import info.bioinfweb.treegraph.document.ConcretePaintableElement;
+import info.bioinfweb.treegraph.document.AbstractPaintableElement;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Label;
 import info.bioinfweb.treegraph.document.Labels;
@@ -791,7 +791,7 @@ public class RectangularCladogramPositioner implements TreePositioner {
 	}
 	
 	
-  private ConcretePaintableElement searchLabelBlock(Branch branch, float x, float y, 
+  private AbstractPaintableElement searchLabelBlock(Branch branch, float x, float y, 
   		float margin) {
   	
   	boolean above = false;  // Vorgabe: Gesuchtes Label befindet sich h�chstens unterhalb des Asts.
@@ -816,7 +816,7 @@ public class RectangularCladogramPositioner implements TreePositioner {
   }
 	
 	
-	private ConcretePaintableElement searchElementToPosition(Node root, float x, float y, 
+	private AbstractPaintableElement searchElementToPosition(Node root, float x, float y, 
 			float margin) {
 		
 		NodePositionData pd = root.getPosition(type);
@@ -835,7 +835,7 @@ public class RectangularCladogramPositioner implements TreePositioner {
 					}
 	  		}
 				else {
-					ConcretePaintableElement result = searchLabelBlock(root.getAfferentBranch(), x, y, margin);
+					AbstractPaintableElement result = searchLabelBlock(root.getAfferentBranch(), x, y, margin);
 					if (result != null) {
 						return result;
 					}
@@ -850,7 +850,7 @@ public class RectangularCladogramPositioner implements TreePositioner {
 			}
 			else {
 				for (int i = 0; i < root.getChildren().size(); i++) {
-					ConcretePaintableElement result = searchElementToPosition(root.getChildren().get(i), x, y, margin);
+					AbstractPaintableElement result = searchElementToPosition(root.getChildren().get(i), x, y, margin);
 					if (result != null) {
 						return result;
 					}
@@ -868,14 +868,14 @@ public class RectangularCladogramPositioner implements TreePositioner {
 	 * @param x the x-position in mm
 	 * @param y the y-position in mm
 	 */
-	public ConcretePaintableElement elementToPosition(Document document, float x, float y, 
+	public AbstractPaintableElement elementToPosition(Document document, float x, float y, 
 			float margin) {
 		
 		this.document = document;
 		
 		// Search tree elements: 
 		if (!document.getTree().isEmpty()) {
-			ConcretePaintableElement result = searchElementToPosition(
+			AbstractPaintableElement result = searchElementToPosition(
 					document.getTree().getPaintStart(), x, y, margin);
 			if (result != null) {
 				return result;

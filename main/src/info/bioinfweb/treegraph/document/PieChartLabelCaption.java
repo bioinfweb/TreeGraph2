@@ -16,11 +16,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.document.labelcaption;
+package info.bioinfweb.treegraph.document;
 
 
-import info.bioinfweb.treegraph.document.Labels;
-import info.bioinfweb.treegraph.document.PieChartLabel;
 
 
 

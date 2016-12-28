@@ -51,7 +51,7 @@ class TreeEditlInputListener extends MouseAdapter
 	}
 	
 	
-	private ConcretePaintableElement getElementByPosition(MouseEvent e) {
+	private AbstractPaintableElement getElementByPosition(MouseEvent e) {
 		return PositionPaintFactory.getInstance().getPositioner(owner.getPainterType()).elementToPosition(
 				owner.getDocument(), 
 				DistanceValue.pixelsToMillimeters(e.getX(), owner.pixelsPerMillimeter()), 
@@ -60,7 +60,7 @@ class TreeEditlInputListener extends MouseAdapter
 	}
 	
 	
-	protected void doubleClick(MouseEvent e, ConcretePaintableElement element) {
+	protected void doubleClick(MouseEvent e, AbstractPaintableElement element) {
 		if (element != null) {
 			if ((element instanceof TextElement) && !((element instanceof Node) && !(((Node)element).isLeaf()))) {
   			MainFrame.getInstance().getActionManagement().get("edit.editText").
@@ -74,7 +74,7 @@ class TreeEditlInputListener extends MouseAdapter
 	}
 	
 	
-	private void checkPopup(MouseEvent e, ConcretePaintableElement selected) {
+	private void checkPopup(MouseEvent e, AbstractPaintableElement selected) {
 		if (e.isPopupTrigger()) {
 			JPopupMenu menu = MainFrame.getInstance().getActionManagement().getPopupMenu(
 					selected);
@@ -88,7 +88,7 @@ class TreeEditlInputListener extends MouseAdapter
 	@Override
 	public void mousePressed(MouseEvent e) {
 		owner.requestFocusInWindow();
-		ConcretePaintableElement selected = getElementByPosition(e);
+		AbstractPaintableElement selected = getElementByPosition(e);
 		if ((!e.isPopupTrigger()) && (e.getClickCount() > 1)) { 
 			doubleClick(e, selected);
 		}
@@ -187,7 +187,7 @@ class TreeEditlInputListener extends MouseAdapter
 		  	}
 		  	else if (owner.getSelection().first() instanceof Label) {
 		  		Label currentSelection = (Label)owner.getSelection().first();
-		  		ConcretePaintableElement newSelection = null;
+		  		AbstractPaintableElement newSelection = null;
 		  		switch (e.getKeyCode()) {
 					  case KeyEvent.VK_RIGHT: case KeyEvent.VK_NUMPAD6:
 					  	newSelection = currentSelection.getNext();

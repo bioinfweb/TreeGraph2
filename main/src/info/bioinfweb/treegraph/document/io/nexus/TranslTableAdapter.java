@@ -21,7 +21,7 @@ package info.bioinfweb.treegraph.document.io.nexus;
 
 import java.util.Map;
 
-import info.bioinfweb.treegraph.document.ConcretePaintableElement;
+import info.bioinfweb.treegraph.document.AbstractPaintableElement;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.nodebranchdata.AbstractNodeBranchDataAdapter;
@@ -123,7 +123,7 @@ class TranslTableAdapter extends AbstractNodeBranchDataAdapter {
 	
 
 	@Override
-	public ConcretePaintableElement getDataElement(Node node) {
+	public AbstractPaintableElement getDataElement(Node node) {
 		return node;
 	}
 }

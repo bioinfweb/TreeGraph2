@@ -19,7 +19,7 @@
 package info.bioinfweb.treegraph.gui.actions.select;
 
 
-import info.bioinfweb.treegraph.document.ConcretePaintableElement;
+import info.bioinfweb.treegraph.document.AbstractPaintableElement;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Legends;
 import info.bioinfweb.treegraph.document.NodeType;
@@ -58,10 +58,10 @@ public class InvertSelectionAction extends AbstractSelectionAction {
 			TreeSelection selection) {
 		
 		Tree tree = frame.getDocument().getTree();
-		List<ConcretePaintableElement> newSelection = new Vector<ConcretePaintableElement>();
+		List<AbstractPaintableElement> newSelection = new Vector<AbstractPaintableElement>();
 		
-		ConcretePaintableElement[] all = 
-			  TreeSerializer.getElementsInSubtree(tree.getPaintStart(), NodeType.BOTH, ConcretePaintableElement.class);
+		AbstractPaintableElement[] all = 
+			  TreeSerializer.getElementsInSubtree(tree.getPaintStart(), NodeType.BOTH, AbstractPaintableElement.class);
 		for (int i = 0; i < all.length; i++) {
 			if (!selection.contains(all[i])) {
 				newSelection.add(all[i]);

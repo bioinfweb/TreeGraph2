@@ -19,7 +19,7 @@
 package info.bioinfweb.treegraph.document.nodebranchdata;
 
 
-import info.bioinfweb.treegraph.document.ConcretePaintableElement;
+import info.bioinfweb.treegraph.document.AbstractPaintableElement;
 import info.bioinfweb.treegraph.document.Label;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextElementData;
@@ -49,7 +49,7 @@ public class GeneralIDAdapter extends AbstractIDElementAdapter {
 	
 
 	@Override
-	public ConcretePaintableElement getDataElement(Node node) {
+	public AbstractPaintableElement getDataElement(Node node) {
   	Label l = node.getAfferentBranch().getLabels().get(id);
   	if ((l != null) && (l instanceof TextLabel)) {
   		return (TextLabel)l;

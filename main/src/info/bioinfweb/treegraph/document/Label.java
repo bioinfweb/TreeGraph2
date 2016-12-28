@@ -28,7 +28,7 @@ import info.bioinfweb.treegraph.document.format.LabelFormats;
 /**
  * @author BenStoever
  */
-public abstract class Label extends ConcretePaintableElement implements TreeElement, Cloneable {
+public abstract class Label extends AbstractPaintableElement implements TreeElement, Cloneable {
 	private static final Pattern idPattern = Pattern.compile("[_\\w]+");
 	
 	

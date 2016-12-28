@@ -19,7 +19,7 @@
 package info.bioinfweb.treegraph.document.nodebranchdata;
 
 
-import info.bioinfweb.treegraph.document.ConcretePaintableElement;
+import info.bioinfweb.treegraph.document.AbstractPaintableElement;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextElementData;
 
@@ -73,7 +73,7 @@ public class PieChartLabelAdapter extends AbstractIDElementAdapter {
 	
 	
 	@Override
-	public ConcretePaintableElement getDataElement(Node node) {
+	public AbstractPaintableElement getDataElement(Node node) {
 		// unused
 		return null;
 	}

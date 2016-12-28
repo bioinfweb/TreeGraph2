@@ -238,7 +238,7 @@ public class Node extends AbstractTextElement
 	 * @return <code>true</code>, if the element is found
 	 * @see TreeSerializer
 	 */
-	public boolean containedInSubtree(ConcretePaintableElement element) {
+	public boolean containedInSubtree(AbstractPaintableElement element) {
 		if (element == null) {
 			return false;
 		}

@@ -26,7 +26,7 @@ import java.util.*;
 
 
 
-public abstract class ConcretePaintableElement implements Cloneable, PaintableElement {
+public abstract class AbstractPaintableElement implements Cloneable, PaintableElement {
 	protected EnumMap<PositionPaintType, PositionData> positions = 
 		  new EnumMap<PositionPaintType, PositionData>(PositionPaintType.class);
 
@@ -51,5 +51,5 @@ public abstract class ConcretePaintableElement implements Cloneable, PaintableEl
 	 * should an empty <code>EnumMap</code>.
 	 */
 	@Override
-	public abstract ConcretePaintableElement clone();
+	public abstract AbstractPaintableElement clone();
 }

@@ -28,7 +28,7 @@ import info.bioinfweb.treegraph.document.format.*;
  * 
  * @author Ben St&ouml;ver
  */
-public class Branch extends ConcretePaintableElement 
+public class Branch extends AbstractPaintableElement 
     implements LineElement, HiddenDataElement, TreeElement, Cloneable {
 	
   private double length = Double.NaN;

@@ -20,7 +20,7 @@ package info.bioinfweb.treegraph.gui.actions.edit;
 
 
 import info.bioinfweb.treegraph.Main;
-import info.bioinfweb.treegraph.document.ConcretePaintableElement;
+import info.bioinfweb.treegraph.document.AbstractPaintableElement;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.ScaleBar;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
@@ -65,7 +65,7 @@ public class DeleteElementAction extends DocumentAction {
 	@Override
 	protected void onActionPerformed(ActionEvent e, TreeInternalFrame frame) {
 		DeleteEdit edit = new DeleteEdit(frame.getDocument(), 
-						frame.getTreeViewPanel().getSelection().toArray(new ConcretePaintableElement[0]));
+						frame.getTreeViewPanel().getSelection().toArray(new AbstractPaintableElement[0]));
 		frame.getDocument().executeEdit(edit);
 		if (edit.hasWarnings()) {
 			WikiHelpOptionPane.showMessageDialog(MainFrame.getInstance(), edit.getWarningText(), "Legend(s) affected",	

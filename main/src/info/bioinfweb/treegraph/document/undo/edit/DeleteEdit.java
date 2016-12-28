@@ -24,7 +24,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import info.bioinfweb.treegraph.document.Branch;
-import info.bioinfweb.treegraph.document.ConcretePaintableElement;
+import info.bioinfweb.treegraph.document.AbstractPaintableElement;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Label;
 import info.bioinfweb.treegraph.document.Legend;
@@ -44,12 +44,12 @@ import info.bioinfweb.treegraph.document.undo.WarningMessageEdit;
  * @author Ben St&ouml;ver
  */
 public class DeleteEdit extends ComposedDocumentEdit implements WarningMessageEdit {
-  private HashSet<ConcretePaintableElement> elements; 
+  private HashSet<AbstractPaintableElement> elements; 
   
   
-	public DeleteEdit(Document document, ConcretePaintableElement[] elements) {
+	public DeleteEdit(Document document, AbstractPaintableElement[] elements) {
 		super(document, DocumentChangeType.TOPOLOGICAL_BY_OBJECT_CHANGE);
-		this.elements = new HashSet<ConcretePaintableElement>();
+		this.elements = new HashSet<AbstractPaintableElement>();
 		for (int i = 0; i < elements.length; i++) {
 			this.elements.add(elements[i]);
 		}
@@ -99,9 +99,9 @@ public class DeleteEdit extends ComposedDocumentEdit implements WarningMessageEd
 	
 	
 	private void deleteSubtreeElements() {
-		Iterator<ConcretePaintableElement> iterator = elements.iterator();
+		Iterator<AbstractPaintableElement> iterator = elements.iterator();
 		while (iterator.hasNext()) {
-			ConcretePaintableElement element = iterator.next();
+			AbstractPaintableElement element = iterator.next();
 			Node node = Tree.getLinkedNode(element);
 			if ((node != null) && 
 					(((node != element) && (elements.contains(node))) || (containsParent(node)))) {
@@ -113,10 +113,10 @@ public class DeleteEdit extends ComposedDocumentEdit implements WarningMessageEd
 	
 	
 	private void createSubedits() {
-		Iterator<ConcretePaintableElement> iterator = elements.iterator();
+		Iterator<AbstractPaintableElement> iterator = elements.iterator();
 		while (iterator.hasNext()) {
 			DocumentEdit edit = null;
-			ConcretePaintableElement element = iterator.next();
+			AbstractPaintableElement element = iterator.next();
 			
 			if (element instanceof Branch) {
 				element = ((Branch)element).getTargetNode();

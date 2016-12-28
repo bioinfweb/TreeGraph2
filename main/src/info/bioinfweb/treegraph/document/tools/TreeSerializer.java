@@ -19,7 +19,7 @@
 package info.bioinfweb.treegraph.document.tools;
 
 
-import info.bioinfweb.treegraph.document.ConcretePaintableElement;
+import info.bioinfweb.treegraph.document.AbstractPaintableElement;
 import info.bioinfweb.treegraph.document.Label;
 import info.bioinfweb.treegraph.document.Labels;
 import info.bioinfweb.treegraph.document.Legend;
@@ -267,7 +267,7 @@ public class TreeSerializer {
    * @param root - the root node of the subtree
    * @throws IllegalArgumentException if <code>root</code> is not contained in <code>tree</code>.
    * @return an array of the legends (possibly with the length 0)
-   * @see Node#containedInSubtree(ConcretePaintableElement)
+   * @see Node#containedInSubtree(AbstractPaintableElement)
    */
   public static Legend[] getLegendsInSubtree(Tree tree, Node root) {
   	if (!tree.contains(root)) {

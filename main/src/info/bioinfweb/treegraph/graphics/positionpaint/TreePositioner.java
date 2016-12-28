@@ -32,5 +32,5 @@ public interface TreePositioner {
 	 * @param y y-coordinate
 	 * @return The element or null if the given koordinates are located araound the elements.
 	 */
-	public ConcretePaintableElement elementToPosition(Document document, float x, float y, float margin);
+	public AbstractPaintableElement elementToPosition(Document document, float x, float y, float margin);
 }

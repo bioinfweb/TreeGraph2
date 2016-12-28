@@ -29,7 +29,7 @@ import info.bioinfweb.treegraph.document.format.ConcreteTextFormats;
  * @see TextElementData 
  * @author Ben St&ouml;ver
  */
-public abstract class AbstractTextElement extends ConcretePaintableElement implements TextElement {
+public abstract class AbstractTextElement extends AbstractPaintableElement implements TextElement {
 	private TextElementData data = new TextElementData();
 	
 	

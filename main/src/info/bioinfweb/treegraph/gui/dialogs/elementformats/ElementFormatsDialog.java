@@ -131,7 +131,7 @@ public class ElementFormatsDialog extends EditDialog {
 			if (operators.size() > 0) {
 				getDocument().executeEdit(new OperatorsEdit(getDocument(), 
 						getSelection().toArray(
-								new ConcretePaintableElement[getSelection().size()]), 
+								new AbstractPaintableElement[getSelection().size()]), 
 						operators.toArray(new FormatOperator[operators.size()])));
 				resetChangeMonitors();
 			}

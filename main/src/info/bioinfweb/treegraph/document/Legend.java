@@ -91,7 +91,7 @@ public class Legend extends AbstractTextElement implements LineElement, CornerRa
 	/**
 	 * Returns a deep copy of this legend. Note that the linked {@link Legends}-object
 	 * of the returned object is <code>null</code> no matter if this object was linked or not.
-	 * @see info.bioinfweb.treegraph.document.ConcretePaintableElement#clone()
+	 * @see info.bioinfweb.treegraph.document.AbstractPaintableElement#clone()
 	 */
 	@Override
 	public Legend clone() {

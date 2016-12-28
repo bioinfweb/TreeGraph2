@@ -19,7 +19,7 @@
 package info.bioinfweb.treegraph.document.nodebranchdata;
 
 
-import info.bioinfweb.treegraph.document.ConcretePaintableElement;
+import info.bioinfweb.treegraph.document.AbstractPaintableElement;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextElementData;
 
@@ -74,7 +74,7 @@ public interface NodeBranchDataAdapter {
 	 * @param node
 	 * @return
 	 */
-	public ConcretePaintableElement getDataElement(Node node);
+	public AbstractPaintableElement getDataElement(Node node);
 	
 	/**
 	 * A description of the adapter that is readable by the user should be returned here.

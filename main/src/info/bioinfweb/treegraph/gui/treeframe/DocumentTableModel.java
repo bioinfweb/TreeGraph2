@@ -22,7 +22,7 @@ package info.bioinfweb.treegraph.gui.treeframe;
 import java.util.List;
 import java.util.Vector;
 
-import info.bioinfweb.treegraph.document.ConcretePaintableElement;
+import info.bioinfweb.treegraph.document.AbstractPaintableElement;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextLabel;
@@ -100,7 +100,7 @@ public class DocumentTableModel extends AbstractTableModel implements DocumentLi
 	}
 
 
-  public ConcretePaintableElement getTreeElement(int row, int col) {
+  public AbstractPaintableElement getTreeElement(int row, int col) {
   	return getAdapter(col).getDataElement(nodes.get(row));
   }
   

@@ -19,7 +19,7 @@
 package info.bioinfweb.treegraph.document.undo.edit;
 
 
-import info.bioinfweb.treegraph.document.ConcretePaintableElement;
+import info.bioinfweb.treegraph.document.AbstractPaintableElement;
 import info.bioinfweb.treegraph.document.Document;
 
 
@@ -31,7 +31,7 @@ import info.bioinfweb.treegraph.document.Document;
  * @author Ben St&ouml;ver
  */
 public class CutEdit extends DeleteEdit {
-	public CutEdit(Document document, ConcretePaintableElement[] elements) {
+	public CutEdit(Document document, AbstractPaintableElement[] elements) {
 		super(document, elements);
 	}
 

@@ -21,7 +21,7 @@ package info.bioinfweb.treegraph.graphics.positionpaint;
 
 import info.bioinfweb.commons.Math2;
 import info.bioinfweb.treegraph.document.Branch;
-import info.bioinfweb.treegraph.document.ConcretePaintableElement;
+import info.bioinfweb.treegraph.document.AbstractPaintableElement;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Label;
 import info.bioinfweb.treegraph.document.Labels;
@@ -91,7 +91,7 @@ public class RectangularCladogramPainter implements TreePainter {
 	}
 	
 	
-	private void paintSelection(ConcretePaintableElement element) {
+	private void paintSelection(AbstractPaintableElement element) {
 		if ((selection != null) && selection.contains(element)) {
 			g.setColor(TreeViewPanel.selectionColor(
 					document.getTree().getFormats().getBackgroundColor()));

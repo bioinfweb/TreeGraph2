@@ -79,9 +79,9 @@ main/src/info/bioinfweb/treegraph/cmd/CmdLoadLogger.java -text
 main/src/info/bioinfweb/treegraph/cmd/CmdProcessor.java -text
 main/src/info/bioinfweb/treegraph/cmd/ImageGenerator.java -text
 main/src/info/bioinfweb/treegraph/cmd/package.html -text
+main/src/info/bioinfweb/treegraph/document/AbstractPaintableElement.java -text
 main/src/info/bioinfweb/treegraph/document/AbstractTextElement.java -text
 main/src/info/bioinfweb/treegraph/document/Branch.java -text
-main/src/info/bioinfweb/treegraph/document/ConcretePaintableElement.java -text
 main/src/info/bioinfweb/treegraph/document/ContrastManager.java -text
 main/src/info/bioinfweb/treegraph/document/CornerRadiusElement.java -text
 main/src/info/bioinfweb/treegraph/document/Document.java -text
@@ -102,6 +102,7 @@ main/src/info/bioinfweb/treegraph/document/NodeLadderizeComparable.java -text
 main/src/info/bioinfweb/treegraph/document/NodeType.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/PaintableElement.java -text
 main/src/info/bioinfweb/treegraph/document/PieChartLabel.java -text
+main/src/info/bioinfweb/treegraph/document/PieChartLabelCaption.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/PieColorManager.java -text
 main/src/info/bioinfweb/treegraph/document/ScaleBar.java -text
 main/src/info/bioinfweb/treegraph/document/TextElement.java -text
@@ -306,7 +307,6 @@ main/src/info/bioinfweb/treegraph/document/io/xtg/XTGFilter.java -text
 main/src/info/bioinfweb/treegraph/document/io/xtg/XTGReader.java -text
 main/src/info/bioinfweb/treegraph/document/io/xtg/XTGWriter.java -text
 main/src/info/bioinfweb/treegraph/document/io/xtg/package.html -text
-main/src/info/bioinfweb/treegraph/document/labelcaption/PieChartLabelCaption.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/AbstractIDElementAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/AbstractNodeBranchDataAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/AbstractTextElementDataAdapter.java -text
