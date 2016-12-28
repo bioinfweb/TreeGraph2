@@ -173,9 +173,9 @@ public class DistanceValuesByNodeBranchDataDialog extends FormatsByNodeBranchDat
 			distancesPanel.add(getChangeUndefinedCheckBox(), undefinedGBC);
 			distancesPanel.add(getInheritToTerminalsCheckBox(), gridBagConstraints);
 			
-			minWidthInput = new DistanceValueInput("Minimal value", distancesPanel, 1);
+			minWidthInput = new DistanceValueInput("Minimum value", distancesPanel, 1);
 			minWidthInput.setValue(DEFAULT_MIN_WIDTH_IN_MM);
-			maxWidthInput = new DistanceValueInput("Maximal value", distancesPanel, 3);
+			maxWidthInput = new DistanceValueInput("Maximum value", distancesPanel, 3);
 			maxWidthInput.setValue(DEFAULT_MAX_WIDTH_IN_MM);
 			
 			distancesPanel.setMaximumSize(new Dimension(distancesPanel.getMaximumSize().width, distancesPanel.getMinimumSize().height));  // Otherwise this component would be enlarged if the dialog height is increased.
