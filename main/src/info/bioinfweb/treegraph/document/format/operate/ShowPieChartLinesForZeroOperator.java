@@ -25,7 +25,7 @@ import info.bioinfweb.treegraph.document.format.PieChartLabelFormats;
 
 
 /**
- * @author BenSt&ouml;ver
+ * @author Ben St&ouml;ver
  * @since 2.0.43
  */
 public class ShowPieChartLinesForZeroOperator extends AbstractPieChartLabelOperator {

@@ -20,33 +20,28 @@ package info.bioinfweb.treegraph.document.format.operate;
 
 
 import info.bioinfweb.treegraph.document.format.ElementFormats;
-import info.bioinfweb.treegraph.document.format.ScaleBarFormats;
+import info.bioinfweb.treegraph.document.format.PieChartLabelFormats;
 
 
 
 /**
- * There only one operator for all scale bar formats because there can only be one 
- * scale bar per document.
+ * Format operator to set whether captions of pie chart labels shall be shown.
  * 
  * @author Ben St&ouml;ver
+ * @since 2.13.0
  */
-public class ScaleBarFormatsOperator extends AbstractOperator {
-	private ScaleBarFormats formats;
-	
-	
-	public ScaleBarFormatsOperator(ScaleBarFormats formats) {
+public class ShowPieChartTitleOperator extends AbstractPieChartLabelOperator {
+  private boolean show;
+
+  
+	public ShowPieChartTitleOperator(boolean show) {
 		super();
-		this.formats = formats;
+		this.show = show;
 	}
 
 
 	@Override
 	protected void doApplyTo(ElementFormats format) {
-		((ScaleBarFormats)format).assignScaleBarFormats(formats);
-	}
-
-	
-	public boolean validTarget(ElementFormats format) {
-		return format instanceof ScaleBarFormats;
+		((PieChartLabelFormats)format).setShowTitle(show);
 	}
 }

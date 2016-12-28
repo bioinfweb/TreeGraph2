@@ -228,7 +228,9 @@ main/src/info/bioinfweb/treegraph/document/format/operate/MinTreeDistanceOperato
 main/src/info/bioinfweb/treegraph/document/format/operate/OperatorMap.java -text
 main/src/info/bioinfweb/treegraph/document/format/operate/PieColorOperator.java -text
 main/src/info/bioinfweb/treegraph/document/format/operate/ScaleBarFormatsOperator.java -text
+main/src/info/bioinfweb/treegraph/document/format/operate/ShowPieChartCaptionsOperator.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/format/operate/ShowPieChartLinesForZeroOperator.java -text
+main/src/info/bioinfweb/treegraph/document/format/operate/ShowPieChartTitleOperator.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/format/operate/TextColorOperator.java -text
 main/src/info/bioinfweb/treegraph/document/format/operate/TextHeightOperator.java -text
 main/src/info/bioinfweb/treegraph/document/format/operate/TextOrientationOperator.java -text

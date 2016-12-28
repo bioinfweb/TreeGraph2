@@ -38,8 +38,10 @@ import info.bioinfweb.treegraph.document.format.operate.InternalPieChartLinesOpe
 import info.bioinfweb.treegraph.document.format.operate.LabelHeightOperator;
 import info.bioinfweb.treegraph.document.format.operate.IconOperator;
 import info.bioinfweb.treegraph.document.format.operate.LabelWidthOperator;
+import info.bioinfweb.treegraph.document.format.operate.ShowPieChartCaptionsOperator;
 import info.bioinfweb.treegraph.document.format.operate.ShowPieChartLinesForZeroOperator;
 import info.bioinfweb.treegraph.document.format.operate.PieColorOperator;
+import info.bioinfweb.treegraph.document.format.operate.ShowPieChartTitleOperator;
 import info.bioinfweb.treegraph.gui.dialogs.DistanceValueInput;
 import info.bioinfweb.treegraph.gui.dialogs.elementformats.piecolor.PieColorCellRenderer;
 import info.bioinfweb.treegraph.gui.dialogs.elementformats.piecolor.PieColorListEntry;
@@ -71,11 +73,13 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatTab {
 	public static final int PREVIEW_SIZE = 50;
 	
 	
-	private SwingChangeMonitor iconMonitor = new SwingChangeMonitor();  //  @jve:decl-index=0:
-	private SwingChangeMonitor iconFilledMonitor = new SwingChangeMonitor();  //  @jve:decl-index=0:
-	private ChangeMonitor pieColorMonitor = new ChangeMonitor();  //  @jve:decl-index=0:
-	private ChangeMonitor internalLinesMonitor = new ChangeMonitor();  //  @jve:decl-index=0:
-	private ChangeMonitor nullLinesMonitor = new ChangeMonitor();  //  @jve:decl-index=0:
+	private SwingChangeMonitor iconMonitor = new SwingChangeMonitor();
+	private SwingChangeMonitor iconFilledMonitor = new SwingChangeMonitor();
+	private ChangeMonitor pieColorMonitor = new ChangeMonitor();
+	private ChangeMonitor internalLinesMonitor = new ChangeMonitor();
+	private ChangeMonitor linesForZerosMonitor = new ChangeMonitor();
+	private ChangeMonitor showTitleMonitor = new ChangeMonitor();
+	private ChangeMonitor showCaptionsMonitor = new ChangeMonitor();
 	private JPanel iconPanel = null;
 	private JComboBox<String> iconComboBox = null;
 	private IconPreviewPanel iconPreviewPanel = null;
@@ -90,6 +94,8 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatTab {
 	private JLabel colorLabel = null;
 	private JCheckBox showInternalLinesCheckBox = null;
 	private JCheckBox showNullLinesCheckBox = null;
+	private JCheckBox showTitleCheckBox;
+	private JCheckBox showCaptionsCheckBox;
 	
 	
 	/**
@@ -139,6 +145,8 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatTab {
 			}
 			getShowInternalLinesCheckBox().setSelected(f.isShowInternalLines());
 			getShowNullLinesCheckBox().setSelected(f.isShowLinesForZero());
+			getShowTitleCheckBox().setSelected(f.isShowTitle());
+			getShowCaptionsCheckBox().setSelected(f.isShowCaptions());
 		}
 		return (iconLabelSel || pieChartLabelSel);
 	}
@@ -180,8 +188,14 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatTab {
 		if (internalLinesMonitor.hasChanged()) {
 			operators.add(new InternalPieChartLinesOperator(getShowInternalLinesCheckBox().isSelected()));
 		}
-		if (nullLinesMonitor.hasChanged()) {
+		if (linesForZerosMonitor.hasChanged()) {
 			operators.add(new ShowPieChartLinesForZeroOperator(getShowNullLinesCheckBox().isSelected()));
+		}
+		if (showTitleMonitor.hasChanged()) {
+			operators.add(new ShowPieChartTitleOperator(getShowTitleCheckBox().isSelected()));
+		}
+		if (showCaptionsMonitor.hasChanged()) {
+			operators.add(new ShowPieChartCaptionsOperator(getShowCaptionsCheckBox().isSelected()));
 		}
 	}
 	
@@ -193,7 +207,7 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatTab {
 		iconFilledMonitor.reset();
 		pieColorMonitor.reset();
 		internalLinesMonitor.reset();
-		nullLinesMonitor.reset();
+		linesForZerosMonitor.reset();
 	}
 	
 	
@@ -392,13 +406,19 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatTab {
 	private JPanel getPieChartPanel() {
 		if (pieChartPanel == null) {
 			GridBagConstraints gridBagConstraints5 = new GridBagConstraints();
+			gridBagConstraints5.weightx = 1.0;
+			gridBagConstraints5.anchor = GridBagConstraints.WEST;
+			gridBagConstraints5.insets = new Insets(0, 0, 5, 0);
 			gridBagConstraints5.gridx = 1;
 			gridBagConstraints5.gridy = 2;
 			GridBagConstraints gridBagConstraints3 = new GridBagConstraints();
+			gridBagConstraints3.weightx = 1.0;
+			gridBagConstraints3.insets = new Insets(0, 0, 5, 5);
 			gridBagConstraints3.gridx = 0;
 			gridBagConstraints3.anchor = GridBagConstraints.WEST;
 			gridBagConstraints3.gridy = 2;
 			GridBagConstraints gridBagConstraints2 = new GridBagConstraints();
+			gridBagConstraints2.insets = new Insets(0, 0, 5, 0);
 			gridBagConstraints2.gridx = 0;
 			gridBagConstraints2.anchor = GridBagConstraints.WEST;
 			gridBagConstraints2.gridwidth = 2;
@@ -406,6 +426,7 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatTab {
 			colorLabel = new JLabel();
 			colorLabel.setText("Sector colors:");
 			GridBagConstraints gridBagConstraints1 = new GridBagConstraints();
+			gridBagConstraints1.insets = new Insets(0, 0, 5, 0);
 			gridBagConstraints1.fill = GridBagConstraints.BOTH;
 			gridBagConstraints1.gridy = 1;
 			gridBagConstraints1.weightx = 1.0;
@@ -421,6 +442,19 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatTab {
 			pieChartPanel.add(colorLabel, gridBagConstraints2);
 			pieChartPanel.add(getShowInternalLinesCheckBox(), gridBagConstraints3);
 			pieChartPanel.add(getShowNullLinesCheckBox(), gridBagConstraints5);
+			GridBagConstraints gbc_showTitleCheckBox = new GridBagConstraints();
+			gbc_showTitleCheckBox.weightx = 1.0;
+			gbc_showTitleCheckBox.anchor = GridBagConstraints.WEST;
+			gbc_showTitleCheckBox.insets = new Insets(0, 0, 0, 5);
+			gbc_showTitleCheckBox.gridx = 0;
+			gbc_showTitleCheckBox.gridy = 3;
+			pieChartPanel.add(getShowTitleCheckBox(), gbc_showTitleCheckBox);
+			GridBagConstraints gbc_showCaptionsCheckBox = new GridBagConstraints();
+			gbc_showCaptionsCheckBox.weightx = 1.0;
+			gbc_showCaptionsCheckBox.anchor = GridBagConstraints.WEST;
+			gbc_showCaptionsCheckBox.gridx = 1;
+			gbc_showCaptionsCheckBox.gridy = 3;
+			pieChartPanel.add(getShowCaptionsCheckBox(), gbc_showCaptionsCheckBox);
 		}
 		return pieChartPanel;
 	}
@@ -511,10 +545,36 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatTab {
 			showNullLinesCheckBox.setText("Show sectors with a value of 0");
 			showNullLinesCheckBox.addItemListener(new java.awt.event.ItemListener() {
 				public void itemStateChanged(java.awt.event.ItemEvent e) {
-					nullLinesMonitor.registerChange();
+					linesForZerosMonitor.registerChange();
 				}
 			});
 		}
 		return showNullLinesCheckBox;
+	}
+	
+	
+	private JCheckBox getShowTitleCheckBox() {
+		if (showTitleCheckBox == null) {
+			showTitleCheckBox = new JCheckBox("Show title");
+			showTitleCheckBox.addItemListener(new java.awt.event.ItemListener() {
+				public void itemStateChanged(java.awt.event.ItemEvent e) {
+					showTitleMonitor.registerChange();
+				}
+			});
+		}
+		return showTitleCheckBox;
+	}
+	
+	
+	private JCheckBox getShowCaptionsCheckBox() {
+		if (showCaptionsCheckBox == null) {
+			showCaptionsCheckBox = new JCheckBox("Show captions");
+			showCaptionsCheckBox.addItemListener(new java.awt.event.ItemListener() {
+				public void itemStateChanged(java.awt.event.ItemEvent e) {
+					showCaptionsMonitor.registerChange();
+				}
+			});
+		}
+		return showCaptionsCheckBox;
 	}
 }
