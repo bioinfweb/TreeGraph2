@@ -35,7 +35,7 @@ import javax.swing.JColorChooser;
  * 
  * @author Ben St&ouml;ver
  */
-public class FontColorPanel extends JColorChooser implements ElementFormatTab {
+public class FontColorPanel extends JColorChooser implements ElementFormatsTab {
 	private static final long serialVersionUID = 1L;
 	
 	

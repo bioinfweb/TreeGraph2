@@ -19,8 +19,9 @@
 package info.bioinfweb.treegraph.gui.dialogs.elementformats;
 
 
+import info.bioinfweb.commons.changemonitor.ChangeMonitor;
+import info.bioinfweb.commons.swing.SwingChangeMonitor;
 import info.bioinfweb.treegraph.document.TextElement;
-import info.bioinfweb.treegraph.document.format.BranchFormats;
 import info.bioinfweb.treegraph.document.format.ConcreteTextFormats;
 import info.bioinfweb.treegraph.document.format.TextFormats;
 import info.bioinfweb.treegraph.document.format.operate.FontNameOperator;
@@ -30,26 +31,26 @@ import info.bioinfweb.treegraph.document.format.operate.TextStyleOperator;
 import info.bioinfweb.treegraph.gui.dialogs.DistanceValueInput;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 import info.bioinfweb.treegraph.gui.treeframe.TreeViewPanel;
-import info.bioinfweb.commons.changemonitor.ChangeMonitor;
-import info.bioinfweb.commons.swing.SwingChangeMonitor;
-import java.awt.GridBagLayout;
-import javax.swing.JPanel;
-import javax.swing.BoxLayout;
-import javax.swing.JScrollPane;
-import javax.swing.ListSelectionModel;
 
-import java.awt.FlowLayout;
-import javax.swing.JCheckBox;
-import javax.swing.BorderFactory;
-import javax.swing.border.TitledBorder;
-import java.awt.Font;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GraphicsEnvironment;
-import javax.swing.JTextField;
-import javax.swing.JList;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.KeyEvent;
 import java.util.List;
+
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JCheckBox;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.border.TitledBorder;
 
 
 
@@ -59,7 +60,7 @@ import java.util.List;
  * @author Ben St&ouml;ver
  * @see ElementFormatsDialog
  */
-public class FontFormatsPanel extends JPanel implements ElementFormatTab {
+public class FontFormatsPanel extends JPanel implements ElementFormatsTab {
 	private static final long serialVersionUID = 1L;
 	private static final int VISIBLE_ROW_COUNT = 8;
 	
@@ -71,25 +72,27 @@ public class FontFormatsPanel extends JPanel implements ElementFormatTab {
 	private JCheckBox boldCheckBox = null;
 	private JCheckBox italicCheckBox = null;
 	private JCheckBox underlineCheckBox = null;
-	private DistanceValueInput fontHeightInput = null;  //  @jve:decl-index=0:
+	private DistanceValueInput fontHeightInput = null;
 	private JTextField previewTextField = null;
-	private JList fontFamilyList = null;
+	private JList<String> fontFamilyList = null;
 	private JTextField fontFamilyTextField = null;
-	private SwingChangeMonitor fontFamilyMonitor = new SwingChangeMonitor();  //  @jve:decl-index=0:
-	private ChangeMonitor boldMonitor = new ChangeMonitor();  //  @jve:decl-index=0:
-	private ChangeMonitor italicMonitor = new ChangeMonitor();  //  @jve:decl-index=0:
-	private ChangeMonitor underlineMonitor = new ChangeMonitor();  //  @jve:decl-index=0:
+	
+	private SwingChangeMonitor fontFamilyMonitor = new SwingChangeMonitor();
+	private ChangeMonitor boldMonitor = new ChangeMonitor();
+	private ChangeMonitor italicMonitor = new ChangeMonitor();
+	private ChangeMonitor underlineMonitor = new ChangeMonitor();
 
 
 	/**
 	 * This is the default constructor
 	 */
-	public FontFormatsPanel() {
+	public FontFormatsPanel(boolean showTextHeightInput) {
 		super();
-		initialize();
+		initialize(showTextHeightInput);
 	}
 
 
+	@Override
 	public boolean setValues(TreeSelection selection) {
 		TextElement first = selection.getFirstElementOfType(TextElement.class);
 		boolean result = (first != null);
@@ -100,11 +103,13 @@ public class FontFormatsPanel extends JPanel implements ElementFormatTab {
 	}
 
 
+	@Override
 	public String title() {
 		return "Font formats";
 	}
 
 
+	@Override
 	public void addOperators(List<FormatOperator> list) {
 		if (fontFamilyMonitor.hasChanged()) {
 			list.add(new FontNameOperator(getFontFamilyTextField().getText()));
@@ -121,14 +126,15 @@ public class FontFormatsPanel extends JPanel implements ElementFormatTab {
 			list.add(new TextStyleOperator(getUnderlineCheckBox().isSelected(),
 					TextFormats.UNDERLINE));
 		}
-		if (fontHeightInput.getChangeMonitor().hasChanged()) {
+		if ((fontHeightInput != null) && fontHeightInput.getChangeMonitor().hasChanged()) {
 			list.add(new TextHeightOperator(getFontHeightInput().getValue()));
 		}
 	}
 	
 	
+	@Override
 	public void addError(List<String> list) {
-		if (fontHeightInput.getValue().getInMillimeters() < 0) {
+		if ((fontHeightInput != null) && fontHeightInput.getValue().getInMillimeters() < 0) {
 			list.add("The font height cannot be less than 0.");
 		}
 	}
@@ -142,7 +148,9 @@ public class FontFormatsPanel extends JPanel implements ElementFormatTab {
 	public void setValue(TextFormats f) {
 		getFontFamilyTextField().setText(f.getFontName());
 		selectInFontList(f.getFontName());
-		getFontHeightInput().setValue(f.getTextHeight());  // Muss vor CheckBoxes kommen, da sonst Fehler in preview() auftritt
+		if (getFontHeightInput() != null) {
+			getFontHeightInput().setValue(f.getTextHeight());  // Muss vor CheckBoxes kommen, da sonst Fehler in preview() auftritt
+		}
 		getBoldCheckBox().getModel().setSelected(f.hasTextStyle(TextFormats.BOLD));
 		getItalicCheckBox().getModel().setSelected(f.hasTextStyle(TextFormats.ITALIC));
 		getUnderlineCheckBox().getModel().setSelected(f.hasTextStyle(TextFormats.UNDERLINE));
@@ -152,7 +160,9 @@ public class FontFormatsPanel extends JPanel implements ElementFormatTab {
 	public void assignValue(TextFormats f) {
 		f.setFontName(getFontFamilyTextField().getText());
 		f.setTextStyle(TextFormats.PLAIN);
-		getFontHeightInput().assignValueTo(f.getTextHeight());
+		if (getFontHeightInput() != null) {
+			getFontHeightInput().assignValueTo(f.getTextHeight());
+		}
 		if (getBoldCheckBox().getModel().isSelected()) {
 			f.addTextStyle(TextFormats.BOLD);
 		}
@@ -167,7 +177,9 @@ public class FontFormatsPanel extends JPanel implements ElementFormatTab {
 	
 	public void resetChangeMonitors() {
 		fontFamilyMonitor.reset();
-		fontHeightInput.getChangeMonitor().reset();
+		if (fontHeightInput != null) {
+			fontHeightInput.getChangeMonitor().reset();
+		}
 		boldMonitor.reset();
 		italicMonitor.reset();
 		underlineMonitor.reset();
@@ -207,12 +219,14 @@ public class FontFormatsPanel extends JPanel implements ElementFormatTab {
 	 * 
 	 * @return void
 	 */
-	private void initialize() {
+	private void initialize(boolean showTextHeightInput) {
 		this.setSize(300, 200);
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.add(getFontFamilyPanel(), null);
 		this.add(getFontStylePanel(), null);
-		this.add(getFontHeightPanel(), null);
+		if (showTextHeightInput) {
+			this.add(getFontHeightPanel(), null);
+		}
 		this.add(getPreviewPanel(), null);
 	}
 
@@ -264,6 +278,7 @@ public class FontFormatsPanel extends JPanel implements ElementFormatTab {
 			fontStylePanel.add(getBoldCheckBox(), null);
 			fontStylePanel.add(getItalicCheckBox(), null);
 			fontStylePanel.add(getUnderlineCheckBox(), null);
+			fontStylePanel.setMaximumSize(new Dimension(fontStylePanel.getMaximumSize().width, fontStylePanel.getMinimumSize().height));  // Otherwise this component would be enlarged if the dialog height is increased.
 		}
 		return fontStylePanel;
 	}
@@ -280,6 +295,7 @@ public class FontFormatsPanel extends JPanel implements ElementFormatTab {
 			fontHeightPanel.setLayout(new GridBagLayout());
 			fontHeightPanel.setBorder(BorderFactory.createTitledBorder(null, "Font height", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
 			fontHeightInput = new DistanceValueInput("", fontHeightPanel, 0);
+			fontHeightPanel.setMaximumSize(new Dimension(fontHeightPanel.getMaximumSize().width, fontHeightPanel.getMinimumSize().height));  // Otherwise this component would be enlarged if the dialog height is increased.
 		}
 		return fontHeightPanel;
 	}
@@ -303,6 +319,7 @@ public class FontFormatsPanel extends JPanel implements ElementFormatTab {
 					TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, 
 					new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
 			previewPanel.add(getPreviewTextField(), gridBagConstraints1);
+			previewPanel.setMaximumSize(new Dimension(previewPanel.getMaximumSize().width, previewPanel.getMinimumSize().height));  // Otherwise this component would be enlarged if the dialog height is increased.
 		}
 		return previewPanel;
 	}
@@ -387,15 +404,15 @@ public class FontFormatsPanel extends JPanel implements ElementFormatTab {
 	 * 	
 	 * @return javax.swing.JList	
 	 */
-	private JList getFontFamilyList() {
+	private JList<String> getFontFamilyList() {
 		if (fontFamilyList == null) {
-			fontFamilyList = new JList(GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames());
+			fontFamilyList = new JList<String>(GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames());
 			fontFamilyList.setVisibleRowCount(VISIBLE_ROW_COUNT);
 			fontFamilyList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			fontFamilyList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
 					public void valueChanged(javax.swing.event.ListSelectionEvent e) {
 						if (!e.getValueIsAdjusting()) {
-							if (getFontFamilyList().isFocusOwner()) {  // Muss ebenfalls gepr�ft werden, da es sonst zu Division durch Null kommt, die irgendwie mit dem Wechselseitigen Aufruf der beiden Listener bei der Aktualisierung in onExecute kommt. (!getFontFamilyTextField().isFocusOwner() reicht als Bedingung nicht.)								
+							if (getFontFamilyList().isFocusOwner()) {  // Muss ebenfalls geprüft werden, da es sonst zu Division durch Null kommt, die irgendwie mit dem Wechselseitigen Aufruf der beiden Listener bei der Aktualisierung in onExecute kommt. (!getFontFamilyTextField().isFocusOwner() reicht als Bedingung nicht.)								
 								getFontFamilyTextField().setText(fontFamilyList.getModel().getElementAt(
 										fontFamilyList.getSelectedIndex()).toString());
 								preview();

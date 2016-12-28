@@ -32,7 +32,7 @@ import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
  * @author Ben St&ouml;ver
  * @see ElementFormatsDialog
  */
-public interface ElementFormatTab {
+public interface ElementFormatsTab {
   /**
    * The values of the first compatible element in the selection should be set to
    * the input components of this tab.

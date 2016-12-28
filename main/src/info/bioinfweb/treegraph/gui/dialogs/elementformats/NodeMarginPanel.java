@@ -47,7 +47,7 @@ import javax.swing.border.TitledBorder;
  * @author Ben St&ouml;ver
  * @since 2.0.25
  */
-public class NodeMarginPanel extends JPanel implements ElementFormatTab {
+public class NodeMarginPanel extends JPanel implements ElementFormatsTab {
 	private static final long serialVersionUID = 1L;
 	
 

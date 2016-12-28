@@ -59,7 +59,7 @@ import javax.swing.text.NumberFormatter;
  * @author Ben St&ouml;ver
  * @see LabelFormats
  */
-public class LabelPanel extends JPanel implements ElementFormatTab {
+public class LabelPanel extends JPanel implements ElementFormatsTab {
 	private static final long serialVersionUID = 1L;
 
 	

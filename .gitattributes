@@ -226,6 +226,7 @@ main/src/info/bioinfweb/treegraph/document/format/operate/MinSpaceAboveOperator.
 main/src/info/bioinfweb/treegraph/document/format/operate/MinSpaceBelowOperator.java -text
 main/src/info/bioinfweb/treegraph/document/format/operate/MinTreeDistanceOperator.java -text
 main/src/info/bioinfweb/treegraph/document/format/operate/OperatorMap.java -text
+main/src/info/bioinfweb/treegraph/document/format/operate/PieChartCaptionTextOperator.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/format/operate/PieColorOperator.java -text
 main/src/info/bioinfweb/treegraph/document/format/operate/ScaleBarFormatsOperator.java -text
 main/src/info/bioinfweb/treegraph/document/format/operate/ShowPieChartCaptionsOperator.java -text svneol=unset#text/plain
@@ -660,8 +661,8 @@ main/src/info/bioinfweb/treegraph/gui/dialogs/editelement/TextElementDataInput.j
 main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/BranchPanel.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/DecimalFormatPanel.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/DecimalFormatsTableModel.java -text
-main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/ElementFormatTab.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/ElementFormatsDialog.java -text
+main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/ElementFormatsTab.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/FontColorPanel.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/FontFormatsPanel.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/IconPieChartLabelPanel.java -text
@@ -671,6 +672,7 @@ main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/LabelPanel.java -te
 main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/LegendPanel.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/LinePanel.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/NodeMarginPanel.java -text
+main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/PieChartLabelCaptionsFontDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/ScaleBarIntervalKeyListener.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/ScaleBarPanel.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/ScaleValueInput.java -text

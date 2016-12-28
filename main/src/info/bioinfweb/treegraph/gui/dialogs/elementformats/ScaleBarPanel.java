@@ -54,7 +54,7 @@ import java.awt.Insets;
  * @author Ben St&ouml;ver
  * @see ElementFormatsDialog
  */
-public class ScaleBarPanel extends JPanel implements ElementFormatTab {
+public class ScaleBarPanel extends JPanel implements ElementFormatsTab {
 	private static final long serialVersionUID = 1L;
 	
 	

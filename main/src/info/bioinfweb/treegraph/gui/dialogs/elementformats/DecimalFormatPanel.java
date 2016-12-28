@@ -61,7 +61,7 @@ import java.awt.Insets;
  * @author Ben St&ouml;ver
  * @see ElementFormatsDialog
  */
-public class DecimalFormatPanel extends JPanel implements ElementFormatTab {
+public class DecimalFormatPanel extends JPanel implements ElementFormatsTab {
 	private static final long serialVersionUID = 1L;
 	public static final double FORMAT_EXAMPLE = 1125024.87356218; 
 	

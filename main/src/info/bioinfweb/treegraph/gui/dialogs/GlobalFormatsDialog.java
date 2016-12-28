@@ -60,7 +60,7 @@ public class GlobalFormatsDialog extends EditDialog {
 	@Override
 	protected boolean onExecute() {
 		setValues(getDocument().getTree().getFormats());
-		return true;  // F�r globale formate muss kein Element markiert sein.
+		return true;  // Für globale formate muss kein Element markiert sein.
 	}
 
 

@@ -61,7 +61,7 @@ import javax.swing.border.TitledBorder;
  * @author Ben St&ouml;ver
  * @see LegendFormats
  */
-public class LegendPanel extends JPanel implements ElementFormatTab {
+public class LegendPanel extends JPanel implements ElementFormatsTab {
 	private static final long serialVersionUID = 1L;
 
 

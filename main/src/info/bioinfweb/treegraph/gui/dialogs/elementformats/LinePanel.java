@@ -49,7 +49,7 @@ import javax.swing.border.TitledBorder;
  * @author Ben St&ouml;ver
  * @see LineFormats
  */
-public class LinePanel extends JPanel implements ElementFormatTab {
+public class LinePanel extends JPanel implements ElementFormatsTab {
 	private static final long serialVersionUID = 1L;
 
 

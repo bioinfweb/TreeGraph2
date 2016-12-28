@@ -19,20 +19,21 @@
 package info.bioinfweb.treegraph.gui.dialogs.elementformats;
 
 
-import info.bioinfweb.treegraph.document.*;
+import info.bioinfweb.treegraph.document.AbstractPaintableElement;
+import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.format.operate.FormatOperator;
 import info.bioinfweb.treegraph.document.undo.format.OperatorsEdit;
 import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
 
-import javax.swing.JPanel;
 import java.awt.Component;
 import java.awt.Frame;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.BoxLayout;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-
-import java.util.List;
-import java.util.Vector;
 
 
 
@@ -48,7 +49,7 @@ public class ElementFormatsDialog extends EditDialog {
 	
 	private JPanel jContentPane = null;
 	private JTabbedPane formatsTabbedPane = null;
-	private Vector<ElementFormatTab> tabs = null;  //  @jve:decl-index=0:
+	private List<ElementFormatsTab> tabs = null;
 
 
 	/**
@@ -75,11 +76,11 @@ public class ElementFormatsDialog extends EditDialog {
 	}
 	
 	
-	private boolean checkInputs() {
-		List<String> errors = new Vector<String>();
-		for (int i = 0; i < getTabs().size(); i++) {
-			if (getFormatsTabbedPane().isEnabledAt(i)) {
-				getTabs().get(i).addError(errors);
+	public static boolean checkInputs(Component dialogParent, JTabbedPane pane, List<ElementFormatsTab> tabs) {
+		List<String> errors = new ArrayList<String>();
+		for (int i = 0; i < tabs.size(); i++) {
+			if (pane.isEnabledAt(i)) {
+				tabs.get(i).addError(errors);
 			}
 		}
 		
@@ -89,7 +90,7 @@ public class ElementFormatsDialog extends EditDialog {
 			for (int i = 0; i < errors.size(); i++) {
 				text += "- " + errors.get(i) + "\n";
 			}
-			JOptionPane.showMessageDialog(this, text, "Invalid inputs",	JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(dialogParent, text, "Invalid inputs",	JOptionPane.ERROR_MESSAGE);
 		}
 		return result;
 	}
@@ -117,17 +118,22 @@ public class ElementFormatsDialog extends EditDialog {
 		}
 		return result;
 	}
+	
+	
+	public static List<FormatOperator> getTabOperators(List<ElementFormatsTab> tabs) {
+		List<FormatOperator> result = new ArrayList<FormatOperator>();
+		for (ElementFormatsTab tab : tabs) {
+			tab.addOperators(result);
+		}
+		return result;
+	}
 
 
 	@Override
 	protected boolean apply() {
-		boolean result = checkInputs();
+		boolean result = checkInputs(this, getFormatsTabbedPane(), getTabs());
 		if (result) {
-			Vector<FormatOperator> operators = new Vector<FormatOperator>();
-			for (int i = 0; i < getFormatsTabbedPane().getTabCount(); i++) {
-				getTabs().get(i).addOperators(operators);
-			}
-			
+			List<FormatOperator> operators = getTabOperators(getTabs());
 			if (operators.size() > 0) {
 				getDocument().executeEdit(new OperatorsEdit(getDocument(), 
 						getSelection().toArray(
@@ -140,11 +146,11 @@ public class ElementFormatsDialog extends EditDialog {
 	}
 
 
-	public Vector<ElementFormatTab> getTabs() {
+	public List<ElementFormatsTab> getTabs() {
 		if (tabs == null) {
-			tabs = new Vector<ElementFormatTab>();
+			tabs = new ArrayList<ElementFormatsTab>();
 			tabs.add(new LinePanel());
-			tabs.add(new FontFormatsPanel());
+			tabs.add(new FontFormatsPanel(true));
 			tabs.add(new FontColorPanel());
 			tabs.add(new DecimalFormatPanel());
 			tabs.add(new NodeMarginPanel());
