@@ -19,13 +19,15 @@
 package info.bioinfweb.treegraph.document.format;
 
 
-import java.awt.Color;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Vector;
-
 import info.bioinfweb.treegraph.document.Label;
 import info.bioinfweb.treegraph.document.PieColorManager;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 
 
@@ -35,14 +37,20 @@ import info.bioinfweb.treegraph.document.PieColorManager;
  * @author Ben St&ouml;ver
  * @since 2.0.43
  */
-public class PieChartLabelFormats extends GraphicalLabelFormats implements LineFormats {
+public class PieChartLabelFormats extends GraphicalLabelFormats implements LineFormats, TextFormats {
 	public static final boolean DEFAULT_SHOW_INTERNAL_LINES = true;
 	public static final boolean DEFAULT_SHOW_LINES_FOR_ZERO = false;
+	public static final boolean DEFAULT_SHOW_TITLE = false;
+	public static final boolean DEFAULT_SHOW_CAPTIONS = false;
 	
 	
   private List<Color> pieColors = new ArrayList<Color>();
   private boolean showInternalLines = DEFAULT_SHOW_INTERNAL_LINES;
-  private boolean showLinesForZero = DEFAULT_SHOW_LINES_FOR_ZERO; 
+  private boolean showLinesForZero = DEFAULT_SHOW_LINES_FOR_ZERO;
+  private boolean showTitle = DEFAULT_SHOW_TITLE;
+  private boolean showCaptions = DEFAULT_SHOW_CAPTIONS;
+	private TextFormats titleTextFormats = new ConcreteTextFormats();
+	private TextFormats captionsTextFormats = new ConcreteTextFormats();
 
 
 	public PieChartLabelFormats(Label owner, boolean above, int line, int linePosition) {
@@ -68,7 +76,8 @@ public class PieChartLabelFormats extends GraphicalLabelFormats implements LineF
 	/**
 	 * Returns the stored color with the specified index. If the index is out of the rage of the 
 	 * currently stored field, new colors are added.
-	 * @param index - the index of the color
+	 * 
+	 * @param index the index of the color
 	 * @return
 	 */
 	public Color getPieColor(int index) {
@@ -92,7 +101,7 @@ public class PieChartLabelFormats extends GraphicalLabelFormats implements LineF
 	}
 
 
-	public boolean getShowInternalLines() {
+	public boolean isShowInternalLines() {
 		return showInternalLines;
 	}
 
@@ -102,21 +111,150 @@ public class PieChartLabelFormats extends GraphicalLabelFormats implements LineF
 	}
 
 
-	public boolean getShowLinesForZero() {
+	public boolean isShowLinesForZero() {
 		return showLinesForZero;
 	}
 
 
-	public void setShowLinesForZero(boolean showNullLines) {
-		this.showLinesForZero = showNullLines;
+	public void setShowLinesForZero(boolean showLinesForZero) {
+		this.showLinesForZero = showLinesForZero;
 	}
 
 
+	public boolean isShowTitle() {
+		return showTitle;
+	}
+
+
+	public void setShowTitle(boolean showTitle) {
+		this.showTitle = showTitle;
+	}
+
+
+	public boolean isShowCaptions() {
+		return showCaptions;
+	}
+
+
+	public void setShowCaptions(boolean showCaptions) {
+		this.showCaptions = showCaptions;
+	}
+
+
+	@Override
+	public String getFontName() {
+		return titleTextFormats.getFontName();
+	}
+
+
+	@Override
+	public void setFontName(String fontName) {
+		titleTextFormats.setFontName(fontName);
+	}
+
+
+	@Override
+	public DistanceValue getTextHeight() {
+		return titleTextFormats.getTextHeight();
+	}
+
+
+	@Override
+	public float getDescent() {
+		return titleTextFormats.getDescent();
+	}
+
+
+	@Override
+	public boolean hasTextStyle(int style) {
+		return titleTextFormats.hasTextStyle(style);
+	}
+
+
+	@Override
+	public int getTextStyle() {
+		return titleTextFormats.getTextStyle();
+	}
+
+
+	@Override
+	public void setTextStyle(int style) {
+		titleTextFormats.setTextStyle(style);
+	}
+
+
+	@Override
+	public void addTextStyle(int style) {
+		titleTextFormats.addTextStyle(style);
+	}
+
+
+	@Override
+	public void removeTextStyle(int style) {
+		titleTextFormats.removeTextStyle(style);
+	}
+
+
+	@Override
+	public Font getFont(float pixelsPerMillimeter) {
+		return titleTextFormats.getFont(pixelsPerMillimeter);
+	}
+
+
+	@Override
+	public Color getTextColor() {
+		return titleTextFormats.getTextColor();
+	}
+
+
+	@Override
+	public void setTextColor(Color textColor) {
+		titleTextFormats.setTextColor(textColor);
+	}
+
+
+	@Override
+	public Locale getLocale() {
+		return titleTextFormats.getLocale();
+	}
+
+
+	@Override
+	public void setLocale(Locale locale) {
+		titleTextFormats.setLocale(locale);
+	}
+
+
+	@Override
+	public DecimalFormat getDecimalFormat() {
+		return titleTextFormats.getDecimalFormat();
+	}
+
+
+	@Override
+	public void setDecimalFormat(DecimalFormat decimalFormat, Locale locale) {
+		titleTextFormats.setDecimalFormat(decimalFormat, locale);
+	}
+
+
+	public TextFormats getCaptionsTextFormats() {
+		return captionsTextFormats;
+	}
+
+
+	@Override
+	public void assignTextFormats(TextFormats other) {
+		titleTextFormats.assignTextFormats(other);
+	}
+	
+	
 	public void assignPieChartLabelFormats(PieChartLabelFormats other) {
   	pieColors.clear();
   	pieColors.addAll(other.pieColors);
-  	setShowInternalLines(other.getShowInternalLines());
-  	setShowLinesForZero(other.getShowLinesForZero());
+  	setShowInternalLines(other.isShowInternalLines());
+  	setShowLinesForZero(other.isShowLinesForZero());
+		assignTextFormats(other);
+		getCaptionsTextFormats().assignTextFormats(other.getCaptionsTextFormats());
   }
 	
 	

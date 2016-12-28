@@ -338,19 +338,18 @@ public class IDManager {
   
   
   /**
-   * Updates the renamed ID if it is referenced by pie chart label in the subtree under 
-   * <code>root</code>.  
+   * Updates the renamed ID if it is referenced by pie chart label in the subtree under {@code root}.
    * 
-   * @param oldName - the current ID
-   * @param newName - the new ID
-   * @param root - the root of the subtree to be updated
+   * @param oldName the current ID
+   * @param newName the new ID
+   * @param root the root of the subtree to be updated
    */
   private static void updatePieChartLabels(String oldName, String newName, Node root) {
   	PieChartLabel[] labels = root.getAfferentBranch().getLabels().toPieChartLabelArray();
   	for (int i = 0; i < labels.length; i++) {
-			for (int j = 0; j < labels[i].valueCount(); j++) {
-				if (oldName.equals(labels[i].getValueID(j))) {
-					labels[i].setValueID(j, newName);
+			for (int j = 0; j < labels[i].getSectionDataList().size(); j++) {
+				if (oldName.equals(labels[i].getSectionDataList().get(j).getValueColumnID())) {
+					labels[i].getSectionDataList().get(j).setValueColumnID(newName);
 				}
 			}
 		}
@@ -374,9 +373,9 @@ public class IDManager {
   /**
    * Renames a data ID in the specified tree and updates possible links to this ID in pie chart labels.
    * 
-   * @param oldName - the current ID
-   * @param newName - the new ID
-   * @param tree - the tree to rename the IDs in
+   * @param oldName the current ID
+   * @param newName the new ID
+   * @param tree the tree to rename the IDs in
    */
   public static void renameID(String oldName, String newName, Document document) {
   	if (!document.getTree().isEmpty()) {

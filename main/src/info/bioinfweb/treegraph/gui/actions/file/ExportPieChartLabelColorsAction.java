@@ -59,13 +59,15 @@ public class ExportPieChartLabelColorsAction extends DocumentAction {
 	private void writeTable(File file, Branch branch) throws FileNotFoundException {
 		PrintWriter writer = new PrintWriter(file);
 		try {
-			writer.println("Pie chart label ID\tSource data column ID\tColor\tRed\tGreen\tBlue");
+			writer.println("Pie chart label ID\tSource data column ID\tData caption\tColor\tRed\tGreen\tBlue");
 			PieChartLabel[] labels = TreeSerializer.getElementsOnNode(branch.getTargetNode(), PieChartLabel.class);
 			for (PieChartLabel label : labels) {
-				for (int i = 0; i < label.valueCount(); i++) {
+				for (int i = 0; i < label.getSectionDataList().size(); i++) {
 					writer.write(label.getID());
 					writer.write('\t');
-					writer.write(label.getValueID(i));
+					writer.write(label.getSectionDataList().get(i).getValueColumnID());
+					writer.write('\t');
+					writer.write(label.getSectionDataList().get(i).getCaption());
 					writer.write('\t');
 					
 					Color color = label.getFormats().getPieColor(i);

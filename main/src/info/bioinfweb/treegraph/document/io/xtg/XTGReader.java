@@ -20,6 +20,7 @@ package info.bioinfweb.treegraph.document.io.xtg;
 
 
 import info.bioinfweb.treegraph.document.*;
+import info.bioinfweb.treegraph.document.PieChartLabel.SectionData;
 import info.bioinfweb.treegraph.document.format.*;
 import info.bioinfweb.treegraph.document.io.AbstractDocumentReader;
 import info.bioinfweb.treegraph.document.io.DocumentIterator;
@@ -283,7 +284,7 @@ public class XTGReader extends AbstractDocumentReader implements XTGConstants {
         else if (element.getName().getLocalPart().equals(TAG_HIDDEN_DATA)) {
         	readHiddenData(element, b.getHiddenDataMap());
         }
-        else {  // evtl. zus�tzlich vorhandenes Element, dass nicht gelesen wird
+        else {
           reachElementEnd(reader, element);  
         }
       }
@@ -301,11 +302,12 @@ public class XTGReader extends AbstractDocumentReader implements XTGConstants {
         if (element.getName().getLocalPart().equals(TAG_PIE_CHART_ID)) {
         	l.getFormats().setPieColor(index, XMLUtils.readColorAttr(element, ATTR_PIE_COLOR, 
               l.getFormats().getPieColor(index)));
-        	l.addValueID(XMLUtils.readCharactersAsString(reader));  // If string contains e.g. "&lt;" it will be split into separate events. Therefore the util method needs to be used. 
+        	l.getSectionDataList().add(new PieChartLabel.SectionData(XMLUtils.readCharactersAsString(reader), ""));  // If string contains e.g. "&lt;" it will be split into separate events. Therefore the util method needs to be used.
+        			//TODO Also set caption here in the future.
           reachElementEnd(reader, element);
           index++;
         }
-        else {  // evtl. zus�tzlich vorhandenes Element, dass nicht gelesen wird
+        else {
           reachElementEnd(reader, element);
         }
       }
@@ -393,9 +395,9 @@ public class XTGReader extends AbstractDocumentReader implements XTGConstants {
     readLineAttr(f, rootElement);
   	readGraphicalLabelDimensions(f, rootElement);
     f.setShowInternalLines(XMLUtils.readBooleanAttr(rootElement, ATTR_SHOW_INTERNAL_LINES, 
-    		f.getShowInternalLines()));
+    		f.isShowInternalLines()));
     f.setShowLinesForZero(XMLUtils.readBooleanAttr(rootElement, ATTR_SHOW_NULL_LINES, 
-    		f.getShowLinesForZero()));
+    		f.isShowLinesForZero()));
     
     readLabelData(rootElement, l);
     labels.add(l);  // label.labels wird hier automatisch gesetzt

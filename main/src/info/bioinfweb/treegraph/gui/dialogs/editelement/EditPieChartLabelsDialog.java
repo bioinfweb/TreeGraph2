@@ -51,13 +51,7 @@ public class EditPieChartLabelsDialog extends NewPieChartLabelsDialog {
 		boolean result = (l != null);
 		if (result) {		
 			getValuesPanel().setIDs(getDocument());
-			getValuesPanel().getListModel().clear();
-			for (int i = 0; i < l.valueCount(); i++) {
-				getValuesPanel().getListModel().addElement(l.getValueID(i));
-			}
-			if (!getValuesPanel().getListModel().isEmpty()) {
-				getValuesPanel().getSelectionModel().setSelectionInterval(0, 0);
-			}
+			getValuesPanel().setSectionDataList(l.getSectionDataList());
 		}
 		return result;
 	}
@@ -65,13 +59,8 @@ public class EditPieChartLabelsDialog extends NewPieChartLabelsDialog {
 
 	@Override
 	protected boolean apply() {
-		String[] ids = new String[getValuesPanel().getListModel().size()];
-		for (int i = 0; i < ids.length; i++) {
-			ids[i] = getValuesPanel().getListModel().get(i).toString();
-		}
-
 		getDocument().executeEdit(new PieChartLabelIDsEdit(getDocument(), 
-				getSelection().getAllElementsOfType(PieChartLabel.class), ids));
+				getSelection().getAllElementsOfType(PieChartLabel.class), getValuesPanel().getSectionDataList()));
 		return true;
 	}
 }

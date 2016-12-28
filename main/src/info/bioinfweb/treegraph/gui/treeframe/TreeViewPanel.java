@@ -313,16 +313,16 @@ public class TreeViewPanel extends JPanel implements DocumentListener, Scrollabl
 			
 			if (element instanceof PieChartLabel) {
 				PieChartLabel label = (PieChartLabel)element;
-				if (label.valueCount() > 0) {
+				if (!label.getSectionDataList().isEmpty()) {
 					result.append(" (states: ");
 					PieChartLabelFormats formats = label.getFormats();
-					for (int i = 0; i < label.valueCount(); i++) {
+					for (int i = 0; i < label.getSectionDataList().size(); i++) {
 						result.append("<span style='color: ");
 						result.append(GraphicsUtils.colorToHexString(formats.getPieColor(i)));
 						result.append(";'>");
-						result.append(label.getValueID(i));
+						result.append(label.getSectionDataList().get(i).getValueColumnID());
 						result.append("</span>");
-						if (i < label.valueCount() - 1) {
+						if (i < label.getSectionDataList().size() - 1) {
 							result.append(", ");
 						}
 					}

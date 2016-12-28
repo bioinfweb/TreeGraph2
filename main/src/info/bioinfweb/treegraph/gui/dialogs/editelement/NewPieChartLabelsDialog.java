@@ -21,7 +21,7 @@ package info.bioinfweb.treegraph.gui.dialogs.editelement;
 
 import info.bioinfweb.treegraph.document.GraphicalLabel;
 import info.bioinfweb.treegraph.document.PieChartLabel;
-import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataList;
+import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.PieChartSectionDataList;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -46,7 +46,7 @@ public class NewPieChartLabelsDialog extends NewGraphicalLabelsDialog {
 
 	
 	private JPanel jContentPane = null;
-	private NodeBranchDataList valuesPanel = null;
+	private PieChartSectionDataList valuesPanel = null;
 
 	
 	/**
@@ -73,9 +73,7 @@ public class NewPieChartLabelsDialog extends NewGraphicalLabelsDialog {
 	@Override
 	protected GraphicalLabel createLabel() {
 		PieChartLabel label = new PieChartLabel(null);
-		for (int i = 0; i < getValuesPanel().getListModel().size(); i++) {
-			label.addValueID(getValuesPanel().getListModel().get(i).toString());
-		}
+		label.getSectionDataList().addAll(getValuesPanel().getSectionDataList());
 		return label;
 	}
 
@@ -109,9 +107,9 @@ public class NewPieChartLabelsDialog extends NewGraphicalLabelsDialog {
 	}
 	
 	
-	protected NodeBranchDataList getValuesPanel() {
+	protected PieChartSectionDataList getValuesPanel() {
 		if (valuesPanel == null) {
-			valuesPanel = new NodeBranchDataList();
+			valuesPanel = new PieChartSectionDataList();
 			valuesPanel.setBorder(BorderFactory.createTitledBorder(null, "Pie chart value IDs", 
 					TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, 
 					new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));

@@ -30,6 +30,7 @@ import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.PieChartLabel;
+import info.bioinfweb.treegraph.document.PieChartLabel.SectionData;
 import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.io.ancestralstate.AncestralStateData;
 import info.bioinfweb.treegraph.document.io.ancestralstate.BayesTraitsReader;
@@ -228,7 +229,8 @@ public class ImportBayesTraitsDataEdit extends AbstractTopologicalCalculationEdi
 					Iterator<String> stateIterator = parameters.getData().get(internalNodeName).getKeyIterator(siteKey);
 					while (stateIterator.hasNext()) {
 						if (labelID != null) {
-							label.addValueID(((IDElementAdapter)parameters.getImportAdapters()[importAdapterIndex]).getID());
+							label.getSectionDataList().add(new PieChartLabel.SectionData(
+									((IDElementAdapter)parameters.getImportAdapters()[importAdapterIndex]).getID(), ""));
 						}
 						
 						double probability = parameters.getData().get(internalNodeName).getProbability(siteKey, stateIterator.next());

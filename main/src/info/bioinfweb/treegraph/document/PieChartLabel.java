@@ -34,52 +34,96 @@ import java.util.List;
  * @author Ben St&ouml;ver
  * @since 2.0.43
  */
-public class PieChartLabel extends GraphicalLabel implements LineElement {
-	private List<String> valueIDs = new ArrayList<String>();
-	protected PieChartLabelFormats formats;
+public class PieChartLabel extends GraphicalLabel implements LineElement, TextElement {
+	public static class SectionData implements Cloneable {
+		private String valueColumnID = "";
+		private String caption = "";
+		
+		public SectionData(String valueColumnID, String caption) {
+			super();
+			this.valueColumnID = valueColumnID;
+			this.caption = caption;
+		}
+
+		public String getValueColumnID() {
+			return valueColumnID;
+		}
+		
+		public void setValueColumnID(String valueColumnID) {
+			this.valueColumnID = valueColumnID;
+		}
+		
+		public String getCaption() {
+			return caption;
+		}
+		
+		public void setCaption(String caption) {
+			this.caption = caption;
+		}
+
+		@Override
+		public String toString() {
+			String caption = "";
+			if ((getCaption() != null) && !getCaption().isEmpty()) {
+				caption = " (" + getCaption() + ")";
+			}
+			return getValueColumnID() + caption;
+		}
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + ((caption == null) ? 0 : caption.hashCode());
+			result = prime * result
+					+ ((valueColumnID == null) ? 0 : valueColumnID.hashCode());
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			SectionData other = (SectionData) obj;
+			if (caption == null) {
+				if (other.caption != null)
+					return false;
+			} else if (!caption.equals(other.caption))
+				return false;
+			if (valueColumnID == null) {
+				if (other.valueColumnID != null)
+					return false;
+			} else if (!valueColumnID.equals(other.valueColumnID))
+				return false;
+			return true;
+		}
+
+		@Override
+		public SectionData clone() {
+			return new SectionData(getValueColumnID(), getCaption());
+		}
+	}
+	
+	
+	private List<SectionData> sectionDataList = new ArrayList<>();
+	private TextElementData title = new TextElementData();
+	private PieChartLabelFormats formats = new PieChartLabelFormats(this);
 	
 	
 	public PieChartLabel(Labels labels) {
 		super(labels);
-		formats = new PieChartLabelFormats(this);  // Must be done here in order to set a different instance in inherited classes. 
 	}
 	
 	
-	public void addValueID(int index, String id) {
-		valueIDs.add(index, id);
+	public List<SectionData> getSectionDataList() {
+		return sectionDataList;
 	}
 
 
-	public boolean addValueID(String id) {
-		return valueIDs.add(id);
-	}
-
-
-	public String getValueID(int index) {
-		return valueIDs.get(index);
-	}
-
-
-	public String removeValueID(int index) {
-		return valueIDs.remove(index);
-	}
-
-
-	public String setValueID(int index, String id) {
-		return valueIDs.set(index, id);
-	}
-
-
-	public void clearValueIDs() {
-		valueIDs.clear();
-	}
-
-
-	public int valueCount() {
-		return valueIDs.size();
-	}
-	
-	
 	/**
 	 * Returns the value of the data column for the ID with the specified index. (The value is not normalized to 
 	 * 100 % or 2 Pi)
@@ -97,7 +141,7 @@ public class PieChartLabel extends GraphicalLabel implements LineElement {
 			throw new NoLinkedNodeException();
 		}
 		else {
-			TextElementData data = IDManager.getDataByID(node, getValueID(index));
+			TextElementData data = IDManager.getDataByID(node, getSectionDataList().get(index).getValueColumnID());
 			if (data != null) {
 				return data.getDecimal(); 
 			}
@@ -115,7 +159,7 @@ public class PieChartLabel extends GraphicalLabel implements LineElement {
 	 * @throws NoLinkedNodeException - if this label has no linked node (no linked {@link Labels} object).
 	 */
 	public double[] getPieChartAngles() {
-		double[] result = new double[valueCount()];
+		double[] result = new double[getSectionDataList().size()];
 		double sum = 0;
 		for (int i = 0; i < result.length; i++) {
 			result[i] = getValue(i);
@@ -128,6 +172,18 @@ public class PieChartLabel extends GraphicalLabel implements LineElement {
 		return result;
 	}
 	
+
+	@Override
+	public TextElementData getData() {
+		return title;
+	}
+
+
+	@Override
+	public void assignTextElementData(TextElement other) {
+		getData().assign(other.getData());
+	}
+
 
 	@Override
 	public PieChartLabelFormats getFormats() {
@@ -144,8 +200,10 @@ public class PieChartLabel extends GraphicalLabel implements LineElement {
 	
 	
 	public void assignPieChartData(PieChartLabel other) {
-		valueIDs.clear();
-		valueIDs.addAll(other.valueIDs);
+		getSectionDataList().clear();
+		for (SectionData sectionData : other.getSectionDataList()) {
+			getSectionDataList().add(sectionData.clone());
+		}
 	}
 
 	

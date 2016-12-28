@@ -36,7 +36,7 @@ import javax.swing.ComboBoxModel;
  * @author Ben St&ouml;ver
  * @since 2.0.25
  */
-public class LabelIconComboBoxModel extends AbstractListModel implements ComboBoxModel {
+public class LabelIconComboBoxModel extends AbstractListModel<String> implements ComboBoxModel<String> {
 	private Vector<String> items = new Vector<String>();
 	private String selected = null;
 	

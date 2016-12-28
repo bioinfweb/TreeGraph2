@@ -38,7 +38,7 @@ public class PieChartLabelPainter extends AbstractGraphicalLabelPainter<PieChart
 	 * @param angles - the an array of angles
 	 * @return {@code true} if at least two valid angles were found
 	 */
-	private static boolean twoSectorsNotZero(double[] angles) {
+	private boolean twoSectorsNotZero(double[] angles) {
 		int count = 0;
 		for (int i = 0; i < angles.length; i++) {
 			if (!Double.isNaN(angles[i]) && (angles[i] > 0)) {
@@ -49,7 +49,7 @@ public class PieChartLabelPainter extends AbstractGraphicalLabelPainter<PieChart
 	}
 	
 	
-	public static void paintPieChart(Graphics2D g, float pixelsPerMillimeter, float x, float y, float width, float height, PieChartLabel label) {
+	private void paintPieChart(Graphics2D g, float pixelsPerMillimeter, float x, float y, float width, float height, PieChartLabel label) {
 		PieChartLabel l = (PieChartLabel)label;
 		double[] angles = l.getPieChartAngles();
 		double startAngle = 0;
@@ -62,7 +62,7 @@ public class PieChartLabelPainter extends AbstractGraphicalLabelPainter<PieChart
 	    // Draw arc areas:
 	    Arc2D.Double[] arcs = new Arc2D.Double[angles.length];
 			for (int j = 0; j < angles.length; j++) {
-				if (f.getShowLinesForZero() || (!Double.isNaN(angles[j]) && (angles[j] > 0))) {
+				if (f.isShowLinesForZero() || (!Double.isNaN(angles[j]) && (angles[j] > 0))) {
 					arcs[j] = new Arc2D.Double(x, y, width, height, 
 							Math.round(startAngle), Math.round(angles[j]), Arc2D.PIE);  // Rounding is necessary, as a workaround for rendering errors in SVG, if too small angles are written (see bug #104). (A higher precision of 0.1° already leads to deformed arcs.)
 					g.setColor(f.getPieColor(j));
@@ -73,10 +73,10 @@ public class PieChartLabelPainter extends AbstractGraphicalLabelPainter<PieChart
 			
 			// Draw arc borders:
 			g.setColor(f.getLineColor());
-			if (f.getShowInternalLines() && (twoValid || f.getShowLinesForZero())) {
+			if (f.isShowInternalLines() && (twoValid || f.isShowLinesForZero())) {
 				startAngle = 0.0;
 				for (int j = 0; j < arcs.length; j++) {  // Borders need to be drawn after all areas, because borders of null wide parts would be hidden in SVG otherwise.
-					if (f.getShowLinesForZero() || (!Double.isNaN(angles[j]) && (angles[j] > 0))) {
+					if (f.isShowLinesForZero() || (!Double.isNaN(angles[j]) && (angles[j] > 0))) {
 						g.draw(arcs[j]);
 						startAngle += angles[j];
 					}

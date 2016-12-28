@@ -16,34 +16,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.graphics.positionpaint.label;
+package info.bioinfweb.treegraph.document.position;
 
 
-import info.bioinfweb.treegraph.document.PieChartCaptionLabel;
-import info.bioinfweb.treegraph.document.format.DistanceDimension;
-import info.bioinfweb.treegraph.document.position.PositionData;
-
-import java.awt.Graphics2D;
+import java.util.ArrayList;
+import java.util.List;
 
 
 
-public class PieChartCaptionLabelPainter extends AbstractGraphicalLabelPainter<PieChartCaptionLabel> {
-	@Override
-	protected DistanceDimension doCalculateDimension(PieChartCaptionLabel label) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+public class PieChartLabelPositionData extends PositionData {
+	private PositionData chartPosition = new PositionData();
+	private List<PositionData> captionPositions = new ArrayList<PositionData>();
 	
-	@Override
-	protected void doPaint(Graphics2D g, float pixelsPerMillimeter, PositionData pd, PieChartCaptionLabel label) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	
-	@Override
-	public Class<PieChartCaptionLabel> getLabelClass() {
-		return PieChartCaptionLabel.class;
+	public PositionData getChartPosition() {
+		return chartPosition;
+	}
+	
+	
+	public List<PositionData> getCaptionPositions() {
+		return captionPositions;
 	}
 }

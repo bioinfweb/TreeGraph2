@@ -77,7 +77,7 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatTab {
 	private ChangeMonitor internalLinesMonitor = new ChangeMonitor();  //  @jve:decl-index=0:
 	private ChangeMonitor nullLinesMonitor = new ChangeMonitor();  //  @jve:decl-index=0:
 	private JPanel iconPanel = null;
-	private JComboBox iconComboBox = null;
+	private JComboBox<String> iconComboBox = null;
 	private IconPreviewPanel iconPreviewPanel = null;
 	private DistanceValueInput iconWidthInput = null; 
 	private DistanceValueInput iconHeightInput = null;
@@ -86,7 +86,7 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatTab {
 	private JPanel pieChartPanel = null;
 	private JLabel previewLabel = null;
 	private JScrollPane colorListScrollPane = null;
-	private JList colorList = null;
+	private JList<PieColorListEntry> colorList = null;
 	private JLabel colorLabel = null;
 	private JCheckBox showInternalLinesCheckBox = null;
 	private JCheckBox showNullLinesCheckBox = null;
@@ -133,12 +133,12 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatTab {
 			}
 			
 			getColorListModel().clear();
-			for (int i = 0; i < pieChartLabel.valueCount(); i++) {
-				getColorListModel().addElement(new PieColorListEntry(pieChartLabel.getValueID(i), 
+			for (int i = 0; i < pieChartLabel.getSectionDataList().size(); i++) {
+				getColorListModel().addElement(new PieColorListEntry(pieChartLabel.getSectionDataList().get(i).toString(), 
 						f.getPieColor(i)));
 			}
-			getShowInternalLinesCheckBox().setSelected(f.getShowInternalLines());
-			getShowNullLinesCheckBox().setSelected(f.getShowLinesForZero());
+			getShowInternalLinesCheckBox().setSelected(f.isShowInternalLines());
+			getShowNullLinesCheckBox().setSelected(f.isShowLinesForZero());
 		}
 		return (iconLabelSel || pieChartLabelSel);
 	}
@@ -313,9 +313,9 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatTab {
 	 * 	
 	 * @return javax.swing.JComboBox	
 	 */
-	private JComboBox getIconComboBox() {
+	private JComboBox<String> getIconComboBox() {
 		if (iconComboBox == null) {
-			iconComboBox = new JComboBox(new LabelIconComboBoxModel());
+			iconComboBox = new JComboBox<String>(new LabelIconComboBoxModel());
 			iconComboBox.addItemListener(iconMonitor);
 			iconComboBox.addItemListener(new java.awt.event.ItemListener() {
 				public void itemStateChanged(java.awt.event.ItemEvent e) {
@@ -446,9 +446,9 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatTab {
 	 * 	
 	 * @return javax.swing.JList	
 	 */
-	private JList getColorList() {
+	private JList<PieColorListEntry> getColorList() {
 		if (colorList == null) {
-			colorList = new JList(new DefaultListModel());
+			colorList = new JList<PieColorListEntry>(new DefaultListModel<PieColorListEntry>());
 			colorList.setCellRenderer(new PieColorCellRenderer());
 			colorList.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
@@ -472,8 +472,8 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatTab {
 	}
 	
 	
-	private DefaultListModel getColorListModel() {
-		return (DefaultListModel)getColorList().getModel();
+	private DefaultListModel<PieColorListEntry> getColorListModel() {
+		return (DefaultListModel<PieColorListEntry>)getColorList().getModel();
 	}
 	
 	

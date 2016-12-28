@@ -21,7 +21,6 @@ package info.bioinfweb.treegraph.gui.dialogs.elementformats.piecolor;
 
 import info.bioinfweb.treegraph.gui.dialogs.elementformats.IconPieChartLabelPanel;
 
-import java.awt.Color;
 import java.awt.Component;
 
 import javax.swing.JLabel;
@@ -35,11 +34,11 @@ import javax.swing.ListCellRenderer;
  * @author Ben St&ouml;ver
  * @since 2.0.43
  */
-public class PieColorCellRenderer extends JLabel implements ListCellRenderer {
+public class PieColorCellRenderer extends JLabel implements ListCellRenderer<PieColorListEntry> {
 	private PieColorIcon icon = new PieColorIcon();
 	
 	
-  public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
+  public Component getListCellRendererComponent(JList<? extends PieColorListEntry> list, PieColorListEntry value, int index, boolean isSelected,
     boolean cellHasFocus) {
   	
     setText(value.toString());
@@ -51,10 +50,8 @@ public class PieColorCellRenderer extends JLabel implements ListCellRenderer {
       setBackground(list.getBackground());
       setForeground(list.getForeground());
     }
-    if (value instanceof PieColorListEntry) {
-    	icon.setColor(((PieColorListEntry)value).getColor());
-      setIcon(icon);
-    }
+  	icon.setColor(value.getColor());
+    setIcon(icon);
     setEnabled(list.isEnabled());
     setFont(list.getFont());
     setOpaque(true);

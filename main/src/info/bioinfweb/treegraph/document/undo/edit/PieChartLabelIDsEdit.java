@@ -19,6 +19,9 @@
 package info.bioinfweb.treegraph.document.undo.edit;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 
@@ -37,30 +40,25 @@ import info.bioinfweb.treegraph.document.undo.DocumentEdit;
  */
 public class PieChartLabelIDsEdit extends DocumentEdit {
 	private PieChartLabel[] labels;
-	private String[] newIDs;
-	private String[][] oldIDs;
+	private List<PieChartLabel.SectionData> newIDs;
+	private List<List<PieChartLabel.SectionData>> oldIDs;
 	
 	
-	public PieChartLabelIDsEdit(Document document, PieChartLabel[] labels, String[] newIDs) {
+	public PieChartLabelIDsEdit(Document document, PieChartLabel[] labels, List<PieChartLabel.SectionData> newIDs) {
 		super(document, DocumentChangeType.NEUTRAL);
 		this.labels = labels;
 		this.newIDs = newIDs;
 		
-		oldIDs = new String[labels.length][];
-		for (int i = 0; i < oldIDs.length; i++) {
-			oldIDs[i] = new String[labels[i].valueCount()];
-			for (int j = 0; j < labels[i].valueCount(); j++) {
-			  oldIDs[i][j] = labels[i].getValueID(j);
-			}
+		oldIDs = new ArrayList<List<PieChartLabel.SectionData>>(labels.length);
+		for (int i = 0; i < labels.length; i++) {
+			oldIDs.add(new ArrayList<>(labels[i].getSectionDataList()));
 		}
 	}
 
 	
-	private void setIDs(String[] ids, int labelIndex) {
-		labels[labelIndex].clearValueIDs();
-		for (int i = 0; i < ids.length; i++) {
-			labels[labelIndex].addValueID(ids[i]);
-		}
+	private void setIDs(List<PieChartLabel.SectionData> ids, int labelIndex) {
+		labels[labelIndex].getSectionDataList().clear();
+		labels[labelIndex].getSectionDataList().addAll(ids);
 	}
 	
 
@@ -76,7 +74,7 @@ public class PieChartLabelIDsEdit extends DocumentEdit {
 	@Override
 	public void undo() throws CannotUndoException {
 		for (int i = 0; i < labels.length; i++) {
-			setIDs(oldIDs[i], i);
+			setIDs(oldIDs.get(i), i);
 		}
 		super.undo();
 	}

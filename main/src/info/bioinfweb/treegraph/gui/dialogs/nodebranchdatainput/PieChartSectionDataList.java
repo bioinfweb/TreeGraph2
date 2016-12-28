@@ -20,17 +20,23 @@ package info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput;
 
 
 import info.bioinfweb.treegraph.document.Document;
+import info.bioinfweb.treegraph.document.PieChartLabel;
+import info.bioinfweb.treegraph.document.PieChartLabel.SectionData;
 import info.bioinfweb.treegraph.gui.dialogs.DataIDComboBox;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -43,19 +49,23 @@ import javax.swing.event.ListSelectionListener;
  * @author Ben St&ouml;ver
  * @since 2.0.48
  */
-public class NodeBranchDataList extends JPanel {
+public class PieChartSectionDataList extends JPanel {
 	private DataIDComboBox listIDComboBox = null;
-	private JList<String> idList = null;
+	private JList<PieChartLabel.SectionData> idList = null;
 	private JButton addButton = null;
 	private JButton replaceButton = null;
 	private JButton removeButton = null;
-	private JScrollPane idListScrollPane = null;
 	private JButton clearButton;
 	private JButton moveDownButton;
 	private JButton moveUpButton;
+	private JScrollPane idListScrollPane = null;
+	private JTextField captionTextField;
+	private JPanel buttonsPanel;
+	private JLabel lblDataSource;
+	private JLabel lblCaption;
 
 	
-	public NodeBranchDataList() {
+	public PieChartSectionDataList() {
 	  super();
 	  initialize();
 	  refreshButtonStatus();
@@ -101,8 +111,8 @@ public class NodeBranchDataList extends JPanel {
 	}
 
 
-	public DefaultListModel<String> getListModel() {
-		return (DefaultListModel<String>)getIDList().getModel();
+	private DefaultListModel<PieChartLabel.SectionData> getListModel() {
+		return (DefaultListModel<PieChartLabel.SectionData>)getIDList().getModel();
 	}
 	
 	
@@ -121,61 +131,51 @@ public class NodeBranchDataList extends JPanel {
 
 
 	private void initialize() {
-		GridBagConstraints listScrollPabeGBC = new GridBagConstraints();
-		listScrollPabeGBC.fill = GridBagConstraints.BOTH;
-		listScrollPabeGBC.gridy = 1;
-		listScrollPabeGBC.weightx = 1.0;
-		listScrollPabeGBC.weighty = 1.0;
-		listScrollPabeGBC.gridheight = 5;
-		listScrollPabeGBC.insets = new Insets(2, 2, 5, 5);
-		listScrollPabeGBC.gridx = 1;
-		GridBagConstraints removeButtonGBC = new GridBagConstraints();
-		removeButtonGBC.gridx = 2;
-		removeButtonGBC.insets = new Insets(2, 2, 5, 2);
-		removeButtonGBC.fill = GridBagConstraints.HORIZONTAL;
-		removeButtonGBC.gridy = 2;
-		GridBagConstraints replaceButtonGBC = new GridBagConstraints();
-		replaceButtonGBC.gridx = 2;
-		replaceButtonGBC.insets = new Insets(2, 2, 5, 2);
-		replaceButtonGBC.fill = GridBagConstraints.HORIZONTAL;
-		replaceButtonGBC.gridy = 1;
-		GridBagConstraints addButtonGBC = new GridBagConstraints();
-		addButtonGBC.gridx = 2;
-		addButtonGBC.insets = new Insets(2, 2, 5, 2);
-		addButtonGBC.fill = GridBagConstraints.HORIZONTAL;
-		addButtonGBC.gridy = 0;
+		GridBagLayout gridBagLayout = new GridBagLayout();
+		gridBagLayout.rowWeights = new double[]{1.0, 0.0, 0.0};
+		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 1.0};
+		setLayout(gridBagLayout);
+		GridBagConstraints gbc_lblDataSource = new GridBagConstraints();
+		gbc_lblDataSource.insets = new Insets(0, 0, 5, 5);
+		gbc_lblDataSource.anchor = GridBagConstraints.WEST;
+		gbc_lblDataSource.gridx = 0;
+		gbc_lblDataSource.gridy = 0;
+		add(getLblDataSource(), gbc_lblDataSource);
 		GridBagConstraints listIDComboBoxGBC = new GridBagConstraints();
 		listIDComboBoxGBC.fill = GridBagConstraints.HORIZONTAL;
 		listIDComboBoxGBC.gridy = 0;
 		listIDComboBoxGBC.weightx = 1.0;
 		listIDComboBoxGBC.insets = new Insets(2, 2, 5, 5);
 		listIDComboBoxGBC.gridx = 1;
-		setLayout(new GridBagLayout());
 		add(getListIDComboBox(), listIDComboBoxGBC);
-		add(getAddButton(), addButtonGBC);
-		add(getReplaceButton(), replaceButtonGBC);
-		add(getRemoveButton(), removeButtonGBC);
-		add(getIdListScrollPane(), listScrollPabeGBC);
-		GridBagConstraints gbc_clearButton = new GridBagConstraints();
-		gbc_clearButton.insets = new Insets(0, 0, 5, 0);
-		gbc_clearButton.fill = GridBagConstraints.HORIZONTAL;
-		gbc_clearButton.anchor = GridBagConstraints.NORTH;
-		gbc_clearButton.gridx = 2;
-		gbc_clearButton.gridy = 3;
-		add(getClearButton(), gbc_clearButton);
-		GridBagConstraints gbc_moveUpButton = new GridBagConstraints();
-		gbc_moveUpButton.anchor = GridBagConstraints.NORTH;
-		gbc_moveUpButton.fill = GridBagConstraints.HORIZONTAL;
-		gbc_moveUpButton.insets = new Insets(0, 0, 5, 0);
-		gbc_moveUpButton.gridx = 2;
-		gbc_moveUpButton.gridy = 4;
-		add(getMoveUpButton(), gbc_moveUpButton);
-		GridBagConstraints gbc_moveDownButton = new GridBagConstraints();
-		gbc_moveDownButton.anchor = GridBagConstraints.NORTH;
-		gbc_moveDownButton.fill = GridBagConstraints.HORIZONTAL;
-		gbc_moveDownButton.gridx = 2;
-		gbc_moveDownButton.gridy = 5;
-		add(getMoveDownButton(), gbc_moveDownButton);
+		GridBagConstraints gbc_buttonsPanel = new GridBagConstraints();
+		gbc_buttonsPanel.anchor = GridBagConstraints.NORTH;
+		gbc_buttonsPanel.gridheight = 3;
+		gbc_buttonsPanel.insets = new Insets(0, 0, 5, 5);
+		gbc_buttonsPanel.gridx = 2;
+		gbc_buttonsPanel.gridy = 0;
+		add(getButtonsPanel(), gbc_buttonsPanel);
+		GridBagConstraints gbc_lblCaption = new GridBagConstraints();
+		gbc_lblCaption.insets = new Insets(0, 0, 5, 5);
+		gbc_lblCaption.anchor = GridBagConstraints.WEST;
+		gbc_lblCaption.gridx = 0;
+		gbc_lblCaption.gridy = 1;
+		add(getLblCaption(), gbc_lblCaption);
+		GridBagConstraints gbc_captionTextField = new GridBagConstraints();
+		gbc_captionTextField.insets = new Insets(0, 0, 5, 5);
+		gbc_captionTextField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_captionTextField.gridx = 1;
+		gbc_captionTextField.gridy = 1;
+		add(getCaptionTextField(), gbc_captionTextField);
+		GridBagConstraints listScrollPaneGBC = new GridBagConstraints();
+		listScrollPaneGBC.gridwidth = 2;
+		listScrollPaneGBC.fill = GridBagConstraints.BOTH;
+		listScrollPaneGBC.gridy = 2;
+		listScrollPaneGBC.weightx = 1.0;
+		listScrollPaneGBC.weighty = 1.0;
+		listScrollPaneGBC.insets = new Insets(2, 2, 0, 5);
+		listScrollPaneGBC.gridx = 0;
+		add(getIdListScrollPane(), listScrollPaneGBC);
 	}
 
 
@@ -197,9 +197,9 @@ public class NodeBranchDataList extends JPanel {
 	 * 	
 	 * @return javax.swing.JList	
 	 */
-	protected JList<String> getIDList() {
+	protected JList<PieChartLabel.SectionData> getIDList() {
 		if (idList == null) {
-			idList = new JList<String>(new DefaultListModel<String>());
+			idList = new JList<PieChartLabel.SectionData>(new DefaultListModel<PieChartLabel.SectionData>());
 			idList.addListSelectionListener(new ListSelectionListener() {
 						public void valueChanged(ListSelectionEvent e) {
 						  refreshButtonStatus();
@@ -222,6 +222,11 @@ public class NodeBranchDataList extends JPanel {
 	}
 	
 	
+	private PieChartLabel.SectionData getSelectedSectionData() {
+		return new PieChartLabel.SectionData(getListIDComboBox().getSelectedItem(), getCaptionTextField().getText());
+	}
+	
+	
 	/**
 	 * This method initializes addButton	
 	 * 	
@@ -233,7 +238,7 @@ public class NodeBranchDataList extends JPanel {
 			addButton.setText("Add");
 			addButton.addActionListener(new java.awt.event.ActionListener() {
 						public void actionPerformed(java.awt.event.ActionEvent e) {
-							getListModel().addElement(getListIDComboBox().getSelectedItem());
+							getListModel().addElement(getSelectedSectionData());
 						}
 					});
 		}
@@ -252,7 +257,7 @@ public class NodeBranchDataList extends JPanel {
 			replaceButton.setText("Replace");
 			replaceButton.addActionListener(new java.awt.event.ActionListener() {
 						public void actionPerformed(java.awt.event.ActionEvent e) {
-							getListModel().set(getIDList().getSelectedIndex(), getListIDComboBox().getSelectedItem());
+							getListModel().set(getIDList().getSelectedIndex(), getSelectedSectionData());
 						}
 					});
 		}
@@ -298,8 +303,8 @@ public class NodeBranchDataList extends JPanel {
 			moveDownButton.addActionListener(new java.awt.event.ActionListener() {
 						public void actionPerformed(java.awt.event.ActionEvent e) {
 							int index = getIDList().getSelectedIndex();
-							String id = getListModel().remove(index);
-							getListModel().add(index + 1, id);
+							PieChartLabel.SectionData data = getListModel().remove(index);
+							getListModel().add(index + 1, data);
 							getIDList().setSelectedIndex(index + 1);
 						}
 					});
@@ -314,8 +319,8 @@ public class NodeBranchDataList extends JPanel {
 			moveUpButton.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					int index = getIDList().getSelectedIndex();
-					String id = getListModel().remove(index);
-					getListModel().add(index - 1, id);
+					PieChartLabel.SectionData data = getListModel().remove(index);
+					getListModel().add(index - 1, data);
 					getIDList().setSelectedIndex(index - 1);
 				}
 			});
@@ -331,9 +336,98 @@ public class NodeBranchDataList extends JPanel {
 	 */
 	private JScrollPane getIdListScrollPane() {
 		if (idListScrollPane == null) {
-			idListScrollPane = new JScrollPane();
-			idListScrollPane.setViewportView(getIDList());
+			idListScrollPane = new JScrollPane(getIDList());
 		}
 		return idListScrollPane;
+	}
+	
+	
+	public List<PieChartLabel.SectionData> getSectionDataList() {
+		List<PieChartLabel.SectionData> result = new ArrayList<PieChartLabel.SectionData>();
+		for (int i = 0; i < getListModel().size(); i++) {
+			result.add(getListModel().get(i)); 
+		}
+		return result;
+	}
+	
+	
+	public void setSectionDataList(List<PieChartLabel.SectionData> list) {
+		getListModel().clear();
+		for (SectionData sectionData : list) {
+			getListModel().addElement(sectionData);
+		}
+		
+		if (!getListModel().isEmpty()) {
+			getSelectionModel().setSelectionInterval(0, 0);
+		}
+	}
+	
+	
+	private JTextField getCaptionTextField() {
+		if (captionTextField == null) {
+			captionTextField = new JTextField();
+			captionTextField.setColumns(10);
+		}
+		return captionTextField;
+	}
+	
+	
+	private JPanel getButtonsPanel() {
+		if (buttonsPanel == null) {
+			buttonsPanel = new JPanel();
+			buttonsPanel.setLayout(new GridBagLayout());
+			GridBagConstraints gbc_addButton = new GridBagConstraints();
+			gbc_addButton.fill = GridBagConstraints.HORIZONTAL;
+			gbc_addButton.insets = new Insets(0, 0, 3, 0);
+			gbc_addButton.gridx = 0;
+			gbc_addButton.gridy = 0;
+			buttonsPanel.add(getAddButton(), gbc_addButton);
+			GridBagConstraints gbc_replaceButton = new GridBagConstraints();
+			gbc_replaceButton.fill = GridBagConstraints.HORIZONTAL;
+			gbc_replaceButton.insets = new Insets(0, 0, 3, 0);
+			gbc_replaceButton.gridx = 0;
+			gbc_replaceButton.gridy = 1;
+			buttonsPanel.add(getReplaceButton(), gbc_replaceButton);
+			GridBagConstraints gbc_removeButton = new GridBagConstraints();
+			gbc_removeButton.fill = GridBagConstraints.HORIZONTAL;
+			gbc_removeButton.insets = new Insets(0, 0, 3, 0);
+			gbc_removeButton.gridx = 0;
+			gbc_removeButton.gridy = 2;
+			buttonsPanel.add(getRemoveButton(), gbc_removeButton);
+			GridBagConstraints gbc_clearButton = new GridBagConstraints();
+			gbc_clearButton.fill = GridBagConstraints.HORIZONTAL;
+			gbc_clearButton.insets = new Insets(0, 0, 3, 0);
+			gbc_clearButton.gridx = 0;
+			gbc_clearButton.gridy = 3;
+			buttonsPanel.add(getClearButton(), gbc_clearButton);
+			GridBagConstraints gbc_moveUpButton = new GridBagConstraints();
+			gbc_moveUpButton.fill = GridBagConstraints.HORIZONTAL;
+			gbc_moveUpButton.insets = new Insets(0, 0, 3, 0);
+			gbc_moveUpButton.gridx = 0;
+			gbc_moveUpButton.gridy = 4;
+			buttonsPanel.add(getMoveUpButton(), gbc_moveUpButton);
+			GridBagConstraints gbc_moveDownButton = new GridBagConstraints();
+			gbc_moveDownButton.fill = GridBagConstraints.HORIZONTAL;
+			gbc_moveDownButton.gridx = 0;
+			gbc_moveDownButton.gridy = 5;
+			buttonsPanel.add(getMoveDownButton(), gbc_moveDownButton);
+		}
+		return buttonsPanel;
+	}
+	
+	
+	private JLabel getLblDataSource() {
+		if (lblDataSource == null) {
+			lblDataSource = new JLabel("Data source: ");
+		}
+		return lblDataSource;
+	}
+	
+	
+	private JLabel getLblCaption() {
+		if (lblCaption == null) {
+			lblCaption = new JLabel("Caption: ");
+		}
+		return lblCaption;
 	}
 }

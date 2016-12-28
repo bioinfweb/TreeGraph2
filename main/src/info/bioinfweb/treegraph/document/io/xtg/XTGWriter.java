@@ -187,8 +187,8 @@ public class XTGWriter extends AbstractDocumentWriter implements XTGConstants, D
 					PieChartLabelFormats f = ((PieChartLabel)l).getFormats();
 					writeLineAttr(f);
 		    	writeLabelDimensions(f);
-					writer.writeAttribute(ATTR_SHOW_INTERNAL_LINES.toString(), "" + f.getShowInternalLines());
-					writer.writeAttribute(ATTR_SHOW_NULL_LINES.toString(), "" + f.getShowLinesForZero());
+					writer.writeAttribute(ATTR_SHOW_INTERNAL_LINES.toString(), "" + f.isShowInternalLines());
+					writer.writeAttribute(ATTR_SHOW_NULL_LINES.toString(), "" + f.isShowLinesForZero());
 				}
 				else {
 					throw new InternalError("Unsupported label of type " + l.getClass().getCanonicalName() + " found.");
@@ -203,11 +203,11 @@ public class XTGWriter extends AbstractDocumentWriter implements XTGConstants, D
 	    	if (l instanceof PieChartLabel) {
 	    		PieChartLabel pieChartLabel = (PieChartLabel)l;
 	    		writer.writeStartElement(TAG_PIE_CHART_IDS.toString());
-	    		for (int i = 0; i < pieChartLabel.valueCount(); i++) {
+	    		for (int i = 0; i < pieChartLabel.getSectionDataList().size(); i++) {
 		    		writer.writeStartElement(TAG_PIE_CHART_ID.toString());
 			    	writer.writeAttribute(ATTR_PIE_COLOR.toString(), "" + 
 			    			formatColor(pieChartLabel.getFormats().getPieColor(i)));
-						writer.writeCharacters(pieChartLabel.getValueID(i));
+						writer.writeCharacters(pieChartLabel.getSectionDataList().get(i).getValueColumnID());
 		    		writer.writeEndElement();
 					}
 	    		writer.writeEndElement();

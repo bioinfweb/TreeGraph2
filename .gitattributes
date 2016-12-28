@@ -101,7 +101,6 @@ main/src/info/bioinfweb/treegraph/document/Node.java -text
 main/src/info/bioinfweb/treegraph/document/NodeLadderizeComparable.java -text
 main/src/info/bioinfweb/treegraph/document/NodeType.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/PaintableElement.java -text
-main/src/info/bioinfweb/treegraph/document/PieChartCaptionLabel.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/PieChartLabel.java -text
 main/src/info/bioinfweb/treegraph/document/PieColorManager.java -text
 main/src/info/bioinfweb/treegraph/document/ScaleBar.java -text
@@ -135,7 +134,6 @@ main/src/info/bioinfweb/treegraph/document/format/LegendStyle.java -text
 main/src/info/bioinfweb/treegraph/document/format/LineFormats.java -text
 main/src/info/bioinfweb/treegraph/document/format/Margin.java -text
 main/src/info/bioinfweb/treegraph/document/format/NodeFormats.java -text
-main/src/info/bioinfweb/treegraph/document/format/PieChartCaptionLabelFormats.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/format/PieChartLabelFormats.java -text
 main/src/info/bioinfweb/treegraph/document/format/ScaleAlignment.java -text
 main/src/info/bioinfweb/treegraph/document/format/ScaleBarFormats.java -text
@@ -336,6 +334,7 @@ main/src/info/bioinfweb/treegraph/document/nodebranchdata/package.html -text
 main/src/info/bioinfweb/treegraph/document/package.html -text
 main/src/info/bioinfweb/treegraph/document/position/LegendPositionData.java -text
 main/src/info/bioinfweb/treegraph/document/position/NodePositionData.java -text
+main/src/info/bioinfweb/treegraph/document/position/PieChartLabelPositionData.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/position/PositionData.java -text
 main/src/info/bioinfweb/treegraph/document/position/package.html -text
 main/src/info/bioinfweb/treegraph/document/tools/IDManager.java -text
@@ -503,7 +502,6 @@ main/src/info/bioinfweb/treegraph/graphics/positionpaint/label/AbstractLabelPain
 main/src/info/bioinfweb/treegraph/graphics/positionpaint/label/IconLabelPainter.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/graphics/positionpaint/label/LabelPainter.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/graphics/positionpaint/label/LabelPainterMap.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/treegraph/graphics/positionpaint/label/PieChartCaptionLabelPainter.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/graphics/positionpaint/label/PieChartLabelPainter.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/graphics/positionpaint/label/TextLabelPainter.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/graphics/positionpaint/label/icons/CrossIcon.java -text
@@ -720,9 +718,9 @@ main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/RenameIDDialog.java
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/TextIDElementTypeInput.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdatainput/NewNodeBranchDataInput.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdatainput/NodeBranchDataInput.java -text
-main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdatainput/NodeBranchDataList.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdatainput/NodeDataComboBoxModel.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdatainput/NodeDataInputListener.java -text
+main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdatainput/PieChartSectionDataList.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/package.html -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/specialformats/AbstractLabelAdapter.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/specialformats/ColorAdapterListModel.java -text
