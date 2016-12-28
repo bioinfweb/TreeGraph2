@@ -490,6 +490,7 @@ main/src/info/bioinfweb/treegraph/graphics/positionpaint/PhylogramPainter.java -
 main/src/info/bioinfweb/treegraph/graphics/positionpaint/PhylogramPositioner.java -text
 main/src/info/bioinfweb/treegraph/graphics/positionpaint/PositionPaintFactory.java -text
 main/src/info/bioinfweb/treegraph/graphics/positionpaint/PositionPaintType.java -text
+main/src/info/bioinfweb/treegraph/graphics/positionpaint/PositionPaintUtils.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/graphics/positionpaint/RectangularCladogramFactory.java -text
 main/src/info/bioinfweb/treegraph/graphics/positionpaint/RectangularCladogramPainter.java -text
 main/src/info/bioinfweb/treegraph/graphics/positionpaint/RectangularCladogramPositioner.java -text

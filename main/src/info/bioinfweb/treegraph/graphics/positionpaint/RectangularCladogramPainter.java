@@ -19,26 +19,45 @@
 package info.bioinfweb.treegraph.graphics.positionpaint;
 
 
-import info.bioinfweb.treegraph.document.*;
-import info.bioinfweb.treegraph.document.format.*;
+import info.bioinfweb.commons.Math2;
+import info.bioinfweb.treegraph.document.Branch;
+import info.bioinfweb.treegraph.document.ConcretePaintableElement;
+import info.bioinfweb.treegraph.document.Document;
+import info.bioinfweb.treegraph.document.Label;
+import info.bioinfweb.treegraph.document.Labels;
+import info.bioinfweb.treegraph.document.Legend;
+import info.bioinfweb.treegraph.document.Legends;
+import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.ScaleBar;
+import info.bioinfweb.treegraph.document.format.BranchFormats;
+import info.bioinfweb.treegraph.document.format.DistanceDimension;
+import info.bioinfweb.treegraph.document.format.LegendFormats;
+import info.bioinfweb.treegraph.document.format.LegendStyle;
+import info.bioinfweb.treegraph.document.format.Margin;
+import info.bioinfweb.treegraph.document.format.NodeFormats;
+import info.bioinfweb.treegraph.document.format.ScaleBarFormats;
+import info.bioinfweb.treegraph.document.format.ScaleValue;
+import info.bioinfweb.treegraph.document.format.TextFormats;
+import info.bioinfweb.treegraph.document.format.TextOrientation;
 import info.bioinfweb.treegraph.document.position.LegendPositionData;
 import info.bioinfweb.treegraph.document.position.NodePositionData;
 import info.bioinfweb.treegraph.document.position.PositionData;
 import info.bioinfweb.treegraph.graphics.positionpaint.label.LabelPainter;
 import info.bioinfweb.treegraph.graphics.positionpaint.label.LabelPainterMap;
-import info.bioinfweb.treegraph.graphics.positionpaint.label.icons.LabelIconMap;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 import info.bioinfweb.treegraph.gui.treeframe.TreeViewPanel;
-import info.bioinfweb.commons.Math2;
-import info.bioinfweb.commons.graphics.FontCalculator;
 
+import java.awt.BasicStroke;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.Stroke;
-import java.awt.BasicStroke;
-import java.awt.geom.*;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Arc2D;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
+import java.awt.geom.Path2D;
+import java.awt.geom.Rectangle2D;
 
 
 
@@ -48,9 +67,6 @@ import java.awt.geom.*;
  */
 public class RectangularCladogramPainter implements TreePainter {
 	public static final float SELECTION_DISTANCE = 2;  // px  //TODO ggf. mit TreeViewPanel.SELECTION_MARGIN vereinigen.
-	public static final float UNDERLINE_DISTANCE_FACTOR = 0.15f;
-	public static final float UNDERLINE_LINE_WIDTH_FACTOR = 0.05f;
-	public static final float UNDERLINE_X_SHIFT_FACTOR = 0.07f;
 	public static final float SHORT_DASH_SCALE_FACTOR = 0.5f;
 	
 	
@@ -91,28 +107,7 @@ public class RectangularCladogramPainter implements TreePainter {
 		
 	
 	private float paintText(String text, TextFormats f, float x, float y) {
-		return paintText(g, pixelsPerMillimeter, text, f, x, y);
-	}
-	
-	
-	public static float paintText(Graphics2D g, float pixelsPerMillimeter, String text, TextFormats f, float x, float y) {
-		Font font = f.getFont(pixelsPerMillimeter);
-		g.setColor(f.getTextColor());
-		g.setFont(font);
-		g.drawString(text, x, y);
-		
-		float width = FontCalculator.getInstance().getWidth(font, text);
-		if (f.hasTextStyle(TextFormats.UNDERLINE)) {
-			float height = FontCalculator.getInstance().getHeight(font);
-			Stroke oldStroke = g.getStroke();
-			g.setStroke(new BasicStroke(UNDERLINE_LINE_WIDTH_FACTOR * height));
-			x += UNDERLINE_X_SHIFT_FACTOR * height;  // Linie ist sonst nicht genau unter dem Text 
-			y += UNDERLINE_DISTANCE_FACTOR * height;
-			g.draw(new Line2D.Float(x, y, x + width, y));  //TODO Liniendicke setzen
-			g.setStroke(oldStroke);
-		}
-		
-		return width;
+		return PositionPaintUtils.paintText(g, pixelsPerMillimeter, text, f, x, y);
 	}
 	
 	
@@ -135,11 +130,11 @@ public class RectangularCladogramPainter implements TreePainter {
 		float halfHeightRight = 0.5f * b.getFormats().getLineWidth().getInPixels(pixelsPerMillimeter);
 		float left = pd.getLeft().getInPixels(pixelsPerMillimeter);
 		if ((!n.isFirst() && !n.isLast()) || !parentHasEdgeRadius) {
-			left = (int)left;  //�berlappung der Linien erreichen
+			left = (int)left;  // Make sure that lines overlap
 		}
 		float right = pd.getRightInPixels(pixelsPerMillimeter);
 		if (!n.isLeaf()) {
-			right = Math2.roundUp(right);  //�berlappung der Linien erreichen
+			right = Math2.roundUp(right);  // Make sure that lines overlap
 		}
 		
 		Path2D path = new  Path2D.Float();

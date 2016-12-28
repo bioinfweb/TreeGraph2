@@ -19,16 +19,29 @@
 package info.bioinfweb.treegraph.graphics.positionpaint;
 
 
-import info.bioinfweb.treegraph.document.*;
-import info.bioinfweb.treegraph.document.format.*;
+import info.bioinfweb.commons.Math2;
+import info.bioinfweb.treegraph.document.Branch;
+import info.bioinfweb.treegraph.document.ConcretePaintableElement;
+import info.bioinfweb.treegraph.document.Document;
+import info.bioinfweb.treegraph.document.Label;
+import info.bioinfweb.treegraph.document.Labels;
+import info.bioinfweb.treegraph.document.Legend;
+import info.bioinfweb.treegraph.document.Legends;
+import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.ScaleBar;
+import info.bioinfweb.treegraph.document.format.DistanceDimension;
+import info.bioinfweb.treegraph.document.format.GlobalFormats;
+import info.bioinfweb.treegraph.document.format.LegendFormats;
+import info.bioinfweb.treegraph.document.format.LegendStyle;
+import info.bioinfweb.treegraph.document.format.Margin;
+import info.bioinfweb.treegraph.document.format.ScaleBarFormats;
+import info.bioinfweb.treegraph.document.format.TextOrientation;
 import info.bioinfweb.treegraph.document.position.LegendPositionData;
 import info.bioinfweb.treegraph.document.position.NodePositionData;
 import info.bioinfweb.treegraph.document.position.PositionData;
 import info.bioinfweb.treegraph.document.tools.TreeSerializer;
 import info.bioinfweb.treegraph.graphics.positionpaint.label.LabelPainter;
 import info.bioinfweb.treegraph.graphics.positionpaint.label.LabelPainterMap;
-import info.bioinfweb.commons.*;
-import info.bioinfweb.commons.graphics.*;
 
 
 
@@ -53,32 +66,8 @@ public class RectangularCladogramPositioner implements TreePositioner {
 	}
 
 	
-	/**
-	 * Calculates the Dimensions of this text element. The height is already defined in
-	 * by the provided formats and the width will calculated from the the text length scaled
-	 * with the provided height.
-	 * 
-	 * @param textElement the text element for which the dimensions shall be calculated
-	 * @return the dimensions of the element not including optional margins
-	 */
-	public static DistanceDimension calculateTextDimension(TextElement textElement) {
-		DistanceDimension result = new DistanceDimension();
-		
-		TextFormats formats = textElement.getFormats();
-		String text = textElement.getData().formatValue(formats.getDecimalFormat());
-		float height = formats.getTextHeight().getInMillimeters();
-		result.getHeight().setInMillimeters(height);
-		result.getWidth().setInMillimeters(
-			  FontCalculator.getInstance().getWidthToHeigth(
-				formats.getFontName(), formats.getTextStyle() & ~TextFormats.UNDERLINE, 
-        text, height));
-		
-		return result;		
-	}
-	
-	
 	private DistanceDimension calculateTaxonDimension(Node terminal) {
-		DistanceDimension result = calculateTextDimension(terminal);
+		DistanceDimension result = PositionPaintUtils.calculateTextDimension(terminal);
 		Margin m = terminal.getFormats().getLeafMargin();
 		result.getWidth().add(m.getLeft());
 		result.getWidth().add(m.getRight());
@@ -562,7 +551,7 @@ public class RectangularCladogramPositioner implements TreePositioner {
 				pd.getLinePos().getTop().setInMillimeters(top);
 				pd.getLinePos().getHeight().setInMillimeters(bottom - top);
 				
-				DistanceDimension textDim = calculateTextDimension(l);
+				DistanceDimension textDim = PositionPaintUtils.calculateTextDimension(l);
 				if (f.getOrientation().equals(TextOrientation.HORIZONTAL)) {
 					pd.getTextPos().getWidth().assign(textDim.getWidth());
 					pd.getTextPos().getHeight().assign(textDim.getHeight());
