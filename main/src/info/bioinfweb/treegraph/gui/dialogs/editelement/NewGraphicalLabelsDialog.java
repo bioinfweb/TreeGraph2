@@ -28,15 +28,14 @@ import info.bioinfweb.treegraph.gui.dialogs.CollidingIDsDialog;
 import info.bioinfweb.treegraph.gui.dialogs.DataIDComboBox;
 import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
 
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+
 import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
-import java.awt.Font;
-import java.awt.Color;
 
 
 
@@ -109,8 +108,7 @@ public abstract class NewGraphicalLabelsDialog extends EditDialog {
 			idPanel = new JPanel();
 			idPanel.setLayout(new GridBagLayout());
 			idPanel.setBorder(BorderFactory.createTitledBorder(null, "Label ID", 
-					TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, 
-					new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
+					TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null)); 
 			GridBagConstraints gridBagConstraints = new GridBagConstraints();
 			gridBagConstraints.fill = GridBagConstraints.BOTH;
 			gridBagConstraints.weightx = 1.0;

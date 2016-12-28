@@ -253,7 +253,8 @@ public class PieChartLabelFormats extends GraphicalLabelFormats implements LineF
   	pieColors.addAll(other.pieColors);
   	setShowInternalLines(other.isShowInternalLines());
   	setShowLinesForZero(other.isShowLinesForZero());
-		assignTextFormats(other);
+  	setShowTitle(other.isShowTitle());
+  	setShowCaptions(other.isShowCaptions());
 		getCaptionsTextFormats().assignTextFormats(other.getCaptionsTextFormats());
   }
 	
@@ -262,6 +263,7 @@ public class PieChartLabelFormats extends GraphicalLabelFormats implements LineF
 		assignLabelFormats(other);
 		assignLineFormats(other);
 		assignGraphicalLabelFormats(other);
+		assignTextFormats(other);
 		assignPieChartLabelFormats(other);
 	}
 	

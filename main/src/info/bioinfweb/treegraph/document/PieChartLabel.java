@@ -215,6 +215,7 @@ public class PieChartLabel extends GraphicalLabel implements LineElement, TextEl
 	public PieChartLabel clone() {
 		PieChartLabel result = new PieChartLabel(null);
 		result.assignLabelData(this);
+		result.assignTextElementData(this);
 		result.assignPieChartData(this);
 		result.setFormats(getFormats().clone());
 		return result;

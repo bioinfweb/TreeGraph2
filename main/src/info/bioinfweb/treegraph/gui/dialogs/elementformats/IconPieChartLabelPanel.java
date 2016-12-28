@@ -285,8 +285,7 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatTab {
 			iconPanel = new JPanel();
 			iconPanel.setLayout(new GridBagLayout());
 			iconPanel.setBorder(BorderFactory.createTitledBorder(null, "Icon", 
-					TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, 
-					new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
+					TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null)); 
 			iconPanel.add(getIconComboBox(), gridBagConstraints4);
 			iconPanel.add(getIconFilledCheckBox(), gridBagConstraints8);
 			iconPanel.add(getIconPreviewPanel(), gridBagConstraints);
@@ -377,7 +376,7 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatTab {
 		if (dimensionPanel == null) {
 			dimensionPanel = new JPanel();
 			dimensionPanel.setLayout(new GridBagLayout());
-			dimensionPanel.setBorder(BorderFactory.createTitledBorder(null, "Dimensions", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
+			dimensionPanel.setBorder(BorderFactory.createTitledBorder(null, "Dimensions", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
       iconWidthInput = new DistanceValueInput("Width: ", dimensionPanel, 1, 1);
       iconHeightInput = new DistanceValueInput("Height: ", dimensionPanel, 1, 3);
 		}

@@ -68,13 +68,13 @@ public class PieChartSectionDataList extends JPanel {
 	public PieChartSectionDataList() {
 	  super();
 	  initialize();
-	  refreshButtonStatus();
+	  refreshGUIStatus();
   }
 	
 	
 	public void setIDs(Document document) {
 	  listIDComboBox.setIDs(document);
-	  refreshButtonStatus();
+	  refreshGUIStatus();
   }
 	
 	
@@ -85,12 +85,21 @@ public class PieChartSectionDataList extends JPanel {
 
 	public void setEnabled(boolean flag) {
 	  getListIDComboBox().setEnabled(flag);
+	  getCaptionTextField().setEditable(flag);
 	  getIDList().setEnabled(flag);
-	  refreshButtonStatus();
+	  refreshGUIStatus();
   }
 	
 	
-	public void refreshButtonStatus() {
+	public void refreshGUIStatus() {
+		// Set inputs:
+		PieChartLabel.SectionData data = getIDList().getSelectedValue();
+		if (data != null) {
+			getListIDComboBox().setSelectedItem(data.getValueColumnID());
+			getCaptionTextField().setText(data.getCaption());
+		}
+		
+		// Set button status:
 		if (isEnabled()) {
 			boolean notEmpty = !getListModel().isEmpty();
 			getRemoveButton().setEnabled(notEmpty);
@@ -202,7 +211,7 @@ public class PieChartSectionDataList extends JPanel {
 			idList = new JList<PieChartLabel.SectionData>(new DefaultListModel<PieChartLabel.SectionData>());
 			idList.addListSelectionListener(new ListSelectionListener() {
 						public void valueChanged(ListSelectionEvent e) {
-						  refreshButtonStatus();
+						  refreshGUIStatus();
 						}
 					});
 			idList.getSelectionModel().addListSelectionListener(new ListSelectionListener() {

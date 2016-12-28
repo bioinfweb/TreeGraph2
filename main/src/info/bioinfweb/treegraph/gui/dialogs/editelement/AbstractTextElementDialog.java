@@ -164,7 +164,7 @@ public abstract class AbstractTextElementDialog extends EditDialog {
 			textLabel.setText("Text:  ");
 			valuesPanel = new JPanel();
 			valuesPanel.setLayout(new GridBagLayout());
-			valuesPanel.setBorder(BorderFactory.createTitledBorder(null, "Value", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
+			valuesPanel.setBorder(BorderFactory.createTitledBorder(null, "Value", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
 			valuesPanel.add(textLabel, gridBagConstraints);
 			valuesPanel.add(getValueTextField(), gridBagConstraints1);
 			valuesPanel.add(getDecimalCheckBox(), gridBagConstraints11);
@@ -212,7 +212,7 @@ public abstract class AbstractTextElementDialog extends EditDialog {
 					else {
 						getValueTextField().setFormatterFactory(stringFormatterFactory);
 					}
-					getValueTextField().setText(text);  // Wert wurde durch Setzen neuer Factory gel�scht.
+					getValueTextField().setText(text);  // Wert wurde durch Setzen neuer Factory gelöscht.
 					
 					updatePreview();
 				}
@@ -236,7 +236,7 @@ public abstract class AbstractTextElementDialog extends EditDialog {
 			previewLabel.setText("Text");
 			previewPanel = new JPanel();
 			previewPanel.setLayout(new GridBagLayout());
-			previewPanel.setBorder(BorderFactory.createTitledBorder(null, "Preview", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
+			previewPanel.setBorder(BorderFactory.createTitledBorder(null, "Preview", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
 			previewPanel.add(previewLabel, gridBagConstraints2);
 		}
 		return previewPanel;

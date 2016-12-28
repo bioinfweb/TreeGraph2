@@ -19,18 +19,18 @@
 package info.bioinfweb.treegraph.gui.dialogs.editelement;
 
 
-import info.bioinfweb.treegraph.document.GraphicalLabel;
 import info.bioinfweb.treegraph.document.PieChartLabel;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.PieChartSectionDataList;
 
-import javax.swing.BorderFactory;
+import java.awt.Frame;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
-
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Frame;
 
 
 
@@ -47,6 +47,8 @@ public class NewPieChartLabelsDialog extends NewGraphicalLabelsDialog {
 	
 	private JPanel jContentPane = null;
 	private PieChartSectionDataList valuesPanel = null;
+	private JTextField titleTextField;
+	private JPanel titlePanel;
 
 	
 	/**
@@ -71,8 +73,9 @@ public class NewPieChartLabelsDialog extends NewGraphicalLabelsDialog {
 
 
 	@Override
-	protected GraphicalLabel createLabel() {
+	protected PieChartLabel createLabel() {
 		PieChartLabel label = new PieChartLabel(null);
+		label.getData().setText(getTitleTextField().getText());
 		label.getSectionDataList().addAll(getValuesPanel().getSectionDataList());
 		return label;
 	}
@@ -100,6 +103,7 @@ public class NewPieChartLabelsDialog extends NewGraphicalLabelsDialog {
 			jContentPane = new JPanel();
 			jContentPane.setLayout(new BoxLayout(getJContentPane(), BoxLayout.Y_AXIS));
 			jContentPane.add(getIDPanel(), null);
+			jContentPane.add(getTitlePanel());
 			jContentPane.add(getValuesPanel(), null);
 			jContentPane.add(getButtonsPanel(), null);
 		}
@@ -107,13 +111,39 @@ public class NewPieChartLabelsDialog extends NewGraphicalLabelsDialog {
 	}
 	
 	
+	private JTextField getTitleTextField() {
+		if (titleTextField == null) {
+			titleTextField = new JTextField();
+			titleTextField.setColumns(10);
+		}
+		return titleTextField;
+	}
+	
+	
 	protected PieChartSectionDataList getValuesPanel() {
 		if (valuesPanel == null) {
 			valuesPanel = new PieChartSectionDataList();
-			valuesPanel.setBorder(BorderFactory.createTitledBorder(null, "Pie chart value IDs", 
-					TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, 
-					new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
+			valuesPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Pie chart value IDs", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		}
 		return valuesPanel;
+	}
+	
+	
+	protected JPanel getTitlePanel() {
+		if (titlePanel == null) {
+			titlePanel = new JPanel();
+			titlePanel.setBorder(new TitledBorder(null, "Chart title", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+			GridBagLayout gbl_titlePanel = new GridBagLayout();
+			titlePanel.setLayout(gbl_titlePanel);
+			
+			GridBagConstraints gbc_titleTextField = new GridBagConstraints();
+			gbc_titleTextField.weightx = 1.0;
+			gbc_titleTextField.fill = GridBagConstraints.HORIZONTAL;
+			gbc_titleTextField.anchor = GridBagConstraints.NORTH;
+			gbc_titleTextField.gridx = 0;
+			gbc_titleTextField.gridy = 0;
+			titlePanel.add(getTitleTextField(), gbc_titleTextField);
+		}
+		return titlePanel;
 	}
 }

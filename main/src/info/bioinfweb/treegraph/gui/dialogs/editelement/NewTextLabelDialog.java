@@ -19,16 +19,14 @@
 package info.bioinfweb.treegraph.gui.dialogs.editelement;
 
 
+import info.bioinfweb.commons.Math2;
 import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.TextLabel;
 import info.bioinfweb.treegraph.document.format.FormatUtils;
 import info.bioinfweb.treegraph.document.undo.edit.InsertLabelEdit;
 import info.bioinfweb.treegraph.gui.dialogs.CollidingIDsDialog;
 import info.bioinfweb.treegraph.gui.dialogs.DataIDComboBox;
-import info.bioinfweb.commons.Math2;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -144,7 +142,7 @@ public class NewTextLabelDialog extends AbstractTextElementDialog {
 			idPanel = new JPanel();
 			idPanel.setLayout(new GridBagLayout());
 			idPanel.add(getIDComboBox(), gridBagConstraints);
-			idPanel.setBorder(BorderFactory.createTitledBorder(null, "ID", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
+			idPanel.setBorder(BorderFactory.createTitledBorder(null, "ID", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
 		}
 		return idPanel;
 	}
