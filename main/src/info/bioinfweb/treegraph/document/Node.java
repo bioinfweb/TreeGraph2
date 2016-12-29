@@ -20,9 +20,9 @@ package info.bioinfweb.treegraph.document;
 
 
 import info.bioinfweb.treegraph.document.format.*;
-import info.bioinfweb.treegraph.document.position.NodePositionData;
 import info.bioinfweb.treegraph.document.tools.TreeSerializer;
 import info.bioinfweb.treegraph.graphics.positionpaint.PositionPaintType;
+import info.bioinfweb.treegraph.graphics.positionpaint.positiondata.NodePositionData;
 
 import java.util.*;
 

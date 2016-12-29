@@ -20,8 +20,8 @@ package info.bioinfweb.treegraph.document;
 
 
 import info.bioinfweb.treegraph.document.format.*;
-import info.bioinfweb.treegraph.document.position.LegendPositionData;
 import info.bioinfweb.treegraph.graphics.positionpaint.PositionPaintType;
+import info.bioinfweb.treegraph.graphics.positionpaint.positiondata.LegendPositionData;
 
 
 

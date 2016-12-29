@@ -27,7 +27,7 @@ import java.awt.geom.Ellipse2D;
 
 import info.bioinfweb.treegraph.document.PieChartLabel;
 import info.bioinfweb.treegraph.document.format.PieChartLabelFormats;
-import info.bioinfweb.treegraph.document.position.PositionData;
+import info.bioinfweb.treegraph.graphics.positionpaint.positiondata.PositionData;
 
 
 

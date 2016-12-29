@@ -39,11 +39,11 @@ import info.bioinfweb.treegraph.document.format.ScaleBarFormats;
 import info.bioinfweb.treegraph.document.format.ScaleValue;
 import info.bioinfweb.treegraph.document.format.TextFormats;
 import info.bioinfweb.treegraph.document.format.TextOrientation;
-import info.bioinfweb.treegraph.document.position.LegendPositionData;
-import info.bioinfweb.treegraph.document.position.NodePositionData;
-import info.bioinfweb.treegraph.document.position.PositionData;
 import info.bioinfweb.treegraph.graphics.positionpaint.label.LabelPainter;
 import info.bioinfweb.treegraph.graphics.positionpaint.label.LabelPainterMap;
+import info.bioinfweb.treegraph.graphics.positionpaint.positiondata.LegendPositionData;
+import info.bioinfweb.treegraph.graphics.positionpaint.positiondata.NodePositionData;
+import info.bioinfweb.treegraph.graphics.positionpaint.positiondata.PositionData;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 import info.bioinfweb.treegraph.gui.treeframe.TreeViewPanel;
 

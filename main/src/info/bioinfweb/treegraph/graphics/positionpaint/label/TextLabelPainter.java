@@ -22,8 +22,8 @@ package info.bioinfweb.treegraph.graphics.positionpaint.label;
 import info.bioinfweb.treegraph.document.TextLabel;
 import info.bioinfweb.treegraph.document.format.DistanceDimension;
 import info.bioinfweb.treegraph.document.format.TextLabelFormats;
-import info.bioinfweb.treegraph.document.position.PositionData;
 import info.bioinfweb.treegraph.graphics.positionpaint.PositionPaintUtils;
+import info.bioinfweb.treegraph.graphics.positionpaint.positiondata.PositionData;
 
 import java.awt.Graphics2D;
 

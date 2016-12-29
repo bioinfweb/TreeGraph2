@@ -21,7 +21,7 @@ package info.bioinfweb.treegraph.graphics.positionpaint;
 
 import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Node;
-import info.bioinfweb.treegraph.document.position.PositionData;
+import info.bioinfweb.treegraph.graphics.positionpaint.positiondata.PositionData;
 
 
 

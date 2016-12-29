@@ -338,11 +338,6 @@ main/src/info/bioinfweb/treegraph/document/nodebranchdata/factory/NodeBranchData
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/factory/SingleNodeBranchDataAdapterFactory.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/package.html -text
 main/src/info/bioinfweb/treegraph/document/package.html -text
-main/src/info/bioinfweb/treegraph/document/position/LegendPositionData.java -text
-main/src/info/bioinfweb/treegraph/document/position/NodePositionData.java -text
-main/src/info/bioinfweb/treegraph/document/position/PieChartLabelPositionData.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/treegraph/document/position/PositionData.java -text
-main/src/info/bioinfweb/treegraph/document/position/package.html -text
 main/src/info/bioinfweb/treegraph/document/tools/IDManager.java -text
 main/src/info/bioinfweb/treegraph/document/tools/TextElementDataAsStringIterator.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/tools/TreeSerializer.java -text
@@ -525,6 +520,11 @@ main/src/info/bioinfweb/treegraph/graphics/positionpaint/label/icons/TiltedHexag
 main/src/info/bioinfweb/treegraph/graphics/positionpaint/label/icons/TriangleIcon.java -text
 main/src/info/bioinfweb/treegraph/graphics/positionpaint/label/icons/UnknownIcon.java -text
 main/src/info/bioinfweb/treegraph/graphics/positionpaint/package.html -text
+main/src/info/bioinfweb/treegraph/graphics/positionpaint/positiondata/LegendPositionData.java -text
+main/src/info/bioinfweb/treegraph/graphics/positionpaint/positiondata/NodePositionData.java -text
+main/src/info/bioinfweb/treegraph/graphics/positionpaint/positiondata/PieChartLabelPositionData.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/graphics/positionpaint/positiondata/PositionData.java -text
+main/src/info/bioinfweb/treegraph/graphics/positionpaint/positiondata/package.html -text
 main/src/info/bioinfweb/treegraph/gui/CurrentDirectoryModel.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/ActionManagement.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/DocumentAction.java -text

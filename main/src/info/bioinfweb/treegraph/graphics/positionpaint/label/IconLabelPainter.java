@@ -23,8 +23,8 @@ import java.awt.Graphics2D;
 
 import info.bioinfweb.treegraph.document.IconLabel;
 import info.bioinfweb.treegraph.document.format.IconLabelFormats;
-import info.bioinfweb.treegraph.document.position.PositionData;
 import info.bioinfweb.treegraph.graphics.positionpaint.label.icons.LabelIconMap;
+import info.bioinfweb.treegraph.graphics.positionpaint.positiondata.PositionData;
 
 
 
