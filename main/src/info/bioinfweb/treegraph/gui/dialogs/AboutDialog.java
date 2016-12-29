@@ -19,27 +19,28 @@
 package info.bioinfweb.treegraph.gui.dialogs;
 
 
-import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.commons.io.TextReader;
-import javax.swing.JPanel;
+import info.bioinfweb.treegraph.Main;
+import info.bioinfweb.wikihelp.client.JHTMLLabel;
 
 import java.awt.Desktop;
 import java.awt.Frame;
-import javax.swing.JDialog;
-import javax.swing.JTabbedPane;
-import java.awt.GridBagLayout;
-import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
-import java.io.IOException;
-import javax.swing.JButton;
-import javax.swing.JEditorPane;
-import javax.swing.BoxLayout;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.event.HyperlinkListener;
-import javax.swing.event.HyperlinkEvent.EventType;
-
+import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.SystemColor;
+import java.io.IOException;
+
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JEditorPane;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.event.HyperlinkEvent.EventType;
+import javax.swing.event.HyperlinkListener;
 
 
 
@@ -75,7 +76,7 @@ public class AboutDialog extends JDialog {
 	private JPanel generalPanel = null;
 	private JPanel gplPanel = null;
 	private JPanel apachePanel = null;
-	private JLabel batikLabel = null;
+	private JHTMLLabel batikLabel = null;
 	private JPanel buttonPanel = null;
 	private JButton closeButton = null;
 	private JEditorPane apacheTextArea = null;
@@ -183,21 +184,18 @@ public class AboutDialog extends JDialog {
 		if (apachePanel == null) {
 			GridBagConstraints gridBagConstraints1 = new GridBagConstraints();
 			gridBagConstraints1.fill = GridBagConstraints.BOTH;
+			gridBagConstraints1.gridx = 0;
 			gridBagConstraints1.gridy = 1;
-			gridBagConstraints1.ipadx = 0;
-			gridBagConstraints1.ipady = -2564;
 			gridBagConstraints1.weightx = 1.0;
 			gridBagConstraints1.weighty = 1.0;
-			gridBagConstraints1.gridx = 0;
 			GridBagConstraints gridBagConstraints = new GridBagConstraints();
 			gridBagConstraints.insets = new Insets(0, 0, 0, 0);
+			gridBagConstraints.gridx = 0;
 			gridBagConstraints.gridy = 0;
-			gridBagConstraints.ipadx = -610;
 			gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
 			gridBagConstraints.weightx = 1.0;
-			gridBagConstraints.gridx = 0;
-			batikLabel = new JLabel();
-			batikLabel.setText("<html>TreeGraph uses the <a href=\"http://xmlgraphics.apache.org/batik/\">Batik SVG Toolkit</a> (http://xmlgraphics.apache.org/batik/) from the Apache XML Graphics Project wich is included in this release. It is distributed under Apache Public Licence which you can read below:</html>");
+			batikLabel = new JHTMLLabel();
+			batikLabel.setHTMLContent("TreeGraph uses libraries from the <a href=\"http://apache.org/\">Apache software foundation</a> wich are included in this release. They are distributed under Apache Public Licence:");
 			apachePanel = new JPanel();
 			apachePanel.setLayout(new GridBagLayout());
 			apachePanel.add(batikLabel, gridBagConstraints);
@@ -263,6 +261,8 @@ public class AboutDialog extends JDialog {
 			apacheTextArea = new JEditorPane("text/text", text);
 			apacheTextArea.setCaretPosition(0);
 			apacheTextArea.setEnabled(false);
+			apacheTextArea.setBackground(SystemColor.text);
+			apacheTextArea.setDisabledTextColor(SystemColor.textText);
 		}
 		return apacheTextArea;
 	}
