@@ -75,6 +75,7 @@ public abstract class FreeHEPWriter extends AbstractGraphicWriter
 		
   	g.startExport();
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+  	g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		painter.paintTree(g, document, null, paintResolution, 
 				hints.getBoolean(KEY_TRANSPARENT, false));
 		g.endExport();

@@ -118,8 +118,8 @@ public class ConcreteTextFormats implements ElementFormats, Cloneable, TextForma
 	 * @see info.bioinfweb.treegraph.document.format.TextFormats#getFont(float)
 	 */
 	public Font getFont(float pixelsPerMillimeter) {  
-		//Die Angabe size von Font in Punkten ist ungleich der Angabe der Schrifth�he in Punkten. 
-		//Sie muss zur Umrechnung skaliert werden.
+		// Die Angabe size von Font in Punkten ist ungleich der Angabe der Schrifthöhe in Punkten. 
+		// Sie muss zur Umrechnung skaliert werden.
 		
 		final float factor = 0.8f;
 		return new Font(getFontName(), textStyle & ~UNDERLINE, Math.round(getTextHeight().getInPixels(pixelsPerMillimeter) * factor));

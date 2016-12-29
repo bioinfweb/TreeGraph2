@@ -27,8 +27,9 @@ import info.bioinfweb.commons.*;
  * This class represents a distance in the document. Distances are internaly stored in 
  * millimeters (mm) but can be converted tp pixels (px) and DTP-Points (pt). Converting
  * values in millimeters to pixels depends on the resolution (e.g. dpi) of the generated image
- * or the zoomfactor of the view displaying the document.
- * @author BenStoever
+ * or the zoom factor of the view displaying the document.
+ * 
+ * @author Ben St&ouml;ver
  */
 public class DistanceValue implements Cloneable {
 	public static final float POINTS_PER_MM = 72f / 25.4f;  // 1 pt = 1/72 Zoll; 1 Zoll = 25.4 mm

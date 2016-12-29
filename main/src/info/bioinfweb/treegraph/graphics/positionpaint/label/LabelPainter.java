@@ -31,8 +31,10 @@ import info.bioinfweb.treegraph.graphics.positionpaint.positiondata.PositionData
  * of label.
  * 
  * @author Ben St&ouml;ver
+ * @since 2.13.0
  *
  * @param <L> the type of label to be painted
+ * @param <P> the type of position data object to be used with labels of the type {@code L}
  */
 public interface LabelPainter<L extends Label, P extends PositionData> {
 	/**

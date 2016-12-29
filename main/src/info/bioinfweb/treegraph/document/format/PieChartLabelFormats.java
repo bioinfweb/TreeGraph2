@@ -139,7 +139,12 @@ public class PieChartLabelFormats extends GraphicalLabelFormats implements LineF
 
 
 	public void setCaptionsContentType(PieChartLabelCaptionContentType captionsContentType) {
-		this.captionsContentType = captionsContentType;
+		if (captionsContentType == null) {
+			throw new NullPointerException("The caption content type must not be null.");
+		}
+		else {
+			this.captionsContentType = captionsContentType;
+		}
 	}
 
 
@@ -149,7 +154,12 @@ public class PieChartLabelFormats extends GraphicalLabelFormats implements LineF
 
 
 	public void setCaptionsLinkType(PieChartLabelCaptionLinkType captionsLinkType) {
-		this.captionsLinkType = captionsLinkType;
+		if (captionsLinkType == null) {
+			throw new NullPointerException("The caption link type must not be null.");
+		}
+		else {
+			this.captionsLinkType = captionsLinkType;
+		}
 	}
 
 

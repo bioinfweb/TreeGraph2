@@ -41,7 +41,6 @@ import info.bioinfweb.treegraph.document.format.TextFormats;
 public class PositionPaintUtils {
 	public static final float UNDERLINE_DISTANCE_FACTOR = 0.15f;
 	public static final float UNDERLINE_LINE_WIDTH_FACTOR = 0.05f;
-	public static final float UNDERLINE_X_SHIFT_FACTOR = 0.07f;
 	
 	
 	/**
@@ -79,9 +78,8 @@ public class PositionPaintUtils {
 			float height = FontCalculator.getInstance().getHeight(font);
 			Stroke oldStroke = g.getStroke();
 			g.setStroke(new BasicStroke(UNDERLINE_LINE_WIDTH_FACTOR * height));
-			x += UNDERLINE_X_SHIFT_FACTOR * height;  // Otherwise the line would not be exactly under the text 
 			y += UNDERLINE_DISTANCE_FACTOR * height;
-			g.draw(new Line2D.Float(x, y, x + width, y));  //TODO set line width
+			g.draw(new Line2D.Float(x, y, x + width, y));
 			g.setStroke(oldStroke);
 		}
 		

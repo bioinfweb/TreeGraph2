@@ -25,17 +25,63 @@ import java.awt.Stroke;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Ellipse2D;
 
+import info.bioinfweb.commons.graphics.FontCalculator;
 import info.bioinfweb.treegraph.document.PieChartLabel;
+import info.bioinfweb.treegraph.document.format.PieChartLabelCaptionContentType;
 import info.bioinfweb.treegraph.document.format.PieChartLabelFormats;
 import info.bioinfweb.treegraph.graphics.positionpaint.positiondata.PieChartLabelPositionData;
 
 
 
 public class PieChartLabelPainter extends AbstractGraphicalLabelPainter<PieChartLabel, PieChartLabelPositionData> {
+	/** The fraction of the pie chart radius measured from outside from where the caption link lines shall start. */
+	public static final float LINE_START_DISTANCE_FACTOR = 0.1f;
+	
+	
+	@Override
+	protected void doCalculatePositionData(PieChartLabel label,	PieChartLabelPositionData positionData) {
+		PieChartLabelFormats f = label.getFormats();
+		positionData.getCaptionPositions().clear();
+		
+		// Chart dimensions are defined by the formats:
+		positionData.getChartPosition().getWidth().assign(f.getWidth());
+		positionData.getChartPosition().getHeight().assign(f.getHeight());
+		
+//		// Calculate caption font height:
+//		int captionsPerSide = label.getSectionDataList().size() / 2 + label.getSectionDataList().size() % 2;
+//		//FontCalculator
+//		
+//		if (PieChartLabelCaptionContentType.NONE.equals(f.getCaptionsContentType())) {
+//			positionData.getChartPosition().getTop().setInMillimeters(0f);
+//			positionData.getChartPosition().getLeft().setInMillimeters(0f);
+//		}
+//		else {
+//			switch (f.getCaptionsLinkType()) {
+//				case STRAIGHT_LINES:
+//				case HORIZONTAL_LINES:
+//					//TODO Calculate line start points.
+//					//TODO Set oder by algorithm.
+//					break;
+//				case COLORED_BOXES:
+//					// Set unchanged caption order:
+//					for (int i = 0; i < label.getSectionDataList().size(); i++) {
+//						PieChartLabelPositionData.CaptionPositionData data = new PieChartLabelPositionData.CaptionPositionData(i);
+//						FontCalculator.getInstance().
+//						data.getWidth().setInMillimeters(value);
+//						positionData.getCaptionPositions().add(data);
+//					}
+//					break;
+//				default:
+//					throw new InternalError("Unknown captions link type encountered (" + f.getCaptionsLinkType().name() + ").");
+//			}
+//		}
+	}
+
+
 	/**
 	 * Tests of at least two of the specified angles are valid floating point values greater than zero.
 	 * 
-	 * @param angles - the an array of angles
+	 * @param angles the an array of angles
 	 * @return {@code true} if at least two valid angles were found
 	 */
 	private boolean twoSectorsNotZero(double[] angles) {
@@ -43,6 +89,9 @@ public class PieChartLabelPainter extends AbstractGraphicalLabelPainter<PieChart
 		for (int i = 0; i < angles.length; i++) {
 			if (!Double.isNaN(angles[i]) && (angles[i] > 0)) {
 				count++;
+				if (count == 2) {
+					return true;
+				}
 			}
 		}
 		return (count >= 2);
