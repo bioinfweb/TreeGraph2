@@ -59,7 +59,7 @@ public class TreeViewPanel extends JPanel implements DocumentListener, Scrollabl
 	
 	public static final Dimension START_MIN_SIZE = new Dimension(100, 60);
 	public static final float SELECTION_MARGIN = 2;  // in px
-	public static final float PIXELS_PER_MM_100 = 2.8346456692919635439270879919f;
+	public static final float PIXELS_PER_MM_100 = 2.8346456692919635439270879919f;  // This could also be calculated system dependent using Toolkit.getScreenResolution().
 	public static final float MIN_ZOOM = 0.1f;
 	public static final Color DEFAULT_SELECTION_COLOR = Color.BLUE.brighter();
 	public static final Color ALTERNATIVE_SELECTION_COLOR = Color.WHITE;
