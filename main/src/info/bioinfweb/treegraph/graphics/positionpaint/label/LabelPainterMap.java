@@ -30,7 +30,7 @@ public class LabelPainterMap {
 	private static LabelPainterMap firstInstance = null;
 	
 	
-	private Map<Class<? extends Label>, LabelPainter<? extends Label>> map = new HashMap<>();
+	private Map<Class<? extends Label>, LabelPainter<?, ?>> map = new HashMap<>();
 	
 	
 	public static LabelPainterMap getInstance() {
@@ -54,19 +54,19 @@ public class LabelPainterMap {
 	}
 	
 	
-	private void put(LabelPainter<?> painter) {
+	private void put(LabelPainter<?, ?> painter) {
 		map.put(painter.getLabelClass(), painter);
 	}
 
 
 	@SuppressWarnings("unchecked")
-	public <L extends Label> LabelPainter<L> getLabelPainter(Class<L> labelClass) {
-		return (LabelPainter<L>)map.get(labelClass);
+	public <L extends Label> LabelPainter<L, ?> getLabelPainter(Class<L> labelClass) {
+		return (LabelPainter<L, ?>)map.get(labelClass);
 	}
 	
 	
 	@SuppressWarnings("unchecked")
-	public <L extends Label> LabelPainter<L> getLabelPainter(L label) {
-		return (LabelPainter<L>)getLabelPainter(label.getClass());
+	public <L extends Label> LabelPainter<L, ?> getLabelPainter(L label) {
+		return (LabelPainter<L, ?>)getLabelPainter(label.getClass());
 	}
 }

@@ -28,18 +28,24 @@ import info.bioinfweb.treegraph.graphics.positionpaint.positiondata.PositionData
 
 
 
-public class IconLabelPainter extends AbstractGraphicalLabelPainter<IconLabel> {
+public class IconLabelPainter extends AbstractGraphicalLabelPainter<IconLabel, PositionData> {
 	@Override
-	protected void doPaint(Graphics2D g, float pixelsPerMillimeter, PositionData pd, IconLabel label) {
+	protected void doPaint(Graphics2D g, float pixelsPerMillimeter, PositionData positionData, IconLabel label) {
 		IconLabelFormats f = ((IconLabel)label).getFormats();
 		LabelIconMap.getInstance().get(f.getIcon()).paint(g, 
-				pd.getLeft().getInPixels(pixelsPerMillimeter), 
-				pd.getTop().getInPixels(pixelsPerMillimeter), f, pixelsPerMillimeter);
+				positionData.getLeft().getInPixels(pixelsPerMillimeter), 
+				positionData.getTop().getInPixels(pixelsPerMillimeter), f, pixelsPerMillimeter);
 	}
 
 	
 	@Override
 	public Class<IconLabel> getLabelClass() {
 		return IconLabel.class;
+	}
+
+
+	@Override
+	public Class<PositionData> getPositionDataClass() {
+		return PositionData.class;
 	}
 }

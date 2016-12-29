@@ -20,15 +20,16 @@ package info.bioinfweb.treegraph.graphics.positionpaint.label;
 
 
 import info.bioinfweb.treegraph.document.GraphicalLabel;
-import info.bioinfweb.treegraph.document.format.DistanceDimension;
 import info.bioinfweb.treegraph.document.format.GraphicalLabelFormats;
+import info.bioinfweb.treegraph.graphics.positionpaint.positiondata.PositionData;
 
 
 
-public abstract class AbstractGraphicalLabelPainter<L extends GraphicalLabel> extends AbstractLabelPainter<L> {
+public abstract class AbstractGraphicalLabelPainter<L extends GraphicalLabel, P extends PositionData> extends AbstractLabelPainter<L, P> {
 	@Override
-	protected DistanceDimension doCalculateDimension(L label) {
+	protected void doCalculatePositionData(L label, P positionData) {
 		GraphicalLabelFormats f = label.getFormats();
-		return new DistanceDimension(f.getWidth(), f.getHeight());
+		positionData.getWidth().assign(f.getWidth());
+		positionData.getHeight().assign(f.getHeight());
 	}
 }

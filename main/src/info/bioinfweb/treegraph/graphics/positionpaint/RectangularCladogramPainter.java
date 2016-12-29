@@ -157,7 +157,7 @@ public class RectangularCladogramPainter implements TreePainter {
 				Label label = labels.get(above, lineNo, i);
 				PositionData pd = label.getPosition(type);
 				
-				LabelPainter<?> painter = LabelPainterMap.getInstance().getLabelPainter(label);
+				LabelPainter<?, ?> painter = LabelPainterMap.getInstance().getLabelPainter(label);
 				if (painter != null) {
 					painter.paint(g, pixelsPerMillimeter, pd, label);
 				}
@@ -173,6 +173,7 @@ public class RectangularCladogramPainter implements TreePainter {
 	
 	/**
 	 * Paints the given node.
+	 * 
 	 * @param n the node to paint
 	 * @return the corner radius actually used
 	 */

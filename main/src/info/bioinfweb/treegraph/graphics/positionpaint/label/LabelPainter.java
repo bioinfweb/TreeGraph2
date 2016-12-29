@@ -22,7 +22,6 @@ package info.bioinfweb.treegraph.graphics.positionpaint.label;
 import java.awt.Graphics2D;
 
 import info.bioinfweb.treegraph.document.Label;
-import info.bioinfweb.treegraph.document.format.DistanceDimension;
 import info.bioinfweb.treegraph.graphics.positionpaint.positiondata.PositionData;
 
 
@@ -35,13 +34,45 @@ import info.bioinfweb.treegraph.graphics.positionpaint.positiondata.PositionData
  *
  * @param <L> the type of label to be painted
  */
-public interface LabelPainter<L extends Label> {
-	public DistanceDimension calculateDimension(Label label);
+public interface LabelPainter<L extends Label, P extends PositionData> {
+	/**
+	 * Implementations of this method should set the width and height of the position data object and all other relevant properties
+	 * of label specific position data class instances. The left and top coordinate will be calculated by the positioner later and
+	 * should be left unchanged.
+	 * 
+	 * @param label the label to be positioned
+	 * @param positionData the position data object for {@code label}
+	 * @throws ClassCastException if {@code label} or {@code positionData} are not instances of the classes returned by
+	 *         {@link #getLabelClass()} and {@link #getPositionDataClass()}.
+	 */
+	public void calculatePositionData(Label label, PositionData positionData);
 	
+	/**
+	 * Paints a label of the type supported by this class.
+	 * 
+	 * @param g the graphics context to paint the label to
+	 * @param pixelsPerMillimeter the scale for the output of the label
+	 * @param pd the position data object of the label
+	 * @param label the label to be painted
+	 * @throws ClassCastException if {@code label} or {@code positionData} are not instances of the classes returned by
+	 *         {@link #getLabelClass()} and {@link #getPositionDataClass()}.
+	 */
 	public void paint(Graphics2D g, float pixelsPerMillimeter, PositionData pd, Label label);
 	// The position data is provided here, although it could also be determined from the label instance if the position/paint type would
 	// be specified instead. Since currently (and probably also in the future) painting of labels does not depend on the view mode the
 	// parameter set was chosen this way, which would e.g. allow to remove the position data property from labels in the future.
 	
+	/**
+	 * Return the class of label objects handled by this painter.
+	 * 
+	 * @return the label class
+	 */
 	public Class<L> getLabelClass();
+	
+	/**
+	 * Return the class of position data objects to be used with labels if the type {@code L}.
+	 * 
+	 * @return the position data class
+	 */
+	public Class<P> getPositionDataClass();
 }

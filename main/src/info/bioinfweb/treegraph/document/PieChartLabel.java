@@ -22,6 +22,8 @@ package info.bioinfweb.treegraph.document;
 import info.bioinfweb.treegraph.document.format.ElementFormats;
 import info.bioinfweb.treegraph.document.format.PieChartLabelFormats;
 import info.bioinfweb.treegraph.document.tools.IDManager;
+import info.bioinfweb.treegraph.graphics.positionpaint.PositionPaintType;
+import info.bioinfweb.treegraph.graphics.positionpaint.positiondata.PieChartLabelPositionData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -196,6 +198,24 @@ public class PieChartLabel extends GraphicalLabel implements LineElement, TextEl
 		((PieChartLabelFormats)formats).setOwner(this);
 		this.formats = (PieChartLabelFormats)formats;
 		reinsert();
+	}
+	
+	
+	/**
+	 * Returns a position data object of this label. 
+	 * 
+	 * @see info.bioinfweb.treegraph.document.AbstractPaintableElement#getPosition(info.bioinfweb.treegraph.graphics.positionpaint.PositionPaintType)
+	 * @since 2.13.0
+	 */
+	@Override
+	public PieChartLabelPositionData getPosition(PositionPaintType type) {
+		PieChartLabelPositionData result = (PieChartLabelPositionData)positions.get(type);
+		if (result == null) {
+			result = new PieChartLabelPositionData();
+			positions.put(type, result);
+		}
+		
+		return result;
 	}
 	
 	

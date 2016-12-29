@@ -22,26 +22,25 @@ package info.bioinfweb.treegraph.graphics.positionpaint.label;
 import java.awt.Graphics2D;
 
 import info.bioinfweb.treegraph.document.Label;
-import info.bioinfweb.treegraph.document.format.DistanceDimension;
 import info.bioinfweb.treegraph.graphics.positionpaint.positiondata.PositionData;
 
 
 
-public abstract class AbstractLabelPainter<L extends Label> implements LabelPainter<L> {
+public abstract class AbstractLabelPainter<L extends Label, P extends PositionData> implements LabelPainter<L, P> {
 	@Override
-	public DistanceDimension calculateDimension(Label label) {
-		return doCalculateDimension(getLabelClass().cast(label));
+	public void calculatePositionData(Label label, PositionData positionData) {
+		doCalculatePositionData(getLabelClass().cast(label), getPositionDataClass().cast(positionData));
 	}
 	
 	
-	protected abstract DistanceDimension doCalculateDimension(L label);
+	protected abstract void doCalculatePositionData(L label, P positionData);
 
 	
 	@Override
 	public void paint(Graphics2D g, float pixelsPerMillimeter, PositionData pd, Label label) {
-		doPaint(g, pixelsPerMillimeter, pd, getLabelClass().cast(label));
+		doPaint(g, pixelsPerMillimeter, getPositionDataClass().cast(pd), getLabelClass().cast(label));
 	}
 
 	
-	protected abstract void doPaint(Graphics2D g, float pixelsPerMillimeter, PositionData pd, L label);
+	protected abstract void doPaint(Graphics2D g, float pixelsPerMillimeter, P positionData, L label);
 }

@@ -29,24 +29,32 @@ import java.awt.Graphics2D;
 
 
 
-public class TextLabelPainter extends AbstractLabelPainter<TextLabel> {
+public class TextLabelPainter extends AbstractLabelPainter<TextLabel, PositionData> {
 	@Override
-	protected DistanceDimension doCalculateDimension(TextLabel label) {
-		return PositionPaintUtils.calculateTextDimension(label);
+	protected void doCalculatePositionData(TextLabel label, PositionData pd) {
+		DistanceDimension dimension = PositionPaintUtils.calculateTextDimension(label);
+		pd.getWidth().assign(dimension.getWidth());
+		pd.getHeight().assign(dimension.getHeight());
 	}
 
 	
 	@Override
-	protected void doPaint(Graphics2D g, float pixelsPerMillimeter, PositionData pd, TextLabel label) {
+	protected void doPaint(Graphics2D g, float pixelsPerMillimeter, PositionData positionData, TextLabel label) {
 		TextLabelFormats f = label.getFormats(); 
 		PositionPaintUtils.paintText(g, pixelsPerMillimeter, label.getData().formatValue(f.getDecimalFormat()), f, 
-				pd.getLeft().getInPixels(pixelsPerMillimeter), 
-				pd.getTop().getInPixels(pixelsPerMillimeter) + g.getFontMetrics(f.getFont(pixelsPerMillimeter)).getAscent());
+				positionData.getLeft().getInPixels(pixelsPerMillimeter), 
+				positionData.getTop().getInPixels(pixelsPerMillimeter) + g.getFontMetrics(f.getFont(pixelsPerMillimeter)).getAscent());
 	}
 
 
 	@Override
 	public Class<TextLabel> getLabelClass() {
 		return TextLabel.class;
+	}
+
+
+	@Override
+	public Class<PositionData> getPositionDataClass() {
+		return PositionData.class;
 	}
 }

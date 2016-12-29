@@ -27,11 +27,11 @@ import java.awt.geom.Ellipse2D;
 
 import info.bioinfweb.treegraph.document.PieChartLabel;
 import info.bioinfweb.treegraph.document.format.PieChartLabelFormats;
-import info.bioinfweb.treegraph.graphics.positionpaint.positiondata.PositionData;
+import info.bioinfweb.treegraph.graphics.positionpaint.positiondata.PieChartLabelPositionData;
 
 
 
-public class PieChartLabelPainter extends AbstractGraphicalLabelPainter<PieChartLabel> {
+public class PieChartLabelPainter extends AbstractGraphicalLabelPainter<PieChartLabel, PieChartLabelPositionData> {
 	/**
 	 * Tests of at least two of the specified angles are valid floating point values greater than zero.
 	 * 
@@ -91,14 +91,20 @@ public class PieChartLabelPainter extends AbstractGraphicalLabelPainter<PieChart
 	
 	
 	@Override
-	protected void doPaint(Graphics2D g, float pixelsPerMillimeter, PositionData pd, PieChartLabel label) {
-		paintPieChart(g, pixelsPerMillimeter, pd.getLeft().getInPixels(pixelsPerMillimeter), pd.getTop().getInPixels(pixelsPerMillimeter), 
-				pd.getWidth().getInPixels(pixelsPerMillimeter), pd.getHeight().getInPixels(pixelsPerMillimeter), label);
+	protected void doPaint(Graphics2D g, float pixelsPerMillimeter, PieChartLabelPositionData positionData, PieChartLabel label) {
+		paintPieChart(g, pixelsPerMillimeter, positionData.getLeft().getInPixels(pixelsPerMillimeter), positionData.getTop().getInPixels(pixelsPerMillimeter), 
+				positionData.getWidth().getInPixels(pixelsPerMillimeter), positionData.getHeight().getInPixels(pixelsPerMillimeter), label);
 	}
 
 	
 	@Override
 	public Class<PieChartLabel> getLabelClass() {
 		return PieChartLabel.class;
+	}
+
+
+	@Override
+	public Class<PieChartLabelPositionData> getPositionDataClass() {
+		return PieChartLabelPositionData.class;
 	}
 }

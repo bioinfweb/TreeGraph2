@@ -83,11 +83,9 @@ public class RectangularCladogramPositioner implements TreePositioner {
 				Label l = labels.get(above, lineNo, pos);
 				PositionData pd = l.getPosition(type);
 				
-				LabelPainter<?> painter = LabelPainterMap.getInstance().getLabelPainter(l);
+				LabelPainter<?, ?> painter = LabelPainterMap.getInstance().getLabelPainter(l);
 				if (painter != null) {
-					DistanceDimension d = painter.calculateDimension(l);
-					pd.getWidth().assign(d.getWidth());
-					pd.getHeight().assign(d.getHeight());
+					painter.calculatePositionData(l, pd);
 				}
 				else {
 					throw new InternalError("Unsupported label of type " + l.getClass().getCanonicalName() + " found.");
@@ -238,7 +236,7 @@ public class RectangularCladogramPositioner implements TreePositioner {
 	    b.getPosition(type).getLeft().setInMillimeters(-result);  // ast.x = -breite;
 	  }  // wenn_ende
 
-	  return result;  // r�ckgabe breite;
+	  return result;  // rückgabe breite;
 	}
 	
 	
@@ -247,11 +245,11 @@ public class RectangularCladogramPositioner implements TreePositioner {
 			float lengthDif = branch.getPosition(type).getWidth().getInMillimeters() -
 	        labelLineWidth(branch.getLabels(), above, lineNo);
 			float left = branch.getPosition(type).getLeft().getInMillimeters();
-			if ((lengthDif > 0) || !document.getTree().getFormats().getPositionLabelsToLeft()) {  // Ast l�nger
+			if ((lengthDif > 0) || !document.getTree().getFormats().getPositionLabelsToLeft()) {  // Ast länger
 				left += 0.5f * lengthDif;
 			}
 			else {
-				left += lengthDif;  // lengthDif ist negativ  //TODO LabelBlock k�nnte bei Phylogramm links �ber Dokumentenrand hinausgehen
+				left += lengthDif;  // lengthDif ist negativ  //TODO LabelBlock könnte bei Phylogramm links über Dokumentenrand hinausgehen
 			}
 			
 			for (int pos = 0; pos < branch.getLabels().labelCount(above, lineNo); pos++) {
@@ -342,12 +340,11 @@ public class RectangularCladogramPositioner implements TreePositioner {
 	
 	
 	/**
-	 * Positions the subtree under root. (Widths ans heights must have been calculated 
-	 * already.)
+	 * Positions the subtree under root. (Widths ans heights must have been calculated already.)
 	 * 
-	 * @param root - the root of the subtree to position
+	 * @param root the root of the subtree to position
 	 * @param overallWidth
-	 * @param y0 - the start of the subtree on y
+	 * @param y0 the start of the subtree on y
 	 * @return the y coodinates untl which the positiones subtree reaches
 	 */
 	private float positionElements(Node root, float overallWidth, float y0) {
@@ -356,32 +353,32 @@ public class RectangularCladogramPositioner implements TreePositioner {
 	
 	  if (root.hasAfferentBranch()) {  // wenn (elternast vorhanden) dann
 	  	PositionData branchPos = root.getAfferentBranch().getPosition(type);
-	    branchPos.getTop().setInMillimeters(y0 + pd.getHeightAbove());  // wurzel.elternast.y = y0 + wurzel.h�heOben;
-	    if (root.hasParent()) {  // Verl�gerung des Ast wg. cornerRadius
+	    branchPos.getTop().setInMillimeters(y0 + pd.getHeightAbove());  // wurzel.elternast.y = y0 + wurzel.höheOben;
+	    if (root.hasParent()) {  // Verlägerung des Ast wg. cornerRadius
 	    	branchPos.getTop().add(-0.5f * branchPos.getHeight().getInMillimeters());
 	    	float cornerRadiusShift = calculateCornerRadiusShift(root.getParent(), branchPos.getTop().getInMillimeters() + .5f * branchPos.getHeight().getInMillimeters());
 		    branchPos.getLeft().add(cornerRadiusShift);
 		    branchPos.getWidth().add(-cornerRadiusShift);  // -cornerRadiusShift ist positiv
 	    }
 
-	    positionLabelBlockX(root.getAfferentBranch(), true);  // (x-Positionen der Labels in Abh�ngigkeit von unterast.x und zentriert �ber unterast.breite bestimmen);
+	    positionLabelBlockX(root.getAfferentBranch(), true);  // (x-Positionen der Labels in Abhängigkeit von unterast.x und zentriert über unterast.breite bestimmen);
 	    positionLabelBlockX(root.getAfferentBranch(), false);
 	    positionLabelBlockY(root.getAfferentBranch());  // (Labels von wurzel.elternast ebenfalls entsprechendes y zuweisen);
 	  }  // wenn_ende
 	  pd.getTop().setInMillimeters(y0 + pd.getDifAbove());  // wurzel.y = y0 + wuzel.difOben;  // Knoten.y ist oben und nicht in der Mitte des Knotens!
 	
 	  if (!root.isLeaf()) {  //wenn (wurzel hat unterknoten) dann
-	  	float currentY0 = y0 + pd.getDifAbove() - root.getChildren().get(0).getPosition(type).getHeightAbove();  // aktY0 = y0 + wurzel.difOben - wurzel.ersterUnterast.h�heOben
+	  	float currentY0 = y0 + pd.getDifAbove() - root.getChildren().get(0).getPosition(type).getHeightAbove();  // aktY0 = y0 + wurzel.difOben - wurzel.ersterUnterast.höheOben
 	    float newX = pd.getLeft().getInMillimeters() + pd.getWidth().getInMillimeters();  // neuesX = wurzel.x + wurzel.breite;
-		  for (int i = 0; i < root.getChildren().size(); i++) {  // f�r alle Unter�ste bzw. Unterknoten von wurzel
+		  for (int i = 0; i < root.getChildren().size(); i++) {  // für alle Unteräste bzw. Unterknoten von wurzel
 		    PositionData childPD = root.getChildren().get(i).getAfferentBranch().getPosition(type);  
 		    childPD.getWidth().add(childPD.getLeft().getInMillimeters() + overallWidth - newX);  // ast.breite = ast.breite + ((ast.x + gesamtbreite) - neuesX);  // ! alteBreite <= neueBreite
 		    childPD.getLeft().setInMillimeters(newX);  // ast.x = neuesX;
 		    currentY0 = positionElements(root.getChildren().get(i), overallWidth, currentY0);  // aktY0 = Schritt2(unterknoten, gesamtbreite, aktY0);
-			}  // f�r_ende
+			}  // für_ende
 	  }  // wenn_ende
 	
-	  return y0 + pd.getHeightAbove() + pd.getHeightBelow();  // r�ckgabe y0 + wurzel.h�heOben + wurzel.h�heUnten;
+	  return y0 + pd.getHeightAbove() + pd.getHeightBelow();  // rückgabe y0 + wurzel.höheOben + wurzel.höheUnten;
 	}
 	
 	
