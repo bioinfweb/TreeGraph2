@@ -19,52 +19,56 @@
 package info.bioinfweb.treegraph.gui.dialogs.elementformats;
 
 
-import java.awt.Color;
-import java.awt.Dialog;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.util.List;
-
+import info.bioinfweb.commons.changemonitor.ChangeMonitor;
+import info.bioinfweb.commons.swing.SwingChangeMonitor;
+import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.treegraph.document.IconLabel;
 import info.bioinfweb.treegraph.document.PieChartLabel;
 import info.bioinfweb.treegraph.document.format.GraphicalLabelFormats;
 import info.bioinfweb.treegraph.document.format.IconLabelFormats;
+import info.bioinfweb.treegraph.document.format.PieChartLabelCaptionContentType;
+import info.bioinfweb.treegraph.document.format.PieChartLabelCaptionLinkType;
 import info.bioinfweb.treegraph.document.format.PieChartLabelFormats;
 import info.bioinfweb.treegraph.document.format.operate.FormatOperator;
 import info.bioinfweb.treegraph.document.format.operate.IconFilledOperator;
+import info.bioinfweb.treegraph.document.format.operate.IconOperator;
 import info.bioinfweb.treegraph.document.format.operate.InternalPieChartLinesOperator;
 import info.bioinfweb.treegraph.document.format.operate.LabelHeightOperator;
-import info.bioinfweb.treegraph.document.format.operate.IconOperator;
 import info.bioinfweb.treegraph.document.format.operate.LabelWidthOperator;
-import info.bioinfweb.treegraph.document.format.operate.ShowPieChartCaptionsOperator;
-import info.bioinfweb.treegraph.document.format.operate.ShowPieChartLinesForZeroOperator;
+import info.bioinfweb.treegraph.document.format.operate.PieChartCaptionsContentTypeOperator;
+import info.bioinfweb.treegraph.document.format.operate.PieChartCaptionsLinkTypeOperator;
 import info.bioinfweb.treegraph.document.format.operate.PieColorOperator;
+import info.bioinfweb.treegraph.document.format.operate.ShowPieChartLinesForZeroOperator;
 import info.bioinfweb.treegraph.document.format.operate.ShowPieChartTitleOperator;
 import info.bioinfweb.treegraph.gui.dialogs.DistanceValueInput;
 import info.bioinfweb.treegraph.gui.dialogs.elementformats.piecolor.PieColorCellRenderer;
 import info.bioinfweb.treegraph.gui.dialogs.elementformats.piecolor.PieColorListEntry;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
-import info.bioinfweb.commons.changemonitor.ChangeMonitor;
-import info.bioinfweb.commons.swing.SwingChangeMonitor;
+import info.bioinfweb.wikihelp.client.JHTMLLabel;
+
+import java.awt.Color;
+import java.awt.Dialog;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JList;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 
 
@@ -85,7 +89,8 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatsTab 
 	private ChangeMonitor internalLinesMonitor = new ChangeMonitor();
 	private ChangeMonitor linesForZerosMonitor = new ChangeMonitor();
 	private ChangeMonitor showTitleMonitor = new ChangeMonitor();
-	private ChangeMonitor showCaptionsMonitor = new ChangeMonitor();
+	private ChangeMonitor captionsContentTypeMonitor = new ChangeMonitor();
+	private ChangeMonitor captionsLinkTypeMonitor = new ChangeMonitor();
 	
 	private JPanel iconPanel = null;
 	private JComboBox<String> iconComboBox = null;
@@ -102,8 +107,13 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatsTab 
 	private JCheckBox showInternalLinesCheckBox = null;
 	private JCheckBox showNullLinesCheckBox = null;
 	private JCheckBox showTitleCheckBox;
-	private JCheckBox showCaptionsCheckBox;
 	private JButton captionsFontButton;
+	private JPanel chartCaptionsPanel;
+	private JLabel captionsContentTypeLabel;
+	private JComboBox<PieChartLabelCaptionContentType> captionsContentTypeComboBox;
+	private JLabel captionsLinkTypeLabel;
+	private JComboBox<PieChartLabelCaptionLinkType> captionsLinkTypeComboBox;
+	private JHTMLLabel captionLinkHelpLabel;
 	
 	
 	/**
@@ -142,7 +152,10 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatsTab 
 		getShowInternalLinesCheckBox().setEnabled(pieChartLabelSel);
 		getShowNullLinesCheckBox().setEnabled(pieChartLabelSel);
 		getShowTitleCheckBox().setEnabled(pieChartLabelSel);
-		getShowCaptionsCheckBox().setEnabled(pieChartLabelSel);
+		getCaptionsContentTypeLabel().setEnabled(pieChartLabelSel);
+		getCaptionsContentTypeComboBox().setEnabled(pieChartLabelSel);
+		getCaptionsLinkTypeLabel().setEnabled(pieChartLabelSel);
+		getCaptionsLinkTypeComboBox().setEnabled(pieChartLabelSel);
 		getCaptionsFontButton().setEnabled(pieChartLabelSel);
 		if (pieChartLabelSel) {
 			PieChartLabelFormats f = pieChartLabel.getFormats();
@@ -159,8 +172,8 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatsTab 
 			getShowInternalLinesCheckBox().setSelected(f.isShowInternalLines());
 			getShowNullLinesCheckBox().setSelected(f.isShowLinesForZero());
 			getShowTitleCheckBox().setSelected(f.isShowTitle());
-			getShowCaptionsCheckBox().setSelected(f.isShowCaptions());
-			
+			getCaptionsContentTypeComboBox().setSelectedItem(f.getCaptionsContentType());
+			getCaptionsLinkTypeComboBox().setSelectedItem(f.getCaptionsLinkType());
 			getCaptionsDialog().setValues(f);
 		}
 		return (iconLabelSel || pieChartLabelSel);
@@ -209,8 +222,13 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatsTab 
 		if (showTitleMonitor.hasChanged()) {
 			operators.add(new ShowPieChartTitleOperator(getShowTitleCheckBox().isSelected()));
 		}
-		if (showCaptionsMonitor.hasChanged()) {
-			operators.add(new ShowPieChartCaptionsOperator(getShowCaptionsCheckBox().isSelected()));
+		if (captionsContentTypeMonitor.hasChanged()) {
+			operators.add(new PieChartCaptionsContentTypeOperator(
+					(PieChartLabelCaptionContentType)getCaptionsContentTypeComboBox().getSelectedItem()));
+		}
+		if (captionsLinkTypeMonitor.hasChanged()) {
+			operators.add(new PieChartCaptionsLinkTypeOperator(
+					(PieChartLabelCaptionLinkType)getCaptionsLinkTypeComboBox().getSelectedItem()));
 		}
 		getCaptionsDialog().addOperators(operators);
 	}
@@ -262,8 +280,6 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatsTab 
 	
 	private void paintIconPreview() {
 		getIconPreviewPanel().setIcon(getIconComboBoxModel().getSelectedItem());
-		getIconPreviewPanel().getIconWidth().assign(getWidthInput().getValue());
-		getIconPreviewPanel().getIconHeight().assign(getHeightInput().getValue());
 		getIconPreviewPanel().setIconFilled(getIconFilledCheckBox().isSelected());
 		getIconPreviewPanel().repaint();
 	}
@@ -297,40 +313,47 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatsTab 
 	 */
 	private JPanel getIconPanel() {
 		if (iconPanel == null) {
-			GridBagConstraints gridBagConstraints11 = new GridBagConstraints();
-			gridBagConstraints11.gridx = 0;
-			gridBagConstraints11.anchor = GridBagConstraints.WEST;
-			gridBagConstraints11.gridy = 3;
-			previewLabel = new JLabel();
-			previewLabel.setText("Preview: ");
-			GridBagConstraints gridBagConstraints = new GridBagConstraints();
-			gridBagConstraints.fill = GridBagConstraints.BOTH;
-			gridBagConstraints.gridheight = 1;
-			gridBagConstraints.gridwidth = 1;
-			gridBagConstraints.gridx = 1;
-			gridBagConstraints.gridy = 3;
-			gridBagConstraints.weightx = 1.0;
-			gridBagConstraints.weighty = 1.0;
-			gridBagConstraints.insets = new Insets(3, 3, 3, 3);
-			GridBagConstraints gridBagConstraints8 = new GridBagConstraints();
-			gridBagConstraints8.gridx = 0;
-			gridBagConstraints8.gridwidth = 2;
-			gridBagConstraints8.anchor = GridBagConstraints.WEST;
-			gridBagConstraints8.gridy = 2;
+			iconPanel = new JPanel();
+			GridBagLayout gbl_iconPanel = new GridBagLayout();
+			gbl_iconPanel.rowWeights = new double[] {1.0, 1.0};
+			iconPanel.setLayout(gbl_iconPanel);
+			iconPanel.setBorder(BorderFactory.createTitledBorder(null, "Icon", 
+					TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null)); 
 			GridBagConstraints gridBagConstraints4 = new GridBagConstraints();
+			gridBagConstraints4.insets = new Insets(0, 0, 5, 5);
 			gridBagConstraints4.fill = GridBagConstraints.HORIZONTAL;
-			gridBagConstraints4.gridy = 1;
+			gridBagConstraints4.gridy = 0;
 			gridBagConstraints4.weightx = 1.0;
 			gridBagConstraints4.gridwidth = 2;
 			gridBagConstraints4.gridx = 0;
-			iconPanel = new JPanel();
-			iconPanel.setLayout(new GridBagLayout());
-			iconPanel.setBorder(BorderFactory.createTitledBorder(null, "Icon", 
-					TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null)); 
 			iconPanel.add(getIconComboBox(), gridBagConstraints4);
-			iconPanel.add(getIconFilledCheckBox(), gridBagConstraints8);
-			iconPanel.add(getIconPreviewPanel(), gridBagConstraints);
+			GridBagConstraints gridBagConstraints11 = new GridBagConstraints();
+			gridBagConstraints11.gridheight = 2;
+			gridBagConstraints11.insets = new Insets(0, 5, 5, 2);
+			gridBagConstraints11.gridx = 2;
+			gridBagConstraints11.anchor = GridBagConstraints.WEST;
+			gridBagConstraints11.gridy = 0;
+			previewLabel = new JLabel();
+			previewLabel.setText("Preview: ");
 			iconPanel.add(previewLabel, gridBagConstraints11);
+			GridBagConstraints gridBagConstraints = new GridBagConstraints();
+			gridBagConstraints.fill = GridBagConstraints.BOTH;
+			gridBagConstraints.gridheight = 2;
+			gridBagConstraints.gridwidth = 1;
+			gridBagConstraints.gridx = 3;
+			gridBagConstraints.gridy = 0;
+			gridBagConstraints.weightx = 1.0;
+			gridBagConstraints.weighty = 1.0;
+			gridBagConstraints.insets = new Insets(3, 3, 5, 0);
+			iconPanel.add(getIconPreviewPanel(), gridBagConstraints);
+			GridBagConstraints gridBagConstraints8 = new GridBagConstraints();
+			gridBagConstraints8.insets = new Insets(0, 0, 5, 5);
+			gridBagConstraints8.gridx = 0;
+			gridBagConstraints8.gridwidth = 2;
+			gridBagConstraints8.anchor = GridBagConstraints.WEST;
+			gridBagConstraints8.gridy = 1;
+			iconPanel.add(getIconFilledCheckBox(), gridBagConstraints8);
+			iconPanel.setMaximumSize(new Dimension(iconPanel.getMaximumSize().width, iconPanel.getMinimumSize().height));  // Otherwise this component would be enlarged if the dialog height is increased.
 		}
 		return iconPanel;
 	}
@@ -418,8 +441,11 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatsTab 
 			dimensionPanel = new JPanel();
 			dimensionPanel.setLayout(new GridBagLayout());
 			dimensionPanel.setBorder(BorderFactory.createTitledBorder(null, "Dimensions", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
+			
       iconWidthInput = new DistanceValueInput("Width: ", dimensionPanel, 1, 1);
       iconHeightInput = new DistanceValueInput("Height: ", dimensionPanel, 1, 3);
+      
+      dimensionPanel.setMaximumSize(new Dimension(dimensionPanel.getMaximumSize().width, dimensionPanel.getMinimumSize().height));  // Otherwise this component would be enlarged if the dialog height is increased.
 		}
 		return dimensionPanel;
 	}
@@ -432,61 +458,33 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatsTab 
 	 */
 	private JPanel getPieChartPanel() {
 		if (pieChartPanel == null) {
-			GridBagConstraints gridBagConstraints5 = new GridBagConstraints();
-			gridBagConstraints5.weightx = 1.0;
-			gridBagConstraints5.anchor = GridBagConstraints.WEST;
-			gridBagConstraints5.insets = new Insets(0, 0, 5, 0);
-			gridBagConstraints5.gridx = 1;
-			gridBagConstraints5.gridy = 2;
-			GridBagConstraints gridBagConstraints3 = new GridBagConstraints();
-			gridBagConstraints3.weightx = 1.0;
-			gridBagConstraints3.insets = new Insets(0, 0, 5, 5);
-			gridBagConstraints3.gridx = 0;
-			gridBagConstraints3.anchor = GridBagConstraints.WEST;
-			gridBagConstraints3.gridy = 2;
 			GridBagConstraints gridBagConstraints2 = new GridBagConstraints();
-			gridBagConstraints2.insets = new Insets(0, 0, 5, 0);
+			gridBagConstraints2.insets = new Insets(0, 0, 5, 5);
 			gridBagConstraints2.gridx = 0;
 			gridBagConstraints2.anchor = GridBagConstraints.WEST;
-			gridBagConstraints2.gridwidth = 2;
 			gridBagConstraints2.gridy = 0;
 			GridBagConstraints gridBagConstraints1 = new GridBagConstraints();
-			gridBagConstraints1.insets = new Insets(0, 0, 5, 0);
+			gridBagConstraints1.insets = new Insets(0, 0, 5, 5);
 			gridBagConstraints1.fill = GridBagConstraints.BOTH;
 			gridBagConstraints1.gridy = 1;
 			gridBagConstraints1.weightx = 1.0;
 			gridBagConstraints1.weighty = 1.0;
-			gridBagConstraints1.gridwidth = 2;
 			gridBagConstraints1.gridx = 0;
 			pieChartPanel = new JPanel();
-			pieChartPanel.setLayout(new GridBagLayout());
+			GridBagLayout gbl_pieChartPanel = new GridBagLayout();
+			gbl_pieChartPanel.rowWeights = new double[]{0.0, 1.0, 0.0, 0.0};
+			gbl_pieChartPanel.columnWeights = new double[]{1.0, 0.0};
+			pieChartPanel.setLayout(gbl_pieChartPanel);
 			pieChartPanel.setBorder(BorderFactory.createTitledBorder(null, "Pie chart", 
-					TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, 
-					new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
+					TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
+			GridBagConstraints gbc_chartCaptionsPanel = new GridBagConstraints();
+			gbc_chartCaptionsPanel.gridheight = 4;
+			gbc_chartCaptionsPanel.fill = GridBagConstraints.BOTH;
+			gbc_chartCaptionsPanel.gridx = 1;
+			gbc_chartCaptionsPanel.gridy = 0;
+			pieChartPanel.add(getChartCaptionsPanel(), gbc_chartCaptionsPanel);
 			pieChartPanel.add(getColorListScrollPane(), gridBagConstraints1);
 			pieChartPanel.add(getColorListLabel(), gridBagConstraints2);
-			pieChartPanel.add(getShowInternalLinesCheckBox(), gridBagConstraints3);
-			pieChartPanel.add(getShowNullLinesCheckBox(), gridBagConstraints5);
-			GridBagConstraints gbc_showTitleCheckBox = new GridBagConstraints();
-			gbc_showTitleCheckBox.weightx = 1.0;
-			gbc_showTitleCheckBox.anchor = GridBagConstraints.WEST;
-			gbc_showTitleCheckBox.insets = new Insets(0, 0, 5, 5);
-			gbc_showTitleCheckBox.gridx = 0;
-			gbc_showTitleCheckBox.gridy = 3;
-			pieChartPanel.add(getShowTitleCheckBox(), gbc_showTitleCheckBox);
-			GridBagConstraints gbc_showCaptionsCheckBox = new GridBagConstraints();
-			gbc_showCaptionsCheckBox.insets = new Insets(0, 0, 5, 0);
-			gbc_showCaptionsCheckBox.weightx = 1.0;
-			gbc_showCaptionsCheckBox.anchor = GridBagConstraints.WEST;
-			gbc_showCaptionsCheckBox.gridx = 1;
-			gbc_showCaptionsCheckBox.gridy = 3;
-			pieChartPanel.add(getShowCaptionsCheckBox(), gbc_showCaptionsCheckBox);
-			GridBagConstraints gbc_captionsFontButton = new GridBagConstraints();
-			gbc_captionsFontButton.gridwidth = 2;
-			gbc_captionsFontButton.insets = new Insets(0, 0, 5, 5);
-			gbc_captionsFontButton.gridx = 0;
-			gbc_captionsFontButton.gridy = 4;
-			pieChartPanel.add(getCaptionsFontButton(), gbc_captionsFontButton);
 		}
 		return pieChartPanel;
 	}
@@ -607,19 +605,6 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatsTab 
 	}
 	
 	
-	private JCheckBox getShowCaptionsCheckBox() {
-		if (showCaptionsCheckBox == null) {
-			showCaptionsCheckBox = new JCheckBox("Show captions");
-			showCaptionsCheckBox.addItemListener(new java.awt.event.ItemListener() {
-				public void itemStateChanged(java.awt.event.ItemEvent e) {
-					showCaptionsMonitor.registerChange();
-				}
-			});
-		}
-		return showCaptionsCheckBox;
-	}
-	
-	
 	private JButton getCaptionsFontButton() {
 		if (captionsFontButton == null) {
 			captionsFontButton = new JButton("Change caption font...");
@@ -630,5 +615,122 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatsTab 
 			});
 		}
 		return captionsFontButton;
+	}
+	
+	
+	private JPanel getChartCaptionsPanel() {
+		if (chartCaptionsPanel == null) {
+			chartCaptionsPanel = new JPanel();
+			GridBagLayout gbl_chartCaptionsPanel = new GridBagLayout();
+			chartCaptionsPanel.setLayout(gbl_chartCaptionsPanel);
+			GridBagConstraints gbc_showInternalLinesCheckBox = new GridBagConstraints();
+			gbc_showInternalLinesCheckBox.anchor = GridBagConstraints.WEST;
+			gbc_showInternalLinesCheckBox.insets = new Insets(0, 0, 5, 0);
+			gbc_showInternalLinesCheckBox.gridx = 0;
+			gbc_showInternalLinesCheckBox.gridy = 0;
+			chartCaptionsPanel.add(getShowInternalLinesCheckBox(), gbc_showInternalLinesCheckBox);
+			GridBagConstraints gbc_showNullLinesCheckBox = new GridBagConstraints();
+			gbc_showNullLinesCheckBox.anchor = GridBagConstraints.WEST;
+			gbc_showNullLinesCheckBox.insets = new Insets(0, 0, 5, 0);
+			gbc_showNullLinesCheckBox.gridx = 0;
+			gbc_showNullLinesCheckBox.gridy = 1;
+			chartCaptionsPanel.add(getShowNullLinesCheckBox(), gbc_showNullLinesCheckBox);
+			GridBagConstraints gbc_showTitleCheckBox = new GridBagConstraints();
+			gbc_showTitleCheckBox.anchor = GridBagConstraints.WEST;
+			gbc_showTitleCheckBox.insets = new Insets(0, 0, 10, 0);
+			gbc_showTitleCheckBox.gridx = 0;
+			gbc_showTitleCheckBox.gridy = 2;
+			chartCaptionsPanel.add(getShowTitleCheckBox(), gbc_showTitleCheckBox);
+			GridBagConstraints gbc_captionsContentTypeLabel = new GridBagConstraints();
+			gbc_captionsContentTypeLabel.anchor = GridBagConstraints.WEST;
+			gbc_captionsContentTypeLabel.insets = new Insets(0, 3, 5, 0);
+			gbc_captionsContentTypeLabel.gridx = 0;
+			gbc_captionsContentTypeLabel.gridy = 3;
+			chartCaptionsPanel.add(getCaptionsContentTypeLabel(), gbc_captionsContentTypeLabel);
+			GridBagConstraints gbc_captionsContentTypeComboBox = new GridBagConstraints();
+			gbc_captionsContentTypeComboBox.insets = new Insets(0, 3, 10, 0);
+			gbc_captionsContentTypeComboBox.fill = GridBagConstraints.HORIZONTAL;
+			gbc_captionsContentTypeComboBox.gridx = 0;
+			gbc_captionsContentTypeComboBox.gridy = 4;
+			chartCaptionsPanel.add(getCaptionsContentTypeComboBox(), gbc_captionsContentTypeComboBox);
+			GridBagConstraints gbc_captionsLinkTypeLabel = new GridBagConstraints();
+			gbc_captionsLinkTypeLabel.anchor = GridBagConstraints.WEST;
+			gbc_captionsLinkTypeLabel.insets = new Insets(0, 3, 5, 0);
+			gbc_captionsLinkTypeLabel.gridx = 0;
+			gbc_captionsLinkTypeLabel.gridy = 5;
+			chartCaptionsPanel.add(getCaptionsLinkTypeLabel(), gbc_captionsLinkTypeLabel);
+			GridBagConstraints gbc_captionsLinkTypeComboBox = new GridBagConstraints();
+			gbc_captionsLinkTypeComboBox.insets = new Insets(0, 3, 0, 0);
+			gbc_captionsLinkTypeComboBox.fill = GridBagConstraints.HORIZONTAL;
+			gbc_captionsLinkTypeComboBox.gridx = 0;
+			gbc_captionsLinkTypeComboBox.gridy = 6;
+			chartCaptionsPanel.add(getCaptionsLinkTypeComboBox(), gbc_captionsLinkTypeComboBox);
+			GridBagConstraints gbc_captionLinkHelpLabel = new GridBagConstraints();
+			gbc_captionLinkHelpLabel.anchor = GridBagConstraints.WEST;
+			gbc_captionLinkHelpLabel.insets = new Insets(2, 3, 10, 0);
+			gbc_captionLinkHelpLabel.gridx = 0;
+			gbc_captionLinkHelpLabel.gridy = 7;
+			chartCaptionsPanel.add(getCaptionLinkHelpLabel(), gbc_captionLinkHelpLabel);
+			GridBagConstraints gbc_captionsFontButton = new GridBagConstraints();
+			gbc_captionsFontButton.fill = GridBagConstraints.HORIZONTAL;
+			gbc_captionsFontButton.insets = new Insets(0, 3, 0, 0);
+			gbc_captionsFontButton.gridx = 0;
+			gbc_captionsFontButton.gridy = 8;
+			chartCaptionsPanel.add(getCaptionsFontButton(), gbc_captionsFontButton);
+		}
+		return chartCaptionsPanel;
+	}
+	
+	
+	private JLabel getCaptionsContentTypeLabel() {
+		if (captionsContentTypeLabel == null) {
+			captionsContentTypeLabel = new JLabel("Show captions:");
+		}
+		return captionsContentTypeLabel;
+	}
+	
+	
+	private JComboBox<PieChartLabelCaptionContentType> getCaptionsContentTypeComboBox() {
+		if (captionsContentTypeComboBox == null) {
+			captionsContentTypeComboBox = new JComboBox<PieChartLabelCaptionContentType>(PieChartLabelCaptionContentType.values());
+			captionsContentTypeComboBox.setEditable(false);
+			captionsContentTypeComboBox.addItemListener(new java.awt.event.ItemListener() {
+				public void itemStateChanged(java.awt.event.ItemEvent e) {
+					captionsContentTypeMonitor.registerChange();
+				}
+			});
+		}
+		return captionsContentTypeComboBox;
+	}
+	
+	
+	private JLabel getCaptionsLinkTypeLabel() {
+		if (captionsLinkTypeLabel == null) {
+			captionsLinkTypeLabel = new JLabel("Caption link type:");
+		}
+		return captionsLinkTypeLabel;
+	}
+	
+	
+	private JComboBox<PieChartLabelCaptionLinkType> getCaptionsLinkTypeComboBox() {
+		if (captionsLinkTypeComboBox == null) {
+			captionsLinkTypeComboBox = new JComboBox<PieChartLabelCaptionLinkType>(PieChartLabelCaptionLinkType.values());
+			captionsLinkTypeComboBox.setEditable(false);
+			captionsLinkTypeComboBox.addItemListener(new java.awt.event.ItemListener() {
+				public void itemStateChanged(java.awt.event.ItemEvent e) {
+					captionsLinkTypeMonitor.registerChange();
+				}
+			});
+		}
+		return captionsLinkTypeComboBox;
+	}
+	
+	
+	private JHTMLLabel getCaptionLinkHelpLabel() {
+		if (captionLinkHelpLabel == null) {
+			captionLinkHelpLabel = new JHTMLLabel(Main.getInstance().getWikiHelp());
+			captionLinkHelpLabel.setHTMLContent("<a href='wikihelp://93'>Which link type should I choose?</a>");
+		}
+		return captionLinkHelpLabel;
 	}
 }

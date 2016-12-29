@@ -16,32 +16,38 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.document.format.operate;
+package info.bioinfweb.treegraph.document.format;
 
 
-import info.bioinfweb.treegraph.document.format.ElementFormats;
-import info.bioinfweb.treegraph.document.format.PieChartLabelFormats;
+import info.bioinfweb.treegraph.document.PieChartLabel;
 
 
 
 /**
- * Format operator to set whether captions of pie chart labels shall be shown.
+ * Determines how captions of {@link PieChartLabel}s are linked to their chart sections (pie pieces). 
  * 
  * @author Ben St&ouml;ver
  * @since 2.13.0
  */
-public class ShowPieChartCaptionsOperator extends AbstractPieChartLabelOperator {
-  private boolean show;
-
-  
-	public ShowPieChartCaptionsOperator(boolean show) {
-		super();
-		this.show = show;
-	}
-
-
-	@Override
-	protected void doApplyTo(ElementFormats format) {
-		((PieChartLabelFormats)format).setShowCaptions(show);
-	}
+public enum PieChartLabelCaptionLinkType {
+	STRAIGHT_LINES {
+		@Override
+		public String toString() {
+			return "Straight lines to chart sections";
+		}
+	},
+	
+	HORIZONTAL_LINES {
+		@Override
+		public String toString() {
+			return "Horizontal lines to chart sections";
+		}
+	},
+	
+	COLORED_BOXES {
+		@Override
+		public String toString() {
+			return "Boxes in the colors of the chart sections";
+		}
+	};
 }

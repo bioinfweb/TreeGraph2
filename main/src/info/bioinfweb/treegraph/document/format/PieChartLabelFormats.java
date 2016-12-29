@@ -41,14 +41,16 @@ public class PieChartLabelFormats extends GraphicalLabelFormats implements LineF
 	public static final boolean DEFAULT_SHOW_INTERNAL_LINES = true;
 	public static final boolean DEFAULT_SHOW_LINES_FOR_ZERO = false;
 	public static final boolean DEFAULT_SHOW_TITLE = false;
-	public static final boolean DEFAULT_SHOW_CAPTIONS = false;
+	public static final PieChartLabelCaptionContentType DEFAULT_CAPTIONS_CONTENT_TYPE = PieChartLabelCaptionContentType.NONE;
+	public static final PieChartLabelCaptionLinkType DEFAULT_CAPTIONS_LINK_TYPE = PieChartLabelCaptionLinkType.STRAIGHT_LINES;
 	
 	
   private List<Color> pieColors = new ArrayList<Color>();
   private boolean showInternalLines = DEFAULT_SHOW_INTERNAL_LINES;
   private boolean showLinesForZero = DEFAULT_SHOW_LINES_FOR_ZERO;
   private boolean showTitle = DEFAULT_SHOW_TITLE;
-  private boolean showCaptions = DEFAULT_SHOW_CAPTIONS;
+  private PieChartLabelCaptionContentType captionsContentType = DEFAULT_CAPTIONS_CONTENT_TYPE;
+  private PieChartLabelCaptionLinkType captionsLinkType = DEFAULT_CAPTIONS_LINK_TYPE;
 	private TextFormats titleTextFormats = new ConcreteTextFormats();
 	private TextFormats captionsTextFormats = new ConcreteTextFormats();
 
@@ -131,13 +133,23 @@ public class PieChartLabelFormats extends GraphicalLabelFormats implements LineF
 	}
 
 
-	public boolean isShowCaptions() {
-		return showCaptions;
+	public PieChartLabelCaptionContentType getCaptionsContentType() {
+		return captionsContentType;
 	}
 
 
-	public void setShowCaptions(boolean showCaptions) {
-		this.showCaptions = showCaptions;
+	public void setCaptionsContentType(PieChartLabelCaptionContentType captionsContentType) {
+		this.captionsContentType = captionsContentType;
+	}
+
+
+	public PieChartLabelCaptionLinkType getCaptionsLinkType() {
+		return captionsLinkType;
+	}
+
+
+	public void setCaptionsLinkType(PieChartLabelCaptionLinkType captionsLinkType) {
+		this.captionsLinkType = captionsLinkType;
 	}
 
 
@@ -254,7 +266,8 @@ public class PieChartLabelFormats extends GraphicalLabelFormats implements LineF
   	setShowInternalLines(other.isShowInternalLines());
   	setShowLinesForZero(other.isShowLinesForZero());
   	setShowTitle(other.isShowTitle());
-  	setShowCaptions(other.isShowCaptions());
+  	setCaptionsContentType(other.getCaptionsContentType());
+  	setCaptionsLinkType(other.getCaptionsLinkType());
 		getCaptionsTextFormats().assignTextFormats(other.getCaptionsTextFormats());
   }
 	

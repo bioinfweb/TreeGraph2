@@ -16,11 +16,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.document.format;
+package info.bioinfweb.treegraph.document.format.operate;
 
 
-public enum LegendStyle {
-  BRACKET, 
+import info.bioinfweb.treegraph.document.format.ElementFormats;
+import info.bioinfweb.treegraph.document.format.PieChartLabelCaptionContentType;
+import info.bioinfweb.treegraph.document.format.PieChartLabelFormats;
+
+
+
+/**
+ * Format operator to the captions content type of pie chart labels.
+ * 
+ * @author Ben St&ouml;ver
+ * @since 2.13.0
+ */
+public class PieChartCaptionsContentTypeOperator extends AbstractPieChartLabelOperator {
+  private PieChartLabelCaptionContentType contentType;
+
   
-  BRACE;
+	public PieChartCaptionsContentTypeOperator(PieChartLabelCaptionContentType contentType) {
+		super();
+		this.contentType = contentType;
+	}
+
+
+	@Override
+	protected void doApplyTo(ElementFormats format) {
+		((PieChartLabelFormats)format).setCaptionsContentType(contentType);
+	}
 }

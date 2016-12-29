@@ -19,8 +19,42 @@
 package info.bioinfweb.treegraph.document.format;
 
 
-public enum LegendStyle {
-  BRACKET, 
-  
-  BRACE;
+import info.bioinfweb.treegraph.document.PieChartLabel;
+
+
+
+/**
+ * Determines what kind of data is shown in section captions of {@link PieChartLabel}s. 
+ * 
+ * @author Ben St&ouml;ver
+ * @since 2.13.0
+ */
+public enum PieChartLabelCaptionContentType {
+	NONE {
+		@Override
+		public String toString() {
+			return "Do not show any captions";
+		}
+	},
+	
+	CAPTIONS {
+		@Override
+		public String toString() {
+			return "Show section names";
+		}
+	},
+	
+	VALUES {
+		@Override
+		public String toString() {
+			return "Show section values";
+		}
+	},
+	
+	BOTH {
+		@Override
+		public String toString() {
+			return "Show section names and values";
+		}
+	};
 }

@@ -45,6 +45,8 @@ import javax.swing.border.BevelBorder;
 public class IconPreviewPanel extends JPanel {
 	public static final Color BG_COLOR = SystemColor.text; 
 	public static final Color ICON_COLOR = SystemColor.textText;
+	public static final float ICON_WIDTH_IN_MM = 10f;
+	public static final float ICON_HEIGHT_IN_MM = 10f;
 	
 	
   private IconLabelFormats formats = new IconLabelFormats(null);
@@ -54,6 +56,8 @@ public class IconPreviewPanel extends JPanel {
 		super();
 		setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 		formats.setLineColor(ICON_COLOR);
+		formats.getWidth().setInMillimeters(ICON_WIDTH_IN_MM);
+		formats.getHeight().setInMillimeters(ICON_HEIGHT_IN_MM);
 	}
 
 

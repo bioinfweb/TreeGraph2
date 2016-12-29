@@ -134,6 +134,8 @@ main/src/info/bioinfweb/treegraph/document/format/LegendStyle.java -text
 main/src/info/bioinfweb/treegraph/document/format/LineFormats.java -text
 main/src/info/bioinfweb/treegraph/document/format/Margin.java -text
 main/src/info/bioinfweb/treegraph/document/format/NodeFormats.java -text
+main/src/info/bioinfweb/treegraph/document/format/PieChartLabelCaptionContentType.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/format/PieChartLabelCaptionLinkType.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/format/PieChartLabelFormats.java -text
 main/src/info/bioinfweb/treegraph/document/format/ScaleAlignment.java -text
 main/src/info/bioinfweb/treegraph/document/format/ScaleBarFormats.java -text
@@ -227,9 +229,10 @@ main/src/info/bioinfweb/treegraph/document/format/operate/MinSpaceBelowOperator.
 main/src/info/bioinfweb/treegraph/document/format/operate/MinTreeDistanceOperator.java -text
 main/src/info/bioinfweb/treegraph/document/format/operate/OperatorMap.java -text
 main/src/info/bioinfweb/treegraph/document/format/operate/PieChartCaptionTextOperator.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/format/operate/PieChartCaptionsContentTypeOperator.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/format/operate/PieChartCaptionsLinkTypeOperator.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/format/operate/PieColorOperator.java -text
 main/src/info/bioinfweb/treegraph/document/format/operate/ScaleBarFormatsOperator.java -text
-main/src/info/bioinfweb/treegraph/document/format/operate/ShowPieChartCaptionsOperator.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/format/operate/ShowPieChartLinesForZeroOperator.java -text
 main/src/info/bioinfweb/treegraph/document/format/operate/ShowPieChartTitleOperator.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/format/operate/TextColorOperator.java -text

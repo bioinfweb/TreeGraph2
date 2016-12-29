@@ -45,7 +45,7 @@ import javax.swing.event.HyperlinkListener;
 
 
 /**
- * The about dialog of TreeGraph 2.
+ * The about dialog of <i>TreeGraph 2</i>.
  * 
  * @author Ben St&ouml;ver
  */
