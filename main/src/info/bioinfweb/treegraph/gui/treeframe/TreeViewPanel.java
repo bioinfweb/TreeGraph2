@@ -197,7 +197,7 @@ public class TreeViewPanel extends JPanel implements DocumentListener, Scrollabl
 	private void assignPaintSize() {
 		DistanceDimension d = getDocument().getTree().getPaintDimension(painterType);
 		setSize(d.getWidth().getRoundedInPixels(pixelsPerMillimeter()), d.getHeight().getRoundedInPixels(pixelsPerMillimeter()));
-		setPreferredSize(getSize());  //TODO was ist der genaue Unterschied der beiden Gr��en?
+		setPreferredSize(getSize());  //TODO was ist der genaue Unterschied der beiden Größen?
 		fireSizeChanged();
 	}
 	
@@ -213,6 +213,7 @@ public class TreeViewPanel extends JPanel implements DocumentListener, Scrollabl
 	}
 
 
+  @Override
 	public void paintPreview(Graphics2D g, double scale) {
   	g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
   	g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
@@ -224,6 +225,7 @@ public class TreeViewPanel extends JPanel implements DocumentListener, Scrollabl
 	/* (non-Javadoc)
 	 * @see DocumentView#changeHappened()
 	 */
+  @Override
 	public void changeHappened(DocumentChangeEvent e) {
 		getSelection().setValueIsAdjusting(true);
 		try {
@@ -243,26 +245,31 @@ public class TreeViewPanel extends JPanel implements DocumentListener, Scrollabl
 	}
 
 
+  @Override
 	public Dimension getPreferredScrollableViewportSize() {
 		return getPreferredSize();
 	}
 
 
+  @Override
 	public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
 		return 20; //TODO Welcher Wert ist hier sinnvoll?
 	}
 
 
+  @Override
 	public boolean getScrollableTracksViewportHeight() {
 		return false;
 	}
 
 
+  @Override
 	public boolean getScrollableTracksViewportWidth() {
 		return false;
 	}
 
 
+  @Override
 	public int getScrollableUnitIncrement(Rectangle arg0, int arg1, int arg2) {
 		return 20; //TODO Welcher Wert ist hier sinnvoll?
 	}
