@@ -29,6 +29,7 @@ import info.bioinfweb.commons.Math2;
 import info.bioinfweb.commons.collections.ParameterMap;
 
 import java.awt.Dimension;
+import java.awt.RenderingHints;
 import java.io.BufferedOutputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -136,9 +137,9 @@ public class SVGTranscodeWriter extends AbstractGraphicWriter implements Graphic
 	  		" with Apache Batik SVG Generator <" + Main.TG_URL + ">");
 	  SVGGraphics2D svgGenerator = new SVGGraphics2D(context, hints.getBoolean(KEY_TEXT_AS_SHAPES, false));
 	  svgGenerator.setSVGCanvasSize(new Dimension(Math2.roundUp(width), Math2.roundUp(height)));
+	  svgGenerator.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 	  
-	  painter.paintTree(svgGenerator, document, null, paintResolution, 
-	  		hints.getBoolean(KEY_TRANSPARENT, false));
+	  painter.paintTree(svgGenerator, document, null, paintResolution, hints.getBoolean(KEY_TRANSPARENT, false));
 	  StringWriter stringWriter = new StringWriter();
   	svgGenerator.stream(stringWriter);
   	

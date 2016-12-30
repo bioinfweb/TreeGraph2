@@ -208,6 +208,7 @@ public class TreeViewPanel extends JPanel implements DocumentListener, Scrollabl
   	Graphics2D g2 = (Graphics2D)g;
   	g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
   	g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+  	g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 		PositionPaintFactory.getInstance().getPainter(painterType).paintTree(
 				g2, getVisibleRect(), getDocument(), getSelection(), pixelsPerMillimeter(), false);
 	}
@@ -217,6 +218,7 @@ public class TreeViewPanel extends JPanel implements DocumentListener, Scrollabl
 	public void paintPreview(Graphics2D g, double scale) {
   	g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
   	g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+  	g.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 		PositionPaintFactory.getInstance().getPainter(painterType).paintTree(g, getDocument(), 
 				getSelection(), pixelsPerMillimeter() * (float)scale, false);
 	}

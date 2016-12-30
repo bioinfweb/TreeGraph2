@@ -19,16 +19,16 @@
 package info.bioinfweb.treegraph.graphics.positionpaint;
 
 
+import info.bioinfweb.commons.graphics.FontCalculator;
+import info.bioinfweb.treegraph.document.TextElement;
+import info.bioinfweb.treegraph.document.format.DistanceDimension;
+import info.bioinfweb.treegraph.document.format.TextFormats;
+
 import java.awt.BasicStroke;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.awt.geom.Line2D;
-
-import info.bioinfweb.commons.graphics.FontCalculator;
-import info.bioinfweb.treegraph.document.TextElement;
-import info.bioinfweb.treegraph.document.format.DistanceDimension;
-import info.bioinfweb.treegraph.document.format.TextFormats;
 
 
 
@@ -60,8 +60,8 @@ public class PositionPaintUtils {
 		result.getHeight().setInMillimeters(height);
 		result.getWidth().setInMillimeters(
 			  FontCalculator.getInstance().getWidthToHeigth(
-				formats.getFontName(), formats.getTextStyle() & ~TextFormats.UNDERLINE, 
-        text, height));
+			  		formats.getFontName(), formats.getTextStyle() & ~TextFormats.UNDERLINE, 
+			  		text, height));
 		
 		return result;		
 	}
