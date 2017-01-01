@@ -20,7 +20,9 @@ package info.bioinfweb.treegraph.document;
 
 
 import info.bioinfweb.treegraph.document.format.ElementFormats;
+import info.bioinfweb.treegraph.document.format.PieChartLabelCaptionContentType;
 import info.bioinfweb.treegraph.document.format.PieChartLabelFormats;
+import info.bioinfweb.treegraph.document.format.operate.PieChartCaptionsContentTypeOperator;
 import info.bioinfweb.treegraph.document.tools.IDManager;
 import info.bioinfweb.treegraph.graphics.positionpaint.PositionPaintType;
 import info.bioinfweb.treegraph.graphics.positionpaint.positiondata.PieChartLabelPositionData;
@@ -151,6 +153,34 @@ public class PieChartLabel extends GraphicalLabel implements LineElement, TextEl
 				return Double.NaN;
 			}
 		}
+	}
+	
+	
+	/**
+	 * Returns the text that shall be displayed as the caption with the specified index. The return value depends on
+	 * {@link PieChartLabelFormats#getCaptionsContentType()}.
+	 * 
+	 * @param index the index of the caption
+	 * @return the caption or {@code ""} if the caption content type is {@link PieChartLabelCaptionContentType#NONE}
+	 */
+	public String getCaptionText(int index) {
+		String result;
+		if (getFormats().getCaptionsContentType().containsCaptions()) {
+			result = getSectionDataList().get(index).getCaption();
+		}
+		else {
+			result = "";
+		}
+		
+		if (getFormats().getCaptionsContentType().containsValues()) {
+			String value = getFormats().getCaptionsTextFormats().getDecimalFormat().format(getValue(index));
+			if (!result.isEmpty()) {  // May also happen, if caption "" was set before.
+				value = " (" + value + ")";
+			}
+			result += value;
+		}
+		
+		return result;
 	}
 	
 	

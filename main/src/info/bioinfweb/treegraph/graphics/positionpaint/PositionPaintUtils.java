@@ -63,7 +63,7 @@ public class PositionPaintUtils {
 			  		formats.getFontName(), formats.getTextStyle() & ~TextFormats.UNDERLINE, 
 			  		text, height));
 		
-		return result;		
+		return result;
 	}
 	
 	

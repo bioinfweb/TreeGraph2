@@ -558,7 +558,7 @@ public class RectangularCladogramPositioner implements TreePositioner {
 					pd.getTextPos().getHeight().assign(textDim.getWidth());
 				}
 				
-				// H�he vergr��ern falls Text h�her als Klammer ist:
+				// Höhe vergrößern falls Text höher als Klammer ist:
 				float heightDif = pd.getTextPos().getHeight().getInMillimeters() - (bottom - top);  
 				if (heightDif > 0) {
 					heightDif /= 2f;

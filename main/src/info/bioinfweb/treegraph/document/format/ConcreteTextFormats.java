@@ -122,7 +122,7 @@ public class ConcreteTextFormats implements ElementFormats, Cloneable, TextForma
 		// Sie muss zur Umrechnung skaliert werden.
 		
 		final float factor = 0.8f;
-		return new Font(getFontName(), textStyle & ~UNDERLINE, Math.round(getTextHeight().getInPixels(pixelsPerMillimeter) * factor));
+		return new Font(getFontName(), textStyle & ~UNDERLINE, 1).deriveFont(getTextHeight().getInPixels(pixelsPerMillimeter) * factor);
 	}
 
 

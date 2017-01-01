@@ -24,18 +24,69 @@ import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.collections4.map.HashedMap;
 
 import info.bioinfweb.commons.graphics.FontCalculator;
 import info.bioinfweb.treegraph.document.PieChartLabel;
 import info.bioinfweb.treegraph.document.format.PieChartLabelCaptionContentType;
 import info.bioinfweb.treegraph.document.format.PieChartLabelFormats;
+import info.bioinfweb.treegraph.document.format.TextFormats;
 import info.bioinfweb.treegraph.graphics.positionpaint.positiondata.PieChartLabelPositionData;
+import info.bioinfweb.treegraph.graphics.positionpaint.positiondata.PieChartLabelPositionData.CaptionPositionData;
 
 
 
 public class PieChartLabelPainter extends AbstractGraphicalLabelPainter<PieChartLabel, PieChartLabelPositionData> {
 	/** The fraction of the pie chart radius measured from outside from where the caption link lines shall start. */
-	public static final float LINE_START_DISTANCE_FACTOR = 0.1f;
+	public static final float LINE_START_DISTANCE_FACTOR = 0.9f;
+	
+	public static final float RELATIVE_CAPTION_LINE_DISTANCE = 0.3f;
+	
+	public static final float CAPTION_DISTANCE_FACTOR = 0.05f;  //TODO Possibly make dependent of link type.
+	
+
+	private List<Point2D.Float> calculateStartPoint(PieChartLabel label,	PieChartLabelPositionData positionData) {
+		 List<Point2D.Float> result = new ArrayList<Point2D.Float>(label.getSectionDataList().size()); 
+		
+		// Calculate center and radius:
+		PieChartLabelFormats f = label.getFormats();
+		float centerX = 0.5f * f.getWidth().getInMillimeters(); 
+		float centerY = 0.5f * f.getHeight().getInMillimeters();
+		float rX = LINE_START_DISTANCE_FACTOR * centerX; 
+		float rY = LINE_START_DISTANCE_FACTOR * centerY;
+		
+		// Calculate points:
+		double[] angles = label.getPieChartAngles();
+		for (int i = 0; i < angles.length; i++) {
+			// Calculate angle in the center of the section:
+			double angle = 0.0;
+			if (i > 0) {
+				angle = angles[i - 1];
+			}
+			angle += angles[i] - angle;
+			
+			// Calculate coordinates of start point:
+			result.add(new Point2D.Float((float)(centerX + rX * Math.cos(angle)), (float)(centerY + rY * Math.sin(angle))));
+    }
+		return result;
+	}
+	
+	
+	private void createOrderedCaptionPositions(PieChartLabelPositionData positionData, List<Point2D.Float> startPoints) {
+		Map<Float, Integer> yToIndexMap = new HashedMap<Float, Integer>();
+		for (int i = 0; i < startPoints.size(); i++) {
+	    yToIndexMap.put(startPoints.get(i).y, i);
+    }
+		
+		for (Float y : yToIndexMap.keySet()) {
+	    //TODO Finish
+    }
+	}
 	
 	
 	@Override
@@ -47,34 +98,81 @@ public class PieChartLabelPainter extends AbstractGraphicalLabelPainter<PieChart
 		positionData.getChartPosition().getWidth().assign(f.getWidth());
 		positionData.getChartPosition().getHeight().assign(f.getHeight());
 		
-//		// Calculate caption font height:
-//		int captionsPerSide = label.getSectionDataList().size() / 2 + label.getSectionDataList().size() % 2;
-//		//FontCalculator
-//		
-//		if (PieChartLabelCaptionContentType.NONE.equals(f.getCaptionsContentType())) {
-//			positionData.getChartPosition().getTop().setInMillimeters(0f);
-//			positionData.getChartPosition().getLeft().setInMillimeters(0f);
-//		}
-//		else {
-//			switch (f.getCaptionsLinkType()) {
-//				case STRAIGHT_LINES:
-//				case HORIZONTAL_LINES:
-//					//TODO Calculate line start points.
-//					//TODO Set oder by algorithm.
-//					break;
-//				case COLORED_BOXES:
-//					// Set unchanged caption order:
-//					for (int i = 0; i < label.getSectionDataList().size(); i++) {
-//						PieChartLabelPositionData.CaptionPositionData data = new PieChartLabelPositionData.CaptionPositionData(i);
-//						FontCalculator.getInstance().
-//						data.getWidth().setInMillimeters(value);
-//						positionData.getCaptionPositions().add(data);
-//					}
-//					break;
-//				default:
-//					throw new InternalError("Unknown captions link type encountered (" + f.getCaptionsLinkType().name() + ").");
-//			}
-//		}
+		if (PieChartLabelCaptionContentType.NONE.equals(f.getCaptionsContentType())) {
+			positionData.getChartPosition().getTop().setInMillimeters(0f);
+			positionData.getChartPosition().getLeft().setInMillimeters(0f);
+		}
+		else {
+			// Calculate caption font height:
+			TextFormats captionFormats = f.getCaptionsTextFormats();
+			int captionsPerSide = label.getSectionDataList().size() / 2 + label.getSectionDataList().size() % 2;
+			float captionHeight = f.getHeight().getInMillimeters() / 
+							(captionsPerSide + (captionsPerSide - 1) * RELATIVE_CAPTION_LINE_DISTANCE);
+			float captionLineHeight = (1 + RELATIVE_CAPTION_LINE_DISTANCE) * captionHeight;
+
+			// Calculate label positions:
+			//TODO Handle case that there is only one label on the left and none on the right.
+			float colorBoxesWidth = 0f;
+			switch (f.getCaptionsLinkType()) {
+				case STRAIGHT_LINES:
+				case HORIZONTAL_LINES:
+					
+					//TODO Calculate line start points.
+					//TODO Set oder by algorithm.
+					break;
+				case COLORED_BOXES:
+					colorBoxesWidth = 2 * (1 + RELATIVE_CAPTION_LINE_DISTANCE) * captionHeight; 
+					
+					// Set unchanged caption order:
+					for (int i = 0; i < label.getSectionDataList().size(); i++) {
+						positionData.getCaptionPositions().add(new PieChartLabelPositionData.CaptionPositionData(i));
+					}
+					break;
+				default:
+					throw new InternalError("Unknown captions link type encountered (" + f.getCaptionsLinkType().name() + ").");
+			}
+			
+			// Determine column widths:
+			float leftColumnWidth = 0f;
+			float rightColumnWidth = 0f;
+			for (int i = 0; i < positionData.getCaptionPositions().size(); i++) {
+				PieChartLabelPositionData.CaptionPositionData data = positionData.getCaptionPositions().get(i);
+				float width = FontCalculator.getInstance().getWidthToHeigth(captionFormats.getFontName(), 
+								captionFormats.getTextStyle(), label.getCaptionText(data.getCaptionIndex()), captionHeight);
+				if (i % 2 == 0) {  // left
+					leftColumnWidth = Math.max(leftColumnWidth, width);
+				}
+				else {  // right
+					rightColumnWidth = Math.max(rightColumnWidth, width);
+				}
+				data.getWidth().setInMillimeters(width);
+			}
+			
+			// Set overall label dimensions:
+			float chartWidth = (1 + 2 * CAPTION_DISTANCE_FACTOR) * f.getWidth().getInMillimeters();
+			float rightColumnX = leftColumnWidth + chartWidth + colorBoxesWidth; 
+			positionData.getWidth().setInMillimeters(rightColumnX + rightColumnWidth);
+			positionData.getHeight().assign(f.getHeight());
+			//TODO Set overall label width
+			
+			// Set remaining position data:
+			float yLeft = 0f;
+			float yRight = 0.5f * captionLineHeight;
+			for (int i = 0; i < positionData.getCaptionPositions().size(); i++) {
+				PieChartLabelPositionData.CaptionPositionData data = positionData.getCaptionPositions().get(i);
+				if (i % 2 == 0) {  // left
+					data.getLeft().setInMillimeters(leftColumnWidth - data.getWidth().getInMillimeters());  // right bound
+					data.getTop().setInMillimeters(yLeft);
+					yLeft += captionLineHeight;
+				}
+				else {  // right
+					data.getLeft().setInMillimeters(rightColumnX);
+					data.getTop().setInMillimeters(yRight);
+					yRight += captionLineHeight;
+				}
+				data.getHeight().setInMillimeters(captionHeight);
+      }
+		}
 	}
 
 

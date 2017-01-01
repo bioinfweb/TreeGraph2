@@ -57,4 +57,14 @@ public enum PieChartLabelCaptionContentType {
 			return "Show section names and values";
 		}
 	};
+	
+	
+	public boolean containsCaptions() {
+		return (CAPTIONS.equals(this) || BOTH.equals(this));
+	}
+	
+	
+	public boolean containsValues() {
+		return (VALUES.equals(this) || BOTH.equals(this));
+	}
 }
