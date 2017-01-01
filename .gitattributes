@@ -887,4 +887,5 @@ test/src/info/bioinfweb/treegraph/document/undo/edit/SortLeavesEditTest.java -te
 test/src/info/bioinfweb/treegraph/document/undo/file/importtable/ImportTableDataTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/undo/file/importtable/ImportTableEditTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/test/text/FontMetricsTest.java -text svneol=unset#text/plain
+test/src/info/bioinfweb/treegraph/test/text/TextDimensionTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/test/text/TextSizeTest.java -text svneol=unset#text/plain
