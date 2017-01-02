@@ -28,6 +28,8 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import org.apache.commons.collections4.map.HashedMap;
 
@@ -50,7 +52,7 @@ public class PieChartLabelPainter extends AbstractGraphicalLabelPainter<PieChart
 	public static final float CAPTION_DISTANCE_FACTOR = 0.05f;  //TODO Possibly make dependent of link type.
 	
 
-	private List<Point2D.Float> calculateStartPoint(PieChartLabel label,	PieChartLabelPositionData positionData) {
+	private List<Point2D.Float> calculateStartPoints(PieChartLabel label,	PieChartLabelPositionData positionData) {
 		 List<Point2D.Float> result = new ArrayList<Point2D.Float>(label.getSectionDataList().size()); 
 		
 		// Calculate center and radius:
@@ -78,13 +80,18 @@ public class PieChartLabelPainter extends AbstractGraphicalLabelPainter<PieChart
 	
 	
 	private void createOrderedCaptionPositions(PieChartLabelPositionData positionData, List<Point2D.Float> startPoints) {
-		Map<Float, Integer> yToIndexMap = new HashedMap<Float, Integer>();
+		SortedMap<Float, Integer> yToIndexMap = new TreeMap<Float, Integer>();
 		for (int i = 0; i < startPoints.size(); i++) {
 	    yToIndexMap.put(startPoints.get(i).y, i);
     }
 		
 		for (Float y : yToIndexMap.keySet()) {
-	    //TODO Finish
+			int index = yToIndexMap.get(y);
+			PieChartLabelPositionData.CaptionPositionData data = new PieChartLabelPositionData.CaptionPositionData(index);
+			Point2D.Float point = startPoints.get(index);
+			data.getLineStartX().setInMillimeters(point.x);
+			data.getLineStartY().setInMillimeters(point.y);
+			positionData.getCaptionPositions().add(data);
     }
 	}
 	
@@ -112,13 +119,12 @@ public class PieChartLabelPainter extends AbstractGraphicalLabelPainter<PieChart
 
 			// Calculate label positions:
 			//TODO Handle case that there is only one label on the left and none on the right.
-			float colorBoxesWidth = 0f;
+			float colorBoxesWidth;
 			switch (f.getCaptionsLinkType()) {
 				case STRAIGHT_LINES:
 				case HORIZONTAL_LINES:
-					
-					//TODO Calculate line start points.
-					//TODO Set oder by algorithm.
+					colorBoxesWidth = 0f;
+					createOrderedCaptionPositions(positionData, calculateStartPoints(label, positionData));
 					break;
 				case COLORED_BOXES:
 					colorBoxesWidth = 2 * (1 + RELATIVE_CAPTION_LINE_DISTANCE) * captionHeight; 
