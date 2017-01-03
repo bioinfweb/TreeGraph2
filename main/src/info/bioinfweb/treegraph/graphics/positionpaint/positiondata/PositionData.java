@@ -91,6 +91,14 @@ public class PositionData implements Cloneable {
   			getHeight().getRoundedInPixels(pixelsPerMillimeter));
   	return result;
   }
+  
+  
+  public void assignPositionData(PositionData other) {
+  	getLeft().assign(other.getLeft());
+  	getTop().assign(other.getTop());
+  	getWidth().assign(other.getWidth());
+  	getHeight().assign(other.getHeight());
+  }
 	
 	
 	@Override
