@@ -57,18 +57,38 @@ public class PositionData implements Cloneable {
 	}
 
 	
-	public float getBottomInMillimeters() {
-		return getTop().getInMillimeters() + getHeight().getInMillimeters();
-	}
-	
-	
 	public float getRightInPixels(float pixelsPerMillimeter) {
 		return getLeft().getInPixels(pixelsPerMillimeter) + getWidth().getInPixels(pixelsPerMillimeter);
 	}
 
 	
+	public float getBottomInMillimeters() {
+		return getTop().getInMillimeters() + getHeight().getInMillimeters();
+	}
+	
+	
 	public float getBottomInPixels(float pixelsPerMillimeter) {
 		return getTop().getInPixels(pixelsPerMillimeter) + getHeight().getInPixels(pixelsPerMillimeter);
+	}
+
+	
+	public float getCenterXInMillimeters() {
+		return getLeft().getInMillimeters() + 0.5f * getWidth().getInMillimeters();
+	}
+	
+	
+	public float getCenterXInPixels(float pixelsPerMillimeter) {
+		return getLeft().getInPixels(pixelsPerMillimeter) + 0.5f * getWidth().getInPixels(pixelsPerMillimeter);
+	}
+
+	
+	public float getCenterYInMillimeters() {
+		return getTop().getInMillimeters() + 0.5f * getHeight().getInMillimeters();
+	}
+	
+	
+	public float getCenterYInPixels(float pixelsPerMillimeter) {
+		return getTop().getInPixels(pixelsPerMillimeter) + 0.5f * getHeight().getInPixels(pixelsPerMillimeter);
 	}
 
 	
