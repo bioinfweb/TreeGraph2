@@ -150,15 +150,11 @@ public class DistanceValue implements Cloneable {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!super.equals(obj))
+		if (obj instanceof DistanceValue) {
+			return getInMillimeters() == ((DistanceValue)obj).getInMillimeters();
+		}
+		else {
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		final DistanceValue other = (DistanceValue) obj;
-		if (Double.doubleToLongBits(millimeters) != Double.doubleToLongBits(other.millimeters))
-			return false;
-		return true;
+		}
 	}
 }

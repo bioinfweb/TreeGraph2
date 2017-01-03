@@ -33,7 +33,6 @@ import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -82,6 +81,7 @@ public class PieChartLabelPainter extends AbstractGraphicalLabelPainter<PieChart
 	
 	
 	private void createOrderedCaptionPositions(PieChartLabelPositionData positionData, List<Point2D.Float> startPoints) {
+		// Create position data list:
 		for (int i = 0; i < startPoints.size(); i++) {
 			PieChartLabelPositionData.CaptionPositionData data = new PieChartLabelPositionData.CaptionPositionData(i);
 			Point2D.Float point = startPoints.get(i);
@@ -90,12 +90,27 @@ public class PieChartLabelPainter extends AbstractGraphicalLabelPainter<PieChart
 			positionData.getCaptionPositions().add(data);
     }
 		
+		// Sort position data list by y-coordinates:
 		Collections.sort(positionData.getCaptionPositions(), new Comparator<PieChartLabelPositionData.CaptionPositionData>() {
 			@Override
 			public int compare(PieChartLabelPositionData.CaptionPositionData o1, PieChartLabelPositionData.CaptionPositionData o2) {
 				return Math.round(Math.signum(o1.getLineStartY().getInMillimeters() - o2.getLineStartY().getInMillimeters()));
 			}
 		});
+		
+		// Swap equal y-coordinates on x:
+		for (int i = 0; i < positionData.getCaptionPositions().size() - 1; i++) {
+			PieChartLabelPositionData.CaptionPositionData current = positionData.getCaptionPositions().get(i);
+			PieChartLabelPositionData.CaptionPositionData next = positionData.getCaptionPositions().get(i + 1);
+			boolean left = i % 2 == 0;
+			if (current.getLineStartY().equals(next.getLineStartY()) && 
+					((left && current.getLineStartX().getInMillimeters() > next.getLineStartX().getInMillimeters()) ||
+							!left && current.getLineStartX().getInMillimeters() < next.getLineStartX().getInMillimeters())) {
+				
+				positionData.getCaptionPositions().set(i, next);
+				positionData.getCaptionPositions().set(i + 1, current);
+			}
+		}
 	}
 	
 	
