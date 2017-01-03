@@ -48,7 +48,7 @@ public class PieChartLabelPainter extends AbstractGraphicalLabelPainter<PieChart
 	
 	public static final float RELATIVE_CAPTION_LINE_DISTANCE = 0.3f;
 	
-	public static final float CAPTION_DISTANCE_FACTOR = 0.05f;  //TODO Possibly make dependent of link type.
+	public static final float CAPTION_DISTANCE_FACTOR = 0.3f; //0.05f;  //TODO Possibly make dependent of link type.
 	
 
 	private List<Point2D.Float> calculateStartPoints(PieChartLabel label,	PieChartLabelPositionData positionData) {
@@ -117,18 +117,20 @@ public class PieChartLabelPainter extends AbstractGraphicalLabelPainter<PieChart
 			int captionsPerSide = label.getSectionDataList().size() / 2 + label.getSectionDataList().size() % 2;
 			float captionHeight = f.getHeight().getInMillimeters() / 
 							(captionsPerSide + (captionsPerSide - 1) * RELATIVE_CAPTION_LINE_DISTANCE);
+			f.getCaptionsTextFormats().getTextHeight().setInMillimeters(captionHeight);  // Format can be set here, since it cannot be edited from the GUI and is not written to XTG.
 			float captionLineHeight = (1 + RELATIVE_CAPTION_LINE_DISTANCE) * captionHeight;
+			float captionDistance = CAPTION_DISTANCE_FACTOR * captionHeight;
 
 			// Calculate label positions:
-			float colorBoxesWidth;
+			float colorBoxWidth;
 			switch (f.getCaptionsLinkType()) {
 				case STRAIGHT_LINES:
 				case HORIZONTAL_LINES:
-					colorBoxesWidth = 0f;
+					colorBoxWidth = 0f;
 					createOrderedCaptionPositions(positionData, calculateStartPoints(label, positionData));
 					break;
 				case COLORED_BOXES:
-					colorBoxesWidth = captionColumnCount * (1 + CAPTION_DISTANCE_FACTOR) * captionHeight;
+					colorBoxWidth = captionHeight + captionDistance;
 					
 					// Set unchanged caption order:
 					for (int i = 0; i < label.getSectionDataList().size(); i++) {
@@ -155,12 +157,13 @@ public class PieChartLabelPainter extends AbstractGraphicalLabelPainter<PieChart
 				data.getWidth().setInMillimeters(width);
 			}
 			
-			// Set overall label dimensions:
-			float chartWidth = (1 + captionColumnCount * CAPTION_DISTANCE_FACTOR) * f.getWidth().getInMillimeters();
-			float rightColumnX = leftColumnWidth + chartWidth + colorBoxesWidth; 
+			// Set chart position and overall label dimensions:
+			positionData.getChartPosition().getLeft().setInMillimeters(leftColumnWidth + colorBoxWidth + captionDistance); 
+			positionData.getChartPosition().getTop().setInMillimeters(0f);  // TODO Title height
+			float chartWidth = captionDistance + f.getWidth().getInMillimeters();
+			float rightColumnX = leftColumnWidth + chartWidth + captionColumnCount * colorBoxWidth; 
 			positionData.getWidth().setInMillimeters(rightColumnX + rightColumnWidth);
-			positionData.getHeight().assign(f.getHeight());
-			//TODO Set overall label width
+			positionData.getHeight().assign(f.getHeight());  //TODO Title height
 			
 			// Set remaining position data:
 			float yLeft = 0f;
@@ -242,17 +245,20 @@ public class PieChartLabelPainter extends AbstractGraphicalLabelPainter<PieChart
 			PieChartLabelFormats f = label.getFormats();
 
 			float edgeLength = positionData.getCaptionPositions().get(0).getHeight().getInPixels(pixelsPerMillimeter);
-			float edgeLengthAndDistance = (1 + CAPTION_DISTANCE_FACTOR) * edgeLength;
+			float captionDistance = CAPTION_DISTANCE_FACTOR * edgeLength;
 			float xLeft = positionData.getLeft().getInPixels(pixelsPerMillimeter) + 
-					positionData.getChartPosition().getLeft().getInPixels(pixelsPerMillimeter) - edgeLengthAndDistance;
+					positionData.getChartPosition().getLeft().getInPixels(pixelsPerMillimeter) - edgeLength - captionDistance;
 			float xRight = positionData.getLeft().getInPixels(pixelsPerMillimeter) + 
-					positionData.getChartPosition().getRightInPixels(pixelsPerMillimeter) + edgeLengthAndDistance;
+					positionData.getChartPosition().getRightInPixels(pixelsPerMillimeter) + captionDistance;
 			
 			if (!f.getCaptionsContentType().equals(PieChartLabelCaptionContentType.NONE)) {
 				for (int i = 0; i < positionData.getCaptionPositions().size(); i++) {
 					PieChartLabelPositionData.CaptionPositionData captionPosition = positionData.getCaptionPositions().get(i);
-					PositionPaintUtils.paintText(g, pixelsPerMillimeter, label.getCaptionText(captionPosition.getCaptionIndex()), f, 
-							captionPosition.getLeft().getInPixels(pixelsPerMillimeter), captionPosition.getTop().getInPixels(pixelsPerMillimeter));
+					PositionPaintUtils.paintText(g, pixelsPerMillimeter, label.getCaptionText(captionPosition.getCaptionIndex()), 
+							f.getCaptionsTextFormats(), 
+							positionData.getLeft().getInPixels(pixelsPerMillimeter) + captionPosition.getLeft().getInPixels(pixelsPerMillimeter), 
+							positionData.getTop().getInPixels(pixelsPerMillimeter) + captionPosition.getTop().getInPixels(pixelsPerMillimeter) + 
+							g.getFontMetrics(f.getCaptionsTextFormats().getFont(pixelsPerMillimeter)).getAscent());
 					switch (f.getCaptionsLinkType()) {
 						case COLORED_BOXES:
 							Rectangle2D.Float r = new Rectangle2D.Float(i % 2 == 0 ? xLeft : xRight, 
