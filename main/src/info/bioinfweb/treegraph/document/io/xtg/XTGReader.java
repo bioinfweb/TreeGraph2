@@ -20,7 +20,6 @@ package info.bioinfweb.treegraph.document.io.xtg;
 
 
 import info.bioinfweb.treegraph.document.*;
-import info.bioinfweb.treegraph.document.PieChartLabel.SectionData;
 import info.bioinfweb.treegraph.document.format.*;
 import info.bioinfweb.treegraph.document.io.AbstractDocumentReader;
 import info.bioinfweb.treegraph.document.io.DocumentIterator;
@@ -293,17 +292,19 @@ public class XTGReader extends AbstractDocumentReader implements XTGConstants {
 	}
 	
 	
-	private void readPieChartIDs(PieChartLabel l) throws XMLStreamException {
+	private void readPieChartIDs(StartElement rootElement, PieChartLabel l) throws XMLStreamException {
+		PieChartLabelFormats f = l.getFormats();
+		readTextFormatsAttr(f.getCaptionsTextFormats(), rootElement, "");
+		
     XMLEvent event = reader.nextEvent();
     int index = 0;
     while (event.getEventType() != XMLStreamConstants.END_ELEMENT) {
       if (event.getEventType() == XMLStreamConstants.START_ELEMENT) {
       	StartElement element = event.asStartElement();
         if (element.getName().getLocalPart().equals(TAG_PIE_CHART_ID)) {
-        	l.getFormats().setPieColor(index, XMLUtils.readColorAttr(element, ATTR_PIE_COLOR, 
-              l.getFormats().getPieColor(index)));
-        	l.getSectionDataList().add(new PieChartLabel.SectionData(XMLUtils.readCharactersAsString(reader), ""));  // If string contains e.g. "&lt;" it will be split into separate events. Therefore the util method needs to be used.
-        			//TODO Also set caption here in the future.
+        	f.setPieColor(index, XMLUtils.readColorAttr(element, ATTR_PIE_COLOR, f.getPieColor(index)));
+        	String caption = XMLUtils.readStringAttr(element, ATTR_PIE_CAPTION, "");
+        	l.getSectionDataList().add(new PieChartLabel.SectionData(XMLUtils.readCharactersAsString(reader), caption));  // If string contains e.g. "&lt;" it will be split into separate events. Therefore the util method needs to be used.
           reachElementEnd(reader, element);
           index++;
         }
@@ -340,9 +341,9 @@ public class XTGReader extends AbstractDocumentReader implements XTGConstants {
         else if (element.getName().getLocalPart().equals(TAG_PIE_CHART_IDS) && 
         		(l instanceof PieChartLabel)) {
         	
-        	readPieChartIDs((PieChartLabel)l);
+        	readPieChartIDs(element, (PieChartLabel)l);
         }
-        else {  // evtl. zus�tzlich vorhandenes Element, dass nicht gelesen wird
+        else {
           reachElementEnd(reader, element);  
         }
       }
@@ -392,12 +393,17 @@ public class XTGReader extends AbstractDocumentReader implements XTGConstants {
 		PieChartLabel l = new PieChartLabel(null);
 		PieChartLabelFormats f = l.getFormats();
 		
+		readTextElementDataAttr(l.getData(), rootElement);
+		readTextFormatsAttr(f, rootElement, "");
     readLineAttr(f, rootElement);
   	readGraphicalLabelDimensions(f, rootElement);
-    f.setShowInternalLines(XMLUtils.readBooleanAttr(rootElement, ATTR_SHOW_INTERNAL_LINES, 
-    		f.isShowInternalLines()));
-    f.setShowLinesForZero(XMLUtils.readBooleanAttr(rootElement, ATTR_SHOW_NULL_LINES, 
-    		f.isShowLinesForZero()));
+    f.setShowInternalLines(XMLUtils.readBooleanAttr(rootElement, ATTR_SHOW_INTERNAL_LINES, f.isShowInternalLines()));
+    f.setShowLinesForZero(XMLUtils.readBooleanAttr(rootElement, ATTR_SHOW_NULL_LINES, f.isShowLinesForZero()));
+    f.setShowTitle(XMLUtils.readBooleanAttr(rootElement, ATTR_SHOW_TITLE, f.isShowTitle()));
+    f.setCaptionsContentType(PieChartLabelCaptionContentType.valueOf(
+    		XMLUtils.readStringAttr(rootElement, ATTR_CAPTION_TYPE, f.getCaptionsContentType().name())));
+    f.setCaptionsLinkType(PieChartLabelCaptionLinkType.valueOf(
+    		XMLUtils.readStringAttr(rootElement, ATTR_CAPTION_LINK_TYPE, f.getCaptionsLinkType().name())));
     
     readLabelData(rootElement, l);
     labels.add(l);  // label.labels wird hier automatisch gesetzt

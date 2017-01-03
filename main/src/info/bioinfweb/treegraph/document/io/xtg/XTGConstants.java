@@ -114,9 +114,13 @@ public interface XTGConstants {
   public static final String TAG_PIE_CHART_LABEL = "PieChartLabel";
   public static final QName ATTR_SHOW_INTERNAL_LINES = new QName("InternalLines");
   public static final QName ATTR_SHOW_NULL_LINES = new QName("NullLines");
+  public static final QName ATTR_SHOW_TITLE = new QName("ShowTitle");
+  public static final QName ATTR_CAPTION_TYPE = new QName("CaptionType");
+  public static final QName ATTR_CAPTION_LINK_TYPE = new QName("CaptionLinkType");
   public static final String TAG_PIE_CHART_IDS ="DataIds";
   public static final String TAG_PIE_CHART_ID = "DataId";
   public static final QName ATTR_PIE_COLOR = new QName("PieColor");
+  public static final QName ATTR_PIE_CAPTION = new QName("PieCaption");
   
   public static final String TAG_HIDDEN_DATA = "InvisibleData";  
   

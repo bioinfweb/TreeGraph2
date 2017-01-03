@@ -171,8 +171,8 @@ public class XTGWriter extends AbstractDocumentWriter implements XTGConstants, D
 				Label l = labels.get(above, lineNo, lineIndex);
 	    	if (l instanceof TextLabel) {
 	    		writer.writeStartElement(TAG_TEXT_LABEL);
-			  	writeTextElementData(((TextLabel)l).getData());
-					writeTextFormatsAttr(((TextLabel)l).getFormats());
+			  	writeTextElementData(((TextElement)l).getData());
+					writeTextFormatsAttr(((TextElement)l).getFormats());
 	    	}
 	    	else if (l instanceof IconLabel) {
 	    		writer.writeStartElement(TAG_ICON_LABEL);
@@ -185,10 +185,15 @@ public class XTGWriter extends AbstractDocumentWriter implements XTGConstants, D
 				else if (l instanceof PieChartLabel) {
 					writer.writeStartElement(TAG_PIE_CHART_LABEL);
 					PieChartLabelFormats f = ((PieChartLabel)l).getFormats();
+			  	writeTextElementData(((TextElement)l).getData());
+					writeTextFormatsAttr(f);
 					writeLineAttr(f);
 		    	writeLabelDimensions(f);
 					writer.writeAttribute(ATTR_SHOW_INTERNAL_LINES.toString(), "" + f.isShowInternalLines());
 					writer.writeAttribute(ATTR_SHOW_NULL_LINES.toString(), "" + f.isShowLinesForZero());
+					writer.writeAttribute(ATTR_SHOW_TITLE.toString(), "" + f.isShowTitle());
+					writer.writeAttribute(ATTR_CAPTION_TYPE.toString(), f.getCaptionsContentType().name());
+					writer.writeAttribute(ATTR_CAPTION_LINK_TYPE.toString(), f.getCaptionsLinkType().name());
 				}
 				else {
 					throw new InternalError("Unsupported label of type " + l.getClass().getCanonicalName() + " found.");
@@ -203,11 +208,15 @@ public class XTGWriter extends AbstractDocumentWriter implements XTGConstants, D
 	    	if (l instanceof PieChartLabel) {
 	    		PieChartLabel pieChartLabel = (PieChartLabel)l;
 	    		writer.writeStartElement(TAG_PIE_CHART_IDS.toString());
+					writeTextFormatsAttr(pieChartLabel.getFormats().getCaptionsTextFormats());
 	    		for (int i = 0; i < pieChartLabel.getSectionDataList().size(); i++) {
 		    		writer.writeStartElement(TAG_PIE_CHART_ID.toString());
 			    	writer.writeAttribute(ATTR_PIE_COLOR.toString(), "" + 
 			    			formatColor(pieChartLabel.getFormats().getPieColor(i)));
-						writer.writeCharacters(pieChartLabel.getSectionDataList().get(i).getValueColumnID());
+			    	
+			    	PieChartLabel.SectionData data = pieChartLabel.getSectionDataList().get(i);
+			    	writer.writeAttribute(ATTR_PIE_CAPTION.toString(), data.getCaption()); 
+						writer.writeCharacters(data.getValueColumnID());
 		    		writer.writeEndElement();
 					}
 	    		writer.writeEndElement();
