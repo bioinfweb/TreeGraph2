@@ -98,17 +98,24 @@ public class PieChartLabelPainter extends AbstractGraphicalLabelPainter<PieChart
 			}
 		});
 		
-		// Swap equal y-coordinates on x:
+		// Swap captions with close y-coordinates depending on their column:
 		for (int i = 0; i < positionData.getCaptionPositions().size() - 1; i++) {
 			PieChartLabelPositionData.CaptionPositionData current = positionData.getCaptionPositions().get(i);
 			PieChartLabelPositionData.CaptionPositionData next = positionData.getCaptionPositions().get(i + 1);
 			boolean left = i % 2 == 0;
-			if (current.getLineStartY().equals(next.getLineStartY()) && 
+			float currentDistanceY = next.getLineStartY().getInMillimeters() - current.getLineStartY().getInMillimeters();
+			float nextDistanceY = Float.POSITIVE_INFINITY;
+			if (i + 2 < positionData.getCaptionPositions().size()) {
+				nextDistanceY = positionData.getCaptionPositions().get(i + 2).getLineStartY().getInMillimeters() - 
+						next.getLineStartY().getInMillimeters();
+			}
+			if ((currentDistanceY <= nextDistanceY) && 
 					((left && current.getLineStartX().getInMillimeters() > next.getLineStartX().getInMillimeters()) ||
 							!left && current.getLineStartX().getInMillimeters() < next.getLineStartX().getInMillimeters())) {
 				
 				positionData.getCaptionPositions().set(i, next);
 				positionData.getCaptionPositions().set(i + 1, current);
+				i++;  // Avoid swapping the same value more than once.
 			}
 		}
 	}
