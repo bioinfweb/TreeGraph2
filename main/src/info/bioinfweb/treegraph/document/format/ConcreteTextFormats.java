@@ -114,15 +114,11 @@ public class ConcreteTextFormats implements ElementFormats, Cloneable, TextForma
 	}
 	
 	
-	/* (non-Javadoc)
-	 * @see info.bioinfweb.treegraph.document.format.TextFormats#getFont(float)
-	 */
 	public Font getFont(float pixelsPerMillimeter) {  
-		// Die Angabe size von Font in Punkten ist ungleich der Angabe der Schrifthöhe in Punkten. 
-		// Sie muss zur Umrechnung skaliert werden.
-		
-		final float factor = 0.8f;
-		return new Font(getFontName(), textStyle & ~UNDERLINE, 1).deriveFont(getTextHeight().getInPixels(pixelsPerMillimeter) * factor);
+		float textHeight = getTextHeight().getInPixels(pixelsPerMillimeter);
+		int style = getTextStyle() & ~UNDERLINE;
+		return new Font(getFontName(), style, 1).deriveFont(
+				FontCalculator.getInstance().getFontSizeByTextHeight(textHeight, getFontName(), style));
 	}
 
 

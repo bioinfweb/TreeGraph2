@@ -61,7 +61,7 @@ public class DistanceValue implements Cloneable {
 	}
 
 	
-	/**Gives the uprounded value in pixels */
+	/** Returns the rounded-up value in pixels. */
 	public int getRoundedInPixels(float pixelsPerMillimeter) {
 		return Math2.roundUp(millimeters * pixelsPerMillimeter);
 	}
@@ -74,7 +74,8 @@ public class DistanceValue implements Cloneable {
   
 	/**
 	 * Returns the value in DTP-Points (1 pt = 0.3527777 mm).
-	 * @return vlaue in DTP-Points
+	 * 
+	 * @return value in DTP-Points
 	 */
 	public float getInPoints() {
 		return millimeters * POINTS_PER_MM;
@@ -98,6 +99,7 @@ public class DistanceValue implements Cloneable {
 	
 	/**
 	 * Adds the specified value to the stored value in millimeters.
+	 * 
 	 * @param addend The addend in millimeters
 	 */
 	public void add(float addend) {
@@ -131,8 +133,7 @@ public class DistanceValue implements Cloneable {
 			return (DistanceValue)super.clone();
 		}
 		catch (CloneNotSupportedException e) {
-			
-			throw new InternalError();  // If this happens an unqualified anquestor was used.
+			throw new InternalError();  // If this happens an unqualified ancestor was used.
 		}
 	}
 
