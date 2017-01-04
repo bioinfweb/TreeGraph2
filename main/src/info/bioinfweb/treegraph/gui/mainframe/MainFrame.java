@@ -407,7 +407,7 @@ public class MainFrame extends JFrame implements Runnable {
 			fileMenu.add(getActionManagement().get("file.exportTreeFormat"));
 			fileMenu.add(getActionManagement().get("file.exportTable"));
 			fileMenu.add(getActionManagement().get("file.generateBayesTraitsCommands"));
-			fileMenu.add(getActionManagement().get("file.exportBranchLabelCaption"));
+			fileMenu.add(getActionManagement().get("file.createBranchLabelCaptionDocument"));
 			fileMenu.add(getActionManagement().get("file.exportPieChartLabelColors"));
 			fileMenu.addSeparator();
 			fileMenu.add(getActionManagement().get("file.exit"));

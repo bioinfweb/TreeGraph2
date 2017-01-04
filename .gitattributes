@@ -575,8 +575,8 @@ main/src/info/bioinfweb/treegraph/gui/actions/edit/UndoRedoToAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/edit/UndoToAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/file/AddSupportValuesAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/file/CloseAction.java -text
+main/src/info/bioinfweb/treegraph/gui/actions/file/CreateBranchLabelCaptionDocumentAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/actions/file/ExitAction.java -text
-main/src/info/bioinfweb/treegraph/gui/actions/file/ExportBranchLabelCaptionAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/actions/file/ExportPieChartLabelColorsAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/actions/file/ExportTableAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/file/ExportToGraphicAction.java -text
@@ -684,7 +684,6 @@ main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/piecolor/PieColorIc
 main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/piecolor/PieColorListEntry.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/AddSupportValueColumnsDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/AddSupportValuesDialog.java -text
-main/src/info/bioinfweb/treegraph/gui/dialogs/io/ExportBranchLabelCaptionDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/FileDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/NewickExceptionDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/NodeSupportDialog.java -text svneol=unset#text/plain
