@@ -832,6 +832,7 @@ main/xsd/1.1.xsd -text
 main/xsd/1.2.xsd -text
 main/xsd/1.3.xsd -text svneol=unset#text/plain
 main/xsd/1.4.xsd -text svneol=unset#text/plain
+main/xsd/1.5.xsd -text svneol=unset#text/plain
 test/.classpath -text svneol=unset#text/plain
 test/.project -text svneol=unset#text/plain
 test/.settings/org.eclipse.jdt.core.prefs -text svneol=unset#text/plain
