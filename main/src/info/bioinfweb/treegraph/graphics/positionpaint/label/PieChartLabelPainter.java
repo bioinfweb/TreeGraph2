@@ -21,12 +21,14 @@ package info.bioinfweb.treegraph.graphics.positionpaint.label;
 
 import info.bioinfweb.commons.graphics.FontCalculator;
 import info.bioinfweb.treegraph.document.PieChartLabel;
+import info.bioinfweb.treegraph.document.format.DistanceDimension;
 import info.bioinfweb.treegraph.document.format.PieChartLabelCaptionContentType;
 import info.bioinfweb.treegraph.document.format.PieChartLabelCaptionLinkType;
 import info.bioinfweb.treegraph.document.format.PieChartLabelFormats;
 import info.bioinfweb.treegraph.document.format.TextFormats;
 import info.bioinfweb.treegraph.graphics.positionpaint.PositionPaintUtils;
 import info.bioinfweb.treegraph.graphics.positionpaint.positiondata.PieChartLabelPositionData;
+import info.bioinfweb.treegraph.graphics.positionpaint.positiondata.PositionData;
 
 import java.awt.BasicStroke;
 import java.awt.Graphics2D;
@@ -54,10 +56,10 @@ public class PieChartLabelPainter extends AbstractGraphicalLabelPainter<PieChart
 	public static final float RELATIVE_CAPTION_LINE_DISTANCE = 0.3f;
 	
 	/** The fraction of the caption text height that shall be used as the horizontal distance between captions links and charts. */
-	public static final float CAPTION_DISTANCE_FACTOR = 0.3f; //0.05f;  //TODO Possibly make dependent of link type.
+	public static final float CAPTION_DISTANCE_FACTOR = 0.3f;
 	
 
-	private static double editAngle(double angle) {
+	private static double editAngle(double angle) {  //TODO Shift could be customized by the label formats in the future.
 		angle = angle + 90.0;
 		if (angle < 360.0) {
 			angle -= 360.0;
@@ -135,6 +137,19 @@ public class PieChartLabelPainter extends AbstractGraphicalLabelPainter<PieChart
 		PieChartLabelFormats f = label.getFormats();
 		positionData.getCaptionPositions().clear();
 		
+		// Position heading:
+		PositionData titlePosition = positionData.getTitlePosition();
+		titlePosition.getTop().setInMillimeters(0f);  // Left is set below.
+		if (f.isShowTitle()) {  // Empty stings will also have a height.
+			DistanceDimension dim = PositionPaintUtils.calculateTextDimension(label);
+			titlePosition.getWidth().assign(dim.getWidth());;
+			titlePosition.getHeight().assign(dim.getHeight());;
+		}
+		else {
+			titlePosition.getWidth().setInMillimeters(0f);
+			titlePosition.getHeight().setInMillimeters(0f);
+		}
+		
 		// Chart dimensions are defined by the formats:
 		positionData.getChartPosition().getWidth().assign(f.getWidth());
 		positionData.getChartPosition().getHeight().assign(f.getHeight());
@@ -156,7 +171,7 @@ public class PieChartLabelPainter extends AbstractGraphicalLabelPainter<PieChart
 			float captionLineHeight = (1 + RELATIVE_CAPTION_LINE_DISTANCE) * captionHeight;
 			float captionDistance = CAPTION_DISTANCE_FACTOR * captionHeight;
 
-			// Calculate label positions:
+			// Calculate caption order:
 			float captionChartSpace;  // The space used for color boxes or caption lines.
 			if (f.getCaptionsLinkType().equals(PieChartLabelCaptionLinkType.COLORED_BOXES)) {
 				captionChartSpace = captionHeight + captionDistance;
@@ -181,27 +196,39 @@ public class PieChartLabelPainter extends AbstractGraphicalLabelPainter<PieChart
 				}
 				data.getWidth().setInMillimeters(width);
 			}
+			float leftColumnX = 0f;
+			float rightColumnX = leftColumnWidth + f.getWidth().getInMillimeters() + captionColumnCount * (captionChartSpace + captionDistance);
+			float chartAndCaptionsWidth = rightColumnX + rightColumnWidth;
+			float chartAndCaptionsY = (1 + RELATIVE_CAPTION_LINE_DISTANCE) * positionData.getTitlePosition().getHeight().getInMillimeters();
 			
-			// Set chart position and overall label dimensions:
-			positionData.getChartPosition().getLeft().setInMillimeters(leftColumnWidth + captionChartSpace + captionDistance); 
-			positionData.getChartPosition().getTop().setInMillimeters(0f);  // TODO Title height
-			float rightColumnX = leftColumnWidth + f.getWidth().getInMillimeters() + captionColumnCount * (captionChartSpace + captionDistance); 
-			positionData.getWidth().setInMillimeters(rightColumnX + rightColumnWidth);
-			positionData.getHeight().assign(f.getHeight());  //TODO Title height
-			
-			// Set remaining position data:
-			float yLeft = 0f;
-			float yRight;
-			if (label.getSectionDataList().size() % 2 == 0) {
-				yRight = 0f;
+			// Adjust values depending on title width:
+			float halfWidthDifference = 0.5f * (titlePosition.getWidth().getInMillimeters() - chartAndCaptionsWidth);
+			if (halfWidthDifference > 0) {  // title longer than chart and captions
+				leftColumnX = halfWidthDifference;
+				rightColumnX += halfWidthDifference;
+				titlePosition.getLeft().setInMillimeters(0f);
 			}
 			else {
-				yRight = 0.5f * captionLineHeight;
+				titlePosition.getLeft().setInMillimeters(-halfWidthDifference);
+			}
+			
+			// Set chart position and overall label dimensions:
+			positionData.getChartPosition().getLeft().setInMillimeters(leftColumnX + leftColumnWidth + captionChartSpace + captionDistance); 
+			positionData.getChartPosition().getTop().setInMillimeters(chartAndCaptionsY);
+			positionData.getWidth().setInMillimeters(
+					Math.max(chartAndCaptionsWidth, titlePosition.getWidth().getInMillimeters()));
+			positionData.getHeight().setInMillimeters(chartAndCaptionsY + f.getHeight().getInMillimeters());
+			
+			// Set remaining position data:
+			float yLeft = chartAndCaptionsY;
+			float yRight = chartAndCaptionsY;
+			if (label.getSectionDataList().size() % 2 != 0) {
+				yRight += 0.5f * captionLineHeight;
 			}
 			for (int i = 0; i < positionData.getCaptionPositions().size(); i++) {
 				PieChartLabelPositionData.CaptionPositionData data = positionData.getCaptionPositions().get(i);
 				if (i % 2 == 0) {  // left
-					data.getLeft().setInMillimeters(leftColumnWidth - data.getWidth().getInMillimeters());  // right bound
+					data.getLeft().setInMillimeters(leftColumnX + leftColumnWidth - data.getWidth().getInMillimeters());  // right bound
 					data.getTop().setInMillimeters(yLeft);
 					yLeft += captionLineHeight;
 				}
@@ -336,6 +363,19 @@ public class PieChartLabelPainter extends AbstractGraphicalLabelPainter<PieChart
 		try {
 	    g.setStroke(new BasicStroke(label.getFormats().getLineWidth().getInPixels(pixelsPerMillimeter)));
 	    
+	    //TODO Consider label margin
+	    
+	    // Paint title:
+	    if (label.getFormats().isShowTitle()){
+	    	PositionData titlePosition = positionData.getTitlePosition();
+		    PositionPaintUtils.paintText(g, pixelsPerMillimeter, label.getData().formatValue(label.getFormats().getDecimalFormat()), 
+		    		label.getFormats(), 
+		    		positionData.getLeft().getInPixels(pixelsPerMillimeter) + titlePosition.getLeft().getInPixels(pixelsPerMillimeter), 
+		    		positionData.getTop().getInPixels(pixelsPerMillimeter) + titlePosition.getTop().getInPixels(pixelsPerMillimeter) + 
+		    		g.getFontMetrics(label.getFormats().getFont(pixelsPerMillimeter)).getAscent());
+	    }
+	    
+	    // Paint chart:
 			float lineWidth = label.getFormats().getLineWidth().getInPixels(pixelsPerMillimeter);
 			float halfLineWidth = 0.5f * lineWidth;
 			paintPieChart(g, pixelsPerMillimeter, 
@@ -347,6 +387,7 @@ public class PieChartLabelPainter extends AbstractGraphicalLabelPainter<PieChart
 					positionData.getChartPosition().getHeight().getInPixels(pixelsPerMillimeter) - lineWidth, 
 					label);
 			
+			// Paint captions:
 			paintCaptions(g, pixelsPerMillimeter, positionData, label);
 		}
 		finally {

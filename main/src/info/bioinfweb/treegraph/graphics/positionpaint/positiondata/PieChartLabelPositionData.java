@@ -94,7 +94,7 @@ public class PieChartLabelPositionData extends PositionData {
 	
 	
 	private PositionData chartPosition = new PositionData();
-	private DistanceValue captionFontHeight = new DistanceValue();
+	private PositionData titlePosition = new PositionData();
 	private List<CaptionPositionData> captionPositions = new ArrayList<CaptionPositionData>();
 	
 	
@@ -109,12 +109,12 @@ public class PieChartLabelPositionData extends PositionData {
 	
 	
 	/**
-	 * Returns the font height of the captions.
+	 * Returns the position of the chart title relative to the whole label if it is set to be visible.
 	 * 
-	 * @return the font height calculated from the chart height and the number of captions
+	 * @return the relative heading position
 	 */
-	public DistanceValue getCaptionFontHeight() {
-		return captionFontHeight;
+	public PositionData getTitlePosition() {
+		return titlePosition;
 	}
 
 

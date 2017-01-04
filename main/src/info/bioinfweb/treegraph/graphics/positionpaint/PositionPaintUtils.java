@@ -59,9 +59,8 @@ public class PositionPaintUtils {
 		float height = formats.getTextHeight().getInMillimeters();
 		result.getHeight().setInMillimeters(height);
 		result.getWidth().setInMillimeters(
-			  FontCalculator.getInstance().getWidthToHeigth(
-			  		formats.getFontName(), formats.getTextStyle() & ~TextFormats.UNDERLINE, 
-			  		text, height));
+			  FontCalculator.getInstance().getTextWidthToTextHeigth(formats.getFontName(), 
+			  		formats.getTextStyle() & ~TextFormats.UNDERLINE, text, height));
 		
 		return result;
 	}
