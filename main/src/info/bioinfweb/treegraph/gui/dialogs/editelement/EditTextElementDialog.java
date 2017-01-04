@@ -19,12 +19,17 @@
 package info.bioinfweb.treegraph.gui.dialogs.editelement;
 
 
+import info.bioinfweb.treegraph.document.PieChartLabel;
 import info.bioinfweb.treegraph.document.TextElement;
 import info.bioinfweb.treegraph.document.TextElementData;
+import info.bioinfweb.treegraph.document.undo.edit.PieChartLabelIDsEdit;
 import info.bioinfweb.treegraph.document.undo.edit.TextElementEdit;
 import info.bioinfweb.commons.Math2;
+
 import javax.swing.JPanel;
+
 import java.awt.Frame;
+
 import javax.swing.BoxLayout;
 
 
@@ -54,11 +59,10 @@ public class EditTextElementDialog extends AbstractTextElementDialog {
 
 	@Override
 	protected boolean onExecute() {
-		boolean result = 
-			  (getSelection().size() == 1) && (getSelection().containsType(TextElement.class));
+		boolean result = getSelection().containsType(TextElement.class);
 		
 		if (result) {
-			setTextElement((TextElement)getSelection().first());
+			setTextElement(getSelection().getFirstElementOfType(TextElement.class));
 		}
     return result;
 	}
@@ -74,8 +78,7 @@ public class EditTextElementDialog extends AbstractTextElementDialog {
 			data.setText(getValueTextField().getText());
 		}
 		
-		getDocument().executeEdit(
-				new TextElementEdit(getDocument(), (TextElement)getSelection().first(), data));
+		getDocument().executeEdit(new TextElementEdit(getDocument(), getSelection().getAllElementsOfType(TextElement.class), data));
 		return true;
 	}
 	

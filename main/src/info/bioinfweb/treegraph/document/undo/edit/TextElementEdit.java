@@ -19,6 +19,9 @@
 package info.bioinfweb.treegraph.document.undo.edit;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import info.bioinfweb.treegraph.document.*;
 import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
@@ -29,37 +32,45 @@ import javax.swing.undo.*;
 
 
 /**
- * Edit object that change the contents of a {@link TextElement}.
+ * Edit object that change the contents of a set of {@link TextElement}s.
  * 
  * @author Ben St&ouml;ver
  */
 public class TextElementEdit extends DocumentEdit {
-	private TextElement element;
-	private TextElementData oldData;
+	private TextElement[] elements;
+	private List<TextElementData> oldData;
 	private TextElementData newData;
 
 	
-	public TextElementEdit(Document document, TextElement element, TextElementData newData) {
+	public TextElementEdit(Document document, TextElement[] elements, TextElementData newData) {
 	  super(document, DocumentChangeType.TOPOLOGICAL_BY_RENAMING);
-	  this.element = element;
-	  oldData = element.getData().clone();
+	  this.elements = elements;
+	  
+	  oldData = new ArrayList<>(elements.length);
+	  for (TextElement element : elements) {
+			oldData.add(element.getData().clone());
+		}
 	  this.newData = newData;
 	}
 	
 	
 	public String getPresentationName() {
-		return "Change Text to \"" + newData + "\"";  //TODO Text ggf. bei einer Maximall�nge abschneiden.
+		return "Change Text to \"" + newData + "\"";  //TODO Text ggf. bei einer Maximallänge abschneiden.
 	}
 	
 
 	public void redo() throws CannotRedoException {
-		element.getData().assign(newData);
+		for (TextElement element : elements) {
+			element.getData().assign(newData);
+		}
 		super.redo();
 	}
 
 	
 	public void undo() throws CannotUndoException {
-		element.getData().assign(oldData);
+		for (int i = 0; i < elements.length; i++) {
+			elements[i].getData().assign(oldData.get(i));
+		}
 		super.undo();
 	}
 }

@@ -19,10 +19,6 @@
 package info.bioinfweb.treegraph.gui.actions.edit;
 
 
-import java.awt.event.KeyEvent;
-import javax.swing.Action;
-import javax.swing.KeyStroke;
-
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.TextElement;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
@@ -31,6 +27,11 @@ import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
 import info.bioinfweb.treegraph.gui.dialogs.editelement.EditTextElementDialog;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
+
+import java.awt.event.KeyEvent;
+
+import javax.swing.Action;
+import javax.swing.KeyStroke;
 
 
 
@@ -51,6 +52,6 @@ public class EditTextElementAction extends EditDialogAction {
 
 	@Override
 	public void setEnabled(Document document, TreeSelection selection, NodeBranchDataAdapter tableAdapter) {
-		setEnabled(oneElementSelected(selection) && selection.containsType(TextElement.class));
+		setEnabled((selection != null) && selection.containsType(TextElement.class));
 	}
 }
