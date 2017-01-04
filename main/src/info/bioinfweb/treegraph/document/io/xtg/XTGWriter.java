@@ -136,13 +136,15 @@ public class XTGWriter extends AbstractDocumentWriter implements XTGConstants, D
 	
 	
 	private void writeTextFormatsAttr(TextFormats f) throws XMLStreamException {
-		writeTextFormatsAttr(f, "");
+		writeTextFormatsAttr(f, "", true);
 	}
 	
 	
-	private void writeTextFormatsAttr(TextFormats f, String prefix) throws XMLStreamException {
+	private void writeTextFormatsAttr(TextFormats f, String prefix, boolean includeTextHeight) throws XMLStreamException {
   	writer.writeAttribute(prefix + ATTR_TEXT_COLOR.toString(), formatColor(f.getTextColor()));
-  	writer.writeAttribute(prefix + ATTR_TEXT_HEIGHT.toString(), "" + f.getTextHeight().getInMillimeters());
+  	if (includeTextHeight) {
+  		writer.writeAttribute(prefix + ATTR_TEXT_HEIGHT.toString(), "" + f.getTextHeight().getInMillimeters());
+  	}
   	writer.writeAttribute(prefix + ATTR_TEXT_STYLE.toString(), formatTextStyle(f));
   	writer.writeAttribute(prefix + ATTR_FONT_FAMILY.toString(), f.getFontName());
   	
@@ -208,7 +210,7 @@ public class XTGWriter extends AbstractDocumentWriter implements XTGConstants, D
 	    	if (l instanceof PieChartLabel) {
 	    		PieChartLabel pieChartLabel = (PieChartLabel)l;
 	    		writer.writeStartElement(TAG_PIE_CHART_IDS.toString());
-					writeTextFormatsAttr(pieChartLabel.getFormats().getCaptionsTextFormats());
+					writeTextFormatsAttr(pieChartLabel.getFormats().getCaptionsTextFormats(), "", false);  // Avoid writing caption text height.
 	    		for (int i = 0; i < pieChartLabel.getSectionDataList().size(); i++) {
 		    		writer.writeStartElement(TAG_PIE_CHART_ID.toString());
 			    	writer.writeAttribute(ATTR_PIE_COLOR.toString(), "" + 
