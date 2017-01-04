@@ -57,6 +57,15 @@ public class PieChartLabelPainter extends AbstractGraphicalLabelPainter<PieChart
 	public static final float CAPTION_DISTANCE_FACTOR = 0.3f; //0.05f;  //TODO Possibly make dependent of link type.
 	
 
+	private static double editAngle(double angle) {
+		angle = angle + 90.0;
+		if (angle < 360.0) {
+			angle -= 360.0;
+		}
+		return angle;
+	}
+	
+	
 	private List<Point2D.Float> calculateStartPoints(PieChartLabel label,	PieChartLabelPositionData positionData) {
 		 List<Point2D.Float> result = new ArrayList<Point2D.Float>(label.getSectionDataList().size()); 
 		
@@ -72,7 +81,7 @@ public class PieChartLabelPainter extends AbstractGraphicalLabelPainter<PieChart
 		double[] angles = label.getPieChartAngles();
 		double startAngle = 0.0;
 		for (int i = 0; i < angles.length; i++) {
-			double angle = Math.toRadians(startAngle + 0.5 * angles[i]);  // Angles in Graphics2D are in degrees.
+			double angle = Math.toRadians(editAngle(startAngle + 0.5 * angles[i]));  // Angles in Graphics2D are in degrees.
 			startAngle += angles[i];
 			result.add(new Point2D.Float((float)(centerX + rX * Math.cos(angle)), (float)(centerY - rY * Math.sin(angle))));  // y coordinates are screen coordinates
     }
@@ -149,30 +158,20 @@ public class PieChartLabelPainter extends AbstractGraphicalLabelPainter<PieChart
 
 			// Calculate label positions:
 			float captionChartSpace;  // The space used for color boxes or caption lines.
-			switch (f.getCaptionsLinkType()) {
-				case STRAIGHT_LINES:
-				case HORIZONTAL_LINES:
-					captionChartSpace = captionDistance;
-					createOrderedCaptionPositions(positionData, calculateStartPoints(label, positionData));
-					break;
-				case COLORED_BOXES:
-					captionChartSpace = captionHeight + captionDistance;
-					
-					// Set unchanged caption order:
-					for (int i = 0; i < label.getSectionDataList().size(); i++) {
-						positionData.getCaptionPositions().add(new PieChartLabelPositionData.CaptionPositionData(i));
-					}
-					break;
-				default:
-					throw new InternalError("Unknown captions link type encountered (" + f.getCaptionsLinkType().name() + ").");
+			if (f.getCaptionsLinkType().equals(PieChartLabelCaptionLinkType.COLORED_BOXES)) {
+				captionChartSpace = captionHeight + captionDistance;
 			}
+			else {
+				captionChartSpace = captionDistance;
+			}
+			createOrderedCaptionPositions(positionData, calculateStartPoints(label, positionData));  // For colored boxes points are also needed to calculate the best fitting order.
 			
 			// Determine column widths:
 			float leftColumnWidth = 0f;
 			float rightColumnWidth = 0f;  // Remains 0 if only one columns is present.
 			for (int i = 0; i < positionData.getCaptionPositions().size(); i++) {
 				PieChartLabelPositionData.CaptionPositionData data = positionData.getCaptionPositions().get(i);
-				float width = FontCalculator.getInstance().getWidthToHeigth(captionFormats.getFontName(), 
+				float width = FontCalculator.getInstance().getTextWidthToTextHeigth(captionFormats.getFontName(), 
 								captionFormats.getTextStyle(), label.getCaptionText(data.getCaptionIndex()), captionHeight);
 				if (i % 2 == 0) {  // left
 					leftColumnWidth = Math.max(leftColumnWidth, width);
@@ -192,7 +191,13 @@ public class PieChartLabelPainter extends AbstractGraphicalLabelPainter<PieChart
 			
 			// Set remaining position data:
 			float yLeft = 0f;
-			float yRight = 0.5f * captionLineHeight;
+			float yRight;
+			if (label.getSectionDataList().size() % 2 == 0) {
+				yRight = 0f;
+			}
+			else {
+				yRight = 0.5f * captionLineHeight;
+			}
 			for (int i = 0; i < positionData.getCaptionPositions().size(); i++) {
 				PieChartLabelPositionData.CaptionPositionData data = positionData.getCaptionPositions().get(i);
 				if (i % 2 == 0) {  // left
@@ -243,7 +248,7 @@ public class PieChartLabelPainter extends AbstractGraphicalLabelPainter<PieChart
 		for (int j = 0; j < angles.length; j++) {
 			if (f.isShowLinesForZero() || (!Double.isNaN(angles[j]) && (angles[j] > 0))) {
 				arcs[j] = new Arc2D.Double(x, y, width, height, 
-						Math.round(startAngle), Math.round(angles[j]), Arc2D.PIE);  // Rounding is necessary, as a workaround for rendering errors in SVG, if too small angles are written (see bug #104). (A higher precision of 0.1° already leads to deformed arcs.)
+						Math.round(editAngle(startAngle)), Math.round(angles[j]), Arc2D.PIE);  // Rounding is necessary, as a workaround for rendering errors in SVG, if too small angles are written (see bug #104). (A higher precision of 0.1° already leads to deformed arcs.)
 				g.setColor(f.getPieColor(j));
 				g.fill(arcs[j]);
 				startAngle += angles[j];
@@ -300,7 +305,7 @@ public class PieChartLabelPainter extends AbstractGraphicalLabelPainter<PieChart
 							Rectangle2D.Float r = new Rectangle2D.Float((left ? xLeft : xRight) + halfLineWidth, 
 									positionData.getTop().getInPixels(pixelsPerMillimeter) + captionPosition.getTop().getInPixels(pixelsPerMillimeter) + halfLineWidth, 
 									edgeLength, edgeLength);
-							g.setColor(f.getPieColor(i));
+							g.setColor(f.getPieColor(captionPosition.getCaptionIndex()));
 							g.fill(r);
 							g.setColor(f.getLineColor());
 							g.draw(r);
