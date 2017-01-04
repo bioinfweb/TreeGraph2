@@ -243,6 +243,9 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatsTab 
 		pieColorMonitor.reset();
 		internalLinesMonitor.reset();
 		linesForZerosMonitor.reset();
+		showTitleMonitor.reset();
+		captionsContentTypeMonitor.reset();
+		captionsLinkTypeMonitor.reset();
 		getCaptionsDialog().resetChangeMonitors();
 	}
 	
