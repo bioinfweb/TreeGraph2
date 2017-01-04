@@ -31,8 +31,14 @@ import javax.xml.namespace.QName;
  * @author Ben St&ouml;ver
  */
 public interface XTGConstants {
+  public static final FormatVersion VERSION = new FormatVersion(1, 5);
+  /*
+   * Version changes:
+   * 
+   * 1.5: New formats and data associated with pie chart label captions and heading added. 
+   */
+  
   public static final String NAMESPACE_URI = "http://bioinfweb.info/xmlns/xtg";
-  public static final FormatVersion VERSION = new FormatVersion(1, 4);
   public static final String FULL_SCHEMA_LOCATION = NAMESPACE_URI + " " + NAMESPACE_URI + "/" + VERSION + ".xsd";
   
   public static final String TAG_ROOT = "TreegraphDocument";
