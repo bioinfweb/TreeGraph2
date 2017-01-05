@@ -19,8 +19,12 @@
 package info.bioinfweb.treegraph.document.undo.edit.calculatecolumn;
 
 
+import java.util.Stack;
+
+import info.bioinfweb.commons.Math2;
 import info.bioinfweb.treegraph.document.undo.edit.CalculateColumnEdit;
 
+import org.nfunk.jep.ParseException;
 import org.nfunk.jep.function.PostfixMathCommandI;
 
 
@@ -56,6 +60,49 @@ public abstract class AbstractFunction implements PostfixMathCommandI {
   	}
   	else {
   		return new Double(0);
+  	}
+  }
+  
+  
+  public static double checkDouble(Object value) throws ParseException {
+  	if (value instanceof Double) {
+  		return (Double)value;
+  	}
+  	else {
+  		throw new ParseException("Invalid parameter type. (Expected a numeric value.)");
+  	}
+  }
+  
+  
+  public static long checkLong(Object value) throws ParseException {
+  	double doubleValue = checkDouble(value);
+  	if (Math2.isInt(doubleValue)) {
+  		return (long)doubleValue;
+  	}
+  	else {
+  		throw new ParseException("Invalid parameter type. (Expected an integer value.)");
+  	}
+  }
+  
+  
+  public static int checkInteger(Object value) throws ParseException {
+  	long longValue = checkLong(value);
+  	if (Math2.isBetween(longValue, Integer.MIN_VALUE, Integer.MAX_VALUE)) {
+  		return (int)longValue;
+  	}
+  	else {
+  		throw new ParseException("Integer value out of range (" + longValue + "). Values must be between " + 
+  				Integer.MIN_VALUE + " and " + Integer.MAX_VALUE + ".");
+  	}
+  }
+  
+  
+  public static String checkString(Object value) throws ParseException {
+  	if (value instanceof String) {
+  		return (String)value;
+  	}
+  	else {
+  		throw new ParseException("Invalid parameter type. (Expected a textual value.)");
   	}
   }
   

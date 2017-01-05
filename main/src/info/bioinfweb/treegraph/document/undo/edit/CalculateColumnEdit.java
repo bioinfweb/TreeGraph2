@@ -39,6 +39,16 @@ import info.bioinfweb.treegraph.document.tools.IDManager;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
 import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.AbstractFunction;
 import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.UndefinedIDException;
+import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.string.ContainsFunction;
+import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.string.EndsWithFunction;
+import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.string.FirstIndexOfFunction;
+import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.string.LastIndexOfFunction;
+import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.string.ReplaceAllFunction;
+import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.string.ReplaceFirstFunction;
+import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.string.StartsWithFunction;
+import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.string.SubstringFunction;
+import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.string.ToLowerCaseFunction;
+import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.string.ToUpperCaseFunction;
 import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.topology.IndexInParentFunction;
 import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.topology.IsLeafFunction;
 import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.topology.IsRootFunction;
@@ -194,6 +204,17 @@ public class CalculateColumnEdit extends DocumentEdit {
 		addVarArgFunction(result, new ProductFunction(this));
 		addVarArgFunction(result, new MeanFunction(this));
 
+		addFunction(result, new ToUpperCaseFunction(this));
+		addFunction(result, new ToLowerCaseFunction(this));
+		addFunction(result, new SubstringFunction(this));
+		addFunction(result, new ContainsFunction(this));
+		addFunction(result, new StartsWithFunction(this));
+		addFunction(result, new EndsWithFunction(this));
+		addFunction(result, new FirstIndexOfFunction(this));
+		addFunction(result, new LastIndexOfFunction(this));
+		addFunction(result, new ReplaceAllFunction(this));
+		addFunction(result, new ReplaceFirstFunction(this));
+		
 		return result;
 	}
 	

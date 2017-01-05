@@ -407,6 +407,17 @@ main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/noarg/NoArg
 main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/noarg/NoArgDoubleFunction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/noarg/NoArgFunction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/package-info.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/string/AbstractStringFunction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/string/ContainsFunction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/string/EndsWithFunction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/string/FirstIndexOfFunction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/string/LastIndexOfFunction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/string/ReplaceAllFunction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/string/ReplaceFirstFunction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/string/StartsWithFunction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/string/SubstringFunction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/string/ToLowerCaseFunction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/string/ToUpperCaseFunction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/topology/IndexInParentFunction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/topology/IsLeafFunction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/topology/IsRootFunction.java -text svneol=unset#text/plain

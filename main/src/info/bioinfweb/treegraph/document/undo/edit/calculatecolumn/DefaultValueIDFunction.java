@@ -47,11 +47,13 @@ public abstract class DefaultValueIDFunction extends IDFunction implements Postf
   }
 
 
+	@Override
 	public boolean checkNumberOfParameters(int n) {
 		return (n == 1) || (n == 2);
 	}
 
 	
+	@Override
 	public int getNumberOfParameters() {
 		return -1;
 	}
