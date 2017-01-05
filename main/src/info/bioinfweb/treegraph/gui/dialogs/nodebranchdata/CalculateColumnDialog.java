@@ -78,7 +78,7 @@ public class CalculateColumnDialog extends EditDialog {
 	private JCheckBox defaultValueCheckBox;
 	private TextElementDataInput defaultValueInput;
 	private JCheckBox clearTargetColumnsCheckBox;
-	private JLabel lblnoteThatThe;
+	private JLabel columnTypeNoteLabel;
 
 	
 	/**
@@ -309,7 +309,7 @@ public class CalculateColumnDialog extends EditDialog {
 			gbc_lblnoteThatThe.anchor = GridBagConstraints.WEST;
 			gbc_lblnoteThatThe.gridx = 1;
 			gbc_lblnoteThatThe.gridy = 6;
-			columnPanel.add(getLblnoteThatThe(), gbc_lblnoteThatThe);
+			columnPanel.add(getColumnTypeNoteLabel(), gbc_lblnoteThatThe);
 		}
 		return columnPanel;
 	}
@@ -345,6 +345,7 @@ public class CalculateColumnDialog extends EditDialog {
 					getColumnIDExpressionComboBox().setEnabled(calculatedTargetRB.isSelected());
 					getColumnIDTypeInput().setEnabled(calculatedTargetRB.isSelected());
 					getColumnTypeLabel().setEnabled(calculatedTargetRB.isSelected());
+					getColumnTypeNoteLabel().setEnabled(calculatedTargetRB.isSelected());
 				}
 			});
 			buttonGroup.add(calculatedTargetRB);
@@ -457,10 +458,13 @@ public class CalculateColumnDialog extends EditDialog {
 		}
 		return clearTargetColumnsCheckBox;
 	}
-	private JLabel getLblnoteThatThe() {
-		if (lblnoteThatThe == null) {
-			lblnoteThatThe = new JLabel("(Note that the selection made here will be ignored for columns that already exist.)");
+	
+	
+	private JLabel getColumnTypeNoteLabel() {
+		if (columnTypeNoteLabel == null) {
+			columnTypeNoteLabel = new JLabel("(Note that the selection made here will be ignored for columns that already exist.)");
+			columnTypeNoteLabel.setEnabled(false);
 		}
-		return lblnoteThatThe;
+		return columnTypeNoteLabel;
 	}
 }
