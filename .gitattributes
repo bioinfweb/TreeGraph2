@@ -415,7 +415,7 @@ main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/string/Last
 main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/string/ReplaceAllFunction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/string/ReplaceFirstFunction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/string/StartsWithFunction.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/string/SubstringFunction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/string/SubsequenceFunction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/string/ToLowerCaseFunction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/string/ToUpperCaseFunction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/topology/IndexInParentFunction.java -text svneol=unset#text/plain

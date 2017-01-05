@@ -46,7 +46,7 @@ import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.string.LastIn
 import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.string.ReplaceAllFunction;
 import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.string.ReplaceFirstFunction;
 import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.string.StartsWithFunction;
-import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.string.SubstringFunction;
+import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.string.SubsequenceFunction;
 import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.string.ToLowerCaseFunction;
 import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.string.ToUpperCaseFunction;
 import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.topology.IndexInParentFunction;
@@ -206,7 +206,7 @@ public class CalculateColumnEdit extends DocumentEdit {
 
 		addFunction(result, new ToUpperCaseFunction(this));
 		addFunction(result, new ToLowerCaseFunction(this));
-		addFunction(result, new SubstringFunction(this));
+		addFunction(result, new SubsequenceFunction(this));
 		addFunction(result, new ContainsFunction(this));
 		addFunction(result, new StartsWithFunction(this));
 		addFunction(result, new EndsWithFunction(this));
@@ -265,6 +265,11 @@ public class CalculateColumnEdit extends DocumentEdit {
 	}
 
 
+	public boolean isEvaluatingDecimal() {
+		return isEvaluatingDecimal;
+	}
+
+
 	public NodeBranchDataAdapter getCurrentTargetAdapter() {
 		return (NodeBranchDataAdapter)parser.getVarValue(CURRENT_VALUE_VAR);
 	}
@@ -295,6 +300,7 @@ public class CalculateColumnEdit extends DocumentEdit {
 	 */
 	public boolean evaluate() {
 		isEvaluating = true;
+		position = getDocument().getTree().getPaintStart();  // Avoid NPEs because of undefined positions. (This edit cannot be called with empty trees.)
 		boolean result = true;
 		try {
 			errors.clear();
@@ -336,6 +342,7 @@ public class CalculateColumnEdit extends DocumentEdit {
 		}
 		finally {
 			isEvaluating = false;
+			position = null;  // reset
 		}
 		return result;
 	}
@@ -403,8 +410,7 @@ public class CalculateColumnEdit extends DocumentEdit {
 	
 	
 	public void throwUndefinedIDException(String id) throws UndefinedIDException {
-		throw new UndefinedIDException("A node/branch data column with the ID \"" + id + 
-				" \" does not exists.");
+		throw new UndefinedIDException("A node/branch data column with the ID \"" + id + " \" does not exists.");
 	}
 	
 	

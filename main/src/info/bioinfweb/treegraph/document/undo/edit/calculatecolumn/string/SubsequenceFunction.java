@@ -25,8 +25,8 @@ import org.nfunk.jep.ParseException;
 
 
 
-public class SubstringFunction extends AbstractStringFunction {
-	public SubstringFunction(CalculateColumnEdit edit) {
+public class SubsequenceFunction extends AbstractStringFunction {
+	public SubsequenceFunction(CalculateColumnEdit edit) {
 		super(edit);
 	}
 

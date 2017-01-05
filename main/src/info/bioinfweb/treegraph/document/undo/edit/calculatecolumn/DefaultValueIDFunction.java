@@ -69,7 +69,17 @@ public abstract class DefaultValueIDFunction extends IDFunction implements Postf
 			Object result = parseIDValue(stack.pop());
 			if (result == null) {
 				if (defaultValue == null) {
-					throw new ParseException("A value for the specified column does not exist in the current line.");
+					if (getEdit().isEvaluating()) {
+						if (getEdit().isEvaluatingDecimal()) {
+							result = new Double(1.0);
+						}
+						else {
+							result = "a";
+						}
+					}
+					else {
+						throw new ParseException("A value for the specified column does not exist in the current line.");
+					}
 				}
 				else {
 					result = defaultValue;
