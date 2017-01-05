@@ -112,7 +112,7 @@ public class DecimalFormatPanel extends JPanel implements ElementFormatsTab {
 	public void addOperators(List<FormatOperator> operators) {
 		if (changeMonitor.hasChanged()) {
 			operators.add(new DecimalFormatOperator(getDecimalFormat(), getLocaleValue()));
-			//TODO Kann Formatsangabe ung�ltig sein?
+			//TODO Kann Formatangabe ungültig sein?
 		}
 	}
 	
@@ -125,13 +125,17 @@ public class DecimalFormatPanel extends JPanel implements ElementFormatsTab {
 	}
 
 
+	public void setValues(TextFormats f) {
+		getFormatTextField().setText(f.getDecimalFormat().toPattern());
+		getLocaleComboBox().getModel().setSelectedItem(f.getLocale().getDisplayName());
+		updateExample();
+	}
+	
+	
 	public boolean setValues(TreeSelection selection) {
 		boolean result = selection.containsType(TextElement.class);
 		if (result) {
-			TextFormats f = selection.getFirstElementOfType(TextElement.class).getFormats();
-			getFormatTextField().setText(f.getDecimalFormat().toPattern());
-			getLocaleComboBox().getModel().setSelectedItem(f.getLocale().getDisplayName());
-			updateExample();
+			setValues(selection.getFirstElementOfType(TextElement.class).getFormats());
 		}
 		return result;
 	}

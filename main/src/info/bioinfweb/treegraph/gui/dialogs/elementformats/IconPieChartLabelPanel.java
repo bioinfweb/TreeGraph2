@@ -82,7 +82,7 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatsTab 
 	public static final int PREVIEW_SIZE = 50;
 	
 	
-	private PieChartLabelCaptionsFontDialog captionsDialog = null;
+	private PieChartLabelCaptionsTextDialog captionsDialog = null;
 	private SwingChangeMonitor iconMonitor = new SwingChangeMonitor();
 	private SwingChangeMonitor iconFilledMonitor = new SwingChangeMonitor();
 	private ChangeMonitor pieColorMonitor = new ChangeMonitor();
@@ -288,9 +288,9 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatsTab 
 	}
 	
 	
-	private PieChartLabelCaptionsFontDialog getCaptionsDialog() {
+	private PieChartLabelCaptionsTextDialog getCaptionsDialog() {
 		if (captionsDialog == null) {
-			captionsDialog = new PieChartLabelCaptionsFontDialog((Dialog)SwingUtilities.windowForComponent(this));
+			captionsDialog = new PieChartLabelCaptionsTextDialog((Dialog)SwingUtilities.windowForComponent(this));
 		}
 		return captionsDialog;
 	}
@@ -610,7 +610,7 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatsTab 
 	
 	private JButton getCaptionsFontButton() {
 		if (captionsFontButton == null) {
-			captionsFontButton = new JButton("Change caption font...");
+			captionsFontButton = new JButton("Change caption text formats...");
 			captionsFontButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					getCaptionsDialog().execute();
@@ -680,6 +680,14 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatsTab 
 			gbc_captionsFontButton.gridx = 0;
 			gbc_captionsFontButton.gridy = 8;
 			chartCaptionsPanel.add(getCaptionsFontButton(), gbc_captionsFontButton);
+			GridBagConstraints gbc_captionsFontButtonLabel = new GridBagConstraints();
+			gbc_captionsFontButtonLabel.anchor = GridBagConstraints.WEST;
+			gbc_captionsFontButtonLabel.insets = new Insets(2, 3, 0, 0);
+			gbc_captionsFontButtonLabel.gridx = 0;
+			gbc_captionsFontButtonLabel.gridy = 9;
+			chartCaptionsPanel.add(new JLabel(
+					"<html>(Use the botton above to format captions and<br>the tabs in this dialog to format headings.)</html>"), 
+					gbc_captionsFontButtonLabel);
 		}
 		return chartCaptionsPanel;
 	}

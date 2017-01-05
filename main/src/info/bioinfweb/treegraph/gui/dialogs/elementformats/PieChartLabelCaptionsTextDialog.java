@@ -37,14 +37,14 @@ import javax.swing.JTabbedPane;
 
 
 
-public class PieChartLabelCaptionsFontDialog extends OkCancelApplyWikiHelpDialog {
+public class PieChartLabelCaptionsTextDialog extends OkCancelApplyWikiHelpDialog {
 	private List<ElementFormatsTab> tabs;
 	
 	private JPanel jContentPane;
 	private JTabbedPane tabbedPane;
 	
 	
-	public PieChartLabelCaptionsFontDialog(Dialog owner) {
+	public PieChartLabelCaptionsTextDialog(Dialog owner) {
 		super(owner, true, Main.getInstance().getWikiHelp());
 		setHelpCode(92);
 		initialize();
@@ -91,6 +91,9 @@ public class PieChartLabelCaptionsFontDialog extends OkCancelApplyWikiHelpDialog
 			else if (tab instanceof FontColorPanel) {
 				((FontColorPanel)tab).setColor(f.getCaptionsTextFormats().getTextColor());
 			}
+			else if (tab instanceof DecimalFormatPanel) {
+				((DecimalFormatPanel)tab).setValues(f.getCaptionsTextFormats());
+			}
 		}
 	}
 	
@@ -100,6 +103,7 @@ public class PieChartLabelCaptionsFontDialog extends OkCancelApplyWikiHelpDialog
 			tabs = new ArrayList<ElementFormatsTab>();
 			tabs.add(new FontFormatsPanel(false));
 			tabs.add(new FontColorPanel());
+			tabs.add(new DecimalFormatPanel());
 		}
 		return tabs;
 	}

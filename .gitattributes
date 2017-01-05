@@ -675,7 +675,7 @@ main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/LabelPanel.java -te
 main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/LegendPanel.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/LinePanel.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/NodeMarginPanel.java -text
-main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/PieChartLabelCaptionsFontDialog.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/PieChartLabelCaptionsTextDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/ScaleBarIntervalKeyListener.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/ScaleBarPanel.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/ScaleValueInput.java -text

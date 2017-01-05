@@ -59,7 +59,7 @@ public class PieChartLabelPainter extends AbstractGraphicalLabelPainter<PieChart
 	public static final float CAPTION_DISTANCE_FACTOR = 0.3f;
 	
 
-	private static double editAngle(double angle) {  //TODO Shift could be customized by the label formats in the future.
+	private static double editAngle(double angle) {  //TODO Shift could be customized by the label formats in the future. See also #144.
 		angle = angle + 90.0;
 		if (angle < 360.0) {
 			angle -= 360.0;
