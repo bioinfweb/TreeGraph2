@@ -32,7 +32,7 @@ import javax.swing.JPanel;
  * @author Ben St&ouml;ver
  */
 public abstract class DecimalUnitInput extends DecimalInput {
-  private JComboBox comboBox = null;
+  private JComboBox<String> comboBox = null;
 
   
 	public DecimalUnitInput(String labelText, JPanel panel, int y) {
@@ -52,9 +52,9 @@ public abstract class DecimalUnitInput extends DecimalInput {
 	}
 
 	
-	public JComboBox getComboBox() {
+	public JComboBox<String> getComboBox() {
 		if (comboBox == null) {
-	    comboBox = new JComboBox();
+	    comboBox = new JComboBox<String>();
 	  	comboBox.setEditable(false);
 	  	customizeComboBox(comboBox);
 		}
@@ -69,5 +69,5 @@ public abstract class DecimalUnitInput extends DecimalInput {
 	}
 
 
-	protected abstract void customizeComboBox(JComboBox comboBox);
+	protected abstract void customizeComboBox(JComboBox<String> comboBox);
 }

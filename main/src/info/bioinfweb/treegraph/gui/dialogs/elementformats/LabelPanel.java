@@ -113,12 +113,10 @@ public class LabelPanel extends JPanel implements ElementFormatsTab {
 			operators.add(new LabelAboveOperator(getAboveRadioButton().isSelected()));
 		}
 		if (lineNoMonitor.hasChanged()) {
-			operators.add(new LabelLineNumberOperator(Integer.parseInt(
-					getLineNoTextField().getText())));
+			operators.add(new LabelLineNumberOperator(Integer.parseInt(getLineNoTextField().getText())));
 		}
 		if (linePosMonitor.hasChanged()) {
-			operators.add(new LabelLinePositionOperator(Math2.parseDouble(
-					getLinePosTextField().getText())));
+			operators.add(new LabelLinePositionOperator(Math2.parseDouble(getLinePosTextField().getText())));
 		}
 		if (getMarginInput().getLeft().getChangeMonitor().hasChanged()) {
 			operators.add(new LabelMarginLeftOperator(getMarginInput().getLeft().getValue()));

@@ -42,7 +42,7 @@ public class DistanceValueInput extends DecimalUnitInput {
 
 
 	@Override
-	protected void customizeComboBox(JComboBox comboBox) {
+	protected void customizeComboBox(JComboBox<String> comboBox) {
   	comboBox.addItem(UNIT_MILLIMETERS);
   	comboBox.addItem(UNIT_POINTS);
   	comboBox.addItemListener(new ItemListener() {

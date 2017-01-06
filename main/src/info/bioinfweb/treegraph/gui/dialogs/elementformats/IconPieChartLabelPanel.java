@@ -86,11 +86,11 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatsTab 
 	private SwingChangeMonitor iconMonitor = new SwingChangeMonitor();
 	private SwingChangeMonitor iconFilledMonitor = new SwingChangeMonitor();
 	private ChangeMonitor pieColorMonitor = new ChangeMonitor();
-	private ChangeMonitor internalLinesMonitor = new ChangeMonitor();
-	private ChangeMonitor linesForZerosMonitor = new ChangeMonitor();
-	private ChangeMonitor showTitleMonitor = new ChangeMonitor();
-	private ChangeMonitor captionsContentTypeMonitor = new ChangeMonitor();
-	private ChangeMonitor captionsLinkTypeMonitor = new ChangeMonitor();
+	private SwingChangeMonitor internalLinesMonitor = new SwingChangeMonitor();
+	private SwingChangeMonitor linesForZerosMonitor = new SwingChangeMonitor();
+	private SwingChangeMonitor showTitleMonitor = new SwingChangeMonitor();
+	private SwingChangeMonitor captionsContentTypeMonitor = new SwingChangeMonitor();
+	private SwingChangeMonitor captionsLinkTypeMonitor = new SwingChangeMonitor();
 	
 	private JPanel iconPanel = null;
 	private JComboBox<String> iconComboBox = null;
@@ -566,11 +566,7 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatsTab 
 		if (showInternalLinesCheckBox == null) {
 			showInternalLinesCheckBox = new JCheckBox();
 			showInternalLinesCheckBox.setText("Show internal lines");
-			showInternalLinesCheckBox.addItemListener(new java.awt.event.ItemListener() {
-				public void itemStateChanged(java.awt.event.ItemEvent e) {
-					internalLinesMonitor.registerChange();
-				}
-			});
+			showInternalLinesCheckBox.addItemListener(internalLinesMonitor);
 		}
 		return showInternalLinesCheckBox;
 	}
@@ -585,11 +581,7 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatsTab 
 		if (showNullLinesCheckBox == null) {
 			showNullLinesCheckBox = new JCheckBox();
 			showNullLinesCheckBox.setText("Show sectors with a value of 0");
-			showNullLinesCheckBox.addItemListener(new java.awt.event.ItemListener() {
-				public void itemStateChanged(java.awt.event.ItemEvent e) {
-					linesForZerosMonitor.registerChange();
-				}
-			});
+			showNullLinesCheckBox.addItemListener(linesForZerosMonitor);
 		}
 		return showNullLinesCheckBox;
 	}
@@ -598,11 +590,7 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatsTab 
 	private JCheckBox getShowTitleCheckBox() {
 		if (showTitleCheckBox == null) {
 			showTitleCheckBox = new JCheckBox("Show title");
-			showTitleCheckBox.addItemListener(new java.awt.event.ItemListener() {
-				public void itemStateChanged(java.awt.event.ItemEvent e) {
-					showTitleMonitor.registerChange();
-				}
-			});
+			showTitleCheckBox.addItemListener(showTitleMonitor);
 		}
 		return showTitleCheckBox;
 	}
@@ -705,11 +693,7 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatsTab 
 		if (captionsContentTypeComboBox == null) {
 			captionsContentTypeComboBox = new JComboBox<PieChartLabelCaptionContentType>(PieChartLabelCaptionContentType.values());
 			captionsContentTypeComboBox.setEditable(false);
-			captionsContentTypeComboBox.addItemListener(new java.awt.event.ItemListener() {
-				public void itemStateChanged(java.awt.event.ItemEvent e) {
-					captionsContentTypeMonitor.registerChange();
-				}
-			});
+			captionsContentTypeComboBox.addItemListener(captionsContentTypeMonitor);
 		}
 		return captionsContentTypeComboBox;
 	}
@@ -727,11 +711,7 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatsTab 
 		if (captionsLinkTypeComboBox == null) {
 			captionsLinkTypeComboBox = new JComboBox<PieChartLabelCaptionLinkType>(PieChartLabelCaptionLinkType.values());
 			captionsLinkTypeComboBox.setEditable(false);
-			captionsLinkTypeComboBox.addItemListener(new java.awt.event.ItemListener() {
-				public void itemStateChanged(java.awt.event.ItemEvent e) {
-					captionsLinkTypeMonitor.registerChange();
-				}
-			});
+			captionsLinkTypeComboBox.addItemListener(captionsLinkTypeMonitor);
 		}
 		return captionsLinkTypeComboBox;
 	}
