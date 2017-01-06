@@ -45,6 +45,7 @@ public class PhylogramPositioner extends RectangularCladogramPositioner {
 	
 	/**
 	 * This method is overwritten to ensure that no corner radius in painted.
+	 * 
 	 * @see info.bioinfweb.treegraph.graphics.positionpaint.RectangularCladogramPositioner#rescaleNodeWidth(info.bioinfweb.treegraph.document.Node, float)
 	 */
 	@Override
@@ -60,6 +61,7 @@ public class PhylogramPositioner extends RectangularCladogramPositioner {
 
 	/**
 	 * This method is overwritten to regard the stored branch lengths.
+	 * 
 	 * @see info.bioinfweb.treegraph.graphics.positionpaint.RectangularCladogramPositioner#rescaleBranchWidth(info.bioinfweb.treegraph.document.Branch, float)
 	 */
 	@Override

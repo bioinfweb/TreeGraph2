@@ -392,7 +392,7 @@ public class RectangularCladogramPositioner implements TreePositioner {
 				gf.getDocumentMargin().getTop().getInMillimeters() + 
 				overallHeight + 
 				gf.getDocumentMargin().getBottom().getInMillimeters());
-    //TODO H�he der Ma�stabsangaben hinzufg.
+    //TODO Höhe der Maßstabsangaben hinzufg.
   }
 	
 	
@@ -411,8 +411,9 @@ public class RectangularCladogramPositioner implements TreePositioner {
   /**
    * This methode can be overwritten by extending classes to define a different rescaling
    * process.
-   * @param branch - the branch to be rescaled 
-   * @param width - the old width of the branch in millimeters 
+   * 
+   * @param branch the branch to be rescaled 
+   * @param width the old width of the branch in millimeters 
    * @return the new width of the branch in millimeters
    */
   protected float rescaleBranchWidth(Branch branch, float width) {
@@ -428,6 +429,7 @@ public class RectangularCladogramPositioner implements TreePositioner {
   
 	/**
 	 * Rescales the subtree under root.
+	 * 
 	 * @param root
 	 * @param shift
 	 * @return the maximal y cooronate for the end of a branch
@@ -759,8 +761,9 @@ public class RectangularCladogramPositioner implements TreePositioner {
 			float overallWidth = calculateWidthsHeights(document.getTree().getPaintStart()); // gesamtbreite = Schritt1(Zeichenausgangspunkt);
 	    Branch rootBranch = document.getTree().getPaintStart().getAfferentBranch(); 
 	    if ((rootBranch != null) && !document.getTree().getFormats().getShowRooted()) {
-	    	overallWidth -= rootBranch.getPosition(type).getWidth().getInMillimeters();
+    		overallWidth -= rootBranch.getPosition(type).getWidth().getInMillimeters();
 	    	rootBranch.getPosition(type).getWidth().setInMillimeters(0f);
+	    	//overallWidth += labelBlockWidth(rootBranch.getLabels());  // Add width of root label block, which will still need space, even if the branch is not visible.
 	    }
 	    float overallHeight = positionElements(document.getTree().getPaintStart(), overallWidth, 
 	    		document.getTree().getFormats().getDocumentMargin().getTop().getInMillimeters());  // Schritt2(Zeichenausgangspunkt, gesamtbreite1, DocumentMargin.Top);
@@ -780,6 +783,12 @@ public class RectangularCladogramPositioner implements TreePositioner {
 	    overallWidth = positionLegends(overallWidth);
 	    overallHeight = Math.max(overallHeight, moveForLegends());
 	    
+	  	// Add possible space for root labels:
+	  	if ((rootBranch != null) && !rootBranch.getLabels().isEmpty()) {
+	  		float rootBranchWidth = rootBranch.getPosition(type).getWidth().getInMillimeters();
+	  		overallWidth += Math.max(rootBranchWidth, labelBlockWidth(rootBranch.getLabels())) - rootBranchWidth;
+	  	}
+	  	
 	    calculatePaintDimension(overallWidth, overallHeight);
 	  }
 	  else {
