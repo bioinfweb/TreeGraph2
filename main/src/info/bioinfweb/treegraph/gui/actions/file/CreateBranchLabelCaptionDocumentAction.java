@@ -26,6 +26,7 @@ import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.PieChartLabel;
 import info.bioinfweb.treegraph.document.TextElement;
 import info.bioinfweb.treegraph.document.TextElementData;
+import info.bioinfweb.treegraph.document.TextLabel;
 import info.bioinfweb.treegraph.document.format.PieChartLabelCaptionContentType;
 import info.bioinfweb.treegraph.document.format.PieChartLabelFormats;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
@@ -54,6 +55,11 @@ public class CreateBranchLabelCaptionDocumentAction extends DocumentAction {
 
 	
 	private void editPieChartLabel(PieChartLabel label, String sourceDataID) {
+		TextElementData title = label.getData();
+		if (title.isEmpty() || (title.isString() && title.getText().isEmpty())) {
+			title.setText(label.getID());
+		}
+		
 		for (PieChartLabel.SectionData data : label.getSectionDataList()) {
 			if ((data.getCaption() == null) || data.getCaption().isEmpty()) {
 				data.setCaption(data.getValueColumnID());
@@ -81,8 +87,8 @@ public class CreateBranchLabelCaptionDocumentAction extends DocumentAction {
 		
 		Label[] labels = TreeSerializer.getElementsOnNode(root, Label.class);
 		for (Label label : labels) {
-			if (label instanceof TextElement) {
-				((TextElement) label).getData().setText(label.getID());  // Set text label text or pie chart label title.
+			if (label instanceof TextLabel) {
+				((TextLabel)label).getData().setText(label.getID());
 			}
 			if (label instanceof PieChartLabel) {
 				editPieChartLabel((PieChartLabel)label, sourceDataID);
