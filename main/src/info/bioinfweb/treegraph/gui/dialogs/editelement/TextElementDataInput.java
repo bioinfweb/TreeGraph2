@@ -25,6 +25,8 @@ import info.bioinfweb.treegraph.document.TextElementData;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,19 +75,20 @@ public class TextElementDataInput extends JPanel {
 	private JCheckBox getDecimalCheckBox() {
 		if (decimalCheckBox == null) {
 			decimalCheckBox = new JCheckBox("Decimal value");
-			decimalCheckBox.addChangeListener(new javax.swing.event.ChangeListener() {
-				public void stateChanged(javax.swing.event.ChangeEvent e) {
+			decimalCheckBox.addItemListener(new ItemListener() {
+				@Override
+				public void itemStateChanged(ItemEvent e) {
 					//TODO Is the following still necessary?
-//					String text = getTextField().getText();
-//					if (getDecimalCheckBox().isSelected()) {
-//						getValueTextField().setFormatterFactory(decimalFormatterFactory);
-//					}
-//					else {
-//						getValueTextField().setFormatterFactory(stringFormatterFactory);
-//					}
-//					getValueTextField().setText(text);  // Wert wurde durch Setzen neuer Factory gel�scht.
-					
-					fireValueChanged();
+//				String text = getTextField().getText();
+//				if (getDecimalCheckBox().isSelected()) {
+//					getValueTextField().setFormatterFactory(decimalFormatterFactory);
+//				}
+//				else {
+//					getValueTextField().setFormatterFactory(stringFormatterFactory);
+//				}
+//				getValueTextField().setText(text);  // Wert wurde durch Setzen neuer Factory gel�scht.
+				
+				fireValueChanged();
 				}
 			});
 		}

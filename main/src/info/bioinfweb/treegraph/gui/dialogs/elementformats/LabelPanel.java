@@ -69,10 +69,10 @@ public class LabelPanel extends JPanel implements ElementFormatsTab {
 	private JFormattedTextField lineNoTextField = null;
 	private JLabel linePosLabel = null;
 	private JFormattedTextField linePosTextField = null;
-	private ButtonGroup aboveBelowGroup = null;  //  @jve:decl-index=0:
-	private SwingChangeMonitor aboveMonitor = new SwingChangeMonitor();  //  @jve:decl-index=0:
-	private SwingChangeMonitor lineNoMonitor = new SwingChangeMonitor();  //  @jve:decl-index=0:
-	private SwingChangeMonitor linePosMonitor = new SwingChangeMonitor();  //  @jve:decl-index=0:
+	private ButtonGroup aboveBelowGroup = null;
+	private SwingChangeMonitor aboveMonitor = new SwingChangeMonitor();
+	private SwingChangeMonitor lineNoMonitor = new SwingChangeMonitor();
+	private SwingChangeMonitor linePosMonitor = new SwingChangeMonitor();
 	private JPanel aboveBelowPanel = null;
 	private JPanel labelNumbersPanel = null;
 	private JPanel marginPanel = null;
@@ -207,7 +207,7 @@ public class LabelPanel extends JPanel implements ElementFormatsTab {
 		if (aboveRadioButton == null) {
 			aboveRadioButton = new JRadioButton();
 			aboveRadioButton.setText("Above the branch");
-			aboveRadioButton.getModel().addChangeListener(aboveMonitor);
+			aboveRadioButton.getModel().addItemListener(aboveMonitor);
 		}
 		return aboveRadioButton;
 	}
@@ -222,7 +222,7 @@ public class LabelPanel extends JPanel implements ElementFormatsTab {
 		if (belowRadioButton == null) {
 			belowRadioButton = new JRadioButton();
 			belowRadioButton.setText("Below the branch");
-			belowRadioButton.getModel().addChangeListener(aboveMonitor);
+			belowRadioButton.getModel().addItemListener(aboveMonitor);
 		}
 		return belowRadioButton;
 	}

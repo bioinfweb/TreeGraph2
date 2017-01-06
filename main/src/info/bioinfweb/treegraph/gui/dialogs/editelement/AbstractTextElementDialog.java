@@ -25,6 +25,8 @@ import java.awt.Font;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
@@ -203,8 +205,9 @@ public abstract class AbstractTextElementDialog extends EditDialog {
 		if (decimalCheckBox == null) {
 			decimalCheckBox = new JCheckBox();
 			decimalCheckBox.setText("Save as decimal value");
-			decimalCheckBox.addChangeListener(new javax.swing.event.ChangeListener() {
-				public void stateChanged(javax.swing.event.ChangeEvent e) {
+			decimalCheckBox.addItemListener(new ItemListener() {
+				@Override
+				public void itemStateChanged(ItemEvent e) {
 					String text = getValueTextField().getText();
 					if (getDecimalCheckBox().isSelected()) {
 						getValueTextField().setFormatterFactory(decimalFormatterFactory);
