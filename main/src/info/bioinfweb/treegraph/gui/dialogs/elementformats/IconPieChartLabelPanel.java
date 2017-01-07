@@ -107,13 +107,14 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatsTab 
 	private JCheckBox showInternalLinesCheckBox = null;
 	private JCheckBox showNullLinesCheckBox = null;
 	private JCheckBox showTitleCheckBox;
-	private JButton captionsFontButton;
+	private JButton captionsTextFormatsButton;
 	private JPanel chartCaptionsPanel;
 	private JLabel captionsContentTypeLabel;
 	private JComboBox<PieChartLabelCaptionContentType> captionsContentTypeComboBox;
 	private JLabel captionsLinkTypeLabel;
 	private JComboBox<PieChartLabelCaptionLinkType> captionsLinkTypeComboBox;
 	private JHTMLLabel captionLinkHelpLabel;
+	private JLabel captionsTextFormatsLabel;
 	
 	
 	/**
@@ -156,7 +157,9 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatsTab 
 		getCaptionsContentTypeComboBox().setEnabled(pieChartLabelSel);
 		getCaptionsLinkTypeLabel().setEnabled(pieChartLabelSel);
 		getCaptionsLinkTypeComboBox().setEnabled(pieChartLabelSel);
-		getCaptionsFontButton().setEnabled(pieChartLabelSel);
+		getCaptionLinkHelpLabel().setEnabled(pieChartLabelSel);
+		getCaptionsTextFormatsButton().setEnabled(pieChartLabelSel);
+		getCaptionsTextFormatsLabel().setEnabled(pieChartLabelSel);
 		if (pieChartLabelSel) {
 			PieChartLabelFormats f = pieChartLabel.getFormats();
 			if (!iconLabelSel) {
@@ -596,17 +599,28 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatsTab 
 	}
 	
 	
-	private JButton getCaptionsFontButton() {
-		if (captionsFontButton == null) {
-			captionsFontButton = new JButton("Change caption text formats...");
-			captionsFontButton.addActionListener(new ActionListener() {
+	private JButton getCaptionsTextFormatsButton() {
+		if (captionsTextFormatsButton == null) {
+			captionsTextFormatsButton = new JButton("Change caption text formats...");
+			captionsTextFormatsButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					getCaptionsDialog().execute();
 				}
 			});
 		}
-		return captionsFontButton;
+		return captionsTextFormatsButton;
 	}
+	
+	
+	private JLabel getCaptionsTextFormatsLabel() {
+		if (captionsTextFormatsLabel == null) {
+			captionsTextFormatsLabel = new JLabel(
+					"<html>(Use the botton above to format captions and<br>the tabs in this dialog to format headings.)</html>");
+		}
+		return captionsTextFormatsLabel;
+	}
+	
+	
 	
 	
 	private JPanel getChartCaptionsPanel() {
@@ -667,15 +681,13 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatsTab 
 			gbc_captionsFontButton.insets = new Insets(0, 3, 0, 0);
 			gbc_captionsFontButton.gridx = 0;
 			gbc_captionsFontButton.gridy = 8;
-			chartCaptionsPanel.add(getCaptionsFontButton(), gbc_captionsFontButton);
+			chartCaptionsPanel.add(getCaptionsTextFormatsButton(), gbc_captionsFontButton);
 			GridBagConstraints gbc_captionsFontButtonLabel = new GridBagConstraints();
 			gbc_captionsFontButtonLabel.anchor = GridBagConstraints.WEST;
 			gbc_captionsFontButtonLabel.insets = new Insets(2, 3, 0, 0);
 			gbc_captionsFontButtonLabel.gridx = 0;
 			gbc_captionsFontButtonLabel.gridy = 9;
-			chartCaptionsPanel.add(new JLabel(
-					"<html>(Use the botton above to format captions and<br>the tabs in this dialog to format headings.)</html>"), 
-					gbc_captionsFontButtonLabel);
+			chartCaptionsPanel.add(getCaptionsTextFormatsLabel(), gbc_captionsFontButtonLabel);
 		}
 		return chartCaptionsPanel;
 	}
