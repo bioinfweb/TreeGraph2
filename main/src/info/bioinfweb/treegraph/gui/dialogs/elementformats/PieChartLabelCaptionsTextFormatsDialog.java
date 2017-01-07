@@ -37,14 +37,14 @@ import javax.swing.JTabbedPane;
 
 
 
-public class PieChartLabelCaptionsTextDialog extends OkCancelApplyWikiHelpDialog {
+public class PieChartLabelCaptionsTextFormatsDialog extends OkCancelApplyWikiHelpDialog {
 	private List<ElementFormatsTab> tabs;
 	
 	private JPanel jContentPane;
 	private JTabbedPane tabbedPane;
 	
 	
-	public PieChartLabelCaptionsTextDialog(Dialog owner) {
+	public PieChartLabelCaptionsTextFormatsDialog(Dialog owner) {
 		super(owner, true, Main.getInstance().getWikiHelp());
 		setHelpCode(92);
 		initialize();
@@ -111,7 +111,7 @@ public class PieChartLabelCaptionsTextDialog extends OkCancelApplyWikiHelpDialog
 
 	private void initialize() {
 		setContentPane(getJContentPane());
-		setTitle("Pie chart label captions font formats");
+		setTitle("Pie chart label captions text formats");
 		pack();
 	}
 	

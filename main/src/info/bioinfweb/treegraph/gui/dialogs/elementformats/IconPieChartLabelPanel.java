@@ -82,7 +82,7 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatsTab 
 	public static final int PREVIEW_SIZE = 50;
 	
 	
-	private PieChartLabelCaptionsTextDialog captionsDialog = null;
+	private PieChartLabelCaptionsTextFormatsDialog captionsDialog = null;
 	private SwingChangeMonitor iconMonitor = new SwingChangeMonitor();
 	private SwingChangeMonitor iconFilledMonitor = new SwingChangeMonitor();
 	private ChangeMonitor pieColorMonitor = new ChangeMonitor();
@@ -288,9 +288,9 @@ public class IconPieChartLabelPanel extends JPanel implements ElementFormatsTab 
 	}
 	
 	
-	private PieChartLabelCaptionsTextDialog getCaptionsDialog() {
+	private PieChartLabelCaptionsTextFormatsDialog getCaptionsDialog() {
 		if (captionsDialog == null) {
-			captionsDialog = new PieChartLabelCaptionsTextDialog((Dialog)SwingUtilities.windowForComponent(this));
+			captionsDialog = new PieChartLabelCaptionsTextFormatsDialog((Dialog)SwingUtilities.windowForComponent(this));
 		}
 		return captionsDialog;
 	}
