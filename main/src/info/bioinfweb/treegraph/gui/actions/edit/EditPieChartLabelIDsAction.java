@@ -31,7 +31,6 @@ import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 import java.awt.event.KeyEvent;
 
 import javax.swing.Action;
-import javax.swing.KeyStroke;
 
 
 
@@ -43,7 +42,7 @@ public class EditPieChartLabelIDsAction extends EditDialogAction {
 	public EditPieChartLabelIDsAction (MainFrame mainFrame) {
 		super(mainFrame);
 	  
-		putValue(Action.NAME, "Edit pie chart data IDs..."); 
+		putValue(Action.NAME, "Edit pie chart data IDs and captions..."); 
 	  putValue(Action.MNEMONIC_KEY, KeyEvent.VK_P);
 //		putValue(Action.ACCELERATOR_KEY, 
 //				KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
