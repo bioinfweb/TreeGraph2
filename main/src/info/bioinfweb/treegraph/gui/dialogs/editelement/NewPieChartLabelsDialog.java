@@ -56,7 +56,7 @@ public class NewPieChartLabelsDialog extends NewGraphicalLabelsDialog {
 	 */
 	public NewPieChartLabelsDialog(Frame owner) {
 		super(owner);
-		setHelpCode(55);
+		setHelpCode(91);
 		initialize();
 		setLocationRelativeTo(owner);
 	}

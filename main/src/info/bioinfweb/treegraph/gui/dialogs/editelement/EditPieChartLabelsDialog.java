@@ -39,7 +39,7 @@ public class EditPieChartLabelsDialog extends NewPieChartLabelsDialog {
 	 */
 	public EditPieChartLabelsDialog(Frame owner) {
 		super(owner);
-		setHelpCode(56);
+		setHelpCode(94);
 		setTitle("Edit pie chart source data IDs");
 		getIDPanel().setVisible(false);
 		getTitlePanel().setVisible(false);
