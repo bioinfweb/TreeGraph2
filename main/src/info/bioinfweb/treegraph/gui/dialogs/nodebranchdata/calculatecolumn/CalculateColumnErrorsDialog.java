@@ -76,7 +76,7 @@ public class CalculateColumnErrorsDialog extends OkCancelApplyWikiHelpDialog {
 	
 	private void selectNode(String uniqueName) {
 		TreeViewPanel panel = MainFrame.getInstance().getActiveTreeFrame().getTreeViewPanel();
-		panel.getSelection().set(panel.getDocument().getTree().getNodeByUniqueName(uniqueName));
+		panel.getSelection().set(panel.getDocument().getTree().getNodeByUniqueName(uniqueName));  // If uniqueName is null, null will be returned and the selection will be cleared.
 	}
 	
 
