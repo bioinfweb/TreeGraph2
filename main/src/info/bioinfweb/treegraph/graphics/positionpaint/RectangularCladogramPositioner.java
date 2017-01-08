@@ -817,7 +817,7 @@ public class RectangularCladogramPositioner implements TreePositioner {
   }
   
   
-  protected boolean xToHigh(float x, PositionData pd) {
+  protected boolean xToLow(float x, PositionData pd) {
   	return x < pd.getLeft().getInMillimeters();
   }
 	
@@ -826,14 +826,14 @@ public class RectangularCladogramPositioner implements TreePositioner {
 			float margin) {
 		
 		NodePositionData pd = root.getPosition(type);
-		float middle = pd.getTop().getInMillimeters() + 0.5f * pd.getHeight().getInMillimeters();
-		if (Math2.isBetween(y, middle - pd.getHeightAbove(), middle + pd.getHeightBelow())) {
+		float centerY = pd.getTop().getInMillimeters() + 0.5f * pd.getHeight().getInMillimeters();
+		if (Math2.isBetween(y, centerY - pd.getHeightAbove(), centerY + pd.getHeightBelow())) {
 			if (root.hasAfferentBranch()) {
-				if (xToHigh(x, root.getAfferentBranch().getPosition(type))) {
+				if (root.hasParent() && xToLow(x, root.getAfferentBranch().getPosition(type))) {  // Invisible root branches may still have labels.
 					return null;  // Weder Label noch kommender Unterbaum kommen in Frage.
 				}
 				if (root.getAfferentBranch().getPosition(type).contains(x, y, margin)) {
-					if (root.getPosition(type).contains(x, y, margin)) {  // Bei �berlappung Knoten bevorzugen
+					if (root.getPosition(type).contains(x, y, margin)) {  // Bei Überlappung Knoten bevorzugen
 						return root;
 					}
 					else {
@@ -848,7 +848,7 @@ public class RectangularCladogramPositioner implements TreePositioner {
 				}
 			}
 			
-			if (xToHigh(x, pd)) {
+			if (xToLow(x, pd)) {
 				return null;  // Punkt liegt links vom folgenden Teilbaum.
 			}
 			else if (root.getPosition(type).contains(x, y, margin)) {

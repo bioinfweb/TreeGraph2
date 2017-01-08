@@ -102,7 +102,7 @@ public class PhylogramPositioner extends RectangularCladogramPositioner {
 	 * Always returns <code>false</code> because label blocks could overlap to the left in a phylogram.
 	 */
 	@Override
-	protected boolean xToHigh(float x, PositionData pd) {
+	protected boolean xToLow(float x, PositionData pd) {
 		return false;
 	}
 }
