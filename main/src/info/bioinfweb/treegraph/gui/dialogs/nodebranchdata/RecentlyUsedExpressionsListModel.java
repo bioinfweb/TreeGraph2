@@ -81,7 +81,7 @@ public class RecentlyUsedExpressionsListModel extends DefaultComboBoxModel<Strin
 	@Override
   public void addElement(String expression) {
 		removeElement(expression);  // Possibly remove the element, if it is already contained at another position.
-	  super.addElement(expression);  // Add the element to the top of the list.
+	  super.insertElementAt(expression, 0);  // Add the element to the top of the list.
 		cutToSize();
   }
   
