@@ -401,6 +401,7 @@ main/src/info/bioinfweb/treegraph/document/undo/edit/SortLeavesEdit.java -text s
 main/src/info/bioinfweb/treegraph/document/undo/edit/TextElementEdit.java -text
 main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/AbstractFunction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/DefaultValueIDFunction.java -text
+main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/ErrorInfo.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/IDFunction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/UndefinedIDException.java -text
 main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/noarg/NoArgBooleanFunction.java -text svneol=unset#text/plain
@@ -725,7 +726,6 @@ main/src/info/bioinfweb/treegraph/gui/dialogs/io/imexporttable/SelectImportTable
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/loadlogger/LoadLoggerDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/loadlogger/MessagesListModel.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/AbstractNodeBranchDataColumnsDialog.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/CalculateColumnDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/CopyColumnDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/DefaultDocumentAdapterDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/IntervalDialog.java -text
@@ -733,6 +733,10 @@ main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/NodeBranchDataColum
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/RecentlyUsedExpressionsListModel.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/RenameIDDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/TextIDElementTypeInput.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/calculatecolumn/CalculateColumnDialog.java -text
+main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/calculatecolumn/CalculateColumnErrorsDialog.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/calculatecolumn/ErrorsTableModel.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/calculatecolumn/package-info.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdatainput/NewNodeBranchDataInput.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdatainput/NodeBranchDataInput.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdatainput/NodeDataComboBoxModel.java -text

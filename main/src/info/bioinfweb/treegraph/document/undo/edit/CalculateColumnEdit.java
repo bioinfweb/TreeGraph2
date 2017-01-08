@@ -38,6 +38,7 @@ import info.bioinfweb.treegraph.document.nodebranchdata.UniqueNameAdapter;
 import info.bioinfweb.treegraph.document.tools.IDManager;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
 import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.AbstractFunction;
+import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.ErrorInfo;
 import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.UndefinedIDException;
 import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.string.ContainsFunction;
 import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.string.EndsWithFunction;
@@ -66,6 +67,7 @@ import info.bioinfweb.treegraph.document.undo.nodebranchdata.NodeBranchDataColum
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -90,7 +92,8 @@ public class CalculateColumnEdit extends DocumentEdit {
 	public static final String NODE_NAMES_VAR = "NAME";
 	public static final String BRANCH_LENGTH_VAR = "LENGTH";
 	
-	public static final String UNKNOWN_FUNCTION_NAME_ERROR = "Syntax Error (implicit multiplication not enabled)";
+	public static final String UNKNOWN_FUNCTION_NAME_ERROR = 
+			"Syntax Error (implicit multiplication not enabled). This error can also occur if a misspelled function name was used.";
 	
 	
   private NodeBranchDataAdapter targetAdapter;
@@ -105,7 +108,7 @@ public class CalculateColumnEdit extends DocumentEdit {
   private boolean isEvaluating = false;
   private boolean isEvaluatingDecimal = true;
   private Node position = null;
-  private List<String> errors = new ArrayList<String>();
+  private List<ErrorInfo> errors = new ArrayList<ErrorInfo>();
   private Map<String, NodeBranchDataColumnBackup> backups = new HashMap<>();
 	
 	
@@ -312,7 +315,7 @@ public class CalculateColumnEdit extends DocumentEdit {
 				error = evaluationStep(targetColumnExpression);
 				result = (error == null);
 				if (!result) {
-					errors.add("Error in target column expression: " + error);
+					errors.add(new ErrorInfo(error, false));
 				}
 			}
 			
@@ -335,7 +338,7 @@ public class CalculateColumnEdit extends DocumentEdit {
 					error = evaluationStep(valueExpression);
 					result = (error == null);
 					if (!result) {
-						errors.add("Error in value expression: " + error);
+						errors.add(new ErrorInfo(error, true));
 					}
 				}
 			}
@@ -426,11 +429,9 @@ public class CalculateColumnEdit extends DocumentEdit {
 	  	
 	    parser.parseExpression(targetColumnExpression);
 	    if (parser.hasError()) {
-	  		errors.add("Calculating a value for the node " + position.getUniqueName() + 
-	  				" was skipped because of the following error in calulating the target columns ID: \"" + 
-	  				parser.getErrorInfo());
+	  		errors.add(new ErrorInfo(position.getUniqueName(), parser.getErrorInfo(), false));
 	  		return null;
-	    }
+	    }                                                                                                                                                                       
 	    else {
 	    	NodeBranchDataAdapter result;
 	    	Object value = parser.getValueAsObject();
@@ -450,8 +451,8 @@ public class CalculateColumnEdit extends DocumentEdit {
 	    		if (value != null) {
 	    			valueType = value.getClass().getCanonicalName();
 	    		}
-		  		errors.add("Calculating a value for the node " + position.getUniqueName() + 
-		  				" was skipped because the column ID expression did not result in a adapter or string (" + valueType + ").");
+		  		errors.add(new ErrorInfo(position.getUniqueName(), "The column ID expression did not result in a adapter or string (" + 
+		  						valueType + ").", false));
 		  		return null;
 	    	}
 	    	
@@ -486,7 +487,7 @@ public class CalculateColumnEdit extends DocumentEdit {
   		
 	    parser.parseExpression(valueExpression);
 	    if (parser.hasError()) {
-	    	errors.add(parser.getErrorInfo());
+	    	errors.add(new ErrorInfo(root.getUniqueName(), parser.getErrorInfo(), true));
 	    }
 	    else {
 	    	Object result = parser.getValueAsObject();
@@ -505,7 +506,7 @@ public class CalculateColumnEdit extends DocumentEdit {
 	    	}
 	    	else {
 	    		adapter.delete(root);
-	    		errors.add("Invalid result type (Must be decimal or string.)");
+	    		errors.add(new ErrorInfo(root.getUniqueName(), "Invalid result type (Must be decimal or string.)", true));
 	    	}
 	    }
   	}
@@ -583,25 +584,48 @@ public class CalculateColumnEdit extends DocumentEdit {
 	}
 	
 	
+//	@Override
+//  public String getWarningText() {
+//		if (hasWarnings()) {
+//			return "The following errors occurred when trying to calculate the single cells:\n\n" + getErrors();
+//		}
+//		else {
+//			return null;
+//		}
+//  }
+//
+//
+//	@Override
+//  public boolean hasWarnings() {
+//	  return !errors.isEmpty();
+//  }
+
+
+	public boolean hasErrors() {
+		return !errors.isEmpty();
+	}
+	
+	
 	/**
 	 * Returns a description of the errors that occurred during the last call of 
 	 * {@link #redo()} or {@link #evaluate()}.
 	 * 
 	 * @return a string possibly containing line breaks
 	 */
-	public String getErrors() {
-		if (errors.isEmpty()) {
-			return "";
-		}
-		else {
-			StringBuffer result = new StringBuffer(errors.size() * 64);
-			for (String line : errors) {
-				if (UNKNOWN_FUNCTION_NAME_ERROR.equals(line)) {
-					line += ". This error can also occur if a misspelled function name was used.";
-				}
-		    result.append(line + "\n");
-	    }
-			return result.substring(0, result.length() - 1);  // Cut off last line break.
-		}
+	public List<ErrorInfo> getErrors() {
+		return Collections.unmodifiableList(errors);
+//		if (errors.isEmpty()) {
+//			return "";
+//		}
+//		else {
+//			StringBuffer result = new StringBuffer(errors.size() * 64);
+//			for (String line : errors) {
+//				if (UNKNOWN_FUNCTION_NAME_ERROR.equals(line)) {
+//					line += ". This error can also occur if a misspelled function name was used.";
+//				}
+//		    result.append(line + "\n");
+//	    }
+//			return result.substring(0, result.length() - 1);  // Cut off last line break.
+//		}
 	}
 }

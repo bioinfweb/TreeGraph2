@@ -16,17 +16,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.gui.dialogs.nodebranchdata;
+package info.bioinfweb.treegraph.gui.dialogs.nodebranchdata.calculatecolumn;
 
 
+import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.treegraph.document.nodebranchdata.NewHiddenBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.edit.CalculateColumnEdit;
 import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
 import info.bioinfweb.treegraph.gui.dialogs.editelement.TextElementDataInput;
+import info.bioinfweb.treegraph.gui.dialogs.nodebranchdata.RecentlyUsedExpressionsListModel;
+import info.bioinfweb.treegraph.gui.dialogs.nodebranchdata.TextIDElementTypeInput;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NewNodeBranchDataInput;
+import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
+import info.bioinfweb.wikihelp.client.WikiHelpOptionPane;
 
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -59,6 +65,8 @@ public class CalculateColumnDialog extends EditDialog {
 	
 	private static final long serialVersionUID = 1L;
 
+
+	private CalculateColumnErrorsDialog errorDialog;
 	
 	private JPanel jContentPane = null;
 	private JPanel expressionPanel = null;
@@ -89,6 +97,7 @@ public class CalculateColumnDialog extends EditDialog {
 		setHelpCode(90);
 		initialize();
 		setLocationRelativeTo(owner);
+		errorDialog = new CalculateColumnErrorsDialog(owner);
 	}
 
 	
@@ -113,7 +122,7 @@ public class CalculateColumnDialog extends EditDialog {
 		if (getSingleTargetRB().isSelected()) {
 			singleSelectedAdapter = getColumnInput().getSelectedAdapter();
 		}
-		CalculateColumnEdit edit = new CalculateColumnEdit(getDocument(), singleSelectedAdapter, 
+		final CalculateColumnEdit edit = new CalculateColumnEdit(getDocument(), singleSelectedAdapter, 
 				(String)getColumnIDExpressionComboBox().getSelectedItem(), getColumnIDTypeInput().getSelectedType(), 
 				(String)getValueExpressionComboBox().getSelectedItem(), getClearTargetColumnsCheckBox().isSelected(), 
 				getDefaultValueCheckBox().isSelected() ? getDefaultValueInput().getValue() : null);
@@ -121,6 +130,16 @@ public class CalculateColumnDialog extends EditDialog {
 		boolean result = edit.evaluate();
 		if (result) {
 			getDocument().executeEdit(edit);
+			if (edit.hasErrors()) {
+				EventQueue.invokeLater(new Runnable() {
+					@Override
+					public void run() {  // Display that dialog after this has been closed, so that the tree is visible. 
+						errorDialog.execute(edit.getErrors());
+					}
+				});
+			}
+			
+			// Save expression lists:
 			getValueExpressionsModel().addElement((String)getValueExpressionComboBox().getSelectedItem());
 			getColumnIDExpressionsModel().addElement((String)getColumnIDExpressionComboBox().getSelectedItem());
 			try {
