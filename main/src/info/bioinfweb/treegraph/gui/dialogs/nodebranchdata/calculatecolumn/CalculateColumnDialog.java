@@ -1,6 +1,6 @@
 /*
  * TreeGraph 2 - A feature rich editor for phylogenetic trees
- * Copyright (C) 2007-2011, 2013-2016  Ben Stöver, Sarah Wiechers, Kai Müller
+ * Copyright (C) 2007-2011, 2013-2017  Ben Stöver, Sarah Wiechers, Kai Müller
  * <http://treegraph.bioinfweb.info/>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,6 @@
 package info.bioinfweb.treegraph.gui.dialogs.nodebranchdata.calculatecolumn;
 
 
-import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.treegraph.document.nodebranchdata.NewHiddenBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.edit.CalculateColumnEdit;
@@ -28,8 +27,6 @@ import info.bioinfweb.treegraph.gui.dialogs.editelement.TextElementDataInput;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdata.RecentlyUsedExpressionsListModel;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdata.TextIDElementTypeInput;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NewNodeBranchDataInput;
-import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
-import info.bioinfweb.wikihelp.client.WikiHelpOptionPane;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
