@@ -41,7 +41,7 @@ import info.bioinfweb.wikihelp.client.WikiHelp;
 
 
 /**
- * This is the main class that starts TreeGraph 2. It is implemented as a singleton.
+ * This is the main class that starts <i>TreeGraph 2</i>. It is implemented as a singleton.
  * 
  * @author Ben St&ouml;ver
  */
@@ -69,7 +69,7 @@ public class Main extends ProgramMainClass {
 	
 	
 	private Main() {
-		super(new ApplicationVersion(2, 12, 0, 675, ApplicationType.BETA));
+		super(new ApplicationVersion(2, 13, 0, 747, ApplicationType.BETA));
 		errorReporter = new SwingErrorReporter(ERROR_URL, getVersion());
 	}
 	
