@@ -57,6 +57,7 @@ public class NewickFormatPanel extends JPanel implements TreeFormatPanel {
 	private JRadioButton singleQuotationRadioButton;
 	private JRadioButton spacesAsUnderscoresRadioButton;
 	private final ButtonGroup nodeNameFormatButtonGroup = new ButtonGroup();
+	private JLabel lblPressTheHelp;
 	
 	
 	public NewickFormatPanel() {
@@ -178,18 +179,24 @@ public class NewickFormatPanel extends JPanel implements TreeFormatPanel {
 			GridBagConstraints gbc_singleQuotationRadioButton = new GridBagConstraints();
 			gbc_singleQuotationRadioButton.weightx = 1.0;
 			gbc_singleQuotationRadioButton.fill = GridBagConstraints.HORIZONTAL;
-			gbc_singleQuotationRadioButton.insets = new Insets(0, 0, 0, 5);
+			gbc_singleQuotationRadioButton.insets = new Insets(0, 0, 5, 5);
 			gbc_singleQuotationRadioButton.gridx = 0;
 			gbc_singleQuotationRadioButton.gridy = 0;
 			nodeNameFormatPanel.add(getSingleQuotationRadioButton(), gbc_singleQuotationRadioButton);
 			
 			GridBagConstraints gbc_spacesAsUnderscoresRadioButton = new GridBagConstraints();
-			gbc_spacesAsUnderscoresRadioButton.insets = new Insets(0, 0, 0, 5);
+			gbc_spacesAsUnderscoresRadioButton.insets = new Insets(0, 0, 5, 0);
 			gbc_spacesAsUnderscoresRadioButton.anchor = GridBagConstraints.EAST;
 			gbc_spacesAsUnderscoresRadioButton.weightx = 1.0;
 			gbc_spacesAsUnderscoresRadioButton.gridx = 1;
 			gbc_spacesAsUnderscoresRadioButton.gridy = 0;
 			nodeNameFormatPanel.add(getSpacesAsUnderscoresRadioButton(), gbc_spacesAsUnderscoresRadioButton);
+			GridBagConstraints gbc_lblPressTheHelp = new GridBagConstraints();
+			gbc_lblPressTheHelp.gridwidth = 2;
+			gbc_lblPressTheHelp.insets = new Insets(0, 0, 0, 5);
+			gbc_lblPressTheHelp.gridx = 0;
+			gbc_lblPressTheHelp.gridy = 1;
+			nodeNameFormatPanel.add(getLblPressTheHelp(), gbc_lblPressTheHelp);
 		}
 		return nodeNameFormatPanel;
 	}
@@ -207,9 +214,15 @@ public class NewickFormatPanel extends JPanel implements TreeFormatPanel {
 	
 	private JRadioButton getSpacesAsUnderscoresRadioButton() {
 		if (spacesAsUnderscoresRadioButton == null) {
-			spacesAsUnderscoresRadioButton = new JRadioButton("Spaces as underscores (No underscores in names possible)");
+			spacesAsUnderscoresRadioButton = new JRadioButton("Spaces as underscores, not quotation marks");
 			nodeNameFormatButtonGroup.add(spacesAsUnderscoresRadioButton);
 		}
 		return spacesAsUnderscoresRadioButton;
+	}
+	private JLabel getLblPressTheHelp() {
+		if (lblPressTheHelp == null) {
+			lblPressTheHelp = new JLabel("Press the help button to understand the difference between these options.");
+		}
+		return lblPressTheHelp;
 	}
 }
