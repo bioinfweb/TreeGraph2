@@ -38,7 +38,7 @@ public class NeXMLFactory implements SingleReadWriteFactory {
 
 	
 	public DocumentWriter getWriter() {
-		return null;
+		return new NeXMLWriter();
 	}
 	
 
@@ -48,6 +48,6 @@ public class NeXMLFactory implements SingleReadWriteFactory {
 
 	
 	public boolean hasWriter() {
-		return false;
+		return true;
 	}
 }

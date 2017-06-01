@@ -48,6 +48,7 @@ import info.bioinfweb.wikihelp.client.WikiHelp;
 public class Main extends ProgramMainClass {
 	public static final String CONFIG_DIR = System.getProperty("user.home") + System.getProperty("file.separator") + ".TreeGraph2";
 	
+	public static final String APPLICATION_NAME = "TreeGraph 2";
 	public static final String TG_URL = "http://treegraph.bioinfweb.info/"; 
 	public static final String ERROR_URL = TG_URL + "errorreport/ApplicationReport.jsp"; 
 	public static final String WIKI_URL = TG_URL + "Help/";

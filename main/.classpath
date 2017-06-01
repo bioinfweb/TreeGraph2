@@ -45,6 +45,6 @@
 	<classpathentry kind="lib" path="/info.bioinfweb.commons.bio/bin"/>
 	<classpathentry kind="lib" path="include/lib/owlapi-XMLUtils-4.1.4.jar"/>
 	<classpathentry kind="lib" path="include/lib/commons-collections4-4.1.jar"/>
-	<classpathentry kind="lib" path="/info.bioinfweb.jphyloio.core/bin"/>
+	<classpathentry kind="lib" path="/info.bioinfweb.jphyloio.core/bin" sourcepath="/info.bioinfweb.jphyloio.core/src"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

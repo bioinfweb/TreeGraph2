@@ -314,7 +314,7 @@ public class MainFrame extends JFrame implements Runnable {
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setContentPane(getJContentPane());
 		setJMenuBar(getMainMenu());
-		setTitle("TreeGraph 2");
+		setTitle(Main.APPLICATION_NAME);
 		addWindowListener(getWindowListener());
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		loadIcons();

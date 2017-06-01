@@ -60,6 +60,7 @@ public class Tree {
   private Legends legends = new Legends(this);
 	private EnumMap<PositionPaintType, DistanceDimension> paintDimensions = new EnumMap<PositionPaintType, DistanceDimension>(PositionPaintType.class);
   private GlobalFormats formats = new GlobalFormats();
+  private long nodeCount = 0;
   private TreeMap<String, Node> uniqueNameMap = new TreeMap<String, Node>();
   private HashSet<PaintableElement> elementSet = new HashSet<PaintableElement>();
 	
@@ -170,6 +171,7 @@ public class Tree {
 		if (!root.hasUniqueName()) {
 			root.setUniqueName(newUniqueName());
 		}
+		nodeCount++;
 		uniqueNameMap.put(root.getUniqueName(), root);
 		
 		for (int i = 0; i < root.getChildren().size(); i++) {
@@ -182,6 +184,7 @@ public class Tree {
 	 * Assigns unique names to all nodes in the tree currently without one.
 	 */
 	public void assignUniqueNames() {
+		nodeCount = 0;
 		uniqueNameMap.clear();
 		if (getPaintStart() != null) {
 			assignUniqueNamesToSubtree(getPaintStart());
@@ -204,6 +207,19 @@ public class Tree {
 			elementSet.add(legends.get(i));
 		}
 		elementSet.add(getScaleBar());
+	}
+	
+	
+	/**
+	 * Returns the number of internal and terminal nodes in this tree.
+	 * <p>
+	 * Note that the return value is buffered and determined when {@link #assignUniqueNames()} is called. Therefore the value returned here might be out-dated
+	 * if {@link #assignUniqueNames()} was not already called after the tree was edited.
+	 * 
+	 * @return the number of nodes in the tree
+	 */
+	public long getNodeCount() {
+		return nodeCount;
 	}
 	
 	

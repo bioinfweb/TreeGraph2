@@ -299,7 +299,8 @@ public class Document extends SwingSaver
 	@Override
 	protected void saveDataToFile(File file) {
 		try {
-			ReadWriteFactory.getInstance().getWriter(ReadWriteFormat.XTG).write(this, file);
+			//ReadWriteFactory.getInstance().getWriter(ReadWriteFormat.XTG).write(this, file);
+			ReadWriteFactory.getInstance().getWriter(ReadWriteFormat.NEXML).write(this, file);  // Temporary change for testing.
 		}
 		catch (Exception e) {
 			e.printStackTrace();

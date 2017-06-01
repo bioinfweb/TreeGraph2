@@ -265,9 +265,14 @@ main/src/info/bioinfweb/treegraph/document/io/TreeSelector.java -text
 main/src/info/bioinfweb/treegraph/document/io/ancestralstate/AncestralStateData.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/io/ancestralstate/BayesTraitsCommandsWriter.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/io/ancestralstate/BayesTraitsReader.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/io/jphyloio/AbstractNodeEdgeListDataAdapter.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/io/jphyloio/EdgeListDataAdapter.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/io/jphyloio/NeXMLFactory.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/io/jphyloio/NeXMLFilter.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/io/jphyloio/NeXMLReader.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/io/jphyloio/NeXMLWriter.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/io/jphyloio/NodeListDataAdapter.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/io/jphyloio/TreeDataAdapter.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/io/newick/BranchLengthsScaler.java -text
 main/src/info/bioinfweb/treegraph/document/io/newick/CommentDataReader.java -text
 main/src/info/bioinfweb/treegraph/document/io/newick/NewickException.java -text
