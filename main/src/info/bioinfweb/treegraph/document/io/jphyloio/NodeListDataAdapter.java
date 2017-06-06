@@ -19,7 +19,6 @@
 package info.bioinfweb.treegraph.document.io.jphyloio;
 
 
-import java.awt.Color;
 import java.io.IOException;
 
 import info.bioinfweb.commons.io.W3CXSConstants;
@@ -35,7 +34,6 @@ import info.bioinfweb.jphyloio.events.type.EventContentType;
 import info.bioinfweb.jphyloio.utils.JPhyloIOWritingUtils;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.Tree;
-import info.bioinfweb.treegraph.document.format.adapters.distance.LeafMarginLeftAdapter;
 import info.bioinfweb.treegraph.document.io.xtg.XTGConstants;
 
 
@@ -67,9 +65,8 @@ public class NodeListDataAdapter extends AbstractNodeEdgeListDataAdapter<NodeEve
 		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, id + "_" + DEFAULT_META_ID_PREFIX + getSequentialNumber(), null,
 					info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_IS_DECIMAL, W3CXSConstants.DATA_TYPE_BOOLEAN, node.getData().isDecimal(), null);
 
-		//TODO Change color output to hex code.		
 		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, id + "_" + DEFAULT_META_ID_PREFIX + getSequentialNumber(), null,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_TEXT_COLOR, W3CXSConstants.DATA_TYPE_INT, node.getFormats().getTextColor().getRGB(), null);
+				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_TEXT_COLOR, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.DATA_TYPE_COLOR, node.getFormats().getTextColor(), null);
 
 		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, id + "_" + DEFAULT_META_ID_PREFIX + getSequentialNumber(), null,
 				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_TEXT_HEIGHT, W3CXSConstants.DATA_TYPE_FLOAT, node.getFormats().getTextHeight().getInMillimeters(), null);
@@ -84,28 +81,26 @@ public class NodeListDataAdapter extends AbstractNodeEdgeListDataAdapter<NodeEve
 				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_DECIMAL_FORMAT, W3CXSConstants.DATA_TYPE_STRING, node.getData().getDecimal(), null);
 		
 		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, id + "_" + DEFAULT_META_ID_PREFIX + getSequentialNumber(), null,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_LOCALE_LANG, W3CXSConstants.DATA_TYPE_STRING, "en", null);
+				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_LOCALE_LANG, W3CXSConstants.DATA_TYPE_STRING, node.getFormats().getLocale().getLanguage(), null);
 		
 		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, id + "_" + DEFAULT_META_ID_PREFIX + getSequentialNumber(), null,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_LOCALE_COUNTRY, W3CXSConstants.DATA_TYPE_STRING, " ", null);
+				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_LOCALE_COUNTRY, W3CXSConstants.DATA_TYPE_STRING, node.getFormats().getLocale().getCountry(), null);
+			
+		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, id + "_" + DEFAULT_META_ID_PREFIX + getSequentialNumber(), null,
+				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_LOCALE_VARIANT, W3CXSConstants.DATA_TYPE_STRING, node.getFormats().getLocale().getVariant(), null);
 		
 		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, id + "_" + DEFAULT_META_ID_PREFIX + getSequentialNumber(), null,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_LOCALE_VARIANT, W3CXSConstants.DATA_TYPE_STRING, " ", null);
-		
-		//TODO Change color output to hex code.	
-		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, id + "_" + DEFAULT_META_ID_PREFIX + getSequentialNumber(), null,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_LINE_COLOR, W3CXSConstants.DATA_TYPE_INT, node.getFormats().getLineColor().getRGB(), null);
+				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_LINE_COLOR, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.DATA_TYPE_COLOR, node.getFormats().getLineColor(), null);
 		
 		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, id + "_" + DEFAULT_META_ID_PREFIX + getSequentialNumber(), null,
 				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_LINE_WIDTH, W3CXSConstants.DATA_TYPE_FLOAT, node.getFormats().getLineWidth().getInMillimeters(), null);
 		
 		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, id + "_" + DEFAULT_META_ID_PREFIX + getSequentialNumber(), null,
 				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_UNIQUE_NAME, W3CXSConstants.DATA_TYPE_STRING, node.getUniqueName(), null);
-		
-		//TODO Add proper Object value.
-//		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, id + "_" + DEFAULT_META_ID_PREFIX + getSequentialNumber(), null,
-//				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_EDGE_RADIUS, W3CXSConstants.DATA_TYPE_FLOAT, node.getFormats().rad, null);
-		
+
+		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, id + "_" + DEFAULT_META_ID_PREFIX + getSequentialNumber(), null,
+				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_EDGE_RADIUS, W3CXSConstants.DATA_TYPE_FLOAT, node.getFormats().getCornerRadius().getInMillimeters(), null);
+				
 		
 		receiver.add(new ResourceMetadataEvent(id + "_" + DEFAULT_META_ID_PREFIX + getSequentialNumber(), null, new URIOrStringIdentifier(null, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_LEAF_MARGIN), null, null));
 		

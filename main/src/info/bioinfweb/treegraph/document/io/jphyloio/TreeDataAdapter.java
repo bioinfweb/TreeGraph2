@@ -21,22 +21,16 @@ package info.bioinfweb.treegraph.document.io.jphyloio;
 
 import java.io.IOException;
 
-import info.bioinfweb.commons.io.W3CXSConstants;
 import info.bioinfweb.jphyloio.ReadWriteConstants;
 import info.bioinfweb.jphyloio.ReadWriteParameterMap;
 import info.bioinfweb.jphyloio.dataadapters.JPhyloIOEventReceiver;
 import info.bioinfweb.jphyloio.dataadapters.ObjectListDataAdapter;
 import info.bioinfweb.jphyloio.dataadapters.TreeNetworkDataAdapter;
 import info.bioinfweb.jphyloio.dataadapters.implementations.NoSetsTreeNetworkDataAdapter;
-import info.bioinfweb.jphyloio.events.ConcreteJPhyloIOEvent;
 import info.bioinfweb.jphyloio.events.EdgeEvent;
 import info.bioinfweb.jphyloio.events.LabeledIDEvent;
 import info.bioinfweb.jphyloio.events.NodeEvent;
-import info.bioinfweb.jphyloio.events.meta.ResourceMetadataEvent;
-import info.bioinfweb.jphyloio.events.meta.URIOrStringIdentifier;
 import info.bioinfweb.jphyloio.events.type.EventContentType;
-import info.bioinfweb.jphyloio.formats.nexml.NeXMLConstants;
-import info.bioinfweb.jphyloio.utils.JPhyloIOWritingUtils;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.io.xtg.XTGConstants;
@@ -58,7 +52,7 @@ public class TreeDataAdapter extends NoSetsTreeNetworkDataAdapter implements Tre
 	
 	
 //	private int getSequentialNumber() {
-//		return sequentialNumber++;
+//		return sequentialNumber++; //Int doesn't start at 1, seems to be the number of metadata to write * the number of nodes present. Possible fix?
 //	}
 	
 

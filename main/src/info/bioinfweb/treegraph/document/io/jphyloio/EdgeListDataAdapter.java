@@ -26,9 +26,11 @@ import info.bioinfweb.jphyloio.ReadWriteConstants;
 import info.bioinfweb.jphyloio.ReadWriteParameterMap;
 import info.bioinfweb.jphyloio.ReadWriteParameterNames;
 import info.bioinfweb.jphyloio.dataadapters.JPhyloIOEventReceiver;
+import info.bioinfweb.jphyloio.events.ConcreteJPhyloIOEvent;
 import info.bioinfweb.jphyloio.events.EdgeEvent;
 import info.bioinfweb.jphyloio.events.meta.ResourceMetadataEvent;
 import info.bioinfweb.jphyloio.events.meta.URIOrStringIdentifier;
+import info.bioinfweb.jphyloio.events.type.EventContentType;
 import info.bioinfweb.jphyloio.utils.JPhyloIOWritingUtils;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.Tree;
@@ -46,7 +48,7 @@ public class EdgeListDataAdapter extends AbstractNodeEdgeListDataAdapter<EdgeEve
 	
 	
 	private int getSequentialNumber() {
-		return sequentialNumber++;
+		return sequentialNumber++; //Int doesn't start at 1, seems to be the number of metadata to write * the number of nodes present. Possible fix?
 	}
 	
 
@@ -62,35 +64,88 @@ public class EdgeListDataAdapter extends AbstractNodeEdgeListDataAdapter<EdgeEve
 	
 	@Override
 	protected void writeContentData(ReadWriteParameterMap parameters, JPhyloIOEventReceiver receiver, String id, Node node)
-			throws IOException, IllegalArgumentException {
-		
-		//TODO Change color output to hex code.		
-		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, id + "_" + DEFAULT_META_ID_PREFIX + getSequentialNumber(), null,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_BRANCH_ATTR_LINE_COLOR, W3CXSConstants.DATA_TYPE_INT, node.getFormats().getTextColor().getRGB(), null);
+			throws IOException, IllegalArgumentException {		
 	
 		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, id + "_" + DEFAULT_META_ID_PREFIX + getSequentialNumber(), null,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_BRANCH_ATTR_LINE_WIDTH, W3CXSConstants.DATA_TYPE_FLOAT, node.getFormats().getLineWidth(), null);
-		
-		//TODO Add proper Object value.
-//		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, id + "_" + DEFAULT_META_ID_PREFIX + getSequentialNumber(), null,
-//				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_BRANCH_ATTR_CONSTANT_WIDTH, W3CXSConstants.DATA_TYPE_BOOLEAN, , null);
+				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_BRANCH_ATTR_LINE_COLOR, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.DATA_TYPE_COLOR, node.getAfferentBranch().getFormats().getLineColor(), null);
 	
 		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, id + "_" + DEFAULT_META_ID_PREFIX + getSequentialNumber(), null,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_BRANCH_ATTR_MIN_LENGTH, W3CXSConstants.DATA_TYPE_FLOAT, node.getAfferentBranch().getLength(), null);
+				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_BRANCH_ATTR_LINE_WIDTH, W3CXSConstants.DATA_TYPE_FLOAT, node.getAfferentBranch().getFormats().getLineWidth().getInMillimeters(), null);
 
-		//TODO Add proper Object value.
-//		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, id + "_" + DEFAULT_META_ID_PREFIX + getSequentialNumber(), null,
-//				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_BRANCH_ATTR_MIN_SPACE_ABOVE, W3CXSConstants.DATA_TYPE_FLOAT, , null);
-//
-//		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, id + "_" + DEFAULT_META_ID_PREFIX + getSequentialNumber(), null,
-//				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_BRANCH_ATTR_MIN_SPACE_BELOW, W3CXSConstants.DATA_TYPE_FLOAT, , null);
+		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, id + "_" + DEFAULT_META_ID_PREFIX + getSequentialNumber(), null,
+				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_BRANCH_ATTR_CONSTANT_WIDTH, W3CXSConstants.DATA_TYPE_BOOLEAN, node.getAfferentBranch().getFormats().isConstantWidth(), null);	
+	
+		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, id + "_" + DEFAULT_META_ID_PREFIX + getSequentialNumber(), null,
+				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_BRANCH_ATTR_MIN_LENGTH, W3CXSConstants.DATA_TYPE_FLOAT, node.getAfferentBranch().getFormats().getMinLength().getInMillimeters(), null);
+
+		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, id + "_" + DEFAULT_META_ID_PREFIX + getSequentialNumber(), null,
+				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_BRANCH_ATTR_MIN_SPACE_ABOVE, W3CXSConstants.DATA_TYPE_FLOAT, node.getAfferentBranch().getFormats().getMinSpaceAbove().getInMillimeters(), null);
+
+		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, id + "_" + DEFAULT_META_ID_PREFIX + getSequentialNumber(), null,
+				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_BRANCH_ATTR_MIN_SPACE_BELOW, W3CXSConstants.DATA_TYPE_FLOAT, node.getAfferentBranch().getFormats().getMinSpaceBelow().getInMillimeters(), null);
 		
 		
 		receiver.add(new ResourceMetadataEvent(id + "_" + DEFAULT_META_ID_PREFIX + getSequentialNumber(), null, new URIOrStringIdentifier(null, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_TEXT_LABEL), null, null));
-		//TODO Add proper Object value.
+//		
+//		//TODO Add proper Object values.
 //		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, id + "_" + DEFAULT_META_ID_PREFIX + getSequentialNumber(), null,
-//				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_TEXT_LABEL_ATTR_TEXT, W3CXSConstants.DATA_TYPE_STRING, , null);
+//				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_TEXT_LABEL_ATTR_TEXT, W3CXSConstants.DATA_TYPE_STRING, node.getAfferentBranch().getLabels()., null);
+//		
+//		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, id + "_" + DEFAULT_META_ID_PREFIX + getSequentialNumber(), null,
+//				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_TEXT_LABEL_ATTR_TEXT_COLOR, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.DATA_TYPE_COLOR, node.getAfferentBranch().getLabels(), null);
+//		
+//		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, id + "_" + DEFAULT_META_ID_PREFIX + getSequentialNumber(), null,
+//				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_TEXT_LABEL_ATTR_TEXT_HEIGHT, W3CXSConstants.DATA_TYPE_FLOAT, node.getAfferentBranch().getLabels()., null);
+//		
+//		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, id + "_" + DEFAULT_META_ID_PREFIX + getSequentialNumber(), null,
+//				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_TEXT_LABEL_ATTR_TEXT_STYLE, W3CXSConstants.DATA_TYPE_STRING, node.getAfferentBranch().getLabels()., null);
+//		
+//		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, id + "_" + DEFAULT_META_ID_PREFIX + getSequentialNumber(), null,
+//				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_TEXT_LABEL_ATTR_FONT_FAMILY, W3CXSConstants.DATA_TYPE_STRING, node.getAfferentBranch().getLabels()., null);
+//		
+//		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, id + "_" + DEFAULT_META_ID_PREFIX + getSequentialNumber(), null,
+//				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_TEXT_LABEL_ATTR_DECIMAL_FORMAT, W3CXSConstants.DATA_TYPE_STRING, node.getAfferentBranch().getLabels()., null);
+//		
+//		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, id + "_" + DEFAULT_META_ID_PREFIX + getSequentialNumber(), null,
+//				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_TEXT_LABEL_ATTR_LOCALE_LANG, W3CXSConstants.DATA_TYPE_STRING, node.getAfferentBranch().getLabels()., null);
+//		
+//		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, id + "_" + DEFAULT_META_ID_PREFIX + getSequentialNumber(), null,
+//				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_TEXT_LABEL_ATTR_LOCALE_COUNTRY, W3CXSConstants.DATA_TYPE_STRING, node.getAfferentBranch().getLabels()., null);
+//		
+//		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, id + "_" + DEFAULT_META_ID_PREFIX + getSequentialNumber(), null,
+//				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_TEXT_LABEL_ATTR_LOCALE_VARIANT, W3CXSConstants.DATA_TYPE_STRING, node.getAfferentBranch().getLabels()., null);
+//		
+//		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, id + "_" + DEFAULT_META_ID_PREFIX + getSequentialNumber(), null,
+//				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_TEXT_LABEL_ATTR_ID, W3CXSConstants.DATA_TYPE_STRING, node.getAfferentBranch().getLabels()., null);
+//		
+//		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, id + "_" + DEFAULT_META_ID_PREFIX + getSequentialNumber(), null,
+//				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_TEXT_LABEL_ATTR_ABOVE, W3CXSConstants.DATA_TYPE_BOOLEAN, node.getAfferentBranch().getLabels().getAbove(above, lineNo, lineIndex), null);
+//		
+//		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, id + "_" + DEFAULT_META_ID_PREFIX + getSequentialNumber(), null,
+//				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_TEXT_LABEL_ATTR_LINE_NO, W3CXSConstants.DATA_TYPE_INT, node.getAfferentBranch().getLabels().getLineNo(above, label), null);
+//		
+//		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, id + "_" + DEFAULT_META_ID_PREFIX + getSequentialNumber(), null,
+//				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_TEXT_LABEL_ATTR_LINE_POS, W3CXSConstants.DATA_TYPE_DOUBLE, node.getAfferentBranch().getLabels().getLastLinePos(above, lineNumber), null);
+		
+		receiver.add(ConcreteJPhyloIOEvent.createEndEvent(EventContentType.RESOURCE_META));
+				
+		
+		receiver.add(new ResourceMetadataEvent(id + "_" + DEFAULT_META_ID_PREFIX + getSequentialNumber(), null, new URIOrStringIdentifier(null, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_LABEL_MARGIN), null, null));
 
+		//TODO Add proper object values.		
+//		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, id + "_" + DEFAULT_META_ID_PREFIX + getSequentialNumber(), null,
+//				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_LABEL_MARGIN_ATTR_LEFT, W3CXSConstants.DATA_TYPE_FLOAT, node.getAfferentBranch().getLabels(), null);
+//
+//		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, id + "_" + DEFAULT_META_ID_PREFIX + getSequentialNumber(), null,
+//				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_LABEL_MARGIN_ATTR_TOP, W3CXSConstants.DATA_TYPE_FLOAT, node.getAfferentBranch().getLabels(), null);
+//		
+//		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, id + "_" + DEFAULT_META_ID_PREFIX + getSequentialNumber(), null,
+//				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_LABEL_MARGIN_ATTR_RIGHT, W3CXSConstants.DATA_TYPE_FLOAT, node.getAfferentBranch().getLabels(), null);
+//
+//		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, id + "_" + DEFAULT_META_ID_PREFIX + getSequentialNumber(), null,
+//				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_LABEL_MARGIN_ATTR_BOTTOM, W3CXSConstants.DATA_TYPE_FLOAT, node.getAfferentBranch().getLabels(), null);
+
+		receiver.add(ConcreteJPhyloIOEvent.createEndEvent(EventContentType.RESOURCE_META));
 
 
 
