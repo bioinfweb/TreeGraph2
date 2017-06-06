@@ -23,18 +23,27 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
+import info.bioinfweb.commons.IntegerIDManager;
+import info.bioinfweb.commons.io.W3CXSConstants;
+import info.bioinfweb.jphyloio.ReadWriteConstants;
 import info.bioinfweb.jphyloio.ReadWriteParameterMap;
 import info.bioinfweb.jphyloio.dataadapters.JPhyloIOEventReceiver;
 import info.bioinfweb.jphyloio.dataadapters.ObjectListDataAdapter;
+import info.bioinfweb.jphyloio.events.ConcreteJPhyloIOEvent;
 import info.bioinfweb.jphyloio.events.LabeledIDEvent;
+import info.bioinfweb.jphyloio.events.meta.ResourceMetadataEvent;
+import info.bioinfweb.jphyloio.events.meta.URIOrStringIdentifier;
+import info.bioinfweb.jphyloio.events.type.EventContentType;
+import info.bioinfweb.jphyloio.utils.JPhyloIOWritingUtils;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.NodeType;
+import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.tools.TreeSerializer;
 
 
 
-public abstract class AbstractNodeEdgeListDataAdapter<E extends LabeledIDEvent> implements ObjectListDataAdapter<E> {
+public abstract class AbstractNodeEdgeListDataAdapter<E extends LabeledIDEvent> implements ObjectListDataAdapter<E>, ReadWriteConstants {
 	private Tree treeModel;
 	private String idPrefix;
 	private List<Node> nodeList;
@@ -105,4 +114,27 @@ public abstract class AbstractNodeEdgeListDataAdapter<E extends LabeledIDEvent> 
 	
 	protected abstract void writeContentData(ReadWriteParameterMap parameters, JPhyloIOEventReceiver receiver, String id, Node node)
 			throws IOException, IllegalArgumentException;
+	
+	
+	protected void writeHiddenDataMap(JPhyloIOEventReceiver receiver, String id, Node node, IntegerIDManager idManager) throws IOException {
+		if (!node.getHiddenDataMap().isEmpty()) {
+			receiver.add(new ResourceMetadataEvent(id + "_" + DEFAULT_META_ID_PREFIX + idManager.createNewID(), null, new URIOrStringIdentifier(null, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_INVISIBLE_DATA), null, null));	
+			Iterator<String> iterator = node.getHiddenDataMap().idIterator();
+			while (iterator.hasNext()) {
+				String dataID = iterator.next();
+				TextElementData value = node.getHiddenDataMap().get(dataID);
+				
+				JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, id + "_" + DEFAULT_META_ID_PREFIX + idManager.createNewID(), null,
+						info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_INVISIBLE_DATA_ATTR_ID, W3CXSConstants.DATA_TYPE_STRING, dataID, null);
+				
+				JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, id + "_" + DEFAULT_META_ID_PREFIX + idManager.createNewID(), null,
+						info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_INVISIBLE_DATA_ATTR_IS_DECIMAL, W3CXSConstants.DATA_TYPE_BOOLEAN, value.isDecimal(), null);
+				
+				JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, id + "_" + DEFAULT_META_ID_PREFIX + idManager.createNewID(), null,
+							info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_INVISIBLE_DATA_ATTR_TEXT, 
+							value.isDecimal() ? W3CXSConstants.DATA_TYPE_DOUBLE : W3CXSConstants.DATA_TYPE_STRING, value.toString(), null);			
+			}
+			receiver.add(ConcreteJPhyloIOEvent.createEndEvent(EventContentType.RESOURCE_META));
+		}
+	}
 }
