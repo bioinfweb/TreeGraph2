@@ -118,19 +118,19 @@ public abstract class AbstractNodeEdgeListDataAdapter<E extends LabeledIDEvent> 
 	
 	protected void writeHiddenDataMap(JPhyloIOEventReceiver receiver, String id, Node node, IntegerIDManager idManager) throws IOException {
 		if (!node.getHiddenDataMap().isEmpty()) {
-			receiver.add(new ResourceMetadataEvent(id + "_" + DEFAULT_META_ID_PREFIX + idManager.createNewID(), null, new URIOrStringIdentifier(null, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_INVISIBLE_DATA), null, null));	
+			receiver.add(new ResourceMetadataEvent(TreeDataAdapter.createMetaID(id, idManager), null, new URIOrStringIdentifier(null, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_INVISIBLE_DATA), null, null));	
 			Iterator<String> iterator = node.getHiddenDataMap().idIterator();
 			while (iterator.hasNext()) {
 				String dataID = iterator.next();
 				TextElementData value = node.getHiddenDataMap().get(dataID);
 				
-				JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, id + "_" + DEFAULT_META_ID_PREFIX + idManager.createNewID(), null,
+				JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
 						info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_INVISIBLE_DATA_ATTR_ID, W3CXSConstants.DATA_TYPE_STRING, dataID, null);
 				
-				JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, id + "_" + DEFAULT_META_ID_PREFIX + idManager.createNewID(), null,
+				JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
 						info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_INVISIBLE_DATA_ATTR_IS_DECIMAL, W3CXSConstants.DATA_TYPE_BOOLEAN, value.isDecimal(), null);
 				
-				JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, id + "_" + DEFAULT_META_ID_PREFIX + idManager.createNewID(), null,
+				JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
 							info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_INVISIBLE_DATA_ATTR_TEXT, 
 							value.isDecimal() ? W3CXSConstants.DATA_TYPE_DOUBLE : W3CXSConstants.DATA_TYPE_STRING, value.toString(), null);			
 			}
