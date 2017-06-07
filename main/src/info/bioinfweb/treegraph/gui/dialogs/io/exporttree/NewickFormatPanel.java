@@ -219,6 +219,8 @@ public class NewickFormatPanel extends JPanel implements TreeFormatPanel {
 		}
 		return spacesAsUnderscoresRadioButton;
 	}
+	
+	
 	private JLabel getLblPressTheHelp() {
 		if (lblPressTheHelp == null) {
 			lblPressTheHelp = new JLabel("Press the help button to understand the difference between these options.");
