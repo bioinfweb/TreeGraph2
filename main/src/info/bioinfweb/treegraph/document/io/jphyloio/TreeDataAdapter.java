@@ -37,14 +37,15 @@ import info.bioinfweb.jphyloio.events.meta.ResourceMetadataEvent;
 import info.bioinfweb.jphyloio.events.meta.URIOrStringIdentifier;
 import info.bioinfweb.jphyloio.events.type.EventContentType;
 import info.bioinfweb.jphyloio.utils.JPhyloIOWritingUtils;
+import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.io.xtg.XTGConstants;
 
 
 
 public class TreeDataAdapter extends NoSetsTreeNetworkDataAdapter implements TreeNetworkDataAdapter, XTGConstants, ReadWriteConstants {	
-
 	private Tree treeModel;
 	private ObjectListDataAdapter<NodeEvent> nodeList;
 	private ObjectListDataAdapter<EdgeEvent> edgeList;
@@ -56,7 +57,14 @@ public class TreeDataAdapter extends NoSetsTreeNetworkDataAdapter implements Tre
 		this.treeModel = treeModel;
 	}
 	
-	//creates ID to add to unique name of meta event.
+
+	/**
+	 * Creates ID to add to unique name of meta event.
+	 * 
+	 * @param id
+	 * @param idManager
+	 * @return
+	 */
 	public static String createMetaID(String id, IntegerIDManager idManager) {		
 		return id + "_" + DEFAULT_META_ID_PREFIX + idManager.createNewID();
 	}
@@ -68,29 +76,38 @@ public class TreeDataAdapter extends NoSetsTreeNetworkDataAdapter implements Tre
 
 		receiver.add(new ResourceMetadataEvent(TreeDataAdapter.createMetaID(DEFAULT_TREE_ID_PREFIX, idManager), null, new URIOrStringIdentifier(null, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_GLOBAL_FORMATS), null, null));		
 		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(DEFAULT_TREE_ID_PREFIX, idManager), null,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_GLOBAL_FORMATS_ATTR_BG_COLOR, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.DATA_TYPE_COLOR, treeModel.getFormats().getBackgroundColor(), null);
+				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_GLOBAL_FORMATS_ATTR_BG_COLOR, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.DATA_TYPE_COLOR, 
+				treeModel.getFormats().getBackgroundColor(), null);
 		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(DEFAULT_TREE_ID_PREFIX, idManager), null,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_GLOBAL_FORMATS_ATTR_BRANCH_LENGTH_SCALE, W3CXSConstants.DATA_TYPE_DOUBLE, treeModel.getFormats().getBranchLengthScale().getInMillimeters(), null);
+				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_GLOBAL_FORMATS_ATTR_BRANCH_LENGTH_SCALE, W3CXSConstants.DATA_TYPE_DOUBLE, 
+				treeModel.getFormats().getBranchLengthScale().getInMillimeters(), null);
 		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(DEFAULT_TREE_ID_PREFIX, idManager), null,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_GLOBAL_FORMATS_ATTR_SHOW_SCALE_BAR, W3CXSConstants.DATA_TYPE_BOOLEAN, treeModel.getFormats().getShowScaleBar(), null);
+				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_GLOBAL_FORMATS_ATTR_SHOW_SCALE_BAR, W3CXSConstants.DATA_TYPE_BOOLEAN, 
+				treeModel.getFormats().getShowScaleBar(), null);
 		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(DEFAULT_TREE_ID_PREFIX, idManager), null,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_GLOBAL_FORMATS_ATTR_ALIGN_TO_SUBTREE, W3CXSConstants.DATA_TYPE_BOOLEAN, treeModel.getFormats().getAlignLegendsToSubtree(), null);
+				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_GLOBAL_FORMATS_ATTR_ALIGN_TO_SUBTREE, W3CXSConstants.DATA_TYPE_BOOLEAN, 
+				treeModel.getFormats().getAlignLegendsToSubtree(), null);
 		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(DEFAULT_TREE_ID_PREFIX, idManager), null,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_GLOBAL_FORMATS_ATTR_POSITION_LABELS_TO_LEFT, W3CXSConstants.DATA_TYPE_BOOLEAN, treeModel.getFormats().getPositionLabelsToLeft(), null);
+				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_GLOBAL_FORMATS_ATTR_POSITION_LABELS_TO_LEFT, W3CXSConstants.DATA_TYPE_BOOLEAN, 
+				treeModel.getFormats().getPositionLabelsToLeft(), null);
 		
 		receiver.add(new ResourceMetadataEvent(TreeDataAdapter.createMetaID(DEFAULT_TREE_ID_PREFIX, idManager), null, new URIOrStringIdentifier(null, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_DOCUMENT_MARGIN), null, null));
 		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(DEFAULT_TREE_ID_PREFIX, idManager), null,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_DOCUMENT_MARGIN_ATTR_LEFT, W3CXSConstants.DATA_TYPE_FLOAT, treeModel.getFormats().getDocumentMargin().getLeft().getInMillimeters(), null);
+				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_DOCUMENT_MARGIN_ATTR_LEFT, W3CXSConstants.DATA_TYPE_FLOAT, 
+				treeModel.getFormats().getDocumentMargin().getLeft().getInMillimeters(), null);
 		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(DEFAULT_TREE_ID_PREFIX, idManager), null,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_DOCUMENT_MARGIN_ATTR_TOP, W3CXSConstants.DATA_TYPE_FLOAT, treeModel.getFormats().getDocumentMargin().getTop().getInMillimeters(), null);
+				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_DOCUMENT_MARGIN_ATTR_TOP, W3CXSConstants.DATA_TYPE_FLOAT, 
+				treeModel.getFormats().getDocumentMargin().getTop().getInMillimeters(), null);
 		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(DEFAULT_TREE_ID_PREFIX, idManager), null,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_DOCUMENT_MARGIN_ATTR_RIGHT, W3CXSConstants.DATA_TYPE_FLOAT, treeModel.getFormats().getDocumentMargin().getRight().getInMillimeters(), null);
+				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_DOCUMENT_MARGIN_ATTR_RIGHT, W3CXSConstants.DATA_TYPE_FLOAT, 
+				treeModel.getFormats().getDocumentMargin().getRight().getInMillimeters(), null);
 		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(DEFAULT_TREE_ID_PREFIX, idManager), null,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_DOCUMENT_MARGIN_ATTR_BOTTOM, W3CXSConstants.DATA_TYPE_FLOAT, treeModel.getFormats().getDocumentMargin().getBottom().getInMillimeters(), null);
+				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_DOCUMENT_MARGIN_ATTR_BOTTOM, W3CXSConstants.DATA_TYPE_FLOAT, 
+				treeModel.getFormats().getDocumentMargin().getBottom().getInMillimeters(), null);
 		receiver.add(ConcreteJPhyloIOEvent.createEndEvent(EventContentType.RESOURCE_META));
 		receiver.add(ConcreteJPhyloIOEvent.createEndEvent(EventContentType.RESOURCE_META));
-		
-		
+				
+
 //		receiver.add(new ResourceMetadataEvent(TreeDataAdapter.createMetaID(DEFAULT_TREE_ID_PREFIX, idManager), null, new URIOrStringIdentifier(null, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_BRANCH_DATA_ADAPTERS), null, null));	
 //		
 //		receiver.add(new ResourceMetadataEvent(TreeDataAdapter.createMetaID(DEFAULT_TREE_ID_PREFIX, idManager), null, new URIOrStringIdentifier(null, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_BRANCH_DATA_ADAPTERS_ADAPTER), null, null));		

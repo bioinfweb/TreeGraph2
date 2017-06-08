@@ -61,42 +61,45 @@ public class NodeListDataAdapter extends AbstractNodeEdgeListDataAdapter<NodeEve
 		
 		IntegerIDManager idManager = new IntegerIDManager();
 		
+		EdgeListDataAdapter.getTextAttributes(receiver, id, idManager, node, 
+				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_TEXT_COLOR, 
+				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_TEXT_HEIGHT,
+				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_TEXT_STYLE, 
+				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_FONT_FAMILY,
+				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_DECIMAL_FORMAT,
+				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_LOCALE_LANG,
+				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_LOCALE_COUNTRY, 
+				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_LOCALE_VARIANT);
+		
 		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
-					info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_IS_DECIMAL, W3CXSConstants.DATA_TYPE_BOOLEAN, node.getData().isDecimal(), null);
+					info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_IS_DECIMAL, W3CXSConstants.DATA_TYPE_BOOLEAN, 
+					node.getData().isDecimal(), null);
+			JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
+				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_LINE_COLOR, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.DATA_TYPE_COLOR, 
+				node.getFormats().getLineColor(), null);
+			JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
+				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_LINE_WIDTH, W3CXSConstants.DATA_TYPE_FLOAT, 
+				node.getFormats().getLineWidth().getInMillimeters(), null);
+			JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
+				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_UNIQUE_NAME, W3CXSConstants.DATA_TYPE_STRING, 
+				node.getUniqueName(), null);
 		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_TEXT_COLOR, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.DATA_TYPE_COLOR, node.getFormats().getTextColor(), null);
-		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_TEXT_HEIGHT, W3CXSConstants.DATA_TYPE_FLOAT, node.getFormats().getTextHeight().getInMillimeters(), null);
-			JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_TEXT_STYLE, W3CXSConstants.DATA_TYPE_STRING, node.getFormats().getTextStyle(), null);
-		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_FONT_FAMILY, W3CXSConstants.DATA_TYPE_STRING, node.getFormats().getFontName(), null);
-			JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_DECIMAL_FORMAT, W3CXSConstants.DATA_TYPE_STRING, node.getData().getDecimal(), null);
-			JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_LOCALE_LANG, W3CXSConstants.DATA_TYPE_STRING, node.getFormats().getLocale().getLanguage(), null);
-			JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_LOCALE_COUNTRY, W3CXSConstants.DATA_TYPE_STRING, node.getFormats().getLocale().getCountry(), null);
-			JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_LOCALE_VARIANT, W3CXSConstants.DATA_TYPE_STRING, node.getFormats().getLocale().getVariant(), null);
-			JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_LINE_COLOR, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.DATA_TYPE_COLOR, node.getFormats().getLineColor(), null);
-			JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_LINE_WIDTH, W3CXSConstants.DATA_TYPE_FLOAT, node.getFormats().getLineWidth().getInMillimeters(), null);
-			JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_UNIQUE_NAME, W3CXSConstants.DATA_TYPE_STRING, node.getUniqueName(), null);
-		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_EDGE_RADIUS, W3CXSConstants.DATA_TYPE_FLOAT, node.getFormats().getCornerRadius().getInMillimeters(), null);
+				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_EDGE_RADIUS, W3CXSConstants.DATA_TYPE_FLOAT, 
+				node.getFormats().getCornerRadius().getInMillimeters(), null);
 				
 		receiver.add(new ResourceMetadataEvent(TreeDataAdapter.createMetaID(id, idManager), null, new URIOrStringIdentifier(null, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_LEAF_MARGIN), null, null));
 			JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_LEAF_MARGIN_ATTR_LEFT, W3CXSConstants.DATA_TYPE_FLOAT, node.getFormats().getLeafMargin().getLeft().getInMillimeters(), null);
+				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_LEAF_MARGIN_ATTR_LEFT, W3CXSConstants.DATA_TYPE_FLOAT, 
+				node.getFormats().getLeafMargin().getLeft().getInMillimeters(), null);
 			JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_LEAF_MARGIN_ATTR_TOP, W3CXSConstants.DATA_TYPE_FLOAT, node.getFormats().getLeafMargin().getTop().getInMillimeters(), null);
+				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_LEAF_MARGIN_ATTR_TOP, W3CXSConstants.DATA_TYPE_FLOAT, 
+				node.getFormats().getLeafMargin().getTop().getInMillimeters(), null);
 		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_LEAF_MARGIN_ATTR_RIGHT, W3CXSConstants.DATA_TYPE_FLOAT, node.getFormats().getLeafMargin().getRight().getInMillimeters(), null);
+				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_LEAF_MARGIN_ATTR_RIGHT, W3CXSConstants.DATA_TYPE_FLOAT, 
+				node.getFormats().getLeafMargin().getRight().getInMillimeters(), null);
 			JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_LEAF_MARGIN_ATTR_BOTTOM, W3CXSConstants.DATA_TYPE_FLOAT, node.getFormats().getLeafMargin().getBottom().getInMillimeters(), null);
+				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_LEAF_MARGIN_ATTR_BOTTOM, W3CXSConstants.DATA_TYPE_FLOAT, 
+				node.getFormats().getLeafMargin().getBottom().getInMillimeters(), null);
 			receiver.add(ConcreteJPhyloIOEvent.createEndEvent(EventContentType.RESOURCE_META));
 		
 		writeHiddenDataMap(receiver, id, node, idManager);
