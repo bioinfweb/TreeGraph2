@@ -36,7 +36,10 @@ import info.bioinfweb.jphyloio.events.meta.ResourceMetadataEvent;
 import info.bioinfweb.jphyloio.events.meta.URIOrStringIdentifier;
 import info.bioinfweb.jphyloio.events.type.EventContentType;
 import info.bioinfweb.jphyloio.utils.JPhyloIOWritingUtils;
+import info.bioinfweb.treegraph.document.LineElement;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.PaintableElement;
+import info.bioinfweb.treegraph.document.TextElement;
 import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.io.xtg.XTGConstants;
@@ -55,13 +58,56 @@ public class NodeListDataAdapter extends AbstractNodeEdgeListDataAdapter<NodeEve
 	}
 	
 	
+	public static void getLineAtrributes(JPhyloIOEventReceiver receiver, String id, LineElement element, IntegerIDManager idManager,
+			QName predicateLineColor, QName predicateLineWidth )
+			throws IOException {
+		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
+			predicateLineColor, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.DATA_TYPE_COLOR, 
+			element.getFormats().getLineColor(), null);
+		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
+			predicateLineWidth, W3CXSConstants.DATA_TYPE_FLOAT, 
+			element.getFormats().getLineWidth().getInMillimeters(), null);
+	}
+	
+	
+	public static void getTextAttributes(JPhyloIOEventReceiver receiver, String id, IntegerIDManager idManager, TextElement textElement, 
+			QName predicateColor, QName predicateHeight, QName predicateStyle, QName predicateFontFamily, 
+			QName predicateDecimal, QName predicateLang, QName predicateCountry, QName predicateVariant)
+			throws IOException {
+		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
+				predicateColor, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.DATA_TYPE_COLOR, 
+				textElement.getFormats().getTextColor(), null);
+		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
+				predicateHeight, W3CXSConstants.DATA_TYPE_FLOAT, 
+				textElement.getFormats().getTextHeight().getInMillimeters(), null);
+		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
+				predicateStyle, W3CXSConstants.DATA_TYPE_INT, 
+				textElement.getFormats().getTextStyle(), null);
+		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
+				predicateFontFamily, W3CXSConstants.DATA_TYPE_STRING, 
+				textElement.getFormats().getFontName(), null);
+		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
+				predicateDecimal, W3CXSConstants.DATA_TYPE_DOUBLE, 
+				textElement.getData().getDecimal(), null);
+		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
+				predicateLang, W3CXSConstants.DATA_TYPE_STRING, 
+				textElement.getFormats().getLocale().getLanguage(), null);
+		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
+				predicateCountry, W3CXSConstants.DATA_TYPE_STRING, 
+				textElement.getFormats().getLocale().getCountry(), null);
+		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
+				predicateVariant, W3CXSConstants.DATA_TYPE_STRING, 
+				textElement.getFormats().getLocale().getVariant(), null);
+	}
+	
+	
 	@Override
 	protected void writeContentData(ReadWriteParameterMap parameters, JPhyloIOEventReceiver receiver, String id, Node node)
 			throws IOException, IllegalArgumentException {
 		
 		IntegerIDManager idManager = new IntegerIDManager();
 		
-		EdgeListDataAdapter.getTextAttributes(receiver, id, idManager, node, 
+		getTextAttributes(receiver, id, idManager, node, 
 				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_TEXT_COLOR, 
 				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_TEXT_HEIGHT,
 				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_TEXT_STYLE, 
@@ -74,13 +120,10 @@ public class NodeListDataAdapter extends AbstractNodeEdgeListDataAdapter<NodeEve
 		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
 					info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_IS_DECIMAL, W3CXSConstants.DATA_TYPE_BOOLEAN, 
 					node.getData().isDecimal(), null);
-			JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_LINE_COLOR, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.DATA_TYPE_COLOR, 
-				node.getFormats().getLineColor(), null);
-			JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_LINE_WIDTH, W3CXSConstants.DATA_TYPE_FLOAT, 
-				node.getFormats().getLineWidth().getInMillimeters(), null);
-			JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
+		getLineAtrributes(receiver, id, node, idManager,
+					info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_LINE_COLOR,
+					info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_LINE_WIDTH);
+		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
 				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_UNIQUE_NAME, W3CXSConstants.DATA_TYPE_STRING, 
 				node.getUniqueName(), null);
 		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
@@ -88,23 +131,13 @@ public class NodeListDataAdapter extends AbstractNodeEdgeListDataAdapter<NodeEve
 				node.getFormats().getCornerRadius().getInMillimeters(), null);
 				
 		receiver.add(new ResourceMetadataEvent(TreeDataAdapter.createMetaID(id, idManager), null, new URIOrStringIdentifier(null, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_LEAF_MARGIN), null, null));
-			JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_LEAF_MARGIN_ATTR_LEFT, W3CXSConstants.DATA_TYPE_FLOAT, 
-				node.getFormats().getLeafMargin().getLeft().getInMillimeters(), null);
-			JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_LEAF_MARGIN_ATTR_TOP, W3CXSConstants.DATA_TYPE_FLOAT, 
-				node.getFormats().getLeafMargin().getTop().getInMillimeters(), null);
-		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_LEAF_MARGIN_ATTR_RIGHT, W3CXSConstants.DATA_TYPE_FLOAT, 
-				node.getFormats().getLeafMargin().getRight().getInMillimeters(), null);
-			JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_LEAF_MARGIN_ATTR_BOTTOM, W3CXSConstants.DATA_TYPE_FLOAT, 
-				node.getFormats().getLeafMargin().getBottom().getInMillimeters(), null);
-			receiver.add(ConcreteJPhyloIOEvent.createEndEvent(EventContentType.RESOURCE_META));
+		TreeDataAdapter.getMargin(receiver, id, idManager, node.getFormats().getLeafMargin(),
+				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_LEAF_MARGIN_ATTR_LEFT,
+				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_LEAF_MARGIN_ATTR_TOP,
+				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_LEAF_MARGIN_ATTR_RIGHT,
+				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_LEAF_MARGIN_ATTR_BOTTOM);		
+		receiver.add(ConcreteJPhyloIOEvent.createEndEvent(EventContentType.RESOURCE_META));
 		
 		writeHiddenDataMap(receiver, id, node, idManager);
 	}
-
-
-
 }

@@ -21,6 +21,8 @@ package info.bioinfweb.treegraph.document.io.jphyloio;
 
 import java.io.IOException;
 
+import javax.xml.namespace.QName;
+
 import info.bioinfweb.commons.IntegerIDManager;
 import info.bioinfweb.commons.io.W3CXSConstants;
 import info.bioinfweb.jphyloio.ReadWriteConstants;
@@ -41,6 +43,7 @@ import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.Tree;
+import info.bioinfweb.treegraph.document.format.Margin;
 import info.bioinfweb.treegraph.document.io.xtg.XTGConstants;
 
 
@@ -70,6 +73,19 @@ public class TreeDataAdapter extends NoSetsTreeNetworkDataAdapter implements Tre
 	}
 	
 	
+	public static void getMargin(JPhyloIOEventReceiver receiver, String id, IntegerIDManager idManager, Margin margin,
+			QName predicateMarginLeft, QName predicatemarginTop, QName predicateMarginRight, QName predicateMarginBottom) throws IOException {
+		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
+				predicateMarginLeft, W3CXSConstants.DATA_TYPE_FLOAT, margin.getLeft().getInMillimeters(), null);
+		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
+				predicatemarginTop, W3CXSConstants.DATA_TYPE_FLOAT, margin.getTop().getInMillimeters(), null);
+		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
+				predicateMarginRight, W3CXSConstants.DATA_TYPE_FLOAT, margin.getRight().getInMillimeters(), null);
+		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
+				predicateMarginBottom, W3CXSConstants.DATA_TYPE_FLOAT, margin.getBottom().getInMillimeters(), null);
+	}
+	
+	
 	@Override
 	public void writeMetadata(ReadWriteParameterMap parameters, JPhyloIOEventReceiver receiver) throws IOException {
 		IntegerIDManager idManager = new IntegerIDManager();
@@ -91,20 +107,14 @@ public class TreeDataAdapter extends NoSetsTreeNetworkDataAdapter implements Tre
 				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_GLOBAL_FORMATS_ATTR_POSITION_LABELS_TO_LEFT, W3CXSConstants.DATA_TYPE_BOOLEAN, 
 				treeModel.getFormats().getPositionLabelsToLeft(), null);
 		
-		receiver.add(new ResourceMetadataEvent(TreeDataAdapter.createMetaID(DEFAULT_TREE_ID_PREFIX, idManager), null, new URIOrStringIdentifier(null, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_DOCUMENT_MARGIN), null, null));
-		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(DEFAULT_TREE_ID_PREFIX, idManager), null,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_DOCUMENT_MARGIN_ATTR_LEFT, W3CXSConstants.DATA_TYPE_FLOAT, 
-				treeModel.getFormats().getDocumentMargin().getLeft().getInMillimeters(), null);
-		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(DEFAULT_TREE_ID_PREFIX, idManager), null,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_DOCUMENT_MARGIN_ATTR_TOP, W3CXSConstants.DATA_TYPE_FLOAT, 
-				treeModel.getFormats().getDocumentMargin().getTop().getInMillimeters(), null);
-		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(DEFAULT_TREE_ID_PREFIX, idManager), null,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_DOCUMENT_MARGIN_ATTR_RIGHT, W3CXSConstants.DATA_TYPE_FLOAT, 
-				treeModel.getFormats().getDocumentMargin().getRight().getInMillimeters(), null);
-		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(DEFAULT_TREE_ID_PREFIX, idManager), null,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_DOCUMENT_MARGIN_ATTR_BOTTOM, W3CXSConstants.DATA_TYPE_FLOAT, 
-				treeModel.getFormats().getDocumentMargin().getBottom().getInMillimeters(), null);
+		receiver.add(new ResourceMetadataEvent(TreeDataAdapter.createMetaID(DEFAULT_TREE_ID_PREFIX, idManager), null, new URIOrStringIdentifier(null, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_DOCUMENT_MARGIN), null, null));		
+		getMargin(receiver, DEFAULT_TREE_ID_PREFIX, idManager, treeModel.getFormats().getDocumentMargin(), 
+				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_DOCUMENT_MARGIN_ATTR_LEFT,
+				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_DOCUMENT_MARGIN_ATTR_TOP,
+				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_DOCUMENT_MARGIN_ATTR_RIGHT,
+				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_DOCUMENT_MARGIN_ATTR_BOTTOM);		
 		receiver.add(ConcreteJPhyloIOEvent.createEndEvent(EventContentType.RESOURCE_META));
+		
 		receiver.add(ConcreteJPhyloIOEvent.createEndEvent(EventContentType.RESOURCE_META));
 				
 
