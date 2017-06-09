@@ -20,9 +20,6 @@ package info.bioinfweb.treegraph.document.io.jphyloio;
 
 
 import java.io.IOException;
-import java.util.Iterator;
-
-import javax.xml.namespace.QName;
 
 import info.bioinfweb.commons.IntegerIDManager;
 import info.bioinfweb.commons.io.W3CXSConstants;
@@ -36,11 +33,7 @@ import info.bioinfweb.jphyloio.events.meta.ResourceMetadataEvent;
 import info.bioinfweb.jphyloio.events.meta.URIOrStringIdentifier;
 import info.bioinfweb.jphyloio.events.type.EventContentType;
 import info.bioinfweb.jphyloio.utils.JPhyloIOWritingUtils;
-import info.bioinfweb.treegraph.document.LineElement;
 import info.bioinfweb.treegraph.document.Node;
-import info.bioinfweb.treegraph.document.PaintableElement;
-import info.bioinfweb.treegraph.document.TextElement;
-import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.io.xtg.XTGConstants;
 
@@ -63,23 +56,13 @@ public class NodeListDataAdapter extends AbstractNodeEdgeListDataAdapter<NodeEve
 			throws IOException, IllegalArgumentException {
 		
 		IntegerIDManager idManager = new IntegerIDManager();
-		
-		TreeDataAdapter.writeTextAttributes(receiver, id, idManager, node, 
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_TEXT_COLOR, 
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_TEXT_HEIGHT,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_TEXT_STYLE, 
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_FONT_FAMILY,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_DECIMAL_FORMAT,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_LOCALE_LANG,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_LOCALE_COUNTRY, 
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_LOCALE_VARIANT);
+		//Nodes
+		TreeDataAdapter.writeTextAttributes(receiver, id, idManager, node);
 		
 		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
-					info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_IS_DECIMAL, W3CXSConstants.DATA_TYPE_BOOLEAN, 
+					info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_IS_DECIMAL, W3CXSConstants.DATA_TYPE_BOOLEAN, 
 					node.getData().isDecimal(), null);
-		TreeDataAdapter.writeLineAtrributes(receiver, id, node, idManager,
-					info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_LINE_COLOR,
-					info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_LINE_WIDTH);
+		TreeDataAdapter.writeLineAtrributes(receiver, id, node, idManager);
 		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
 				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_UNIQUE_NAME, W3CXSConstants.DATA_TYPE_STRING, 
 				node.getUniqueName(), null);
@@ -88,11 +71,7 @@ public class NodeListDataAdapter extends AbstractNodeEdgeListDataAdapter<NodeEve
 				node.getFormats().getCornerRadius().getInMillimeters(), null);
 				
 		receiver.add(new ResourceMetadataEvent(TreeDataAdapter.createMetaID(id, idManager), null, new URIOrStringIdentifier(null, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_LEAF_MARGIN), null, null));
-		TreeDataAdapter.writeMargin(receiver, id, idManager, node.getFormats().getLeafMargin(),
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_LEAF_MARGIN_ATTR_LEFT,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_LEAF_MARGIN_ATTR_TOP,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_LEAF_MARGIN_ATTR_RIGHT,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_LEAF_MARGIN_ATTR_BOTTOM);		
+		TreeDataAdapter.writeMargin(receiver, id, idManager, node.getFormats().getLeafMargin());		
 		receiver.add(ConcreteJPhyloIOEvent.createEndEvent(EventContentType.RESOURCE_META));
 		
 		writeHiddenDataMap(receiver, id, node, idManager);

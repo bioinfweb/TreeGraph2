@@ -34,7 +34,6 @@ import info.bioinfweb.jphyloio.factory.JPhyloIOReaderWriterFactory;
 import info.bioinfweb.jphyloio.formats.JPhyloIOFormatIDs;
 import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.treegraph.document.Document;
-import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.io.AbstractDocumentWriter;
 import info.bioinfweb.treegraph.document.io.ReadWriteParameterMap;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
@@ -45,13 +44,13 @@ public class NeXMLWriter extends AbstractDocumentWriter {
 	protected JPhyloIOReaderWriterFactory factory = new JPhyloIOReaderWriterFactory();
 	
 	
-	protected void writeTree(Tree treeModel, String formatID, OutputStream stream) {
+	protected void writeTree(Document document, String formatID, OutputStream stream) {
 		// Create data adapters:
-		ListBasedDocumentDataAdapter document = new ListBasedDocumentDataAdapter();
+		ListBasedDocumentDataAdapter documentAdapter = new ListBasedDocumentDataAdapter();
 		StoreTreeNetworkGroupDataAdapter treeGroup = new StoreTreeNetworkGroupDataAdapter(
 				new LinkedLabeledIDEvent(EventContentType.TREE_NETWORK_GROUP, "treeGroup", null, null), null);
-		document.getTreeNetworkGroups().add(treeGroup);
-		treeGroup.getTreesAndNetworks().add(new TreeDataAdapter(treeModel));
+		documentAdapter.getTreeNetworkGroups().add(treeGroup);
+		treeGroup.getTreesAndNetworks().add(new TreeDataAdapter(document));
 		
 		// Define writer parameters:
 		info.bioinfweb.jphyloio.ReadWriteParameterMap parameters = new info.bioinfweb.jphyloio.ReadWriteParameterMap();
@@ -62,7 +61,7 @@ public class NeXMLWriter extends AbstractDocumentWriter {
 		// Write document:
 		JPhyloIOEventWriter writer = factory.getWriter(formatID);
 		try {
-			writer.writeDocument(document, stream, parameters);
+			writer.writeDocument(documentAdapter, stream, parameters);
 		}
 		catch (IOException ex) {
 			ex.printStackTrace();
@@ -75,7 +74,7 @@ public class NeXMLWriter extends AbstractDocumentWriter {
 	@Override
 	public void write(Document document, OutputStream stream, ReadWriteParameterMap properties) throws Exception {
 		try {
-			writeTree(document.getTree(), JPhyloIOFormatIDs.NEXML_FORMAT_ID, stream);
+			writeTree(document, JPhyloIOFormatIDs.NEXML_FORMAT_ID, stream);
 		}
 		finally {
 			stream.close();

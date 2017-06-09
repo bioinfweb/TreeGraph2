@@ -125,7 +125,7 @@ public abstract class AbstractNodeEdgeListDataAdapter<E extends LabeledIDEvent> 
 				TextElementData value = node.getHiddenDataMap().get(dataID);
 				
 				JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
-						info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_INVISIBLE_DATA_ATTR_ID, W3CXSConstants.DATA_TYPE_STRING, dataID, null);
+						info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_INVISIBLE_DATA, W3CXSConstants.DATA_TYPE_STRING, dataID, null);
 				
 				JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
 						info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_INVISIBLE_DATA_ATTR_IS_DECIMAL, W3CXSConstants.DATA_TYPE_BOOLEAN, value.isDecimal(), null);
