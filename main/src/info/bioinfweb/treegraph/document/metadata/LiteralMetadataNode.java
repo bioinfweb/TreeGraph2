@@ -16,10 +16,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.document;
+package info.bioinfweb.treegraph.document.metadata;
+
+
+import javax.xml.namespace.QName;
+
+import info.bioinfweb.treegraph.document.TextElementData;
 
 
 
-public interface HiddenDataElement {
-  public HiddenDataMap getHiddenDataMap();  //TODO Replace by "MetadataNode getMetadataRoot();"
+public class LiteralMetadataNode extends MetadataNode {
+	private TextElementData value;  // Ggf. später durch Object ersetzen
+	private QName predicate;  // Evtl. String key wird nicht hier, sondern für die ganze Spalte gespeichert.
+	private QName datatype;  // Hier wird ein XML-Datentyp angegeben. (Andere String-Datentypen aus JPhyloIO müssten entsprechend übersetzt oder ignoriert werden.)
+	
+
 }

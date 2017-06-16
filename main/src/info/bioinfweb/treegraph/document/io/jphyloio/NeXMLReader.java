@@ -39,6 +39,7 @@ import info.bioinfweb.treegraph.document.HiddenDataMap;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.Tree;
+import info.bioinfweb.treegraph.document.format.Margin;
 import info.bioinfweb.treegraph.document.io.AbstractDocumentReader;
 import info.bioinfweb.treegraph.document.io.DocumentIterator;
 import info.bioinfweb.treegraph.document.io.SingleDocumentIterator;
@@ -194,10 +195,46 @@ public class NeXMLReader extends AbstractDocumentReader {
 			rootNodeIDs.add(nodeEvent.getID());
 		}
 		
-		JPhyloIOEvent event = reader.next();
+		JPhyloIOEvent event = reader.next();		
     while (!event.getType().getTopologyType().equals(EventTopologyType.END)) {  // It is assumed that events are correctly nested
     	if (event.getType().getContentType().equals(EventContentType.LITERAL_META) || event.getType().getContentType().equals(EventContentType.RESOURCE_META)) {
     		readMetadata(event, node.getHiddenDataMap());
+    		
+//    		switch (event.getType().getContentType()) {    				
+//    			case LITERAL_META:
+//    				LiteralMetadataEvent literalEvent = event.asLiteralMetadataEvent();
+//    				if (info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_IS_DECIMAL.equals(literalEvent.getPredicate().getURI())) {
+//    					node.getData().setDecimal(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Number.class).doubleValue());
+//    				} 
+//    				else if (info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_UNIQUE_NAME.equals(literalEvent.getPredicate().getURI())) {
+//    					node.setUniqueName(JPhyloIOReadingUtils.readLiteralMetadataContentAsString(reader));
+//    				}
+//    				else if (info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_EDGE_RADIUS.equals(literalEvent.getPredicate().getURI())) {
+//    					node.getFormats().getCornerRadius().setInMillimeters(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Number.class).floatValue());
+//    				}
+//    				else {
+//    					JPhyloIOReadingUtils.reachElementEnd(reader);
+//      			}	
+//    				break;
+//      			
+//    			case RESOURCE_META:
+//    				ResourceMetadataEvent resourceEvent = event.asResourceMetadataEvent();
+//    				if (info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_LEAF_MARGIN.equals(resourceEvent.getRel().getURI())) {
+//    					setMargin(node.getFormats().getLeafMargin(), event);
+//    				}
+//    				else if (info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_.equals(resourceEvent.getRel().getURI())) {
+//    					
+//    				}
+//    				else {
+//    					JPhyloIOReadingUtils.reachElementEnd(reader);
+//    				}
+//    				break;
+//    				
+//					default:
+//						JPhyloIOReadingUtils.reachElementEnd(reader);
+//						break;
+//    		}
+
     	}
     	else if (event.getType().getContentType().equals(EventContentType.LITERAL_META_CONTENT)) {
     		readLiteralContent(event.asLiteralMetadataContentEvent(), node.getHiddenDataMap()); 
@@ -210,6 +247,23 @@ public class NeXMLReader extends AbstractDocumentReader {
       event = reader.next();
     }
   }
+
+
+	public void setMargin(Margin margin, JPhyloIOEvent event) throws IOException {
+		LiteralMetadataEvent literalMarginEvent = event.asLiteralMetadataEvent();
+		if (info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_MARGIN_LEFT.equals(literalMarginEvent.getPredicate().getURI())) {
+			margin.getLeft().setInMillimeters(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Number.class).floatValue());
+		}
+		else if (info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_MARGIN_TOP.equals(literalMarginEvent.getPredicate().getURI())) {
+			margin.getTop().setInMillimeters(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Number.class).floatValue());
+		}
+		else if (info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_MARGIN_RIGHT.equals(literalMarginEvent.getPredicate().getURI())) {
+			margin.getRight().setInMillimeters(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Number.class).floatValue());
+		}
+		else if (info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_MARGIN_BOTTOM.equals(literalMarginEvent.getPredicate().getURI())) {
+			margin.getBottom().setInMillimeters(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Number.class).floatValue());
+		}
+	}
 	
 	
 	private void readEdge(EdgeEvent edgeEvent) throws XMLStreamException, IOException {

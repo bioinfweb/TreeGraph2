@@ -53,7 +53,7 @@ public class TextLabelAdapter extends AbstractIDElementAdapter implements NodeBr
 		if ((l != null) && (l instanceof TextLabel)) {
 			return ((TextLabel)l).getData();
 		}
-		else {
+		else {  //TODO Should the title of PieChartLabels also be returned here?
 			return null;
 		}
 	}

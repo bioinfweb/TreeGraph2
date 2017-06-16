@@ -16,10 +16,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.document;
+package info.bioinfweb.treegraph.document.metadata;
+
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 
-public interface HiddenDataElement {
-  public HiddenDataMap getHiddenDataMap();  //TODO Replace by "MetadataNode getMetadataRoot();"
+public class ResourceMetadataNode extends MetadataNode {
+	private List<MetadataNode> children = new ArrayList<MetadataNode>();
+	
+	//TODO Also model resource metadata
+	//     - Wenn value schon vom Typ Object wäre, könnte dort die URI gespeichert werden.
+	//     - rel könnte in predicate gespeichert werden
+	//     - Ein Datentyp ist bei Resource Metadata nicht vorhanden.
 }
