@@ -19,13 +19,58 @@
 package info.bioinfweb.treegraph.document.metadata;
 
 
+import java.net.URI;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+
+import javax.xml.namespace.QName;
+
+import info.bioinfweb.jphyloio.events.meta.ResourceMetadataEvent;
+import info.bioinfweb.jphyloio.events.meta.URIOrStringIdentifier;
+import info.bioinfweb.treegraph.document.Node;
 
 
 
 public class ResourceMetadataNode extends MetadataNode {
 	private List<MetadataNode> children = new ArrayList<MetadataNode>();
+	private URIOrStringIdentifier rel;
+	private Object uri;
+	
+	
+	public ResourceMetadataNode(Node owner, Object value) {
+		super(owner);
+		this.uri = value;
+	}
+	
+	
+//	public URIOrStringIdentifier getRel(QName predicate) {
+//		rel = predicate.getNamespaceURI();
+//		return rel;
+//	}
+	
+	
+	public URI getURI() {
+	return (URI)uri;
+	}
+	
+	
+	public List<MetadataNode> getChildren(LiteralMetadataNode literalMetadataNode) {
+		int index = 0;
+		while (!literalMetadataNode.isEmpty()) {
+			children.add(index, literalMetadataNode);
+			index++;
+		}
+		return children;
+	}
+	
+	
+	public Iterator<MetadataNode> iterator() {
+		return children.listIterator();
+	}
+	
+
+
 	
 	//TODO Also model resource metadata
 	//     - Wenn value schon vom Typ Object wäre, könnte dort die URI gespeichert werden.

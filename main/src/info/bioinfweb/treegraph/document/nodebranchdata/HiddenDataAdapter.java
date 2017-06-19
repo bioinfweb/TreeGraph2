@@ -71,12 +71,6 @@ public abstract class HiddenDataAdapter extends AbstractIDElementAdapter {
 		getMetadataNode(node).put(node.getUniqueName(), new TextElementData());
 	}
 
-
-//	@Override
-//	public void delete(Node node) {
-//		getMetadataNode(node).remove(node.getMetadataRoot().getPredicate());
-//	}
-	
 	
 	@Override
 	public void delete(Node node) {

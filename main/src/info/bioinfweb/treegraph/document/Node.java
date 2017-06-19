@@ -42,7 +42,7 @@ public class Node extends AbstractTextElement
   private NodeFormats formats = new NodeFormats();
   private String uniqueName = null;
 //  private HiddenDataMap hiddenDataMap = new HiddenDataMap(this);
-  private MetadataNode metadataNode = new MetadataNode();
+  private MetadataNode metadataNode = new MetadataNode(parent);
   private HashMap<String, Object> attributeMap = new HashMap<String, Object>(); 
 
   

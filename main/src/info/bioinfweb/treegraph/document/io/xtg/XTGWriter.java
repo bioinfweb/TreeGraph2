@@ -25,6 +25,7 @@ import info.bioinfweb.treegraph.document.io.AbstractDocumentWriter;
 import info.bioinfweb.treegraph.document.io.DocumentWriter;
 import info.bioinfweb.treegraph.document.io.ReadWriteParameterMap;
 import info.bioinfweb.treegraph.document.metadata.MetadataNode;
+import info.bioinfweb.treegraph.document.metadata.ResourceMetadataNode;
 import info.bioinfweb.treegraph.document.nodebranchdata.IDElementAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.commons.io.XMLUtils;
@@ -232,7 +233,7 @@ public class XTGWriter extends AbstractDocumentWriter implements XTGConstants, D
 	
 	
 	private void writeHiddenDataMap(MetadataNode metadataNode) throws XMLStreamException {
-		Iterator<String> iterator = metadataNode.idIterator();
+		Iterator<MetadataNode> iterator = ResourceMetadataNode.;
 		while (iterator.hasNext()) {
 			writer.writeStartElement(TAG_HIDDEN_DATA.toString());
 			String key = iterator.next();

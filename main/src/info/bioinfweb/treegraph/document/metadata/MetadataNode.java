@@ -19,12 +19,9 @@
 package info.bioinfweb.treegraph.document.metadata;
 
 
-import java.util.Iterator;
-import java.util.Map;
-
 import javax.xml.namespace.QName;
 
-import info.bioinfweb.treegraph.document.HiddenDataMap;
+
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextElement;
 import info.bioinfweb.treegraph.document.TextElementData;
@@ -34,7 +31,7 @@ import info.bioinfweb.treegraph.document.tools.IDManager;
 
 public class MetadataNode {
 	private MetadataNode parent;
-	private TextElementData value;  // Ggf. später durch Object ersetzen
+	private Object value;  // Ggf. später durch Object ersetzen
 	private QName predicate;  // Evtl. String key wird nicht hier, sondern für die ganze Spalte gespeichert.
 	private Node owner;
 	
@@ -49,12 +46,8 @@ public class MetadataNode {
 	}
 
 	
-//	public MetadataNode getParent() {
-//		return parent;
-//	}
-	
 	public TextElementData getValue() {
-		return value;
+		return (TextElementData) value;
 	}
 	
 	
@@ -64,7 +57,7 @@ public class MetadataNode {
 	
 	
 	public boolean isEmpty() {
-		return value.isEmpty();
+		return ((MetadataNode) value).isEmpty();
 	}
 	
 	
@@ -85,15 +78,15 @@ public class MetadataNode {
 	
 	public void assign(MetadataNode other) {
 		clear();
-		value.setText(other.value.getText());
+		((TextElementData) value).setText(((TextElementData) other.value).getText());
 	}
 	
 	
 	public Object putForID(String id, TextElementData value) {
 		Object result = null;
-//		if (getParent() != null) {
-//			result = IDManager.removeElementWithID(getParent(), id);
-//		}
+		if (getOwner() != null) {
+			result = IDManager.removeElementWithID(getOwner(), id);
+		}
 		parent.put(id, value);
 		return result;
 	}

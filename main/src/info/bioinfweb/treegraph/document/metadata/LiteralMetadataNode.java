@@ -21,12 +21,25 @@ package info.bioinfweb.treegraph.document.metadata;
 
 import javax.xml.namespace.QName;
 
-import info.bioinfweb.treegraph.document.TextElementData;
+import info.bioinfweb.treegraph.document.Node;
 
 
 
 public class LiteralMetadataNode extends MetadataNode {
 	private QName datatype;  // Hier wird ein XML-Datentyp angegeben. (Andere String-Datentypen aus JPhyloIO müssten entsprechend übersetzt oder ignoriert werden.)
+	private QName predicate;
+	private Object value;
 	
-
+	
+	public LiteralMetadataNode(Node owner, QName predicate, Object value) {
+		super(owner);
+		this.predicate = predicate;
+		this.value = value;		
+	}
+	
+	
+	public QName getDatatype(QName datatype) {
+		datatype.getNamespaceURI();		
+		return datatype;
+	}
 }

@@ -36,14 +36,15 @@ public class Branch extends AbstractPaintableElement
   private Labels labels = new Labels(this);
   private Node targetNode = null;  // Notwendig um von markiertem Knoten in den umgebenden Baum zu gelangen.
   private BranchFormats formats = new BranchFormats();
-  private HiddenDataMap hiddenDataMap = null;
+//  private HiddenDataMap hiddenDataMap = null;
   private MetadataNode metadataNode = null;
   
   
 	public Branch(Node target) {
 		super();
   	targetNode = target;
-  	hiddenDataMap = new HiddenDataMap(getTargetNode());
+  	metadataNode = new MetadataNode(getTargetNode());
+//  	hiddenDataMap = new HiddenDataMap(getTargetNode());
   }
   
   
