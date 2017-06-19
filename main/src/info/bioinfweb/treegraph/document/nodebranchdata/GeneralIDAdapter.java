@@ -28,6 +28,8 @@ import info.bioinfweb.treegraph.document.tools.IDManager;
 
 import java.text.DecimalFormat;
 
+import javax.xml.namespace.QName;
+
 
 
 public class GeneralIDAdapter extends AbstractIDElementAdapter {
@@ -56,12 +58,12 @@ public class GeneralIDAdapter extends AbstractIDElementAdapter {
   	}
   	else {
     	TextElementData data = null;
-  		data = node.getHiddenDataMap().get(id);
+  		data = node.getMetadataRoot().getValue();
   		if (data != null) {
   			return node;
   		}
   		else {
-    		data = node.getAfferentBranch().getHiddenDataMap().get(id);
+    		data = node.getAfferentBranch().getMetadataRoot().getValue();
     		if (data != null) {
     			return node.getAfferentBranch();
     		}

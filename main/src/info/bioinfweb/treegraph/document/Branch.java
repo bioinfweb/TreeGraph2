@@ -20,6 +20,7 @@ package info.bioinfweb.treegraph.document;
 
 
 import info.bioinfweb.treegraph.document.format.*;
+import info.bioinfweb.treegraph.document.metadata.MetadataNode;
 
 
 
@@ -36,6 +37,7 @@ public class Branch extends AbstractPaintableElement
   private Node targetNode = null;  // Notwendig um von markiertem Knoten in den umgebenden Baum zu gelangen.
   private BranchFormats formats = new BranchFormats();
   private HiddenDataMap hiddenDataMap = null;
+  private MetadataNode metadataNode = null;
   
   
 	public Branch(Node target) {
@@ -95,15 +97,20 @@ public class Branch extends AbstractPaintableElement
 	}
 	
 	
-	public HiddenDataMap getHiddenDataMap() {
-		return hiddenDataMap;
+//	public HiddenDataMap getHiddenDataMap() {
+//		return hiddenDataMap;
+//	}
+	
+	
+	public MetadataNode getMetadataRoot() {
+		return metadataNode;
 	}
 	
 	
 	public Node getLinkedNode() {
 		return getTargetNode();
-	}
-
+	}	
+	
 
 	/**
 	 * Clones this <code>Branch</code> including its <code>Labels</code>-object with the 
@@ -118,7 +125,7 @@ public class Branch extends AbstractPaintableElement
 		result.setLength(getLength());
 		result.labels = getLabels().clone();
 		result.labels.setHoldingBranch(result);
-		result.getHiddenDataMap().assign(getHiddenDataMap());
+		result.getMetadataRoot().assign(getMetadataRoot());
 		result.setFormats(getFormats().clone());
 		return result;
 	}
@@ -133,4 +140,7 @@ public class Branch extends AbstractPaintableElement
 			return super.toString();
 		}
   }
+
+
+
 }

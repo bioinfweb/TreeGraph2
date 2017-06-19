@@ -24,6 +24,7 @@ import info.bioinfweb.treegraph.document.format.*;
 import info.bioinfweb.treegraph.document.io.AbstractDocumentWriter;
 import info.bioinfweb.treegraph.document.io.DocumentWriter;
 import info.bioinfweb.treegraph.document.io.ReadWriteParameterMap;
+import info.bioinfweb.treegraph.document.metadata.MetadataNode;
 import info.bioinfweb.treegraph.document.nodebranchdata.IDElementAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.commons.io.XMLUtils;
@@ -230,13 +231,13 @@ public class XTGWriter extends AbstractDocumentWriter implements XTGConstants, D
 	}
 	
 	
-	private void writeHiddenDataMap(HiddenDataMap m) throws XMLStreamException {
-		Iterator<String> iterator = m.idIterator();
+	private void writeHiddenDataMap(MetadataNode metadataNode) throws XMLStreamException {
+		Iterator<String> iterator = metadataNode.idIterator();
 		while (iterator.hasNext()) {
 			writer.writeStartElement(TAG_HIDDEN_DATA.toString());
 			String key = iterator.next();
     	writer.writeAttribute(ATTR_ID.toString(), key);
-    	writeTextElementData(m.get(key));
+    	writeTextElementData(metadataNode.get(key));
     	writer.writeEndElement();
 		}
 	}
@@ -274,14 +275,14 @@ public class XTGWriter extends AbstractDocumentWriter implements XTGConstants, D
     	writeLabelBlock(b.getLabels(), true);
     	writeLabelBlock(b.getLabels(), false);
     	
-    	writeHiddenDataMap(b.getHiddenDataMap());
+    	writeHiddenDataMap(b.getMetadataRoot());
     	
     	writer.writeEndElement();
     	
     	
     	// Branch data:
   	}
-  	writeHiddenDataMap(root.getHiddenDataMap());
+  	writeHiddenDataMap(root.getMetadataRoot());
   	
   	// Subnodes:
   	for (int i = 0; i < root.getChildren().size(); i++) {

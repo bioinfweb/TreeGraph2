@@ -22,6 +22,7 @@ package info.bioinfweb.treegraph.document.nodebranchdata;
 import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.HiddenDataMap;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.metadata.MetadataNode;
 
 
 
@@ -37,9 +38,15 @@ public class HiddenBranchDataAdapter extends HiddenDataAdapter {
 	}
 
 
+//	@Override
+//	protected HiddenDataMap getDataMap(Node node) {
+//		return node.getAfferentBranch().getHiddenDataMap();
+//	}
+	
+	
 	@Override
-	protected HiddenDataMap getDataMap(Node node) {
-		return node.getAfferentBranch().getHiddenDataMap();
+	protected MetadataNode getMetadataNode(Node node) {
+		return node.getAfferentBranch().getMetadataRoot();
 	}
 
 

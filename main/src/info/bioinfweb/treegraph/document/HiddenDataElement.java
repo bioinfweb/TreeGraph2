@@ -19,7 +19,11 @@
 package info.bioinfweb.treegraph.document;
 
 
+import info.bioinfweb.treegraph.document.metadata.MetadataNode;
+
+
 
 public interface HiddenDataElement {
-  public HiddenDataMap getHiddenDataMap();  //TODO Replace by "MetadataNode getMetadataRoot();"
+	public MetadataNode getMetadataRoot();
+//  public HiddenDataMap getHiddenDataMap();  //TODO Replace by "MetadataNode getMetadataRoot();"
 }

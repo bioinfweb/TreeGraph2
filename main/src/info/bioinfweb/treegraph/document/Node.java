@@ -20,6 +20,7 @@ package info.bioinfweb.treegraph.document;
 
 
 import info.bioinfweb.treegraph.document.format.*;
+import info.bioinfweb.treegraph.document.metadata.MetadataNode;
 import info.bioinfweb.treegraph.document.tools.TreeSerializer;
 import info.bioinfweb.treegraph.graphics.positionpaint.PositionPaintType;
 import info.bioinfweb.treegraph.graphics.positionpaint.positiondata.NodePositionData;
@@ -40,7 +41,8 @@ public class Node extends AbstractTextElement
   private Branch afferentBranch = null;
   private NodeFormats formats = new NodeFormats();
   private String uniqueName = null;
-  private HiddenDataMap hiddenDataMap = new HiddenDataMap(this);
+//  private HiddenDataMap hiddenDataMap = new HiddenDataMap(this);
+  private MetadataNode metadataNode = new MetadataNode();
   private HashMap<String, Object> attributeMap = new HashMap<String, Object>(); 
 
   
@@ -311,8 +313,13 @@ public class Node extends AbstractTextElement
 	}
 	
 	
-	public HiddenDataMap getHiddenDataMap() {
-		return hiddenDataMap;
+//	public HiddenDataMap getHiddenDataMap() {
+//		return hiddenDataMap;
+//	}	
+	
+
+	public MetadataNode getMetadataRoot() {
+		return metadataNode;
 	}
 
 
@@ -378,7 +385,7 @@ public class Node extends AbstractTextElement
 		Node result = new Node();
 		result.assignTextElementData(this);
 		result.setAfferentBranch(getAfferentBranch().clone());
-		result.getHiddenDataMap().assign(getHiddenDataMap());
+		result.getMetadataRoot().assign(getMetadataRoot());
 		result.setFormats(getFormats().clone());
 		result.attributeMap = new HashMap<String, Object>();
 		return result;

@@ -84,7 +84,7 @@ public class RerootEdit extends ComplexDocumentEdit implements WarningMessageEdi
   
 	private static void copyBranchData(Branch source, Branch target) {
 		// Merge branch data:
-		target.getHiddenDataMap().putAll(source.getHiddenDataMap());  // Copying is only helpful, if the two branches contain elements with different IDs. All other elements are overwritten. 
+		target.getMetadataRoot().putAll(source.getMetadataRoot());  // Copying is only helpful, if the two branches contain elements with different IDs. All other elements are overwritten. 
 		copyLabels(source.getLabels(), target.getLabels());
 		
 		// Add up branch length:
@@ -108,7 +108,7 @@ public class RerootEdit extends ComplexDocumentEdit implements WarningMessageEdi
 				msg += "- The former root node (which has been deleted) contained the node name \"" + 
 			      root.getData().toString() + "\".\n";
 			}
-			if (!root.getHiddenDataMap().isEmpty()) {
+			if (!root.getMetadataRoot().isEmpty()) {
 				msg += "- The former root node (which has been deleted) contained hidden node data.\n";
 			}
 		}
@@ -122,7 +122,7 @@ public class RerootEdit extends ComplexDocumentEdit implements WarningMessageEdi
 		if (!rootBranch.getLabels().isEmpty()) {
 			msg += "- The former root branch (which has been deleted) was carrying one or more labels.\n";
 		}
-		if (!rootBranch.getHiddenDataMap().isEmpty()) {
+		if (!rootBranch.getMetadataRoot().isEmpty()) {
 			msg += "- The former root branch (which has been deleted) contained hidden branch data.\n";
 		}
 		
@@ -134,7 +134,7 @@ public class RerootEdit extends ComplexDocumentEdit implements WarningMessageEdi
 				msg += "- The two child branches of the root contained one or more labels with the same ID(s). " +
 						"One element of each ID has been deleted.\n";
 			}
-			if (b1.getHiddenDataMap().containsSameID(b2.getHiddenDataMap())) {
+			if (b1.getMetadataRoot().containsSameID(b2.getMetadataRoot())) {
 				msg += "- The two child branches of the root contained hidden branch data with the same ID. " +
 						"One element of each ID has been deleted.\n";
 			}

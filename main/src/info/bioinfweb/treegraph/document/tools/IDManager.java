@@ -38,6 +38,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
+import javax.xml.namespace.QName;
+
 
 
 /**
@@ -80,14 +82,23 @@ public class IDManager {
   }
   
   
+//  private static void searchHiddenDataIDs(HiddenDataElement element, List<String> list) {
+//  	Iterator<String> iterator = element.getMetadataRoot();
+//  	while (iterator.hasNext()) {
+//  		String id = iterator.next(); 
+//			if ((!id.equals("")) && !list.contains(id)) {
+//				list.add(id);
+//			}
+//  	}
+//  }
+  
   private static void searchHiddenDataIDs(HiddenDataElement element, List<String> list) {
-  	Iterator<String> iterator = element.getHiddenDataMap().idIterator();
-  	while (iterator.hasNext()) {
-  		String id = iterator.next(); 
+  	for (int i = 0; i < element.getMetadataRoot().size(); i++) {
+			String id = element.getMetadataRoot().getPredicate().toString();
 			if ((!id.equals("")) && !list.contains(id)) {
 				list.add(id);
 			}
-  	}
+		}
   }
   
   
@@ -166,8 +177,8 @@ public class IDManager {
     if (root == null) {
     	return false;
     }
-  	if (!root.getAfferentBranch().getLabels().isEmpty() || !root.getHiddenDataMap().isEmpty() ||
-  			!root.getAfferentBranch().getHiddenDataMap().isEmpty()) {
+  	if (!root.getAfferentBranch().getLabels().isEmpty() || !root.getMetadataRoot().isEmpty() ||
+  			!root.getAfferentBranch().getMetadataRoot().isEmpty()) {
   		return true;
   	}
   	
@@ -305,10 +316,10 @@ public class IDManager {
   private static void renameHiddenDataID(HiddenDataElement element, String oldName, 
   		String newName) {
   	
-  	TextElementData value = element.getHiddenDataMap().get(oldName);
+  	TextElementData value = element.getMetadataRoot().getValue();
   	if (value != null) {
-  		element.getHiddenDataMap().remove(oldName);
-  		element.getHiddenDataMap().put(newName, value);
+  		element.getMetadataRoot().remove(oldName);
+  		element.getMetadataRoot().put(newName, value);
   	}
   }
   
@@ -435,9 +446,9 @@ public class IDManager {
   		result = ((TextLabel)l).getData();
   	}
   	else {
-  		result = node.getHiddenDataMap().get(id);
+  		result = node.getMetadataRoot().getValue();
   		if (result == null) {
-    		result = node.getAfferentBranch().getHiddenDataMap().get(id);
+    		result = node.getAfferentBranch().getMetadataRoot().getValue();
   		}
   	}
   	return result;
@@ -456,9 +467,9 @@ public class IDManager {
   public static Object getElementByID(Node node, String id) {
   	Object result = node.getAfferentBranch().getLabels().get(id);
   	if (result == null) {
-  		result = node.getHiddenDataMap().get(id);
+  		result = node.getMetadataRoot().getValue();
   		if (result == null) {
-    		result = node.getAfferentBranch().getHiddenDataMap().get(id);
+    		result = node.getAfferentBranch().getMetadataRoot().getValue();
   		}
   	}
   	return result;
@@ -480,9 +491,9 @@ public class IDManager {
   		labels.remove((Label)result);
   	}
   	else {
-  		result = node.getHiddenDataMap().remove(id);
+  		result = node.getMetadataRoot().remove(id);
     	if (result == null) {
-    		result = node.getAfferentBranch().getHiddenDataMap().remove(id);
+    		result = node.getAfferentBranch().getMetadataRoot().remove(id);
     	}
   	}
   	return result;
