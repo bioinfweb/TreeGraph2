@@ -18,40 +18,50 @@
  */
 package info.bioinfweb.treegraph.document.metadata;
 
-
-import javax.xml.namespace.QName;
-
+import java.util.ArrayList;
+import java.util.List;
 
 import info.bioinfweb.treegraph.document.Node;
-import info.bioinfweb.treegraph.document.TextElement;
-import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.TreeElement;
 
-
-
-public class MetadataNode {
-	private MetadataNode parent;
-		private Node owner;
+public class MetadataTree implements Cloneable {
+	private MetadataNode metadataRoot = null;
+	private List<MetadataNode> treeChildren = new ArrayList<MetadataNode>();
 	
 	
-	public MetadataNode(TreeElement owner) {
-		this.owner = (Node) owner;
+	public MetadataTree(TreeElement node) {
+		this.metadataRoot = (MetadataNode) node;
+	}
+
+
+	public MetadataNode getRoot() {
+		return metadataRoot;
 	}
 	
 	
-	public Node getOwner() {
-		return owner;
+	public void clear() {
+		treeChildren.clear();
 	}
 	
 	
-	public MetadataNode clone(TreeElement owner) {
-		MetadataNode metadataNode = new MetadataNode(owner);
-		try {
-			metadataNode.clone();
-		} catch (CloneNotSupportedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	public boolean isEmpty() {
+	  return treeChildren.isEmpty();
+  }
+	
+	
+	public List<MetadataNode> getChildren(MetadataNode metadataNode) {
+		int index = 0;
+		while (metadataNode != null) {
+			treeChildren.add(index, metadataNode);
+			index++;
 		}
-		return metadataNode;
+		return treeChildren;
+	}
+	
+	
+	public MetadataTree clone(TreeElement other) {
+		MetadataTree metadataTree = new MetadataTree(other);
+		metadataTree.clone(other);
+		return metadataTree;
 	}
 }

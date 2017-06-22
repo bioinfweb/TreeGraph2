@@ -21,6 +21,7 @@ package info.bioinfweb.treegraph.document;
 
 import info.bioinfweb.treegraph.document.format.*;
 import info.bioinfweb.treegraph.document.metadata.MetadataNode;
+import info.bioinfweb.treegraph.document.metadata.MetadataTree;
 import info.bioinfweb.treegraph.document.tools.TreeSerializer;
 import info.bioinfweb.treegraph.graphics.positionpaint.PositionPaintType;
 import info.bioinfweb.treegraph.graphics.positionpaint.positiondata.NodePositionData;
@@ -42,7 +43,8 @@ public class Node extends AbstractTextElement
   private NodeFormats formats = new NodeFormats();
   private String uniqueName = null;
 //  private HiddenDataMap hiddenDataMap = new HiddenDataMap(this);
-  private MetadataNode metadataNode = new MetadataNode(parent);
+  private MetadataNode metadataNode = new MetadataNode(this);
+  private MetadataTree metadataTree = new MetadataTree(this);
   private HashMap<String, Object> attributeMap = new HashMap<String, Object>(); 
 
   
@@ -321,7 +323,12 @@ public class Node extends AbstractTextElement
 	public MetadataNode getMetadataRoot() {
 		return metadataNode;
 	}
-
+	
+	
+	public MetadataTree geMetadataTree() {
+		return metadataTree;
+	}
+	
 
 	/**
 	 * Returns the upper most subnode of this node (e.g. needed for legend positioning). 
@@ -385,7 +392,7 @@ public class Node extends AbstractTextElement
 		Node result = new Node();
 		result.assignTextElementData(this);
 		result.setAfferentBranch(getAfferentBranch().clone());
-		result.getMetadataRoot().assign(getMetadataRoot());
+		result.getMetadataRoot().clone(result);
 		result.setFormats(getFormats().clone());
 		result.attributeMap = new HashMap<String, Object>();
 		return result;

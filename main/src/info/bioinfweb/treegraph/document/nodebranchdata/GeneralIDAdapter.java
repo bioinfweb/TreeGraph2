@@ -58,12 +58,12 @@ public class GeneralIDAdapter extends AbstractIDElementAdapter {
   	}
   	else {
     	TextElementData data = null;
-  		data = node.getMetadataRoot().getValue();
+  		data = node.getMetadataRoot().;
   		if (data != null) {
   			return node;
   		}
   		else {
-    		data = node.getAfferentBranch().getMetadataRoot().getValue();
+    		data = node.getAfferentBranch().getMetadataRoot();
     		if (data != null) {
     			return node.getAfferentBranch();
     		}

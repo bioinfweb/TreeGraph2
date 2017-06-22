@@ -21,6 +21,7 @@ package info.bioinfweb.treegraph.document;
 
 import info.bioinfweb.treegraph.document.format.*;
 import info.bioinfweb.treegraph.document.metadata.MetadataNode;
+import info.bioinfweb.treegraph.document.metadata.MetadataTree;
 
 
 
@@ -38,6 +39,7 @@ public class Branch extends AbstractPaintableElement
   private BranchFormats formats = new BranchFormats();
 //  private HiddenDataMap hiddenDataMap = null;
   private MetadataNode metadataNode = null;
+  private MetadataTree metadataTree = null;
   
   
 	public Branch(Node target) {
@@ -108,6 +110,11 @@ public class Branch extends AbstractPaintableElement
 	}
 	
 	
+	public MetadataTree geMetadataTree() {
+		return metadataTree;
+	}
+	
+	
 	public Node getLinkedNode() {
 		return getTargetNode();
 	}	
@@ -126,7 +133,7 @@ public class Branch extends AbstractPaintableElement
 		result.setLength(getLength());
 		result.labels = getLabels().clone();
 		result.labels.setHoldingBranch(result);
-		result.getMetadataRoot().assign(getMetadataRoot());
+		result.getMetadataRoot().clone(result);
 		result.setFormats(getFormats().clone());
 		return result;
 	}

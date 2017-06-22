@@ -24,7 +24,9 @@ import java.text.DecimalFormat;
 import info.bioinfweb.treegraph.document.HiddenDataMap;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextElementData;
+import info.bioinfweb.treegraph.document.metadata.LiteralMetadataNode;
 import info.bioinfweb.treegraph.document.metadata.MetadataNode;
+import info.bioinfweb.treegraph.document.metadata.MetadataTree;
 
 
 
@@ -44,14 +46,14 @@ public abstract class HiddenDataAdapter extends AbstractIDElementAdapter {
 
   
 	@Override
-	public TextElementData getData(Node node) {
-		return getMetadataNode(node).getValue();
+	public TextElementData getData(Node node) {		
+		return ((LiteralMetadataNode)node).getValue();
 	}
 
 	
 	@Override
 	public boolean assignData(Node node, TextElementData data) {
-		TextElementData target = getMetadataNode(node).getValue();
+		TextElementData target = ((LiteralMetadataNode)node).getValue();
 		boolean result = (target != null);
 		if (result) {
 			target.assign(data);
@@ -68,12 +70,12 @@ public abstract class HiddenDataAdapter extends AbstractIDElementAdapter {
 	
 	@Override
 	protected void createData(Node node) {
-		getMetadataNode(node).put(node.getUniqueName(), new TextElementData());
+		((LiteralMetadataNode)node).setValue(node, new TextElementData());
 	}
 
 	
 	@Override
 	public void delete(Node node) {
-		getMetadataNode(node).clear();
+		getMetadataNode(node);
 	}
 }
