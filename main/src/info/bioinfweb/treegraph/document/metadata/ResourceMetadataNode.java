@@ -23,6 +23,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 import javax.xml.namespace.QName;
 
@@ -35,7 +36,7 @@ import info.bioinfweb.treegraph.document.TextElementData;
 
 public class ResourceMetadataNode extends MetadataNode implements MetadataInterface {
 	private List<MetadataNode> children = new ArrayList<MetadataNode>();
-	private URIOrStringIdentifier rel;
+	private QName rel;
 	private Object uri;
 	
 	
@@ -44,36 +45,58 @@ public class ResourceMetadataNode extends MetadataNode implements MetadataInterf
 		this.uri = value;
 	}
 	
-	
-//	public URIOrStringIdentifier getRel(QName predicate) {
-//		rel = predicate.getNamespaceURI();
-//		return rel;
-//	}
-	
-	
+
+	public QName getRel() {
+		return rel;
+	}
+
+
+	public void setRel(QName rel) {
+		this.rel = rel;
+	}
+
+
 	public URI getURI() {
 	return (URI)uri;
 	}
 	
 	
-	public List<MetadataNode> getChildren(LiteralMetadataNode literalMetadataNode) {
+	public void setURI(Object uri) {
+		this.uri = uri;
+	}
+	
+	
+	public List<MetadataNode> getChildren() {
+		return children;
+	}
+	
+	
+	public void setChildren(LiteralMetadataNode literalMetadataNode) {
 		int index = 0;
 		while (!literalMetadataNode.isEmpty()) {
 			children.add(index, literalMetadataNode);
 			index++;
 		}
-		return children;
 	}
 	
 	
-	public Iterator<MetadataNode> iterator() {
+	public ListIterator<MetadataNode> iterator() {
 		return children.listIterator();
+	}
+	
+	
+	public boolean isEmpty() {
+		if (uri != null) {
+			return false;
+		}
+		else {
+			return true;
+		}
 	}
 
 
 	@Override
 	public TextElementData getValue() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	

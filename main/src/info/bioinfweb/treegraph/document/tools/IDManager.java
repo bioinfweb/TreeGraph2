@@ -93,7 +93,7 @@ public class IDManager {
 //  }
   
   private static void searchHiddenDataIDs(HiddenDataElement element, List<String> list) {
-  	for (int i = 0; i < element.getMetadataRoot().size(); i++) {
+  	for (int i = 0; i < element.getMetadataTree().getTreeChildren().size(); i++) {
 			String id = element.getMetadataRoot().getPredicate().toString();
 			if ((!id.equals("")) && !list.contains(id)) {
 				list.add(id);
@@ -177,8 +177,8 @@ public class IDManager {
     if (root == null) {
     	return false;
     }
-  	if (!root.getAfferentBranch().getLabels().isEmpty() || !root.getMetadataRoot().isEmpty() ||
-  			!root.getAfferentBranch().getMetadataRoot().isEmpty()) {
+  	if (!root.getAfferentBranch().getLabels().isEmpty() || !root.getMetadataTree().isEmpty() ||
+  			!root.getAfferentBranch().getMetadataTree().isEmpty()) {
   		return true;
   	}
   	

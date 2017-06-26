@@ -42,23 +42,24 @@ public abstract class HiddenDataAdapter extends AbstractIDElementAdapter {
 	}
 
 
+//	protected abstract MetadataNode getMetadataNode(Node node);
 	protected abstract MetadataTree getMetadataTree(Node node);
 
   
 	@Override
-	public TextElementData getData(Node node) {		
-		return ;
+	public TextElementData getData(Node node) {
+//		return getMetadataTree(node);
 	}
 
 	
 	@Override
 	public boolean assignData(Node node, TextElementData data) {
-		TextElementData target = ;
-		boolean result = (target != null);
-		if (result) {
-			target.assign(data);
-		}
-		return result;
+//		TextElementData target = getDataMap(node).get(getID());
+//		boolean result = (target != null);
+//		if (result) {
+//			target.assign(data);
+//		}
+//		return result;
 	}
 
 

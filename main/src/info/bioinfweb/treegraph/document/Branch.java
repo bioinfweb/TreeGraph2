@@ -37,8 +37,6 @@ public class Branch extends AbstractPaintableElement
   private Labels labels = new Labels(this);
   private Node targetNode = null;  // Notwendig um von markiertem Knoten in den umgebenden Baum zu gelangen.
   private BranchFormats formats = new BranchFormats();
-//  private HiddenDataMap hiddenDataMap = null;
-//  private MetadataNode metadataNode = null;
   private MetadataTree metadataTree = null;
   
   
@@ -46,7 +44,6 @@ public class Branch extends AbstractPaintableElement
 		super();
   	targetNode = target;
   	metadataTree = new MetadataTree(getTargetNode());
-//  	hiddenDataMap = new HiddenDataMap(getTargetNode());
   }
   
   
@@ -100,16 +97,6 @@ public class Branch extends AbstractPaintableElement
 	}
 	
 	
-//	public HiddenDataMap getHiddenDataMap() {
-//		return hiddenDataMap;
-//	}
-	
-	
-//	public MetadataNode getMetadataRoot() {
-//		return metadataNode;
-//	}
-	
-	
 	public MetadataTree getMetadataTree() {
 		return metadataTree;
 	}
@@ -133,7 +120,12 @@ public class Branch extends AbstractPaintableElement
 		result.setLength(getLength());
 		result.labels = getLabels().clone();
 		result.labels.setHoldingBranch(result);
-		result.getMetadataTree().clone();
+		try {
+			result.getMetadataTree().clone();
+		} catch (CloneNotSupportedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		result.setFormats(getFormats().clone());
 		return result;
 	}

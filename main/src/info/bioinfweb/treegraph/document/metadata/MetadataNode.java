@@ -19,31 +19,44 @@
 package info.bioinfweb.treegraph.document.metadata;
 
 
-import javax.xml.namespace.QName;
-
-
 import info.bioinfweb.treegraph.document.Node;
-import info.bioinfweb.treegraph.document.TextElement;
-import info.bioinfweb.treegraph.document.TextElementData;
-import info.bioinfweb.treegraph.document.TreeElement;
 
 
 
 public class MetadataNode {
-	private MetadataNode parent;
+	private MetadataNode parent;	
 	
+	
+	public MetadataNode getParent() {
+		return parent;
+	}
+	
+	
+	public MetadataNode setParent(MetadataNode parent) {
+		this.parent = parent;
+		return parent;
+	}	
 	
 	
 
 	@Override
-	protected Object clone() throws CloneNotSupportedException {
-			MetadataNode metadataNode = new MetadataNode();
-
-		return super.clone();
+	protected MetadataNode clone() throws CloneNotSupportedException {
+		MetadataNode result = new MetadataNode();
+		result.getParent();
+		return result;
 	}
 	
 	
 	
-	
-
+	//TODO What type of parameter for MetadataTree()?
+	public MetadataNode cloneWithSubtree() {
+		MetadataTree subtree = new MetadataTree();
+		MetadataNode result = clone();
+		for (int i = 0; i < subtree.getTreeChildren().size(); i++) {
+			MetadataNode child = subtree.getTreeChildren().get(i).cloneWithSubtree();
+			child.setParent(result);
+			subtree.getTreeChildren().add(child);
+		}
+		return result;
+	}
 }

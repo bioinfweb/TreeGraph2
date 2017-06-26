@@ -18,14 +18,18 @@
  */
 package info.bioinfweb.treegraph.document.metadata;
 
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 import info.bioinfweb.treegraph.document.Node;
-import info.bioinfweb.treegraph.document.TreeElement;
+
+
 
 public class MetadataTree implements Cloneable {
 	private Node owner;
+	private List<MetadataNode> treeChildren = new ArrayList<MetadataNode>();
 	private MetadataNode parent = null;
 	
 	
@@ -39,28 +43,62 @@ public class MetadataTree implements Cloneable {
 	}
 	
 	
-	@Override
-	public Object clone() throws CloneNotSupportedException {
-		MetadataTree result = new MetadataTree();
-		result.getOwner();
-		return result;
+	public Node setOwner(Node owner) {
+		this.owner = owner;
+		return owner;
 	}
 	
 	
-//	public Object cloneWithSubtree() {
-//		MetadataTree result = clone();
-//		for (int i = 0; i < getChildren().size(); i++) {
-//			Node child = getChildren().get(i).cloneWithSubtree(keepUniqueNames);
-//			child.setParent(result);
-//			result.getChildren().add(child);
-//		}
-//		return result;
-//	}
+	public MetadataNode getParent() {
+		return parent;
+	}
 	
 	
-//	public MetadataTree clone(TreeElement other) {
-//		MetadataTree metadataTree = new MetadataTree(other);
-//		metadataTree.clone(other);
-//		return metadataTree;
-//	}
+	public MetadataNode setParent(MetadataNode parent) {
+		this.parent = parent;
+		return parent;
+	}
+	
+	
+	public List<MetadataNode> getTreeChildren() {
+		return treeChildren;
+	}
+
+
+	//TODO Can I change parameter type to Object and then cast to MetadataNode? Would help in RerootEdit.
+	public void setTreeChildren(MetadataNode metaNode) {
+		clear();
+		ListIterator<MetadataNode> iterator = iterator();
+		while (iterator.hasNext()) {
+			treeChildren.add(metaNode);
+			iterator.next();			
+		}
+	}
+	
+	
+	public ListIterator<MetadataNode> iterator() {
+		return treeChildren.listIterator();
+	}
+	
+	
+	public void clear() {
+		treeChildren.clear();
+	}
+	
+	
+	public boolean isEmpty() {
+		return treeChildren.isEmpty();
+	}
+
+
+	@Override
+	public List<MetadataNode> clone() throws CloneNotSupportedException {
+//		MetadataTree result = new MetadataTree();
+		List<MetadataNode> nodeList = new ArrayList<MetadataNode>();
+		MetadataNode result = new MetadataNode();
+		for (int i = 0; i < treeChildren.size(); i++) {
+			nodeList.add(i, result.cloneWithSubtree());
+		}
+		return nodeList;
+	}
 }

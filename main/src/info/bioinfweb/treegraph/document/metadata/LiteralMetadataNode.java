@@ -48,10 +48,15 @@ public class LiteralMetadataNode extends MetadataNode implements MetadataInterfa
 	}
 	
 	
-	public TextElementData setValue(Node node, TextElementData data) {
-		data = node.getData();
-		return data;
+	public void setValue(Object value) {
+		this.value = value;
 	}
+	
+	
+//	public TextElementData setValue(Node node, TextElementData data) {
+//		data = node.getData();
+//		return data;
+//	}
 	
 	
 	public QName getPredicate() {
@@ -59,6 +64,21 @@ public class LiteralMetadataNode extends MetadataNode implements MetadataInterfa
 	}
 	
 	
+	public void setPredicate(QName predicate) {
+		this.predicate = predicate;
+	}
+	
+	
+	public QName getDatatype() {
+		return datatype;
+	}
+
+
+	public void setDatatype(QName datatype) {
+		this.datatype = datatype;
+	}
+
+
 	public boolean isEmpty() {
 		if (value != null) {
 			return false;
