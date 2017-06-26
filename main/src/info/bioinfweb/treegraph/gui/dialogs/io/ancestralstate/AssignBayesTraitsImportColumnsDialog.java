@@ -43,6 +43,9 @@ import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 
 
@@ -55,10 +58,12 @@ public class AssignBayesTraitsImportColumnsDialog extends AbstractNodeBranchData
 	private List<CharacterInput> characterInputs = new ArrayList<CharacterInput>();
 	private NewNodeBranchDataInput internalNodeNames = null;
 	
+	private JPanel characterListHeadingPanel = null;
 	private JLabel importCharacterDataLabel = null;
 	private JLabel importInternalNodeNamesLabel = null;
-	
-	private int bottomY;
+	private JButton invertSelectionButton;
+	private JButton selectAllButton;
+	private JButton selectNoneButton;
 
 
 	/**
@@ -78,19 +83,8 @@ public class AssignBayesTraitsImportColumnsDialog extends AbstractNodeBranchData
 		getImportPanel().removeAll();
 		characterInputs.clear();
 		
-		GridBagConstraints importCharacterDataLabelGBC = new GridBagConstraints();	
-		importCharacterDataLabelGBC.gridx = 0;
-		importCharacterDataLabelGBC.anchor = GridBagConstraints.WEST;
-		importCharacterDataLabelGBC.gridy =  0;
-		importCharacterDataLabelGBC.insets = new Insets(4, 6, 4, 0);
-		importCharacterDataLabelGBC.gridwidth = GridBagConstraints.RELATIVE;
-		importCharacterDataLabelGBC.weighty = 2.0;
-		importCharacterDataLabel = new JLabel();
-		importCharacterDataLabel.setText("Import ancestral state data");
-		getImportPanel().add(importCharacterDataLabel, importCharacterDataLabelGBC);
-		
 		Iterator<String> keySetIterator = data.getSiteIterator();
-		bottomY = 1;
+		int bottomY = 0;
 		while (keySetIterator.hasNext()) {
 			CharacterInput input = new CharacterInput(getImportPanel(), bottomY, data, tree, keySetIterator.next());
 			bottomY = input.getBottomY();
@@ -184,14 +178,52 @@ public class AssignBayesTraitsImportColumnsDialog extends AbstractNodeBranchData
 		if (jContentPane == null) {
 			jContentPane = new JPanel();
 			jContentPane.setLayout(new BoxLayout(jContentPane, BoxLayout.Y_AXIS));
+			jContentPane.add(getCharacterListHeadingPanel());
 			jContentPane.add(getScrollPane());
 			jContentPane.add(getImportInternalNodeNamesPanel(), null);
 			jContentPane.add(getButtonsPanel(), null);
 		}
 		return jContentPane;
 	}
-
 	
+	
+	private JPanel getCharacterListHeadingPanel() {
+		if (characterListHeadingPanel == null) {
+			characterListHeadingPanel = new JPanel();
+			GridBagLayout gbl_characterListHeadingPanel = new GridBagLayout();
+			characterListHeadingPanel.setLayout(gbl_characterListHeadingPanel);
+			GridBagConstraints importCharacterDataLabelGBC = new GridBagConstraints();	
+			importCharacterDataLabelGBC.weightx = 1.0;
+			importCharacterDataLabelGBC.gridx = 0;
+			importCharacterDataLabelGBC.anchor = GridBagConstraints.WEST;
+			importCharacterDataLabelGBC.gridy =  0;
+			importCharacterDataLabelGBC.insets = new Insets(4, 6, 5, 5);
+			importCharacterDataLabelGBC.gridwidth = 3;
+			importCharacterDataLabelGBC.weighty = 2.0;
+			importCharacterDataLabel = new JLabel();
+			importCharacterDataLabel.setText("Import ancestral state data");
+			characterListHeadingPanel.add(importCharacterDataLabel, importCharacterDataLabelGBC);			
+			GridBagConstraints gbc_btnSelectAll = new GridBagConstraints();
+			gbc_btnSelectAll.insets = new Insets(0, 4, 2, 5);
+			gbc_btnSelectAll.gridx = 0;
+			gbc_btnSelectAll.gridy = 1;
+			characterListHeadingPanel.add(getSelectAllButton(), gbc_btnSelectAll);
+			GridBagConstraints gbc_btnSelectNone = new GridBagConstraints();
+			gbc_btnSelectNone.insets = new Insets(0, 0, 2, 5);
+			gbc_btnSelectNone.gridx = 1;
+			gbc_btnSelectNone.gridy = 1;
+			characterListHeadingPanel.add(getSelectNoneButton(), gbc_btnSelectNone);
+			GridBagConstraints gbc_btnInvertSelection = new GridBagConstraints();
+			gbc_btnInvertSelection.insets = new Insets(0, 0, 2, 4);
+			gbc_btnInvertSelection.anchor = GridBagConstraints.WEST;
+			gbc_btnInvertSelection.gridx = 2;
+			gbc_btnInvertSelection.gridy = 1;
+			characterListHeadingPanel.add(getInvertSelectionButton(), gbc_btnInvertSelection);
+		}
+		return characterListHeadingPanel;
+	}
+
+
 	private JPanel getImportInternalNodeNamesPanel() {
 		if (importInternalNodeNamesPanel == null) {
 			importInternalNodeNamesPanel = new JPanel();
@@ -199,15 +231,63 @@ public class AssignBayesTraitsImportColumnsDialog extends AbstractNodeBranchData
 			GridBagConstraints importInternalNodeNamesLabelGBC = new GridBagConstraints();	
 			importInternalNodeNamesLabelGBC.gridx = 0;
 			importInternalNodeNamesLabelGBC.anchor = GridBagConstraints.WEST;
-			importInternalNodeNamesLabelGBC.gridy =  bottomY;
+			importInternalNodeNamesLabelGBC.gridy = 0;
 			importInternalNodeNamesLabelGBC.insets = new Insets(4, 6, 4, 0);
 			importInternalNodeNamesLabelGBC.gridwidth = GridBagConstraints.RELATIVE;
 			importInternalNodeNamesLabel = new JLabel();
 			importInternalNodeNamesLabel.setText("Import internal node names");
 			importInternalNodeNamesPanel.add(importInternalNodeNamesLabel, importInternalNodeNamesLabelGBC);
 			
-			internalNodeNames = new NewNodeBranchDataInput(importInternalNodeNamesPanel, 1, bottomY + 1, true);
+			internalNodeNames = new NewNodeBranchDataInput(importInternalNodeNamesPanel, 1, 1, true);
 		}
 		return importInternalNodeNamesPanel;
+	}
+	
+	
+	private JButton getInvertSelectionButton() {
+		if (invertSelectionButton == null) {
+			invertSelectionButton = new JButton("Invert selection");
+			invertSelectionButton.setMnemonic('i');
+			invertSelectionButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					for (CharacterInput characterInput : characterInputs) {
+						characterInput.setSelected(!characterInput.isSelected());
+					}
+				}
+			});
+		}
+		return invertSelectionButton;
+	}
+	
+	
+	private JButton getSelectAllButton() {
+		if (selectAllButton == null) {
+			selectAllButton = new JButton("Select all");
+			selectAllButton.setMnemonic('a');
+			selectAllButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					for (CharacterInput characterInput : characterInputs) {
+						characterInput.setSelected(true);
+					}
+				}
+			});
+		}
+		return selectAllButton;
+	}
+	
+	
+	private JButton getSelectNoneButton() {
+		if (selectNoneButton == null) {
+			selectNoneButton = new JButton("Select none");
+			selectNoneButton.setMnemonic('n');
+			selectNoneButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					for (CharacterInput characterInput : characterInputs) {
+						characterInput.setSelected(false);
+					}
+				}
+			});
+		}
+		return selectNoneButton;
 	}
 }

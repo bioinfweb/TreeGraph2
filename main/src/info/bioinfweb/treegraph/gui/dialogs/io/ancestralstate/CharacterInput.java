@@ -19,6 +19,14 @@
 package info.bioinfweb.treegraph.gui.dialogs.io.ancestralstate;
 
 
+import info.bioinfweb.treegraph.document.Tree;
+import info.bioinfweb.treegraph.document.io.ancestralstate.AncestralStateData;
+import info.bioinfweb.treegraph.document.nodebranchdata.NewHiddenBranchDataAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.VoidNodeBranchDataAdapter;
+import info.bioinfweb.treegraph.document.undo.file.ancestralstate.AncestralStateImportParameters;
+import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NewNodeBranchDataInput;
+
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ItemEvent;
@@ -26,16 +34,6 @@ import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import info.bioinfweb.treegraph.document.Tree;
-import info.bioinfweb.treegraph.document.io.ancestralstate.AncestralStateData;
-import info.bioinfweb.treegraph.document.nodebranchdata.NewHiddenBranchDataAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.VoidNodeBranchDataAdapter;
-
-
-import info.bioinfweb.treegraph.document.undo.file.ancestralstate.AncestralStateImportParameters;
-import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NewNodeBranchDataInput;
 
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -158,7 +156,7 @@ public class CharacterInput {
 						setContentsEnabled(importCharacterCheckbox.isSelected()); 
 					}
 				});
-	    
+	  
 	  pieChartLabelCheckbox.addItemListener(new ItemListener() { 
 			  	public void itemStateChanged(ItemEvent e) {
 			  		pieChartLabelIDTextField.setEnabled(pieChartLabelCheckbox.isSelected());
@@ -198,5 +196,15 @@ public class CharacterInput {
 		}
 		pieChartLabelCheckbox.setEnabled(enabled);
 		pieChartLabelIDTextField.setEnabled(enabled);
+	}
+
+
+	public boolean isSelected() {
+		return importCharacterCheckbox.isSelected();
+	}
+
+
+	public void setSelected(boolean selected) {
+		importCharacterCheckbox.setSelected(selected);
 	}
 }
