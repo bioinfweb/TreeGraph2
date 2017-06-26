@@ -151,15 +151,28 @@ public class PieChartLabelPainter extends AbstractGraphicalLabelPainter<PieChart
 			titlePosition.getWidth().setInMillimeters(0f);
 			titlePosition.getHeight().setInMillimeters(0f);
 		}
+		float chartAndCaptionsY = (1 + RELATIVE_CAPTION_LINE_DISTANCE) * positionData.getTitlePosition().getHeight().getInMillimeters();
 		
 		// Chart dimensions are defined by the formats:
 		positionData.getChartPosition().getWidth().assign(f.getWidth());
 		positionData.getChartPosition().getHeight().assign(f.getHeight());
 		
 		if (PieChartLabelCaptionContentType.NONE.equals(f.getCaptionsContentType()) || label.getSectionDataList().isEmpty()) {
-			positionData.getChartPosition().getTop().setInMillimeters(0f);
-			positionData.getChartPosition().getLeft().setInMillimeters(0f);
-			positionData.assignPositionData(positionData.getChartPosition());
+			// Adjust values depending on title width:
+			float halfWidthDifference = 0.5f * (titlePosition.getWidth().getInMillimeters() - f.getWidth().getInMillimeters());
+			if (halfWidthDifference > 0) {  // title longer than chart and captions
+				positionData.getChartPosition().getLeft().setInMillimeters(halfWidthDifference);
+				titlePosition.getLeft().setInMillimeters(0f);
+			}
+			else {
+				positionData.getChartPosition().getLeft().setInMillimeters(0f);
+				titlePosition.getLeft().setInMillimeters(-halfWidthDifference);
+			}
+			positionData.getChartPosition().getTop().setInMillimeters(chartAndCaptionsY);
+			
+			positionData.getWidth().setInMillimeters(
+					Math.max(f.getWidth().getInMillimeters(), titlePosition.getWidth().getInMillimeters()));
+			positionData.getHeight().setInMillimeters(chartAndCaptionsY + f.getHeight().getInMillimeters());
 		}
 		else {
 			int captionColumnCount = label.getSectionDataList().size() > 1 ? 2 : 1;
@@ -201,7 +214,6 @@ public class PieChartLabelPainter extends AbstractGraphicalLabelPainter<PieChart
 			float leftColumnX = 0f;
 			float rightColumnX = leftColumnWidth + f.getWidth().getInMillimeters() + captionColumnCount * (captionChartSpace + captionDistance);
 			float chartAndCaptionsWidth = rightColumnX + rightColumnWidth;
-			float chartAndCaptionsY = (1 + RELATIVE_CAPTION_LINE_DISTANCE) * positionData.getTitlePosition().getHeight().getInMillimeters();
 			
 			// Adjust values depending on title width:
 			float halfWidthDifference = 0.5f * (titlePosition.getWidth().getInMillimeters() - chartAndCaptionsWidth);

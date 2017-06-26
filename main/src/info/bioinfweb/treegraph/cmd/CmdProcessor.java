@@ -111,7 +111,7 @@ public class CmdProcessor {
 		boolean readingComplete = false;
 		try {
 			DocumentReader documentReader = ReadWriteFactory.getInstance().getReader(source);
-			if (reader != null) {  //TODO Muss das documentReader hei�en?
+			if (reader != null) {  //TODO Muss das documentReader heißen?
 				ReadWriteParameterMap parameterMap = new ReadWriteParameterMap();
 				parameterMap.putApplicationLogger(CmdLoadLogger.getInstance());
 				parameterMap.put(ReadWriteParameterMap.KEY_INTERNAL_NODE_NAMES_ADAPTER, 
@@ -142,7 +142,7 @@ public class CmdProcessor {
 				}
 				else {
 					System.out.println("\"" + reader.getArg(2) + "\" is not a valid target format.");
-					System.out.println("(See http://treegraph.bioinfweb.info/Help/wiki/Command_line_options for details.)");
+					System.out.println("(See http://r.bioinfweb.info/TGCMD for details.)");
 				}
 			}
 		}

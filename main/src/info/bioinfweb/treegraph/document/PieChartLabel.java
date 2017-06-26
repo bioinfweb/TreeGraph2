@@ -22,7 +22,6 @@ package info.bioinfweb.treegraph.document;
 import info.bioinfweb.treegraph.document.format.ElementFormats;
 import info.bioinfweb.treegraph.document.format.PieChartLabelCaptionContentType;
 import info.bioinfweb.treegraph.document.format.PieChartLabelFormats;
-import info.bioinfweb.treegraph.document.format.operate.PieChartCaptionsContentTypeOperator;
 import info.bioinfweb.treegraph.document.tools.IDManager;
 import info.bioinfweb.treegraph.graphics.positionpaint.PositionPaintType;
 import info.bioinfweb.treegraph.graphics.positionpaint.positiondata.PieChartLabelPositionData;
