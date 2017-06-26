@@ -29,17 +29,18 @@ import javax.xml.namespace.QName;
 import info.bioinfweb.jphyloio.events.meta.ResourceMetadataEvent;
 import info.bioinfweb.jphyloio.events.meta.URIOrStringIdentifier;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.TextElementData;
 
 
 
-public class ResourceMetadataNode extends MetadataNode {
+public class ResourceMetadataNode extends MetadataNode implements MetadataInterface {
 	private List<MetadataNode> children = new ArrayList<MetadataNode>();
 	private URIOrStringIdentifier rel;
 	private Object uri;
 	
 	
 	public ResourceMetadataNode(Node owner, Object value) {
-		super(owner);
+		super();
 		this.uri = value;
 	}
 	
@@ -67,6 +68,13 @@ public class ResourceMetadataNode extends MetadataNode {
 	
 	public Iterator<MetadataNode> iterator() {
 		return children.listIterator();
+	}
+
+
+	@Override
+	public TextElementData getValue() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 

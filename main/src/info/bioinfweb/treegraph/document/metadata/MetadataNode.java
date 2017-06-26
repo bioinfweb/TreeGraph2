@@ -31,27 +31,19 @@ import info.bioinfweb.treegraph.document.TreeElement;
 
 public class MetadataNode {
 	private MetadataNode parent;
-		private Node owner;
 	
 	
-	public MetadataNode(TreeElement owner) {
-		this.owner = (Node) owner;
+	
+
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+			MetadataNode metadataNode = new MetadataNode();
+
+		return super.clone();
 	}
 	
 	
-	public Node getOwner() {
-		return owner;
-	}
 	
 	
-	public MetadataNode clone(TreeElement owner) {
-		MetadataNode metadataNode = new MetadataNode(owner);
-		try {
-			metadataNode.clone();
-		} catch (CloneNotSupportedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return metadataNode;
-	}
+
 }

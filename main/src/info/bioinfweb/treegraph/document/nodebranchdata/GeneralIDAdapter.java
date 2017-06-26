@@ -24,6 +24,7 @@ import info.bioinfweb.treegraph.document.Label;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.TextLabel;
+import info.bioinfweb.treegraph.document.metadata.MetadataInterface;
 import info.bioinfweb.treegraph.document.tools.IDManager;
 
 import java.text.DecimalFormat;
@@ -58,12 +59,12 @@ public class GeneralIDAdapter extends AbstractIDElementAdapter {
   	}
   	else {
     	TextElementData data = null;
-  		data = node.getMetadataRoot().;
+  		data = ((MetadataInterface)node).getValue();
   		if (data != null) {
   			return node;
   		}
   		else {
-    		data = node.getAfferentBranch().getMetadataRoot();
+    		data = ((MetadataInterface)node.getAfferentBranch()).getValue();
     		if (data != null) {
     			return node.getAfferentBranch();
     		}

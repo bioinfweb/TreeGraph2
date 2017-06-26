@@ -16,17 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.document;
+package info.bioinfweb.treegraph.document.metadata;
 
+import info.bioinfweb.treegraph.document.TextElementData;
 
-import info.bioinfweb.treegraph.document.metadata.MetadataNode;
-import info.bioinfweb.treegraph.document.metadata.MetadataTree;
-
-
-
-public interface HiddenDataElement {
-	public MetadataTree getMetadataTree();
+public interface MetadataInterface {
+	public TextElementData getValue();
 	
-//	public MetadataNode getMetadataRoot();
-//  public HiddenDataMap getHiddenDataMap();  //TODO Replace by "MetadataNode getMetadataRoot();"
 }

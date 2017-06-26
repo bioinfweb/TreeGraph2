@@ -43,7 +43,7 @@ public class Node extends AbstractTextElement
   private NodeFormats formats = new NodeFormats();
   private String uniqueName = null;
 //  private HiddenDataMap hiddenDataMap = new HiddenDataMap(this);
-  private MetadataNode metadataNode = new MetadataNode(this);
+//  private MetadataNode metadataNode = new MetadataNode(this);
   private MetadataTree metadataTree = new MetadataTree(this);
   private HashMap<String, Object> attributeMap = new HashMap<String, Object>(); 
 
@@ -320,12 +320,13 @@ public class Node extends AbstractTextElement
 //	}	
 	
 
-	public MetadataNode getMetadataRoot() {
-		return metadataNode;
-	}
+//	public MetadataNode getMetadataRoot() {
+//		return metadataNode;
+//	}
 	
 	
-	public MetadataTree geMetadataTree() {
+	@Override
+	public MetadataTree getMetadataTree() {
 		return metadataTree;
 	}
 	
@@ -392,7 +393,7 @@ public class Node extends AbstractTextElement
 		Node result = new Node();
 		result.assignTextElementData(this);
 		result.setAfferentBranch(getAfferentBranch().clone());
-		result.getMetadataRoot().clone(result);
+		result.getMetadataTree().clone();
 		result.setFormats(getFormats().clone());
 		result.attributeMap = new HashMap<String, Object>();
 		return result;

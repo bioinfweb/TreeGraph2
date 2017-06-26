@@ -42,18 +42,18 @@ public abstract class HiddenDataAdapter extends AbstractIDElementAdapter {
 	}
 
 
-	protected abstract MetadataNode getMetadataNode(Node node);
+	protected abstract MetadataTree getMetadataTree(Node node);
 
   
 	@Override
 	public TextElementData getData(Node node) {		
-		return ((LiteralMetadataNode)node).getValue();
+		return ;
 	}
 
 	
 	@Override
 	public boolean assignData(Node node, TextElementData data) {
-		TextElementData target = ((LiteralMetadataNode)node).getValue();
+		TextElementData target = ;
 		boolean result = (target != null);
 		if (result) {
 			target.assign(data);
@@ -70,12 +70,12 @@ public abstract class HiddenDataAdapter extends AbstractIDElementAdapter {
 	
 	@Override
 	protected void createData(Node node) {
-		((LiteralMetadataNode)node).setValue(node, new TextElementData());
+		;
 	}
 
 	
 	@Override
 	public void delete(Node node) {
-		getMetadataNode(node);
+		getMetadataTree(node);
 	}
 }

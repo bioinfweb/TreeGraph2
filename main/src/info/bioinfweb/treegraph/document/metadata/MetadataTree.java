@@ -25,43 +25,42 @@ import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TreeElement;
 
 public class MetadataTree implements Cloneable {
-	private MetadataNode metadataRoot = null;
-	private List<MetadataNode> treeChildren = new ArrayList<MetadataNode>();
+	private Node owner;
+	private MetadataNode parent = null;
 	
 	
-	public MetadataTree(TreeElement node) {
-		this.metadataRoot = (MetadataNode) node;
-	}
-
-
-	public MetadataNode getRoot() {
-		return metadataRoot;
+	public MetadataTree(Node owner) {
+		this.owner = owner;
 	}
 	
 	
-	public void clear() {
-		treeChildren.clear();
+	public Node getOwner() {
+		return owner;
 	}
 	
 	
-	public boolean isEmpty() {
-	  return treeChildren.isEmpty();
-  }
-	
-	
-	public List<MetadataNode> getChildren(MetadataNode metadataNode) {
-		int index = 0;
-		while (metadataNode != null) {
-			treeChildren.add(index, metadataNode);
-			index++;
-		}
-		return treeChildren;
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		MetadataTree result = new MetadataTree();
+		result.getOwner();
+		return result;
 	}
 	
 	
-	public MetadataTree clone(TreeElement other) {
-		MetadataTree metadataTree = new MetadataTree(other);
-		metadataTree.clone(other);
-		return metadataTree;
-	}
+//	public Object cloneWithSubtree() {
+//		MetadataTree result = clone();
+//		for (int i = 0; i < getChildren().size(); i++) {
+//			Node child = getChildren().get(i).cloneWithSubtree(keepUniqueNames);
+//			child.setParent(result);
+//			result.getChildren().add(child);
+//		}
+//		return result;
+//	}
+	
+	
+//	public MetadataTree clone(TreeElement other) {
+//		MetadataTree metadataTree = new MetadataTree(other);
+//		metadataTree.clone(other);
+//		return metadataTree;
+//	}
 }
