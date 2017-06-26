@@ -56,7 +56,7 @@ public class Main extends ProgramMainClass {
 	
 	public static final Font SPLASH_SCREEN_FONT = new Font(Font.DIALOG, Font.PLAIN, 12); 
 	public static final Color SPLASH_SCREEN_FONT_COLOR = Color.BLACK; 
-	public static final int SPLASH_SCREEN_BORDER = 4; 
+	public static final int SPLASH_SCREEN_BORDER = 4;
 	
 	
 	private static Main firstInstance = null;
@@ -69,7 +69,7 @@ public class Main extends ProgramMainClass {
 	
 	
 	private Main() {
-		super(new ApplicationVersion(2, 13, 0, 748, ApplicationType.BETA));
+		super(new ApplicationVersion(2, 14, 0, 771, ApplicationType.BETA));
 		errorReporter = new SwingErrorReporter(ERROR_URL, getVersion());
 	}
 	
