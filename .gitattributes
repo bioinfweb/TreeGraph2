@@ -318,7 +318,6 @@ main/src/info/bioinfweb/treegraph/document/io/xtg/XTGReader.java -text
 main/src/info/bioinfweb/treegraph/document/io/xtg/XTGWriter.java -text
 main/src/info/bioinfweb/treegraph/document/io/xtg/package.html -text
 main/src/info/bioinfweb/treegraph/document/metadata/LiteralMetadataNode.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/treegraph/document/metadata/MetadataInterface.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/metadata/MetadataNode.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/metadata/MetadataTree.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/metadata/ResourceMetadataNode.java -text svneol=unset#text/plain
@@ -331,6 +330,8 @@ main/src/info/bioinfweb/treegraph/document/nodebranchdata/HiddenBranchDataAdapte
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/HiddenDataAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/HiddenNodeDataAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/IDElementAdapter.java -text
+main/src/info/bioinfweb/treegraph/document/nodebranchdata/LiteralMetadataAdapter.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/nodebranchdata/MetadataPath.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/NewHiddenBranchDataAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/NewHiddenNodeDataAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/NewNodeBranchDataAdapter.java -text
@@ -338,6 +339,7 @@ main/src/info/bioinfweb/treegraph/document/nodebranchdata/NewTextLabelAdapter.ja
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/NodeBranchDataAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/NodeNameAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/PieChartLabelAdapter.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/nodebranchdata/ResourceMetadataAdapter.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/TextElementDataAdapter.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/TextIDElementDataAdapter.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/TextIDElementType.java -text svneol=unset#text/plain

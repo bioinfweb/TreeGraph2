@@ -21,21 +21,21 @@ package info.bioinfweb.treegraph.document.metadata;
 
 import javax.xml.namespace.QName;
 
-import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.jphyloio.formats.xtg.XTGConstants;
 import info.bioinfweb.treegraph.document.TextElementData;
 
 
 
-public class LiteralMetadataNode extends MetadataNode implements MetadataInterface {
-	private Object value;  // Ggf. später durch Object ersetzen
+public class LiteralMetadataNode extends MetadataNode {
+	private TextElementData value;  // Ggf. später durch Object ersetzen
 	private QName predicate;  // Evtl. String key wird nicht hier, sondern für die ganze Spalte gespeichert.
 	private QName datatype;  // Hier wird ein XML-Datentyp angegeben. (Andere String-Datentypen aus JPhyloIO müssten entsprechend übersetzt oder ignoriert werden.)
 	
 	
-	public LiteralMetadataNode(Node owner, QName predicate) {
+	public LiteralMetadataNode(QName predicate) {  //TODO Which properties must be set?
 		super();
 		this.predicate = predicate;
-	}
+	}	
 	
 	
 	public QName getDatatype(QName datatype) {
@@ -43,12 +43,13 @@ public class LiteralMetadataNode extends MetadataNode implements MetadataInterfa
 		return datatype;
 	}
 	
+	
 	public TextElementData getValue() {
-		return (TextElementData) value;
+		return value;
 	}
 	
 	
-	public void setValue(Object value) {
+	public void setValue(TextElementData value) {
 		this.value = value;
 	}
 	
@@ -79,12 +80,38 @@ public class LiteralMetadataNode extends MetadataNode implements MetadataInterfa
 	}
 
 
-	public boolean isEmpty() {
-		if (value != null) {
-			return false;
-		}
-		else {
-			return true;
-		}
+	@Override
+	public LiteralMetadataNode clone() {
+		LiteralMetadataNode result = (LiteralMetadataNode)super.clone();
+		result.setValue(getValue().clone());
+		return result;
 	}
+
+
+//	public static void main(String[] args) {
+//		LiteralMetadataNode parent = new LiteralMetadataNode(XTGConstants.PREDICATE_BRANCH_ATTR_MIN_LENGTH);
+//		LiteralMetadataNode node = new LiteralMetadataNode(XTGConstants.PREDICATE_BRANCH_ATTR_CONSTANT_WIDTH);
+//		node.setValue(new TextElementData(15));
+//		node.setDatatype(XTGConstants.DATA_TYPE_COLOR);
+//		node.setParent(parent);
+//		
+//		LiteralMetadataNode copy = node.clone();
+//		
+//		System.out.println(copy);
+//		System.out.println(copy.getPredicate());
+//		System.out.println(copy.getDatatype());
+//		System.out.println(copy.getValue());
+//		System.out.println(copy.getParent());
+//		System.out.println();
+//		
+//		MetadataNode node2 = node;
+//		copy = (LiteralMetadataNode)node2.clone();
+//		
+//		System.out.println(copy);
+//		System.out.println(copy.getPredicate());
+//		System.out.println(copy.getDatatype());
+//		System.out.println(copy.getValue());
+//		System.out.println(copy.getParent());
+//		
+//	}
 }

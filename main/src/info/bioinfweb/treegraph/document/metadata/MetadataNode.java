@@ -19,44 +19,48 @@
 package info.bioinfweb.treegraph.document.metadata;
 
 
-import info.bioinfweb.treegraph.document.Node;
 
-
-
-public class MetadataNode {
-	private MetadataNode parent;	
+public abstract class MetadataNode implements Cloneable {
+	private MetadataNode parent = null;
 	
-	
+		
+	public MetadataNode() {
+		super();
+	}
+
+
 	public MetadataNode getParent() {
 		return parent;
 	}
 	
 	
-	public MetadataNode setParent(MetadataNode parent) {
+	public void setParent(MetadataNode parent) {
 		this.parent = parent;
-		return parent;
+	}
+
+
+	@Override
+	public MetadataNode clone() {
+		try {
+			MetadataNode result = (MetadataNode) super.clone();
+			result.setParent(null);
+			return result;
+		}
+		catch (CloneNotSupportedException e) {
+			throw new InternalError(e);
+		}
 	}	
 	
 	
-
-	@Override
-	protected MetadataNode clone() throws CloneNotSupportedException {
-		MetadataNode result = new MetadataNode();
-		result.getParent();
-		return result;
-	}
-	
-	
-	
 	//TODO What type of parameter for MetadataTree()?
-	public MetadataNode cloneWithSubtree() {
-		MetadataTree subtree = new MetadataTree();
-		MetadataNode result = clone();
-		for (int i = 0; i < subtree.getTreeChildren().size(); i++) {
-			MetadataNode child = subtree.getTreeChildren().get(i).cloneWithSubtree();
-			child.setParent(result);
-			subtree.getTreeChildren().add(child);
-		}
-		return result;
-	}
+//	public MetadataNode cloneWithSubtree() {
+//		MetadataTree subtree = new MetadataTree();
+//		MetadataNode result = clone();
+//		for (int i = 0; i < subtree.getTreeChildren().size(); i++) {
+//			MetadataNode child = subtree.getTreeChildren().get(i).cloneWithSubtree();
+//			child.setParent(result);
+//			subtree.getTreeChildren().add(child);
+//		}
+//		return result;
+//	}
 }

@@ -21,84 +21,51 @@ package info.bioinfweb.treegraph.document.metadata;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 
+import info.bioinfweb.treegraph.document.HiddenDataElement;
 import info.bioinfweb.treegraph.document.Node;
 
 
 
 public class MetadataTree implements Cloneable {
-	private Node owner;
-	private List<MetadataNode> treeChildren = new ArrayList<MetadataNode>();
-	private MetadataNode parent = null;
+	private HiddenDataElement parent;
+	private List<MetadataNode> children = new ArrayList<MetadataNode>();
 	
 	
-	public MetadataTree(Node owner) {
-		this.owner = owner;
-	}
-	
-	
-	public Node getOwner() {
-		return owner;
-	}
-	
-	
-	public Node setOwner(Node owner) {
-		this.owner = owner;
-		return owner;
-	}
-	
-	
-	public MetadataNode getParent() {
-		return parent;
-	}
-	
-	
-	public MetadataNode setParent(MetadataNode parent) {
+	public MetadataTree(HiddenDataElement parent) {
 		this.parent = parent;
+	}
+	
+	
+	public HiddenDataElement getParent() {
 		return parent;
 	}
 	
 	
-	public List<MetadataNode> getTreeChildren() {
-		return treeChildren;
-	}
-
-
-	//TODO Can I change parameter type to Object and then cast to MetadataNode? Would help in RerootEdit.
-	public void setTreeChildren(MetadataNode metaNode) {
-		clear();
-		ListIterator<MetadataNode> iterator = iterator();
-		while (iterator.hasNext()) {
-			treeChildren.add(metaNode);
-			iterator.next();			
-		}
+	public void setParent(HiddenDataElement parent) {
+		this.parent = parent;
 	}
 	
 	
-	public ListIterator<MetadataNode> iterator() {
-		return treeChildren.listIterator();
-	}
-	
-	
-	public void clear() {
-		treeChildren.clear();
-	}
-	
-	
-	public boolean isEmpty() {
-		return treeChildren.isEmpty();
+	public List<MetadataNode> getChildren() {
+		return children;
 	}
 
 
 	@Override
-	public List<MetadataNode> clone() throws CloneNotSupportedException {
-//		MetadataTree result = new MetadataTree();
-		List<MetadataNode> nodeList = new ArrayList<MetadataNode>();
-		MetadataNode result = new MetadataNode();
-		for (int i = 0; i < treeChildren.size(); i++) {
-			nodeList.add(i, result.cloneWithSubtree());
+	public MetadataTree clone() {
+		try {
+			MetadataTree result = (MetadataTree)super.clone();
+			result.setParent(null);
+			result.children = new ArrayList<MetadataNode>();
+			for (MetadataNode child : getChildren()) {
+				MetadataNode childClone = child.clone();
+				result.getChildren().add(childClone);
+			}
+			return result;
 		}
-		return nodeList;
+		catch (CloneNotSupportedException e) {
+			throw new InternalError(e);
+		}
 	}
 }

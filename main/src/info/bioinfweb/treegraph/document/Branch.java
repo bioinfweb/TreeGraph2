@@ -120,12 +120,8 @@ public class Branch extends AbstractPaintableElement
 		result.setLength(getLength());
 		result.labels = getLabels().clone();
 		result.labels.setHoldingBranch(result);
-		try {
-			result.getMetadataTree().clone();
-		} catch (CloneNotSupportedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		result.metadataTree = getMetadataTree().clone();
+		result.getMetadataTree().setParent(result);
 		result.setFormats(getFormats().clone());
 		return result;
 	}

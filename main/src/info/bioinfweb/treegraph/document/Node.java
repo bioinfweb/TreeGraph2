@@ -381,12 +381,8 @@ public class Node extends AbstractTextElement
 		Node result = new Node();
 		result.assignTextElementData(this);
 		result.setAfferentBranch(getAfferentBranch().clone());
-		try {
-			result.getMetadataTree().clone();
-		} catch (CloneNotSupportedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		result.metadataTree = getMetadataTree().clone();
+		result.getMetadataTree().setParent(result);
 		result.setFormats(getFormats().clone());
 		result.attributeMap = new HashMap<String, Object>();
 		return result;

@@ -16,11 +16,37 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.document.metadata;
+package info.bioinfweb.treegraph.document.nodebranchdata;
 
-import info.bioinfweb.treegraph.document.TextElementData;
 
-public interface MetadataInterface {
-	public TextElementData getValue();
+import java.util.List;
+
+import javax.xml.namespace.QName;
+
+
+
+public class MetadataPath {
+	public static class ListElement {
+		private QName predicateOrRel;
+		private int index;
+		
+		public ListElement(QName predicateOrRel, int index) {
+			super();
+			this.predicateOrRel = predicateOrRel;
+			this.index = index;
+		}
+		
+		public QName getPredicateOrRel() {
+			return predicateOrRel;
+		}
+		
+		public int getIndex() {
+			return index;
+		}
+	}
 	
+	
+	private boolean isNode;  //TODO Should this be boolean?
+	private List<ListElement> path;
+	private boolean isLiteral;  //TODO Should this be boolean?
 }

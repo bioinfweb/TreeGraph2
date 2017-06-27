@@ -34,15 +34,15 @@ import info.bioinfweb.treegraph.document.TextElementData;
 
 
 
-public class ResourceMetadataNode extends MetadataNode implements MetadataInterface {
+public class ResourceMetadataNode extends MetadataNode {
 	private List<MetadataNode> children = new ArrayList<MetadataNode>();
 	private QName rel;
-	private Object uri;
+	private URI uri;
 	
 	
-	public ResourceMetadataNode(Node owner, Object value) {
+	public ResourceMetadataNode(URI uri) {  //TODO Which properties must be set?
 		super();
-		this.uri = value;
+		this.uri = uri;
 	}
 	
 
@@ -57,11 +57,11 @@ public class ResourceMetadataNode extends MetadataNode implements MetadataInterf
 
 
 	public URI getURI() {
-	return (URI)uri;
+		return uri;
 	}
 	
 	
-	public void setURI(Object uri) {
+	public void setURI(URI uri) {
 		this.uri = uri;
 	}
 	
@@ -71,37 +71,24 @@ public class ResourceMetadataNode extends MetadataNode implements MetadataInterf
 	}
 	
 	
-	public void setChildren(LiteralMetadataNode literalMetadataNode) {
-		int index = 0;
-		while (!literalMetadataNode.isEmpty()) {
-			children.add(index, literalMetadataNode);
-			index++;
-		}
-	}
-	
-	
-	public ListIterator<MetadataNode> iterator() {
-		return children.listIterator();
-	}
-	
-	
-	public boolean isEmpty() {
-		if (uri != null) {
-			return false;
-		}
-		else {
-			return true;
-		}
-	}
-
-
 	@Override
-	public TextElementData getValue() {
-		return null;
+	public ResourceMetadataNode clone() {
+		ResourceMetadataNode result = (ResourceMetadataNode)super.clone();
+		result.children = new ArrayList<MetadataNode>();
+		for (MetadataNode child : getChildren()) {
+			MetadataNode childClone = child.clone();
+			childClone.setParent(result);
+			result.getChildren().add(childClone);
+		}
+		return result;
 	}
 	
 
-
+//	public static void main(String[] args) {
+//		ResourceMetadataNode node = new ResourceMetadataNode(null);
+//		node.getChildren().add(e);
+//	}
+	
 	
 	//TODO Also model resource metadata
 	//     - Wenn value schon vom Typ Object wäre, könnte dort die URI gespeichert werden.

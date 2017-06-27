@@ -84,7 +84,7 @@ public class RerootEdit extends ComplexDocumentEdit implements WarningMessageEdi
   
 	private static void copyBranchData(Branch source, Branch target) {
 		// Merge branch data:
-		target.getMetadataTree().setTreeChildren(source.getMetadataTree());;  // Copying is only helpful, if the two branches contain elements with different IDs. All other elements are overwritten. 
+		target.getMetadataTree().setTreeChildren(source.getMetadataTree().getParent());;  // Copying is only helpful, if the two branches contain elements with different IDs. All other elements are overwritten. 
 		copyLabels(source.getLabels(), target.getLabels());
 		
 		// Add up branch length:
@@ -134,10 +134,10 @@ public class RerootEdit extends ComplexDocumentEdit implements WarningMessageEdi
 				msg += "- The two child branches of the root contained one or more labels with the same ID(s). " +
 						"One element of each ID has been deleted.\n";
 			}
-			if (b1.getMetadataTree().containsSameID(b2.getMetadataTree())) {
-				msg += "- The two child branches of the root contained hidden branch data with the same ID. " +
-						"One element of each ID has been deleted.\n";
-			}
+//			if (b1.getMetadataTree().containsSameID(b2.getMetadataTree())) {
+//				msg += "- The two child branches of the root contained hidden branch data with the same ID. " +
+//						"One element of each ID has been deleted.\n";
+//			}
 		}
 		
 		// Output:
