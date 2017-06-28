@@ -16,37 +16,38 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.document.nodebranchdata;
+package info.bioinfweb.treegraph.document.metadata;
 
-
-import java.util.List;
 
 import javax.xml.namespace.QName;
 
 
 
-public class MetadataPath {
-	public static class ListElement {
-		private QName predicateOrRel;
-		private int index;
-		
-		public ListElement(QName predicateOrRel, int index) {
-			super();
-			this.predicateOrRel = predicateOrRel;
-			this.index = index;
-		}
-		
-		public QName getPredicateOrRel() {
-			return predicateOrRel;
-		}
-		
-		public int getIndex() {
-			return index;
-		}
+public class MetadataPathElement {
+	private QName predicateOrRel;
+	private int index;
+	
+	
+	public MetadataPathElement(QName predicateOrRel, int index) {
+		super();
+		this.predicateOrRel = predicateOrRel;
+		this.index = index;
 	}
 	
 	
-	private boolean isNode;  //TODO Should this be boolean?
-	private List<ListElement> path;
-	private boolean isLiteral;  //TODO Should this be boolean?
+	public QName getPredicateOrRel() {
+		return predicateOrRel;
+	}
+	
+	
+	/**
+	 * If more than one metadata node with the same predicate is present on one level of the metadata tree, the value returned here
+	 * denotes its index in the order of node objects with this predicate. (Note that this index is not necessaryly identical with
+	 * the list index of the respecttive metadata node.)
+	 * 
+	 * @return the predicate-specific index of the referenced metadata node
+	 */
+	public int getIndex() {
+		return index;
+	}
 }

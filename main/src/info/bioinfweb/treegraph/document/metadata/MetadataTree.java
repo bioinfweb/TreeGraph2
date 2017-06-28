@@ -20,10 +20,10 @@ package info.bioinfweb.treegraph.document.metadata;
 
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import info.bioinfweb.treegraph.document.HiddenDataElement;
-import info.bioinfweb.treegraph.document.Node;
 
 
 
@@ -49,6 +49,39 @@ public class MetadataTree implements Cloneable {
 	
 	public List<MetadataNode> getChildren() {
 		return children;
+	}
+	
+	
+	public MetadataNode searchNodeByPath(MetadataPath path) {
+		if (!path.getElementList().isEmpty()) {
+			Iterator<MetadataPathElement> iterator = path.getElementList().iterator();
+			MetadataNode node = searchNodeInList(getChildren(), iterator.next());
+			while (iterator.hasNext() && (node instanceof ResourceMetadataNode)) {
+				node = searchNodeInList(((ResourceMetadataNode)node).getChildren(), iterator.next());
+			}
+			if (!iterator.hasNext() && 
+					(((node instanceof ResourceMetadataNode) && !path.isLiteral()) || ((node instanceof LiteralMetadataNode) && path.isLiteral()))) {
+				
+				return node;
+			}
+		}
+		return null;
+	}
+	
+	
+	private MetadataNode searchNodeInList(List<MetadataNode> list, MetadataPathElement element) {
+		int index = 0;
+		for (MetadataNode child : list) {
+			if (child.getPredicateOrRel().equals(element.getPredicateOrRel())) {
+				if (index == element.getIndex()) {
+					return child;
+				}
+				else {
+					index++;
+				}
+			}
+		}
+		return null;
 	}
 
 

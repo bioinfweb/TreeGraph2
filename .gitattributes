@@ -319,6 +319,8 @@ main/src/info/bioinfweb/treegraph/document/io/xtg/XTGWriter.java -text
 main/src/info/bioinfweb/treegraph/document/io/xtg/package.html -text
 main/src/info/bioinfweb/treegraph/document/metadata/LiteralMetadataNode.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/metadata/MetadataNode.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/metadata/MetadataPath.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/metadata/MetadataPathElement.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/metadata/MetadataTree.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/metadata/ResourceMetadataNode.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/AbstractIDElementAdapter.java -text
@@ -331,7 +333,6 @@ main/src/info/bioinfweb/treegraph/document/nodebranchdata/HiddenDataAdapter.java
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/HiddenNodeDataAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/IDElementAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/LiteralMetadataAdapter.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/treegraph/document/nodebranchdata/MetadataPath.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/NewHiddenBranchDataAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/NewHiddenNodeDataAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/NewNodeBranchDataAdapter.java -text

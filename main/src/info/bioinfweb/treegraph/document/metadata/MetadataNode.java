@@ -18,16 +18,17 @@
  */
 package info.bioinfweb.treegraph.document.metadata;
 
-
+import javax.xml.namespace.QName;
 
 public abstract class MetadataNode implements Cloneable {
 	private MetadataNode parent = null;
+	private QName predicateOrRel;	
 	
 		
 	public MetadataNode() {
 		super();
 	}
-
+	
 
 	public MetadataNode getParent() {
 		return parent;
@@ -36,6 +37,17 @@ public abstract class MetadataNode implements Cloneable {
 	
 	public void setParent(MetadataNode parent) {
 		this.parent = parent;
+	}
+
+	
+
+	public QName getPredicateOrRel() {
+		return predicateOrRel;
+	}
+
+
+	public void setPredicateOrRel(QName predicateOrRel) {
+		this.predicateOrRel = predicateOrRel;
 	}
 
 

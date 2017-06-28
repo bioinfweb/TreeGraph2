@@ -36,23 +36,12 @@ import info.bioinfweb.treegraph.document.TextElementData;
 
 public class ResourceMetadataNode extends MetadataNode {
 	private List<MetadataNode> children = new ArrayList<MetadataNode>();
-	private QName rel;
 	private URI uri;
 	
 	
 	public ResourceMetadataNode(URI uri) {  //TODO Which properties must be set?
 		super();
 		this.uri = uri;
-	}
-	
-
-	public QName getRel() {
-		return rel;
-	}
-
-
-	public void setRel(QName rel) {
-		this.rel = rel;
 	}
 
 
