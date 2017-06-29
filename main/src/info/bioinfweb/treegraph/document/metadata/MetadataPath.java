@@ -20,7 +20,10 @@ package info.bioinfweb.treegraph.document.metadata;
 
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+
+import info.bioinfweb.jphyloio.formats.xtg.XTGConstants;
 
 
 
@@ -50,4 +53,30 @@ public class MetadataPath {
 	public boolean isLiteral() {
 		return isLiteral;
 	}
+
+
+	@Override
+	public String toString() {
+		StringBuilder returnValue = new StringBuilder();
+		for (MetadataPathElement metadataPathElement : path) {
+			returnValue.append(metadataPathElement.toString() + " ");			
+		} return returnValue.toString();
+	}
+	
+	
+//	public static void main(String[] args) {
+//		MetadataPathElement a = new MetadataPathElement(XTGConstants.ATTR_FONT_FAMILY, 0);
+//		MetadataPathElement b = new MetadataPathElement(XTGConstants.ATTR_LEGEND_SPACING, 0);
+//		MetadataPathElement c = new MetadataPathElement(XTGConstants.ATTR_SCALE_BAR_INCREASE, 0);
+//		MetadataPathElement d = new MetadataPathElement(XTGConstants.ATTR_FONT_FAMILY, 1);		
+//		MetadataPath path = new MetadataPath(true, true);
+//		
+//		path.getElementList().add(a);
+//		path.getElementList().add(b);
+//		path.getElementList().add(c);
+//		path.getElementList().add(d);
+//		
+//		String pathWay = path.toString();
+//		System.out.println(pathWay);		
+//	}
 }

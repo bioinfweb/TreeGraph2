@@ -25,7 +25,6 @@ import java.net.URISyntaxException;
 import info.bioinfweb.treegraph.document.AbstractPaintableElement;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextElementData;
-import info.bioinfweb.treegraph.document.metadata.LiteralMetadataNode;
 import info.bioinfweb.treegraph.document.metadata.MetadataPath;
 import info.bioinfweb.treegraph.document.metadata.ResourceMetadataNode;
 
@@ -78,15 +77,16 @@ public class ResourceMetadataAdapter extends AbstractNodeBranchDataAdapter {
 
 	@Override
 	public boolean isString(Node node) {
-		
-		return false;
+		return true;
 	}
 
 
 	@Override
 	public boolean isEmpty(Node node) {
-		// TODO Auto-generated method stub
-		return false;
+		ResourceMetadataNode result = (ResourceMetadataNode)node.getMetadataTree().searchNodeByPath(getPath());
+		if (result != null) {
+			return false;
+		} return true;
 	}
 
 
@@ -103,42 +103,43 @@ public class ResourceMetadataAdapter extends AbstractNodeBranchDataAdapter {
 
 
 	@Override
-	public void setText(Node node, String value) {
-//		try {
-//			ResourceMetadataNode result = (ResourceMetadataNode)node.getMetadataTree().searchNodeByPath(getPath());
-//			result.setURI((URI)value);
-//		} catch (URISyntaxException e) {
-//			throw new InternalError(e);
-//		}
+	public void setText(Node node, String value) {		
+		ResourceMetadataNode result = (ResourceMetadataNode)node.getMetadataTree().searchNodeByPath(getPath());
+		try {
+			URI uri = new URI(value);
+			result.setURI(uri);
+		} 
+		catch (URISyntaxException e) {
+			throw new InternalError(e);
+		}
 	}
 
 
 	@Override
 	public double getDecimal(Node node) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 
-	@Override
+	@Override //Decimal can't be set as value of Resource metadata.
 	public void setDecimal(Node node, double value) {
-		throw new InternalError();
-		
+		throw new InternalError();		
 	}
 
 
 	@Override
-	public TextElementData toTextElementData(Node node) {
-		// TODO Auto-generated method stub
-		return null;
+	public TextElementData toTextElementData(Node node) {		
+		ResourceMetadataNode result = (ResourceMetadataNode)node.getMetadataTree().searchNodeByPath(getPath());		
+		TextElementData textElement = new TextElementData(result.getURI().toString());
+		return textElement;
 	}
 
 
 	@Override
 	public void delete(Node node) {
-		node.getMetadataTree().getChildren().clear();
-		
-	}
+		ResourceMetadataNode result = (ResourceMetadataNode)node.getMetadataTree().searchNodeByPath(getPath());	
+		result.clear();
+		}
 
 
 	@Override
@@ -147,4 +148,24 @@ public class ResourceMetadataAdapter extends AbstractNodeBranchDataAdapter {
 	}
 
 
+	@Override
+	public String toString() {
+		return "Resource Metadata with the predicate path \"" + getPath().getElementList().toString().replace("[", "").replace("]", "") + "\"";
+	}
+	
+	
+//	public static void main(String[] args) {
+//		MetadataPath path = new MetadataPath(true, false);		
+//		MetadataPathElement a = new MetadataPathElement(XTGConstants.ATTR_FONT_FAMILY, 0);
+//		MetadataPathElement b = new MetadataPathElement(XTGConstants.ATTR_LEGEND_SPACING, 0);
+//		MetadataPathElement c = new MetadataPathElement(XTGConstants.ATTR_SCALE_BAR_INCREASE, 0);
+//		MetadataPathElement d = new MetadataPathElement(XTGConstants.ATTR_FONT_FAMILY, 1);		
+//		ResourceMetadataAdapter adapter = new ResourceMetadataAdapter(path);
+//		
+//		path.getElementList().add(a);
+//		path.getElementList().add(b);
+//		path.getElementList().add(c);
+//		path.getElementList().add(d);
+//		System.out.println(adapter.toString());
+//	}
 }

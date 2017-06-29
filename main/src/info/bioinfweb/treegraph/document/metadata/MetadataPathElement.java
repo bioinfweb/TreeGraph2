@@ -50,4 +50,13 @@ public class MetadataPathElement {
 	public int getIndex() {
 		return index;
 	}
+
+
+	@Override
+	public String toString() {
+		String predicateAndIndex = getPredicateOrRel().toString() + getIndex();
+		return predicateAndIndex;		
+	}
+	
+	
 }

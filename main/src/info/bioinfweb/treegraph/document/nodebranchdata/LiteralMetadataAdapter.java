@@ -93,9 +93,8 @@ public class LiteralMetadataAdapter extends AbstractTextElementDataAdapter {
 	}
 
 
-	//TODO Need to override toString() in MetadataPath to get content of one element of list.
 	@Override
 	public String toString() {
-		return "Literal Metadata with predicate path \"" + getPath().getElementList().toString() + "\"";
+		return "Literal Metadata with the predicate path \"" + getPath().getElementList().toString().replace("[", "").replace("]", "") + "\"";
 	}
 }

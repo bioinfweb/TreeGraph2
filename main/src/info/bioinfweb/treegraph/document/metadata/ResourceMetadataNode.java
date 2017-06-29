@@ -60,6 +60,12 @@ public class ResourceMetadataNode extends MetadataNode {
 	}
 	
 	
+	public void clear() {
+		uri = null;
+		children.clear();
+	}
+	
+	
 	@Override
 	public ResourceMetadataNode clone() {
 		ResourceMetadataNode result = (ResourceMetadataNode)super.clone();

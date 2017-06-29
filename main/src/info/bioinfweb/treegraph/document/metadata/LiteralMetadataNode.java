@@ -60,6 +60,12 @@ public class LiteralMetadataNode extends MetadataNode {
 	public void setDatatype(QName datatype) {
 		this.datatype = datatype;
 	}
+	
+	
+	public void clear() {
+		datatype = null;
+		value = null;
+	}
 
 
 	@Override
