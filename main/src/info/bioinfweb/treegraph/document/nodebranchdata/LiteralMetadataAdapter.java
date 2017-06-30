@@ -20,6 +20,7 @@ package info.bioinfweb.treegraph.document.nodebranchdata;
 
 
 import info.bioinfweb.treegraph.document.AbstractPaintableElement;
+import info.bioinfweb.treegraph.document.HiddenDataElement;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.metadata.LiteralMetadataNode;
@@ -29,13 +30,15 @@ import info.bioinfweb.treegraph.document.metadata.MetadataPath;
 
 
 public class LiteralMetadataAdapter extends AbstractTextElementDataAdapter {	
-	private MetadataPath path = null;
+	protected MetadataPath path = null;
 	
 	
 	public LiteralMetadataAdapter(MetadataPath path) {
 		super();
 		this.path = path;
-		//TODO Throw IllegalArgumentException of path references a resource metadata or remove the respective property from MetadataPath, if it is not used anywhere else.
+		if (!path.isLiteral()) {
+			throw new IllegalArgumentException();
+		}
 	}
 	
 
@@ -58,43 +61,54 @@ public class LiteralMetadataAdapter extends AbstractTextElementDataAdapter {
 	
 	@Override
 	public AbstractPaintableElement getDataElement(Node node) {
-		return node;
+		if (getPath().isNode()) {
+			return node;
+		}
+		else {
+			return node.getAfferentBranch();
+		}
+	}
+	
+	
+	private MetadataNode metadataNodeByPath(Node node, boolean createNodes) {
+		return ((HiddenDataElement)getDataElement(node)).getMetadataTree().searchNodeByPath(getPath(), createNodes);
 	}
 
 	
 	@Override
 	public TextElementData getData(Node node) {
-		LiteralMetadataNode result = (LiteralMetadataNode)node.getMetadataTree().searchNodeByPath(getPath());
+		LiteralMetadataNode result = (LiteralMetadataNode)metadataNodeByPath(node, false);	
 		if (result != null) {
 			return result.getValue();
 		}
 		else {
-			return new TextElementData();
+			return null;
 		}
 	}
 
 	
 	@Override
 	public boolean assignData(Node node, TextElementData data) {
-		TextElementData result = node.getData();
-		if (result != null) {
-			result.assign(data);
+		LiteralMetadataNode metadataNode = (LiteralMetadataNode)metadataNodeByPath(node, false);
+		if (metadataNode != null) {
+			metadataNode.setValue(data);
 			return true;
 		}
 		else {
 			return false;
 		}
-	}
+	}		
+
 
 	
 	@Override
 	protected void createData(Node node) {
-		// TODO Auto-generated method stub		
+		metadataNodeByPath(node, true);
 	}
 
 
 	@Override
 	public String toString() {
-		return "Literal Metadata with the predicate path \"" + getPath().getElementList().toString().replace("[", "").replace("]", "") + "\"";
+		return "Literal Metadata with the predicate path \"" + getPath().toString() + "\"";
 	}
 }

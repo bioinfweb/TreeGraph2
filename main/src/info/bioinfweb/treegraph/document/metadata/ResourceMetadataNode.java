@@ -39,9 +39,13 @@ public class ResourceMetadataNode extends MetadataNode {
 	private URI uri;
 	
 	
-	public ResourceMetadataNode(URI uri) {  //TODO Which properties must be set?
+	public ResourceMetadataNode() {  //TODO Which properties must be set?
 		super();
-		this.uri = uri;
+	}
+
+
+	public ResourceMetadataNode(QName predicateOrRel) {
+		super(predicateOrRel);
 	}
 
 
@@ -77,16 +81,31 @@ public class ResourceMetadataNode extends MetadataNode {
 		}
 		return result;
 	}
-	
 
-//	public static void main(String[] args) {
-//		ResourceMetadataNode node = new ResourceMetadataNode(null);
-//		node.getChildren().add(e);
-//	}
-	
-	
-	//TODO Also model resource metadata
-	//     - Wenn value schon vom Typ Object wäre, könnte dort die URI gespeichert werden.
-	//     - rel könnte in predicate gespeichert werden
-	//     - Ein Datentyp ist bei Resource Metadata nicht vorhanden.
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((uri == null) ? 0 : uri.hashCode());
+		return result;
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ResourceMetadataNode other = (ResourceMetadataNode) obj;
+		if (uri == null) {
+			if (other.uri != null)
+				return false;
+		} else if (!uri.equals(other.uri))
+			return false;
+		return true;
+	}
 }

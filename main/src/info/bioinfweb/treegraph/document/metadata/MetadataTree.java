@@ -52,16 +52,14 @@ public class MetadataTree implements Cloneable {
 	}
 	
 	
-	public MetadataNode searchNodeByPath(MetadataPath path) {
+	public MetadataNode searchNodeByPath(MetadataPath path, boolean createNodes) {
 		if (!path.getElementList().isEmpty()) {
 			Iterator<MetadataPathElement> iterator = path.getElementList().iterator();
-			MetadataNode node = searchNodeInList(getChildren(), iterator.next());
+			MetadataNode node = searchNodeInList(getChildren(), iterator.next(), iterator.hasNext() ? false : path.isLiteral(), createNodes);
 			while (iterator.hasNext() && (node instanceof ResourceMetadataNode)) {
-				node = searchNodeInList(((ResourceMetadataNode)node).getChildren(), iterator.next());
+				node = searchNodeInList(((ResourceMetadataNode)node).getChildren(), iterator.next(), iterator.hasNext() ? false : path.isLiteral(), createNodes);
 			}
-			if (!iterator.hasNext() && 
-					(((node instanceof ResourceMetadataNode) && !path.isLiteral()) || ((node instanceof LiteralMetadataNode) && path.isLiteral()))) {
-				
+			if (!iterator.hasNext()) {				
 				return node;
 			}
 		}
@@ -69,10 +67,12 @@ public class MetadataTree implements Cloneable {
 	}
 	
 	
-	private MetadataNode searchNodeInList(List<MetadataNode> list, MetadataPathElement element) {
+	private MetadataNode searchNodeInList(List<MetadataNode> list, MetadataPathElement element, boolean searchLiteral, boolean createNodes) {
 		int index = 0;
 		for (MetadataNode child : list) {
-			if (child.getPredicateOrRel().equals(element.getPredicateOrRel())) {
+			if ((((child instanceof ResourceMetadataNode) && !searchLiteral) || ((child instanceof LiteralMetadataNode) && searchLiteral)) && 
+						(child.getPredicateOrRel().equals(element.getPredicateOrRel()))) {
+				
 				if (index == element.getIndex()) {
 					return child;
 				}
@@ -81,7 +81,22 @@ public class MetadataTree implements Cloneable {
 				}
 			}
 		}
-		return null;
+
+		if (createNodes) {  // Add more nodes to this level, if necessary and requested.
+			while (index <= element.getIndex()) {
+				if (searchLiteral) {
+					list.add(new LiteralMetadataNode(element.getPredicateOrRel()));
+				}
+				else {
+					list.add(new ResourceMetadataNode(element.getPredicateOrRel()));
+				}
+				index++;
+			}
+			return list.get(list.size() -1);
+		}
+		else {
+			return null;
+		}
 	}
 
 

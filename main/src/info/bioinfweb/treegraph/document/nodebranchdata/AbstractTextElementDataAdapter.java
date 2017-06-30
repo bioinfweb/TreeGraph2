@@ -104,7 +104,10 @@ public abstract class AbstractTextElementDataAdapter extends AbstractNodeBranchD
 
 	@Override
 	public void delete(Node node) {
-		getData(node).clear();
+		TextElementData data = getData(node);
+		if (data != null) {
+			data.clear();
+		}
 	}
 	
 

@@ -18,17 +18,28 @@
  */
 package info.bioinfweb.treegraph.document.metadata;
 
+
 import javax.xml.namespace.QName;
+
+
 
 public abstract class MetadataNode implements Cloneable {
 	private MetadataNode parent = null;
 	private QName predicateOrRel;	
 	
-		
+	
 	public MetadataNode() {
 		super();
 	}
-	
+			
+
+	public MetadataNode(QName predicateOrRel) {
+		super();
+		this.predicateOrRel = predicateOrRel;
+	}
+
+
+
 
 	public MetadataNode getParent() {
 		return parent;
@@ -39,6 +50,12 @@ public abstract class MetadataNode implements Cloneable {
 		this.parent = parent;
 	}
 
+	
+	public boolean hasParent() {
+		if (parent != null) {
+			return true;
+		} return false;
+	}
 	
 
 	public QName getPredicateOrRel() {
@@ -61,18 +78,32 @@ public abstract class MetadataNode implements Cloneable {
 		catch (CloneNotSupportedException e) {
 			throw new InternalError(e);
 		}
-	}	
-	
-	
-	//TODO What type of parameter for MetadataTree()?
-//	public MetadataNode cloneWithSubtree() {
-//		MetadataTree subtree = new MetadataTree();
-//		MetadataNode result = clone();
-//		for (int i = 0; i < subtree.getTreeChildren().size(); i++) {
-//			MetadataNode child = subtree.getTreeChildren().get(i).cloneWithSubtree();
-//			child.setParent(result);
-//			subtree.getTreeChildren().add(child);
-//		}
-//		return result;
-//	}
+	}
+
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((predicateOrRel == null) ? 0 : predicateOrRel.hashCode());
+		return result;
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		MetadataNode other = (MetadataNode) obj;
+		if (predicateOrRel == null) {
+			if (other.predicateOrRel != null)
+				return false;
+		} else if (!predicateOrRel.equals(other.predicateOrRel))
+			return false;
+		return true;
+	}
 }

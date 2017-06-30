@@ -21,7 +21,6 @@ package info.bioinfweb.treegraph.document.metadata;
 
 import javax.xml.namespace.QName;
 
-import info.bioinfweb.jphyloio.formats.xtg.XTGConstants;
 import info.bioinfweb.treegraph.document.TextElementData;
 
 
@@ -33,9 +32,16 @@ public class LiteralMetadataNode extends MetadataNode {
 	
 	public LiteralMetadataNode() {  //TODO Which properties must be set?
 		super();
-	}	
+	}
 	
-	
+		
+	public LiteralMetadataNode(QName predicateOrRel) {
+		super(predicateOrRel);
+	}
+
+
+
+
 	public QName getDatatype(QName datatype) {
 		datatype.getNamespaceURI();		
 		return datatype;
@@ -76,6 +82,40 @@ public class LiteralMetadataNode extends MetadataNode {
 	}
 
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((datatype == null) ? 0 : datatype.hashCode());
+		result = prime * result + ((value == null) ? 0 : value.hashCode());
+		return result;
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		LiteralMetadataNode other = (LiteralMetadataNode) obj;
+		if (datatype == null) {
+			if (other.datatype != null)
+				return false;
+		} else if (!datatype.equals(other.datatype))
+			return false;
+		if (value == null) {
+			if (other.value != null)
+				return false;
+		} else if (!value.equals(other.value))
+			return false;
+		return true;
+	}
+
+
+	//TODO Move to LiteralMetadataNodeTest
 //	public static void main(String[] args) {
 //		LiteralMetadataNode parent = new LiteralMetadataNode(XTGConstants.PREDICATE_BRANCH_ATTR_MIN_LENGTH);
 //		LiteralMetadataNode node = new LiteralMetadataNode(XTGConstants.PREDICATE_BRANCH_ATTR_CONSTANT_WIDTH);

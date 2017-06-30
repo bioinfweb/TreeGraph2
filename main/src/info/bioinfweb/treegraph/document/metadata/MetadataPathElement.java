@@ -41,9 +41,16 @@ public class MetadataPathElement {
 	
 	
 	/**
-	 * If more than one metadata node with the same predicate is present on one level of the metadata tree, the value returned here
-	 * denotes its index in the order of node objects with this predicate. (Note that this index is not necessaryly identical with
-	 * the list index of the respecttive metadata node.)
+	 * If more than one metadata node of the same type (literal or resource) with the same predicate is present on one level of the metadata tree, 
+	 * the value returned here denotes its index in the order of node objects with this predicate. (Note that this index is not necessarily 
+	 * identical with the list index of the respective metadata node.)
+	 * <p>
+	 * <b>Example:</b>
+	 * <p>
+	 * The following example shows a list of resource and literal metadata nodes with their predicates. The last value of each triple in the index 
+	 * that would be used to describe the respective matadata node.
+	 * <p>
+	 * {@code (type=literal, predicate=p1, index=0), (type=literal, predicate=p2, index=0), (type=literal, predicate=p1, index=1), (type=resource, rel=p1, index=0), (type=literal, predicate=p1, index=2), (type=resource, rel=p1, index=1)}
 	 * 
 	 * @return the predicate-specific index of the referenced metadata node
 	 */

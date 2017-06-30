@@ -29,6 +29,7 @@ import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.PieChartLabel;
 import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.TextLabel;
+import info.bioinfweb.treegraph.document.metadata.MetadataNode;
 import info.bioinfweb.treegraph.document.nodebranchdata.IDElementAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 
@@ -37,8 +38,6 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
-
-import javax.xml.namespace.QName;
 
 
 
@@ -83,7 +82,7 @@ public class IDManager {
   
   
 //  private static void searchHiddenDataIDs(HiddenDataElement element, List<String> list) {
-//  	Iterator<String> iterator = element.getMetadataRoot();
+//  	Iterator<String> iterator = element.getHiddenDataMap().idIterator();
 //  	while (iterator.hasNext()) {
 //  		String id = iterator.next(); 
 //			if ((!id.equals("")) && !list.contains(id)) {
@@ -92,13 +91,16 @@ public class IDManager {
 //  	}
 //  }
   
+  
   private static void searchHiddenDataIDs(HiddenDataElement element, List<String> list) {
-  	for (int i = 0; i < element.getMetadataTree().getTreeChildren().size(); i++) {
-			String id = element.getMetadataRoot().getPredicate().toString();
+  	Iterator<MetadataNode> iterator = element.getMetadataTree().getChildren().iterator();
+  	while (iterator.hasNext()) {
+  		MetadataNode metadataNode = iterator.next();
+  		metadataNode.getPredicateOrRel();
 			if ((!id.equals("")) && !list.contains(id)) {
 				list.add(id);
 			}
-		}
+  	}
   }
   
   
@@ -177,8 +179,8 @@ public class IDManager {
     if (root == null) {
     	return false;
     }
-  	if (!root.getAfferentBranch().getLabels().isEmpty() || !root.getMetadataTree().isEmpty() ||
-  			!root.getAfferentBranch().getMetadataTree().isEmpty()) {
+  	if (!root.getAfferentBranch().getLabels().isEmpty() || !root.getHiddenDataMap().isEmpty() ||
+  			!root.getAfferentBranch().getHiddenDataMap().isEmpty()) {
   		return true;
   	}
   	
@@ -316,10 +318,10 @@ public class IDManager {
   private static void renameHiddenDataID(HiddenDataElement element, String oldName, 
   		String newName) {
   	
-  	TextElementData value = element.getMetadataRoot().getValue();
+  	TextElementData value = element.getHiddenDataMap().get(oldName);
   	if (value != null) {
-  		element.getMetadataRoot().remove(oldName);
-  		element.getMetadataRoot().put(newName, value);
+  		element.getHiddenDataMap().remove(oldName);
+  		element.getHiddenDataMap().put(newName, value);
   	}
   }
   
@@ -446,9 +448,9 @@ public class IDManager {
   		result = ((TextLabel)l).getData();
   	}
   	else {
-  		result = node.getMetadataRoot().getValue();
+  		result = node.getHiddenDataMap().get(id);
   		if (result == null) {
-    		result = node.getAfferentBranch().getMetadataRoot().getValue();
+    		result = node.getAfferentBranch().getHiddenDataMap().get(id);
   		}
   	}
   	return result;
@@ -467,9 +469,9 @@ public class IDManager {
   public static Object getElementByID(Node node, String id) {
   	Object result = node.getAfferentBranch().getLabels().get(id);
   	if (result == null) {
-  		result = node.getMetadataRoot().getValue();
+  		result = node.getHiddenDataMap().get(id);
   		if (result == null) {
-    		result = node.getAfferentBranch().getMetadataRoot().getValue();
+    		result = node.getAfferentBranch().getHiddenDataMap().get(id);
   		}
   	}
   	return result;
@@ -491,9 +493,9 @@ public class IDManager {
   		labels.remove((Label)result);
   	}
   	else {
-  		result = node.getMetadataRoot().remove(id);
+  		result = node.getHiddenDataMap().remove(id);
     	if (result == null) {
-    		result = node.getAfferentBranch().getMetadataRoot().remove(id);
+    		result = node.getAfferentBranch().getHiddenDataMap().remove(id);
     	}
   	}
   	return result;

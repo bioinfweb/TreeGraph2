@@ -24,12 +24,9 @@ import info.bioinfweb.treegraph.document.Label;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.TextLabel;
-import info.bioinfweb.treegraph.document.metadata.MetadataInterface;
 import info.bioinfweb.treegraph.document.tools.IDManager;
 
 import java.text.DecimalFormat;
-
-import javax.xml.namespace.QName;
 
 
 
@@ -57,21 +54,8 @@ public class GeneralIDAdapter extends AbstractIDElementAdapter {
   	if ((l != null) && (l instanceof TextLabel)) {
   		return (TextLabel)l;
   	}
-  	else {
-    	TextElementData data = null;
-  		data = ((MetadataInterface)node).getValue();
-  		if (data != null) {
-  			return node;
-  		}
-  		else {
-    		data = ((MetadataInterface)node.getAfferentBranch()).getValue();
-    		if (data != null) {
-    			return node.getAfferentBranch();
-    		}
-  		}
-  	}
-  	return null;
-	}
+  	return node;
+  }
 	
 
 	@Override

@@ -23,20 +23,25 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import info.bioinfweb.treegraph.document.AbstractPaintableElement;
+import info.bioinfweb.treegraph.document.HiddenDataElement;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextElementData;
+import info.bioinfweb.treegraph.document.metadata.MetadataNode;
 import info.bioinfweb.treegraph.document.metadata.MetadataPath;
 import info.bioinfweb.treegraph.document.metadata.ResourceMetadataNode;
 
 
 
 public class ResourceMetadataAdapter extends AbstractNodeBranchDataAdapter {
-	private MetadataPath path = null;
-	
-	
-	public ResourceMetadataAdapter (MetadataPath path) {
+	protected MetadataPath path = null;	
+
+
+	public ResourceMetadataAdapter(MetadataPath path) {
 		super();
 		this.path = path;
+		if (path.isLiteral()) {
+			throw new IllegalArgumentException();
+		}
 	}
 
 
@@ -79,20 +84,23 @@ public class ResourceMetadataAdapter extends AbstractNodeBranchDataAdapter {
 	public boolean isString(Node node) {
 		return true;
 	}
+	
+	
+	private MetadataNode metadataNodeByPath(Node node, boolean createNodes) {
+		return ((HiddenDataElement)getDataElement(node)).getMetadataTree().searchNodeByPath(getPath(), createNodes);
+	}
 
 
 	@Override
 	public boolean isEmpty(Node node) {
-		ResourceMetadataNode result = (ResourceMetadataNode)node.getMetadataTree().searchNodeByPath(getPath());
-		if (result != null) {
-			return false;
-		} return true;
+		ResourceMetadataNode result = (ResourceMetadataNode)metadataNodeByPath(node, false);
+		return result != null;
 	}
 
 
 	@Override
 	public String getText(Node node) {
-		ResourceMetadataNode result = (ResourceMetadataNode)node.getMetadataTree().searchNodeByPath(getPath());
+		ResourceMetadataNode result = (ResourceMetadataNode)metadataNodeByPath(node, false);
 		if (result != null) {
 			return result.getURI().toString();
 		}
@@ -104,9 +112,9 @@ public class ResourceMetadataAdapter extends AbstractNodeBranchDataAdapter {
 
 	@Override
 	public void setText(Node node, String value) {		
-		ResourceMetadataNode result = (ResourceMetadataNode)node.getMetadataTree().searchNodeByPath(getPath());
 		try {
 			URI uri = new URI(value);
+			ResourceMetadataNode result = (ResourceMetadataNode)metadataNodeByPath(node, true);
 			result.setURI(uri);
 		} 
 		catch (URISyntaxException e) {
@@ -117,7 +125,7 @@ public class ResourceMetadataAdapter extends AbstractNodeBranchDataAdapter {
 
 	@Override
 	public double getDecimal(Node node) {
-		return 0;
+		return Double.NaN;
 	}
 
 
@@ -129,28 +137,34 @@ public class ResourceMetadataAdapter extends AbstractNodeBranchDataAdapter {
 
 	@Override
 	public TextElementData toTextElementData(Node node) {		
-		ResourceMetadataNode result = (ResourceMetadataNode)node.getMetadataTree().searchNodeByPath(getPath());		
-		TextElementData textElement = new TextElementData(result.getURI().toString());
-		return textElement;
+		ResourceMetadataNode result = (ResourceMetadataNode)metadataNodeByPath(node, false);	
+		return new TextElementData(result.getURI().toString());  //TODO Will the returned value be edited somewhere so that data gets lost?
 	}
 
 
 	@Override
 	public void delete(Node node) {
-		ResourceMetadataNode result = (ResourceMetadataNode)node.getMetadataTree().searchNodeByPath(getPath());	
-		result.clear();
+		ResourceMetadataNode result = (ResourceMetadataNode)metadataNodeByPath(node, false);
+		if (result != null) {
+			result.clear();
 		}
+	}
 
 
 	@Override
 	public AbstractPaintableElement getDataElement(Node node) {
-		return node;
+		if (getPath().isNode()) {
+			return node;
+		}
+		else {
+			return node.getAfferentBranch();
+		}
 	}
 
 
 	@Override
 	public String toString() {
-		return "Resource Metadata with the predicate path \"" + getPath().getElementList().toString().replace("[", "").replace("]", "") + "\"";
+		return "Resource Metadata with the predicate path \"" + getPath().toString() + "\"";
 	}
 	
 	
