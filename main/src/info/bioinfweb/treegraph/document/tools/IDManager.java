@@ -33,11 +33,14 @@ import info.bioinfweb.treegraph.document.metadata.MetadataNode;
 import info.bioinfweb.treegraph.document.nodebranchdata.IDElementAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
+
+import javax.xml.namespace.QName;
 
 
 
@@ -92,13 +95,13 @@ public class IDManager {
 //  }
   
   
-  private static void searchHiddenDataIDs(HiddenDataElement element, List<String> list) {
+  private static void searchHiddenDataIDs(HiddenDataElement element, List<QName> list) {
   	Iterator<MetadataNode> iterator = element.getMetadataTree().getChildren().iterator();
   	while (iterator.hasNext()) {
   		MetadataNode metadataNode = iterator.next();
-  		metadataNode.getPredicateOrRel();
-			if ((!id.equals("")) && !list.contains(id)) {
-				list.add(id);
+  		QName qName = metadataNode.getPredicateOrRel();
+			if ((qName != null) && !list.contains(qName)) {
+				list.add(qName);
 			}
   	}
   }

@@ -23,13 +23,13 @@ import info.bioinfweb.treegraph.document.metadata.MetadataPath;
 
 
 
-public class NewLiteralResourceMetadataAdapter extends LiteralMetadataAdapter implements NodeBranchDataAdapter {
-	public NewLiteralResourceMetadataAdapter() {
+public class NewLiteralMetadataAdapter extends LiteralMetadataAdapter implements NodeBranchDataAdapter {
+	public NewLiteralMetadataAdapter() {
 		super(null); //TODO Can parameter be null?
 	}
 	
 
-	public NewLiteralResourceMetadataAdapter(MetadataPath path) {
+	public NewLiteralMetadataAdapter(MetadataPath path) {
 		super(path);
 	}	
 	
