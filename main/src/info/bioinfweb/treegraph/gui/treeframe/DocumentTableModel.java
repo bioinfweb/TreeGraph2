@@ -126,7 +126,7 @@ public class DocumentTableModel extends AbstractTableModel implements DocumentLi
 			adapters.add(new TextLabelAdapter(ids.get(i), 
 					((TextLabel)IDManager.getFirstLabel(root, TextLabel.class, ids.get(i))).getFormats().getDecimalFormat()));
 		}
-  	        
+  	
 		ids = IDManager.getHiddenNodeDataIDListFromSubtree(root);
 		for (int i = 0; i < ids.size(); i++) {
 			adapters.add(new HiddenNodeDataAdapter(ids.get(i)));
@@ -198,16 +198,19 @@ public class DocumentTableModel extends AbstractTableModel implements DocumentLi
 	}
 
 	
+	@Override
 	public int getColumnCount() {
 		return 2 * adapters.size();  // Includes columns to set the data type
 	}
 
 	
+	@Override
 	public int getRowCount() {
 		return nodes.size();
 	}
 
 	
+	@Override
 	public Object getValueAt(int row, int col) {
 		NodeBranchDataAdapter adapter = adapters.get(col / 2);
 		Node n = nodes.get(row);

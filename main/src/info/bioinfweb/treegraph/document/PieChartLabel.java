@@ -39,7 +39,7 @@ import java.util.List;
  */
 public class PieChartLabel extends GraphicalLabel implements LineElement, TextElement {
 	public static class SectionData implements Cloneable {
-		private String valueColumnID = "";
+		private String valueColumnID = "";  //TODO Replace by NodeBranchDataAdapter
 		private String caption = "";
 		
 		public SectionData(String valueColumnID, String caption) {
