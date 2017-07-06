@@ -19,15 +19,6 @@
 package info.bioinfweb.treegraph.gui.dialogs.nodebranchdata.calculatecolumn;
 
 
-import info.bioinfweb.treegraph.document.nodebranchdata.NewHiddenBranchDataAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
-import info.bioinfweb.treegraph.document.undo.edit.CalculateColumnEdit;
-import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
-import info.bioinfweb.treegraph.gui.dialogs.editelement.TextElementDataInput;
-import info.bioinfweb.treegraph.gui.dialogs.nodebranchdata.RecentlyUsedExpressionsListModel;
-import info.bioinfweb.treegraph.gui.dialogs.nodebranchdata.TextIDElementTypeInput;
-import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NewNodeBranchDataInput;
-
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Frame;
@@ -48,6 +39,16 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
+import info.bioinfweb.treegraph.document.AbstractPaintableElement;
+import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.TextElementData;
+import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
+import info.bioinfweb.treegraph.document.undo.edit.CalculateColumnEdit;
+import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
+import info.bioinfweb.treegraph.gui.dialogs.editelement.TextElementDataInput;
+import info.bioinfweb.treegraph.gui.dialogs.nodebranchdata.RecentlyUsedExpressionsListModel;
+import info.bioinfweb.treegraph.gui.dialogs.nodebranchdata.TextIDElementTypeInput;
+import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NewNodeBranchDataInput;
 
 
 

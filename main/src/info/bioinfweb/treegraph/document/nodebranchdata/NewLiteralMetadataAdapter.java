@@ -53,6 +53,6 @@ public class NewLiteralMetadataAdapter extends LiteralMetadataAdapter implements
 	
 	//TODO This method is an override in other NewAdapters. Whose method does it override?
 	public NodeBranchDataAdapter getPermanentAdapter() {
-		return new ResourceMetadataAdapter(getPath());
+		return new LiteralMetadataAdapter(getPath());
 	}
 }

@@ -82,7 +82,7 @@ public class CreateBranchLabelCaptionDocumentAction extends DocumentAction {
 		root.setAfferentBranch(sourceBranch.clone());
 		d.getTree().setPaintStart(root);
 		String sourceDataID = IDManager.newID(SOURCE_DATA_COLUMN_ID, IDManager.getIDListFromSubtree(root));
-		root.getMetadataRoot().put(sourceDataID, new TextElementData(1.0));
+//		root.getMetadataRoot().put(sourceDataID, new TextElementData(1.0));
 		
 		Label[] labels = TreeSerializer.getElementsOnNode(root, Label.class);
 		for (Label label : labels) {

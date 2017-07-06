@@ -19,10 +19,23 @@
 package info.bioinfweb.treegraph.gui.dialogs;
 
 
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+
+import javax.swing.BoxLayout;
+import javax.swing.JFormattedTextField;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
 import info.bioinfweb.commons.Math2;
 import info.bioinfweb.commons.text.StringUtils;
 import info.bioinfweb.treegraph.Main;
-import info.bioinfweb.treegraph.document.nodebranchdata.HiddenDataAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.LiteralMetadataAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.ResourceMetadataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.VoidNodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.edit.CollapseNodesBySupportEdit;
@@ -30,18 +43,6 @@ import info.bioinfweb.treegraph.gui.actions.edit.CollapseNodesBySupportAction;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataInput;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.wikihelp.client.WikiHelpOptionPane;
-
-import java.awt.Dimension;
-import java.awt.Frame;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-
-import javax.swing.BoxLayout;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.JFormattedTextField;
 
 
 
@@ -161,8 +162,11 @@ public class CollapseNodesBySupportDialog extends EditDialog {
 			if (!(getDocument().getDefaultSupportAdapter() instanceof VoidNodeBranchDataAdapter)) {
 				adapterInput.setSelectedAdapter(getDocument().getDefaultSupportAdapter());
 			}
-			else if (!adapterInput.setSelectedAdapter(TextLabelAdapter.class)) {
-				adapterInput.setSelectedAdapter(HiddenDataAdapter.class);
+			else if (!adapterInput.setSelectedAdapter(TextLabelAdapter.class) && !adapterInput.setSelectedAdapter(LiteralMetadataAdapter.class)) {
+				adapterInput.setSelectedAdapter(ResourceMetadataAdapter.class);
+			}
+			else if (!adapterInput.setSelectedAdapter(TextLabelAdapter.class) && !adapterInput.setSelectedAdapter(ResourceMetadataAdapter.class)) {
+				adapterInput.setSelectedAdapter(LiteralMetadataAdapter.class);
 			}
 			pack();
 		  return true;

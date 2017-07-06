@@ -88,7 +88,6 @@ main/src/info/bioinfweb/treegraph/document/Document.java -text
 main/src/info/bioinfweb/treegraph/document/DuplicateIDException.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/GraphicalLabel.java -text
 main/src/info/bioinfweb/treegraph/document/HiddenDataElement.java -text
-main/src/info/bioinfweb/treegraph/document/HiddenDataMap.java -text
 main/src/info/bioinfweb/treegraph/document/IconLabel.java -text
 main/src/info/bioinfweb/treegraph/document/Label.java -text
 main/src/info/bioinfweb/treegraph/document/LabelLine.java -text
@@ -328,13 +327,8 @@ main/src/info/bioinfweb/treegraph/document/nodebranchdata/AbstractNodeBranchData
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/AbstractTextElementDataAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/BranchLengthAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/GeneralIDAdapter.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/treegraph/document/nodebranchdata/HiddenBranchDataAdapter.java -text
-main/src/info/bioinfweb/treegraph/document/nodebranchdata/HiddenDataAdapter.java -text
-main/src/info/bioinfweb/treegraph/document/nodebranchdata/HiddenNodeDataAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/IDElementAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/LiteralMetadataAdapter.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/treegraph/document/nodebranchdata/NewHiddenBranchDataAdapter.java -text
-main/src/info/bioinfweb/treegraph/document/nodebranchdata/NewHiddenNodeDataAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/NewLiteralMetadataAdapter.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/NewNodeBranchDataAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/NewResourceMetadataAdapter.java -text svneol=unset#text/plain

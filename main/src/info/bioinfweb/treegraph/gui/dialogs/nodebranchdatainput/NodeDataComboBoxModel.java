@@ -21,8 +21,10 @@ package info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput;
 
 import info.bioinfweb.treegraph.document.TextLabel;
 import info.bioinfweb.treegraph.document.Tree;
+import info.bioinfweb.treegraph.document.metadata.MetadataPath;
 import info.bioinfweb.treegraph.document.nodebranchdata.*;
 import info.bioinfweb.treegraph.document.tools.IDManager;
+import info.bioinfweb.treegraph.document.tools.PathManager;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -121,20 +123,13 @@ public class NodeDataComboBoxModel extends AbstractListModel<NodeBranchDataAdapt
 		
 		if (tree != null) {
 			String[] labelIDs = IDManager.getLabelIDs(tree.getPaintStart(), TextLabel.class);
-			String[] hiddenBranchDataIDs = IDManager.getHiddenBranchDataIDs(tree.getPaintStart());
-			String[] hiddenNodeDataIDs = IDManager.getHiddenNodeDataIDs(tree.getPaintStart());
+			List<NodeBranchDataAdapter> metadataAdapters = PathManager.createAdapterList(tree.getPaintStart().getMetadataTree(), new ArrayList<NodeBranchDataAdapter>(), true); //TODO What should the boolean isNode be?
 			Map<String, Integer> idDuplication = new TreeMap<String, Integer>();
 			
 			for (int i = 0; i < labelIDs.length; i++) {
 				countIDs(labelIDs[i], idDuplication);
 			}			
-			for (int i = 0; i < hiddenBranchDataIDs.length; i++) {
-				countIDs(hiddenBranchDataIDs[i], idDuplication);
-			}			
-			for (int i = 0; i < hiddenNodeDataIDs.length; i++) {
-				countIDs(hiddenNodeDataIDs[i], idDuplication);
-			}
-			
+
 			for (String key : idDuplication.keySet()) {
 				if (idDuplication.get(key) > 1) {
 					adapters.add(new GeneralIDAdapter(key));
@@ -143,12 +138,10 @@ public class NodeDataComboBoxModel extends AbstractListModel<NodeBranchDataAdapt
 			
 			for (int i = 0; i < labelIDs.length; i++) {				
 				adapters.add(new TextLabelAdapter(labelIDs[i],((TextLabel)IDManager.getFirstLabel(tree.getPaintStart(), TextLabel.class, labelIDs[i])).getFormats().getDecimalFormat()));
-			}			
-			for (int i = 0; i < hiddenBranchDataIDs.length; i++) {
-				adapters.add(new HiddenBranchDataAdapter(hiddenBranchDataIDs[i]));				
-			}			
-			for (int i = 0; i < hiddenNodeDataIDs.length; i++) {				
-				adapters.add(new HiddenNodeDataAdapter(hiddenNodeDataIDs[i]));							
+			}
+			
+			for (int i = 0; i < metadataAdapters.size(); i++) {
+				adapters.add(metadataAdapters.get(i));
 			}
 		}
 		

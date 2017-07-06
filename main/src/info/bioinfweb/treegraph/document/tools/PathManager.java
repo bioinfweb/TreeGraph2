@@ -132,26 +132,26 @@ public class PathManager {
 	//Ruft sich selbst rekursiv auf.	
 	//searchNodeByPath
 	}
+		
 	
-	
-	
-	
-	public static List<NodeBranchDataAdapter> createAdapterList(MetadataTree tree, boolean isNode) {
-		List<NodeBranchDataAdapter> list = null;
+	public static List<NodeBranchDataAdapter> createAdapterList(MetadataTree tree, List<NodeBranchDataAdapter> list, boolean isNode) {
 		List<MetadataNode> children = tree.getChildren();
 		
 		for (MetadataNode metadataNode : children) {
 			fillAdapterList(metadataNode, list, isNode);
+			if (metadataNode instanceof ResourceMetadataNode) {
+				for (int i = 0; i < ((ResourceMetadataNode)metadataNode).getChildren().size(); i++) {
+					fillAdapterList(((ResourceMetadataNode) metadataNode).getChildren().get(i), list, isNode);
+				}				
+			}
 		}
 		return list;
 		
 		//Creates list of all NodeBranchDataAdapters of a given MetadataTree
 		//Durchläuft Baum und erstellt Liste aus Adapters (ruft fillAdapterList rekursiv auf)
 	}
-	
-	
-	
-	
+		
+		
 	private static void fillAdapterList(MetadataNode root, List<NodeBranchDataAdapter> list, boolean isNode) {
 		Map<QName, Integer> resourceMap = null;
 		Map<QName, Integer> literalMap = null;

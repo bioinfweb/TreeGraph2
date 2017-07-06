@@ -30,7 +30,6 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 import info.bioinfweb.treegraph.document.Document;
-import info.bioinfweb.treegraph.document.nodebranchdata.NewHiddenBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.file.importtable.DuplicateKeyException;
 import info.bioinfweb.treegraph.document.undo.file.importtable.ImportTableData;

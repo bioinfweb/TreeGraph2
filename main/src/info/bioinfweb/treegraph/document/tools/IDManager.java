@@ -81,31 +81,7 @@ public class IDManager {
 				}
 			}
 		}
-  }
-  
-  
-//  private static void searchHiddenDataIDs(HiddenDataElement element, List<String> list) {
-//  	Iterator<String> iterator = element.getHiddenDataMap().idIterator();
-//  	while (iterator.hasNext()) {
-//  		String id = iterator.next(); 
-//			if ((!id.equals("")) && !list.contains(id)) {
-//				list.add(id);
-//			}
-//  	}
-//  }
-  
-  
-  private static void searchHiddenDataIDs(HiddenDataElement element, List<QName> list) {
-  	Iterator<MetadataNode> iterator = element.getMetadataTree().getChildren().iterator();
-  	while (iterator.hasNext()) {
-  		MetadataNode metadataNode = iterator.next();
-  		QName qName = metadataNode.getPredicateOrRel();
-			if ((qName != null) && !list.contains(qName)) {
-				list.add(qName);
-			}
-  	}
-  }
-  
+  }  
   
   /**
    * Lists all IDs of elements attached to the specified node.
@@ -125,12 +101,6 @@ public class IDManager {
   		if (labelClass != null) {
   			searchLabelIDsInLabelBlock(labels, true, labelClass, list);
     		searchLabelIDsInLabelBlock(labels, false, labelClass, list);
-  		}
-  		if (includeHiddenNodeData) {
-  			searchHiddenDataIDs(node, list);
-  		}
-  		if (includeHiddenBranchData) {
-  			searchHiddenDataIDs(node.getAfferentBranch(), list);
   		}
   	}
   }
@@ -182,8 +152,7 @@ public class IDManager {
     if (root == null) {
     	return false;
     }
-  	if (!root.getAfferentBranch().getLabels().isEmpty() || !root.getHiddenDataMap().isEmpty() ||
-  			!root.getAfferentBranch().getHiddenDataMap().isEmpty()) {
+  	if (!root.getAfferentBranch().getLabels().isEmpty()) {
   		return true;
   	}
   	
@@ -204,32 +173,6 @@ public class IDManager {
    */
   public static String[] getLabelIDs(Node root, Class<? extends Label> labelClass) {
   	List<String> list = getLabelIDListFromSubtree(root, labelClass);
-  	return list.toArray(new String[list.size()]);
-  }
-  
-  
-  /**
-   * Searches for all the IDs of hidden data that is assigned to a branch present in the 
-   * subtree under root.
-   * 
-   * @param root - the root node of the subtree to be searched. 
-   * @return a list of all IDs (every string is contained only once)
-   */
-  public static String[] getHiddenBranchDataIDs(Node root) {
-  	List<String> list = getHiddenBranchDataIDListFromSubtree(root);
-  	return list.toArray(new String[list.size()]);
-  }
-  
-  
-  /**
-   * Searches for all the IDs of hidden data that is assigned to a node present in the 
-   * subtree under root.
-   * 
-   * @param root - the root node of the subtree to be searched. 
-   * @return a list of all IDs (every string is contained only once)
-   */
-  public static String[] getHiddenNodeDataIDs(Node root) {
-  	List<String> list = getHiddenNodeDataIDListFromSubtree(root);
   	return list.toArray(new String[list.size()]);
   }
   
@@ -294,16 +237,6 @@ public class IDManager {
   }
   
   
-  public static List<String> getHiddenBranchDataIDListFromSubtree(Node root) {
-  	return getListFromSubtree(root, null, false, true);
-  }
-  
-  
-  public static List<String> getHiddenNodeDataIDListFromSubtree(Node root) {
-  	return getListFromSubtree(root, null, true, false);
-  }
-  
-  
   private static void renameLabelIDInLabelBlock(String oldName, String newName, 
   		Labels labels, boolean above) {
   	
@@ -318,24 +251,11 @@ public class IDManager {
   }
   
   
-  private static void renameHiddenDataID(HiddenDataElement element, String oldName, 
-  		String newName) {
-  	
-  	TextElementData value = element.getHiddenDataMap().get(oldName);
-  	if (value != null) {
-  		element.getHiddenDataMap().remove(oldName);
-  		element.getHiddenDataMap().put(newName, value);
-  	}
-  }
-  
-  
   public static void renameID(String oldName, String newName, Node node) {
   		renameLabelIDInLabelBlock(oldName, newName, 
   				node.getAfferentBranch().getLabels(), true);
   		renameLabelIDInLabelBlock(oldName, newName, 
   				node.getAfferentBranch().getLabels(), false);
-  		renameHiddenDataID(node.getAfferentBranch(), oldName, newName);
-  		renameHiddenDataID(node, oldName, newName);
   }
   
   
@@ -450,12 +370,6 @@ public class IDManager {
   	if ((l != null) && (l instanceof TextLabel)) {
   		result = ((TextLabel)l).getData();
   	}
-  	else {
-  		result = node.getHiddenDataMap().get(id);
-  		if (result == null) {
-    		result = node.getAfferentBranch().getHiddenDataMap().get(id);
-  		}
-  	}
   	return result;
   }
   
@@ -471,12 +385,6 @@ public class IDManager {
    */
   public static Object getElementByID(Node node, String id) {
   	Object result = node.getAfferentBranch().getLabels().get(id);
-  	if (result == null) {
-  		result = node.getHiddenDataMap().get(id);
-  		if (result == null) {
-    		result = node.getAfferentBranch().getHiddenDataMap().get(id);
-  		}
-  	}
   	return result;
   }
   
@@ -494,12 +402,6 @@ public class IDManager {
   	Object result = labels.get(id);
   	if (result != null) {
   		labels.remove((Label)result);
-  	}
-  	else {
-  		result = node.getHiddenDataMap().remove(id);
-    	if (result == null) {
-    		result = node.getAfferentBranch().getHiddenDataMap().remove(id);
-    	}
   	}
   	return result;
   }

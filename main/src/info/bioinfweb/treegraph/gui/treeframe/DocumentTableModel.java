@@ -19,25 +19,30 @@
 package info.bioinfweb.treegraph.gui.treeframe;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
 import info.bioinfweb.treegraph.document.AbstractPaintableElement;
+import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextLabel;
 import info.bioinfweb.treegraph.document.change.DocumentChangeEvent;
 import info.bioinfweb.treegraph.document.change.DocumentListener;
+import info.bioinfweb.treegraph.document.metadata.MetadataPath;
+import info.bioinfweb.treegraph.document.metadata.MetadataTree;
 import info.bioinfweb.treegraph.document.nodebranchdata.BranchLengthAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.GeneralIDAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.HiddenBranchDataAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.HiddenNodeDataAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.LiteralMetadataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.ResourceMetadataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.AbstractTextElementDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.UniqueNameAdapter;
 import info.bioinfweb.treegraph.document.tools.IDManager;
+import info.bioinfweb.treegraph.document.tools.PathManager;
 import info.bioinfweb.treegraph.document.undo.edit.ChangeCellTypeEdit;
 import info.bioinfweb.treegraph.document.undo.edit.ChangeNumercalValueEdit;
 import info.bioinfweb.treegraph.document.undo.edit.ChangeTextualValueEdit;
@@ -127,14 +132,13 @@ public class DocumentTableModel extends AbstractTableModel implements DocumentLi
 					((TextLabel)IDManager.getFirstLabel(root, TextLabel.class, ids.get(i))).getFormats().getDecimalFormat()));
 		}
   	
-		ids = IDManager.getHiddenNodeDataIDListFromSubtree(root);
-		for (int i = 0; i < ids.size(); i++) {
-			adapters.add(new HiddenNodeDataAdapter(ids.get(i)));
-		}
+		MetadataTree tree = new MetadataTree(root);
+		List<NodeBranchDataAdapter> metadataAdapters = PathManager.createAdapterList(tree, new ArrayList<NodeBranchDataAdapter>(), true);
 		
-		ids = IDManager.getHiddenBranchDataIDListFromSubtree(root);
-		for (int i = 0; i < ids.size(); i++) {
-			adapters.add(new HiddenBranchDataAdapter(ids.get(i)));
+		if (root instanceof Node) {			
+			for (NodeBranchDataAdapter nodeBranchDataAdapter : metadataAdapters) {
+				adapters.add(nodeBranchDataAdapter);
+			}
 		}
 	}
 	
@@ -170,11 +174,11 @@ public class DocumentTableModel extends AbstractTableModel implements DocumentLi
 			if (adapter instanceof TextLabelAdapter) {
 				return ((TextLabelAdapter)adapter).getID() + " (text labels)";
 			}
-			if (adapter instanceof HiddenNodeDataAdapter) {
-				return ((HiddenNodeDataAdapter)adapter).getID() + " (hidden node data)";
+			if (adapter instanceof LiteralMetadataAdapter) {
+				return ((LiteralMetadataAdapter)adapter).getPath().toString() + " (literal metadata)";
 			}
-			if (adapter instanceof HiddenBranchDataAdapter) {
-				return ((HiddenBranchDataAdapter)adapter).getID() + " (hidden branch data)";
+			if (adapter instanceof ResourceMetadataAdapter) {
+				return ((ResourceMetadataAdapter)adapter).getPath().toString() + " (resource metadata)";
 			}
 			else {
 				return adapter.toString();
