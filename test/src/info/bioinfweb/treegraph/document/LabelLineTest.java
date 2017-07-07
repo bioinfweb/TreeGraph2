@@ -19,15 +19,14 @@
 package info.bioinfweb.treegraph.document;
 
 
-import org.junit.* ;
+import org.junit.*;
 
 import static org.junit.Assert.* ;
 
 
 
 public class LabelLineTest {
-	
-	@Test	
+	@Test
 	public void test_getIndexBeforeLinePos(){
   	Tree tree = new Tree();
   	tree.setPaintStart(Node.newInstanceWithBranch());
@@ -55,5 +54,4 @@ public class LabelLineTest {
 		
 		
 	}
-	
 }

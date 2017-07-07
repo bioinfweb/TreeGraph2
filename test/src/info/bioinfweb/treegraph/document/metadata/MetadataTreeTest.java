@@ -90,22 +90,21 @@ public class MetadataTreeTest {
 		tree.getChildren().add(resourceMeta);
 		tree.getChildren().add(resourceMeta2);		
 		
-		MetadataNode result = tree.searchNodeByPath(path, false);
+		MetadataNode result = tree.searchAndCreateNodeByPath(path, false);
 		
 		
 		assertEquals(2, tree.getChildren().size());		
 		assertEqualsSearchNodeByPath(tree, result);
 	}
 	
-	
-	
+		
 	@Test
 	public void test_searchNodeByPath_create() {
 		MetadataPath path = new MetadataPath(true, true);
 		createPath(path);
 		
 		MetadataTree tree = new MetadataTree(null);		
-		MetadataNode result = tree.searchNodeByPath(path, true);
+		MetadataNode result = tree.searchAndCreateNodeByPath(path, true);
 		
 
 		assertEquals(2, tree.getChildren().size());		
@@ -118,7 +117,8 @@ public class MetadataTreeTest {
 		MetadataPath path = new MetadataPath(true, true);
 		createPath(path);
 		
-		ResourceMetadataNode resourceMeta = new ResourceMetadataNode(XTGConstants.PREDICATE_PIE_CHART_LABEL);	
+		ResourceMetadataNode resourceMeta = new ResourceMetadataNode(XTGConstants.PREDICATE_PIE_CHART_LABEL);
+		ResourceMetadataNode resourceMeta1 = new ResourceMetadataNode(XTGConstants.PREDICATE_PIE_CHART_LABEL);	
 		ResourceMetadataNode resourceMeta2 = new ResourceMetadataNode(XTGConstants.PREDICATE_DATA_IDS);
 		ResourceMetadataNode resourceMeta3 = new ResourceMetadataNode(XTGConstants.PREDICATE_DATA_ID);
 		ResourceMetadataNode resourceMeta4 = new ResourceMetadataNode(XTGConstants.PREDICATE_DATA_ID);
@@ -126,10 +126,12 @@ public class MetadataTreeTest {
 		MetadataTree tree = new MetadataTree(null);		
 
 		resourceMeta2.getChildren().add(resourceMeta3);
-		resourceMeta2.getChildren().add(resourceMeta4);			
+		resourceMeta2.getChildren().add(resourceMeta4);
+		resourceMeta1.getChildren().add(resourceMeta2);
 		tree.getChildren().add(resourceMeta);
+		tree.getChildren().add(resourceMeta1);
 		
-		MetadataNode result = tree.searchNodeByPath(path, true);
+		MetadataNode result = tree.searchAndCreateNodeByPath(path, true);
 		
 		
 		assertEquals(2, tree.getChildren().size());		

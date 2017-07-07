@@ -907,6 +907,7 @@ test/src/info/bioinfweb/treegraph/document/io/ancestralstate/BayesTraitsReaderTe
 test/src/info/bioinfweb/treegraph/document/io/jphyloio/JPhyloIOReaderTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/metadata/MetadataTreeTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/tools/IDManagerTest.java -text svneol=unset#text/plain
+test/src/info/bioinfweb/treegraph/document/tools/PathManagerTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/tools/TreeSerializerTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/topologicalcalculation/LeafSetTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/undo/edit/RerootByLeafSetEditTest.java -text svneol=unset#text/plain
