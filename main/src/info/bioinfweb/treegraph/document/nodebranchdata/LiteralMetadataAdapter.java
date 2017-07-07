@@ -71,7 +71,7 @@ public class LiteralMetadataAdapter extends AbstractTextElementDataAdapter {
 	
 	
 	private MetadataNode metadataNodeByPath(Node node, boolean createNodes) {
-		return ((HiddenDataElement)getDataElement(node)).getMetadataTree().searchNodeByPath(getPath(), createNodes);
+		return ((HiddenDataElement)getDataElement(node)).getMetadataTree().searchAndCreateNodeByPath(getPath(), createNodes);
 	}
 
 	

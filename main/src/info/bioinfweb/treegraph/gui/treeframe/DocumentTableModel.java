@@ -133,6 +133,8 @@ public class DocumentTableModel extends AbstractTableModel implements DocumentLi
 		}
   	
 		MetadataTree tree = new MetadataTree(root);
+		PathManager.createCombinedMetadataTree(root, tree, true, true); //TODO what values should the booleans have?
+		
 		List<NodeBranchDataAdapter> metadataAdapters = PathManager.createAdapterList(tree, new ArrayList<NodeBranchDataAdapter>(), true);
 		
 		if (root instanceof Node) {			

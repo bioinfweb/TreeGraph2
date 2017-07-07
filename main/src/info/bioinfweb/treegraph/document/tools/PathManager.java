@@ -20,13 +20,13 @@ package info.bioinfweb.treegraph.document.tools;
 
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.xml.namespace.QName;
 
-import info.bioinfweb.treegraph.document.HiddenDataElement;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.NodeType;
 import info.bioinfweb.treegraph.document.metadata.LiteralMetadataNode;
@@ -41,224 +41,147 @@ import info.bioinfweb.treegraph.document.nodebranchdata.ResourceMetadataAdapter;
 
 
 
-public class PathManager {	
-	private static void createTree(MetadataTree tree, boolean includeHiddenNodeData, boolean isLiteral, List<MetadataNode> treeChildren,
-			Map<QName, Integer> map, MetadataNode metadataNode) {
-		QName predicate = metadataNode.getPredicateOrRel();
+public class PathManager {
+	/**
+	 * Creates the combined metadata tree from all node and branch metadata trees on the specified phylogenetic node and its children.
+	 * 
+	 * @param root
+	 * @param nodeType
+	 */
+	public static MetadataTree createCombinedMetadataTreeFromNodes(Node root, NodeType nodeType) {
+		Node node = Node.newInstanceWithBranch();  //TODO Mention this in documentation.
+		MetadataTree result = node.getMetadataTree();
+		addToCombinedMetadataTree(root, nodeType, result, true);
+		return result;
+	}
+	
+	
+	public static MetadataTree createCombinedMetadataTreeFromBranches(Node root, NodeType nodeType) {
+		Node node = Node.newInstanceWithBranch();  //TODO Mention this in documentation.
+		MetadataTree result = node.getAfferentBranch().getMetadataTree();
+		addToCombinedMetadataTree(root, nodeType, result, false);
+		return result;
+	}
+	
+	
+	private static void addToCombinedMetadataTree(Node root, NodeType nodeType, MetadataTree tree, boolean useNodeData) {		
+		List<MetadataPath> pathList = createPathList(root, nodeType, useNodeData, !useNodeData);
 		
-		MetadataPath path = new MetadataPath(includeHiddenNodeData, isLiteral);
-		int index = 0;
+		for (MetadataPath child : pathList) {			
+			tree.searchAndCreateNodeByPath(child, true); //Create paths in tree.
+		}
 		
+		for (Node child : root.getChildren()) {
+			addToCombinedMetadataTree(child, nodeType, tree, useNodeData);
+		}
+	}
+		
+	
+	//Create combined branch and node trees
+	//Create path list from both trees
+	//Create adapter list from path list (Concrete instance depends on path.)
+	public static List<NodeBranchDataAdapter> createAdapterList(Node root, NodeType nodeType) {
+		List<NodeBranchDataAdapter> result = new ArrayList<NodeBranchDataAdapter>();
+		
+		MetadataTree nodeTree = createCombinedMetadataTreeFromNodes(root, nodeType);
+		MetadataTree branchTree = createCombinedMetadataTreeFromBranches(root, nodeType);
+		
+		List<MetadataPath> pathList = createPathList(nodeTree, nodeType);
+		pathList.addAll(createPathList(branchTree, nodeType));
+		
+		for (MetadataPath child : pathList) {			
+			boolean isLiteral = child.isLiteral();
+			if(isLiteral) {
+				result.add(new LiteralMetadataAdapter(child));
+			}
+			else {
+				result.add(new ResourceMetadataAdapter(child));
+			}
+		}
+		return result;
+	}
+		
+		
+	public static List<MetadataPath> createPathList(Node root, NodeType nodeType, boolean includeNodeData, boolean includeBranchData) {
+		List<MetadataPath> result = new ArrayList<MetadataPath>();
+		if (includeNodeData) {
+			fillPathList(root.getMetadataTree().getChildren(), true, nodeType, Collections.<MetadataPathElement>emptyList(), result);
+		}
+		if (includeBranchData) {
+			fillPathList(root.getAfferentBranch().getMetadataTree().getChildren(), false, nodeType, Collections.<MetadataPathElement>emptyList(), result);
+		}
+		return result;
+	}
+	
+	
+	public static List<MetadataPath> createPathList(MetadataTree tree, NodeType nodeType) {
+		List<MetadataPath> result = new ArrayList<MetadataPath>();
+		fillPathList(tree.getChildren(), tree.getParent() instanceof Node, nodeType, Collections.<MetadataPathElement>emptyList(), result);
+		return result;
+	}
+	
+	
+	private static void addToMap(Map<QName, Integer> map, QName predicate, int index) {
 		if (!map.containsKey(predicate)) {
-			map.put(metadataNode.getPredicateOrRel(), 0);
+			map.put(predicate, 0);
 		}
 		else {
 			if (map.get(predicate) == index) {
 				index++;
-				map.replace(predicate, map.get(predicate), index);
+				map.put(predicate, index);
 			} else {
 				index = map.get(predicate);
 			}
 		}
-		
+	}
+	
+	
+	private static void addToResultList(List<MetadataPathElement> parentPathElements, List<MetadataPath> resultList,
+			Map<QName, Integer> map, QName predicate, MetadataPath path) {
 		MetadataPathElement element = new MetadataPathElement(predicate, map.get(predicate));
-		if (!path.getElementList().get(path.getElementList().size() - 1).equals(element)) {
-			path.getElementList().add(element);
+		//TODO Clone parent path, add current element and add to path list.	
+		if (!parentPathElements.isEmpty()) {
+			parentPathElements.addAll(parentPathElements);
 		}
 		
-		MetadataNode treeNode = tree.searchNodeByPath(path, true);
-		if(!treeChildren.contains(treeNode)) {
-			treeChildren.add(treeNode);
-		}
-	}
-		
+		parentPathElements.add(element);					
+		path.getElementList().addAll(parentPathElements);
+		resultList.add(path);
+	}	
 	
-	private static void createCombinedMetadataTree(Node root, MetadataTree tree, boolean includeHiddenNodeData,	boolean includeHiddenBranchData) {		
-		List<MetadataNode> treeChildren = tree.getChildren();	
-		Map<QName, Integer> resourceMap = null;
-		Map<QName, Integer> literalMap = null;		
-			
-		if (includeHiddenNodeData) {
-			List<MetadataNode> rootChildren = root.getMetadataTree().getChildren();
-						
-			for (MetadataNode metadataNode : rootChildren) {			
-				if (metadataNode instanceof ResourceMetadataNode) {				
-					createTree(tree, includeHiddenNodeData, false, treeChildren, resourceMap, metadataNode);
-					
-					List<MetadataPath> pathList = new ArrayList<MetadataPath>();
-					NodeType nodeType = NodeType.BOTH;
-					fillPathList(((ResourceMetadataNode) metadataNode).getChildren(), pathList, includeHiddenNodeData, nodeType);
-					
-					for (int i = 0; i < pathList.size(); i++) {
-						MetadataNode childNode = tree.searchNodeByPath(pathList.get(i), true);
-						if(!treeChildren.contains(childNode)) {
-							treeChildren.add(childNode);
-						}						
-					}
-				}
-				else {
-					createTree(tree, includeHiddenNodeData, true, treeChildren, literalMap, metadataNode);
-				}
-			}
-		}
-		
-		if(includeHiddenBranchData) {
-			List<MetadataNode> rootBranchChildren = root.getAfferentBranch().getMetadataTree().getChildren();
-			
-			for (MetadataNode metadataNode : rootBranchChildren) {
-				if (metadataNode instanceof ResourceMetadataNode) {
-					createTree(tree, includeHiddenNodeData, false, treeChildren, resourceMap, metadataNode);
-					
-					List<MetadataPath> pathList = new ArrayList<MetadataPath>();
-					NodeType nodeType = NodeType.BOTH;
-					fillPathList(((ResourceMetadataNode) metadataNode).getChildren(), pathList, includeHiddenNodeData, nodeType);
-					
-					for (int i = 0; i < pathList.size(); i++) {
-						MetadataNode childNode = tree.searchNodeByPath(pathList.get(i), true);
-						if(!treeChildren.contains(childNode)) {
-							treeChildren.add(childNode);
-						}						
-					}
-				}
-				else {
-					createTree(tree, includeHiddenNodeData, true, treeChildren, literalMap, metadataNode);
-				}
-			}
-		}
-		
-	//Creates combined metadataTree from nodes from subtree.
-	//Fügt Baum von einem Knoten zu tree ggf. hinzu.
-	//Index muss beachtet werden, ggf. neues Element erstellen mit selbem Prädikat aber höherem index.
-	//Ruft sich selbst rekursiv auf.	
-	//searchNodeByPath
-	}
-		
 	
-	public static List<NodeBranchDataAdapter> createAdapterList(MetadataTree tree, List<NodeBranchDataAdapter> list, boolean isNode) {
-		List<MetadataNode> children = tree.getChildren();
+	private static void fillPathList(List<MetadataNode> currentChildList, boolean isNode, NodeType nodeType, List<MetadataPathElement> parentPathElements, 
+			List<MetadataPath> resultList) {
 		
-		for (MetadataNode metadataNode : children) {
-			fillAdapterList(metadataNode, list, isNode);
-			if (metadataNode instanceof ResourceMetadataNode) {
-				for (int i = 0; i < ((ResourceMetadataNode)metadataNode).getChildren().size(); i++) {
-					fillAdapterList(((ResourceMetadataNode) metadataNode).getChildren().get(i), list, isNode);
-				}				
-			}
-		}
-		return list;
-		
-		//Creates list of all NodeBranchDataAdapters of a given MetadataTree
-		//Durchläuft Baum und erstellt Liste aus Adapters (ruft fillAdapterList rekursiv auf)
-	}
-		
-		
-	private static void fillAdapterList(MetadataNode root, List<NodeBranchDataAdapter> list, boolean isNode) {
-		Map<QName, Integer> resourceMap = null;
-		Map<QName, Integer> literalMap = null;
-		QName predicate = root.getPredicateOrRel();
-		
-		if (root instanceof ResourceMetadataNode) {
-			int index = 0;
-			MetadataPath resourcePath = new MetadataPath(isNode, false);			
-			
-			if (!resourceMap.containsKey(predicate)) {
-				resourceMap.put(predicate, 0);
-			}
-			else {
-				if (resourceMap.get(predicate) == index) {
-					index++;
-					resourceMap.replace(predicate, resourceMap.get(predicate), index);
-				} else {
-					index = resourceMap.get(predicate);
-				}
-			}
-			
-			MetadataPathElement pathElement = new MetadataPathElement(root.getPredicateOrRel(), index);	
+		Map<QName, Integer> resourceMap = new HashMap<QName, Integer>();
+		Map<QName, Integer> literalMap = new HashMap<QName, Integer>();		
 
-			if (!resourcePath.getElementList().get(resourcePath.getElementList().size() - 1).equals(pathElement)) {
-				resourcePath.getElementList().add(pathElement);
-				list.add(new ResourceMetadataAdapter(resourcePath));
-			}
-			else {
-				pathElement = new MetadataPathElement(root.getPredicateOrRel(), index++);
-			}			
-		}
-		else {
-			MetadataPath path = new MetadataPath(isNode, true);
-			int index = 0;
-			
-			if (!literalMap.containsKey(predicate)) {
-				literalMap.put(predicate, 0);
-			}
-			else {
-				if (literalMap.get(predicate) == index) {
-					index++;
-					literalMap.replace(predicate, literalMap.get(predicate), index);
-				} else {
-					index = literalMap.get(predicate);
-				}
-			}
-			
-			MetadataPathElement element = new MetadataPathElement(predicate, literalMap.get(predicate));
-			if (!path.getElementList().get(path.getElementList().size() - 1).equals(element)) {
-				path.getElementList().add(element);
-			}
-		}
-	//Füllt leere List mit NodeBranchDataAdapter vom jeweiligen MetadataNode.
-	}
-	
-	
-	private static void fillPathList(List<MetadataNode> nodeList, List<MetadataPath> pathList, boolean isNode, NodeType nodeType) {
-		Map<QName, Integer> resourceMap = null;
-		Map<QName, Integer> literalMap = null;		
-
-		for (MetadataNode metadataNode : nodeList) {
+		for (MetadataNode metadataNode : currentChildList) {
 			QName predicate = metadataNode.getPredicateOrRel();
-			
-			if (metadataNode instanceof ResourceMetadataNode && !nodeType.equals(NodeType.LEAVES)) {
+			boolean isLeaf = metadataNode.isLeaf();			
+
+			if (metadataNode instanceof ResourceMetadataNode) { //TODO Debug condition: metadataNode may currently be an internal or a leave node and should only be added if the respective nodeType is set.
+				int index = 0;
 				MetadataPath path = new MetadataPath(isNode, false);
-				int index = 0;
+
+				addToMap(resourceMap, predicate, index);
 				
-				if (!resourceMap.containsKey(predicate)) {
-					resourceMap.put(metadataNode.getPredicateOrRel(), 0);
+				if((isLeaf && !nodeType.equals(NodeType.INTERNAL_NODES)) || (!isLeaf && !nodeType.equals(NodeType.LEAVES))) {
+					addToResultList(parentPathElements, resultList, resourceMap, predicate, path);
 				}
-				else {
-					if (resourceMap.get(predicate) == index) {
-						index++;
-						resourceMap.replace(predicate, resourceMap.get(predicate), index);
-					} else {
-						index = resourceMap.get(predicate);
-					}
-				}
-				
-				MetadataPathElement element = new MetadataPathElement(predicate, resourceMap.get(predicate));
-				if (!path.getElementList().get(path.getElementList().size() - 1).equals(element)) {
-					path.getElementList().add(element);
-				}
-				
-				fillPathList(((ResourceMetadataNode) metadataNode).getChildren(), pathList, isNode, nodeType);
+
+				fillPathList(((ResourceMetadataNode) metadataNode).getChildren(), isNode, nodeType, parentPathElements, resultList);
 			}
-			else if (metadataNode instanceof LiteralMetadataNode && !nodeType.equals(NodeType.INTERNAL_NODES)) {
+			else if (metadataNode instanceof LiteralMetadataNode) {
+				int index = 0;
 				MetadataPath path = new MetadataPath(isNode, true);
-				int index = 0;
 				
-				if (!literalMap.containsKey(predicate)) {
-					literalMap.put(metadataNode.getPredicateOrRel(), 0);
-				}
-				else {
-					if (literalMap.get(predicate) == index) {
-						index++;
-						literalMap.replace(predicate, literalMap.get(predicate), index);
-					} else {
-						index = literalMap.get(predicate);
-					}
-				}
+				addToMap(literalMap, predicate, index);
 				
-				MetadataPathElement element = new MetadataPathElement(predicate, literalMap.get(predicate));
-				if (!path.getElementList().get(path.getElementList().size() - 1).equals(element)) {
-					path.getElementList().add(element);
+				if((isLeaf && !nodeType.equals(NodeType.INTERNAL_NODES))) {
+					addToResultList(parentPathElements, resultList, literalMap, predicate, path);
 				}
 			}
-		}		
+		}
 	}
 }

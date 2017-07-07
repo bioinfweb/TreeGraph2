@@ -52,12 +52,12 @@ public class MetadataTree implements Cloneable {
 	}
 	
 	
-	public MetadataNode searchNodeByPath(MetadataPath path, boolean createNodes) {
+	public MetadataNode searchAndCreateNodeByPath(MetadataPath path, boolean createNodes) {
 		if (!path.getElementList().isEmpty()) {
 			Iterator<MetadataPathElement> iterator = path.getElementList().iterator();
-			MetadataNode node = searchNodeInList(getChildren(), iterator.next(), iterator.hasNext() ? false : path.isLiteral(), createNodes);
+			MetadataNode node = searchAndCreateNodeInList(getChildren(), iterator.next(), iterator.hasNext() ? false : path.isLiteral(), createNodes);
 			while (iterator.hasNext() && (node instanceof ResourceMetadataNode)) {
-				node = searchNodeInList(((ResourceMetadataNode)node).getChildren(), iterator.next(), iterator.hasNext() ? false : path.isLiteral(), createNodes);
+				node = searchAndCreateNodeInList(((ResourceMetadataNode)node).getChildren(), iterator.next(), iterator.hasNext() ? false : path.isLiteral(), createNodes);
 			}
 			if (!iterator.hasNext()) {				
 				return node;
@@ -67,7 +67,7 @@ public class MetadataTree implements Cloneable {
 	}
 	
 	
-	private MetadataNode searchNodeInList(List<MetadataNode> list, MetadataPathElement element, boolean searchLiteral, boolean createNodes) {
+	private MetadataNode searchAndCreateNodeInList(List<MetadataNode> list, MetadataPathElement element, boolean searchLiteral, boolean createNodes) {
 		int index = 0;
 		for (MetadataNode child : list) {
 			if ((((child instanceof ResourceMetadataNode) && !searchLiteral) || ((child instanceof LiteralMetadataNode) && searchLiteral)) && 

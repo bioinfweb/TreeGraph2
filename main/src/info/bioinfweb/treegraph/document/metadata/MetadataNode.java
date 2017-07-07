@@ -25,7 +25,7 @@ import javax.xml.namespace.QName;
 
 public abstract class MetadataNode implements Cloneable {
 	private MetadataNode parent = null;
-	private QName predicateOrRel;	
+	private QName predicateOrRel;
 	
 	
 	public MetadataNode() {
@@ -39,7 +39,8 @@ public abstract class MetadataNode implements Cloneable {
 	}
 
 
-
+	abstract public boolean isLeaf();
+	
 
 	public MetadataNode getParent() {
 		return parent;

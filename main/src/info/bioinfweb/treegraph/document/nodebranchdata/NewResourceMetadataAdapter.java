@@ -23,11 +23,12 @@ import info.bioinfweb.treegraph.document.metadata.MetadataPath;
 
 
 
-public class NewResourceMetadataAdapter extends ResourceMetadataAdapter implements NodeBranchDataAdapter {
+public class NewResourceMetadataAdapter extends ResourceMetadataAdapter implements NodeBranchDataAdapter, NewMetadataAdapter {
 	public NewResourceMetadataAdapter() {
 		super(null); //TODO Can parameter be null?
 	}
 
+	
 	public NewResourceMetadataAdapter(MetadataPath path) {
 		super(path);
 	}
@@ -48,8 +49,10 @@ public class NewResourceMetadataAdapter extends ResourceMetadataAdapter implemen
 	public String toString() {
 		return "New resource metadata with the specified path";
 	}
-	
-	//TODO This method is an override in other NewAdapters. Whose method does it override?
+
+
+	@Override
+
 	public NodeBranchDataAdapter getPermanentAdapter() {
 		return new ResourceMetadataAdapter(getPath());
 	}

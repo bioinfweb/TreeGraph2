@@ -63,10 +63,8 @@ public class NodeDataComboBoxModel extends AbstractListModel<NodeBranchDataAdapt
   
   private void addNewAdapters() {
 		adapters.add(new NewTextLabelAdapter());
-//		adapters.add(new NewHiddenBranchDataAdapter());
 		adapters.add(new NewResourceMetadataAdapter());
 		adapters.add(new NewLiteralMetadataAdapter());
-//		adapters.add(new NewHiddenNodeDataAdapter());
   }
   
   

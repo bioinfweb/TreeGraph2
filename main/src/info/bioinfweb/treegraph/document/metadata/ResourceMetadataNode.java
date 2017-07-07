@@ -64,6 +64,17 @@ public class ResourceMetadataNode extends MetadataNode {
 	}
 	
 	
+	@Override
+	public boolean isLeaf() {
+		if (!getChildren().isEmpty()) {
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+	
+	
 	public void clear() {
 		uri = null;
 		children.clear();

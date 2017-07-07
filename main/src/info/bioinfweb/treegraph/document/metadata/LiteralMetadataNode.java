@@ -28,7 +28,7 @@ import info.bioinfweb.treegraph.document.TextElementData;
 public class LiteralMetadataNode extends MetadataNode {
 	private TextElementData value;  // Ggf. später durch Object ersetzen
 	private QName datatype;  // Hier wird ein XML-Datentyp angegeben. (Andere String-Datentypen aus JPhyloIO müssten entsprechend übersetzt oder ignoriert werden.)
-	
+
 	
 	public LiteralMetadataNode() {  //TODO Which properties must be set?
 		super();
@@ -38,8 +38,6 @@ public class LiteralMetadataNode extends MetadataNode {
 	public LiteralMetadataNode(QName predicateOrRel) {
 		super(predicateOrRel);
 	}
-
-
 
 
 	public QName getDatatype(QName datatype) {
@@ -65,6 +63,12 @@ public class LiteralMetadataNode extends MetadataNode {
 
 	public void setDatatype(QName datatype) {
 		this.datatype = datatype;
+	}
+	
+	
+	@Override
+	public boolean isLeaf() {
+		return true;
 	}
 	
 	

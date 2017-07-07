@@ -81,8 +81,10 @@ public class CreateBranchLabelCaptionDocumentAction extends DocumentAction {
 		Node root = new Node(); 
 		root.setAfferentBranch(sourceBranch.clone());
 		d.getTree().setPaintStart(root);
-		String sourceDataID = IDManager.newID(SOURCE_DATA_COLUMN_ID, IDManager.getIDListFromSubtree(root));
+		//String sourceDataID = IDManager.newID(SOURCE_DATA_COLUMN_ID, IDManager.getIDListFromSubtree(root));
 //		root.getMetadataRoot().put(sourceDataID, new TextElementData(1.0));
+		//TODO Replace by metadata attached using a standard predicate
+		//TODO Refactor pie chart labels to use node/branch data adapters as references
 		
 		Label[] labels = TreeSerializer.getElementsOnNode(root, Label.class);
 		for (Label label : labels) {

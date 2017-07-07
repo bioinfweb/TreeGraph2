@@ -27,7 +27,7 @@ import info.bioinfweb.jphyloio.formats.xtg.XTGConstants;
 
 
 
-public class MetadataPath {
+public class MetadataPath  {
 	private boolean isNode;  //TODO Should this be boolean?
 	private List<MetadataPathElement> path = new ArrayList<MetadataPathElement>();
 	private boolean isLiteral;  //TODO Should this be boolean?
@@ -49,10 +49,26 @@ public class MetadataPath {
 		return path;
 	}
 	
-	
+
 	public boolean isLiteral() {
 		return isLiteral;
 	}
+		
+	
+//	@Override
+//	protected MetadataPath clone() {
+//		try {
+//			MetadataPath result = (MetadataPath) super.clone();
+//			result.path = new ArrayList<MetadataPathElement>();
+//			for (MetadataPathElement child : getElementList()) {
+//				result.getElementList().add(child);				
+//			}
+//			return result;
+//		}
+//		catch (CloneNotSupportedException e) {
+//			throw new InternalError(e);
+//		}
+//	}
 
 
 	@Override
