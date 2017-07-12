@@ -84,7 +84,8 @@ public class RerootEdit extends ComplexDocumentEdit implements WarningMessageEdi
   
 	private static void copyBranchData(Branch source, Branch target) {
 		// Merge branch data:
-		target.getMetadataTree().setTreeChildren(source.getMetadataTree().getParent());;  // Copying is only helpful, if the two branches contain elements with different IDs. All other elements are overwritten. 
+		target.getMetadataTree().getChildren().addAll(source.getMetadataTree().getChildren());
+//		target.getHiddenDataMap().putAll(source.getHiddenDataMap());  // Copying is only helpful, if the two branches contain elements with different IDs. All other elements are overwritten. 
 		copyLabels(source.getLabels(), target.getLabels());
 		
 		// Add up branch length:
@@ -108,8 +109,8 @@ public class RerootEdit extends ComplexDocumentEdit implements WarningMessageEdi
 				msg += "- The former root node (which has been deleted) contained the node name \"" + 
 			      root.getData().toString() + "\".\n";
 			}
-			if (!root.getMetadataTree().isEmpty()) {
-				msg += "- The former root node (which has been deleted) contained hidden node data.\n";
+			if (!root.getMetadataTree().getChildren().isEmpty()) {
+				msg += "- The former root node (which has been deleted) contained metadata.\n";
 			}
 		}
 		
@@ -122,8 +123,8 @@ public class RerootEdit extends ComplexDocumentEdit implements WarningMessageEdi
 		if (!rootBranch.getLabels().isEmpty()) {
 			msg += "- The former root branch (which has been deleted) was carrying one or more labels.\n";
 		}
-		if (!rootBranch.getMetadataTree().isEmpty()) {
-			msg += "- The former root branch (which has been deleted) contained hidden branch data.\n";
+		if (!rootBranch.getMetadataTree().getChildren().isEmpty()) {
+			msg += "- The former root branch (which has been deleted) contained metadata.\n";
 		}
 		
 		// Child branch warnings:
@@ -134,7 +135,7 @@ public class RerootEdit extends ComplexDocumentEdit implements WarningMessageEdi
 				msg += "- The two child branches of the root contained one or more labels with the same ID(s). " +
 						"One element of each ID has been deleted.\n";
 			}
-//			if (b1.getMetadataTree().containsSameID(b2.getMetadataTree())) {
+//			if (b1.getHiddenDataMap().containsSameID(b2.getHiddenDataMap())) {
 //				msg += "- The two child branches of the root contained hidden branch data with the same ID. " +
 //						"One element of each ID has been deleted.\n";
 //			}

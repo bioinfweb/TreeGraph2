@@ -193,7 +193,7 @@ public abstract class AbstractTextElementDataAdapter extends AbstractNodeBranchD
 			try {
 				setDecimal(node, Math2.parseDouble(getText(node)));
 			}
-			catch (NumberFormatException e) {}  // noting to do
+			catch (NumberFormatException e) {}  // nothing to do
 		}
 	}
 }

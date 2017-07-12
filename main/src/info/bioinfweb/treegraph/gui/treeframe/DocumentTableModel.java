@@ -27,6 +27,7 @@ import info.bioinfweb.treegraph.document.AbstractPaintableElement;
 import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.NodeType;
 import info.bioinfweb.treegraph.document.TextLabel;
 import info.bioinfweb.treegraph.document.change.DocumentChangeEvent;
 import info.bioinfweb.treegraph.document.change.DocumentListener;
@@ -131,17 +132,22 @@ public class DocumentTableModel extends AbstractTableModel implements DocumentLi
 			adapters.add(new TextLabelAdapter(ids.get(i), 
 					((TextLabel)IDManager.getFirstLabel(root, TextLabel.class, ids.get(i))).getFormats().getDecimalFormat()));
 		}
-  	
-		MetadataTree tree = new MetadataTree(root);
-		PathManager.createCombinedMetadataTree(root, tree, true, true); //TODO what values should the booleans have?
 		
-		List<NodeBranchDataAdapter> metadataAdapters = PathManager.createAdapterList(tree, new ArrayList<NodeBranchDataAdapter>(), true);
-		
-		if (root instanceof Node) {			
-			for (NodeBranchDataAdapter nodeBranchDataAdapter : metadataAdapters) {
-				adapters.add(nodeBranchDataAdapter);
-			}
+		List<NodeBranchDataAdapter> adapterList = PathManager.createAdapterList(root, NodeType.BOTH);
+		for (NodeBranchDataAdapter child : adapterList) {
+			adapters.add(child);
 		}
+  	
+//		MetadataTree tree = new MetadataTree(root);
+//		PathManager.createCombinedMetadataTree(root, tree, true, true); //TODO what values should the booleans have?
+//		
+//		List<NodeBranchDataAdapter> metadataAdapters = PathManager.createAdapterList(tree, new ArrayList<NodeBranchDataAdapter>(), true);
+//		
+//		if (root instanceof Node) {			
+//			for (NodeBranchDataAdapter nodeBranchDataAdapter : metadataAdapters) {
+//				adapters.add(nodeBranchDataAdapter);
+//			}
+//		}
 	}
 	
 	

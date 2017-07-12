@@ -23,6 +23,7 @@ import java.text.DecimalFormat;
 
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextElementData;
+import info.bioinfweb.treegraph.document.metadata.MetadataPath;
 
 
 
@@ -32,19 +33,21 @@ import info.bioinfweb.treegraph.document.TextElementData;
  *  @author Ben St&ouml;ver
  */
 public enum TextIDElementType {
-	TEXT_LABEL, 
-	HIDDEN_NODE_DATA, 
-	HIDDEN_BRANCH_DATA;
+	TEXT_LABEL,
+	HIDDEN_NODE_DATA,
+	HIDDEN_BRANCH_DATA; 
+//	LITERAL_METADATA,
+//	RESOURCE_METADATA;
 	
 	
 	public TextIDElementDataAdapter createAdapterInstance(String id, DecimalFormat decimalFormat) {
 		switch (this) {
 			case TEXT_LABEL:
 				return new TextLabelAdapter(id, decimalFormat);
-			case HIDDEN_BRANCH_DATA:
-				return new HiddenBranchDataAdapter(id);
-			case HIDDEN_NODE_DATA:
-				return new HiddenNodeDataAdapter(id);
+//			case LITERAL_METADATA:
+//				return new LiteralMetadataAdapter(path);
+//			case RESOURCE_METADATA:
+//				return new ResourceMetadataAdapter(path);
 			default:
 				throw new InternalError("Unsupported target type " + this + " encountered. "
 						+ "Please inform the TreeGraph developers on this bug.");

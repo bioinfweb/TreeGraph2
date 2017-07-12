@@ -75,6 +75,8 @@ public class NodeListDataAdapter extends AbstractNodeEdgeListDataAdapter<NodeEve
 		TreeDataAdapter.writeMargin(receiver, id, idManager, node.getFormats().getLeafMargin());		
 		receiver.add(ConcreteJPhyloIOEvent.createEndEvent(EventContentType.RESOURCE_META));
 		
-		writeHiddenDataMap(receiver, id, node, idManager);
+		
+		//Metadata
+		writeMetadata(receiver, id, node, idManager);
 	}
 }

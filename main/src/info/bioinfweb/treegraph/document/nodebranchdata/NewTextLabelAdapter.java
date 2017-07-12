@@ -64,5 +64,5 @@ public class NewTextLabelAdapter extends TextLabelAdapter implements NewNodeBran
 	@Override
 	public NodeBranchDataAdapter getPermanentAdapter() {
 		return new TextLabelAdapter(getID());	
-	}  
+	}
 }

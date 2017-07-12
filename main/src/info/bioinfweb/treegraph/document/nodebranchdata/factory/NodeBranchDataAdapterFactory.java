@@ -24,11 +24,11 @@ import java.util.TreeMap;
 
 import info.bioinfweb.treegraph.document.nodebranchdata.BranchLengthAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.GeneralIDAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.HiddenBranchDataAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.HiddenNodeDataAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.LiteralMetadataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.PieChartLabelAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.ResourceMetadataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.UniqueNameAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.VoidNodeBranchDataAdapter;
@@ -62,16 +62,16 @@ public class NodeBranchDataAdapterFactory {
 				return new GeneralIDAdapter(id);
 			}
 		});
-		factories.put(new HiddenBranchDataAdapter("").getName(), new SingleNodeBranchDataAdapterFactory<NodeBranchDataAdapter>() {
+		factories.put(new LiteralMetadataAdapter(null).getName(), new SingleNodeBranchDataAdapterFactory<NodeBranchDataAdapter>() {
 			@Override
 			public NodeBranchDataAdapter newInstance(String id) {
-				return new HiddenBranchDataAdapter(id);
+				return new LiteralMetadataAdapter(null);
 			}
 		});
-		factories.put(new HiddenNodeDataAdapter("").getName(), new SingleNodeBranchDataAdapterFactory<NodeBranchDataAdapter>() {
+		factories.put(new ResourceMetadataAdapter(null).getName(), new SingleNodeBranchDataAdapterFactory<NodeBranchDataAdapter>() {
 			@Override
 			public NodeBranchDataAdapter newInstance(String id) {
-				return new HiddenNodeDataAdapter(id);
+				return new ResourceMetadataAdapter(null);
 			}
 		});
 		factories.put(NodeNameAdapter.getSharedInstance().getName(), new SingleNodeBranchDataAdapterFactory<NodeBranchDataAdapter>() {

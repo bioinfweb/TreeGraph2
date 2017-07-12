@@ -35,7 +35,7 @@ import info.bioinfweb.jphyloio.events.type.EventTopologyType;
 import info.bioinfweb.jphyloio.formats.nexml.NeXMLEventReader;
 import info.bioinfweb.jphyloio.utils.JPhyloIOReadingUtils;
 import info.bioinfweb.treegraph.document.Document;
-import info.bioinfweb.treegraph.document.HiddenDataMap;
+import info.bioinfweb.treegraph.document.HiddenDataElement;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.Tree;
@@ -43,6 +43,12 @@ import info.bioinfweb.treegraph.document.format.Margin;
 import info.bioinfweb.treegraph.document.io.AbstractDocumentReader;
 import info.bioinfweb.treegraph.document.io.DocumentIterator;
 import info.bioinfweb.treegraph.document.io.SingleDocumentIterator;
+import info.bioinfweb.treegraph.document.metadata.LiteralMetadataNode;
+import info.bioinfweb.treegraph.document.metadata.MetadataNode;
+import info.bioinfweb.treegraph.document.metadata.MetadataPath;
+import info.bioinfweb.treegraph.document.metadata.MetadataPathElement;
+import info.bioinfweb.treegraph.document.metadata.MetadataTree;
+import info.bioinfweb.treegraph.document.metadata.ResourceMetadataNode;
 import info.bioinfweb.treegraph.document.nodebranchdata.BranchLengthAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
@@ -54,6 +60,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
 
@@ -66,7 +73,8 @@ public class NeXMLReader extends AbstractDocumentReader {
 	private Map<String, Node> idToNodeMap = new HashMap<String, Node>();
 	private List<String> possiblePaintStartIDs = new ArrayList<String>();
 	private List<String> rootNodeIDs = new ArrayList<String>(); //TODO Mark all root nodes with icon label or something similar
-	private String currentColumnID = null;
+	private QName literalPredicate = null;
+//	private String currentColumnID = null;
 	private NodeBranchDataAdapter nodeNameAdapter = NodeNameAdapter.getSharedInstance();
 	private BranchLengthAdapter branchLengthAdapter = BranchLengthAdapter.getSharedInstance();
 	
@@ -197,8 +205,11 @@ public class NeXMLReader extends AbstractDocumentReader {
 		
 		JPhyloIOEvent event = reader.next();		
     while (!event.getType().getTopologyType().equals(EventTopologyType.END)) {  // It is assumed that events are correctly nested
+    	MetadataPath path = new MetadataPath(true, ((event.getType().getContentType().equals(EventContentType.LITERAL_META) ? true : false)));
+    	
     	if (event.getType().getContentType().equals(EventContentType.LITERAL_META) || event.getType().getContentType().equals(EventContentType.RESOURCE_META)) {
-    		readMetadata(event, node.getHiddenDataMap());
+    		
+    		readMetadata(event, path, node, node.getMetadataTree());
     		
 //    		switch (event.getType().getContentType()) {    				
 //    			case LITERAL_META:
@@ -237,7 +248,7 @@ public class NeXMLReader extends AbstractDocumentReader {
 
     	}
     	else if (event.getType().getContentType().equals(EventContentType.LITERAL_META_CONTENT)) {
-    		readLiteralContent(event.asLiteralMetadataContentEvent(), node.getHiddenDataMap()); 
+    		readLiteralContent(event.asLiteralMetadataContentEvent(), path, node.getMetadataTree()); 
     	}
       else {  // Possible additional element, which is not read
       	if (event.getType().getTopologyType().equals(EventTopologyType.START)) {  // SOLE and END events do not have to be processed here, because they have no further content.
@@ -286,11 +297,13 @@ public class NeXMLReader extends AbstractDocumentReader {
 		
 		JPhyloIOEvent event = reader.next();
     while (!event.getType().getTopologyType().equals(EventTopologyType.END)) {  // It is assumed that events are correctly nested
-    	if (event.getType().getContentType().equals(EventContentType.LITERAL_META) || event.getType().getContentType().equals(EventContentType.RESOURCE_META)) {
-    		readMetadata(event, targetNode.getAfferentBranch().getHiddenDataMap());
+    	MetadataPath path = new MetadataPath(true, ((event.getType().getContentType().equals(EventContentType.LITERAL_META) ? true : false)));
+    	
+    	if (event.getType().getContentType().equals(EventContentType.LITERAL_META) || event.getType().getContentType().equals(EventContentType.RESOURCE_META)) {    		
+    		readMetadata(event, path, targetNode.getAfferentBranch(), targetNode.getAfferentBranch().getMetadataTree());
     	}
     	else if (event.getType().getContentType().equals(EventContentType.LITERAL_META_CONTENT)) {
-    		readLiteralContent(event.asLiteralMetadataContentEvent(), targetNode.getAfferentBranch().getHiddenDataMap()); 
+    		readLiteralContent(event.asLiteralMetadataContentEvent(), path, targetNode.getAfferentBranch().getMetadataTree()); 
     	}
     	else {  // Possible additional element, which is not read
       	if (event.getType().getTopologyType().equals(EventTopologyType.START)) {  // SOLE and END events do not have to be processed here, because they have no further content.
@@ -302,25 +315,36 @@ public class NeXMLReader extends AbstractDocumentReader {
   }
 	
 	
-	private String extractMetadataKey(URIOrStringIdentifier predicate) {
-		return predicate.getURI().getNamespaceURI() + predicate.getURI().getLocalPart();
-		//TODO Extend functionality of this method when more formats are supported. (Make use of string representation alternatively.)
-		//TODO Will a '/' separating namespace URI and local part always be present/necessary? 
-	}
+//	private String extractMetadataKey(URIOrStringIdentifier predicate) {
+//		return predicate.getURI().getNamespaceURI() + predicate.getURI().getLocalPart();
+//		//TODO Extend functionality of this method when more formats are supported. (Make use of string representation alternatively.)
+//		//TODO Will a '/' separating namespace URI and local part always be present/necessary? 
+//	}
 	
 	
-	private void readMetadata(JPhyloIOEvent metaEvent, HiddenDataMap map) throws IOException {
+	private void readMetadata(JPhyloIOEvent metaEvent, MetadataPath path, HiddenDataElement parent, MetadataTree tree) throws IOException {
 		if (metaEvent.getType().getTopologyType().equals(EventTopologyType.START)) {
+			
+			if (tree.getChildren() == null) {
+				tree = new MetadataTree(parent);
+			}
+			
 			if (metaEvent.getType().getContentType().equals(EventContentType.RESOURCE_META)) {
 				ResourceMetadataEvent resourceMeta = metaEvent.asResourceMetadataEvent();
+				
 				if ((resourceMeta.getHRef() != null) && (resourceMeta.getRel().getURI() != null)) {
-					storeMetaData(map, extractMetadataKey(resourceMeta.getRel()), new TextElementData(resourceMeta.getHRef().toString()));  // The whole predicate URI is used as a key here
+					MetadataPathElement element = new MetadataPathElement(resourceMeta.getRel().getURI(), 0);
+					storeMetaData(path, element);				
+					
+					MetadataNode metadataNode = tree.searchAndCreateNodeByPath(path, true);
+					((ResourceMetadataNode)metadataNode).setURI(resourceMeta.getHRef());
+//					storeMetaData(map, extractMetadataKey(resourceMeta.getRel()), new TextElementData(resourceMeta.getHRef().toString()));  // The whole predicate URI is used as a key here
 				}
 			}
 			else if (metaEvent.getType().getContentType().equals(EventContentType.LITERAL_META)) {
 				LiteralMetadataEvent literalMeta = metaEvent.asLiteralMetadataEvent();
 				if (literalMeta.getPredicate().getURI() != null) {
-					currentColumnID = extractMetadataKey(literalMeta.getPredicate());
+					literalPredicate = literalMeta.getPredicate().getURI();
 				}
 			}
 		}
@@ -328,10 +352,10 @@ public class NeXMLReader extends AbstractDocumentReader {
 		JPhyloIOEvent event = reader.next();
 	    while (!event.getType().getTopologyType().equals(EventTopologyType.END)) {
 	    	if (event.getType().getContentType().equals(EventContentType.LITERAL_META) || event.getType().getContentType().equals(EventContentType.RESOURCE_META)) {
-	    		readMetadata(event, map);
+	    		readMetadata(event, path, parent, tree);
 	    	}
 	    	else if (event.getType().getContentType().equals(EventContentType.LITERAL_META_CONTENT)) {
-	    		readLiteralContent(event.asLiteralMetadataContentEvent(), map);
+	    		readLiteralContent(event.asLiteralMetadataContentEvent(), path, tree);
 	    	}
 	    	else {  // Possible additional element, which is not read
 	      	if (event.getType().getTopologyType().equals(EventTopologyType.START)) {  // SOLE and END events do not have to be processed here, because they have no further content.
@@ -343,7 +367,7 @@ public class NeXMLReader extends AbstractDocumentReader {
 	}
 	
 	
-	private void readLiteralContent(LiteralMetadataContentEvent literalEvent, HiddenDataMap map) throws IOException {
+	private void readLiteralContent(LiteralMetadataContentEvent literalEvent, MetadataPath path, MetadataTree tree) throws IOException {
 		StringBuffer content = new StringBuffer();
 		TextElementData data = null;
 		
@@ -360,7 +384,7 @@ public class NeXMLReader extends AbstractDocumentReader {
     }
 		
 		JPhyloIOEvent event = reader.peek();
-    while (event.getType().getContentType().equals(EventContentType.LITERAL_META_CONTENT)) {    	
+    while (event.getType().getContentType().equals(EventContentType.LITERAL_META_CONTENT)) {
       event = reader.next();
       content.append(event.asLiteralMetadataContentEvent().getStringValue());  // Content can only be continued if it has only a string value      
     }
@@ -368,20 +392,39 @@ public class NeXMLReader extends AbstractDocumentReader {
     if (data == null) {
     	data = new TextElementData(content.toString());
     }
+    
+		MetadataPathElement element = new MetadataPathElement(literalPredicate, 0);
+		storeMetaData(path, element);
 		
-    storeMetaData(map, currentColumnID, data);
+		MetadataNode metadataNode = tree.searchAndCreateNodeByPath(path, true);
+		((LiteralMetadataNode)metadataNode).setValue(data);
 	}
 	
 	
-	private void storeMetaData(HiddenDataMap map, String key, TextElementData data) {
-		if (!map.containsKey(key)) {
-			map.put(key, data);
+	private void storeMetaData(MetadataPath path, MetadataPathElement element) {
+		if(!path.getElementList().contains(element)) {
+			path.getElementList().add(element);
 		}
 		else {
-			parameterMap.getApplicationLogger().addMessage("More than one value with the key \"" + currentColumnID + "\" was encountered for one node or branch."
-					+ " Only the first encountered value was imported.");
+			int index = element.getIndex();
+			index++;
+			MetadataPathElement newElement = new MetadataPathElement(element.getPredicateOrRel(), index);
+			storeMetaData(path, newElement);
+//			parameterMap.getApplicationLogger().addMessage("More than one value with the key \"" + currentColumnID + "\" was encountered for one node or branch."
+//					+ " Only the first encountered value was imported.");
 		}
 	}
+	
+	
+//	private void storeMetaData(HiddenDataMap map, String key, TextElementData data) {
+//		if (!map.containsKey(key)) {
+//			map.put(key, data);
+//		}
+//		else {
+//			parameterMap.getApplicationLogger().addMessage("More than one value with the key \"" + currentColumnID + "\" was encountered for one node or branch."
+//					+ " Only the first encountered value was imported.");
+//		}
+//	}
 	
 
 	@Override

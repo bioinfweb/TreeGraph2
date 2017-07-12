@@ -19,7 +19,6 @@
 package info.bioinfweb.treegraph.document;
 
 
-import info.bioinfweb.treegraph.document.metadata.MetadataNode;
 import info.bioinfweb.treegraph.document.metadata.MetadataTree;
 
 

@@ -25,8 +25,6 @@ import info.bioinfweb.treegraph.document.NodeType;
 import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.nodebranchdata.AbstractTextElementDataAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.HiddenBranchDataAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.HiddenNodeDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextElementDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;

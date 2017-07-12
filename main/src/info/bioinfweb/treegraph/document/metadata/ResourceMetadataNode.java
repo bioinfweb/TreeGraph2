@@ -36,7 +36,7 @@ import info.bioinfweb.treegraph.document.TextElementData;
 
 public class ResourceMetadataNode extends MetadataNode {
 	private List<MetadataNode> children = new ArrayList<MetadataNode>();
-	private URI uri;
+	private URI href;
 	
 	
 	public ResourceMetadataNode() {  //TODO Which properties must be set?
@@ -50,12 +50,14 @@ public class ResourceMetadataNode extends MetadataNode {
 
 
 	public URI getURI() {
-		return uri;
+		return href;
 	}
 	
 	
 	public void setURI(URI uri) {
-		this.uri = uri;
+		if (uri != null) {
+			this.href = uri;			
+		}
 	}
 	
 	
@@ -76,7 +78,7 @@ public class ResourceMetadataNode extends MetadataNode {
 	
 	
 	public void clear() {
-		uri = null;
+		href = null;
 		children.clear();
 	}
 	
@@ -98,7 +100,7 @@ public class ResourceMetadataNode extends MetadataNode {
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + ((uri == null) ? 0 : uri.hashCode());
+		result = prime * result + ((href == null) ? 0 : href.hashCode());
 		return result;
 	}
 
@@ -112,10 +114,10 @@ public class ResourceMetadataNode extends MetadataNode {
 		if (getClass() != obj.getClass())
 			return false;
 		ResourceMetadataNode other = (ResourceMetadataNode) obj;
-		if (uri == null) {
-			if (other.uri != null)
+		if (href == null) {
+			if (other.href != null)
 				return false;
-		} else if (!uri.equals(other.uri))
+		} else if (!href.equals(other.href))
 			return false;
 		return true;
 	}

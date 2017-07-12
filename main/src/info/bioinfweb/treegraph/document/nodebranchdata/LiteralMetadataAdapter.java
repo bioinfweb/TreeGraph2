@@ -30,7 +30,7 @@ import info.bioinfweb.treegraph.document.metadata.MetadataPath;
 
 
 public class LiteralMetadataAdapter extends AbstractTextElementDataAdapter {	
-	protected MetadataPath path = null;
+	protected MetadataPath path;
 	
 	
 	public LiteralMetadataAdapter(MetadataPath path) {

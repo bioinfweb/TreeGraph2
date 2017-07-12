@@ -23,7 +23,10 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.xml.namespace.QName;
+
 import info.bioinfweb.commons.IntegerIDManager;
+import java.net.URI;
 import info.bioinfweb.commons.io.W3CXSConstants;
 import info.bioinfweb.jphyloio.ReadWriteConstants;
 import info.bioinfweb.jphyloio.ReadWriteParameterMap;
@@ -35,10 +38,16 @@ import info.bioinfweb.jphyloio.events.meta.ResourceMetadataEvent;
 import info.bioinfweb.jphyloio.events.meta.URIOrStringIdentifier;
 import info.bioinfweb.jphyloio.events.type.EventContentType;
 import info.bioinfweb.jphyloio.utils.JPhyloIOWritingUtils;
+import info.bioinfweb.treegraph.document.HiddenDataElement;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.NodeType;
 import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.Tree;
+import info.bioinfweb.treegraph.document.metadata.LiteralMetadataNode;
+import info.bioinfweb.treegraph.document.metadata.MetadataNode;
+import info.bioinfweb.treegraph.document.metadata.MetadataPath;
+import info.bioinfweb.treegraph.document.metadata.ResourceMetadataNode;
+import info.bioinfweb.treegraph.document.tools.PathManager;
 import info.bioinfweb.treegraph.document.tools.TreeSerializer;
 
 
@@ -116,25 +125,61 @@ public abstract class AbstractNodeEdgeListDataAdapter<E extends LabeledIDEvent> 
 			throws IOException, IllegalArgumentException;
 	
 	
-	protected void writeHiddenDataMap(JPhyloIOEventReceiver receiver, String id, Node node, IntegerIDManager idManager) throws IOException {
-		if (!node.getHiddenDataMap().isEmpty()) {
-			receiver.add(new ResourceMetadataEvent(TreeDataAdapter.createMetaID(id, idManager), null, new URIOrStringIdentifier(null, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_INVISIBLE_DATA), null, null));	
-			Iterator<String> iterator = node.getHiddenDataMap().idIterator();
-			while (iterator.hasNext()) {
-				String dataID = iterator.next();
-				TextElementData value = node.getHiddenDataMap().get(dataID);
-				
-				JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
-						info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_INVISIBLE_DATA, W3CXSConstants.DATA_TYPE_STRING, dataID, null);
-				
-				JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
-						info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_INVISIBLE_DATA_ATTR_IS_DECIMAL, W3CXSConstants.DATA_TYPE_BOOLEAN, value.isDecimal(), null);
-				
-				JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
-							info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_INVISIBLE_DATA_ATTR_TEXT, 
-							value.isDecimal() ? W3CXSConstants.DATA_TYPE_DOUBLE : W3CXSConstants.DATA_TYPE_STRING, value.toString(), null);			
-			}
-			receiver.add(ConcreteJPhyloIOEvent.createEndEvent(EventContentType.RESOURCE_META));
+	protected void writeMetadata(JPhyloIOEventReceiver receiver, String id, HiddenDataElement node, IntegerIDManager idManager) throws IOException {
+		receiver.add(new ResourceMetadataEvent(TreeDataAdapter.createMetaID(id, idManager), null, new URIOrStringIdentifier(null, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_INVISIBLE_DATA), null, null));	
+		
+		if (!node.getMetadataTree().getChildren().isEmpty()) {
+			List<MetadataNode> list = node.getMetadataTree().getChildren();
+			writeMetadataContent(receiver, id, list, idManager);
 		}
 	}
+
+
+	private void writeMetadataContent(JPhyloIOEventReceiver receiver, String id, List<MetadataNode> list, IntegerIDManager idManager)
+			throws IOException {
+		
+		for (MetadataNode child : list) {
+			QName predicate = child.getPredicateOrRel();
+			
+			if (child instanceof ResourceMetadataNode) {
+				URI hRef = ((ResourceMetadataNode)child).getURI();
+				List<MetadataNode> childList = ((ResourceMetadataNode)child).getChildren();
+				
+				receiver.add(new ResourceMetadataEvent(TreeDataAdapter.createMetaID(id, idManager), null, new URIOrStringIdentifier(null, predicate), hRef, null));				
+				
+				if(!childList.isEmpty()) {
+					writeMetadataContent(receiver, id, childList, idManager);
+				}
+			}
+			else {					
+				QName dataType =((LiteralMetadataNode)child).getDatatype();
+				TextElementData value = ((LiteralMetadataNode)child).getValue();
+				
+				JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null, predicate, dataType, value, null);
+			}
+		}
+	}
+	
+	
+//	protected void writeHiddenDataMap(JPhyloIOEventReceiver receiver, String id, Node node, IntegerIDManager idManager) throws IOException {
+//		if (!node.getHiddenDataMap().isEmpty()) {
+//			receiver.add(new ResourceMetadataEvent(TreeDataAdapter.createMetaID(id, idManager), null, new URIOrStringIdentifier(null, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_INVISIBLE_DATA), null, null));	
+//			Iterator<String> iterator = node.getHiddenDataMap().idIterator();
+//			while (iterator.hasNext()) {
+//				String dataID = iterator.next();
+//				TextElementData value = node.getHiddenDataMap().get(dataID);
+//				
+//				JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
+//						info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_INVISIBLE_DATA, W3CXSConstants.DATA_TYPE_STRING, dataID, null);
+//				
+//				JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
+//						info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_INVISIBLE_DATA_ATTR_IS_DECIMAL, W3CXSConstants.DATA_TYPE_BOOLEAN, value.isDecimal(), null);
+//				
+//				JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
+//							info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_INVISIBLE_DATA_ATTR_TEXT, 
+//							value.isDecimal() ? W3CXSConstants.DATA_TYPE_DOUBLE : W3CXSConstants.DATA_TYPE_STRING, value.toString(), null);			
+//			}
+//			receiver.add(ConcreteJPhyloIOEvent.createEndEvent(EventContentType.RESOURCE_META));
+//		}
+//	}
 }

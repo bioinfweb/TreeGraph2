@@ -212,8 +212,8 @@ public class EdgeListDataAdapter extends AbstractNodeEdgeListDataAdapter<EdgeEve
 				}
 			}
 		}
-		//Hidden Data
-		writeHiddenDataMap(receiver, id, node, idManager);		
+		//Metadata
+		writeMetadata(receiver, id, node.getAfferentBranch(), idManager);
 	}
 
 

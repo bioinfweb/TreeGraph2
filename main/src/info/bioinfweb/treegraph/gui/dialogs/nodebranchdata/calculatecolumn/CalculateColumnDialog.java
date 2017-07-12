@@ -43,9 +43,9 @@ import info.bioinfweb.treegraph.document.AbstractPaintableElement;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.nodebranchdata.NewLiteralMetadataAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.NewMetadataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NewResourceMetadataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.ResourceMetadataAdapter;
 import info.bioinfweb.treegraph.document.undo.edit.CalculateColumnEdit;
 import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
 import info.bioinfweb.treegraph.gui.dialogs.editelement.TextElementDataInput;
@@ -105,7 +105,7 @@ public class CalculateColumnDialog extends EditDialog {
 	@Override
 	protected boolean onExecute() {
 		getColumnInput().setAdapters(getDocument().getTree(), false, true, true, false, true, "");
-		getColumnInput().setSelectedAdapter(NewMetadataAdapter.class); //TODO Would either NewLiteral or NewResourceMetadataAdapter be selected?
+		getColumnInput().setSelectedAdapter(ResourceMetadataAdapter.class); //TODO Would either NewLiteral or NewResourceMetadataAdapter be selected?
 		if (getSelectedAdapter() != null) {
 			getColumnInput().setSelectedAdapter(getSelectedAdapter());  // If an readOnly adapter is selected, nothing will change.
 		}

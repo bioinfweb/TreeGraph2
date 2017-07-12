@@ -21,21 +21,24 @@ package info.bioinfweb.treegraph.document.undo.edit;
 
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.NodeType;
 import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.TextLabel;
 import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.format.TextFormats;
+import info.bioinfweb.treegraph.document.metadata.MetadataPath;
 import info.bioinfweb.treegraph.document.nodebranchdata.BranchLengthAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.HiddenBranchDataAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.HiddenNodeDataAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.LiteralMetadataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NewNodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.ResourceMetadataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextElementDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextIDElementType;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.UniqueNameAdapter;
 import info.bioinfweb.treegraph.document.tools.IDManager;
+import info.bioinfweb.treegraph.document.tools.PathManager;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
 import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.AbstractFunction;
 import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.ErrorInfo;
@@ -104,7 +107,7 @@ public class CalculateColumnEdit extends DocumentEdit {
   private TextElementData defaultValue;
   
   private JEP parser;
-  private Map<String, NodeBranchDataAdapter> adapterMap;
+  private Map<Object, NodeBranchDataAdapter> adapterMap;
   private boolean isEvaluating = false;
   private boolean isEvaluatingDecimal = true;
   private Node position = null;
@@ -222,25 +225,26 @@ public class CalculateColumnEdit extends DocumentEdit {
 	}
 	
 	
-	private Map<String, NodeBranchDataAdapter> createAdapterMap() {
-		Map<String, NodeBranchDataAdapter> result = new HashMap<String, NodeBranchDataAdapter>();
+	private Map<Object, NodeBranchDataAdapter> createAdapterMap() {
+		Map<Object, NodeBranchDataAdapter> result = new HashMap<Object, NodeBranchDataAdapter>();
 		
 		String[] ids = IDManager.getLabelIDs(getDocument().getTree().getPaintStart(), TextLabel.class);
+		List<MetadataPath> paths = PathManager.createPathList(getDocument().getTree().getPaintStart(), NodeType.BOTH, true, false);
+		paths.addAll(PathManager.createPathList(getDocument().getTree().getPaintStart(), NodeType.BOTH, false, true));
+		
 		for (int i = 0; i < ids.length; i++) {
 			result.put(ids[i], new TextLabelAdapter(ids[i], 
 					new DecimalFormat(TextFormats.DEFAULT_DECIMAL_FORMAT_EXPR)));
 		}
 		
-		ids = IDManager.getHiddenNodeDataIDs(getDocument().getTree().getPaintStart());
-		for (int i = 0; i < ids.length; i++) {
-			result.put(ids[i], new HiddenNodeDataAdapter(ids[i])); 
-		}
-		
-		ids = IDManager.getHiddenBranchDataIDs(getDocument().getTree().getPaintStart());
-		for (int i = 0; i < ids.length; i++) {
-			result.put(ids[i], new HiddenBranchDataAdapter(ids[i])); 
-		}
-		
+		for (MetadataPath child : paths) {
+			if (!child.isLiteral()) {				
+				result.put(child, new ResourceMetadataAdapter(child));
+			}
+			else {
+				result.put(child, new LiteralMetadataAdapter(child));
+			}			
+		}		
 		return result;
 	}
 	

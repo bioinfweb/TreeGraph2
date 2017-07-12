@@ -19,6 +19,7 @@
 package info.bioinfweb.treegraph.gui.actions.file;
 
 
+import info.bioinfweb.jphyloio.formats.xtg.XTGConstants;
 import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Label;
@@ -39,11 +40,13 @@ import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
+import javax.xml.namespace.QName;
 
 
 
 public class CreateBranchLabelCaptionDocumentAction extends DocumentAction {
 	public static final String SOURCE_DATA_COLUMN_ID = "pieChartSource";
+//	public static final QName PREDICATE_INVISIBLE_DATA = new QName(XTGConstants.XTG_PREDICATE_NAMESPACE, "pieChartSource");
 	
 	
 	public CreateBranchLabelCaptionDocumentAction(MainFrame mainFrame) {

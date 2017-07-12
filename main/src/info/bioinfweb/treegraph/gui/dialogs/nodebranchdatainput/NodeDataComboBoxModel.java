@@ -19,6 +19,7 @@
 package info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput;
 
 
+import info.bioinfweb.treegraph.document.NodeType;
 import info.bioinfweb.treegraph.document.TextLabel;
 import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.metadata.MetadataPath;
@@ -63,8 +64,8 @@ public class NodeDataComboBoxModel extends AbstractListModel<NodeBranchDataAdapt
   
   private void addNewAdapters() {
 		adapters.add(new NewTextLabelAdapter());
-		adapters.add(new NewResourceMetadataAdapter());
-		adapters.add(new NewLiteralMetadataAdapter());
+		adapters.add(new NewResourceMetadataAdapter(new MetadataPath(true, false))); //TODO What should the boolean isNode for MetadataPath be?
+		adapters.add(new NewLiteralMetadataAdapter(new MetadataPath(true, true))); //TODO What should the boolean isNode for MetadataPath be?
   }
   
   
@@ -121,7 +122,7 @@ public class NodeDataComboBoxModel extends AbstractListModel<NodeBranchDataAdapt
 		
 		if (tree != null) {
 			String[] labelIDs = IDManager.getLabelIDs(tree.getPaintStart(), TextLabel.class);
-			List<NodeBranchDataAdapter> metadataAdapters = PathManager.createAdapterList(tree.getPaintStart().getMetadataTree(), new ArrayList<NodeBranchDataAdapter>(), true); //TODO What should the boolean isNode be?
+			List<NodeBranchDataAdapter> metadataAdapters = PathManager.createAdapterList(tree.getPaintStart(),NodeType.BOTH); //TODO What should the nodeType be?
 			Map<String, Integer> idDuplication = new TreeMap<String, Integer>();
 			
 			for (int i = 0; i < labelIDs.length; i++) {
@@ -138,9 +139,10 @@ public class NodeDataComboBoxModel extends AbstractListModel<NodeBranchDataAdapt
 				adapters.add(new TextLabelAdapter(labelIDs[i],((TextLabel)IDManager.getFirstLabel(tree.getPaintStart(), TextLabel.class, labelIDs[i])).getFormats().getDecimalFormat()));
 			}
 			
-			for (int i = 0; i < metadataAdapters.size(); i++) {
-				adapters.add(metadataAdapters.get(i));
+			for (NodeBranchDataAdapter child : metadataAdapters) {
+				adapters.add(child);
 			}
+
 		}
 		
 		// Delete all adapters for columns that contain no decimal value

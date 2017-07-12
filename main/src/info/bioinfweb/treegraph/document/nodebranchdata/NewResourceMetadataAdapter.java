@@ -23,17 +23,12 @@ import info.bioinfweb.treegraph.document.metadata.MetadataPath;
 
 
 
-public class NewResourceMetadataAdapter extends ResourceMetadataAdapter implements NodeBranchDataAdapter, NewMetadataAdapter {
-	public NewResourceMetadataAdapter() {
-		super(null); //TODO Can parameter be null?
-	}
-
-	
+public class NewResourceMetadataAdapter extends ResourceMetadataAdapter implements NodeBranchDataAdapter, NewNodeBranchDataAdapter{	
 	public NewResourceMetadataAdapter(MetadataPath path) {
 		super(path);
 	}
-	
-	
+
+
 	public void setPath(MetadataPath path) {
 		this.path = path;
 	}
@@ -50,10 +45,20 @@ public class NewResourceMetadataAdapter extends ResourceMetadataAdapter implemen
 		return "New resource metadata with the specified path";
 	}
 
-
+	
 	@Override
-
 	public NodeBranchDataAdapter getPermanentAdapter() {
 		return new ResourceMetadataAdapter(getPath());
+	}
+
+
+	@Override
+	public String getID() {		
+		return null;
+	}
+
+
+	@Override
+	public void setID(String id) {	
 	}
 }

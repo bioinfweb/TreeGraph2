@@ -70,9 +70,10 @@ public class PathManager {
 		for (MetadataPath child : pathList) {			
 			tree.searchAndCreateNodeByPath(child, true); //Create paths in tree.
 		}
-		
-		for (Node child : root.getChildren()) {
-			addToCombinedMetadataTree(child, nodeType, tree, useNodeData);
+		if (root != null) {
+			for (Node child : root.getChildren()) {
+				addToCombinedMetadataTree(child, nodeType, tree, useNodeData);
+			}
 		}
 	}
 		
@@ -104,11 +105,13 @@ public class PathManager {
 		
 	public static List<MetadataPath> createPathList(Node root, NodeType nodeType, boolean includeNodeData, boolean includeBranchData) {
 		List<MetadataPath> result = new ArrayList<MetadataPath>();
-		if (includeNodeData) {
-			fillPathList(root.getMetadataTree().getChildren(), true, nodeType, Collections.<MetadataPathElement>emptyList(), result);
-		}
-		if (includeBranchData) {
-			fillPathList(root.getAfferentBranch().getMetadataTree().getChildren(), false, nodeType, Collections.<MetadataPathElement>emptyList(), result);
+		if (root != null) {
+			if (includeNodeData) {
+				fillPathList(root.getMetadataTree().getChildren(), true, nodeType, Collections.<MetadataPathElement>emptyList(), result);
+			}
+			if (includeBranchData) {
+				fillPathList(root.getAfferentBranch().getMetadataTree().getChildren(), false, nodeType, Collections.<MetadataPathElement>emptyList(), result);
+			}
 		}
 		return result;
 	}
@@ -121,17 +124,12 @@ public class PathManager {
 	}
 	
 	
-	private static void addToMap(Map<QName, Integer> map, QName predicate, int index) {
+	private static void addToMap(Map<QName, Integer> map, QName predicate) {
 		if (!map.containsKey(predicate)) {
 			map.put(predicate, 0);
 		}
 		else {
-			if (map.get(predicate) == index) {
-				index++;
-				map.put(predicate, index);
-			} else {
-				index = map.get(predicate);
-			}
+			map.put(predicate, map.get(predicate) + 1);
 		}
 	}
 	
@@ -139,7 +137,7 @@ public class PathManager {
 	private static void addToResultList(List<MetadataPathElement> parentPathElements, List<MetadataPath> resultList,
 			Map<QName, Integer> map, QName predicate, MetadataPath path) {
 		MetadataPathElement element = new MetadataPathElement(predicate, map.get(predicate));
-		//TODO Clone parent path, add current element and add to path list.	
+
 		if (!parentPathElements.isEmpty()) {
 			parentPathElements.addAll(parentPathElements);
 		}
@@ -161,10 +159,9 @@ public class PathManager {
 			boolean isLeaf = metadataNode.isLeaf();			
 
 			if (metadataNode instanceof ResourceMetadataNode) { //TODO Debug condition: metadataNode may currently be an internal or a leave node and should only be added if the respective nodeType is set.
-				int index = 0;
-				MetadataPath path = new MetadataPath(isNode, false);
+								MetadataPath path = new MetadataPath(isNode, false);
 
-				addToMap(resourceMap, predicate, index);
+				addToMap(resourceMap, predicate);
 				
 				if((isLeaf && !nodeType.equals(NodeType.INTERNAL_NODES)) || (!isLeaf && !nodeType.equals(NodeType.LEAVES))) {
 					addToResultList(parentPathElements, resultList, resourceMap, predicate, path);
@@ -173,10 +170,9 @@ public class PathManager {
 				fillPathList(((ResourceMetadataNode) metadataNode).getChildren(), isNode, nodeType, parentPathElements, resultList);
 			}
 			else if (metadataNode instanceof LiteralMetadataNode) {
-				int index = 0;
 				MetadataPath path = new MetadataPath(isNode, true);
 				
-				addToMap(literalMap, predicate, index);
+				addToMap(literalMap, predicate);
 				
 				if((isLeaf && !nodeType.equals(NodeType.INTERNAL_NODES))) {
 					addToResultList(parentPathElements, resultList, literalMap, predicate, path);
