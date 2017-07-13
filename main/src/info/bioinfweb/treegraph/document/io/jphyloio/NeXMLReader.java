@@ -19,6 +19,16 @@
 package info.bioinfweb.treegraph.document.io.jphyloio;
 
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
+
 import info.bioinfweb.jphyloio.JPhyloIOEventReader;
 import info.bioinfweb.jphyloio.ReadWriteParameterMap;
 import info.bioinfweb.jphyloio.events.EdgeEvent;
@@ -29,7 +39,6 @@ import info.bioinfweb.jphyloio.events.NodeEvent;
 import info.bioinfweb.jphyloio.events.meta.LiteralMetadataContentEvent;
 import info.bioinfweb.jphyloio.events.meta.LiteralMetadataEvent;
 import info.bioinfweb.jphyloio.events.meta.ResourceMetadataEvent;
-import info.bioinfweb.jphyloio.events.meta.URIOrStringIdentifier;
 import info.bioinfweb.jphyloio.events.type.EventContentType;
 import info.bioinfweb.jphyloio.events.type.EventTopologyType;
 import info.bioinfweb.jphyloio.formats.nexml.NeXMLEventReader;
@@ -52,16 +61,6 @@ import info.bioinfweb.treegraph.document.metadata.ResourceMetadataNode;
 import info.bioinfweb.treegraph.document.nodebranchdata.BranchLengthAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
-
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
 
 
 
@@ -203,42 +202,11 @@ public class NeXMLReader extends AbstractDocumentReader {
 			rootNodeIDs.add(nodeEvent.getID());
 		}
 		
-		JPhyloIOEvent event = reader.next();		
-    while (!event.getType().getTopologyType().equals(EventTopologyType.END)) {  // It is assumed that events are correctly nested
-    	MetadataPath path;
-    	
-    	if (event.getType().getContentType().equals(EventContentType.LITERAL_META) || event.getType().getContentType().equals(EventContentType.RESOURCE_META)) {
-    		path = new MetadataPath(true, ((event.getType().getContentType().equals(EventContentType.LITERAL_META) ? true : false)));
-    		readMetadata(event, path, node, node.getMetadataTree());
-    	}
-    	else if (event.getType().getContentType().equals(EventContentType.LITERAL_META_CONTENT)) {
-    		readLiteralContent(event.asLiteralMetadataContentEvent(), new HashMap<QName, Integer>(), new MetadataPath(true, true), node.getMetadataTree()); //TODO Check if path needs to be a new instance, or if it can somehow be the old path.
-    	}
-      else {  // Possible additional element, which is not read
-      	if (event.getType().getTopologyType().equals(EventTopologyType.START)) {  // SOLE and END events do not have to be processed here, because they have no further content.
-      		JPhyloIOReadingUtils.reachElementEnd(reader);
-    		}
-      }
-      event = reader.next();
-    }
+		JPhyloIOEvent event = reader.next();
+		boolean isNode = true;
+		
+    event = createMetadata(node, event, isNode);
   }
-
-
-	public void setMargin(Margin margin, JPhyloIOEvent event) throws IOException {
-		LiteralMetadataEvent literalMarginEvent = event.asLiteralMetadataEvent();
-		if (info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_MARGIN_LEFT.equals(literalMarginEvent.getPredicate().getURI())) {
-			margin.getLeft().setInMillimeters(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Number.class).floatValue());
-		}
-		else if (info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_MARGIN_TOP.equals(literalMarginEvent.getPredicate().getURI())) {
-			margin.getTop().setInMillimeters(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Number.class).floatValue());
-		}
-		else if (info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_MARGIN_RIGHT.equals(literalMarginEvent.getPredicate().getURI())) {
-			margin.getRight().setInMillimeters(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Number.class).floatValue());
-		}
-		else if (info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_MARGIN_BOTTOM.equals(literalMarginEvent.getPredicate().getURI())) {
-			margin.getBottom().setInMillimeters(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Number.class).floatValue());
-		}
-	}
 	
 	
 	private void readEdge(EdgeEvent edgeEvent) throws XMLStreamException, IOException {
@@ -260,31 +228,48 @@ public class NeXMLReader extends AbstractDocumentReader {
 		}
 		
 		JPhyloIOEvent event = reader.next();
-    while (!event.getType().getTopologyType().equals(EventTopologyType.END)) {  // It is assumed that events are correctly nested
-    	MetadataPath path;
-    	
-    	if (event.getType().getContentType().equals(EventContentType.LITERAL_META) || event.getType().getContentType().equals(EventContentType.RESOURCE_META)) {   
-    		path = new MetadataPath(false, ((event.getType().getContentType().equals(EventContentType.LITERAL_META) ? true : false)));
-    		readMetadata(event, path, targetNode.getAfferentBranch(), targetNode.getAfferentBranch().getMetadataTree());
+		boolean isNode = false;
+		
+		createMetadata(targetNode.getAfferentBranch(), event, isNode);
+  }
+
+
+	private JPhyloIOEvent createMetadata(HiddenDataElement node, JPhyloIOEvent event, boolean isNode) throws IOException {
+		MetadataPath path;
+		while (!event.getType().getTopologyType().equals(EventTopologyType.END)) {  // It is assumed that events are correctly nested    	
+    	if (event.getType().getContentType().equals(EventContentType.LITERAL_META) || event.getType().getContentType().equals(EventContentType.RESOURCE_META)) {
+    		path = new MetadataPath(isNode, ((event.getType().getContentType().equals(EventContentType.LITERAL_META) ? true : false)));
+    		readMetadata(event, path, node, node.getMetadataTree());
     	}
     	else if (event.getType().getContentType().equals(EventContentType.LITERAL_META_CONTENT)) {
-    		readLiteralContent(event.asLiteralMetadataContentEvent(), new HashMap<QName, Integer>(), new MetadataPath(false, true), targetNode.getAfferentBranch().getMetadataTree()); 
+    		readLiteralContent(event.asLiteralMetadataContentEvent(), new HashMap<QName, Integer>(), new MetadataPath(isNode, true), node.getMetadataTree()); //TODO Check if path needs to be a new instance, or if it can somehow be the old path.
     	}
-    	else {  // Possible additional element, which is not read
+      else {  // Possible additional element, which is not read
       	if (event.getType().getTopologyType().equals(EventTopologyType.START)) {  // SOLE and END events do not have to be processed here, because they have no further content.
       		JPhyloIOReadingUtils.reachElementEnd(reader);
     		}
       }
       event = reader.next();
     }
-  }
-	
-	
-//	private String extractMetadataKey(URIOrStringIdentifier predicate) {
-//		return predicate.getURI().getNamespaceURI() + predicate.getURI().getLocalPart();
-//		//TODO Extend functionality of this method when more formats are supported. (Make use of string representation alternatively.)
-//		//TODO Will a '/' separating namespace URI and local part always be present/necessary? 
-//	}
+		return event;
+	}
+
+
+	public void setMargin(Margin margin, JPhyloIOEvent event) throws IOException {
+		LiteralMetadataEvent literalMarginEvent = event.asLiteralMetadataEvent();
+		if (info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_MARGIN_LEFT.equals(literalMarginEvent.getPredicate().getURI())) {
+			margin.getLeft().setInMillimeters(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Number.class).floatValue());
+		}
+		else if (info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_MARGIN_TOP.equals(literalMarginEvent.getPredicate().getURI())) {
+			margin.getTop().setInMillimeters(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Number.class).floatValue());
+		}
+		else if (info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_MARGIN_RIGHT.equals(literalMarginEvent.getPredicate().getURI())) {
+			margin.getRight().setInMillimeters(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Number.class).floatValue());
+		}
+		else if (info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_MARGIN_BOTTOM.equals(literalMarginEvent.getPredicate().getURI())) {
+			margin.getBottom().setInMillimeters(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Number.class).floatValue());
+		}
+	}
 	
 	
 	private void readMetadata(JPhyloIOEvent metaEvent, MetadataPath path, HiddenDataElement parent, MetadataTree tree) throws IOException {
@@ -379,9 +364,6 @@ public class NeXMLReader extends AbstractDocumentReader {
 	private void storeMetaData(Map<QName, Integer> map, MetadataPath path, QName predicate) {		
 		addToMap(map, predicate);
 		path.getElementList().add(new MetadataPathElement(predicate, map.get(predicate)));
-		
-//			parameterMap.getApplicationLogger().addMessage("More than one value with the key \"" + currentColumnID + "\" was encountered for one node or branch."
-//					+ " Only the first encountered value was imported.");
 	}
 	
 
