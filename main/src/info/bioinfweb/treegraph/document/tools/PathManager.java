@@ -20,6 +20,7 @@ package info.bioinfweb.treegraph.document.tools;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -110,7 +111,8 @@ public class PathManager {
 				fillPathList(root.getMetadataTree().getChildren(), true, nodeType, Collections.<MetadataPathElement>emptyList(), result);
 			}
 			if (includeBranchData) {
-				fillPathList(root.getAfferentBranch().getMetadataTree().getChildren(), false, nodeType, Collections.<MetadataPathElement>emptyList(), result);
+//				fillPathList(root.getAfferentBranch().getMetadataTree().getChildren(), false, nodeType, Collections.<MetadataPathElement>emptyList(), result);
+				fillPathList(root.getAfferentBranch().getMetadataTree().getChildren(), false, nodeType, new ArrayList<MetadataPathElement>(), result);
 			}
 		}
 		return result;
@@ -119,7 +121,8 @@ public class PathManager {
 	
 	public static List<MetadataPath> createPathList(MetadataTree tree, NodeType nodeType) {
 		List<MetadataPath> result = new ArrayList<MetadataPath>();
-		fillPathList(tree.getChildren(), tree.getParent() instanceof Node, nodeType, Collections.<MetadataPathElement>emptyList(), result);
+//		fillPathList(tree.getChildren(), tree.getParent() instanceof Node, nodeType, Collections.<MetadataPathElement>emptyList(), result);
+		fillPathList(tree.getChildren(), tree.getParent() instanceof Node, nodeType, new ArrayList<MetadataPathElement>(), result);
 		return result;
 	}
 	
@@ -134,16 +137,21 @@ public class PathManager {
 	}
 	
 	
-	private static void addToResultList(List<MetadataPathElement> parentPathElements, List<MetadataPath> resultList,
+	private static void createNewPathList(List<MetadataPathElement> parentPathElements, List<MetadataPath> resultList,
 			Map<QName, Integer> map, QName predicate, MetadataPath path) {
+		
+		//TODO Does parentPathElements need to be copied to a new List? Can't it just add element itself?
 		MetadataPathElement element = new MetadataPathElement(predicate, map.get(predicate));
+		List<MetadataPathElement> copyList = new ArrayList<MetadataPathElement>();
 
-		if (!parentPathElements.isEmpty()) {
-			parentPathElements.addAll(parentPathElements);
+		if (!parentPathElements.isEmpty()) {			
+			for (MetadataPathElement child : parentPathElements) { //TODO Stattdessen .AddAll()
+				copyList.add(child);
+			}
 		}
 		
-		parentPathElements.add(element);					
-		path.getElementList().addAll(parentPathElements);
+		copyList.add(element);					
+		path.getElementList().addAll(copyList);
 		resultList.add(path);
 	}	
 	
@@ -164,7 +172,7 @@ public class PathManager {
 				addToMap(resourceMap, predicate);
 				
 				if((isLeaf && !nodeType.equals(NodeType.INTERNAL_NODES)) || (!isLeaf && !nodeType.equals(NodeType.LEAVES))) {
-					addToResultList(parentPathElements, resultList, resourceMap, predicate, path);
+					createNewPathList(parentPathElements, resultList, resourceMap, predicate, path);
 				}
 
 				fillPathList(((ResourceMetadataNode) metadataNode).getChildren(), isNode, nodeType, parentPathElements, resultList);
@@ -175,7 +183,7 @@ public class PathManager {
 				addToMap(literalMap, predicate);
 				
 				if((isLeaf && !nodeType.equals(NodeType.INTERNAL_NODES))) {
-					addToResultList(parentPathElements, resultList, literalMap, predicate, path);
+					createNewPathList(parentPathElements, resultList, literalMap, predicate, path);
 				}
 			}
 		}

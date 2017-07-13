@@ -148,15 +148,16 @@ public abstract class AbstractNodeEdgeListDataAdapter<E extends LabeledIDEvent> 
 				receiver.add(new ResourceMetadataEvent(TreeDataAdapter.createMetaID(id, idManager), null, new URIOrStringIdentifier(null, predicate), hRef, null));				
 				
 				if(!childList.isEmpty()) {
-					writeMetadataContent(receiver, id, childList, idManager);
+					writeMetadataContent(receiver, id, childList, idManager);					
 				}
+				receiver.add(ConcreteJPhyloIOEvent.createEndEvent(EventContentType.RESOURCE_META));
 			}
 			else {					
 				QName dataType =((LiteralMetadataNode)child).getDatatype();
 				TextElementData value = ((LiteralMetadataNode)child).getValue();
 				
 				JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null, predicate, dataType, value, null);
-			}
+			}			
 		}
 	}
 	
