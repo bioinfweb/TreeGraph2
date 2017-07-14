@@ -182,12 +182,6 @@ public class DocumentTableModel extends AbstractTableModel implements DocumentLi
 			if (adapter instanceof TextLabelAdapter) {
 				return ((TextLabelAdapter)adapter).getID() + " (text labels)";
 			}
-			if (adapter instanceof LiteralMetadataAdapter) {
-				return ((LiteralMetadataAdapter)adapter).getPath().toString() + " (literal metadata)";
-			}
-			if (adapter instanceof ResourceMetadataAdapter) {
-				return ((ResourceMetadataAdapter)adapter).getPath().toString() + " (resource metadata)";
-			}
 			else {
 				return adapter.toString();
 			}

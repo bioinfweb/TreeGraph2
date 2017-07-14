@@ -22,12 +22,14 @@ package info.bioinfweb.treegraph.document.nodebranchdata;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import info.bioinfweb.jphyloio.formats.xtg.XTGConstants;
 import info.bioinfweb.treegraph.document.AbstractPaintableElement;
 import info.bioinfweb.treegraph.document.HiddenDataElement;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.metadata.MetadataNode;
 import info.bioinfweb.treegraph.document.metadata.MetadataPath;
+import info.bioinfweb.treegraph.document.metadata.MetadataPathElement;
 import info.bioinfweb.treegraph.document.metadata.ResourceMetadataNode;
 
 
@@ -99,13 +101,17 @@ public class ResourceMetadataAdapter extends AbstractNodeBranchDataAdapter {
 
 
 	@Override
-	public String getText(Node node) {
+	public URI getText(Node node) {
 		ResourceMetadataNode result = (ResourceMetadataNode)metadataNodeByPath(node, false);
 		if (result != null) {
-			return result.getURI().toString();
+			return result.getURI();
 		}
 		else {
-			return "";
+			try {
+				return new URI("");
+			} catch (URISyntaxException e) {
+					throw new InternalError(e);
+			}
 		}
 	}
 
@@ -163,8 +169,9 @@ public class ResourceMetadataAdapter extends AbstractNodeBranchDataAdapter {
 
 
 	@Override
-	public String toString() {
-		return "Resource Metadata with the predicate path \"" + getPath().toString() + "\"";
+	public String toString() {		
+		MetadataPathElement element = getPath().getElementList().get(getPath().getElementList().size() - 1);
+		return element.toString() + " (Resource Metadata)";
 	}
 	
 	

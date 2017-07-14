@@ -544,7 +544,7 @@ public class CalculateColumnEdit extends DocumentEdit {
 	
 	
 	private void setDefaultValueInColumn(NodeBranchDataAdapter adapter, Node root) {
-		if (adapter.isEmpty(root) || (adapter.isString(root) && adapter.getText(root).isEmpty())) {  // Currently deleting values in the node/branch data table leads to the storage of empty strings instead of null. Therefore such cells are also considered to be empty here.
+		if (adapter.isEmpty(root) || (adapter.isString(root) && ((TextElementData) adapter.getText(root)).isEmpty())) {  // Currently deleting values in the node/branch data table leads to the storage of empty strings instead of null. Therefore such cells are also considered to be empty here.
 			adapter.setTextElementData(root, defaultValue);
 		}
 		for (Node child : root.getChildren()) {

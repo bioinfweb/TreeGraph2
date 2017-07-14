@@ -24,6 +24,8 @@ import info.bioinfweb.treegraph.document.metadata.MetadataPath;
 
 
 public class NewResourceMetadataAdapter extends ResourceMetadataAdapter implements NodeBranchDataAdapter, NewNodeBranchDataAdapter{	
+	MetadataPath path = null;
+	
 	public NewResourceMetadataAdapter(MetadataPath path) {
 		super(path);
 	}
@@ -34,6 +36,11 @@ public class NewResourceMetadataAdapter extends ResourceMetadataAdapter implemen
 	}
 
 	
+	public MetadataPath getPath() {
+		return path;
+	}
+
+
 	@Override
 	public boolean isNewColumn() {
 		return true;
@@ -54,7 +61,7 @@ public class NewResourceMetadataAdapter extends ResourceMetadataAdapter implemen
 
 	@Override
 	public String getID() {		
-		return null;
+		return getPath().toString();
 	}
 
 

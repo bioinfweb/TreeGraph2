@@ -19,6 +19,9 @@
 package info.bioinfweb.treegraph.document.nodebranchdata;
 
 
+import java.io.Serializable;
+import java.net.URI;
+
 import info.bioinfweb.treegraph.document.AbstractPaintableElement;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextElementData;
@@ -48,7 +51,7 @@ public interface NodeBranchDataAdapter {
 	
 	public boolean isEmpty(Node node);
 	
-	public String getText(Node node); 
+	public Serializable getText(Node node); 
 	
 	public void setText(Node node, String value);
 	

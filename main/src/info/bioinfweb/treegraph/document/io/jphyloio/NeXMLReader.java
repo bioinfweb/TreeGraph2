@@ -205,8 +205,12 @@ public class NeXMLReader extends AbstractDocumentReader {
 		JPhyloIOEvent event = reader.next();
 		boolean isNode = true;
 		
-    event = createMetadata(node, event, isNode);
-  }
+    createMetadata(node, event, isNode);
+    List<Node> list = node.getChildren();
+    for (Node child : list) {
+			createMetadata(child, event, isNode);
+		}
+	}
 	
 	
 	private void readEdge(EdgeEvent edgeEvent) throws XMLStreamException, IOException {
@@ -240,9 +244,16 @@ public class NeXMLReader extends AbstractDocumentReader {
     	if (event.getType().getContentType().equals(EventContentType.LITERAL_META) || event.getType().getContentType().equals(EventContentType.RESOURCE_META)) {
     		path = new MetadataPath(isNode, ((event.getType().getContentType().equals(EventContentType.LITERAL_META) ? true : false)));
     		readMetadata(event, path, node, node.getMetadataTree());
+    		event = reader.next();
+    		if(node instanceof Node && !((Node) node).getChildren().isEmpty()) {
+    			for (Node child : ((Node) node).getChildren()) {
+						createMetadata(child, event, isNode);
+					}
+    		}
+    		createMetadata(node, event, isNode);
     	}
     	else if (event.getType().getContentType().equals(EventContentType.LITERAL_META_CONTENT)) {
-    		readLiteralContent(event.asLiteralMetadataContentEvent(), new HashMap<QName, Integer>(), new MetadataPath(isNode, true), node.getMetadataTree()); //TODO Check if path needs to be a new instance, or if it can somehow be the old path.
+    		readLiteralContent(event.asLiteralMetadataContentEvent(), new MetadataPath(isNode, true), node.getMetadataTree()); //TODO Check if path needs to be a new instance, or if it can somehow be the old path.
     	}
       else {  // Possible additional element, which is not read
       	if (event.getType().getTopologyType().equals(EventTopologyType.START)) {  // SOLE and END events do not have to be processed here, because they have no further content.
@@ -273,8 +284,7 @@ public class NeXMLReader extends AbstractDocumentReader {
 	
 	
 	private void readMetadata(JPhyloIOEvent metaEvent, MetadataPath path, HiddenDataElement parent, MetadataTree tree) throws IOException {
-		Map<QName, Integer> resourceMap = new HashMap<QName, Integer>();
-		Map<QName, Integer> literalMap = new HashMap<QName, Integer>();	
+		Map<QName, Integer> resourceMap = new HashMap<QName, Integer>();		
 		
 		if (metaEvent.getType().getTopologyType().equals(EventTopologyType.START)) {			
 			if (tree.getChildren() == null) {
@@ -284,11 +294,13 @@ public class NeXMLReader extends AbstractDocumentReader {
 			if (metaEvent.getType().getContentType().equals(EventContentType.RESOURCE_META)) {
 				ResourceMetadataEvent resourceMeta = metaEvent.asResourceMetadataEvent();
 				
-				if ((resourceMeta.getHRef() != null) && (resourceMeta.getRel().getURI() != null)) {
+				if ((resourceMeta.getRel().getURI() != null)) {
 					storeMetaData(resourceMap, path, resourceMeta.getRel().getURI());				
 					
 					MetadataNode metadataNode = tree.searchAndCreateNodeByPath(path, true);
-					((ResourceMetadataNode)metadataNode).setURI(resourceMeta.getHRef());					
+					if ((resourceMeta.getHRef() != null)) {
+						((ResourceMetadataNode)metadataNode).setURI(resourceMeta.getHRef());					
+					}
 //					storeMetaData(map, extractMetadataKey(resourceMeta.getRel()), new TextElementData(resourceMeta.getHRef().toString()));  // The whole predicate URI is used as a key here
 				}
 			}
@@ -299,28 +311,13 @@ public class NeXMLReader extends AbstractDocumentReader {
 				}
 			}
 		}
-		
-		JPhyloIOEvent event = reader.next();
-	    while (!event.getType().getTopologyType().equals(EventTopologyType.END)) {
-	    	if (event.getType().getContentType().equals(EventContentType.LITERAL_META) || event.getType().getContentType().equals(EventContentType.RESOURCE_META)) {
-	    		readMetadata(event, path, parent, tree);
-	    	}
-	    	else if (event.getType().getContentType().equals(EventContentType.LITERAL_META_CONTENT) && path.isLiteral()) {
-	    		readLiteralContent(event.asLiteralMetadataContentEvent(), literalMap, path, tree);
-	    	}
-	    	else {  // Possible additional element, which is not read
-	      	if (event.getType().getTopologyType().equals(EventTopologyType.START)) {  // SOLE and END events do not have to be processed here, because they have no further content.
-	      		JPhyloIOReadingUtils.reachElementEnd(reader);
-	    		}
-	      }
-	      event = reader.next();
-	    }
 	}
 	
 	
-	private void readLiteralContent(LiteralMetadataContentEvent literalEvent, Map<QName, Integer> literalMap, MetadataPath path, MetadataTree tree) throws IOException {
+	private void readLiteralContent(LiteralMetadataContentEvent literalEvent, MetadataPath path, MetadataTree tree) throws IOException {
 		StringBuffer content = new StringBuffer();
 		TextElementData data = null;
+		Map<QName, Integer> literalMap = new HashMap<QName, Integer>();	
 		
 		if (literalEvent.getObjectValue() != null) {
 			if (literalEvent.getObjectValue() instanceof Number) {
@@ -351,18 +348,14 @@ public class NeXMLReader extends AbstractDocumentReader {
 	}
 	
 	
-	private static void addToMap(Map<QName, Integer> map, QName predicate) {
+	private void storeMetaData(Map<QName, Integer> map, MetadataPath path, QName predicate) {
 		if (!map.containsKey(predicate)) {
 			map.put(predicate, 0);
 		}
 		else {
 			map.put(predicate, map.get(predicate) + 1);
-		}
-	}
-	
-	
-	private void storeMetaData(Map<QName, Integer> map, MetadataPath path, QName predicate) {		
-		addToMap(map, predicate);
+		}		
+
 		path.getElementList().add(new MetadataPathElement(predicate, map.get(predicate)));
 	}
 	

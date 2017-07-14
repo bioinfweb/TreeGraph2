@@ -26,6 +26,7 @@ import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.metadata.LiteralMetadataNode;
 import info.bioinfweb.treegraph.document.metadata.MetadataNode;
 import info.bioinfweb.treegraph.document.metadata.MetadataPath;
+import info.bioinfweb.treegraph.document.metadata.MetadataPathElement;
 
 
 
@@ -109,6 +110,7 @@ public class LiteralMetadataAdapter extends AbstractTextElementDataAdapter {
 
 	@Override
 	public String toString() {
-		return "Literal Metadata with the predicate path \"" + getPath().toString() + "\"";
+		MetadataPathElement element = getPath().getElementList().get(getPath().getElementList().size() - 1);
+		return element.toString() + " (Literal Metadata)";
 	}
 }

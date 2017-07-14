@@ -27,6 +27,8 @@ import javax.xml.namespace.QName;
 
 import info.bioinfweb.commons.IntegerIDManager;
 import java.net.URI;
+import java.net.URISyntaxException;
+
 import info.bioinfweb.commons.io.W3CXSConstants;
 import info.bioinfweb.jphyloio.ReadWriteConstants;
 import info.bioinfweb.jphyloio.ReadWriteParameterMap;
@@ -37,6 +39,7 @@ import info.bioinfweb.jphyloio.events.LabeledIDEvent;
 import info.bioinfweb.jphyloio.events.meta.ResourceMetadataEvent;
 import info.bioinfweb.jphyloio.events.meta.URIOrStringIdentifier;
 import info.bioinfweb.jphyloio.events.type.EventContentType;
+import info.bioinfweb.jphyloio.formats.xtg.XTGConstants;
 import info.bioinfweb.jphyloio.utils.JPhyloIOWritingUtils;
 import info.bioinfweb.treegraph.document.HiddenDataElement;
 import info.bioinfweb.treegraph.document.Node;
@@ -125,11 +128,12 @@ public abstract class AbstractNodeEdgeListDataAdapter<E extends LabeledIDEvent> 
 			throws IOException, IllegalArgumentException;
 	
 	
-	protected void writeMetadata(JPhyloIOEventReceiver receiver, String id, HiddenDataElement node, IntegerIDManager idManager) throws IOException {
-		receiver.add(new ResourceMetadataEvent(TreeDataAdapter.createMetaID(id, idManager), null, new URIOrStringIdentifier(null, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_INVISIBLE_DATA), null, null));	
-		
+	protected void writeMetadata(JPhyloIOEventReceiver receiver, String id, HiddenDataElement node, IntegerIDManager idManager) throws IOException {		
 		if (!node.getMetadataTree().getChildren().isEmpty()) {
 			List<MetadataNode> list = node.getMetadataTree().getChildren();
+			
+			receiver.add(new ResourceMetadataEvent(TreeDataAdapter.createMetaID(id, idManager), null, new URIOrStringIdentifier(null, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_INVISIBLE_DATA), null, null));	
+
 			writeMetadataContent(receiver, id, list, idManager);
 		}
 	}
@@ -143,6 +147,18 @@ public abstract class AbstractNodeEdgeListDataAdapter<E extends LabeledIDEvent> 
 			
 			if (child instanceof ResourceMetadataNode) {
 				URI hRef = ((ResourceMetadataNode)child).getURI();
+				if (hRef == null) {
+					try {
+						hRef = new URI("");
+					} catch (URISyntaxException e) {
+						throw new InternalError(e);
+					}
+				}
+				
+				if(predicate == null) {
+					predicate = PREDICATE_HAS_RESOURCE_METADATA;
+				}
+				
 				List<MetadataNode> childList = ((ResourceMetadataNode)child).getChildren();
 				
 				receiver.add(new ResourceMetadataEvent(TreeDataAdapter.createMetaID(id, idManager), null, new URIOrStringIdentifier(null, predicate), hRef, null));				
@@ -154,8 +170,16 @@ public abstract class AbstractNodeEdgeListDataAdapter<E extends LabeledIDEvent> 
 			}
 			else {					
 				QName dataType =((LiteralMetadataNode)child).getDatatype();
-				TextElementData value = ((LiteralMetadataNode)child).getValue();
+				if(dataType == null) {
+					((LiteralMetadataNode)child).setDatatype(W3CXSConstants.DATA_TYPE_STRING);
+				}
 				
+				if(predicate == null) {
+					predicate = PREDICATE_HAS_LITERAL_METADATA;
+				}
+				
+				TextElementData value = ((LiteralMetadataNode)child).getValue();
+
 				JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null, predicate, dataType, value, null);
 			}			
 		}
