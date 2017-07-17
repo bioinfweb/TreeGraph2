@@ -21,6 +21,8 @@ package info.bioinfweb.treegraph.document.io.jphyloio;
 
 import java.io.IOException;
 
+import javax.xml.namespace.QName;
+
 import info.bioinfweb.commons.IntegerIDManager;
 import info.bioinfweb.commons.io.W3CXSConstants;
 import info.bioinfweb.jphyloio.ReadWriteConstants;
@@ -50,7 +52,7 @@ import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 
 
 public class TreeDataAdapter extends NoSetsTreeNetworkDataAdapter implements TreeNetworkDataAdapter, XTGConstants, ReadWriteConstants {	
-
+	private static final QName PREDICATE_INTERNAL_DATA = new QName(info.bioinfweb.jphyloio.formats.xtg.XTGConstants.XTG_PREDICATE_NAMESPACE, "internalData");
 	private ObjectListDataAdapter<NodeEvent> nodeList;
 	private ObjectListDataAdapter<EdgeEvent> edgeList;
 	private Document document;
@@ -129,7 +131,7 @@ public class TreeDataAdapter extends NoSetsTreeNetworkDataAdapter implements Tre
 	@Override
 	public void writeMetadata(ReadWriteParameterMap parameters, JPhyloIOEventReceiver receiver) throws IOException {
 		IntegerIDManager idManager = new IntegerIDManager();
-
+		
 		receiver.add(new ResourceMetadataEvent(TreeDataAdapter.createMetaID(DEFAULT_TREE_ID_PREFIX, idManager), null, new URIOrStringIdentifier(null, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_GLOBAL_FORMATS), null, null));		
 		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(DEFAULT_TREE_ID_PREFIX, idManager), null,
 				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_GLOBAL_FORMATS_ATTR_BG_COLOR, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.DATA_TYPE_COLOR, 
@@ -154,7 +156,6 @@ public class TreeDataAdapter extends NoSetsTreeNetworkDataAdapter implements Tre
 		
 						
 
-		
 		receiver.add(new ResourceMetadataEvent(TreeDataAdapter.createMetaID(DEFAULT_TREE_ID_PREFIX, idManager), null, new URIOrStringIdentifier(null, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_BRANCH_DATA_ADAPTERS), null, null));		
 		NodeBranchDataAdapter leafAdapter = document.getDefaultLeafAdapter();
 		NodeBranchDataAdapter supportAdapter = document.getDefaultSupportAdapter();

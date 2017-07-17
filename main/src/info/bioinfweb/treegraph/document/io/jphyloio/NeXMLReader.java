@@ -19,6 +19,7 @@
 package info.bioinfweb.treegraph.document.io.jphyloio;
 
 
+import java.awt.Color;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,12 +44,14 @@ import info.bioinfweb.jphyloio.events.type.EventContentType;
 import info.bioinfweb.jphyloio.events.type.EventTopologyType;
 import info.bioinfweb.jphyloio.formats.nexml.NeXMLEventReader;
 import info.bioinfweb.jphyloio.utils.JPhyloIOReadingUtils;
+import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.HiddenDataElement;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.format.Margin;
+import info.bioinfweb.treegraph.document.format.NodeFormats;
 import info.bioinfweb.treegraph.document.io.AbstractDocumentReader;
 import info.bioinfweb.treegraph.document.io.DocumentIterator;
 import info.bioinfweb.treegraph.document.io.SingleDocumentIterator;
@@ -114,7 +117,7 @@ public class NeXMLReader extends AbstractDocumentReader {
 	      		}
 	      		break;
 	      	case TREE_NETWORK_GROUP:
-	      		readTreeNetworkGroup(event.asLinkedLabeledIDEvent());
+	      			readTreeNetworkGroup(event.asLinkedLabeledIDEvent());
 	        	break;
 	        default:
 	        	if (event.getType().getTopologyType().equals(EventTopologyType.START)) {  // Possible additional element, which is not read. SOLE and END events do not have to be processed here, because they have no further content.
@@ -206,10 +209,6 @@ public class NeXMLReader extends AbstractDocumentReader {
 		boolean isNode = true;
 		
     createMetadata(node, event, isNode);
-    List<Node> list = node.getChildren();
-    for (Node child : list) {
-			createMetadata(child, event, isNode);
-		}
 	}
 	
 	
@@ -245,15 +244,11 @@ public class NeXMLReader extends AbstractDocumentReader {
     		path = new MetadataPath(isNode, ((event.getType().getContentType().equals(EventContentType.LITERAL_META) ? true : false)));
     		readMetadata(event, path, node, node.getMetadataTree());
     		event = reader.next();
-    		if(node instanceof Node && !((Node) node).getChildren().isEmpty()) {
-    			for (Node child : ((Node) node).getChildren()) {
-						createMetadata(child, event, isNode);
-					}
-    		}
+  		
     		createMetadata(node, event, isNode);
     	}
     	else if (event.getType().getContentType().equals(EventContentType.LITERAL_META_CONTENT)) {
-    		readLiteralContent(event.asLiteralMetadataContentEvent(), new MetadataPath(isNode, true), node.getMetadataTree()); //TODO Check if path needs to be a new instance, or if it can somehow be the old path.
+    		readLiteralContent(event.asLiteralMetadataContentEvent(), node, new MetadataPath(isNode, true), node.getMetadataTree()); //TODO Check if path needs to be a new instance, or if it can somehow be the old path.
     	}
       else {  // Possible additional element, which is not read
       	if (event.getType().getTopologyType().equals(EventTopologyType.START)) {  // SOLE and END events do not have to be processed here, because they have no further content.
@@ -264,29 +259,12 @@ public class NeXMLReader extends AbstractDocumentReader {
     }
 		return event;
 	}
-
-
-	public void setMargin(Margin margin, JPhyloIOEvent event) throws IOException {
-		LiteralMetadataEvent literalMarginEvent = event.asLiteralMetadataEvent();
-		if (info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_MARGIN_LEFT.equals(literalMarginEvent.getPredicate().getURI())) {
-			margin.getLeft().setInMillimeters(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Number.class).floatValue());
-		}
-		else if (info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_MARGIN_TOP.equals(literalMarginEvent.getPredicate().getURI())) {
-			margin.getTop().setInMillimeters(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Number.class).floatValue());
-		}
-		else if (info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_MARGIN_RIGHT.equals(literalMarginEvent.getPredicate().getURI())) {
-			margin.getRight().setInMillimeters(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Number.class).floatValue());
-		}
-		else if (info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_MARGIN_BOTTOM.equals(literalMarginEvent.getPredicate().getURI())) {
-			margin.getBottom().setInMillimeters(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Number.class).floatValue());
-		}
-	}
 	
 	
 	private void readMetadata(JPhyloIOEvent metaEvent, MetadataPath path, HiddenDataElement parent, MetadataTree tree) throws IOException {
 		Map<QName, Integer> resourceMap = new HashMap<QName, Integer>();		
 		
-		if (metaEvent.getType().getTopologyType().equals(EventTopologyType.START)) {			
+		if (metaEvent.getType().getTopologyType().equals(EventTopologyType.START)) {
 			if (tree.getChildren() == null) {
 				tree = new MetadataTree(parent);
 			}
@@ -297,11 +275,12 @@ public class NeXMLReader extends AbstractDocumentReader {
 				if ((resourceMeta.getRel().getURI() != null)) {
 					storeMetaData(resourceMap, path, resourceMeta.getRel().getURI());				
 					
-					MetadataNode metadataNode = tree.searchAndCreateNodeByPath(path, true);
-					if ((resourceMeta.getHRef() != null)) {
-						((ResourceMetadataNode)metadataNode).setURI(resourceMeta.getHRef());					
+					if(!(resourceMeta.getRel().getURI() instanceof info.bioinfweb.jphyloio.formats.xtg.XTGConstants)) {
+						MetadataNode metadataNode = tree.searchAndCreateNodeByPath(path, true);
+						if ((resourceMeta.getHRef() != null)) {
+							((ResourceMetadataNode)metadataNode).setURI(resourceMeta.getHRef());					
+						}
 					}
-//					storeMetaData(map, extractMetadataKey(resourceMeta.getRel()), new TextElementData(resourceMeta.getHRef().toString()));  // The whole predicate URI is used as a key here
 				}
 			}
 			else if (metaEvent.getType().getContentType().equals(EventContentType.LITERAL_META)) {
@@ -314,10 +293,138 @@ public class NeXMLReader extends AbstractDocumentReader {
 	}
 	
 	
-	private void readLiteralContent(LiteralMetadataContentEvent literalEvent, MetadataPath path, MetadataTree tree) throws IOException {
+	private void readLiteralContent(LiteralMetadataContentEvent literalEvent, HiddenDataElement node, MetadataPath path, MetadataTree tree) throws IOException {
+		Map<QName, Integer> literalMap = new HashMap<QName, Integer>();	
+		
+		TextElementData data = getValue(literalEvent);
+		storeMetaData(literalMap, path, literalPredicate);		
+
+		MetadataNode metadataNode = tree.searchAndCreateNodeByPath(path, true);
+		((LiteralMetadataNode)metadataNode).setValue(data);
+	}
+
+	
+	private void readInternalMetadataContent(JPhyloIOEvent metaEvent, HiddenDataElement node) throws IOException {
+		
+		if (metaEvent.getType().getContentType().equals(EventContentType.LITERAL_META)) {
+			LiteralMetadataEvent literalMeta = metaEvent.asLiteralMetadataEvent();
+			if (literalMeta.getPredicate().getURI() != null) {
+				literalPredicate = literalMeta.getPredicate().getURI();
+			}
+			metaEvent = reader.next();
+			readInternalMetadataContent(metaEvent, node);
+		}
+		else if (metaEvent.getType().getContentType().equals(EventContentType.RESOURCE_META)) {
+			metaEvent = reader.next();
+			readInternalMetadataContent(metaEvent, node);
+		} 
+		else if (metaEvent.getType().getContentType().equals(EventContentType.LITERAL_META_CONTENT)) {
+			LiteralMetadataContentEvent literalEvent = metaEvent.asLiteralMetadataContentEvent();
+			
+			TextElementData data = getValue(literalEvent);
+
+			String localPredicate = literalPredicate.getLocalPart();
+			Map<String, Double> marginMap = new HashMap<String, Double>();
+			Map<String, Object> valueMap = new HashMap<String, Object>();
+			
+			switch (localPredicate) {
+				case "MarginLeft":
+					marginMap.put(localPredicate, data.getDecimal());
+					break;
+				case "MarginTop":
+					marginMap.put(localPredicate, data.getDecimal());
+					break;
+				case "MarginRight":
+					marginMap.put(localPredicate, data.getDecimal());	
+					break;
+				case "MarginBottom":
+					marginMap.put(localPredicate, data.getDecimal());	
+					break;
+				case "LineColor":
+					valueMap.put(localPredicate, data.getText());
+					break;
+				case "LineWidth":
+					valueMap.put(localPredicate, data.getDecimal());
+					break;
+				case "Branch.ConstantWidth":
+					((Branch)node).getFormats().setConstantWidth(Boolean.parseBoolean(data.toString()));
+					break;
+				case "Branch.MinLength":
+					((Branch)node).getFormats().getMinLength().setInMillimeters((float) data.getDecimal());
+					break;
+				case "Branch.MinSpaceAbove":
+					((Branch)node).getFormats().getMinSpaceAbove().setInMillimeters((float) data.getDecimal());
+					break;
+				case "Branch.MinSpaceBelow":
+					((Branch)node).getFormats().getMinSpaceBelow().setInMillimeters((float) data.getDecimal());
+					break;
+				case "Node.UniqueName":
+					((Node)node).setUniqueName(data.toString());
+					break;
+				case "Node.EdgeRadius":
+					((Node)node).getFormats().getCornerRadius().setInMillimeters((float) data.getDecimal());
+					break;
+//					case "TextColor":
+//						((Node)node).getFormats().setTextColor((Color) data.getText());
+//						break;
+				case "TextHeight":
+					((Node)node).getFormats().getTextHeight().setInMillimeters((float) data.getDecimal());
+					break;
+				case "TextStyle":
+					((Node)node).getFormats().setTextStyle((int) data.getDecimal());
+					break;
+				case "FontFamily":
+					((Node)node).getFormats().setFontName(data.toString());;
+					break;
+//					case "DecimalFormat":
+//						((Node)node).getFormats().
+//						break;
+//					case "LocaleLang":
+//						((Node)node).getFormats().getLocale()
+//						break;
+//					case "LocaleCountry":
+//						((Node)node).getFormats()
+//						break;
+//					case "LocaleVariant":
+//						((Node)node).getFormats()
+//						break;
+				default:
+					break;
+			}
+			
+			if (marginMap.containsKey("MarginLeft") && marginMap.containsKey("MarginTop") && marginMap.containsKey("MarginRight") && marginMap.containsKey("MarginBottom")) {
+				Margin margin = new Margin(marginMap.get("MarginLeft").floatValue(), marginMap.get("MarginTop").floatValue(), marginMap.get("MarginRight").floatValue(), marginMap.get("MarginBottom").floatValue());
+				if (node instanceof Node) {
+					NodeFormats nodeFormats = new NodeFormats();
+					nodeFormats.getLeafMargin().assign(margin);
+					((Node)node).getFormats().assignNodeFormats(nodeFormats);
+				}
+				marginMap.clear();
+			}
+			
+			if (valueMap.containsKey("LineColor") && valueMap.containsKey("LineWidth")) {
+				Color color = (Color) valueMap.get("LineColor");
+				Float lineWith = (Float) valueMap.get("LineWidth");
+				if (node instanceof Node) {
+					((Node)node).getFormats().setLineColor(color);
+					((Node)node).getFormats().getLineWidth().setInMillimeters(lineWith);
+				}
+				else if (node instanceof Branch) {
+					((Branch)node).getLineFormats().setLineColor(color);
+					((Branch)node).getLineFormats().getLineWidth().setInMillimeters(lineWith);
+				}
+				valueMap.remove("LineColor");
+				valueMap.remove("LineWidth");
+			}
+		}
+
+		
+	}
+
+
+	public TextElementData getValue(LiteralMetadataContentEvent literalEvent) throws IOException {
 		StringBuffer content = new StringBuffer();
 		TextElementData data = null;
-		Map<QName, Integer> literalMap = new HashMap<QName, Integer>();	
 		
 		if (literalEvent.getObjectValue() != null) {
 			if (literalEvent.getObjectValue() instanceof Number) {
@@ -339,15 +446,11 @@ public class NeXMLReader extends AbstractDocumentReader {
     
     if (data == null) {
     	data = new TextElementData(content.toString());
-    }    
-
-		storeMetaData(literalMap, path, literalPredicate);
-		
-		MetadataNode metadataNode = tree.searchAndCreateNodeByPath(path, true);
-		((LiteralMetadataNode)metadataNode).setValue(data);
+    }
+		return data;
 	}
 	
-	
+		
 	private void storeMetaData(Map<QName, Integer> map, MetadataPath path, QName predicate) {
 		if (!map.containsKey(predicate)) {
 			map.put(predicate, 0);
@@ -363,5 +466,22 @@ public class NeXMLReader extends AbstractDocumentReader {
 	@Override
 	public DocumentIterator createIterator(BufferedInputStream stream) throws Exception {
 		return new SingleDocumentIterator(read(stream));
+	}
+	
+	
+	public void setMargin(Margin margin, JPhyloIOEvent event) throws IOException {
+		LiteralMetadataEvent literalMarginEvent = event.asLiteralMetadataEvent();
+		if (info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_MARGIN_LEFT.equals(literalMarginEvent.getPredicate().getURI())) {
+			margin.getLeft().setInMillimeters(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Number.class).floatValue());
+		}
+		else if (info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_MARGIN_TOP.equals(literalMarginEvent.getPredicate().getURI())) {
+			margin.getTop().setInMillimeters(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Number.class).floatValue());
+		}
+		else if (info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_MARGIN_RIGHT.equals(literalMarginEvent.getPredicate().getURI())) {
+			margin.getRight().setInMillimeters(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Number.class).floatValue());
+		}
+		else if (info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_MARGIN_BOTTOM.equals(literalMarginEvent.getPredicate().getURI())) {
+			margin.getBottom().setInMillimeters(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Number.class).floatValue());
+		}
 	}
 }
