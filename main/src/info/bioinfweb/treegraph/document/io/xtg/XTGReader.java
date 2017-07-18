@@ -24,7 +24,6 @@ import info.bioinfweb.treegraph.document.format.*;
 import info.bioinfweb.treegraph.document.io.AbstractDocumentReader;
 import info.bioinfweb.treegraph.document.io.DocumentIterator;
 import info.bioinfweb.treegraph.document.io.SingleDocumentIterator;
-import info.bioinfweb.treegraph.document.metadata.MetadataNode;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.factory.NodeBranchDataAdapterFactory;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
@@ -282,7 +281,7 @@ public class XTGReader extends AbstractDocumentReader implements XTGConstants {
         	readPieChartLabel(element, b.getLabels());
         }
         else if (element.getName().getLocalPart().equals(TAG_HIDDEN_DATA)) {
-        	readHiddenData(element, b.getMetadataRoot());
+        	readHiddenData(element, b.getHiddenDataMap());
         }
         else {
           reachElementEnd(reader, element);  
@@ -411,12 +410,12 @@ public class XTGReader extends AbstractDocumentReader implements XTGConstants {
   }
   
   
-	private void readHiddenData(StartElement element, MetadataNode metadataNode) throws XMLStreamException {
+	private void readHiddenData(StartElement element, HiddenDataMap list) throws XMLStreamException {
 		String id = XMLUtils.readStringAttr(element, ATTR_ID, null);
 		if (id != null) {
 			TextElementData data = new TextElementData();
 			readTextElementDataAttr(data, element);
-			metadataNode.put(id, data);
+			list.put(id, data);
 		}
 		
   	reachElementEnd(reader, "XML elements under <" + TAG_HIDDEN_DATA + ">");
@@ -444,7 +443,7 @@ public class XTGReader extends AbstractDocumentReader implements XTGConstants {
         	readTextLabel(element, result.getAfferentBranch().getLabels());
         }
         else if (element.getName().getLocalPart().equals(TAG_HIDDEN_DATA)) {
-        	readHiddenData(element, result.getMetadataRoot());
+        	readHiddenData(element, result.getHiddenDataMap());
         }
         else if (element.getName().getLocalPart().equals(TAG_LEAF_MARGIN)) {
         	readMargin(f.getLeafMargin(), element);
