@@ -110,6 +110,8 @@ public class NewickStringReader extends NewickStringChars {
   		hiddenDataAdded = hiddenDataAdded || !node.getAfferentBranch().getHiddenDataMap().isEmpty() || !node.getHiddenDataMap().isEmpty();
   	}
   	catch (Exception e) {}  // comment was not of the expected format
+  	//TODO Concrete exception classes should be caught here. Otherwise an exception e.g. due to a lost network connection happening here will be ignored. 
+  	
  	}
  	
   
@@ -275,7 +277,7 @@ public class NewickStringReader extends NewickStringChars {
   
   
   /**
-   * Returns whether hidden data has been read from commetns in the newick string (e.g. from BEAST)
+   * Returns whether hidden data has been read from comments in the Newick string (e.g. from BEAST)
    * during the last call of 
    * {@link NewickStringReader#read(String, NodeBranchDataAdapter, NodeBranchDataAdapter, TranslTable, boolean)}
    * or one of its convenience methods.

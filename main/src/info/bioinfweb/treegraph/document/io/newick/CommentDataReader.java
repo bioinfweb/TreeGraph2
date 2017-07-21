@@ -19,7 +19,6 @@
 package info.bioinfweb.treegraph.document.io.newick;
 
 
-import info.bioinfweb.treegraph.document.HiddenDataMap;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextElementData;
 
