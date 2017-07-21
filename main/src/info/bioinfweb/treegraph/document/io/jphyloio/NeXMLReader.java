@@ -78,8 +78,6 @@ public class NeXMLReader extends AbstractDocumentReader {
 	private Map<String, Node> idToNodeMap = new HashMap<String, Node>();
 	private List<String> possiblePaintStartIDs = new ArrayList<String>();
 	private List<String> rootNodeIDs = new ArrayList<String>(); //TODO Mark all root nodes with icon label or something similar
-	Map<QName, Double> marginMap = new HashMap<QName, Double>();
-	Map<QName, Object> valueMap = new HashMap<QName, Object>();	
 //	private String currentColumnID = null;
 	private NodeBranchDataAdapter nodeNameAdapter = NodeNameAdapter.getSharedInstance();
 	private BranchLengthAdapter branchLengthAdapter = BranchLengthAdapter.getSharedInstance();
@@ -121,12 +119,7 @@ public class NeXMLReader extends AbstractDocumentReader {
 	      		}
 	      		break;
 	      	case TREE_NETWORK_GROUP:
-	      		if (event.getType().getTopologyType().equals(EventTopologyType.START)) {
-	      			readTreeNetworkGroup(event);
-	      		}
-//	      		else if (event.getType().getTopologyType().equals(EventTopologyType.END)) {
-//		          reader.next();
-//	      		}
+	      		readTreeNetworkGroup(event);
 	        	break;
 	        default:
 	        	if (event.getType().getTopologyType().equals(EventTopologyType.START)) {  // Possible additional element, which is not read. SOLE and END events do not have to be processed here, because they have no further content.
@@ -215,8 +208,11 @@ public class NeXMLReader extends AbstractDocumentReader {
 		}
 		
 		JPhyloIOEvent event = reader.next();
+		
 		MetadataPath path = new MetadataPath(true, ((event.getType().getContentType().equals(EventContentType.LITERAL_META) ? true : false)));
     readMetadata(node, event, path);
+    
+    event = reader.next();
 	}
 	
 	
@@ -239,8 +235,11 @@ public class NeXMLReader extends AbstractDocumentReader {
 		}
 		
 		JPhyloIOEvent event = reader.next();
+		
 		MetadataPath path = new MetadataPath(false, ((event.getType().getContentType().equals(EventContentType.LITERAL_META) ? true : false)));
 		readMetadata(targetNode.getAfferentBranch(), event, path);
+		
+		event = reader.next();
   }
 
 
@@ -271,9 +270,18 @@ public class NeXMLReader extends AbstractDocumentReader {
 				}
 			}
 			else if (event.getType().getContentType().equals(EventContentType.LITERAL_META)) {
-				LiteralMetadataEvent literalMeta = event.asLiteralMetadataEvent();		
+				LiteralMetadataEvent literalMeta = event.asLiteralMetadataEvent();
 				
-				readLiteralMetadataContent(node, parentPath, literalMap, literalMeta, event);
+				if (literalMeta.getPredicate().getURI() == null) {
+					throw new InternalError("Handling string keys currently not implemented.");
+				}
+				
+				if (reader.peek().getType().getContentType().equals(EventContentType.LITERAL_META_CONTENT)) {
+					storePredicateAndIndexInMap(literalMap, parentPath, literalMeta.getPredicate().getURI());
+					
+					MetadataNode metadataNode = node.getMetadataTree().searchAndCreateNodeByPath(parentPath, true);
+					((LiteralMetadataNode)metadataNode).setValue(readLiteralMetadataContent(event));
+				}			
 				event = reader.next();
 			}
 			else {
@@ -283,16 +291,9 @@ public class NeXMLReader extends AbstractDocumentReader {
 	}
 
 
-	public void readLiteralMetadataContent(HiddenDataElement node, MetadataPath path, Map<QName, Integer> literalMap, LiteralMetadataEvent literalMeta, JPhyloIOEvent event) throws IOException {
-		if (literalMeta.getPredicate().getURI() == null) {
-			throw new InternalError("Handling string keys currently not implemented.");
-		}
-		
-		if (reader.peek().getType().getContentType().equals(EventContentType.LITERAL_META_CONTENT)) {
+	public TextElementData readLiteralMetadataContent(JPhyloIOEvent event) throws IOException {
 			event = reader.next();
-			LiteralMetadataContentEvent literalEvent = event.asLiteralMetadataContentEvent();
-			
-			storePredicateAndIndexInMap(literalMap, path, literalMeta.getPredicate().getURI());
+			LiteralMetadataContentEvent literalEvent = event.asLiteralMetadataContentEvent();			
 		
 			StringBuffer content = new StringBuffer();
 			TextElementData data = null;
@@ -317,10 +318,7 @@ public class NeXMLReader extends AbstractDocumentReader {
 		  if (data == null) {
 		  	data = new TextElementData(content.toString());
 		  }
-		  
-			MetadataNode metadataNode = node.getMetadataTree().searchAndCreateNodeByPath(path, true);
-			((LiteralMetadataNode)metadataNode).setValue(data);
-		}
+		return data;
 	}
 	
 		
@@ -369,29 +367,28 @@ public class NeXMLReader extends AbstractDocumentReader {
 ////		TextElementData data = getValueOfLiteralMetadataContent(literalEvent);
 //		
 //		if (literalPredicate.equals(XTGConstants.PREDICATE_MARGIN_LEFT)) {
-//			marginMap.put(literalPredicate, literalEvent.getObjectValue());
-//			((Node)node).getFormats().getLeafMargin().
+//			((Node)node).getFormats().getLeafMargin().getLeft().setInMillimeters(data);
 //		} 
 //		else if (literalPredicate.equals(XTGConstants.PREDICATE_MARGIN_TOP)) {
-//			marginMap.put(literalPredicate, data.getDecimal());
+//			((Node)node).getFormats().getLeafMargin().getTop().setInMillimeters(data);
 //		}
 //		else if (literalPredicate.equals(XTGConstants.PREDICATE_MARGIN_RIGHT)) {
-//			marginMap.put(literalPredicate, data.getDecimal());
+//			((Node)node).getFormats().getLeafMargin().getRight().setInMillimeters(data);
 //		}
 //		else if (literalPredicate.equals(XTGConstants.PREDICATE_MARGIN_BOTTOM)) {
-//			marginMap.put(literalPredicate, data.getDecimal());
+//			((Node)node).getFormats().getLeafMargin().getBottom().setInMillimeters(data);
 //		}
 //		else if (literalPredicate.equals(XTGConstants.PREDICATE_LINE_WIDTH)) {
-//			valueMap.put(literalPredicate, data.getDecimal());
+//			((Node)node).getFormats().getLineWidth().setInMillimeters(data);
 //		}
 //		else if (literalPredicate.equals(XTGConstants.PREDICATE_LINE_COLOR)) {
-//			valueMap.put(literalPredicate, data.getText());
+//			((Node)node).getFormats().getLineColor().
 //		}				
 //		else if (literalPredicate.equals(XTGConstants.PREDICATE_NODE_ATTR_UNIQUE_NAME)) {
-//			((Node)node).setUniqueName(data.getText());
+//			((Node)node).setUniqueName(data);
 //		}
 //		else if (literalPredicate.equals(XTGConstants.PREDICATE_NODE_ATTR_EDGE_RADIUS)) {
-//			((Node)node).getFormats().getCornerRadius().setInMillimeters((float) data.getDecimal());
+//			((Node)node).getFormats().getCornerRadius().setInMillimeters(data);
 //		}
 ////				else if (literalPredicate.equals(XTGConstants.PREDICATE_IS_DECIMAL)) {
 ////					if (node instanceof Node) {
@@ -404,7 +401,7 @@ public class NeXMLReader extends AbstractDocumentReader {
 ////				}
 //		else if (literalPredicate.equals(XTGConstants.PREDICATE_TEXT_HEIGHT)) {
 //			if (node instanceof Node) {
-//				((Node)node).getFormats().getTextHeight().setInMillimeters((float) data.getDecimal());
+//				((Node)node).getFormats().getTextHeight().setInMillimeters(data);
 //			}
 //		}
 //		else if (literalPredicate.equals(XTGConstants.PREDICATE_TEXT_STYLE)) {
@@ -449,37 +446,6 @@ public class NeXMLReader extends AbstractDocumentReader {
 //		else if (literalPredicate.equals(XTGConstants.PREDICATE_BRANCH_ATTR_MIN_SPACE_BELOW)) {
 //			((Branch)node).getFormats().getMinSpaceBelow().setInMillimeters((float) data.getDecimal());
 //		}
-//		
-//		
-//		if (marginMap.containsKey(XTGConstants.PREDICATE_MARGIN_LEFT) && marginMap.containsKey(XTGConstants.PREDICATE_MARGIN_TOP) 
-//				&& marginMap.containsKey(XTGConstants.PREDICATE_MARGIN_RIGHT) && marginMap.containsKey(XTGConstants.PREDICATE_MARGIN_BOTTOM)) {
-//			
-//			Margin margin = new Margin(marginMap.get(XTGConstants.PREDICATE_MARGIN_LEFT).floatValue(), 
-//					marginMap.get(XTGConstants.PREDICATE_MARGIN_TOP).floatValue(), 
-//					marginMap.get(XTGConstants.PREDICATE_MARGIN_RIGHT).floatValue(), 
-//					marginMap.get(XTGConstants.PREDICATE_MARGIN_BOTTOM).floatValue());
-//			
-//			if (node instanceof Node) {
-//				NodeFormats nodeFormats = new NodeFormats();
-//				nodeFormats.getLeafMargin().assign(margin);
-//				((Node)node).getFormats().assignNodeFormats(nodeFormats);
-//			}
-//			marginMap.clear();
-//		}
-//		
-////		if (valueMap.containsKey(XTGConstants.PREDICATE_LINE_WIDTH) && valueMap.containsKey(XTGConstants.PREDICATE_LINE_COLOR)) {
-////			Color color = (Color) valueMap.get(XTGConstants.PREDICATE_LINE_COLOR);
-////			Float lineWith = valueMap.get(XTGConstants.PREDICATE_LINE_WIDTH);
-////			if (node instanceof Node) {
-////				((Node)node).getFormats().setLineColor(color);
-////				((Node)node).getFormats().getLineWidth().setInMillimeters(lineWith);
-////			}
-////			else if (node instanceof Branch) {
-////				((Branch)node).getLineFormats().setLineColor(color);
-////				((Branch)node).getLineFormats().getLineWidth().setInMillimeters(lineWith);
-////			}
-////			valueMap.clear();
-////		}
 //	}
 	
 
