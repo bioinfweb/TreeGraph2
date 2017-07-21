@@ -73,11 +73,15 @@ public class MetadataPath  {
 
 	@Override
 	public String toString() {
-		StringBuilder returnValue = new StringBuilder();
-		for (MetadataPathElement metadataPathElement : path) {
-			returnValue.append(metadataPathElement.toString() + " ");			
+		StringBuilder result = new StringBuilder();
+		Iterator<MetadataPathElement> iterator = path.iterator();
+		while (iterator.hasNext()) {
+			result.append(iterator.next().toString());
+			if (iterator.hasNext()) {
+				result.append(" -> ");
+			}
 		}
-		return returnValue.toString();
+		return result.toString();
 	}
 	
 	

@@ -53,7 +53,10 @@ import info.bioinfweb.treegraph.document.HiddenDataElement;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.Tree;
+import info.bioinfweb.treegraph.document.format.LineFormats;
 import info.bioinfweb.treegraph.document.format.Margin;
+import info.bioinfweb.treegraph.document.format.NodeFormats;
+import info.bioinfweb.treegraph.document.format.TextFormats;
 import info.bioinfweb.treegraph.document.io.AbstractDocumentReader;
 import info.bioinfweb.treegraph.document.io.DocumentIterator;
 import info.bioinfweb.treegraph.document.io.SingleDocumentIterator;
@@ -241,7 +244,12 @@ public class NeXMLReader extends AbstractDocumentReader {
 				MetadataPath childPath = storePredicateAndIndexInMap(resourceMap, parentPath, resourceMeta.getRel().getURI(), event);
 				
 				if (resourceMeta.getRel().getURI().equals(TreeDataAdapter.PREDICATE_INTERNAL_DATA)) {
-					readInternalMetadata(paintableElement);
+					if (paintableElement instanceof Node) {
+						readInternalNodeMetadata((Node)paintableElement);
+					}
+					else {
+						readInternalBranchMetadata((Branch)paintableElement);
+					}
 				}
 				else {
 					MetadataNode metadataNode = paintableElement.getMetadataTree().searchAndCreateNodeByPath(childPath, true);
@@ -327,22 +335,64 @@ public class NeXMLReader extends AbstractDocumentReader {
 	}
 	
 	
-	private void readInternalMetadata(HiddenDataElement node) throws IOException {
+	private boolean readTextFormats(LiteralMetadataEvent literalMeta, TextFormats f)  throws IOException {
+		if (literalMeta.getPredicate().equals(XTGConstants.PREDICATE_TEXT_HEIGHT)) {
+			f.getTextHeight().setInMillimeters(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Float.class));  //TODO NPE possible
+		}
+		else if (literalMeta.getPredicate().equals(XTGConstants.PREDICATE_TEXT_COLOR)) {
+			f.setTextColor(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Color.class));
+		}
+		else if (literalMeta.getPredicate().equals(XTGConstants.PREDICATE_TEXT_STYLE)) {
+			f.setTextStyle(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Integer.class));
+		}
+		else if (literalMeta.getPredicate().equals(XTGConstants.PREDICATE_FONT_FAMILY)) {
+			f.setFontName(JPhyloIOReadingUtils.readLiteralMetadataContentAsString(reader));
+		}
+		else {
+			return false;
+		}
+		return true;
+	}
+	
+	
+	private boolean readLineFormats(LiteralMetadataEvent literalMeta, LineFormats f)  throws IOException {
+		if (literalMeta.getPredicate().equals(XTGConstants.PREDICATE_LINE_COLOR)) {
+			f.setLineColor(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Color.class));
+		}
+		else if (literalMeta.getPredicate().equals(XTGConstants.PREDICATE_LINE_WIDTH)) {
+			f.getLineWidth().setInMillimeters(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Float.class));
+		}
+		else {
+			return false;
+		}
+		return true;
+	}
+	
+	
+	private void readMargin(Margin margin, NodeFormats f) throws IOException {		
+	}
+	
+	
+	private void readInternalNodeMetadata(Node node) throws IOException {
 		JPhyloIOEvent event = reader.next();
-		
 		while (!event.getType().getTopologyType().equals(EventTopologyType.END)) {
 			if (event.getType().getContentType().equals(EventContentType.RESOURCE_META)) {
-				readInternalMetadata(node);
+				ResourceMetadataEvent resourceMeta = event.asResourceMetadataEvent();
+				if (XTGConstants.PREDICATE_LEAF_MARGIN.equals(resourceMeta.getRel().getURI())) {
+					readMargin(node.getFormats().getLeafMargin(), ...);
+				}
 			}	
 			else if (event.getType().getContentType().equals(EventContentType.LITERAL_META)) {
 				LiteralMetadataEvent literalMeta = event.asLiteralMetadataEvent();
-								
-				if (literalMeta.getPredicate().getURI() == null) {
-					throw new InternalError("Handling string keys currently not implemented.");
+				NodeFormats f = node.getFormats();
+				if (!readTextFormats(literalMeta, f) && !readLineFormats(literalMeta, f)) {
+					if (literalMeta.getPredicate().equals(XTGConstants.PREDICATE_TEXT)) {
+						node.getData().setText(JPhyloIOReadingUtils.readLiteralMetadataContentAsString(reader));
+					}
+					else if (literalMeta.getPredicate().equals(XTGConstants.PREDICATE_)) {
+						//...
+					}
 				}
-				else {
-					readInternaLiterallMetadataContent(node, literalMeta.getPredicate().getURI());
-				}				
 			}
 			else {
 				JPhyloIOReadingUtils.reachElementEnd(reader);
@@ -360,7 +410,7 @@ public class NeXMLReader extends AbstractDocumentReader {
 			if (reader.peek().getType().getContentType().equals(EventContentType.LITERAL_META_CONTENT)) {
 				if (predicate.equals(XTGConstants.PREDICATE_MARGIN_LEFT)) {
 					if (node instanceof Node) {
-						((Node)node).getFormats().getLeafMargin().getLeft().setInMillimeters((float) value);
+						((Node)node).getFormats().getLeafMargin().getLeft().setInMillimeters((Float) value);
 					}
 				} 
 				else if (predicate.equals(XTGConstants.PREDICATE_MARGIN_TOP)) {
@@ -383,11 +433,11 @@ public class NeXMLReader extends AbstractDocumentReader {
 						((Node)node).getFormats().getLineWidth().setInMillimeters((float) value);
 					}
 				}
-		//		else if (predicate.equals(XTGConstants.PREDICATE_LINE_COLOR)) {
-		//			if (node instanceof Node) {
-		//				((Node)node).getFormats().getLineColor(XMLUtils.readColorAttr(value, predicate, Color.BLACK));
-		//			}
-		//		}				
+				else if (predicate.equals(XTGConstants.PREDICATE_LINE_COLOR)) {
+					if (node instanceof Node) {
+						((Node)node).getFormats().setLineColor((Color)value);  //TODO Make sure that JPhyloIO uses ObjectTranslator for XTG color type also when reading non-XTG formats like NeXML.
+					}
+				}				
 				else if (predicate.equals(XTGConstants.PREDICATE_NODE_ATTR_UNIQUE_NAME)) {
 					((Node)node).setUniqueName((String) value);
 				}

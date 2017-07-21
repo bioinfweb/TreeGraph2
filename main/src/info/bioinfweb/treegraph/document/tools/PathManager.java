@@ -108,7 +108,7 @@ public class PathManager {
 		List<MetadataPath> result = new ArrayList<MetadataPath>();
 		if (root != null) {
 			if (includeNodeData) {
-				fillPathList(root.getMetadataTree().getChildren(), true, nodeType, Collections.<MetadataPathElement>emptyList(), result);
+				fillPathList(root.getMetadataTree().getChildren(), true, nodeType, new ArrayList<MetadataPathElement>(), result);
 			}
 			if (includeBranchData) {
 //				fillPathList(root.getAfferentBranch().getMetadataTree().getChildren(), false, nodeType, Collections.<MetadataPathElement>emptyList(), result);
@@ -137,20 +137,6 @@ public class PathManager {
 	}
 	
 	
-	private static void createNewPathList(List<MetadataPathElement> parentPathElements, List<MetadataPath> resultList,
-			Map<QName, Integer> map, QName predicate, MetadataPath path) {
-		
-		//TODO Does parentPathElements need to be copied to a new List? Can't it just add element itself?
-		MetadataPathElement element = new MetadataPathElement(predicate, map.get(predicate));
-		List<MetadataPathElement> copyList = new ArrayList<MetadataPathElement>();
-		copyList.addAll(parentPathElements);
-		
-		copyList.add(element);					
-		path.getElementList().addAll(copyList);
-		resultList.add(path);
-	}	
-	
-	
 	private static void fillPathList(List<MetadataNode> currentChildList, boolean isNode, NodeType nodeType, List<MetadataPathElement> parentPathElements, 
 			List<MetadataPath> resultList) {
 		
@@ -161,26 +147,28 @@ public class PathManager {
 			QName predicate = metadataNode.getPredicateOrRel();
 			boolean isLeaf = metadataNode.isLeaf();			
 
-			if (metadataNode instanceof ResourceMetadataNode) { //TODO Debug condition: metadataNode may currently be an internal or a leave node and should only be added if the respective nodeType is set.
-								MetadataPath path = new MetadataPath(isNode, false);
-
-				addToMap(resourceMap, predicate);
+			boolean isLiteral = metadataNode instanceof LiteralMetadataNode;
+			Map<QName, Integer> indexMap;
+			
+			if (isLiteral) {
+				indexMap = literalMap;
+			}
+			else {
+				indexMap = resourceMap;
+			}
 				
-				if((isLeaf && !nodeType.equals(NodeType.INTERNAL_NODES)) || (!isLeaf && !nodeType.equals(NodeType.LEAVES))) {
-					createNewPathList(parentPathElements, resultList, resourceMap, predicate, path);
-				}
-
+			addToMap(indexMap, predicate);
+			parentPathElements.add(new MetadataPathElement(predicate, indexMap.get(predicate)));
+				
+			if ((isLeaf && !nodeType.equals(NodeType.INTERNAL_NODES)) || (!isLeaf && !nodeType.equals(NodeType.LEAVES))) {
+				MetadataPath path = new MetadataPath(isNode, isLiteral);
+				path.getElementList().addAll(parentPathElements);
+				resultList.add(path);
+			}
+			if (!isLiteral) {
 				fillPathList(((ResourceMetadataNode) metadataNode).getChildren(), isNode, nodeType, parentPathElements, resultList);
 			}
-			else if (metadataNode instanceof LiteralMetadataNode) {
-				MetadataPath path = new MetadataPath(isNode, true);
-				
-				addToMap(literalMap, predicate);
-				
-				if((isLeaf && !nodeType.equals(NodeType.INTERNAL_NODES))) {
-					createNewPathList(parentPathElements, resultList, literalMap, predicate, path);
-				}
-			}
+			parentPathElements.remove(parentPathElements.size() - 1);
 		}
 	}
 }

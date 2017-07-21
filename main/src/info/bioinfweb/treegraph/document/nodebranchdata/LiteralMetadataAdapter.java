@@ -110,7 +110,8 @@ public class LiteralMetadataAdapter extends AbstractTextElementDataAdapter {
 
 	@Override
 	public String toString() {
-		MetadataPathElement element = getPath().getElementList().get(getPath().getElementList().size() - 1);
-		return element.toString() + " (Literal Metadata)";
+//		MetadataPathElement element = getPath().getElementList().get(getPath().getElementList().size() - 1);
+//		return element.toString() + " (Literal Metadata)";
+		return getPath().toString() + " (Literal Metadata)";
 	}
 }

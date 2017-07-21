@@ -61,7 +61,7 @@ public class MetadataPathElement {
 
 	@Override
 	public String toString() {
-		String predicateAndIndex = getPredicateOrRel().getLocalPart() + getIndex();
+		String predicateAndIndex = getPredicateOrRel().getLocalPart() + "[" + getIndex() + "]";
 		return predicateAndIndex;		
 	}
 	

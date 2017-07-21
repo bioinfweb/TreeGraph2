@@ -102,7 +102,7 @@ public class ResourceMetadataAdapter extends AbstractNodeBranchDataAdapter {
 	@Override
 	public String getText(Node node) {
 		ResourceMetadataNode result = (ResourceMetadataNode)metadataNodeByPath(node, false);
-		if (result != null) {
+		if ((result != null) && (result.getURI() != null)) {
 			return result.getURI().toString();
 		}
 		else {
@@ -165,8 +165,9 @@ public class ResourceMetadataAdapter extends AbstractNodeBranchDataAdapter {
 
 	@Override
 	public String toString() {		
-		MetadataPathElement element = getPath().getElementList().get(getPath().getElementList().size() - 1);
-		return element.toString() + " (Resource Metadata)";
+//		MetadataPathElement element = getPath().getElementList().get(getPath().getElementList().size() - 1);
+//		return element.toString() + " (Resource Metadata)";
+		return getPath().toString() + " (Resource Metadata)";
 	}
 	
 	
