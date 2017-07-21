@@ -19,11 +19,11 @@
 package info.bioinfweb.treegraph.document.tools;
 
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import org.junit.*;
+import org.junit.Test;
 
 import info.bioinfweb.jphyloio.formats.xtg.XTGConstants;
 import info.bioinfweb.treegraph.document.Node;
@@ -31,13 +31,14 @@ import info.bioinfweb.treegraph.document.NodeType;
 import info.bioinfweb.treegraph.document.metadata.MetadataPath;
 import info.bioinfweb.treegraph.document.metadata.MetadataPathElement;
 import info.bioinfweb.treegraph.document.metadata.MetadataTree;
-import info.bioinfweb.treegraph.document.metadata.ResourceMetadataNode;
 
 
 
 public class PathManagerTest {
+	static Node parent = Node.newInstanceWithBranch();
+	
 	private static MetadataTree createTree() {
-		Node parent = Node.newInstanceWithBranch();
+
 		MetadataPath path = new MetadataPath(true, false);
 		MetadataTree tree = new MetadataTree(parent);
 		
@@ -58,7 +59,7 @@ public class PathManagerTest {
 		NodeType nodeType = NodeType.LEAVES;
 		MetadataTree tree = createTree();
 		
-		List<MetadataPath> pathList = PathManager.createPathList(tree, nodeType);
+		List<MetadataPath> pathList = PathManager.createPathList(parent, nodeType, true, false);
 		
 		//TODO Continue JUnit test.
 		assertTrue(pathList.get(0) != null);
