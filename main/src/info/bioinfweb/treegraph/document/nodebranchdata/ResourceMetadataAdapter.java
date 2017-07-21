@@ -84,7 +84,7 @@ public class ResourceMetadataAdapter extends AbstractNodeBranchDataAdapter {
 
 	@Override
 	public boolean isString(Node node) {
-		return true;
+		return !isEmpty(node);
 	}
 	
 	
@@ -95,23 +95,18 @@ public class ResourceMetadataAdapter extends AbstractNodeBranchDataAdapter {
 
 	@Override
 	public boolean isEmpty(Node node) {
-		ResourceMetadataNode result = (ResourceMetadataNode)metadataNodeByPath(node, false);
-		return result != null;
+		return metadataNodeByPath(node, false) == null;
 	}
 
 
 	@Override
-	public URI getText(Node node) {
+	public String getText(Node node) {
 		ResourceMetadataNode result = (ResourceMetadataNode)metadataNodeByPath(node, false);
 		if (result != null) {
-			return result.getURI();
+			return result.getURI().toString();
 		}
 		else {
-			try {
-				return new URI("");
-			} catch (URISyntaxException e) {
-					throw new InternalError(e);
-			}
+			return null;
 		}
 	}
 

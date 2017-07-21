@@ -91,13 +91,13 @@ public class PathManager {
 		List<MetadataPath> pathList = createPathList(nodeTree, nodeType);
 		pathList.addAll(createPathList(branchTree, nodeType));
 		
-		for (MetadataPath child : pathList) {			
-			boolean isLiteral = child.isLiteral();
+		for (MetadataPath path : pathList) {			
+			boolean isLiteral = path.isLiteral();
 			if(isLiteral) {
-				result.add(new LiteralMetadataAdapter(child));
+				result.add(new LiteralMetadataAdapter(path));
 			}
 			else {
-				result.add(new ResourceMetadataAdapter(child));
+				result.add(new ResourceMetadataAdapter(path));
 			}
 		}
 		return result;
@@ -143,12 +143,7 @@ public class PathManager {
 		//TODO Does parentPathElements need to be copied to a new List? Can't it just add element itself?
 		MetadataPathElement element = new MetadataPathElement(predicate, map.get(predicate));
 		List<MetadataPathElement> copyList = new ArrayList<MetadataPathElement>();
-
-		if (!parentPathElements.isEmpty()) {			
-			for (MetadataPathElement child : parentPathElements) { //TODO Stattdessen .AddAll()
-				copyList.add(child);
-			}
-		}
+		copyList.addAll(parentPathElements);
 		
 		copyList.add(element);					
 		path.getElementList().addAll(copyList);

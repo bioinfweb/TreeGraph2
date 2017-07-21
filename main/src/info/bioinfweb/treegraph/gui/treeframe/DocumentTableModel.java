@@ -222,6 +222,12 @@ public class DocumentTableModel extends AbstractTableModel implements DocumentLi
 		Node n = nodes.get(row);
 		
 		if (col % 2 == 0) {
+			//TODO Remove
+			if (adapter instanceof LiteralMetadataAdapter) {
+				System.out.println(((LiteralMetadataAdapter)adapter).getPath());
+				System.out.println(((LiteralMetadataAdapter)adapter).getData(n));
+			}
+			
 			if (adapter.isDecimal(n)) {
 				return new Double(adapter.getDecimal(n));
 			}

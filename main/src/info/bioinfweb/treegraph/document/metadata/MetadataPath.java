@@ -76,7 +76,8 @@ public class MetadataPath  {
 		StringBuilder returnValue = new StringBuilder();
 		for (MetadataPathElement metadataPathElement : path) {
 			returnValue.append(metadataPathElement.toString() + " ");			
-		} return returnValue.toString();
+		}
+		return returnValue.toString();
 	}
 	
 	

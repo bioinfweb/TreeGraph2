@@ -36,7 +36,7 @@ import info.bioinfweb.treegraph.document.TextElementData;
 
 public class ResourceMetadataNode extends MetadataNode {
 	private List<MetadataNode> children = new ArrayList<MetadataNode>();
-	private URI href;
+	private URI href = null;
 	
 	
 	public ResourceMetadataNode() {  //TODO Which properties must be set?
@@ -55,9 +55,7 @@ public class ResourceMetadataNode extends MetadataNode {
 	
 	
 	public void setURI(URI uri) {
-		if (uri != null) {
-			this.href = uri;			
-		}
+		this.href = uri;			
 	}
 	
 	
