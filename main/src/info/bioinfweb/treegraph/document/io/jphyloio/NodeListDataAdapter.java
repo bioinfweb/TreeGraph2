@@ -58,7 +58,7 @@ public class NodeListDataAdapter extends AbstractNodeEdgeListDataAdapter<NodeEve
 		IntegerIDManager idManager = new IntegerIDManager();
 		//Nodes
 		receiver.add(new ResourceMetadataEvent(TreeDataAdapter.createMetaID(id, idManager), null, new URIOrStringIdentifier(null, TreeDataAdapter.PREDICATE_INTERNAL_DATA), null, null));	
-		receiver.add(new ResourceMetadataEvent(TreeDataAdapter.createMetaID(id, idManager), null, new URIOrStringIdentifier(null, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_TEXT), null, null));
+		receiver.add(new ResourceMetadataEvent(TreeDataAdapter.createMetaID(id, idManager), null, new URIOrStringIdentifier(null, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_TEXT_LABEL), null, null));
 		TreeDataAdapter.writeTextAttributes(receiver, id, idManager, node);		
 		
 		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,

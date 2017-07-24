@@ -177,6 +177,12 @@ public class EdgeListDataAdapter extends AbstractNodeEdgeListDataAdapter<EdgeEve
 						JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
 								info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_PIE_CHART_LABEL_ATTR_NULL_LINES, W3CXSConstants.DATA_TYPE_BOOLEAN, 
 								pieChartLabel.getFormats().isShowLinesForZero(), null);	
+						
+						writeLabelDimensions(receiver, id, idManager, pieChartLabel, 
+								info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_PIE_CHART_LABEL_ATTR_WIDTH, 
+								info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_PIE_CHART_LABEL_ATTR_HEIGHT);
+						
+						writeLabelAttributes(receiver, id, idManager, label);
 						receiver.add(ConcreteJPhyloIOEvent.createEndEvent(EventContentType.RESOURCE_META));
 
 						receiver.add(new ResourceMetadataEvent(TreeDataAdapter.createMetaID(id, idManager), null, new URIOrStringIdentifier(null, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_DATA_IDS), null, null));
@@ -206,12 +212,7 @@ public class EdgeListDataAdapter extends AbstractNodeEdgeListDataAdapter<EdgeEve
 							//TODO Attribute ShowTitle							
 						}
 						receiver.add(ConcreteJPhyloIOEvent.createEndEvent(EventContentType.RESOURCE_META));
-						receiver.add(ConcreteJPhyloIOEvent.createEndEvent(EventContentType.RESOURCE_META));
-						
-						writeLabelDimensions(receiver, id, idManager, pieChartLabel, 
-								info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_PIE_CHART_LABEL_ATTR_WIDTH, 
-								info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_PIE_CHART_LABEL_ATTR_HEIGHT);						
-						writeLabelAttributes(receiver, id, idManager, label);
+						receiver.add(ConcreteJPhyloIOEvent.createEndEvent(EventContentType.RESOURCE_META));						
 						receiver.add(ConcreteJPhyloIOEvent.createEndEvent(EventContentType.RESOURCE_META));
 					}
 					receiver.add(new ResourceMetadataEvent(TreeDataAdapter.createMetaID(id, idManager), null, new URIOrStringIdentifier(null, TreeDataAdapter.PREDICATE_INTERNAL_DATA), null, null));	
