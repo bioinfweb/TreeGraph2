@@ -19,6 +19,7 @@
 package info.bioinfweb.treegraph.document.io.jphyloio;
 
 
+import java.awt.Color;
 import java.io.IOException;
 
 import javax.xml.namespace.QName;
@@ -76,6 +77,20 @@ public class TreeDataAdapter extends NoSetsTreeNetworkDataAdapter implements Tre
 	public static String createMetaID(String id, IntegerIDManager idManager) {		
 		return id + "_" + DEFAULT_META_ID_PREFIX + idManager.createNewID();
 	}
+	
+	
+	private static String formatColorByte(int value) {
+		String result = String.format("%x", value).toUpperCase();
+		if (result.length() == 1) {
+			result = "0" + result;
+		}
+		return result;
+	}
+	
+	
+	public static String formatColor(Color color) {
+		return "#" + formatColorByte(color.getRed()) + formatColorByte(color.getGreen()) + formatColorByte(color.getBlue());  
+	}
 
 	
 	public static void writeMargin(JPhyloIOEventReceiver receiver, String id, IntegerIDManager idManager, Margin margin) throws IOException {
@@ -90,20 +105,20 @@ public class TreeDataAdapter extends NoSetsTreeNetworkDataAdapter implements Tre
 	}
 	
 	
-	public static void writeLineAtrributes(JPhyloIOEventReceiver receiver, String id, LineElement element, IntegerIDManager idManager) throws IOException {
+	public static void writeLineAtrributes(JPhyloIOEventReceiver receiver, String id, LineElement element, IntegerIDManager idManager, Color lineColor) throws IOException {
 		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
 				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_LINE_COLOR, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.DATA_TYPE_COLOR, 
-			element.getFormats().getLineColor(), null);
+			formatColor(lineColor), null);
 		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
 				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_LINE_WIDTH, W3CXSConstants.DATA_TYPE_FLOAT, 
 			element.getFormats().getLineWidth().getInMillimeters(), null);
 	}
 	
 	
-	public static void writeTextAttributes(JPhyloIOEventReceiver receiver, String id, IntegerIDManager idManager, TextElement textElement) throws IOException {
+	public static void writeTextAttributes(JPhyloIOEventReceiver receiver, String id, IntegerIDManager idManager, TextElement textElement, Color textColor) throws IOException {
 		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
 				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_TEXT_COLOR, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.DATA_TYPE_COLOR, 
-				textElement.getFormats().getTextColor(), null);
+				formatColor(textColor), null);
 		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
 				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_TEXT_HEIGHT, W3CXSConstants.DATA_TYPE_FLOAT, 
 				textElement.getFormats().getTextHeight().getInMillimeters(), null);
@@ -136,7 +151,7 @@ public class TreeDataAdapter extends NoSetsTreeNetworkDataAdapter implements Tre
 		receiver.add(new ResourceMetadataEvent(TreeDataAdapter.createMetaID(DEFAULT_TREE_ID_PREFIX, idManager), null, new URIOrStringIdentifier(null, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_GLOBAL_FORMATS), null, null));		
 		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(DEFAULT_TREE_ID_PREFIX, idManager), null,
 				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_GLOBAL_FORMATS_ATTR_BG_COLOR, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.DATA_TYPE_COLOR, 
-				document.getTree().getFormats().getBackgroundColor(), null);
+				formatColor(document.getTree().getFormats().getBackgroundColor()), null);
 		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(DEFAULT_TREE_ID_PREFIX, idManager), null,
 				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_GLOBAL_FORMATS_ATTR_BRANCH_LENGTH_SCALE, W3CXSConstants.DATA_TYPE_DOUBLE, 
 				document.getTree().getFormats().getBranchLengthScale().getInMillimeters(), null);
@@ -202,7 +217,7 @@ public class TreeDataAdapter extends NoSetsTreeNetworkDataAdapter implements Tre
 						info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_TEXT, W3CXSConstants.DATA_TYPE_STRING, 
 						textElement.getData(), null);
 				
-				writeTextAttributes(receiver, DEFAULT_TREE_ID_PREFIX, idManager, textElement);						
+				writeTextAttributes(receiver, DEFAULT_TREE_ID_PREFIX, idManager, textElement, textElement.getFormats().getTextColor());						
 
 
 				JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(DEFAULT_TREE_ID_PREFIX, idManager), null,
@@ -232,7 +247,7 @@ public class TreeDataAdapter extends NoSetsTreeNetworkDataAdapter implements Tre
 						info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_LEGEND_ATTR_EDGE_RADIUS, W3CXSConstants.DATA_TYPE_FLOAT, 
 						legend.getFormats().getCornerRadius().getInMillimeters(), null);
 				
-				writeLineAtrributes(receiver, DEFAULT_TREE_ID_PREFIX, legend, idManager);				
+				writeLineAtrributes(receiver, DEFAULT_TREE_ID_PREFIX, legend, idManager, legend.getFormats().getLineColor());				
 				receiver.add(ConcreteJPhyloIOEvent.createEndEvent(EventContentType.RESOURCE_META));
 				receiver.add(ConcreteJPhyloIOEvent.createEndEvent(EventContentType.RESOURCE_META));
 				
@@ -246,9 +261,9 @@ public class TreeDataAdapter extends NoSetsTreeNetworkDataAdapter implements Tre
 		
 		receiver.add(new ResourceMetadataEvent(TreeDataAdapter.createMetaID(DEFAULT_TREE_ID_PREFIX, idManager), null, new URIOrStringIdentifier(null, TreeDataAdapter.PREDICATE_INTERNAL_DATA), null, null));	
 		receiver.add(new ResourceMetadataEvent(TreeDataAdapter.createMetaID(DEFAULT_TREE_ID_PREFIX, idManager), null, new URIOrStringIdentifier(null, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_SCALE_BAR), null, null));
-		writeTextAttributes(receiver, DEFAULT_TREE_ID_PREFIX, idManager, document.getTree().getScaleBar());
+		writeTextAttributes(receiver, DEFAULT_TREE_ID_PREFIX, idManager, document.getTree().getScaleBar(), document.getTree().getScaleBar().getFormats().getTextColor());
 		
-		writeLineAtrributes(receiver, DEFAULT_TREE_ID_PREFIX, document.getTree().getScaleBar(), idManager);
+		writeLineAtrributes(receiver, DEFAULT_TREE_ID_PREFIX, document.getTree().getScaleBar(), idManager, document.getTree().getScaleBar().getFormats().getLineColor());
 		
 		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(DEFAULT_TREE_ID_PREFIX, idManager), null,
 				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_SCALE_BAR_ATTR_HEIGHT, W3CXSConstants.DATA_TYPE_FLOAT, 

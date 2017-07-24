@@ -78,10 +78,10 @@ public interface TextFormats extends ElementFormats {
 
 	/**
 	 * Sets a new decimal format object. The provided local object will be used to determine
-	 * the decimal format symbols. (This means that the decimal formats object may be 
-	 * changed after being passed here.)
-	 * @param decimalFormat - the new decimal format object
-	 * @param locale - the locale object which was used to create the new decimal formats
+	 * the decimal format symbols.
+	 * 
+	 * @param decimalFormat the new decimal format object
+	 * @param locale the locale object which was used to create the new decimal formats
 	 * @throws IllegalArgumentException if one of the parameters is <code>null</code>
 	 */
 	public void setDecimalFormat(DecimalFormat decimalFormat, Locale locale);
