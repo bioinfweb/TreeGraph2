@@ -83,10 +83,10 @@ import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 
 public class NeXMLReader extends AbstractDocumentReader {
 	private static class DecimalAndLocaleStore {
-		String lang = null;
-		String country = null;
-		String variant = null;
-		String formatString = TextFormats.DEFAULT_DECIMAL_FORMAT_EXPR;
+		private String lang = null;
+		private String country = null;
+		private String variant = null;
+		private String formatString = TextFormats.DEFAULT_DECIMAL_FORMAT_EXPR;
 
 		public void setFormatString(String decimal) {
 			this.formatString = decimal;
@@ -129,8 +129,8 @@ public class NeXMLReader extends AbstractDocumentReader {
 
 	
 	private class TextElementDataStore {
-		String text = null;
-		boolean decimal = false;
+		private String text = null;
+		private boolean decimal = false;
 		
 		public boolean isDecimal() {
 			return decimal;
@@ -149,7 +149,10 @@ public class NeXMLReader extends AbstractDocumentReader {
 		}
 
 		public void setInTextElementData(TextElementData data) {
-			if (isDecimal()) {
+			if (getText() == null) {
+				data.clear();
+			}
+			else if (isDecimal()) {
 				try {
 					data.setDecimal(Double.parseDouble(getText()));
 				}
@@ -168,11 +171,11 @@ public class NeXMLReader extends AbstractDocumentReader {
 		
 	private JPhyloIOEventReader reader;
 	private String currentTreeName;
-	private List<Document> trees = new ArrayList<Document>();
+	private List<Tree> trees = new ArrayList<Tree>();
 	private List<String> names = new ArrayList<String>();
 	private Map<String, Node> idToNodeMap = new HashMap<String, Node>();
 	private List<String> possiblePaintStartIDs = new ArrayList<String>();
-	private List<String> rootNodeIDs = new ArrayList<String>(); //TODO Mark all root nodes with icon label or something similar
+	private List<String> rootNodeIDs = new ArrayList<String>();  //TODO Mark all additional root nodes with icon label or something similar
 	private NodeBranchDataAdapter nodeNameAdapter = NodeNameAdapter.getSharedInstance();
 	private BranchLengthAdapter branchLengthAdapter = BranchLengthAdapter.getSharedInstance();
 	
@@ -196,14 +199,14 @@ public class NeXMLReader extends AbstractDocumentReader {
 	      switch (event.getType().getContentType()) {
 	      	case DOCUMENT:
 	      		if (event.getType().getTopologyType().equals(EventTopologyType.START)) {
-	      			//document = createEmptyDocument();
+	      			document = createEmptyDocument();
 	      		}
 	      		else if (event.getType().getTopologyType().equals(EventTopologyType.END)) {
 		          reader.close();
 		          
 		          if (!trees.isEmpty()) {
-		          	document = trees.get(parameterMap.getTreeSelector().select(names.toArray(new String[names.size()]), trees));
-		          	//document.setTree(tree);
+		          	document.setTree(trees.get(
+		          			parameterMap.getTreeSelector().select(names.toArray(new String[names.size()]), trees)));
 		          }
 		          else {
 		          	throw new IOException("The document did not contain any tree or no valid tree could be read from the document.");
@@ -434,7 +437,6 @@ public class NeXMLReader extends AbstractDocumentReader {
 	private void readInternalNodeMetadata(Node node) throws IOException {
 		JPhyloIOEvent event = reader.next();
 		NodeFormats f = node.getFormats();
-		
 		TextElementDataStore textElementDataStore = new TextElementDataStore();
 		DecimalAndLocaleStore decimalObject = new DecimalAndLocaleStore();
 		
@@ -461,8 +463,12 @@ public class NeXMLReader extends AbstractDocumentReader {
 			}
 			event = reader.next();
 		}
+		
 		decimalObject.setInTextFormats(f);
-		textElementDataStore.setInTextElementData(node.getData());
+		if (!node.getData().isEmpty()) {
+			textElementDataStore.setText(node.getData().toString());  // Possible texts defined by a (illegal) predicate are overwritten by the node name from the node event here.
+			textElementDataStore.setInTextElementData(node.getData());
+		}
 	}
 	
 	
@@ -782,7 +788,7 @@ public class NeXMLReader extends AbstractDocumentReader {
 			f.setFontName(JPhyloIOReadingUtils.readLiteralMetadataContentAsString(reader));
 		}		
 		else if (XTGConstants.PREDICATE_TEXT.equals(literalMeta.getPredicate().getURI())) {
-			textElementDataStore.setInTextElementData((JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, TextElementData.class)));
+			textElementDataStore.setText(JPhyloIOReadingUtils.readLiteralMetadataContentAsString(reader));
 		}
 		else if (XTGConstants.PREDICATE_IS_DECIMAL.equals(literalMeta.getPredicate().getURI())) {
 			textElementDataStore.setDecimal(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Boolean.class).booleanValue());
