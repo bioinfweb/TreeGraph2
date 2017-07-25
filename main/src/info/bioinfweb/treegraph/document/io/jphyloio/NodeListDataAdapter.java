@@ -58,17 +58,17 @@ public class NodeListDataAdapter extends AbstractNodeEdgeListDataAdapter<NodeEve
 		IntegerIDManager idManager = new IntegerIDManager();
 		//Nodes
 		receiver.add(new ResourceMetadataEvent(TreeDataAdapter.createMetaID(id, idManager), null, new URIOrStringIdentifier(null, TreeDataAdapter.PREDICATE_INTERNAL_DATA), null, null));	
-		TreeDataAdapter.writeTextAttributes(receiver, id, idManager, node, node.getFormats().getTextColor());		
+		TreeDataAdapter.writeTextAttributes(receiver, id, idManager, node.getFormats(), true);		
 		
 		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
 					info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_IS_DECIMAL, W3CXSConstants.DATA_TYPE_BOOLEAN, 
 					node.getData().isDecimal(), null);
-		TreeDataAdapter.writeLineAtrributes(receiver, id, node, idManager, node.getFormats().getLineColor());
+		TreeDataAdapter.writeLineAtrributes(receiver, id, node, idManager);
 		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_UNIQUE_NAME, W3CXSConstants.DATA_TYPE_STRING, 
+				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_UNIQUE_NAME, W3CXSConstants.DATA_TYPE_STRING, 
 				node.getUniqueName(), null);
 		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
-				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_NODE_ATTR_EDGE_RADIUS, W3CXSConstants.DATA_TYPE_FLOAT, 
+				info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_EDGE_RADIUS, W3CXSConstants.DATA_TYPE_FLOAT, 
 				node.getFormats().getCornerRadius().getInMillimeters(), null);
 
 		receiver.add(new ResourceMetadataEvent(TreeDataAdapter.createMetaID(id, idManager), null, new URIOrStringIdentifier(null, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_LEAF_MARGIN), null, null));
