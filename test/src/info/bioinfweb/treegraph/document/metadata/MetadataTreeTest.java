@@ -34,7 +34,7 @@ public class MetadataTreeTest {
 		path.getElementList().add(new MetadataPathElement(XTGConstants.PREDICATE_PIE_CHART_LABEL, 1));
 		path.getElementList().add(new MetadataPathElement(XTGConstants.PREDICATE_DATA_IDS, 0));
 		path.getElementList().add(new MetadataPathElement(XTGConstants.PREDICATE_DATA_ID, 3));
-		path.getElementList().add(new MetadataPathElement(XTGConstants.PREDICATE_DATA_ID_ATTR_PIE_COLOR, 0));
+		path.getElementList().add(new MetadataPathElement(XTGConstants.PREDICATE_PIE_COLOR, 0));
 	}
 	
 	
@@ -58,7 +58,7 @@ public class MetadataTreeTest {
 		child = assertResourceMetadataNode(XTGConstants.PREDICATE_DATA_ID, 1, child.getChildren().get(3));
 		
 		assertTrue(child.getChildren().get(0) instanceof LiteralMetadataNode);
-		assertEquals(XTGConstants.PREDICATE_DATA_ID_ATTR_PIE_COLOR, child.getChildren().get(0).getPredicateOrRel());
+		assertEquals(XTGConstants.PREDICATE_PIE_COLOR, child.getChildren().get(0).getPredicateOrRel());
 		
 		assertEquals(result, child.getChildren().get(0));
 	}
@@ -76,7 +76,7 @@ public class MetadataTreeTest {
 		ResourceMetadataNode resourceMeta5 = new ResourceMetadataNode(XTGConstants.PREDICATE_DATA_ID);
 		ResourceMetadataNode resourceMeta6 = new ResourceMetadataNode(XTGConstants.PREDICATE_DATA_ID);
 		ResourceMetadataNode resourceMeta7 = new ResourceMetadataNode(XTGConstants.PREDICATE_DATA_ID);
-		LiteralMetadataNode literalMeta = new LiteralMetadataNode(XTGConstants.PREDICATE_DATA_ID_ATTR_PIE_COLOR);
+		LiteralMetadataNode literalMeta = new LiteralMetadataNode(XTGConstants.PREDICATE_PIE_COLOR);
 		
 		MetadataTree tree = new MetadataTree(null);	
 		

@@ -45,7 +45,7 @@ public class PathManagerTest {
 		path.getElementList().add(new MetadataPathElement(XTGConstants.PREDICATE_PIE_CHART_LABEL, 1));
 		path.getElementList().add(new MetadataPathElement(XTGConstants.PREDICATE_DATA_IDS, 0));
 		path.getElementList().add(new MetadataPathElement(XTGConstants.PREDICATE_DATA_ID, 3));
-		path.getElementList().add(new MetadataPathElement(XTGConstants.PREDICATE_DATA_ID_ATTR_PIE_COLOR, 0));
+		path.getElementList().add(new MetadataPathElement(XTGConstants.PREDICATE_PIE_COLOR, 0));
 		
 		tree.searchAndCreateNodeByPath(path, true);
 		
