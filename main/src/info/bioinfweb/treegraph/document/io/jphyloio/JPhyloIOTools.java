@@ -26,6 +26,7 @@ import info.bioinfweb.jphyloio.objecttranslation.implementations.HexadecimalColo
 import info.bioinfweb.treegraph.document.format.LegendStyle;
 import info.bioinfweb.treegraph.document.format.PieChartLabelCaptionContentType;
 import info.bioinfweb.treegraph.document.format.PieChartLabelCaptionLinkType;
+import info.bioinfweb.treegraph.document.format.ScaleBarAlignment;
 import info.bioinfweb.treegraph.document.format.TextOrientation;
 
 
@@ -57,6 +58,9 @@ public class JPhyloIOTools {
 				XTGConstants.DATA_TYPE_TEXT_ORIENTATION);
 		factory.addTranslator(new EnumTranslator<LegendStyle>(LegendStyle.class), asDefault, 
 				XTGConstants.DATA_TYPE_LEGEND_STYLE);
+		factory.addTranslator(new EnumTranslator<ScaleBarAlignment>(ScaleBarAlignment.class), asDefault, 
+				XTGConstants.DATA_TYPE_SCALE_BAR_ALIGNMENT);
+		factory.addTranslator(new ScaleValueTranslator(), asDefault, XTGConstants.DATA_TYPE_SCALE_VALUE);
 		factory.addTranslator(new EnumTranslator<PieChartLabelCaptionContentType>(PieChartLabelCaptionContentType.class), 
 				asDefault, XTGConstants.DATA_TYPE_PIE_CHART_LABEL_CAPTION_TYPE);
 		factory.addTranslator(new EnumTranslator<PieChartLabelCaptionLinkType>(PieChartLabelCaptionLinkType.class), 

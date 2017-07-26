@@ -20,6 +20,7 @@ package info.bioinfweb.treegraph.document.format;
 
 
 import info.bioinfweb.commons.Math2;
+import info.bioinfweb.treegraph.document.io.xtg.XTGConstants;
 
 
 
@@ -166,5 +167,18 @@ public class ScaleValue {
 		else {
 			setInMillimeters(other.distanceValue.getInMillimeters());
 		}
+	}
+
+
+	@Override
+	public String toString() {
+		String unit;
+		if (isInScaleUnits()) {
+			unit = XTGConstants.BRANCH_LENGTH_UNITS;
+		}
+		else {
+			unit = XTGConstants.MILLIMETERS;
+		}
+		return getStoredValue() + unit;
 	}
 }

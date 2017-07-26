@@ -32,7 +32,7 @@ import java.awt.Color;
  * @author Ben St&ouml;ver
  */
 public class ScaleBarFormats extends ConcreteTextFormats implements LineFormats {
-	public static final ScaleAlignment DEFAULT_ALIGNMENT = ScaleAlignment.LEFT; 
+	public static final ScaleBarAlignment DEFAULT_ALIGNMENT = ScaleBarAlignment.LEFT; 
 	
 	public static final float DEFAULT_TREE_DISTANCE_IN_MM = 2; 
 	
@@ -62,7 +62,7 @@ public class ScaleBarFormats extends ConcreteTextFormats implements LineFormats 
 	
 	private DistanceValue lineWidth = new DistanceValue(LineFormats.DEFAULT_LINE_WIDTH_IN_MM);
   private Color lineColor = LineFormats.DEFAULT_LINE_COLOR;
-  private ScaleAlignment alignment = DEFAULT_ALIGNMENT;
+  private ScaleBarAlignment alignment = DEFAULT_ALIGNMENT;
   private DistanceValue treeDistance = new DistanceValue(DEFAULT_TREE_DISTANCE_IN_MM);
   private ScaleValue width = new ScaleValue(DEFAULT_WIDTH_IN_MM);
   private DistanceValue height = new DistanceValue(DEFAULT_HEIGHT_IN_MM);
@@ -93,12 +93,12 @@ public class ScaleBarFormats extends ConcreteTextFormats implements LineFormats 
 	}
 	
 	
-	public ScaleAlignment getAlignment() {
+	public ScaleBarAlignment getAlignment() {
 		return alignment;
 	}
 
 
-	public void setAlignment(ScaleAlignment scaleAnchor) {
+	public void setAlignment(ScaleBarAlignment scaleAnchor) {
 		this.alignment = scaleAnchor;
 	}
 

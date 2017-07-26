@@ -489,13 +489,13 @@ public class XTGReader extends AbstractDocumentReader implements XTGConstants {
 		
 		String align = XMLUtils.readStringAttr(element, ATTR_SCALE_BAR_ALIGN, ALIGN_LEFT);
 		if (align.equals(ALIGN_LEFT)) {
-			f.setAlignment(ScaleAlignment.LEFT);
+			f.setAlignment(ScaleBarAlignment.LEFT);
 		}
 		else if (align.equals(ALIGN_RIGHT)) {
-			f.setAlignment(ScaleAlignment.RIGHT);
+			f.setAlignment(ScaleBarAlignment.RIGHT);
 		}
 		else {  // ALIGN_TREE_WIDTH
-			f.setAlignment(ScaleAlignment.TREE_WIDTH);
+			f.setAlignment(ScaleBarAlignment.TREE_WIDTH);
 		}
 		
 		readDistanceValueAttr(f.getTreeDistance(), element, ATTR_SCALE_BAR_DISTANCE);
