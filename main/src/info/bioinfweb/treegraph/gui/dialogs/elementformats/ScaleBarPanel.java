@@ -20,7 +20,7 @@ package info.bioinfweb.treegraph.gui.dialogs.elementformats;
 
 
 import info.bioinfweb.treegraph.document.ScaleBar;
-import info.bioinfweb.treegraph.document.format.ScaleAlignment;
+import info.bioinfweb.treegraph.document.format.ScaleBarAlignment;
 import info.bioinfweb.treegraph.document.format.ScaleBarFormats;
 import info.bioinfweb.treegraph.document.format.ScaleValue;
 import info.bioinfweb.treegraph.document.format.operate.FormatOperator;
@@ -111,13 +111,13 @@ public class ScaleBarPanel extends JPanel implements ElementFormatsTab {
 			ScaleBarFormats formats = new ScaleBarFormats();
 			
 			if (getLeftRadioButton().isSelected()) {
-				formats.setAlignment(ScaleAlignment.LEFT);
+				formats.setAlignment(ScaleBarAlignment.LEFT);
 			}
 			else if (getRightRadioButton().isSelected()) {
-				formats.setAlignment(ScaleAlignment.RIGHT);
+				formats.setAlignment(ScaleBarAlignment.RIGHT);
 			}
 			else {
-				formats.setAlignment(ScaleAlignment.TREE_WIDTH);
+				formats.setAlignment(ScaleBarAlignment.TREE_WIDTH);
 			}
 			
 			treeDistanceInput.assignValueTo(formats.getTreeDistance());

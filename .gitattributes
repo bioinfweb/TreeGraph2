@@ -136,7 +136,7 @@ main/src/info/bioinfweb/treegraph/document/format/NodeFormats.java -text
 main/src/info/bioinfweb/treegraph/document/format/PieChartLabelCaptionContentType.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/format/PieChartLabelCaptionLinkType.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/format/PieChartLabelFormats.java -text
-main/src/info/bioinfweb/treegraph/document/format/ScaleAlignment.java -text
+main/src/info/bioinfweb/treegraph/document/format/ScaleBarAlignment.java -text
 main/src/info/bioinfweb/treegraph/document/format/ScaleBarFormats.java -text
 main/src/info/bioinfweb/treegraph/document/format/ScaleValue.java -text
 main/src/info/bioinfweb/treegraph/document/format/TextFormats.java -text
@@ -272,6 +272,7 @@ main/src/info/bioinfweb/treegraph/document/io/jphyloio/NeXMLFilter.java -text sv
 main/src/info/bioinfweb/treegraph/document/io/jphyloio/NeXMLReader.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/io/jphyloio/NeXMLWriter.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/io/jphyloio/NodeListDataAdapter.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/io/jphyloio/ScaleValueTranslator.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/io/jphyloio/TreeDataAdapter.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/io/newick/BranchLengthsScaler.java -text
 main/src/info/bioinfweb/treegraph/document/io/newick/CommentDataReader.java -text

@@ -20,6 +20,6 @@ package info.bioinfweb.treegraph.document.format;
 
 
 
-public enum ScaleAlignment {
+public enum ScaleBarAlignment {
   LEFT, RIGHT, TREE_WIDTH;
 }
