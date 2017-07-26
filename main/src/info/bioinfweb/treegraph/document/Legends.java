@@ -45,6 +45,7 @@ public class Legends {
 
 	/**
 	 * Inserts the specified legend to the list and calls <code>l.setLegends(this)</code>.
+	 * 
 	 * @param l - the legend to be inserted
 	 * @return the postion where the legend was inserted
 	 */
@@ -62,6 +63,7 @@ public class Legends {
 	/**
 	 * Reinserts a legend to ensure the correct order of the stored legends. This method 
 	 * should be called if the position of a legend changes.
+	 * 
 	 * @param l - the legend to reinsert
 	 * @return the new position of the legend or -1 if the legend was not present in the 
 	 * first case. 

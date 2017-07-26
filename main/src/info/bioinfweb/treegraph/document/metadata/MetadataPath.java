@@ -74,6 +74,12 @@ public class MetadataPath  {
 	@Override
 	public String toString() {
 		StringBuilder result = new StringBuilder();
+		if (isNode()) {
+			result.append("Node -> ");
+		}
+		else {
+			result.append("Branch -> ");
+		}
 		Iterator<MetadataPathElement> iterator = path.iterator();
 		while (iterator.hasNext()) {
 			result.append(iterator.next().toString());

@@ -26,11 +26,10 @@ import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.metadata.LiteralMetadataNode;
 import info.bioinfweb.treegraph.document.metadata.MetadataNode;
 import info.bioinfweb.treegraph.document.metadata.MetadataPath;
-import info.bioinfweb.treegraph.document.metadata.MetadataPathElement;
 
 
 
-public class LiteralMetadataAdapter extends AbstractTextElementDataAdapter {	
+public class LiteralMetadataAdapter extends AbstractTextElementDataAdapter implements MetadataAdapter {	
 	protected MetadataPath path;
 	
 	
@@ -42,7 +41,8 @@ public class LiteralMetadataAdapter extends AbstractTextElementDataAdapter {
 		}
 	}
 	
-
+	
+	@Override
 	public MetadataPath getPath() {
 		return path;
 	}

@@ -331,6 +331,7 @@ main/src/info/bioinfweb/treegraph/document/nodebranchdata/BranchLengthAdapter.ja
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/GeneralIDAdapter.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/IDElementAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/LiteralMetadataAdapter.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/nodebranchdata/MetadataAdapter.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/NewLiteralMetadataAdapter.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/NewNodeBranchDataAdapter.java -text
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/NewResourceMetadataAdapter.java -text svneol=unset#text/plain

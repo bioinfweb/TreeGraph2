@@ -50,6 +50,8 @@ public class NodeBranchDataAdapterFactory {
 
 
 	private void fillFactoryMap() {
+		//TODO Refactor this class to use metadata paths instead of IDs as soon as text and pie chart labels do not store their own data anymore (and ID adapters have been removed). 
+		
 		factories.put(BranchLengthAdapter.getSharedInstance().getName(), new SingleNodeBranchDataAdapterFactory<NodeBranchDataAdapter>() {
 			@Override
 			public NodeBranchDataAdapter newInstance(String id) {

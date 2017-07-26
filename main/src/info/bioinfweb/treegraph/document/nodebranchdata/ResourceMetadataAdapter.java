@@ -34,7 +34,7 @@ import info.bioinfweb.treegraph.document.metadata.ResourceMetadataNode;
 
 
 
-public class ResourceMetadataAdapter extends AbstractNodeBranchDataAdapter {
+public class ResourceMetadataAdapter extends AbstractNodeBranchDataAdapter implements MetadataAdapter {
 	protected MetadataPath path;	
 
 
@@ -47,6 +47,7 @@ public class ResourceMetadataAdapter extends AbstractNodeBranchDataAdapter {
 	}
 
 
+	@Override
 	public MetadataPath getPath() {
 		return path;
 	}

@@ -19,8 +19,9 @@
 package info.bioinfweb.treegraph.document;
 
 
-import info.bioinfweb.treegraph.document.format.*;
-import info.bioinfweb.treegraph.document.metadata.MetadataNode;
+import info.bioinfweb.treegraph.document.format.BranchFormats;
+import info.bioinfweb.treegraph.document.format.ElementFormats;
+import info.bioinfweb.treegraph.document.format.LineFormats;
 import info.bioinfweb.treegraph.document.metadata.MetadataTree;
 
 
@@ -43,7 +44,7 @@ public class Branch extends AbstractPaintableElement
 	public Branch(Node target) {
 		super();
   	targetNode = target;
-  	metadataTree = new MetadataTree(getTargetNode());
+  	metadataTree = new MetadataTree(this);
   }
   
   

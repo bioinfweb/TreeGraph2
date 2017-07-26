@@ -27,6 +27,7 @@ import info.bioinfweb.treegraph.document.io.xtg.XTGConstants;
 /**
  * Stores the length of a branch length scale bar. In can be stored in the units of the branch lengths
  * or in millimeters.
+ * 
  * @author Ben St&ouml;ver
  */
 public class ScaleValue {

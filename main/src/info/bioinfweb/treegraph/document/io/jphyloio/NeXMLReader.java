@@ -32,6 +32,7 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
+import info.bioinfweb.commons.io.W3CXSConstants;
 import info.bioinfweb.jphyloio.JPhyloIOEventReader;
 import info.bioinfweb.jphyloio.ReadWriteParameterMap;
 import info.bioinfweb.jphyloio.events.EdgeEvent;
@@ -52,21 +53,33 @@ import info.bioinfweb.treegraph.document.HiddenDataElement;
 import info.bioinfweb.treegraph.document.IconLabel;
 import info.bioinfweb.treegraph.document.Label;
 import info.bioinfweb.treegraph.document.Labels;
+import info.bioinfweb.treegraph.document.Legend;
+import info.bioinfweb.treegraph.document.Legends;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.PieChartLabel;
 import info.bioinfweb.treegraph.document.PieChartLabel.SectionData;
+import info.bioinfweb.treegraph.document.ScaleBar;
 import info.bioinfweb.treegraph.document.TextElement;
 import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.TextLabel;
 import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.format.BranchFormats;
+import info.bioinfweb.treegraph.document.format.GlobalFormats;
 import info.bioinfweb.treegraph.document.format.GraphicalLabelFormats;
 import info.bioinfweb.treegraph.document.format.IconLabelFormats;
+import info.bioinfweb.treegraph.document.format.LegendFormats;
+import info.bioinfweb.treegraph.document.format.LegendStyle;
 import info.bioinfweb.treegraph.document.format.LineFormats;
 import info.bioinfweb.treegraph.document.format.Margin;
 import info.bioinfweb.treegraph.document.format.NodeFormats;
+import info.bioinfweb.treegraph.document.format.PieChartLabelCaptionContentType;
+import info.bioinfweb.treegraph.document.format.PieChartLabelCaptionLinkType;
 import info.bioinfweb.treegraph.document.format.PieChartLabelFormats;
+import info.bioinfweb.treegraph.document.format.ScaleBarAlignment;
+import info.bioinfweb.treegraph.document.format.ScaleBarFormats;
+import info.bioinfweb.treegraph.document.format.ScaleValue;
 import info.bioinfweb.treegraph.document.format.TextFormats;
+import info.bioinfweb.treegraph.document.format.TextOrientation;
 import info.bioinfweb.treegraph.document.io.AbstractDocumentReader;
 import info.bioinfweb.treegraph.document.io.DocumentIterator;
 import info.bioinfweb.treegraph.document.io.SingleDocumentIterator;
@@ -190,6 +203,7 @@ public class NeXMLReader extends AbstractDocumentReader {
 		document = null;
 		ReadWriteParameterMap parameters = new ReadWriteParameterMap();
 		parameters.put(ReadWriteParameterMap.KEY_USE_OTU_LABEL, true);
+		JPhyloIOTools.addTreeGraphObjectTranslators(parameters.getObjectTranslatorFactory(), true);
 		reader = new NeXMLEventReader(stream, parameters);  //TODO Use JPhyloIOReader for other formats (currently not possible, due to exceptions)
 		
 		try {
@@ -261,18 +275,19 @@ public class NeXMLReader extends AbstractDocumentReader {
 		
 		possiblePaintStartIDs.clear();
 		idToNodeMap.clear();
+    Tree tree = new Tree();
 		
     JPhyloIOEvent event = reader.next();
-    while (!event.getType().getTopologyType().equals(EventTopologyType.END)) { //TODO Check for ResourceMetadataEvent InternalData	
+    while (!event.getType().getTopologyType().equals(EventTopologyType.END)) {
     	if (event.getType().getContentType().equals(EventContentType.NODE)) {
     		readNode(event.asNodeEvent());
     	}
     	else if (event.getType().getContentType().equals(EventContentType.EDGE) || event.getType().getContentType().equals(EventContentType.ROOT_EDGE)) {
     		readEdge(event.asEdgeEvent());
     	}
-//    	else if (event.getType().getContentType().equals(EventContentType.RESOURCE_META)) {
-//    		readInternalTreeMetadata(Tree tree);
-//    	}
+    	else if (event.getType().getContentType().equals(EventContentType.RESOURCE_META)) {
+    		readInternalTreeMetadata(tree);
+    	}
     	else {  // Possible additional element, which is not read
       	if (event.getType().getTopologyType().equals(EventTopologyType.START)) {  // SOLE and END events do not have to be processed here, because they have no further content.
       		JPhyloIOReadingUtils.reachElementEnd(reader);
@@ -285,7 +300,7 @@ public class NeXMLReader extends AbstractDocumentReader {
     	throw new IOException("More than one root node was found for the tree \"" + currentTreeName + "\", but this can not be displayed in TreeGraph 2.");
     }
     
-    Tree tree = new Tree();
+    //TODO Check if all legend anchors are valid. See XTGReader.readAnchor(). (This cannot be done during loading of legends, since nodes are not loaded at that time.)
     tree.setPaintStart(idToNodeMap.get(possiblePaintStartIDs.get(0)));
     tree.assignUniqueNames();
     if (!rootNodeIDs.isEmpty()) {
@@ -368,7 +383,18 @@ public class NeXMLReader extends AbstractDocumentReader {
 				MetadataPath childPath = storePredicateAndIndexInMap(literalMap, parentPath, literalMeta.getPredicate().getURI(), event);
 				
 				MetadataNode metadataNode = paintableElement.getMetadataTree().searchAndCreateNodeByPath(childPath, true);
+//				((LiteralMetadataNode)metadataNode).setDatatype(literalMeta.getOriginalType().getURI()); //TODO Use as soon as value of LiteralMetadataNode is no longer TextElementData but Object.
+				
 				((LiteralMetadataNode)metadataNode).setValue(readLiteralMetadataContent());
+				TextElementData data = ((LiteralMetadataNode)metadataNode).getValue();
+				if (data.isDecimal()) {
+					((LiteralMetadataNode)metadataNode).setDatatype(W3CXSConstants.DATA_TYPE_DOUBLE);
+				}
+				else {
+					((LiteralMetadataNode)metadataNode).setDatatype(W3CXSConstants.DATA_TYPE_STRING);
+				}
+				
+
 			}
 			else {
 				JPhyloIOReadingUtils.reachElementEnd(reader);
@@ -387,6 +413,7 @@ public class NeXMLReader extends AbstractDocumentReader {
 		while (!event.getType().getTopologyType().equals(EventTopologyType.END)) {			
 			if (event.getType().getContentType().equals(EventContentType.LITERAL_META_CONTENT)) {
 				LiteralMetadataContentEvent literalEvent = event.asLiteralMetadataContentEvent();
+				
 				if (isFirst) {
 					isFirst = false;					
 					
@@ -395,7 +422,12 @@ public class NeXMLReader extends AbstractDocumentReader {
 							data = new TextElementData(((Number)literalEvent.getObjectValue()).doubleValue());
 						}
 						else {
-							content.append(literalEvent.getObjectValue().toString());    	  
+							if (literalEvent.hasStringValue()) {
+								content.append(literalEvent.getStringValue());
+							}
+							else {
+								content.append(literalEvent.getObjectValue().toString());    	  
+							}
 						}
 				  }
 				  else {
@@ -403,7 +435,7 @@ public class NeXMLReader extends AbstractDocumentReader {
 				  }	
 				}
 				else {
-					content.append(event.asLiteralMetadataContentEvent().getStringValue());  // Content can only be continued if it has only a string value      
+					content.append(literalEvent.getStringValue());  // Content can only be continued if it has only a string value      
 				}				
 				event = reader.next();
 			}
@@ -438,7 +470,7 @@ public class NeXMLReader extends AbstractDocumentReader {
 		JPhyloIOEvent event = reader.next();
 		NodeFormats f = node.getFormats();
 		TextElementDataStore textElementDataStore = new TextElementDataStore();
-		DecimalAndLocaleStore decimalObject = new DecimalAndLocaleStore();
+		DecimalAndLocaleStore decimalAndLocalStore = new DecimalAndLocaleStore();
 		
 		while (!event.getType().getTopologyType().equals(EventTopologyType.END)) {
 			if (event.getType().getContentType().equals(EventContentType.RESOURCE_META)) {
@@ -449,12 +481,15 @@ public class NeXMLReader extends AbstractDocumentReader {
 			}	
 			else if (event.getType().getContentType().equals(EventContentType.LITERAL_META)) {				
 				LiteralMetadataEvent literalMeta = event.asLiteralMetadataEvent();
-				if (!readTextFormats(literalMeta, node, textElementDataStore) && !readLineFormats(literalMeta, f) && !readDecimalAndLocaleValues(literalMeta, decimalObject)) {
+				if (!readTextFormats(literalMeta, node, textElementDataStore) && !readLineFormats(literalMeta, f) && !readDecimalAndLocaleValues(literalMeta, decimalAndLocalStore)) {
 					if (XTGConstants.PREDICATE_NODE_UNIQUE_NAME.equals(literalMeta.getPredicate().getURI())) {
-						node.setUniqueName(JPhyloIOReadingUtils.readLiteralMetadataContentAsString(reader));
+						node.setUniqueName(JPhyloIOReadingUtils.readLiteralMetadataContentAsString(reader));   //TODO Convert unique node name to lower case.
 					}
 					else if (XTGConstants.PREDICATE_EDGE_RADIUS.equals(literalMeta.getPredicate().getURI())) {
 						node.getFormats().getCornerRadius().setInMillimeters(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Number.class).floatValue());
+					}
+					else {
+						JPhyloIOReadingUtils.reachElementEnd(reader);  // Consume end events of possible empty unknown literal metadata.
 					}
 				}
 			}
@@ -464,7 +499,7 @@ public class NeXMLReader extends AbstractDocumentReader {
 			event = reader.next();
 		}
 		
-		decimalObject.setInTextFormats(f);
+		decimalAndLocalStore.setInTextFormats(f);
 		if (!node.getData().isEmpty()) {
 			textElementDataStore.setText(node.getData().toString());  // Possible texts defined by a (illegal) predicate are overwritten by the node name from the node event here.
 			textElementDataStore.setInTextElementData(node.getData());
@@ -473,7 +508,7 @@ public class NeXMLReader extends AbstractDocumentReader {
 	
 	
 	private void readInternalBranchMetadata(Branch branch) throws IOException {
-		JPhyloIOEvent event = reader.next();			
+		JPhyloIOEvent event = reader.next();
 		Labels labels = branch.getLabels();
 				
 		while (!event.getType().getTopologyType().equals(EventTopologyType.END)) {
@@ -511,6 +546,9 @@ public class NeXMLReader extends AbstractDocumentReader {
 					else if (XTGConstants.PREDICATE_BRANCH_MIN_SPACE_BELOW.equals(literalMeta.getPredicate().getURI())) {
 						f.getMinSpaceBelow().setInMillimeters(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Number.class).floatValue());
 					}
+					else {
+						JPhyloIOReadingUtils.reachElementEnd(reader);  // Consume end events of possible empty unknown literal metadata.
+					}
 				}
 			}
 			else {
@@ -521,32 +559,190 @@ public class NeXMLReader extends AbstractDocumentReader {
 	}
 	
 	
-//	private void readInternalTreeMetadata(Tree tree) throws IOException {
-//		JPhyloIOEvent event = reader.next();
-//		
-//		while (!event.getType().getTopologyType().equals(EventTopologyType.END)) {
-//			if (event.getType().getContentType().equals(EventContentType.RESOURCE_META)) {
-//				ResourceMetadataEvent resourceMeta = event.asResourceMetadataEvent();
-//				if (XTGConstants.PREDICATE_GLOBAL_FORMATS.equals(resourceMeta.getRel().getURI())) {
-//					readGlobalFormats(tree.getFormats());
+	private void readInternalTreeMetadata(Tree tree) throws IOException {
+		JPhyloIOEvent event = reader.next();
+		Legends legends = tree.getLegends();
+		
+		while (!event.getType().getTopologyType().equals(EventTopologyType.END)) {
+			if (event.getType().getContentType().equals(EventContentType.RESOURCE_META)) {
+				ResourceMetadataEvent resourceMeta = event.asResourceMetadataEvent();
+				if (XTGConstants.PREDICATE_GLOBAL_FORMATS.equals(resourceMeta.getRel().getURI())) {
+					readGlobalFormats(tree.getFormats());
+				}
+				else if (XTGConstants.PREDICATE_DOCUMENT_MARGIN.equals(resourceMeta.getRel().getURI())) {
+					readMargin(tree.getFormats().getDocumentMargin());
+				}
+//				else if (XTGConstants.PREDICATE_NODE_BRANCH_DATA_ADAPTERS.equals(resourceMeta.getRel().getURI())) {					
+//					readNodeBranchDataAdapters(leafAdapter, supportAdapter);
 //				}
-//				else if (XTGConstants.PREDICATE_DOCUMENT_MARGIN.equals(resourceMeta.getRel().getURI())) {
-//					
-//				}
-//			}
-//		}
-//	}
+				else if (XTGConstants.PREDICATE_SCALE_BAR.equals(resourceMeta.getRel().getURI())) {
+					readScaleBar(tree.getScaleBar());
+				}
+				else if (XTGConstants.PREDICATE_LEGEND.equals(resourceMeta.getRel().getURI())) {					
+					readLegends(legends);
+				}
+			}
+			else {
+				JPhyloIOReadingUtils.reachElementEnd(reader);  // Consume end events of possible empty unknown literal metadata.
+			}
+			event = reader.next();
+		}	
+	}
+	
+	
+	private void readGlobalFormats(GlobalFormats f) throws IOException  {
+		JPhyloIOEvent event = reader.next();
+		
+		while (!event.getType().getTopologyType().equals(EventTopologyType.END)) {
+			if (event.getType().getContentType().equals(EventContentType.LITERAL_META)) {
+				LiteralMetadataEvent literalMeta = event.asLiteralMetadataEvent();
+				
+				if (XTGConstants.PREDICATE_GLOBAL_FORMATS_BG_COLOR.equals(literalMeta.getPredicate().getURI())) {
+					if (XTGConstants.DATA_TYPE_COLOR.equals(literalMeta.getOriginalType().getURI())) {
+						try {
+							f.setBackgroundColor(Color.decode(JPhyloIOReadingUtils.readLiteralMetadataContentAsString(reader)));
+						}
+						catch (IllegalArgumentException e) {}
+					}
+				}
+				else if (XTGConstants.PREDICATE_GLOBAL_FORMATS_BRANCH_LENGTH_SCALE.equals(literalMeta.getPredicate().getURI())) {
+					f.getBranchLengthScale().setInMillimeters(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Number.class).floatValue());
+				}
+				else if (XTGConstants.PREDICATE_GLOBAL_FORMATS_SHOW_SCALE_BAR.equals(literalMeta.getPredicate().getURI())) {
+					f.setShowScaleBar(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Boolean.class).booleanValue());
+				}
+				else if (XTGConstants.PREDICATE_GLOBAL_FORMATS_ALIGN_TO_SUBTREE.equals(literalMeta.getPredicate().getURI())) {
+					f.setAlignLegendsToSubtree(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Boolean.class).booleanValue());
+				}
+				else if (XTGConstants.PREDICATE_GLOBAL_FORMATS_POSITION_LABELS_TO_LEFT.equals(literalMeta.getPredicate().getURI())) {
+					f.setPositionLabelsToLeft(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Boolean.class).booleanValue());
+				}
+				else {
+					JPhyloIOReadingUtils.reachElementEnd(reader);  // Consume end events of possible empty unknown literal metadata.
+				}
+			}
+			else {
+				JPhyloIOReadingUtils.reachElementEnd(reader);
+			}
+			event = reader.next();
+		}
+	}
+	
+	
+	private void readScaleBar(ScaleBar scaleBar) throws IOException {
+		JPhyloIOEvent event = reader.next();		
+		ScaleBarFormats f = scaleBar.getFormats();
+		
+		TextElementDataStore textElementDataStore = new TextElementDataStore();
+		DecimalAndLocaleStore decimalAndLocalStore = new DecimalAndLocaleStore();
+		
+		while (!event.getType().getTopologyType().equals(EventTopologyType.END)) {
+			if (event.getType().getContentType().equals(EventContentType.LITERAL_META)) {
+				LiteralMetadataEvent literalMeta = event.asLiteralMetadataEvent();
+				
+				if (!readTextFormats(literalMeta, scaleBar, textElementDataStore) && !readDecimalAndLocaleValues(literalMeta, decimalAndLocalStore) && !readLineFormats(literalMeta, f)) {
+					if (XTGConstants.PREDICATE_WIDTH.equals(literalMeta.getPredicate().getURI())) {
+						f.getWidth().assign(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, ScaleValue.class));
+					}
+					else if (XTGConstants.PREDICATE_HEIGHT.equals(literalMeta.getPredicate().getURI())) {
+						f.getHeight().setInMillimeters(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Number.class).floatValue());
+					}
+					else if (XTGConstants.PREDICATE_SCALE_BAR_ALIGN.equals(literalMeta.getPredicate().getURI())) {
+						f.setAlignment(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, ScaleBarAlignment.class));
+					}
+					else if (XTGConstants.PREDICATE_SCALE_BAR_TREE_DISTANCE.equals(literalMeta.getPredicate().getURI())) {
+						f.getTreeDistance().setInMillimeters(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Number.class).floatValue());
+					}
+					else if (XTGConstants.PREDICATE_SCALE_BAR_SMALL_INTERVAL.equals(literalMeta.getPredicate().getURI())) {
+						f.setSmallInterval(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Number.class).floatValue());
+					}
+					else if (XTGConstants.PREDICATE_SCALE_BAR_LONG_INTERVAL.equals(literalMeta.getPredicate().getURI())) {
+						f.setLongInterval(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Number.class).intValue());
+					}
+					else if (XTGConstants.PREDICATE_SCALE_BAR_START_LEFT.equals(literalMeta.getPredicate().getURI())) {
+						f.setStartLeft(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Boolean.class).booleanValue());
+					}
+					else if (XTGConstants.PREDICATE_SCALE_BAR_INCREASING.equals(literalMeta.getPredicate().getURI())) {
+						f.setIncreasing(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Boolean.class).booleanValue());
+					}
+					else {
+						JPhyloIOReadingUtils.reachElementEnd(reader);  // Consume end events of possible empty unknown literal metadata.
+					}
+				}
+			}
+			else {
+				JPhyloIOReadingUtils.reachElementEnd(reader);
+			}
+			event = reader.next();
+		}
+		textElementDataStore.setInTextElementData(scaleBar.getData());
+		decimalAndLocalStore.setInTextFormats(f);
+	}
+	
+	
+	private void readLegends(Legends legends) throws IOException {
+		Legend legend = new Legend(legends);
+		JPhyloIOEvent event = reader.next();
+		TextElementDataStore textElementDataStore = new TextElementDataStore();
+		DecimalAndLocaleStore decimalAndLocalStore = new DecimalAndLocaleStore();
+		
+		while (!event.getType().getTopologyType().equals(EventTopologyType.END)) {
+			if (event.getType().getContentType().equals(EventContentType.LITERAL_META)) {
+				LiteralMetadataEvent literalMeta = event.asLiteralMetadataEvent();
+				LegendFormats f = legend.getFormats();
+				
+				if (!readTextFormats(literalMeta, legend, textElementDataStore) && !readDecimalAndLocaleValues(literalMeta, decimalAndLocalStore) && !readLineFormats(literalMeta, f)) {
+					if (XTGConstants.PREDICATE_LEGEND_ANCHOR_0.equals(literalMeta.getPredicate().getURI())) {
+						f.setAnchorName(0, JPhyloIOReadingUtils.readLiteralMetadataContentAsString(reader));  //TODO Check of anchor is not null and convert unique node name to lower case.
+					}
+					else if (XTGConstants.PREDICATE_LEGEND_ANCHOR_1.equals(literalMeta.getPredicate().getURI())) {
+						f.setAnchorName(1, JPhyloIOReadingUtils.readLiteralMetadataContentAsString(reader));  //TODO Convert unique node name to lower case.
+					}
+					else if (XTGConstants.PREDICATE_LEGEND_LEGEND_POSITION.equals(literalMeta.getPredicate().getURI())) {
+						f.setPosition(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Number.class).intValue());
+					}
+					else if (XTGConstants.PREDICATE_LEGEND_MIN_TREE_DISTANCE.equals(literalMeta.getPredicate().getURI())) {
+						f.getMinTreeDistance().setInMillimeters(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Number.class).floatValue());
+					}
+					else if (XTGConstants.PREDICATE_LEGEND_LEGEND_SPACING.equals(literalMeta.getPredicate().getURI())) {
+						f.getSpacing().setInMillimeters(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Number.class).floatValue());
+					}
+					else if (XTGConstants.PREDICATE_LEGEND_LEGEND_STYLE.equals(literalMeta.getPredicate().getURI())) {
+						f.setLegendStyle(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, LegendStyle.class));
+					}
+					else if (XTGConstants.PREDICATE_LEGEND_ORIENTATION.equals(literalMeta.getPredicate().getURI())) {
+						f.setOrientation(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, TextOrientation.class));
+					}
+					else if (XTGConstants.PREDICATE_EDGE_RADIUS.equals(literalMeta.getPredicate().getURI())) {
+						f.getCornerRadius().setInMillimeters(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Number.class).floatValue());
+					}
+					else {
+						JPhyloIOReadingUtils.reachElementEnd(reader);  // Consume end events of possible empty unknown literal metadata.
+					}
+				}
+			}
+			else if (event.getType().getContentType().equals(EventContentType.RESOURCE_META)) {
+				readMargin(legend.getFormats().getMargin());
+			}
+			else {
+				JPhyloIOReadingUtils.reachElementEnd(reader);
+			}
+			event = reader.next();
+		}		
+		textElementDataStore.setInTextElementData(legend.getData());
+		legends.insert(legend);
+	}
 	
 	
 	private boolean readLabelFormats(LiteralMetadataEvent literalMeta, Label label) throws IOException  {
 		if (XTGConstants.PREDICATE_LABEL_LINE_NO.equals(literalMeta.getPredicate().getURI())) {
-			label.getFormats().setLineNumber(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Integer.class).intValue());
+			label.getFormats().setLineNumber(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Number.class).intValue());
 		}
 		else if (XTGConstants.PREDICATE_LABEL_ABOVE.equals(literalMeta.getPredicate().getURI())) {
 			label.getFormats().setAbove(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Boolean.class).booleanValue());
 		}
 		else if (XTGConstants.PREDICATE_LABEL_LINE_POS.equals(literalMeta.getPredicate().getURI())) {
-			label.getFormats().setLinePosition(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Double.class).doubleValue());
+			label.getFormats().setLinePosition(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Number.class).doubleValue());
 		}
 		else if (XTGConstants.PREDICATE_COLUMN_ID.equals(literalMeta.getPredicate().getURI())) {
 			label.setID(JPhyloIOReadingUtils.readLiteralMetadataContentAsString(reader));
@@ -560,10 +756,10 @@ public class NeXMLReader extends AbstractDocumentReader {
 	
 	private boolean readGraphicalLabelDimensions(LiteralMetadataEvent literalMeta, GraphicalLabelFormats f) throws IOException  {
 		if (XTGConstants.PREDICATE_WIDTH.equals(literalMeta.getPredicate().getURI())) {
-			f.getWidth().setInMillimeters(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Float.class).floatValue());
+			f.getWidth().setInMillimeters(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Number.class).floatValue());
 		}
 		else if (XTGConstants.PREDICATE_HEIGHT.equals(literalMeta.getPredicate().getURI())) {
-			f.getHeight().setInMillimeters(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Float.class).floatValue());
+			f.getHeight().setInMillimeters(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Number.class).floatValue());
 		}
 		else {
 			return false;
@@ -576,13 +772,13 @@ public class NeXMLReader extends AbstractDocumentReader {
 		JPhyloIOEvent event = reader.next();
 		TextElementDataStore textElementDataStore = new TextElementDataStore();
 		
-		DecimalAndLocaleStore decimalObject = new DecimalAndLocaleStore();
+		DecimalAndLocaleStore decimalAndLocalStore = new DecimalAndLocaleStore();
 		
 		while (!event.getType().getTopologyType().equals(EventTopologyType.END)) {
 			if (event.getType().getContentType().equals(EventContentType.LITERAL_META)) {
 				LiteralMetadataEvent literalMeta = event.asLiteralMetadataEvent();
 				
-				if (!readTextFormats(literalMeta, label, textElementDataStore) && !readLabelFormats(literalMeta, label) && !readDecimalAndLocaleValues(literalMeta, decimalObject)) {
+				if (!readTextFormats(literalMeta, label, textElementDataStore) && !readLabelFormats(literalMeta, label) && !readDecimalAndLocaleValues(literalMeta, decimalAndLocalStore)) {
 					JPhyloIOReadingUtils.reachElementEnd(reader);  // Consume end events of possible empty unknown literal metadata.					
 				}
 			}
@@ -594,7 +790,7 @@ public class NeXMLReader extends AbstractDocumentReader {
 			}
 			event = reader.next();
 		}
-		decimalObject.setInTextFormats(label.getFormats());
+		decimalAndLocalStore.setInTextFormats(label.getFormats());
 		textElementDataStore.setInTextElementData(label.getData());
 	}
 	
@@ -635,7 +831,7 @@ public class NeXMLReader extends AbstractDocumentReader {
 		JPhyloIOEvent event = reader.next();
 		
 		TextElementDataStore textElementDataStore = new TextElementDataStore();		
-		DecimalAndLocaleStore decimalObject = new DecimalAndLocaleStore();
+		DecimalAndLocaleStore decimalAndLocalStore = new DecimalAndLocaleStore();
 		PieChartLabelFormats f = label.getFormats();
 		
 		while (!event.getType().getTopologyType().equals(EventTopologyType.END)) {
@@ -643,7 +839,7 @@ public class NeXMLReader extends AbstractDocumentReader {
 				LiteralMetadataEvent literalMeta = event.asLiteralMetadataEvent();				
 				
 				if (!readGraphicalLabelDimensions(literalMeta, f) && !readLabelFormats(literalMeta, label) && !readLineFormats(literalMeta, f) 
-						&& !readDecimalAndLocaleValues(literalMeta, decimalObject) && !readTextFormats(literalMeta, label, textElementDataStore)) {
+						&& !readDecimalAndLocaleValues(literalMeta, decimalAndLocalStore) && !readTextFormats(literalMeta, label, textElementDataStore)) {
 					
 					if (XTGConstants.PREDICATE_PIE_CHART_LABEL_INTERNAL_LINES.equals(literalMeta.getPredicate().getURI())) {
 						f.setShowInternalLines(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Boolean.class).booleanValue());
@@ -651,13 +847,12 @@ public class NeXMLReader extends AbstractDocumentReader {
 					else if (XTGConstants.PREDICATE_PIE_CHART_LABEL_NULL_LINES.equals(literalMeta.getPredicate().getURI())) {
 						f.setShowLinesForZero(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Boolean.class).booleanValue());
 					}
-					//TODO Use ObjectTranslator in the future.
-//					else if (XTGConstants.PREDICATE_PIE_CHART_LABEL_CAPTION_TYPE.equals(literalMeta.getPredicate().getURI())) {
-//						f.setCaptionsContentType(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, ));
-//					}
-//					else if (XTGConstants.PREDICATE_PIE_CHART_LABEL_CAPTION_LINK_TYPE.equals(literalMeta.getPredicate().getURI())) {
-//						f.setCaptionsLinkType(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, ));
-//					}
+					else if (XTGConstants.PREDICATE_PIE_CHART_LABEL_CAPTION_TYPE.equals(literalMeta.getPredicate().getURI())) {
+						f.setCaptionsContentType(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, PieChartLabelCaptionContentType.class));
+					}
+					else if (XTGConstants.PREDICATE_PIE_CHART_LABEL_CAPTION_LINK_TYPE.equals(literalMeta.getPredicate().getURI())) {
+						f.setCaptionsLinkType(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, PieChartLabelCaptionLinkType.class));
+					}
 					else if (XTGConstants.PREDICATE_PIE_CHART_LABEL_SHOW_TITLE.equals(literalMeta.getPredicate().getURI())) {
 						f.setShowTitle(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Boolean.class).booleanValue());
 					}
@@ -680,7 +875,7 @@ public class NeXMLReader extends AbstractDocumentReader {
 			}
 			event = reader.next();
 		}
-		decimalObject.setInTextFormats(f);
+		decimalAndLocalStore.setInTextFormats(f);
 		textElementDataStore.setInTextElementData(label.getData());
 	}
 	
@@ -724,7 +919,6 @@ public class NeXMLReader extends AbstractDocumentReader {
 				}
 				else if (XTGConstants.PREDICATE_DATA_ID_VALUE.equals(literalMeta.getPredicate().getURI())) {
 					data.setValueColumnID(JPhyloIOReadingUtils.readLiteralMetadataContentAsString(reader));
-//					label.getSectionDataList().add(new SectionData(JPhyloIOReadingUtils.readLiteralMetadataContentAsString(reader), "")); //TODO Add correct caption, once predicates are implemented.
 				}
 				else if (XTGConstants.PREDICATE_PIE_CAPTION.equals(literalMeta.getPredicate().getURI())) {
 					data.setCaption(JPhyloIOReadingUtils.readLiteralMetadataContentAsString(reader));
@@ -740,22 +934,20 @@ public class NeXMLReader extends AbstractDocumentReader {
 		}
 		label.getSectionDataList().add(data);  //TODO Check if an ID was read.
 	}
+		
 	
-	
-	
-	
-	private boolean readDecimalAndLocaleValues(LiteralMetadataEvent literalMeta, DecimalAndLocaleStore decimalObject) throws IOException  {		
+	private boolean readDecimalAndLocaleValues(LiteralMetadataEvent literalMeta, DecimalAndLocaleStore decimalAndLocalStore) throws IOException  {		
 		if (XTGConstants.PREDICATE_DECIMAL_FORMAT.equals(literalMeta.getPredicate().getURI())) {
-			decimalObject.setFormatString(JPhyloIOReadingUtils.readLiteralMetadataContentAsString(reader));
+			decimalAndLocalStore.setFormatString(JPhyloIOReadingUtils.readLiteralMetadataContentAsString(reader));
 		}
 		else if (XTGConstants.PREDICATE_LOCALE_LANG.equals(literalMeta.getPredicate().getURI())) {
-			decimalObject.setLang(JPhyloIOReadingUtils.readLiteralMetadataContentAsString(reader));
+			decimalAndLocalStore.setLang(JPhyloIOReadingUtils.readLiteralMetadataContentAsString(reader));
 		}
 		else if (XTGConstants.PREDICATE_LOCALE_COUNTRY.equals(literalMeta.getPredicate().getURI())) {
-			decimalObject.setCountry(JPhyloIOReadingUtils.readLiteralMetadataContentAsString(reader));
+			decimalAndLocalStore.setCountry(JPhyloIOReadingUtils.readLiteralMetadataContentAsString(reader));
 		}
 		else if (XTGConstants.PREDICATE_LOCALE_VARIANT.equals(literalMeta.getPredicate().getURI())) {
-			decimalObject.setVariant(JPhyloIOReadingUtils.readLiteralMetadataContentAsString(reader));
+			decimalAndLocalStore.setVariant(JPhyloIOReadingUtils.readLiteralMetadataContentAsString(reader));
 		}
 		else {
 			return false;
@@ -769,7 +961,7 @@ public class NeXMLReader extends AbstractDocumentReader {
 		
 		
 		if (XTGConstants.PREDICATE_TEXT_HEIGHT.equals(literalMeta.getPredicate().getURI())) {
-			f.getTextHeight().setInMillimeters(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Number.class).floatValue());  //TODO NPE possible
+			f.getTextHeight().setInMillimeters(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Number.class).floatValue());
 		}
 		else if (XTGConstants.PREDICATE_TEXT_COLOR.equals(literalMeta.getPredicate().getURI())) {
 			Object objectValue = null;
@@ -856,10 +1048,50 @@ public class NeXMLReader extends AbstractDocumentReader {
 			event = reader.next();
 		}
 	}
-		
+	
 	
 	@Override
 	public DocumentIterator createIterator(BufferedInputStream stream) throws Exception {
 		return new SingleDocumentIterator(read(stream));
 	}	
+	
+	
+//private void readNodeBranchDataAdapters(NodeBranchDataAdapter leafAdapter, NodeBranchDataAdapter supportAdapter) throws IOException {
+//JPhyloIOEvent event = reader.next();		
+//
+//while (!event.getType().getTopologyType().equals(EventTopologyType.END)) {
+//	if (event.getType().getContentType().equals(EventContentType.RESOURCE_META)) {
+//		
+//	}
+//	else {
+//		JPhyloIOReadingUtils.reachElementEnd(reader);	
+//	}
+//	event = reader.next();
+//}
+//}
+//
+//
+//private void readNodeBranchDataAdaptersAdapter() throws IOException {
+//JPhyloIOEvent event = reader.next();
+//
+//while (!event.getType().getTopologyType().equals(EventTopologyType.END)) {
+//	if (event.getType().getContentType().equals(EventContentType.LITERAL_META)) {
+//		LiteralMetadataEvent literalMeta = event.asLiteralMetadataEvent();
+//		
+//		if (XTGConstants.PREDICATE_NODE_BRANCH_DATA_ADAPTERS_ADAPTER_NAME.equals(literalMeta.getPredicate().getURI())) {
+//		
+//		}
+//		else if (XTGConstants.PREDICATE_NODE_BRANCH_DATA_ADAPTERS_ADAPTER_PURPOSE.equals(literalMeta.getPredicate().getURI())) {
+//
+//		}
+//		else {
+//			JPhyloIOReadingUtils.reachElementEnd(reader);  // Consume end events of possible empty unknown literal metadata.		
+//		}
+//	}
+//	else {
+//		JPhyloIOReadingUtils.reachElementEnd(reader);
+//	}
+//	event = reader.next();
+//}
+//}
 }

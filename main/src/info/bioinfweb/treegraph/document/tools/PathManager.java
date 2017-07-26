@@ -91,7 +91,7 @@ public class PathManager {
 		List<MetadataPath> pathList = createPathList(nodeTree, nodeType);
 		pathList.addAll(createPathList(branchTree, nodeType));
 		
-		for (MetadataPath path : pathList) {			
+		for (MetadataPath path : pathList) {
 			boolean isLiteral = path.isLiteral();
 			if(isLiteral) {
 				result.add(new LiteralMetadataAdapter(path));

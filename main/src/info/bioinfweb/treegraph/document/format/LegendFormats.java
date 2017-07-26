@@ -180,12 +180,13 @@ public class LegendFormats extends ConcreteTextFormats
   
   /**
    * Sorts the anchors by the y-coordinates of their according terminal subnodes. The 
-   * upper most one becomes first. If only one anchor is specified it is made shure that
-   * the secound anchor is <code>null</code>.<br>
+   * upper most one becomes first. If only one anchor is specified it is made sure that
+   * the second anchor is <code>null</code>.<br>
    * Note that the anchors of a legend can be only positioned by the y-values for one
    * painter ID at a time. Therefor positioners have to call this method every time they
    * are executed.
-   * @param type - the painter type for the y-coordinates
+   * 
+   * @param type the painter type for the y-coordinates
    */
   public void sortAnchors(PositionPaintType type) {
   	if (hasOneAnchor()) {

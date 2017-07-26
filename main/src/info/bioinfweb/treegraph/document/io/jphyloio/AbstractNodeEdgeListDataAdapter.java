@@ -132,8 +132,6 @@ public abstract class AbstractNodeEdgeListDataAdapter<E extends LabeledIDEvent> 
 		if (!node.getMetadataTree().getChildren().isEmpty()) {
 			List<MetadataNode> list = node.getMetadataTree().getChildren();
 			
-			receiver.add(new ResourceMetadataEvent(TreeDataAdapter.createMetaID(id, idManager), null, new URIOrStringIdentifier(null, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_INVISIBLE_DATA), null, null));	
-
 			writeMetadataContent(receiver, id, list, idManager);
 		}
 	}
@@ -147,13 +145,13 @@ public abstract class AbstractNodeEdgeListDataAdapter<E extends LabeledIDEvent> 
 			
 			if (child instanceof ResourceMetadataNode) {
 				URI hRef = ((ResourceMetadataNode)child).getURI();
-				if (hRef == null) {
-					try {
-						hRef = new URI("");
-					} catch (URISyntaxException e) {
-						throw new InternalError(e);
-					}
-				}
+//				if (hRef == null) {
+//					try {
+//						hRef = new URI("");
+//					} catch (URISyntaxException e) {
+//						throw new InternalError(e);
+//					}
+//				}
 				
 				if(predicate == null) {
 					predicate = PREDICATE_HAS_RESOURCE_METADATA;
@@ -169,42 +167,31 @@ public abstract class AbstractNodeEdgeListDataAdapter<E extends LabeledIDEvent> 
 				receiver.add(ConcreteJPhyloIOEvent.createEndEvent(EventContentType.RESOURCE_META));
 			}
 			else {					
-				QName dataType =((LiteralMetadataNode)child).getDatatype();
-				if(dataType == null) {
-					((LiteralMetadataNode)child).setDatatype(W3CXSConstants.DATA_TYPE_STRING);
+				TextElementData data = ((LiteralMetadataNode)child).getValue();
+				Object value;
+				if (data.isDecimal()) {
+					value = data.getDecimal();
+				}
+				else {
+					value = data.getText();
 				}
 				
-				if(predicate == null) {
+				QName dataType = ((LiteralMetadataNode)child).getDatatype();
+				if (dataType == null) {
+					if ((data != null) && (data.isDecimal())) {
+						dataType = W3CXSConstants.DATA_TYPE_DOUBLE;
+					}
+					else {
+						dataType = W3CXSConstants.DATA_TYPE_STRING;
+					}
+				}
+				
+				if (predicate == null) {
 					predicate = PREDICATE_HAS_LITERAL_METADATA;
 				}
 				
-				TextElementData value = ((LiteralMetadataNode)child).getValue();
-
 				JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null, predicate, dataType, value, null);
 			}			
 		}
 	}
-	
-	
-//	protected void writeHiddenDataMap(JPhyloIOEventReceiver receiver, String id, Node node, IntegerIDManager idManager) throws IOException {
-//		if (!node.getHiddenDataMap().isEmpty()) {
-//			receiver.add(new ResourceMetadataEvent(TreeDataAdapter.createMetaID(id, idManager), null, new URIOrStringIdentifier(null, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_INVISIBLE_DATA), null, null));	
-//			Iterator<String> iterator = node.getHiddenDataMap().idIterator();
-//			while (iterator.hasNext()) {
-//				String dataID = iterator.next();
-//				TextElementData value = node.getHiddenDataMap().get(dataID);
-//				
-//				JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
-//						info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_INVISIBLE_DATA, W3CXSConstants.DATA_TYPE_STRING, dataID, null);
-//				
-//				JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
-//						info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_INVISIBLE_DATA_ATTR_IS_DECIMAL, W3CXSConstants.DATA_TYPE_BOOLEAN, value.isDecimal(), null);
-//				
-//				JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
-//							info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_INVISIBLE_DATA_ATTR_TEXT, 
-//							value.isDecimal() ? W3CXSConstants.DATA_TYPE_DOUBLE : W3CXSConstants.DATA_TYPE_STRING, value.toString(), null);			
-//			}
-//			receiver.add(ConcreteJPhyloIOEvent.createEndEvent(EventContentType.RESOURCE_META));
-//		}
-//	}
 }

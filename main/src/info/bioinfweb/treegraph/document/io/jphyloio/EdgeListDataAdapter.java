@@ -184,11 +184,11 @@ public class EdgeListDataAdapter extends AbstractNodeEdgeListDataAdapter<EdgeEve
 						JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
 								info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_PIE_CHART_LABEL_CAPTION_TYPE, 
 								info.bioinfweb.jphyloio.formats.xtg.XTGConstants.DATA_TYPE_PIE_CHART_LABEL_CAPTION_TYPE, 
-								formats.getCaptionsContentType().name(), null); //TODO Use ObjectTranslator in the future.
+								formats.getCaptionsContentType(), null);
 						JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
 								info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_PIE_CHART_LABEL_CAPTION_LINK_TYPE, 
 								info.bioinfweb.jphyloio.formats.xtg.XTGConstants.DATA_TYPE_PIE_CHART_LABEL_CAPTION_LINK_TYPE, 
-								formats.getCaptionsLinkType().name(), null); //TODO Use ObjectTranslator in the future.
+								formats.getCaptionsLinkType(), null);
 						JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
 								info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_PIE_CHART_LABEL_SHOW_TITLE, W3CXSConstants.DATA_TYPE_BOOLEAN, 
 								formats.isShowTitle(), null);
@@ -209,7 +209,7 @@ public class EdgeListDataAdapter extends AbstractNodeEdgeListDataAdapter<EdgeEve
 							receiver.add(new ResourceMetadataEvent(TreeDataAdapter.createMetaID(id, idManager), null, new URIOrStringIdentifier(null, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_DATA_ID), null, null));
 							JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
 									info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_PIE_COLOR, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.DATA_TYPE_COLOR, 
-									TreeDataAdapter.formatColor(formats.getPieColor(index)), null);
+									formats.getPieColor(index), null);
 							JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(id, idManager), null,
 									info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_DATA_ID_VALUE, W3CXSConstants.DATA_TYPE_STRING, 
 									pieChartLabel.getSectionDataList().get(index).getValueColumnID(), null);							

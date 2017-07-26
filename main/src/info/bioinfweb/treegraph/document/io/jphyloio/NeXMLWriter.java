@@ -57,6 +57,7 @@ public class NeXMLWriter extends AbstractDocumentWriter {
 		parameters.put(ReadWriteParameterNames.KEY_APPLICATION_NAME, Main.APPLICATION_NAME);
 		parameters.put(ReadWriteParameterNames.KEY_APPLICATION_VERSION, Main.getInstance().getVersion());
 		parameters.put(ReadWriteParameterNames.KEY_APPLICATION_URL, Main.TG_URL);
+		JPhyloIOTools.addTreeGraphObjectTranslators(parameters.getObjectTranslatorFactory(), true);
 		
 		// Write document:
 		JPhyloIOEventWriter writer = factory.getWriter(formatID);
