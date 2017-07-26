@@ -120,15 +120,15 @@ public class PieChartLabel extends GraphicalLabel implements LineElement, TextEl
 	public PieChartLabel(Labels labels) {
 		super(labels);
 	}
-	
-	
+ 
+
 	public List<SectionData> getSectionDataList() {
 		return sectionDataList;
 	}
 
 
 	/**
-	 * Returns the value of the data column for the ID with the specified index. (The value is not normalized to 
+	 * Returns the value of the data column for the ID with the specified index. (The value is not normalized to e.g.
 	 * 100 % or 2 Pi)
 	 * 
 	 * @param index - the index of the ID to be used
