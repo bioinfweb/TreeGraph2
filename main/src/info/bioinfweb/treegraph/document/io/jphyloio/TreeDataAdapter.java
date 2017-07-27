@@ -217,16 +217,16 @@ public class TreeDataAdapter extends NoSetsTreeNetworkDataAdapter implements Tre
 				}
 				
 				JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(DEFAULT_TREE_ID_PREFIX, idManager), null,
-						info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_LEGEND_LEGEND_POSITION, W3CXSConstants.DATA_TYPE_INT, 
+						info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_LEGEND_POSITION, W3CXSConstants.DATA_TYPE_INT, 
 						legend.getFormats().getPosition(), null);
 				JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(DEFAULT_TREE_ID_PREFIX, idManager), null,
 						info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_LEGEND_MIN_TREE_DISTANCE, W3CXSConstants.DATA_TYPE_FLOAT, 
 						legend.getFormats().getMinTreeDistance().getInMillimeters(), null);
 				JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(DEFAULT_TREE_ID_PREFIX, idManager), null,
-						info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_LEGEND_LEGEND_SPACING, W3CXSConstants.DATA_TYPE_FLOAT, 
+						info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_LEGEND_SPACING, W3CXSConstants.DATA_TYPE_FLOAT, 
 						legend.getFormats().getSpacing().getInMillimeters(), null);
 				JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(DEFAULT_TREE_ID_PREFIX, idManager), null,
-						info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_LEGEND_LEGEND_STYLE, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.DATA_TYPE_LEGEND_STYLE, 
+						info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_LEGEND_STYLE, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.DATA_TYPE_LEGEND_STYLE, 
 						legend.getFormats().getLegendStyle(), null);
 				JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, TreeDataAdapter.createMetaID(DEFAULT_TREE_ID_PREFIX, idManager), null,
 						info.bioinfweb.jphyloio.formats.xtg.XTGConstants.PREDICATE_LEGEND_ORIENTATION, info.bioinfweb.jphyloio.formats.xtg.XTGConstants.DATA_TYPE_TEXT_ORIENTATION, 

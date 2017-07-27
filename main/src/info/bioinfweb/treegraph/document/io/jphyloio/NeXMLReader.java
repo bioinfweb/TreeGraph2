@@ -94,6 +94,13 @@ import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 
 
 
+/**
+ * A document reader to read <i>TreeGraph</i> and other metadata from <i>NeXML</i>.
+ * 
+ * @author Phoebe Brech
+ * @author Sarah Wiechers
+ * @author Ben St&ouml;ver
+ */
 public class NeXMLReader extends AbstractDocumentReader {
 	private static class DecimalAndLocaleStore {
 		private String lang = null;
@@ -698,16 +705,16 @@ public class NeXMLReader extends AbstractDocumentReader {
 					else if (XTGConstants.PREDICATE_LEGEND_ANCHOR_1.equals(literalMeta.getPredicate().getURI())) {
 						f.setAnchorName(1, JPhyloIOReadingUtils.readLiteralMetadataContentAsString(reader));  //TODO Convert unique node name to lower case.
 					}
-					else if (XTGConstants.PREDICATE_LEGEND_LEGEND_POSITION.equals(literalMeta.getPredicate().getURI())) {
+					else if (XTGConstants.PREDICATE_LEGEND_POSITION.equals(literalMeta.getPredicate().getURI())) {
 						f.setPosition(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Number.class).intValue());
 					}
 					else if (XTGConstants.PREDICATE_LEGEND_MIN_TREE_DISTANCE.equals(literalMeta.getPredicate().getURI())) {
 						f.getMinTreeDistance().setInMillimeters(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Number.class).floatValue());
 					}
-					else if (XTGConstants.PREDICATE_LEGEND_LEGEND_SPACING.equals(literalMeta.getPredicate().getURI())) {
+					else if (XTGConstants.PREDICATE_LEGEND_SPACING.equals(literalMeta.getPredicate().getURI())) {
 						f.getSpacing().setInMillimeters(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, Number.class).floatValue());
 					}
-					else if (XTGConstants.PREDICATE_LEGEND_LEGEND_STYLE.equals(literalMeta.getPredicate().getURI())) {
+					else if (XTGConstants.PREDICATE_LEGEND_STYLE.equals(literalMeta.getPredicate().getURI())) {
 						f.setLegendStyle(JPhyloIOReadingUtils.readLiteralMetadataContentAsObject(reader, LegendStyle.class));
 					}
 					else if (XTGConstants.PREDICATE_LEGEND_ORIENTATION.equals(literalMeta.getPredicate().getURI())) {
