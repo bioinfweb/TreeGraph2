@@ -19,30 +19,20 @@
 package info.bioinfweb.treegraph.gui.actions.help;
 
 
-import java.awt.event.ActionEvent;
+import info.bioinfweb.treegraph.Main;
+
 import java.awt.event.KeyEvent;
 
 import javax.swing.Action;
 
-import info.bioinfweb.treegraph.Main;
-import info.bioinfweb.commons.swing.ExtendedAbstractAction;
 
 
-
-/**
- * Navigates to the TreeGraph 2 homepage.
- * @author Ben St&ouml;ver
- */
-public class HomepageAction extends ExtendedAbstractAction {
-	public HomepageAction() {
-		super();
+public class BioinfwebMainPageAction  extends WebsiteAction {
+	public BioinfwebMainPageAction() {
+		super("http://bioinfweb.info/");
 		
-		putValue(Action.NAME, "TreeGraph 2 website"); 
-	  putValue(Action.MNEMONIC_KEY, KeyEvent.VK_T);
-	  loadSymbols("TreeGraph");
-	}
-
-	public void actionPerformed(ActionEvent e) {
-		Main.getInstance().getWikiHelp().setPage(Main.TG_URL);
+		putValue(Action.NAME, "bioinfweb main page"); 
+	  putValue(Action.MNEMONIC_KEY, KeyEvent.VK_B);
+	  loadSymbols("bioinfweb");
 	}
 }

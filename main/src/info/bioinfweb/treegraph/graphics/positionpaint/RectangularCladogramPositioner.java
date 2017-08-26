@@ -620,6 +620,7 @@ public class RectangularCladogramPositioner implements TreePositioner {
 	
 	/**
 	 * Positions the scale bar.
+	 * 
 	 * @param treeWidth - the width of the tree positioned above 
 	 * @param maxTreeY - the end of the tree positioned above on y
 	 * @return the end of the scale bar on y

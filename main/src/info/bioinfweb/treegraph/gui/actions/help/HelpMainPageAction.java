@@ -19,8 +19,8 @@
 package info.bioinfweb.treegraph.gui.actions.help;
 
 
-import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
+
 import javax.swing.Action;
 import javax.swing.KeyStroke;
 
