@@ -19,22 +19,19 @@
 package info.bioinfweb.treegraph.gui.actions.help;
 
 
-import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 
 import javax.swing.Action;
-import javax.swing.KeyStroke;
 
 
 
-public class HelpContentsAction extends HelpTopicAction {
-	public HelpContentsAction() {
-		super(0);
-		putValue(Action.NAME, "Contents"); 
-	  putValue(Action.MNEMONIC_KEY, KeyEvent.VK_C);
-		putValue(Action.SHORT_DESCRIPTION, "Help contents"); 
-		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F1, 
-				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-	  loadSymbols("Help");
+public class ResearchGateAction extends WebsiteAction {
+	public ResearchGateAction() {
+		super("http://r.bioinfweb.info/RGTreeGraph2");
+		
+		putValue(Action.NAME, "TreeGraph 2 questions on ResearchGate"); 
+	  putValue(Action.MNEMONIC_KEY, KeyEvent.VK_R);
+	  putValue(Action.DISPLAYED_MNEMONIC_INDEX_KEY, 25);
+	  loadSymbols("ResearchGate");
 	}
 }

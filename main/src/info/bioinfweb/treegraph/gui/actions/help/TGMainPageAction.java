@@ -19,22 +19,25 @@
 package info.bioinfweb.treegraph.gui.actions.help;
 
 
-import java.awt.Toolkit;
+import info.bioinfweb.treegraph.Main;
+
 import java.awt.event.KeyEvent;
 
 import javax.swing.Action;
-import javax.swing.KeyStroke;
 
 
 
-public class HelpContentsAction extends HelpTopicAction {
-	public HelpContentsAction() {
-		super(0);
-		putValue(Action.NAME, "Contents"); 
-	  putValue(Action.MNEMONIC_KEY, KeyEvent.VK_C);
-		putValue(Action.SHORT_DESCRIPTION, "Help contents"); 
-		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F1, 
-				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-	  loadSymbols("Help");
+/**
+ * Navigates to the TreeGraph 2 website.
+ * 
+ * @author Ben St&ouml;ver
+ */
+public class TGMainPageAction extends WebsiteAction {
+	public TGMainPageAction() {
+		super(Main.TG_URL);
+		
+		putValue(Action.NAME, "TreeGraph 2 website"); 
+	  putValue(Action.MNEMONIC_KEY, KeyEvent.VK_W);
+	  loadSymbols("TreeGraph");
 	}
 }

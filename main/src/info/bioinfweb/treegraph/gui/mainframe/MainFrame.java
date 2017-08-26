@@ -499,9 +499,13 @@ public class MainFrame extends JFrame implements Runnable {
 			helpMenu.add(getActionManagement().get("help.index"));
 			helpMenu.add(getActionManagement().get("help.contents"));
 			helpMenu.add(getActionManagement().get("help.aboutMenu"));
+			helpMenu.add(getActionManagement().get("help.researchGate"));
 			helpMenu.addSeparator();
 			helpMenu.add(getActionManagement().get("help.homepage"));
 			helpMenu.add(getActionManagement().get("help.about"));
+			helpMenu.addSeparator();
+			helpMenu.add(getActionManagement().get("help.bioinfweb"));
+			helpMenu.add(getActionManagement().get("help.twitter"));
 		}
 		return helpMenu;
 	}
