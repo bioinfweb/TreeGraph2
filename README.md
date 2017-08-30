@@ -12,7 +12,7 @@ This GitHub repository in a synchronized mirror of the [master repository at bio
 
 There is an extensive [documentation](http://treegraph.bioinfweb.info/Help) including a number of [tutorials](http://treegraph.bioinfweb.info/Help/wiki/Tutorial:Main_page) available to help you getting started with *TreeGraph 2* or to find new features. Developers planing to contribute to the project or to create depending software can refer to the [development section](http://treegraph.bioinfweb.info/Development) of our website.
 
-If you have further questions, feel free to ask a question on our [ResearchGate project page](http://r.bioinfweb.info/RGTreeGraph2) or contact [@BenStoever](https://github.com/BenStoever) at stoever@bioinfweb.info.
+If you have further questions, feel free to ask one on our [ResearchGate project page](http://r.bioinfweb.info/RGTreeGraph2) or contact support@bioinfweb.info.
 
 ## License
 
