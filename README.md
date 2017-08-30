@@ -1,4 +1,4 @@
-# AlignmentComparator
+# TreeGraph 2
 
 *TreeGraph 2* is a is graphical editor for phylogenetic trees, which allows to apply various of graphical formats and edit operations and supports several (visible or invisible) annotations attached to nodes or branches. Data can be imported from many tree formats, tables and [*BayesTraits*](http://www.evolution.rdg.ac.uk/BayesTraitsV3/BayesTraitsV3.html) output. A key feature is the [interactive comparison](http://treegraph.bioinfweb.info/Help/wiki/Synchronizing_tree_selections) and [combination](http://treegraph.bioinfweb.info/Help/wiki/Adding_support_values) of alternative topologies from different analyses.
 
