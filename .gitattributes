@@ -1,4 +1,6 @@
 * text=auto !eol
+/LICENSE.md -text
+/README.md -text
 launch4j/TreeGraph.ico -text
 launch4j/TreeGraph.xml -text
 main/.classpath -text
