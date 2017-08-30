@@ -16,7 +16,7 @@ If you have further questions, feel free to ask one on our [ResearchGate project
 
 ## License
 
-*TreeGraph 2* is distrubuted under [GNU General Public License Version 3](http://treegraph.bioinfweb.info/License). See [NOTICE.txt](https://github.com/bioinfweb/TreeGraph2/blob/master/main/src/NOTICE.txt) fur further details.
+*TreeGraph 2* is distrubuted under [GNU General Public License Version 3](http://treegraph.bioinfweb.info/License). See [NOTICE.txt](https://github.com/bioinfweb/TreeGraph2/blob/master/main/src/NOTICE.txt) for further details.
 
 This product includes dependencies developed by the [Apache Software Foundation](http://www.apache.org/) distributed under the terms of the [Apache License Version 2.0](https://github.com/bioinfweb/TreeGraph2/blob/master/main/src/APACHE-LICENSE.txt).
 
