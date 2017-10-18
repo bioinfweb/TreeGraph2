@@ -37,7 +37,7 @@ import javax.swing.KeyStroke;
 
 
 
-public class MoveSubtreeDownAction extends MoveSubtreeAction{
+public class MoveSubtreeDownAction extends MoveSubtreeAction {
 	public MoveSubtreeDownAction(MainFrame mainFrame) {
 		super(mainFrame);
 		putValue(Action.NAME, "Move subtree down"); 

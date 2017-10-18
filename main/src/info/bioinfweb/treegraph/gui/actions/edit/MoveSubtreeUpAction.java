@@ -41,12 +41,12 @@ public class MoveSubtreeUpAction extends MoveSubtreeAction {
 	public MoveSubtreeUpAction(MainFrame mainFrame) {
 		super(mainFrame);
 		putValue(Action.NAME, "Move subtree up"); 
-	  putValue(Action.MNEMONIC_KEY, KeyEvent.VK_M);
+		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_M);
 		putValue(Action.SHORT_DESCRIPTION, "Move subtree up"); 
 		putValue(Action.ACCELERATOR_KEY, 
 				KeyStroke.getKeyStroke(KeyEvent.VK_UP, 
 						Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-	  loadSymbols("MoveUp");
+		loadSymbols("MoveUp");
 	}
 
 
