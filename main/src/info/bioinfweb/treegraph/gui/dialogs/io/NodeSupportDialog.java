@@ -30,34 +30,27 @@ import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextElementDataAdapter;
 import info.bioinfweb.treegraph.document.tools.IDManager;
 import info.bioinfweb.treegraph.document.undo.file.NodeSupportEdit;
-import info.bioinfweb.treegraph.gui.dialogs.io.loadlogger.LoadLoggerDialog;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NewNodeBranchDataInput;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataInput;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 
-
-
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Frame;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.io.File;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Frame;
-
-import javax.swing.border.TitledBorder;
-
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Dimension;
-import java.io.File;
-
-import javax.swing.JCheckBox;
 import javax.swing.JTextField;
-import javax.swing.JLabel;
+import javax.swing.border.TitledBorder;
 
 
 
@@ -117,7 +110,7 @@ public class NodeSupportDialog extends FileDialog {
 			NodeSupportEdit edit = new NodeSupportEdit(getDocument(), 
 					(TextElementDataAdapter)getTerminalInput().getSelectedAdapter(),
 					getDestInput().getSelectedAdapter(), NodeNameAdapter.getSharedInstance(), false, 
-					new MultipleDocumentIterator(getFileChooser().getSelectedFiles(), LoadLoggerDialog.getInstance(),
+					new MultipleDocumentIterator(getFileChooser().getSelectedFiles(), MainFrame.getInstance().getReadWriteLogDialog(),  //TODO When is the dialog displayed? Is it at all?
 					    NodeNameAdapter.getSharedInstance(), BranchLengthAdapter.getSharedInstance(), false), normalisationBorder);
 			getDocument().executeEdit(edit);
 			

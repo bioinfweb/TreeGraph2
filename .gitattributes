@@ -731,8 +731,6 @@ main/src/info/bioinfweb/treegraph/gui/dialogs/io/imexporttable/ExportNodeDataTab
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/imexporttable/ExportTableDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/imexporttable/KeyColumnDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/imexporttable/SelectImportTableDialog.java -text
-main/src/info/bioinfweb/treegraph/gui/dialogs/io/loadlogger/LoadLoggerDialog.java -text
-main/src/info/bioinfweb/treegraph/gui/dialogs/io/loadlogger/MessagesListModel.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/AbstractNodeBranchDataColumnsDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/CopyColumnDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/DefaultDocumentAdapterDialog.java -text svneol=unset#text/plain
