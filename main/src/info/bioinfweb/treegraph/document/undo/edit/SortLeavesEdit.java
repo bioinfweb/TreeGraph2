@@ -100,7 +100,7 @@ public class SortLeavesEdit extends DocumentEdit implements WarningMessageEdit {
 	 *        order elements
 	 */
 	public SortLeavesEdit(Document document, Node root, List<TextElementData> newOrder, NodeBranchDataAdapter leafAdapter,
-					CompareTextElementDataParameters parameters) {
+				CompareTextElementDataParameters parameters) {
 		
 	  super(document, DocumentChangeType.NODE_ORDER);
 	  this.root = root;
