@@ -37,6 +37,7 @@ import info.bioinfweb.treegraph.document.NodeType;
 import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;
 import info.bioinfweb.treegraph.document.tools.TreeSerializer;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
 import info.bioinfweb.treegraph.document.undo.CompareTextElementDataParameters;
@@ -155,11 +156,23 @@ public class SortLeavesEdit extends DocumentEdit implements WarningMessageEdit {
 		return result;
 	}
 	
+	
+//	private void showIndices(Node root) {
+//		Double index = (Double)root.getAttributeMap().get(ATTRIBUTE_ID);
+//		if (index != null) {
+//			new TextLabelAdapter("averageIndex").setDecimal(root, index);
+//		}
+//		for (Node child : root.getChildren()) {
+//			showIndices(child);
+//		}
+//	}
+	
 
 	@Override
   public void redo() throws CannotRedoException {
 		unlinkedTreeValues.clear();
 	  sortLeafs(root, newOrder);
+	  //showIndices(root);
 	  super.redo();
   }
 
