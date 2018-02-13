@@ -23,7 +23,7 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.Action;
 
-import info.bioinfweb.commons.swing.OpenWebsiteAction;
+import info.bioinfweb.commons.swing.actions.OpenWebsiteAction;
 import info.bioinfweb.treegraph.Main;
 
 
