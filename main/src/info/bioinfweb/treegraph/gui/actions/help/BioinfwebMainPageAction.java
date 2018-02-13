@@ -19,15 +19,15 @@
 package info.bioinfweb.treegraph.gui.actions.help;
 
 
-import info.bioinfweb.treegraph.Main;
-
 import java.awt.event.KeyEvent;
 
 import javax.swing.Action;
 
+import info.bioinfweb.commons.swing.OpenWebsiteAction;
 
 
-public class BioinfwebMainPageAction  extends WebsiteAction {
+
+public class BioinfwebMainPageAction  extends OpenWebsiteAction {
 	public BioinfwebMainPageAction() {
 		super("http://bioinfweb.info/");
 		

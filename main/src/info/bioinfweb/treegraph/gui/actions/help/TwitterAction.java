@@ -18,13 +18,16 @@
  */
 package info.bioinfweb.treegraph.gui.actions.help;
 
+
 import java.awt.event.KeyEvent;
 
 import javax.swing.Action;
 
+import info.bioinfweb.commons.swing.OpenWebsiteAction;
 
 
-public class TwitterAction extends WebsiteAction {
+
+public class TwitterAction extends OpenWebsiteAction {
 	public TwitterAction() {
 		super("http://r.bioinfweb.info/Twitter");
 		

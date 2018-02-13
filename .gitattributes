@@ -625,7 +625,6 @@ main/src/info/bioinfweb/treegraph/gui/actions/help/HelpTopicAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/help/ResearchGateAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/actions/help/TGMainPageAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/help/TwitterAction.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/treegraph/gui/actions/help/WebsiteAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/actions/package.html -text
 main/src/info/bioinfweb/treegraph/gui/actions/select/AbstractSelectionAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/select/InvertSelectionAction.java -text
