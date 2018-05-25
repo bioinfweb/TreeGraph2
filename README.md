@@ -23,3 +23,8 @@ This product includes dependencies developed by the [Apache Software Foundation]
 ## Binary releases
 
 Binary releases can be found at http://treegraph.bioinfweb.info/Download.
+
+## About *bioinfweb*
+
+* Legal notice: http://bioinfweb.info/About
+* Privacy policy: http://bioinfweb.info/Privacy
