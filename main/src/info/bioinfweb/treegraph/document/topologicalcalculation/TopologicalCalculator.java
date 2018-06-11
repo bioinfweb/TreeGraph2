@@ -258,7 +258,6 @@ public class TopologicalCalculator {
 			LeafSet conflictingReferenceLeafSet, LeafSet completeSearchedLeafSet, NodeBranchDataAdapter searchedSupportAdapter) {
 		
 		LeafSet currentSearchRootLeafSet = getLeafSet(currentSearchRoot).and(referenceRootLeafSet);
-		
 		if ((currentSearchRootLeafSet.containsAnyAndOther(conflictingReferenceLeafSet, false) &&
 				currentSearchRootLeafSet.inSubtreeOf(completeSearchedLeafSet, false))  //TODO This condition could be removed if the loop of the first level would be run in the non-recursive method.
 				|| (currentSearchRootLeafSet.containsAnyAndOther(conflictingReferenceLeafSet, true) &&

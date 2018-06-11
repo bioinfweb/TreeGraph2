@@ -152,10 +152,8 @@ public class LeafSet {
 	
 	
 	/**
-	 * Returns <code>false</code> if this field (or its complement) contains any terminal the specified 
-	 * field does not contain and this field (or its complement) contains at least one terminal less than
-	 * the specified field. (Tests whether this field (or its complement) is in the subtree of the 
-	 * specified field.)
+	 * Tests whether this field (or its complement) is in the subtree of the specified field. Identical fields are
+	 * not considered as subtrees of each other.
 	 * 
 	 * @param parent a leaf set describing a subtree that shall be tested be be the parent of the subtree
 	 *        represented by this instance
