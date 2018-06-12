@@ -358,8 +358,11 @@ public class AboutDialog extends JDialog {
 					"<p>Development: <a href='http://bioinfweb.info/People/Stoever'>Ben St&ouml;ver</a>, " +
 							"<a href='http://bioinfweb.info/People/Wiechers'>Sarah Wiechers</a>, " + 
 					    "<a href='http://bioinfweb.info/People/Mueller'>Kai M&uuml;ller</a><br />" +
-					"Website: <a href='http://treegraph.bioinfweb.info/'>treegraph.bioinfweb.info</a><br />" +
-					"Copyright 2007-2017 Ben St&ouml;ver, Sarah Wiechers, Kai M&uuml;ller. All rights reserved.</p>" +
+					"Copyright 2007-2018 Ben St&ouml;ver, Sarah Wiechers, Kai M&uuml;ller. All rights reserved.</p>" +
+					"<p>Website: <a href='http://treegraph.bioinfweb.info/'>treegraph.bioinfweb.info</a><br />" +
+					"ResearchGate: <a href='http://r.bioinfweb.info/RGTreeGraph2'>r.bioinfweb.info/RGTreeGraph2</a><br />" +
+					"GitHub: <a href='https://github.com/bioinfweb/TreeGraph2'>github.com/bioinfweb/TreeGraph2</a><br />" +
+					"Twitter: <a href='http://twitter.com/bioinfweb'>twitter.com/bioinfweb</a></p>" +
 					
 					"<p><b>Publication:</b><br /> St&ouml;ver B C, M&uuml;ller K F: " +
 					    "<a href='http://dx.doi.org/10.1186/1471-2105-11-7'>TreeGraph 2: Combining and " +
