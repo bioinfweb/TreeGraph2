@@ -18,12 +18,13 @@
  */
 package info.bioinfweb.treegraph.document.undo.file;
 
+
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.TextIDElementType;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextElementDataAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.TextIDElementType;
 
-import java.io.File;
+
 
 public class AddSupportValuesParameters {
 	private Document sourceDocument;
