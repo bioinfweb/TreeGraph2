@@ -856,6 +856,10 @@ test/.project -text svneol=unset#text/plain
 test/.settings/org.eclipse.jdt.core.prefs -text svneol=unset#text/plain
 test/.settings/org.eclipse.jdt.ui.prefs -text svneol=unset#text/plain
 test/data/RerootByLeaves.xtg -text
+test/data/addSupport/Source.tre -text
+test/data/addSupport/Source.xtg -text
+test/data/addSupport/Target.tre -text
+test/data/addSupport/Target.xtg -text
 test/data/ancestralState/Primates.txt.log.txt -text svneol=unset#text/plain
 test/data/getFirstNodeByData.xtg -text
 test/data/importTable/TableNodeNames.txt -text svneol=unset#text/plain
@@ -902,6 +906,7 @@ test/src/info/bioinfweb/treegraph/document/tools/TreeSerializerTest.java -text s
 test/src/info/bioinfweb/treegraph/document/topologicalcalculation/LeafSetTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/undo/edit/RerootByLeafSetEditTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/undo/edit/SortLeavesEditTest.java -text svneol=unset#text/plain
+test/src/info/bioinfweb/treegraph/document/undo/file/AddSupportValuesEditTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/undo/file/importtable/ImportTableDataTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/undo/file/importtable/ImportTableEditTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/test/text/FontMetricsTest.java -text svneol=unset#text/plain
