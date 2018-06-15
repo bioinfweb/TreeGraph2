@@ -121,8 +121,8 @@ public class LeafSet {
 	 * Compares this field or its complement to another. Note that both fields have to be of the 
 	 * same size.
 	 * 
-	 * @param other - the leaf field to be compared
-	 * @param complement - defines whether the original of this field or its complement shall be compared
+	 * @param other the leaf field to be compared
+	 * @param complement defines whether the original of this field or its complement shall be compared
 	 * @return 0 if exactly the same leaves are contained in both fields, 
 	 *         -1 if the other field does not contain all leaves that this field contains (if so the 
 	 *         complement of this field is also tested before -1 is returned)

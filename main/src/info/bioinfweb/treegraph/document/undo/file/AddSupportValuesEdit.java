@@ -134,40 +134,52 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit imp
 				
 				NodeInfo bestTargetNode = getTopologicalCalculator().findSourceNodeWithAllLeaves(getDocument().getTree(), 
 								getTopologicalCalculator().getLeafSet(sourceRoot));
+				bestTargetNode.getAdditionalCount();
 				if (bestTargetNode != null) {
 					Node conflict = getTopologicalCalculator().findHighestConflict(sourceDocument.getTree(), 
 							getDocument().getTree(), bestTargetNode.getNode(), getTopologicalCalculator().getLeafSet(sourceRoot), 
 							getTopologicalCalculator().getLeafSet(bestTargetNode.getNode()), sourceSupportAdapter);
 					
 					if (conflict == null) {  // Support found
-		  				if (sourceSupportAdapter.isDecimal(sourceRoot)) {  // If no value exists there
-		  					targetSupportAdapter.setDecimal(bestTargetNode.getNode(), sourceSupportAdapter.getDecimal(sourceRoot));  // Only decimal values can appear here.
-						}
-		  				else if (checkOtherPaintStartBranch(bestTargetNode.getNode())) {
-							int index = 1;
-							if (bestTargetNode.getNode().isLast()) {
-								index = 0;
+						//TODO Hier zusätzlich auch wieder additionalCount prüfen. Allerdings sicherstellen, dass nur in beiden Bäumen vorhandene Knoten gezählt werden.
+						//TODO Unit Test für jetzigen Fall erzeugen
+						//     Analogen Unit Test mit unterschiedlichen TaxonSets erzeugen und prüfen ob additionalCount nur für überlappendes TaxonSet erzeugt wird. Falls nicht, prüfen ob Funktion auch woanders verwendet wird oder verändert werden kann.
+						System.out.println(bestTargetNode.getNode().getUniqueName() + ": " + bestTargetNode.getAdditionalCount());
+						
+						if (bestTargetNode.getAdditionalCount() == 0) {
+							if (sourceSupportAdapter.isDecimal(sourceRoot)) {  // If no value exists there
+								targetSupportAdapter.setDecimal(bestTargetNode.getNode(), sourceSupportAdapter.getDecimal(sourceRoot));  // Only decimal values can appear here.
 							}
-							Node other = bestTargetNode.getNode().getParent().getChildren().get(index);
-							if (sourceSupportAdapter.isDecimal(sourceRoot)) {
-								targetSupportAdapter.setDecimal(other, sourceSupportAdapter.getDecimal(sourceRoot));  // Only decimal values can appear here.
+							else if (checkOtherPaintStartBranch(bestTargetNode.getNode())) {
+								int index = 1;
+								if (bestTargetNode.getNode().isLast()) {
+									index = 0;
+								}
+								Node other = bestTargetNode.getNode().getParent().getChildren().get(index);
+								if (sourceSupportAdapter.isDecimal(sourceRoot)) {
+									targetSupportAdapter.setDecimal(other, sourceSupportAdapter.getDecimal(sourceRoot));  // Only decimal values can appear here.
+								}
+								else if (parseNumericValues) {
+									try {
+										targetSupportAdapter.setDecimal(other, Double.parseDouble(sourceSupportAdapter.getText(sourceRoot)));
+									}
+									catch (Exception e) {}
+								}
 							}
 							else if (parseNumericValues) {
 								try {
-									targetSupportAdapter.setDecimal(other, Double.parseDouble(sourceSupportAdapter.getText(sourceRoot)));
+									targetSupportAdapter.setDecimal(bestTargetNode.getNode(), Double.parseDouble(sourceSupportAdapter.getText(sourceRoot)));
 								}
 								catch (Exception e) {}
 							}
-		  				}
-		  				else if (parseNumericValues) {
-		  					try {
-		  						targetSupportAdapter.setDecimal(bestTargetNode.getNode(), Double.parseDouble(sourceSupportAdapter.getText(sourceRoot)));
-							}
-							catch (Exception e) {}
-		  				}
+						}
+						else {
+							System.out.println("value not imported");
+						}
 					}
 					else if (bestTargetNode.getAdditionalCount() == -1) {
-						throw new InternalError("-1 RETURNED");  // Should not happen.
+						throw new InternalError("An unexpected error has occorred. (Undefined bestTargetNode.getAdditionalCount().) "
+								+ "Please contact the developers at support@bioinfweb.info.");  // Should not happen.
 					}
 					else {  // conflict found						
 						double value = getSupportValue(sourceRoot);
