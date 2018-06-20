@@ -1,4 +1,0 @@
-#NEXUS
-begin trees;
-tree tree1 = [&u] (((A, (B, C)1.0)2.0, D), E);
-end;
