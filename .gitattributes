@@ -857,7 +857,9 @@ test/.settings/org.eclipse.jdt.core.prefs -text svneol=unset#text/plain
 test/.settings/org.eclipse.jdt.ui.prefs -text svneol=unset#text/plain
 test/data/RerootByLeaves.xtg -text
 test/data/addSupport/Polytomy.xtg -text
+test/data/addSupport/PolytomyAddTerminal.xtg -text
 test/data/addSupport/Solved.xtg -text
+test/data/addSupport/SolvedAddTerminal.xtg -text
 test/data/ancestralState/Primates.txt.log.txt -text svneol=unset#text/plain
 test/data/getFirstNodeByData.xtg -text
 test/data/importTable/TableNodeNames.txt -text svneol=unset#text/plain
