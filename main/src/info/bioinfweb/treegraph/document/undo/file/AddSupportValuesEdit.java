@@ -83,7 +83,7 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit imp
 	 * @param parameters the parameter object for this edit
 	 */
 	public AddSupportValuesEdit(Document targetDocument, AddSupportValuesParameters parameters) {
-		super(targetDocument, DocumentChangeType.TOPOLOGICAL_BY_RENAMING, parameters.getTerminalsAdapter(), parameters.isRooted());  // Topological relevance only if the default leaves adapter ID is affected.
+		super(targetDocument, DocumentChangeType.TOPOLOGICAL_BY_RENAMING, parameters.getTerminalsAdapter(), parameters.isRooted());  // This edit only has a topological relevance if the default leaves adapter is used to store values.
 		this.sourceDocument = parameters.getSourceDocument();
 		this.sourceSupportAdapter = parameters.getSourceSupportColumn();
 		this.sourceLeavesAdapter = parameters.getSourceLeavesColumn();
@@ -93,7 +93,7 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit imp
 				parameters.getIDPrefix() + SUPPORT_NAME, SUPPORT_DECIMAL_FORMAT);
 		targetConflictAdapter = parameters.getTargetType().createAdapterInstance(
 				parameters.getIDPrefix() + CONFLICT_NAME, CONFLICT_DECIMAL_FORMAT);
-		getTopologicalCalculator().addSubtreeToLeafValueToIndexMap(sourceDocument.getTree().getPaintStart(), sourceLeavesAdapter);  //TODO Must be a different calculator than used in the inherited constructor. Otherwise the indices for the target document are wrong, if the order differs.
+		getTopologicalCalculator().addSubtreeToLeafValueToIndexMap(sourceDocument.getTree().getPaintStart(), sourceLeavesAdapter);  //TODO Must be a different calculator than used in the inherited constructor. Otherwise the indices for the target document are wrong, if the order differs. => Is this still valid?
 	}
 	
 	
@@ -102,6 +102,8 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit imp
 		//topologicalCalculator.addLeafValueToIndexMap(getDocument().getTree().getPaintStart(), getTargetLeavesAdapter());  // Is already done in the inherited constructor.
 		getTopologicalCalculator().addLeafSets(sourceDocument.getTree().getPaintStart(), sourceLeavesAdapter);
 		getTopologicalCalculator().addLeafSets(getDocument().getTree().getPaintStart(), getTargetLeavesAdapter());
+		getTopologicalCalculator().setFullSourceLeafSet(
+				getTopologicalCalculator().getLeafSet(sourceDocument.getTree().getPaintStart()));  // Cave: The root might not be included. Should probably depend in the rooted parameter.
 		processSubtree(sourceDocument.getTree().getPaintStart());
 		
 		warningMessage = createWarningMessage();

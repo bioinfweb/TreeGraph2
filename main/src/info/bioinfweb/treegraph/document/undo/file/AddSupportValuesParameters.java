@@ -62,6 +62,11 @@ public class AddSupportValuesParameters {
 	}
 	
 	
+	/**
+	 * Sets the column to type to import support values into.
+	 * 
+	 * @param targetType the type of the new support column to be created
+	 */
 	public void setTargetType(TextIDElementType targetType) {
 		this.targetType = targetType;
 	}

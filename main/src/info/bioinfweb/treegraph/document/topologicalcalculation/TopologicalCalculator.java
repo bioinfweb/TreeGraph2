@@ -45,6 +45,7 @@ public class TopologicalCalculator {
 	protected Map<TextElementData, Integer> leafValueToIndexMap = new TreeMap<TextElementData, Integer>();
 	protected boolean processRooted;
 	protected String keyLeafReference;
+	protected LeafSet fullSourceLeafSet = null;  //TODO Cannot be specified in the constructor, since leaf sets may change on every call. Should be set, e.g., in AddSupportValuesEdit.redo(). Do all callers need this property or could it be optionally null?
 	protected CompareTextElementDataParameters parameters;
 	
 	
@@ -68,6 +69,16 @@ public class TopologicalCalculator {
 	 */
 	public boolean isProcessRooted() {
 		return processRooted;
+	}
+
+
+	public LeafSet getFullSourceLeafSet() {
+		return fullSourceLeafSet;
+	}
+
+
+	public void setFullSourceLeafSet(LeafSet fullSourceLeafSet) {
+		this.fullSourceLeafSet = fullSourceLeafSet;
 	}
 
 
@@ -115,7 +126,7 @@ public class TopologicalCalculator {
 	 * Returns the leaf field attribute of {@code node} if it has one attached. If not an according object
 	 * is created first and than returned.
 	 * 
-	 * @param node - the node from which the leaf field attribute shall be returned or created. 
+	 * @param node the node from which the leaf field attribute shall be returned or created. 
 	 */
 	public LeafSet getLeafSet(Node node) {
 		if (node.getAttributeMap().get(keyLeafReference) == null) {
@@ -193,14 +204,19 @@ public class TopologicalCalculator {
 	}
 	
 	
-	private NodeInfo findSourceNodeWithAllLeavesRecursive(Node root, LeafSet leafSet) {
-		if (isLeafSetEmpty(leafSet)) {
+	private NodeInfo findSourceNodeWithAllLeavesRecursive(Node root, LeafSet searchedLeafSet) {
+		if (isLeafSetEmpty(searchedLeafSet)) {
 			return null;
 		}
-		int additionalCount = leafSet.compareTo(getLeafSet(root), false);
+		
+		LeafSet comparedLeafSet = getLeafSet(root);
+		if (fullSourceLeafSet != null) {  //TODO Will this check remain necessary in the future or should all callers specify one? (In this case an IllegalStateException could be thrown here instead.)
+			comparedLeafSet = comparedLeafSet.and(fullSourceLeafSet);  // Necessary for trees with different sets of terminals. (Searched leaf set is edited in findSourceNodeWithAllLeaves().) 
+		}
+		int additionalCount = searchedLeafSet.compareTo(comparedLeafSet, false);
 		boolean downwards = additionalCount != -1;
 		if (!downwards) {
-			additionalCount = leafSet.compareTo(getLeafSet(root), true);
+			additionalCount = searchedLeafSet.compareTo(comparedLeafSet, true);
 		}
   	NodeInfo result = null;
   	if (additionalCount != -1) {
@@ -208,7 +224,7 @@ public class TopologicalCalculator {
   	}
   	
 		for (int i = 0; i < root.getChildren().size(); i++) {
-			NodeInfo childResult = findSourceNodeWithAllLeavesRecursive(root.getChildren().get(i), leafSet);
+			NodeInfo childResult = findSourceNodeWithAllLeavesRecursive(root.getChildren().get(i), searchedLeafSet);
 			if (childResult != null) {
 				if (result == null) {
 					result = childResult;
