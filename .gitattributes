@@ -53,11 +53,8 @@ main/include/lib/batik/xalan-2.6.0.jar -text
 main/include/lib/batik/xerces_2_5_0.jar -text
 main/include/lib/batik/xml-apis-ext.jar -text
 main/include/lib/batik/xml-apis.jar -text
-main/include/lib/bioinfweb-commons-java-bio-2.0.0.jar -text
 main/include/lib/bioinfweb-commons-java-bio-3.0.0.jar -text
-main/include/lib/bioinfweb-commons-java-core-2.2.0.jar -text
 main/include/lib/bioinfweb-commons-java-core-3.2.0.jar -text
-main/include/lib/bioinfweb-commons-java-swing-2.2.0.jar -text
 main/include/lib/bioinfweb-commons-java-swing-3.1.0.jar -text
 main/include/lib/commons-collections4-4.1.jar -text
 main/include/lib/commons-lang3-3.1.jar -text
@@ -71,7 +68,6 @@ main/include/lib/freehep-graphics2d.jar -text
 main/include/lib/freehep-graphicsio-emf.jar -text
 main/include/lib/freehep-graphicsio.jar -text
 main/include/lib/jep-2.4.1.jar -text
-main/include/lib/jphyloio-core-0.3.0.jar -text
 main/include/lib/jphyloio-core-0.5.2.jar -text
 main/include/lib/l2fprod-common-directorychooser-7.3.jar -text
 main/include/lib/org.jdesktop.swingx.scrollpaneselector.jar -text
