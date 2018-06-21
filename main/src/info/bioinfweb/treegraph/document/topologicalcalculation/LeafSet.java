@@ -62,7 +62,7 @@ public class LeafSet {
 	
 	
 	public void setChild(int pos, boolean value) {
-		if (value){
+		if (value) {
 			field[pos / Integer.SIZE] = field[pos / Integer.SIZE] | Math2.intPow(2, pos % Integer.SIZE);
 		}
 		else {

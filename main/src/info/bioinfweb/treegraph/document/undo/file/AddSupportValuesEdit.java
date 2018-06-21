@@ -19,10 +19,6 @@
 package info.bioinfweb.treegraph.document.undo.file;
 
 
-import java.text.DecimalFormat;
-import java.util.HashSet;
-import java.util.Set;
-
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.NodeType;
@@ -32,12 +28,15 @@ import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextElementDataAdapter;
 import info.bioinfweb.treegraph.document.tools.TextElementDataAsStringIterator;
 import info.bioinfweb.treegraph.document.tools.TreeSerializer;
+import info.bioinfweb.treegraph.document.topologicalcalculation.LeafSet;
 import info.bioinfweb.treegraph.document.topologicalcalculation.NodeInfo;
-import info.bioinfweb.treegraph.document.topologicalcalculation.TopologicalCalculator;
 import info.bioinfweb.treegraph.document.undo.AbstractTopologicalCalculationEdit;
-import info.bioinfweb.treegraph.document.undo.CompareTextElementDataParameters;
 import info.bioinfweb.treegraph.document.undo.WarningMessageEdit;
 import info.bioinfweb.treegraph.gui.actions.DocumentAction;
+
+import java.text.DecimalFormat;
+import java.util.HashSet;
+import java.util.Set;
 
 
 
@@ -120,22 +119,23 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit imp
 	/**
 	 * Finds the support or conflict values in the source document.
 	 * 
-	 * @param sourceRoot - the root of the subtree to add support values to (a node of the 
+	 * @param sourceRoot the root of the subtree to add support values to (a node of the 
 	 *        target document)
 	 */
 	private void processSubtree(Node sourceRoot) {
-//		TODO: Currently the best support value for every node in the target tree is searched. This can lead to a single value from the source tree being 
-//		mapped onto multiple nodes if the target tree contains more leaf taxa. To avoid this behavior, search for a fitting node for every support 
-//		value in the source tree instead
 		// TODO: Are all conflicts found this way? - Is it possible that conflicts exist on branches in target tree that are not covered this way?
 		// shouldn't all conflicting nodes in target tree be found if all support values are checked from source? if more conflicts exist no support/conflict values for them would exist anyways?
 		
-		if (!sourceRoot.isLeaf()) {
-			if (!(sourceRoot.hasParent() && !sourceRoot.getParent().hasParent() && !getTopologicalCalculator().isProcessRooted() && 
+		LeafSet sourceLeafSet = getTopologicalCalculator().getLeafSet(sourceRoot).and(
+					getTopologicalCalculator().getLeafSet(getDocument().getTree().getPaintStart()));
+		if (!sourceRoot.isLeaf() && (sourceLeafSet.childCount() > 1)) {  // The second condition (and the one below) test the same as the first for the case of different sets of terminals.  //TODO The same AND operation is repeated in findSourceNodeWithAllLeaves() below. This could be combined in the future.
+			if ((sourceLeafSet.complement().childCount() > 1) &&  // This must not be done in the statement above, since iterating over the children still needs to be done.
+					!(sourceRoot.hasParent() && !sourceRoot.getParent().hasParent() && !getTopologicalCalculator().isProcessRooted() && 
 					(sourceRoot.getParent().getChildren().size() == 2) && sourceRoot.isLast())) {  // Check if the current node is linked to the paint start which does not represent a root and the other linked branch already carries the same support value.
+				                                                  //TODO Both probably need to be from the overlapping taxon set. The condition would have to be refactored.
 				
 				NodeInfo bestTargetNode = getTopologicalCalculator().findSourceNodeWithAllLeaves(getDocument().getTree(), 
-								getTopologicalCalculator().getLeafSet(sourceRoot));
+						sourceLeafSet);
 				bestTargetNode.getAdditionalCount();
 				if (bestTargetNode != null) {
 					Node conflict = getTopologicalCalculator().findHighestConflict(sourceDocument.getTree(), 
@@ -143,11 +143,6 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit imp
 							getTopologicalCalculator().getLeafSet(bestTargetNode.getNode()), sourceSupportAdapter);
 					
 					if (conflict == null) {  // Support found
-						//TODO Hier zusätzlich auch wieder additionalCount prüfen. Allerdings sicherstellen, dass nur in beiden Bäumen vorhandene Knoten gezählt werden.
-						//TODO Unit Test für jetzigen Fall erzeugen
-						//     Analogen Unit Test mit unterschiedlichen TaxonSets erzeugen und prüfen ob additionalCount nur für überlappendes TaxonSet erzeugt wird. Falls nicht, prüfen ob Funktion auch woanders verwendet wird oder verändert werden kann.
-						System.out.println(bestTargetNode.getNode().getUniqueName() + ": " + bestTargetNode.getAdditionalCount());
-						
 						if (bestTargetNode.getAdditionalCount() == 0) {
 							if (sourceSupportAdapter.isDecimal(sourceRoot)) {  // If no value exists there
 								targetSupportAdapter.setDecimal(bestTargetNode.getNode(), sourceSupportAdapter.getDecimal(sourceRoot));  // Only decimal values can appear here.
@@ -175,9 +170,9 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit imp
 								catch (Exception e) {}
 							}
 						}
-						else {
-							System.out.println("value not imported");
-						}
+//						else {
+//							System.out.println("value not imported");  //TODO Create info message here?
+//						}
 					}
 					else if (bestTargetNode.getAdditionalCount() == -1) {
 						throw new InternalError("An unexpected error has occorred. (Undefined bestTargetNode.getAdditionalCount().) "

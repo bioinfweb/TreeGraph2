@@ -199,7 +199,7 @@ public class TopologicalCalculator {
 	 *         be found. 
 	 */
 	public NodeInfo findSourceNodeWithAllLeaves(Tree tree, LeafSet leafSet) {
-		leafSet = leafSet.and(getLeafSet(tree.getPaintStart()));
+		leafSet = leafSet.and(getLeafSet(tree.getPaintStart()));  //TODO Is this necessary for other cases then AddSupportValues?
 		return findSourceNodeWithAllLeavesRecursive(tree.getPaintStart(), leafSet);
 	}
 	
@@ -211,7 +211,7 @@ public class TopologicalCalculator {
 		
 		LeafSet comparedLeafSet = getLeafSet(root);
 		if (fullSourceLeafSet != null) {  //TODO Will this check remain necessary in the future or should all callers specify one? (In this case an IllegalStateException could be thrown here instead.)
-			comparedLeafSet = comparedLeafSet.and(fullSourceLeafSet);  // Necessary for trees with different sets of terminals. (Searched leaf set is edited in findSourceNodeWithAllLeaves().) 
+			comparedLeafSet = comparedLeafSet.and(fullSourceLeafSet);  // Necessary for trees with different sets of terminals. (Searched leaf set is edited in findSourceNodeWithAllLeaves().)
 		}
 		int additionalCount = searchedLeafSet.compareTo(comparedLeafSet, false);
 		boolean downwards = additionalCount != -1;
