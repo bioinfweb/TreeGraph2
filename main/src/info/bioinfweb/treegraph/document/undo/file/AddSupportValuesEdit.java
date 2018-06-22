@@ -136,7 +136,9 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit imp
 				
 				NodeInfo bestTargetNode = getTopologicalCalculator().findSourceNodeWithAllLeaves(getDocument().getTree(), 
 						sourceLeafSet);
-				bestTargetNode.getAdditionalCount();
+				if ("x7474zcnij".equals(bestTargetNode.getNode().getUniqueName())) {
+					System.out.println("Importing to node " + sourceLeafSet.complement());  //TODO Why is that 3 and not 1?
+				}
 				if (bestTargetNode != null) {
 					Node conflict = getTopologicalCalculator().findHighestConflict(sourceDocument.getTree(), 
 							getDocument().getTree(), bestTargetNode.getNode(), getTopologicalCalculator().getLeafSet(sourceRoot), 
