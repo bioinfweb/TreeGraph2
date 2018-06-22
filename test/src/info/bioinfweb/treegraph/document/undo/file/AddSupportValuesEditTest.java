@@ -53,7 +53,7 @@ public class AddSupportValuesEditTest {
 	//     - Test unrooted cases. Add parameter to executeEdit(). (Support values directly below the root should not be imported then, but currently seem to be for in test_polytomyIntoSolvedAddTerminals(). This needs to be checked.)
 	//     - Test cases with support near root, especially regarding TODO in AddSupportValuesEdit:135.
 	
-	private Tree executeEdit(String targetName, String sourceName) throws Exception {
+	private Tree executeEdit(String targetName, String sourceName, boolean rooted) throws Exception {
 	  Document target = ReadWriteFactory.getInstance().getReader(ReadWriteFormat.XTG).read(
 	  		new File("data" + SystemUtils.FILE_SEPARATOR + "addSupport" + SystemUtils.FILE_SEPARATOR + targetName));		
 	  Document source = ReadWriteFactory.getInstance().getReader(ReadWriteFormat.XTG).read(
@@ -66,7 +66,7 @@ public class AddSupportValuesEditTest {
 		parameters.setTerminalsAdapter(NodeNameAdapter.getSharedInstance());
 		parameters.setSourceSupportColumn(new TextLabelAdapter("support"));
 		parameters.setTargetType(TextIDElementType.HIDDEN_BRANCH_DATA);
-		parameters.setRooted(true);
+		parameters.setRooted(rooted);
 		
 		target.executeEdit(new AddSupportValuesEdit(target, parameters));
 		
@@ -74,9 +74,9 @@ public class AddSupportValuesEditTest {
 	}
 	
 	
-	@Test
+	//@Test
 	public void test_polytomyIntoSolved() throws Exception {
-		Tree tree = executeEdit("Solved.xtg", "Polytomy.xtg");
+		Tree tree = executeEdit("Solved.xtg", "Polytomy.xtg", true);
 		
 		assertNoAnnotation(tree, "egkw6pwe2g", SUPPORT_COLUMN);
 		assertNoAnnotation(tree, "egkw6pwe2g", CONFLICT_COLUMN);
@@ -92,9 +92,27 @@ public class AddSupportValuesEditTest {
 	}
 	
 	
-	@Test
+	//@Test
+	public void test_polytomyIntoSolvedUnrooted() throws Exception {
+		Tree tree = executeEdit("Solved.xtg", "Polytomy.xtg", false);
+		
+		assertNoAnnotation(tree, "egkw6pwe2g", SUPPORT_COLUMN);
+		assertNoAnnotation(tree, "egkw6pwe2g", CONFLICT_COLUMN);
+		
+		assertNoAnnotation(tree, "x7474zcnij", SUPPORT_COLUMN);  // The 2.0 does not separate more then one terminal on each side if the tree is considered unrooted.
+		assertNoAnnotation(tree, "x7474zcnij", CONFLICT_COLUMN);
+		
+		assertAnnotation(tree, "yt4x200u57", SUPPORT_COLUMN, 1.0);
+		assertNoAnnotation(tree, "yt4x200u57", CONFLICT_COLUMN);
+		
+		assertNoAnnotation(tree, "051l0uv3ok", SUPPORT_COLUMN);
+		assertNoAnnotation(tree, "051l0uv3ok", CONFLICT_COLUMN);
+	}
+	
+	
+	//@Test
 	public void test_solvedIntoPolytomy() throws Exception {
-		Tree tree = executeEdit("Polytomy.xtg", "Solved.xtg");
+		Tree tree = executeEdit("Polytomy.xtg", "Solved.xtg", true);
 		
 		assertNoAnnotation(tree, "egkw6pwe2g", SUPPORT_COLUMN);
 		assertNoAnnotation(tree, "egkw6pwe2g", CONFLICT_COLUMN);
@@ -107,9 +125,24 @@ public class AddSupportValuesEditTest {
 	}
 
 
-	@Test
+	//@Test
+	public void test_solvedIntoPolytomyUnrooted() throws Exception {
+		Tree tree = executeEdit("Polytomy.xtg", "Solved.xtg", false);
+		
+		assertNoAnnotation(tree, "egkw6pwe2g", SUPPORT_COLUMN);
+		assertNoAnnotation(tree, "egkw6pwe2g", CONFLICT_COLUMN);
+		
+		assertNoAnnotation(tree, "mcvscb0eq5", SUPPORT_COLUMN);
+		assertNoAnnotation(tree, "mcvscb0eq5", CONFLICT_COLUMN);
+		
+		assertAnnotation(tree, "yt4x200u57", SUPPORT_COLUMN, 2.0);
+		assertNoAnnotation(tree, "yt4x200u57", CONFLICT_COLUMN);
+	}
+
+
+	//@Test
 	public void test_polytomyIntoSolvedAddTerminals() throws Exception {
-		Tree tree = executeEdit("SolvedAddTerminals.xtg", "PolytomyAddTerminals.xtg");
+		Tree tree = executeEdit("SolvedAddTerminals.xtg", "PolytomyAddTerminals.xtg", true);
 		
 		assertNoAnnotation(tree, "egkw6pwe2g", SUPPORT_COLUMN);
 		assertNoAnnotation(tree, "egkw6pwe2g", CONFLICT_COLUMN);
@@ -129,8 +162,29 @@ public class AddSupportValuesEditTest {
 	
 	
 	@Test
+	public void test_polytomyIntoSolvedAddTerminalsUnrooted() throws Exception {
+		Tree tree = executeEdit("SolvedAddTerminals.xtg", "PolytomyAddTerminals.xtg", false);
+		
+		assertNoAnnotation(tree, "egkw6pwe2g", SUPPORT_COLUMN);
+		assertNoAnnotation(tree, "egkw6pwe2g", CONFLICT_COLUMN);
+		
+		assertNoAnnotation(tree, "x7474zcnij", SUPPORT_COLUMN);  // The 2.0 does not separate more then one terminal on each side if the tree is considered unrooted.
+		assertNoAnnotation(tree, "x7474zcnij", CONFLICT_COLUMN);
+		
+		assertAnnotation(tree, "yt4x200u57", SUPPORT_COLUMN, 1.0);
+		assertNoAnnotation(tree, "yt4x200u57", CONFLICT_COLUMN);
+		
+		assertNoAnnotation(tree, "051l0uv3ok", SUPPORT_COLUMN);
+		assertNoAnnotation(tree, "051l0uv3ok", CONFLICT_COLUMN);
+		
+		assertNoAnnotation(tree, "71ralxvypp", SUPPORT_COLUMN);
+		assertNoAnnotation(tree, "71ralxvypp", CONFLICT_COLUMN);
+	}
+	
+	
+	//@Test
 	public void test_solvedIntoPolytomyAddTerminals() throws Exception {
-		Tree tree = executeEdit("PolytomyAddTerminals.xtg", "SolvedAddTerminals.xtg");
+		Tree tree = executeEdit("PolytomyAddTerminals.xtg", "SolvedAddTerminals.xtg", true);
 		
 		assertNoAnnotation(tree, "egkw6pwe2g", SUPPORT_COLUMN);
 		assertNoAnnotation(tree, "egkw6pwe2g", CONFLICT_COLUMN);
