@@ -174,6 +174,7 @@ public class ActionManagement extends AbstractUndoActionManagement {
 		put("help.aboutMenu", new HelpAboutMenuAction());
 		put("help.about", new AboutAction());
 		put("help.homepage", new TGMainPageAction());
+		put("help.issues", new BugMainPageAction());
 		put("help.bioinfweb", new BioinfwebMainPageAction());
 		put("help.researchGate", new ResearchGateAction());
 		put("help.twitter", new TwitterAction());
