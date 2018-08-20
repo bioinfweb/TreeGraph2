@@ -19,28 +19,12 @@
 package info.bioinfweb.treegraph.gui.dialogs;
 
 
+import java.awt.Frame;
+import java.io.IOException;
+
 import info.bioinfweb.commons.io.TextReader;
 import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.wikihelp.client.JHTMLLabel;
-
-import java.awt.Desktop;
-import java.awt.Frame;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.SystemColor;
-import java.io.IOException;
-
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JEditorPane;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
-import javax.swing.event.HyperlinkEvent.EventType;
-import javax.swing.event.HyperlinkListener;
 
 
 
@@ -49,42 +33,12 @@ import javax.swing.event.HyperlinkListener;
  * 
  * @author Ben St&ouml;ver
  */
-public class AboutDialog extends JDialog {
+public class AboutDialog extends info.bioinfweb.commons.swing.AboutDialog {
 	public static final String RESOURCES_PATH = "/resources/about/";  //  @jve:decl-index=0:
 	
 	private static final long serialVersionUID = 1L;
 	
-	public final HyperlinkListener HYPERLINK_LISTENER = 		
-		  new javax.swing.event.HyperlinkListener() {
-					public void hyperlinkUpdate(javax.swing.event.HyperlinkEvent e) {
-						if (e.getEventType().equals(EventType.ACTIVATED)) {
-							try {
-								Desktop.getDesktop().browse(e.getURL().toURI());
-							}
-							catch (Exception ex) {
-								JOptionPane.showMessageDialog(getOwner(), 
-										"An error occurred when trying open the selected link.", 
-										"Navigation failed,", JOptionPane.ERROR_MESSAGE);
-							}
-						}
-					}
-				};
-	
-	
-	private JPanel jContentPane = null;
-	private JTabbedPane contentsTabbedPane = null;
-	private JPanel generalPanel = null;
-	private JPanel gplPanel = null;
-	private JPanel apachePanel = null;
-	private JHTMLLabel batikLabel = null;
-	private JPanel buttonPanel = null;
-	private JButton closeButton = null;
-	private JEditorPane apacheTextArea = null;
-	private JScrollPane apacheScrollPane = null;
-	private JScrollPane gplScrollPane = null;
-	private JEditorPane gplEditorPane = null;
-	private JScrollPane generalScrollPane = null;
-	private JEditorPane generalEditorPane = null;
+	//private JHTMLLabel batikLabel = null;
 	
 	
 	/**
@@ -92,248 +46,33 @@ public class AboutDialog extends JDialog {
 	 */
 	public AboutDialog(Frame owner) {
 		super(owner);
-		initialize();
+		addTabs();
+		setSize(700, 600);
+		setTitle("About TreeGraph 2");
 		setLocationRelativeTo(owner);
 	}
 	
 	
-	/**
-	 * This method initializes this
-	 * 
-	 * @return void
-	 */
-	private void initialize() {
-		setSize(700, 600);
-		setContentPane(getJContentPane());
-		setTitle("About TreeGraph 2");
-	}
-
-
-	/**
-	 * This method initializes jContentPane
-	 * 
-	 * @return javax.swing.JPanel
-	 */
-	private JPanel getJContentPane() {
-		if (jContentPane == null) {
-			jContentPane = new JPanel();
-			jContentPane.setLayout(new BoxLayout(getJContentPane(), BoxLayout.Y_AXIS));
-			jContentPane.add(getContentsTabbedPane(), null);
-			jContentPane.add(getButtonPanel(), null);
+	private void addContentFromFile(String title, String path, String altURL) {
+		String text;
+		try {
+			text = TextReader.readText(Object.class.getResource(path));
 		}
-		return jContentPane;
-	}
-
-
-	/**
-	 * This method initializes contentsTabbedPane	
-	 * 	
-	 * @return javax.swing.JTabbedPane	
-	 */
-	private JTabbedPane getContentsTabbedPane() {
-		if (contentsTabbedPane == null) {
-			contentsTabbedPane = new JTabbedPane();
-			contentsTabbedPane.addTab("Info", getGeneralPanel());
-			contentsTabbedPane.addTab("General public lincence", getGPLPanel());
-			contentsTabbedPane.addTab("Apache licence", getApachePanel());
+		catch (IOException e) {
+			text = "<html><body>Unable to read licence file. Licence is available at <a href=\"" + altURL + "\">\" + altURL + \"</a>.</body></html>";
 		}
-		return contentsTabbedPane;
+		
+		addTab(title, null, "text/html", text, null);
 	}
-
-
-	/**
-	 * This method initializes generalPanel	
-	 * 	
-	 * @return javax.swing.JPanel	
-	 */
-	private JPanel getGeneralPanel() {
-		if (generalPanel == null) {
-			generalPanel = new JPanel();
-			generalPanel.setLayout(new BoxLayout(getGeneralPanel(), BoxLayout.Y_AXIS));
-			generalPanel.add(getGeneralScrollPane(), null);
-		}
-		return generalPanel;
-	}
-
-
-	/**
-	 * This method initializes gplPanel	
-	 * 	
-	 * @return javax.swing.JPanel	
-	 */
-	private JPanel getGPLPanel() {
-		if (gplPanel == null) {
-			GridBagConstraints gridBagConstraints2 = new GridBagConstraints();
-			gridBagConstraints2.fill = GridBagConstraints.BOTH;
-			gridBagConstraints2.weighty = 1.0;
-			gridBagConstraints2.weightx = 1.0;
-			gplPanel = new JPanel();
-			gplPanel.setLayout(new GridBagLayout());
-			gplPanel.add(getGplScrollPane(), gridBagConstraints2);
-		}
-		return gplPanel;
-	}
-
-
-	/**
-	 * This method initializes apachePanel	
-	 * 	
-	 * @return javax.swing.JPanel	
-	 */
-	private JPanel getApachePanel() {
-		if (apachePanel == null) {
-			GridBagConstraints gridBagConstraints1 = new GridBagConstraints();
-			gridBagConstraints1.fill = GridBagConstraints.BOTH;
-			gridBagConstraints1.gridx = 0;
-			gridBagConstraints1.gridy = 1;
-			gridBagConstraints1.weightx = 1.0;
-			gridBagConstraints1.weighty = 1.0;
-			GridBagConstraints gridBagConstraints = new GridBagConstraints();
-			gridBagConstraints.insets = new Insets(0, 0, 0, 0);
-			gridBagConstraints.gridx = 0;
-			gridBagConstraints.gridy = 0;
-			gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
-			gridBagConstraints.weightx = 1.0;
-			batikLabel = new JHTMLLabel();
-			batikLabel.setHTMLContent("TreeGraph uses libraries from the <a href=\"http://apache.org/\">Apache software foundation</a> wich are included in this release. They are distributed under Apache Public Licence:");
-			apachePanel = new JPanel();
-			apachePanel.setLayout(new GridBagLayout());
-			apachePanel.add(batikLabel, gridBagConstraints);
-			apachePanel.add(getApacheScrollPane(), gridBagConstraints1);
-		}
-		return apachePanel;
-	}
-
-
-	/**
-	 * This method initializes buttonPanel	
-	 * 	
-	 * @return javax.swing.JPanel	
-	 */
-	private JPanel getButtonPanel() {
-		if (buttonPanel == null) {
-			GridBagConstraints gridBagConstraints3 = new GridBagConstraints();
-			gridBagConstraints3.insets = new Insets(3, 3, 3, 3);
-			gridBagConstraints3.weighty = 1.0;
-			gridBagConstraints3.weightx = 1.0;
-			buttonPanel = new JPanel();
-			buttonPanel.setLayout(new GridBagLayout());
-			buttonPanel.add(getCloseButton(), gridBagConstraints3);
-		}
-		return buttonPanel;
-	}
-
-
-	/**
-	 * This method initializes closeButton	
-	 * 	
-	 * @return javax.swing.JButton	
-	 */
-	private JButton getCloseButton() {
-		if (closeButton == null) {
-			closeButton = new JButton();
-			closeButton.setText("Close");
-			closeButton.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent e) {
-					setVisible(false);
-				}
-			});
-		}
-		return closeButton;
-	}
-
-
-	/**
-	 * This method initializes apacheTextArea	
-	 * 	
-	 * @return javax.swing.JTextArea	
-	 */
-	private JEditorPane getApacheTextArea() {
-		if (apacheTextArea == null) {
-			String text;
-			try {
-				text = TextReader.readText(Object.class.getResource("/resources/about/Apache.txt"));
-			}
-			catch (IOException e) {
-				text = "<html><body>Unable to read licence file. Licence is available at <a href=\"http://xmlgraphics.apache.org/batik/license.html\">http://xmlgraphics.apache.org/batik/license.html</a>.</body></html>";
-			}
-			
-			apacheTextArea = new JEditorPane("text/text", text);
-			apacheTextArea.setCaretPosition(0);
-			apacheTextArea.setEnabled(false);
-			apacheTextArea.setBackground(SystemColor.text);
-			apacheTextArea.setDisabledTextColor(SystemColor.textText);
-		}
-		return apacheTextArea;
-	}
-
-
-	/**
-	 * This method initializes apacheScrollPane	
-	 * 	
-	 * @return javax.swing.JScrollPane	
-	 */
-	private JScrollPane getApacheScrollPane() {
-		if (apacheScrollPane == null) {
-			apacheScrollPane = new JScrollPane();
-			apacheScrollPane.setViewportView(getApacheTextArea());
-		}
-		return apacheScrollPane;
-	}
-
-
-	/**
-	 * This method initializes gplScrollPane	
-	 * 	
-	 * @return javax.swing.JScrollPane	
-	 */
-	private JScrollPane getGplScrollPane() {
-		if (gplScrollPane == null) {
-			gplScrollPane = new JScrollPane();
-			gplScrollPane.setViewportView(getGplEditorPane());
-		}
-		return gplScrollPane;
-	}
-
-
-	/**
-	 * This method initializes gplTextArea	
-	 * 	
-	 * @return javax.swing.JTextArea	
-	 */
-	private JEditorPane getGplEditorPane() {
-		if (gplEditorPane == null) {
-			String text;
-			try {
-				text = TextReader.readText(Object.class.getResource("/resources/about/GPL.html"));
-			}
-			catch (IOException e) {
-				text = "<html>Unable to read license file. Licence is available at " +
-						"<a href=\"http://treegraph.web-insel.info/License\">" +
-						"http://treegraph.bioinfweb.info/License</a>.</html>";
-			}
-			gplEditorPane = new JEditorPane();
-			gplEditorPane.setContentType("text/html");
-			gplEditorPane.setText(text);
-			gplEditorPane.setCaretPosition(0);
-			gplEditorPane.setEditable(false);
-			gplEditorPane.addHyperlinkListener(HYPERLINK_LISTENER);
-		}
-		return gplEditorPane;
-	}
-
-
-	/**
-	 * This method initializes generalScrollPane	
-	 * 	
-	 * @return javax.swing.JScrollPane	
-	 */
-	private JScrollPane getGeneralScrollPane() {
-		if (generalScrollPane == null) {
-			generalScrollPane = new JScrollPane();
-			generalScrollPane.setViewportView(getGeneralEditorPane());
-		}
-		return generalScrollPane;
+	
+	
+	private void addTabs() {
+		addTab("General", null, "text/html", getGeneralContent(), null);
+		addContentFromFile("TreeGraph 2 License", "/resources/about/GPL.html", "http://treegraph.bioinfweb.info/License");  //TODO Add link label to panel or include link in HTML.
+		addContentFromFile("Apache License", "/resources/about/ApacheLicense.html", "http://www.apache.org/licenses/LICENSE-2.0.html");
+		addContentFromFile("Privacy Policy", "/resources/about/PrivacyPolicy.en.html", "http://r.bioinfweb.info/TGPrivacyEN");  //TODO Create page and redirection
+		addContentFromFile("Datenschutzerklärung", "/resources/about/PrivacyPolicy.de.html", "http://r.bioinfweb.info/TGPrivacyDE");  //TODO Create page and redirection
+		//TODO Does only the general tab use a CSS? If so, should it be changed?
 	}
 
 
@@ -347,11 +86,9 @@ public class AboutDialog extends JDialog {
 	 * 	
 	 * @return javax.swing.JEditorPane	
 	 */
-	private JEditorPane getGeneralEditorPane() {
-		if (generalEditorPane == null) {
-			generalEditorPane = new JEditorPane();
-			generalEditorPane.setContentType("text/html");
-			generalEditorPane.setText("<html>" +
+	private String getGeneralContent() {
+			return 
+					"<html>" +
 					"<head><link rel='stylesheet' type='text/css' href='" + getResourcePath("Style.css") + "'></head>" +
 					"<body>" +
 					"<h1><i>TreeGraph " + Main.getInstance().getVersion().toString() + "</i></h1>" +
@@ -394,11 +131,6 @@ public class AboutDialog extends JDialog {
 					  "<li><i>Tango Desktop Project</i> (<a href='http://tango.freedesktop.org/'>http://tango.freedesktop.org/</a>)</li>" +
 					"</ul>" +
 					"<p>See <a href='http://treegraph.bioinfweb.info/Development/Libraries'>here</a> for more information." +
-					"</body></html>");			
-			generalEditorPane.setCaretPosition(0);
-			generalEditorPane.setEditable(false);
-			generalEditorPane.addHyperlinkListener(HYPERLINK_LISTENER);
-		}
-		return generalEditorPane;
+					"</body></html>";			
 	}
 }

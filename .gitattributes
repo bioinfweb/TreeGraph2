@@ -778,8 +778,10 @@ main/src/info/bioinfweb/treegraph/gui/treeframe/ruler/TreeViewRulerConstants.jav
 main/src/info/bioinfweb/treegraph/gui/treeframe/ruler/TreeViewRulerUnitField.java -text
 main/src/info/bioinfweb/treegraph/package.html -text
 main/src/resources/Splash.png -text
-main/src/resources/about/Apache.txt -text
+main/src/resources/about/ApacheLicense.html -text svneol=unset#text/plain
 main/src/resources/about/GPL.html -text
+main/src/resources/about/PrivacyPolicy.de.html -text svneol=unset#text/plain
+main/src/resources/about/PrivacyPolicy.en.html -text svneol=unset#text/plain
 main/src/resources/about/Style.css -text
 main/src/resources/symbols/CopyElement16.png -text
 main/src/resources/symbols/CopyElement22.png -text
