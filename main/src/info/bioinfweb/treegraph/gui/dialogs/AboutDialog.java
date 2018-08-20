@@ -117,8 +117,8 @@ public class AboutDialog extends info.bioinfweb.commons.swing.AboutDialog {
 					    "or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for " +
 					    "more details.</p>" +
 					
-  				"<p>The included Apache Commons, Batic and l2fprod-common Libraries are distributed under " +
-					    "Apache Public Licence (see Apache Public Licence tab).</p>" +
+  				"<p>The included libraries Apache Commons, Batic and l2fprod-common are distributed under " +
+					    "Apache Licence (see Apache Licence tab).</p>" +
 					
 					"<p><b>The following libraries are used by <i>TreeGraph 2</i>:</b></p>" +
 					"<ul>" +
