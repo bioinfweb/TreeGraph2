@@ -29,6 +29,9 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import info.bioinfweb.commons.CommandLineReader;
+import info.bioinfweb.commons.Math2;
+import info.bioinfweb.commons.appversion.ApplicationVersion;
 import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.treegraph.PreferencesConstants;
 import info.bioinfweb.treegraph.document.Document;
@@ -38,14 +41,10 @@ import info.bioinfweb.treegraph.document.io.ReadWriteFactory;
 import info.bioinfweb.treegraph.document.io.ReadWriteFormat;
 import info.bioinfweb.treegraph.document.io.ReadWriteParameterMap;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;
-import info.bioinfweb.treegraph.gui.dialogs.PreferencesDialog;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.updatecenter.dataxchange.VersionListXMLReader;
 import info.bioinfweb.updatecenter.dataxchange.beans.ApplicationVersionInfo;
 import info.bioinfweb.updatecenter.dataxchange.beans.ListInfo;
-import info.bioinfweb.commons.CommandLineReader;
-import info.bioinfweb.commons.Math2;
-import info.bioinfweb.commons.appversion.ApplicationVersion;
 
 
 
@@ -74,7 +73,8 @@ public class CmdProcessor implements PreferencesConstants {
 				preferences.putBoolean(DO_VERSION_CHECK_PREF_KEY, JOptionPane.YES_OPTION == JOptionPane.showOptionDialog(null, 
 						"You seem to using TreeGraph 2 for the first time on this system.\n"
 						+ "By default TreeGraph 2 will check is a newer version of the software is available on startup to inform you on possible updates.\n"
-						+ "(You can edit your settings later by selecting \"Window\" -> \"Preferences\" from the main menu.)\n",
+						+ "(You can edit your settings later by selecting \"Window\" -> \"Preferences\" from the main menu.)\n\n"
+						+ "You can read our privacy policy by selecting \"Help\" -> \"Privacy Policy\" from the main menu.\n\n",
 						"Check for updates", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, 
 						new String[]{"Check for updates on start (recommended)", "Never check for updates"}, null));
 				preferences.putBoolean(FIRST_RUN_PREF_KEY, false);
