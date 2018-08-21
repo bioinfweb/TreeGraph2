@@ -40,6 +40,8 @@ import info.bioinfweb.wikihelp.client.OkCancelApplyWikiHelpDialog;
 
 
 public class PreferencesDialog extends OkCancelApplyWikiHelpDialog implements PreferencesConstants {
+	//TODO Add options to hide further warning messages?
+	
 	private JPanel preferencesPanel;
 	private JCheckBox checkForUpdatesCB;
 
