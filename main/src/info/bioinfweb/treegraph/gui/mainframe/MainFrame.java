@@ -32,6 +32,7 @@ import info.bioinfweb.treegraph.graphics.positionpaint.PositionPaintType;
 import info.bioinfweb.treegraph.gui.CurrentDirectoryModel;
 import info.bioinfweb.treegraph.gui.actions.ActionManagement;
 import info.bioinfweb.treegraph.gui.actions.window.SelectFrameAction;
+import info.bioinfweb.treegraph.gui.dialogs.AboutDialog;
 import info.bioinfweb.treegraph.gui.treeframe.TreeInternalFrame;
 
 import java.awt.BorderLayout;
@@ -93,6 +94,7 @@ public class MainFrame extends JFrame implements Runnable {
 	private JMenu newMenu = null;
 	private JMenu nodeBranchDataMenu = null;
 	private ApplicationLoggerDialog readWriteLogDialog;
+	private AboutDialog aboutDialog = null;
 	
 	
 	/**
@@ -116,6 +118,14 @@ public class MainFrame extends JFrame implements Runnable {
 
 	public ApplicationLoggerDialog getReadWriteLogDialog() {
 		return readWriteLogDialog;
+	}
+	
+	
+	public AboutDialog getAboutDialog() {
+		if (aboutDialog == null) {
+			aboutDialog = new AboutDialog(this);
+		}
+		return aboutDialog;
 	}
 
 
@@ -518,6 +528,7 @@ public class MainFrame extends JFrame implements Runnable {
 			helpMenu.addSeparator();
 			helpMenu.add(getActionManagement().get("help.homepage"));
 			helpMenu.add(getActionManagement().get("help.about"));
+			helpMenu.add(getActionManagement().get("help.privacyPolicy"));
 			helpMenu.addSeparator();
 			helpMenu.add(getActionManagement().get("help.bioinfweb"));
 			helpMenu.add(getActionManagement().get("help.twitter"));

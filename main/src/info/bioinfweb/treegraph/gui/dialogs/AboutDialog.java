@@ -34,6 +34,8 @@ import info.bioinfweb.wikihelp.client.JHTMLLabel;
  * @author Ben St&ouml;ver
  */
 public class AboutDialog extends info.bioinfweb.commons.swing.AboutDialog {
+	public static final int GENERAL_TAB_INDEX = 0;
+	public static final int PRIVACY_POLICY_TAB_INDEX = 3;
 	public static final String RESOURCES_PATH = "/resources/about/";  //  @jve:decl-index=0:
 	
 	private static final long serialVersionUID = 1L;

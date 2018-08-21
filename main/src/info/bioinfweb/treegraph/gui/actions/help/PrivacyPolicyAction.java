@@ -27,10 +27,10 @@ import info.bioinfweb.treegraph.gui.dialogs.AboutDialog;
 
 
 
-public class AboutAction extends BasicAboutAction {
-	public AboutAction() {
-		super(AboutDialog.GENERAL_TAB_INDEX);
-		putValue(Action.NAME, "About..."); 
-	  putValue(Action.MNEMONIC_KEY, KeyEvent.VK_A);
+public class PrivacyPolicyAction extends BasicAboutAction {
+	public PrivacyPolicyAction() {
+		super(AboutDialog.PRIVACY_POLICY_TAB_INDEX);
+		putValue(Action.NAME, "Privacy Policy..."); 
+	  putValue(Action.MNEMONIC_KEY, KeyEvent.VK_P);
 	}
 }

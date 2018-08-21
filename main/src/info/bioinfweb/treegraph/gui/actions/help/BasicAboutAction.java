@@ -19,18 +19,25 @@
 package info.bioinfweb.treegraph.gui.actions.help;
 
 
-import java.awt.event.KeyEvent;
+import java.awt.event.ActionEvent;
 
-import javax.swing.Action;
-
-import info.bioinfweb.treegraph.gui.dialogs.AboutDialog;
-
+import info.bioinfweb.commons.swing.ExtendedAbstractAction;
+import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 
 
-public class AboutAction extends BasicAboutAction {
-	public AboutAction() {
-		super(AboutDialog.GENERAL_TAB_INDEX);
-		putValue(Action.NAME, "About..."); 
-	  putValue(Action.MNEMONIC_KEY, KeyEvent.VK_A);
+
+public class BasicAboutAction extends ExtendedAbstractAction {
+	private int tabIndex;
+	
+	
+	public BasicAboutAction(int tabIndex) {
+		super();
+		this.tabIndex = tabIndex;
+	  loadSymbols("TreeGraph");
+  }
+
+
+	public void actionPerformed(ActionEvent e) {
+		MainFrame.getInstance().getAboutDialog().show(tabIndex);
 	}
 }

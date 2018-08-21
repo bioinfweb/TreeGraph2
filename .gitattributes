@@ -616,12 +616,14 @@ main/src/info/bioinfweb/treegraph/gui/actions/format/ScaleBranchLengthsAction.ja
 main/src/info/bioinfweb/treegraph/gui/actions/format/ScaleDistanceValuesAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/format/ShowHideScaleBarAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/format/ShowRootedAction.java -text
-main/src/info/bioinfweb/treegraph/gui/actions/help/AboutAction.java -text
+main/src/info/bioinfweb/treegraph/gui/actions/help/AboutAction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/gui/actions/help/BasicAboutAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/help/BugMainPageAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/actions/help/HelpAboutMenuAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/help/HelpContentsAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/help/HelpMainPageAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/help/HelpTopicAction.java -text
+main/src/info/bioinfweb/treegraph/gui/actions/help/PrivacyPolicyAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/actions/help/ResearchGateAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/actions/help/TGMainPageAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/package.html -text
