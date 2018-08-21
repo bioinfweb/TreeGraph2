@@ -33,16 +33,13 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import info.bioinfweb.treegraph.Main;
+import info.bioinfweb.treegraph.PreferencesConstants;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.wikihelp.client.OkCancelApplyWikiHelpDialog;
 
 
 
-public class PreferencesDialog extends OkCancelApplyWikiHelpDialog {
-	public static final String DO_VERSION_CHECK_PREF_KEY = "doVersionCheck";
-	public static final boolean DO_VERSION_CHECK_DEFAULT_VALUE = true;
-	
-	
+public class PreferencesDialog extends OkCancelApplyWikiHelpDialog implements PreferencesConstants {
 	private JPanel preferencesPanel;
 	private JCheckBox checkForUpdatesCB;
 

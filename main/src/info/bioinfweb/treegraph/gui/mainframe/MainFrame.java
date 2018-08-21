@@ -70,7 +70,7 @@ import javax.swing.WindowConstants;
  */
 public class MainFrame extends JFrame implements Runnable {
 	private static final long serialVersionUID = 1L;
-	private static final int WINDOW_MENU_ITEMS_COUNT = 3;
+	private static final int WINDOW_MENU_ITEMS_COUNT = 5;
 	
 	
 	private static MainFrame firstInstance = null;
@@ -333,8 +333,7 @@ public class MainFrame extends JFrame implements Runnable {
 	 * @return void
 	 */
 	private void initialize() {
-		setSize(800, 800);  // Tutorial
-		//setSize(800, 600);
+		setSize(800, 600);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setContentPane(getJContentPane());
 		setJMenuBar(getMainMenu());
@@ -576,6 +575,8 @@ public class MainFrame extends JFrame implements Runnable {
 			windowMenu = new JMenu();
 			windowMenu.setText("Window");
 			windowMenu.setMnemonic(KeyEvent.VK_W);
+			windowMenu.add(getActionManagement().get("window.preferences"));
+			windowMenu.addSeparator();
 			windowMenu.add(getActionManagement().get("window.tileVertical"));
 			windowMenu.add(getActionManagement().get("window.tileHorizontal"));
 			windowMenu.add(getActionManagement().get("window.cascade"));

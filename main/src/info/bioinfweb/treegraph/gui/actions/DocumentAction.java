@@ -35,8 +35,9 @@ import info.bioinfweb.commons.swing.ExtendedAbstractAction;
 
 
 /**
- * Implements basic functionality for all actions in TreeGraph 2 which are applied on
- * opened documents. All subclasses have access 
+ * Implements basic functionality for all actions in <i>TreeGraph 2</i> which are applied on
+ * opened documents.
+ * 
  * @author Ben St&ouml;ver
  */
 public abstract class DocumentAction extends ExtendedAbstractAction {

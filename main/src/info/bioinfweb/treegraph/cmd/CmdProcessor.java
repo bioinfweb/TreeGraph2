@@ -23,12 +23,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URL;
 import java.text.DecimalFormat;
+import java.util.prefs.Preferences;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import info.bioinfweb.treegraph.Main;
+import info.bioinfweb.treegraph.PreferencesConstants;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.format.TextFormats;
 import info.bioinfweb.treegraph.document.io.DocumentReader;
@@ -36,6 +38,7 @@ import info.bioinfweb.treegraph.document.io.ReadWriteFactory;
 import info.bioinfweb.treegraph.document.io.ReadWriteFormat;
 import info.bioinfweb.treegraph.document.io.ReadWriteParameterMap;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;
+import info.bioinfweb.treegraph.gui.dialogs.PreferencesDialog;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.updatecenter.dataxchange.VersionListXMLReader;
 import info.bioinfweb.updatecenter.dataxchange.beans.ApplicationVersionInfo;
@@ -46,10 +49,7 @@ import info.bioinfweb.commons.appversion.ApplicationVersion;
 
 
 
-public class CmdProcessor {
-	public static final String LAST_VERSION_CHECK_PREF_KEY = "lastVersionCheck";
-	public static final long VERSION_CHECK_INTERVAL = 1000 * 60 * 60;  // 1 h
-	
+public class CmdProcessor implements PreferencesConstants {
 	public static final String VERSION_OPTION = "-version";
 	public static final String CONVERT_OPTION = "-convert";
 	public static final String XTG_OPTION = "-xtg";
@@ -69,27 +69,40 @@ public class CmdProcessor {
 	
 	
 	private void checkUpdate() {
-		try {
-			String lastChecked = Main.getInstance().getPreferences().get(LAST_VERSION_CHECK_PREF_KEY, null);
-			if ((lastChecked == null) || (Math2.parseDouble(lastChecked) + VERSION_CHECK_INTERVAL <= System.currentTimeMillis())) {
-				ListInfo<ApplicationVersionInfo> list = new VersionListXMLReader().read(new URL(Main.LATEST_VERSION_URL).openStream());
-				ApplicationVersion remoteVersion = list.getEntries().get(0);
-				if (Main.getInstance().getVersion().getBuildNumber() < remoteVersion.getBuildNumber()) {
-					if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(null, 
-							"There is a newer version of TreeGraph 2 available for download.\n" +
-							"(You are using " + Main.getInstance().getVersion() + " and could update to " + remoteVersion + ".)\n\n" +
-							"Do you want to go to the download page now?", "Newer version available", 
-							JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE)) {
-						
-						Main.getInstance().getWikiHelp().setPage(Main.DOWNLOAD_URL);
+			Preferences preferences = Main.getInstance().getPreferences();
+			if (preferences.getBoolean(FIRST_RUN_PREF_KEY, true)) {
+				preferences.putBoolean(DO_VERSION_CHECK_PREF_KEY, JOptionPane.YES_OPTION == JOptionPane.showOptionDialog(null, 
+						"You seem to using TreeGraph 2 for the first time on this system.\n"
+						+ "By default TreeGraph 2 will check is a newer version of the software is available on startup to inform you on possible updates.\n"
+						+ "(You can edit your settings later by selecting \"Window\" -> \"Preferences\" from the main menu.)\n",
+						"Check for updates", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, 
+						new String[]{"Check for updates on start (recommended)", "Never check for updates"}, null));
+				preferences.putBoolean(FIRST_RUN_PREF_KEY, false);
+			}
+
+			if (preferences.getBoolean(DO_VERSION_CHECK_PREF_KEY, false)) {
+				String lastChecked = preferences.get(LAST_VERSION_CHECK_PREF_KEY, null);
+				if ((lastChecked == null) || (Math2.parseDouble(lastChecked) + VERSION_CHECK_INTERVAL_DEFAULT_VALUE <= System.currentTimeMillis())) {
+					try {
+						ListInfo<ApplicationVersionInfo> list = new VersionListXMLReader().read(new URL(Main.LATEST_VERSION_URL).openStream());
+						ApplicationVersion remoteVersion = list.getEntries().get(0);
+						if (Main.getInstance().getVersion().getBuildNumber() < remoteVersion.getBuildNumber()) {
+							if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(null, 
+									"There is a newer version of TreeGraph 2 available for download.\n" +
+									"(You are using " + Main.getInstance().getVersion() + " and could update to " + remoteVersion + ".)\n\n" +
+									"Do you want to go to the download page now?", "Newer version available", 
+									JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE)) {
+								
+								Main.getInstance().getWikiHelp().setPage(Main.DOWNLOAD_URL);
+							}
+							preferences.put(LAST_VERSION_CHECK_PREF_KEY, "" + System.currentTimeMillis());
+						}
 					}
-					Main.getInstance().getPreferences().put(LAST_VERSION_CHECK_PREF_KEY, "" + System.currentTimeMillis());
+					catch (Exception e) {
+						e.printStackTrace();  //TODO evtl. spezielle Ausgabe oder gar keine Ausgabe
+					}
 				}
 			}
-		}
-		catch (Exception e) {
-			e.printStackTrace();  //TODO evtl. spezielle Ausgabe oder gar keine Ausgabe
-		}
 	}
 
 

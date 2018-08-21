@@ -168,6 +168,7 @@ public class ActionManagement extends AbstractUndoActionManagement {
 		put("window.tileVertical", new TileVerticalAction());
 		put("window.tileHorizontal", new TileHorizontalAction());
 		put("window.cascade", new CascadeAction());
+		put("window.preferences", new PreferencesAction());
 
 		put("help.contents", new HelpContentsAction());
 		put("help.index", new HelpMainPageAction());
@@ -319,7 +320,7 @@ public class ActionManagement extends AbstractUndoActionManagement {
 	public JPopupMenu getPopupMenu(PaintableElement selected) {
   	if (selected != null) {
   		popupMenu.removeAll();
-			boolean separatorWasLast = true;  // Zur Vermeidung mehrere Trennlinien hintereinander
+			boolean separatorWasLast = true;  // Avoid multiple subsequent separators.
   		for (int i = 0; i < popupActions.size(); i++) {
   			Action action = popupActions.get(i);
   			if ((action == null) && !separatorWasLast) {

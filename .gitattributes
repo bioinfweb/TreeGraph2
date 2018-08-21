@@ -77,6 +77,7 @@ main/src/GPL.txt -text svneol=unset#text/plain
 main/src/NOTICE.txt -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/AWTExceptionHandler.java -text
 main/src/info/bioinfweb/treegraph/Main.java -text
+main/src/info/bioinfweb/treegraph/PreferencesConstants.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/cmd/CmdLoadLogger.java -text
 main/src/info/bioinfweb/treegraph/cmd/CmdProcessor.java -text
 main/src/info/bioinfweb/treegraph/cmd/ImageGenerator.java -text
