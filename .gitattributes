@@ -650,6 +650,7 @@ main/src/info/bioinfweb/treegraph/gui/actions/view/SetZoomAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/view/SetZoomToOriginalAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/window/CascadeAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/window/NextDocumentAction.java -text
+main/src/info/bioinfweb/treegraph/gui/actions/window/PreferencesAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/actions/window/PreviousDocumentAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/window/SelectFrameAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/window/TileHorizontalAction.java -text
@@ -665,6 +666,7 @@ main/src/info/bioinfweb/treegraph/gui/dialogs/EditDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/GlobalFormatsDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/MarginInput.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/OpenedDocumentsComboBoxModel.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/gui/dialogs/PreferencesDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/ReplaceInNodeDataDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/ResolutionInput.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/ScaleBranchLengthsDialog.java -text
