@@ -119,8 +119,7 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit imp
 	/**
 	 * Finds the support or conflict values in the source document.
 	 * 
-	 * @param sourceRoot the root of the subtree to add support values to (a node of the 
-	 *        target document)
+	 * @param sourceRoot the root of the subtree to add support values to (a node of the target document)
 	 */
 	private void processSubtree(Node sourceRoot) {
 		// TODO: Are all conflicts found this way? - Is it possible that conflicts exist on branches in target tree that are not covered this way?
@@ -241,10 +240,10 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit imp
 			return null;
 		}
 		else {
-			return "There were no according terminal nodes in the target document for the following terminal nodes from the source "
+			return "There were no respective terminal nodes in the target document for the following terminal nodes from the source "
 					+ "document found:\n\n" + DocumentAction.createElementList(new TextElementDataAsStringIterator(
 							remainingSourceLeaves.iterator()), remainingSourceLeaves.size(), true)
-					+ "\n\nAccordingly some support values may not have been imported from the source tree (which may have been desired).\n"
+					+ "\n\nConsequently, some support values may not have been imported from the source tree (which may have been desired).\n"
 					+ "(Note that matching also may have failed because the specified leaf node/branch data columns for the source or "
 					+ "target document were not correct.)";
 		}
