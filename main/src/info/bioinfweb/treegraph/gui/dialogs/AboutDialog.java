@@ -83,11 +83,6 @@ public class AboutDialog extends info.bioinfweb.commons.swing.AboutDialog {
 	}
 	
 	
-	/**
-	 * This method initializes generalEditorPane	
-	 * 	
-	 * @return javax.swing.JEditorPane	
-	 */
 	private String getGeneralContent() {
 			return 
 					"<html>" +
