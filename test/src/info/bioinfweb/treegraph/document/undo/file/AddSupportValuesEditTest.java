@@ -74,7 +74,7 @@ public class AddSupportValuesEditTest {
 	}
 	
 	
-	//@Test
+	@Test
 	public void test_polytomyIntoSolved() throws Exception {
 		Tree tree = executeEdit("Solved.xtg", "Polytomy.xtg", true);
 		
@@ -92,7 +92,7 @@ public class AddSupportValuesEditTest {
 	}
 	
 	
-	//@Test
+	@Test
 	public void test_polytomyIntoSolvedUnrooted() throws Exception {
 		Tree tree = executeEdit("Solved.xtg", "Polytomy.xtg", false);
 		
@@ -110,7 +110,7 @@ public class AddSupportValuesEditTest {
 	}
 	
 	
-	//@Test
+	@Test
 	public void test_solvedIntoPolytomy() throws Exception {
 		Tree tree = executeEdit("Polytomy.xtg", "Solved.xtg", true);
 		
@@ -125,7 +125,7 @@ public class AddSupportValuesEditTest {
 	}
 
 
-	//@Test
+	@Test
 	public void test_solvedIntoPolytomyUnrooted() throws Exception {
 		Tree tree = executeEdit("Polytomy.xtg", "Solved.xtg", false);
 		
@@ -140,7 +140,7 @@ public class AddSupportValuesEditTest {
 	}
 
 
-	//@Test
+	@Test
 	public void test_polytomyIntoSolvedAddTerminals() throws Exception {
 		Tree tree = executeEdit("SolvedAddTerminals.xtg", "PolytomyAddTerminals.xtg", true);
 		
@@ -182,7 +182,7 @@ public class AddSupportValuesEditTest {
 	}
 	
 	
-	//@Test
+	@Test
 	public void test_solvedIntoPolytomyAddTerminals() throws Exception {
 		Tree tree = executeEdit("PolytomyAddTerminals.xtg", "SolvedAddTerminals.xtg", true);
 		
