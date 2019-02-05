@@ -122,22 +122,19 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit imp
 	 * @param sourceRoot the root of the subtree to add support values to (a node of the target document)
 	 */
 	private void processSubtree(Node sourceRoot) {
-		// TODO: Are all conflicts found this way? - Is it possible that conflicts exist on branches in target tree that are not covered this way?
-		// shouldn't all conflicting nodes in target tree be found if all support values are checked from source? if more conflicts exist no support/conflict values for them would exist anyways?
-		
 		LeafSet sourceLeafSet = getTopologicalCalculator().getLeafSet(sourceRoot).and(
 					getTopologicalCalculator().getLeafSet(getDocument().getTree().getPaintStart()));
 		if (!sourceRoot.isLeaf() && (sourceLeafSet.childCount() > 1)) {  // The second condition (and the one below) test the same as the first for the case of different sets of terminals.  //TODO The same AND operation is repeated in findSourceNodeWithAllLeaves() below. This could be combined in the future.
 			if ((sourceLeafSet.complement().childCount() > 1) &&  // This must not be done in the statement above, since iterating over the children still needs to be done.
-					!(sourceRoot.hasParent() && !sourceRoot.getParent().hasParent() && !getTopologicalCalculator().isProcessRooted() && 
-					(sourceRoot.getParent().getChildren().size() == 2) && sourceRoot.isLast())) {  // Check if the current node is linked to the paint start which does not represent a root and the other linked branch already carries the same support value.
-				                                                  //TODO Both probably need to be from the overlapping taxon set. The condition would have to be refactored.
+					!(sourceRoot.hasParent() && !sourceRoot.getParent().hasParent() &&  // The current source node is a direct child of the root. 
+								!getTopologicalCalculator().isProcessRooted() && 
+								(sourceRoot.getParent().getChildren().size() == 2) /*&& sourceRoot.isLast()*/)) {  // Check if the current node is linked to the paint start which does not represent a root and the other branch linked to that root already carries the same support value.
+				                                                              //TODO Why isLast()? In the unrooted case, support values from here should never be import, right? 
 				
-				NodeInfo bestTargetNode = getTopologicalCalculator().findSourceNodeWithAllLeaves(getDocument().getTree(), 
-						sourceLeafSet);
-				if ("x7474zcnij".equals(bestTargetNode.getNode().getUniqueName())) {
-					System.out.println("Importing to node " + sourceLeafSet.complement());  //TODO Why is that 3 and not 1?
-				}
+				NodeInfo bestTargetNode = getTopologicalCalculator().findSourceNodeWithAllLeaves(getDocument().getTree(), sourceLeafSet);
+//				if ("x7474zcnij".equals(bestTargetNode.getNode().getUniqueName())) {
+//					System.out.println("Importing to node " + sourceLeafSet.complement());
+//				}
 				if (bestTargetNode != null) {
 					Node conflict = getTopologicalCalculator().findHighestConflict(sourceDocument.getTree(), 
 							getDocument().getTree(), bestTargetNode.getNode(), getTopologicalCalculator().getLeafSet(sourceRoot), 
@@ -171,9 +168,9 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit imp
 								catch (Exception e) {}
 							}
 						}
-//						else {
-//							System.out.println("value not imported");  //TODO Create info message here?
-//						}
+						else {
+							System.out.println("value not imported");  //TODO Create info message here that values were not imported due to an unrooted comparison.
+						}
 					}
 					else if (bestTargetNode.getAdditionalCount() == -1) {
 						throw new InternalError("An unexpected error has occorred. (Undefined bestTargetNode.getAdditionalCount().) "
