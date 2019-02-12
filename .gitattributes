@@ -53,9 +53,9 @@ main/include/lib/batik/xalan-2.6.0.jar -text
 main/include/lib/batik/xerces_2_5_0.jar -text
 main/include/lib/batik/xml-apis-ext.jar -text
 main/include/lib/batik/xml-apis.jar -text
-main/include/lib/bioinfweb-commons-java-bio-2.0.0.jar -text
-main/include/lib/bioinfweb-commons-java-core-2.2.0.jar -text
-main/include/lib/bioinfweb-commons-java-swing-2.2.0.jar -text
+main/include/lib/bioinfweb-commons-java-bio-3.0.0.jar -text
+main/include/lib/bioinfweb-commons-java-core-3.2.0.jar -text
+main/include/lib/bioinfweb-commons-java-swing-3.1.0.jar -text
 main/include/lib/commons-collections4-4.1.jar -text
 main/include/lib/commons-lang3-3.1.jar -text
 main/include/lib/errorReporter/ErrorReporter.jar -text
@@ -68,7 +68,7 @@ main/include/lib/freehep-graphics2d.jar -text
 main/include/lib/freehep-graphicsio-emf.jar -text
 main/include/lib/freehep-graphicsio.jar -text
 main/include/lib/jep-2.4.1.jar -text
-main/include/lib/jphyloio-core-0.3.0.jar -text
+main/include/lib/jphyloio-core-0.5.2.jar -text
 main/include/lib/l2fprod-common-directorychooser-7.3.jar -text
 main/include/lib/org.jdesktop.swingx.scrollpaneselector.jar -text
 main/include/lib/owlapi-XMLUtils-4.1.4.jar -text
@@ -77,6 +77,7 @@ main/src/GPL.txt -text svneol=unset#text/plain
 main/src/NOTICE.txt -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/AWTExceptionHandler.java -text
 main/src/info/bioinfweb/treegraph/Main.java -text
+main/src/info/bioinfweb/treegraph/PreferencesConstants.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/cmd/CmdLoadLogger.java -text
 main/src/info/bioinfweb/treegraph/cmd/CmdProcessor.java -text
 main/src/info/bioinfweb/treegraph/cmd/ImageGenerator.java -text
@@ -627,16 +628,16 @@ main/src/info/bioinfweb/treegraph/gui/actions/format/ScaleBranchLengthsAction.ja
 main/src/info/bioinfweb/treegraph/gui/actions/format/ScaleDistanceValuesAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/format/ShowHideScaleBarAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/format/ShowRootedAction.java -text
-main/src/info/bioinfweb/treegraph/gui/actions/help/AboutAction.java -text
-main/src/info/bioinfweb/treegraph/gui/actions/help/BioinfwebMainPageAction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/gui/actions/help/AboutAction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/gui/actions/help/BasicAboutAction.java -text
+main/src/info/bioinfweb/treegraph/gui/actions/help/BugMainPageAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/actions/help/HelpAboutMenuAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/help/HelpContentsAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/help/HelpMainPageAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/help/HelpTopicAction.java -text
+main/src/info/bioinfweb/treegraph/gui/actions/help/PrivacyPolicyAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/actions/help/ResearchGateAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/actions/help/TGMainPageAction.java -text
-main/src/info/bioinfweb/treegraph/gui/actions/help/TwitterAction.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/treegraph/gui/actions/help/WebsiteAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/actions/package.html -text
 main/src/info/bioinfweb/treegraph/gui/actions/select/AbstractSelectionAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/select/InvertSelectionAction.java -text
@@ -661,6 +662,7 @@ main/src/info/bioinfweb/treegraph/gui/actions/view/SetZoomAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/view/SetZoomToOriginalAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/window/CascadeAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/window/NextDocumentAction.java -text
+main/src/info/bioinfweb/treegraph/gui/actions/window/PreferencesAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/actions/window/PreviousDocumentAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/window/SelectFrameAction.java -text
 main/src/info/bioinfweb/treegraph/gui/actions/window/TileHorizontalAction.java -text
@@ -676,6 +678,7 @@ main/src/info/bioinfweb/treegraph/gui/dialogs/EditDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/GlobalFormatsDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/MarginInput.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/OpenedDocumentsComboBoxModel.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/gui/dialogs/PreferencesDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/ReplaceInNodeDataDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/ResolutionInput.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/ScaleBranchLengthsDialog.java -text
@@ -742,8 +745,6 @@ main/src/info/bioinfweb/treegraph/gui/dialogs/io/imexporttable/ExportNodeDataTab
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/imexporttable/ExportTableDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/imexporttable/KeyColumnDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/imexporttable/SelectImportTableDialog.java -text
-main/src/info/bioinfweb/treegraph/gui/dialogs/io/loadlogger/LoadLoggerDialog.java -text
-main/src/info/bioinfweb/treegraph/gui/dialogs/io/loadlogger/MessagesListModel.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/AbstractNodeBranchDataColumnsDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/CopyColumnDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/DefaultDocumentAdapterDialog.java -text svneol=unset#text/plain
@@ -793,8 +794,10 @@ main/src/info/bioinfweb/treegraph/gui/treeframe/ruler/TreeViewRulerConstants.jav
 main/src/info/bioinfweb/treegraph/gui/treeframe/ruler/TreeViewRulerUnitField.java -text
 main/src/info/bioinfweb/treegraph/package.html -text
 main/src/resources/Splash.png -text
-main/src/resources/about/Apache.txt -text
+main/src/resources/about/ApacheLicense.html -text svneol=unset#text/plain
 main/src/resources/about/GPL.html -text
+main/src/resources/about/PrivacyPolicy.de.html -text svneol=unset#text/plain
+main/src/resources/about/PrivacyPolicy.en.html -text svneol=unset#text/plain
 main/src/resources/about/Style.css -text
 main/src/resources/symbols/CopyElement16.png -text
 main/src/resources/symbols/CopyElement22.png -text
@@ -838,8 +841,6 @@ main/src/resources/symbols/Redo16.png -text
 main/src/resources/symbols/Redo22.png -text
 main/src/resources/symbols/Replace16.png -text
 main/src/resources/symbols/Replace22.png -text
-main/src/resources/symbols/ResearchGate16.png -text
-main/src/resources/symbols/ResearchGate22.png -text
 main/src/resources/symbols/Save16.png -text
 main/src/resources/symbols/Save22.png -text
 main/src/resources/symbols/SaveAs16.png -text
@@ -860,14 +861,10 @@ main/src/resources/symbols/TreeGraph256.png -text
 main/src/resources/symbols/TreeGraph32.png -text
 main/src/resources/symbols/TreeGraph48.png -text
 main/src/resources/symbols/TreeGraph64.png -text
-main/src/resources/symbols/Twitter16.png -text
-main/src/resources/symbols/Twitter22.png -text
 main/src/resources/symbols/Undo16.png -text
 main/src/resources/symbols/Undo22.png -text
 main/src/resources/symbols/ZoomToOriginal16.png -text
 main/src/resources/symbols/ZoomToOriginal22.png -text
-main/src/resources/symbols/bioinfweb16.png -text
-main/src/resources/symbols/bioinfweb22.png -text
 main/xsd/1.1.xsd -text
 main/xsd/1.2.xsd -text
 main/xsd/1.3.xsd -text svneol=unset#text/plain
@@ -878,6 +875,10 @@ test/.project -text svneol=unset#text/plain
 test/.settings/org.eclipse.jdt.core.prefs -text svneol=unset#text/plain
 test/.settings/org.eclipse.jdt.ui.prefs -text svneol=unset#text/plain
 test/data/RerootByLeaves.xtg -text
+test/data/addSupport/Polytomy.xtg -text
+test/data/addSupport/PolytomyAddTerminals.xtg -text
+test/data/addSupport/Solved.xtg -text
+test/data/addSupport/SolvedAddTerminals.xtg -text
 test/data/ancestralState/Primates.txt.log.txt -text svneol=unset#text/plain
 test/data/getFirstNodeByData.xtg -text
 test/data/importTable/TableNodeNames.txt -text svneol=unset#text/plain
@@ -926,8 +927,10 @@ test/src/info/bioinfweb/treegraph/document/tools/TreeSerializerTest.java -text s
 test/src/info/bioinfweb/treegraph/document/topologicalcalculation/LeafSetTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/undo/edit/RerootByLeafSetEditTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/undo/edit/SortLeavesEditTest.java -text svneol=unset#text/plain
+test/src/info/bioinfweb/treegraph/document/undo/file/AddSupportValuesEditTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/undo/file/importtable/ImportTableDataTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/undo/file/importtable/ImportTableEditTest.java -text svneol=unset#text/plain
+test/src/info/bioinfweb/treegraph/test/TestTools.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/test/text/FontMetricsTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/test/text/FontSizeTextHeightTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/test/text/TextDimensionTest.java -text svneol=unset#text/plain

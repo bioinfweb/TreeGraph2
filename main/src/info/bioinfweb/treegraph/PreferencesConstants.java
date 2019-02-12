@@ -16,21 +16,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.gui.actions.help;
-
-
-import java.awt.event.KeyEvent;
-
-import javax.swing.Action;
-
-import info.bioinfweb.treegraph.gui.dialogs.AboutDialog;
+package info.bioinfweb.treegraph;
 
 
 
-public class AboutAction extends BasicAboutAction {
-	public AboutAction() {
-		super(AboutDialog.GENERAL_TAB_INDEX);
-		putValue(Action.NAME, "About..."); 
-	  putValue(Action.MNEMONIC_KEY, KeyEvent.VK_A);
-	}
+public interface PreferencesConstants {
+	public static final String FIRST_RUN_PREF_KEY = "isFirstRun";
+	public static final String LAST_VERSION_CHECK_PREF_KEY = "lastVersionCheck";
+	public static final String DO_VERSION_CHECK_PREF_KEY = "doVersionCheck";
+
+	public static final boolean DO_VERSION_CHECK_DEFAULT_VALUE = true;
+	public static final long VERSION_CHECK_INTERVAL_DEFAULT_VALUE = 1000 * 60 * 60;  // 1 h
 }

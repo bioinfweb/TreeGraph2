@@ -44,6 +44,8 @@ import info.bioinfweb.treegraph.gui.treeframe.TreeInternalFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 import info.bioinfweb.commons.swing.AbstractUndoActionManagement;
 import info.bioinfweb.commons.swing.AccessibleUndoManager;
+import info.bioinfweb.commons.swing.actions.BioinfwebMainPageAction;
+import info.bioinfweb.commons.swing.actions.TwitterAction;
 
 
 
@@ -166,12 +168,15 @@ public class ActionManagement extends AbstractUndoActionManagement {
 		put("window.tileVertical", new TileVerticalAction());
 		put("window.tileHorizontal", new TileHorizontalAction());
 		put("window.cascade", new CascadeAction());
+		put("window.preferences", new PreferencesAction());
 
 		put("help.contents", new HelpContentsAction());
 		put("help.index", new HelpMainPageAction());
 		put("help.aboutMenu", new HelpAboutMenuAction());
 		put("help.about", new AboutAction());
+		put("help.privacyPolicy", new PrivacyPolicyAction());
 		put("help.homepage", new TGMainPageAction());
+		put("help.issues", new BugMainPageAction());
 		put("help.bioinfweb", new BioinfwebMainPageAction());
 		put("help.researchGate", new ResearchGateAction());
 		put("help.twitter", new TwitterAction());
@@ -315,7 +320,7 @@ public class ActionManagement extends AbstractUndoActionManagement {
 	public JPopupMenu getPopupMenu(PaintableElement selected) {
   	if (selected != null) {
   		popupMenu.removeAll();
-			boolean separatorWasLast = true;  // Zur Vermeidung mehrere Trennlinien hintereinander
+			boolean separatorWasLast = true;  // Avoid multiple subsequent separators.
   		for (int i = 0; i < popupActions.size(); i++) {
   			Action action = popupActions.get(i);
   			if ((action == null) && !separatorWasLast) {

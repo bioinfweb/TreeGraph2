@@ -18,11 +18,6 @@
 	<classpathentry kind="lib" path="/TreeGraph2/include/lib/errorReporter/ErrorReporter.jar"/>
 	<classpathentry kind="lib" path="/TreeGraph2/include/lib/errorReporter/jaxen-1.1.6.jar"/>
 	<classpathentry kind="lib" path="/TreeGraph2/include/lib/errorReporter/jdom-2.0.5.jar"/>
-	<classpathentry kind="lib" path="/TreeGraph2/bin" sourcepath="/TreeGraph2/src"/>
-	<classpathentry kind="lib" path="/info.bioinfweb.commons.core/bin" sourcepath="/info.bioinfweb.commons.core/src"/>
-	<classpathentry kind="lib" path="/info.bioinfweb.commons.swing/bin" sourcepath="/info.bioinfweb.commons.swing/src"/>
-	<classpathentry kind="lib" path="/info.bioinfweb.wikihelp.client/bin" sourcepath="/info.bioinfweb.wikihelp.client/src"/>
-	<classpathentry kind="lib" path="/info.bioinfweb.commons.testing/bin" sourcepath="/info.bioinfweb.commons.testing/src"/>
 	<classpathentry kind="lib" path="/TreeGraph2/include/lib/batik/batik-anim.jar"/>
 	<classpathentry kind="lib" path="/TreeGraph2/include/lib/batik/batik-awt-util.jar"/>
 	<classpathentry kind="lib" path="/TreeGraph2/include/lib/batik/batik-bridge.jar"/>
@@ -46,8 +41,13 @@
 	<classpathentry kind="lib" path="/TreeGraph2/include/lib/batik/xml-apis-ext.jar"/>
 	<classpathentry kind="lib" path="/TreeGraph2/include/lib/batik/xml-apis.jar"/>
 	<classpathentry kind="lib" path="/TreeGraph2/include/lib/owlapi-XMLUtils-4.1.4.jar"/>
-	<classpathentry kind="lib" path="/info.bioinfweb.commons.bio/bin"/>
 	<classpathentry kind="lib" path="/TreeGraph2/include/lib/commons-collections4-4.1.jar"/>
-	<classpathentry kind="lib" path="/info.bioinfweb.jphyloio.core/bin"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/info.bioinfweb.commons.bio"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/info.bioinfweb.commons.core"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/info.bioinfweb.commons.swing"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/info.bioinfweb.commons.testing"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/info.bioinfweb.jphyloio.core"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/info.bioinfweb.wikihelp.client"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/TreeGraph2"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -18,18 +18,19 @@
  */
 package info.bioinfweb.treegraph.gui.actions.help;
 
+
 import java.awt.event.KeyEvent;
 
 import javax.swing.Action;
 
+import info.bioinfweb.treegraph.gui.dialogs.AboutDialog;
 
 
-public class TwitterAction extends WebsiteAction {
-	public TwitterAction() {
-		super("http://r.bioinfweb.info/Twitter");
-		
-		putValue(Action.NAME, "bioinfweb news on Twitter"); 
-	  putValue(Action.MNEMONIC_KEY, KeyEvent.VK_T);
-	  loadSymbols("Twitter");
+
+public class PrivacyPolicyAction extends BasicAboutAction {
+	public PrivacyPolicyAction() {
+		super(AboutDialog.PRIVACY_POLICY_TAB_INDEX);
+		putValue(Action.NAME, "Privacy Policy..."); 
+	  putValue(Action.MNEMONIC_KEY, KeyEvent.VK_P);
 	}
 }

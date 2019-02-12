@@ -19,18 +19,25 @@
 package info.bioinfweb.treegraph.gui.actions.help;
 
 
+import info.bioinfweb.commons.swing.actions.OpenWebsiteAction;
+
 import java.awt.event.KeyEvent;
 
 import javax.swing.Action;
 
-import info.bioinfweb.treegraph.gui.dialogs.AboutDialog;
 
 
-
-public class AboutAction extends BasicAboutAction {
-	public AboutAction() {
-		super(AboutDialog.GENERAL_TAB_INDEX);
-		putValue(Action.NAME, "About..."); 
-	  putValue(Action.MNEMONIC_KEY, KeyEvent.VK_A);
+/**
+ * Navigates to the bug main page on the TreeGraph 2 website.
+ * 
+ * @author Ben St&ouml;ver
+ */
+public class BugMainPageAction extends OpenWebsiteAction {
+	public BugMainPageAction() {
+		super("http://treegraph.bioinfweb.info/Bugs");
+		
+		putValue(Action.NAME, "Known issues / planned features / report issue"); 
+	  putValue(Action.MNEMONIC_KEY, KeyEvent.VK_K);
+	  loadSymbols("TreeGraph");
 	}
 }

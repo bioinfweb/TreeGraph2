@@ -70,7 +70,7 @@ public class Main extends ProgramMainClass {
 	
 	
 	private Main() {
-		super(new ApplicationVersion(2, 14, 0, 771, ApplicationType.BETA));
+		super(new ApplicationVersion(2, 14, 0, 838, ApplicationType.BETA));
 		errorReporter = new SwingErrorReporter(ERROR_URL, getVersion());
 	}
 	

@@ -19,11 +19,12 @@
 package info.bioinfweb.treegraph.gui.actions.help;
 
 
-import info.bioinfweb.treegraph.Main;
-
 import java.awt.event.KeyEvent;
 
 import javax.swing.Action;
+
+import info.bioinfweb.commons.swing.actions.OpenWebsiteAction;
+import info.bioinfweb.treegraph.Main;
 
 
 
@@ -32,7 +33,7 @@ import javax.swing.Action;
  * 
  * @author Ben St&ouml;ver
  */
-public class TGMainPageAction extends WebsiteAction {
+public class TGMainPageAction extends OpenWebsiteAction {
 	public TGMainPageAction() {
 		super(Main.TG_URL);
 		

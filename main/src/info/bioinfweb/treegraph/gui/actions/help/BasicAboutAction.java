@@ -19,57 +19,25 @@
 package info.bioinfweb.treegraph.gui.actions.help;
 
 
-import java.awt.Desktop;
 import java.awt.event.ActionEvent;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-
-import javax.swing.JOptionPane;
 
 import info.bioinfweb.commons.swing.ExtendedAbstractAction;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 
 
 
-public class WebsiteAction extends ExtendedAbstractAction {
-	private URI url;
-
-	
-	protected static URI createURI(String uri) {
-		try {
-			return new URI(uri);
-		}
-		catch (URISyntaxException e) {
-			throw new InternalError(e);
-		}
-	}
+public class BasicAboutAction extends ExtendedAbstractAction {
+	private int tabIndex;
 	
 	
-	public WebsiteAction(String url) {
-		this(createURI(url));
-	}
-	
-	
-	public WebsiteAction(URI url) {
+	public BasicAboutAction(int tabIndex) {
 		super();
-		this.url = url;
-	}
+		this.tabIndex = tabIndex;
+	  loadSymbols("TreeGraph");
+  }
 
 
-	public URI getURL() {
-		return url;
-	}
-
-
-	@Override
 	public void actionPerformed(ActionEvent e) {
-		try {
-			Desktop.getDesktop().browse(getURL());
-		}
-		catch (IOException ex) {
-			JOptionPane.showMessageDialog(MainFrame.getInstance(), "The website could not be opened due to the following error: " +
-					ex.getLocalizedMessage(), "Could not open website", JOptionPane.ERROR_MESSAGE);
-		}
+		MainFrame.getInstance().getAboutDialog().show(tabIndex);
 	}
 }

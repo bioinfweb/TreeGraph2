@@ -23,9 +23,11 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.Action;
 
+import info.bioinfweb.commons.swing.actions.OpenWebsiteAction;
 
 
-public class ResearchGateAction extends WebsiteAction {
+
+public class ResearchGateAction extends OpenWebsiteAction {
 	public ResearchGateAction() {
 		super("http://r.bioinfweb.info/RGTreeGraph2");
 		

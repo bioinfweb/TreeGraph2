@@ -24,12 +24,11 @@ import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.NodeType;
 import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.change.DocumentChangeType;
-import info.bioinfweb.treegraph.document.nodebranchdata.AbstractTextElementDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextElementDataAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;
 import info.bioinfweb.treegraph.document.tools.TextElementDataAsStringIterator;
 import info.bioinfweb.treegraph.document.tools.TreeSerializer;
+import info.bioinfweb.treegraph.document.topologicalcalculation.LeafSet;
 import info.bioinfweb.treegraph.document.topologicalcalculation.NodeInfo;
 import info.bioinfweb.treegraph.document.undo.AbstractTopologicalCalculationEdit;
 import info.bioinfweb.treegraph.document.undo.WarningMessageEdit;
@@ -83,7 +82,7 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit imp
 	 * @param parameters the parameter object for this edit
 	 */
 	public AddSupportValuesEdit(Document targetDocument, AddSupportValuesParameters parameters) {
-		super(targetDocument, DocumentChangeType.TOPOLOGICAL_BY_RENAMING, parameters.getTerminalsAdapter(), parameters.isRooted());  // Topological relevance only if the default leaves adapter ID is affected.
+		super(targetDocument, DocumentChangeType.TOPOLOGICAL_BY_RENAMING, parameters.getTerminalsAdapter(), parameters.isRooted());  // This edit only has a topological relevance if the default leaves adapter is used to store values.
 		this.sourceDocument = parameters.getSourceDocument();
 		this.sourceSupportAdapter = parameters.getSourceSupportColumn();
 		this.sourceLeavesAdapter = parameters.getSourceLeavesColumn();
@@ -93,7 +92,7 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit imp
 				parameters.getIDPrefix() + SUPPORT_NAME, SUPPORT_DECIMAL_FORMAT);
 		targetConflictAdapter = parameters.getTargetType().createAdapterInstance(
 				parameters.getIDPrefix() + CONFLICT_NAME, CONFLICT_DECIMAL_FORMAT);
-		getTopologicalCalculator().addSubtreeToLeafValueToIndexMap(sourceDocument.getTree().getPaintStart(), sourceLeavesAdapter);  //TODO Must be a different calculator then used in the inherited constructor. Otherwise the indices for the target document are wrong, if the order differs.
+		getTopologicalCalculator().addSubtreeToLeafValueToIndexMap(sourceDocument.getTree().getPaintStart(), sourceLeavesAdapter);  //TODO Must be a different calculator than used in the inherited constructor. Otherwise the indices for the target document are wrong, if the order differs. => Is this still valid?
 	}
 	
 	
@@ -102,7 +101,9 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit imp
 		//topologicalCalculator.addLeafValueToIndexMap(getDocument().getTree().getPaintStart(), getTargetLeavesAdapter());  // Is already done in the inherited constructor.
 		getTopologicalCalculator().addLeafSets(sourceDocument.getTree().getPaintStart(), sourceLeavesAdapter);
 		getTopologicalCalculator().addLeafSets(getDocument().getTree().getPaintStart(), getTargetLeavesAdapter());
-		processSubtree(getDocument().getTree().getPaintStart());
+		getTopologicalCalculator().setFullSourceLeafSet(
+				getTopologicalCalculator().getLeafSet(sourceDocument.getTree().getPaintStart()));  // Cave: The root might not be included. Should probably depend in the rooted parameter.
+		processSubtree(sourceDocument.getTree().getPaintStart());
 		
 		warningMessage = createWarningMessage();
 	}
@@ -118,61 +119,73 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit imp
 	/**
 	 * Finds the support or conflict values in the source document.
 	 * 
-	 * @param targetRoot - the root of the subtree to add support values to (a node of the 
-	 *        target document)
+	 * @param sourceRoot the root of the subtree to add support values to (a node of the target document)
 	 */
-	private void processSubtree(Node targetRoot) {
-		if (!targetRoot.isLeaf()) {
-			if (!(targetRoot.hasParent() && !targetRoot.getParent().hasParent() && !getTopologicalCalculator().isProcessRooted() && 
-					(targetRoot.getParent().getChildren().size() == 2) && targetRoot.isLast())) {  // Check if the current node is linked to the paint start which does not represent a root and the other linked branch already carries the same support value.
+	private void processSubtree(Node sourceRoot) {
+		LeafSet sourceLeafSet = getTopologicalCalculator().getLeafSet(sourceRoot).and(
+					getTopologicalCalculator().getLeafSet(getDocument().getTree().getPaintStart()));
+		if (!sourceRoot.isLeaf() && (sourceLeafSet.childCount() > 1)) {  // The second condition (and the one below) test the same as the first for the case of different sets of terminals.  //TODO The same AND operation is repeated in findSourceNodeWithAllLeaves() below. This could be combined in the future.
+			if ((sourceLeafSet.complement().childCount() > 1) &&  // This must not be done in the statement above, since iterating over the children still needs to be done.
+					!(sourceRoot.hasParent() && !sourceRoot.getParent().hasParent() &&  // The current source node is a direct child of the root. 
+								!getTopologicalCalculator().isProcessRooted() && 
+								(sourceRoot.getParent().getChildren().size() == 2) /*&& sourceRoot.isLast()*/)) {  // Check if the current node is linked to the paint start which does not represent a root and the other branch linked to that root already carries the same support value.
+				                                                              //TODO Why isLast()? In the unrooted case, support values from here should never be import, right? 
 				
-				NodeInfo bestSourceNode = getTopologicalCalculator().findSourceNodeWithAllLeaves(sourceDocument.getTree(), 
-								getTopologicalCalculator().getLeafSet(targetRoot));
-				if (bestSourceNode != null) {
-					Node conflict = getTopologicalCalculator().findHighestConflict(getDocument().getTree(), 
-							sourceDocument.getTree(), bestSourceNode.getNode(), getTopologicalCalculator().getLeafSet(targetRoot), 
-							getTopologicalCalculator().getLeafSet(bestSourceNode.getNode()), sourceSupportAdapter);
+				NodeInfo bestTargetNode = getTopologicalCalculator().findSourceNodeWithAllLeaves(getDocument().getTree(), sourceLeafSet);
+//				if ("x7474zcnij".equals(bestTargetNode.getNode().getUniqueName())) {
+//					System.out.println("Importing to node " + sourceLeafSet.complement());
+//				}
+				if (bestTargetNode != null) {
+					Node conflict = getTopologicalCalculator().findHighestConflict(sourceDocument.getTree(), 
+							getDocument().getTree(), bestTargetNode.getNode(), getTopologicalCalculator().getLeafSet(sourceRoot), 
+							getTopologicalCalculator().getLeafSet(bestTargetNode.getNode()), sourceSupportAdapter);
 					
-					if (conflict == null) {  // support found
-	  				if (sourceSupportAdapter.isDecimal(bestSourceNode.getNode())) {  // if no value exists there
-		  				targetSupportAdapter.setDecimal(targetRoot, sourceSupportAdapter.getDecimal(bestSourceNode.getNode()));  // Only decimal values can appear here.
-						}
-	  				else if (checkOtherPaintStartBranch(bestSourceNode.getNode())) {
-							int index = 1;
-							if (bestSourceNode.getNode().isLast()) {
-								index = 0;
+					if (conflict == null) {  // Support found
+						if (bestTargetNode.getAdditionalCount() == 0) {
+							if (sourceSupportAdapter.isDecimal(sourceRoot)) {  // If no value exists there
+								targetSupportAdapter.setDecimal(bestTargetNode.getNode(), sourceSupportAdapter.getDecimal(sourceRoot));  // Only decimal values can appear here.
 							}
-							Node other = bestSourceNode.getNode().getParent().getChildren().get(index);
-							if (sourceSupportAdapter.isDecimal(other)) {
-			  				targetSupportAdapter.setDecimal(targetRoot, sourceSupportAdapter.getDecimal(other));  // Only decimal values can appear here.
+							else if (checkOtherPaintStartBranch(bestTargetNode.getNode())) {
+								int index = 1;
+								if (bestTargetNode.getNode().isLast()) {
+									index = 0;
+								}
+								Node other = bestTargetNode.getNode().getParent().getChildren().get(index);
+								if (sourceSupportAdapter.isDecimal(sourceRoot)) {
+									targetSupportAdapter.setDecimal(other, sourceSupportAdapter.getDecimal(sourceRoot));  // Only decimal values can appear here.
+								}
+								else if (parseNumericValues) {
+									try {
+										targetSupportAdapter.setDecimal(other, Double.parseDouble(sourceSupportAdapter.getText(sourceRoot)));
+									}
+									catch (Exception e) {}
+								}
 							}
 							else if (parseNumericValues) {
 								try {
-									targetSupportAdapter.setDecimal(targetRoot, Double.parseDouble(sourceSupportAdapter.getText(other)));
+									targetSupportAdapter.setDecimal(bestTargetNode.getNode(), Double.parseDouble(sourceSupportAdapter.getText(sourceRoot)));
 								}
 								catch (Exception e) {}
 							}
-	  				}
-	  				else if (parseNumericValues) {
-	  					try {
-								targetSupportAdapter.setDecimal(targetRoot, Double.parseDouble(sourceSupportAdapter.getText(bestSourceNode.getNode())));
-							}
-							catch (Exception e) {}
-	  				}
+						}
+						else {
+							System.out.println("value not imported");  //TODO Create info message here that values were not imported due to an unrooted comparison.
+						}
 					}
-					else if (bestSourceNode.getAdditionalCount() == -1) {
-						throw new InternalError("-1 RETURNED");  // Should not happen.
+					else if (bestTargetNode.getAdditionalCount() == -1) {
+						throw new InternalError("An unexpected error has occorred. (Undefined bestTargetNode.getAdditionalCount().) "
+								+ "Please contact the developers at support@bioinfweb.info.");  // Should not happen.
 					}
-					else {  // conflict found
-						double value = getSupportValue(conflict);
+					else {  // conflict found						
+						double value = getSupportValue(sourceRoot);
 						if (!Double.isNaN(value) && (value != 0)) {
-		  				targetConflictAdapter.setDecimal(targetRoot, value);
+							targetConflictAdapter.setDecimal(conflict, value);
 						}
 					}
 				}
 			}
-			for (int i = 0; i < targetRoot.getChildren().size(); i++) {
-				processSubtree(targetRoot.getChildren().get(i));
+			for (int i = 0; i < sourceRoot.getChildren().size(); i++) {
+				processSubtree(sourceRoot.getChildren().get(i));
 			}
 		}
 	}
@@ -224,10 +237,10 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit imp
 			return null;
 		}
 		else {
-			return "There were no according terminal nodes in the target document for the following terminal nodes from the source "
+			return "There were no respective terminal nodes in the target document for the following terminal nodes from the source "
 					+ "document found:\n\n" + DocumentAction.createElementList(new TextElementDataAsStringIterator(
 							remainingSourceLeaves.iterator()), remainingSourceLeaves.size(), true)
-					+ "\n\nAccordingly some support values may not have been imported from the source tree (which may have been desired).\n"
+					+ "\n\nConsequently, some support values may not have been imported from the source tree (which may have been desired).\n"
 					+ "(Note that matching also may have failed because the specified leaf node/branch data columns for the source or "
 					+ "target document were not correct.)";
 		}

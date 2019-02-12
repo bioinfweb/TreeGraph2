@@ -16,23 +16,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.gui.actions.help;
+package info.bioinfweb.treegraph.test;
 
 
-import info.bioinfweb.treegraph.Main;
-
-import java.awt.event.KeyEvent;
-
-import javax.swing.Action;
+import static org.junit.Assert.*;
 
 
+import info.bioinfweb.treegraph.document.Tree;
+import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 
-public class BioinfwebMainPageAction  extends WebsiteAction {
-	public BioinfwebMainPageAction() {
-		super("http://bioinfweb.info/");
-		
-		putValue(Action.NAME, "bioinfweb main page"); 
-	  putValue(Action.MNEMONIC_KEY, KeyEvent.VK_B);
-	  loadSymbols("bioinfweb");
+
+
+public class TestTools {
+	public static void assertAnnotation(Tree tree, String uniqueNodeName, NodeBranchDataAdapter column, String value) {
+		assertEquals(value, column.getText(tree.getNodeByUniqueName(uniqueNodeName)));
+	}
+	
+	
+	public static void assertAnnotation(Tree tree, String uniqueNodeName, NodeBranchDataAdapter column, double value) {
+		assertEquals(value, column.getDecimal(tree.getNodeByUniqueName(uniqueNodeName)), 0.00000001);
+	}
+	
+	
+	public static void assertNoAnnotation(Tree tree, String uniqueNodeName, NodeBranchDataAdapter column) {
+		assertTrue(column.isEmpty(tree.getNodeByUniqueName(uniqueNodeName)));
 	}
 }

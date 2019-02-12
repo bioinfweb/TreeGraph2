@@ -19,8 +19,10 @@
 package info.bioinfweb.treegraph.gui.mainframe;
 
 
+import info.bioinfweb.commons.log.ApplicationLoggerDialog;
+import info.bioinfweb.commons.swing.ExtendedDesktopPane;
 import info.bioinfweb.treegraph.Main;
-import info.bioinfweb.treegraph.document.*;
+import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.io.DocumentReader;
 import info.bioinfweb.treegraph.document.io.ReadWriteFactory;
 import info.bioinfweb.treegraph.document.io.ReadWriteParameterMap;
@@ -30,11 +32,15 @@ import info.bioinfweb.treegraph.graphics.positionpaint.PositionPaintType;
 import info.bioinfweb.treegraph.gui.CurrentDirectoryModel;
 import info.bioinfweb.treegraph.gui.actions.ActionManagement;
 import info.bioinfweb.treegraph.gui.actions.window.SelectFrameAction;
-import info.bioinfweb.treegraph.gui.dialogs.io.loadlogger.LoadLoggerDialog;
+import info.bioinfweb.treegraph.gui.dialogs.AboutDialog;
 import info.bioinfweb.treegraph.gui.treeframe.TreeInternalFrame;
-import info.bioinfweb.commons.swing.ExtendedDesktopPane;
 
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.event.ContainerListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyVetoException;
 import java.io.File;
@@ -45,14 +51,15 @@ import java.util.List;
 import java.util.Vector;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
-
-import java.awt.BorderLayout;
-
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JPanel;
+import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 
 
 
@@ -63,7 +70,7 @@ import javax.swing.JMenu;
  */
 public class MainFrame extends JFrame implements Runnable {
 	private static final long serialVersionUID = 1L;
-	private static final int WINDOW_MENU_ITEMS_COUNT = 3;
+	private static final int WINDOW_MENU_ITEMS_COUNT = 5;
 	
 	
 	private static MainFrame firstInstance = null;
@@ -86,6 +93,8 @@ public class MainFrame extends JFrame implements Runnable {
 	private JMenu redoMenu = null;
 	private JMenu newMenu = null;
 	private JMenu nodeBranchDataMenu = null;
+	private ApplicationLoggerDialog readWriteLogDialog;
+	private AboutDialog aboutDialog = null;
 	
 	
 	/**
@@ -93,6 +102,8 @@ public class MainFrame extends JFrame implements Runnable {
 	 */
 	private MainFrame() {
 		super();
+		readWriteLogDialog = new ApplicationLoggerDialog(this);
+		readWriteLogDialog.setTitle("Warnings occurred when the file was opened");
 		initialize();
 	}
 	
@@ -105,6 +116,19 @@ public class MainFrame extends JFrame implements Runnable {
 	}
 
 
+	public ApplicationLoggerDialog getReadWriteLogDialog() {
+		return readWriteLogDialog;
+	}
+	
+	
+	public AboutDialog getAboutDialog() {
+		if (aboutDialog == null) {
+			aboutDialog = new AboutDialog(this);
+		}
+		return aboutDialog;
+	}
+
+
 	private void openInitialFile() {
 		File file = Main.getInstance().getCmdProcessor().getInitialFile();
 		if ((file != null)) {
@@ -113,12 +137,12 @@ public class MainFrame extends JFrame implements Runnable {
 				if (reader != null) {
 					try {
 						ReadWriteParameterMap parameterMap = new ReadWriteParameterMap();
-						parameterMap.putApplicationLogger(LoadLoggerDialog.getInstance());
+						parameterMap.putApplicationLogger(getReadWriteLogDialog());
 						parameterMap.put(ReadWriteParameterMap.KEY_INTERNAL_NODE_NAMES_ADAPTER, 
 								new NewTextLabelAdapter("internalNodeNames", new DecimalFormat()));
 						addInternalFrame(reader.read(file, parameterMap));
 						CurrentDirectoryModel.getInstance().setCurrentDirectory(file.getParentFile());
-						LoadLoggerDialog.getInstance().display();
+						getReadWriteLogDialog().display();
 					}
 					catch (Exception e) {
 						e.printStackTrace();
@@ -309,8 +333,7 @@ public class MainFrame extends JFrame implements Runnable {
 	 * @return void
 	 */
 	private void initialize() {
-		setSize(800, 800);  // Tutorial
-		//setSize(800, 600);
+		setSize(800, 600);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setContentPane(getJContentPane());
 		setJMenuBar(getMainMenu());
@@ -500,9 +523,11 @@ public class MainFrame extends JFrame implements Runnable {
 			helpMenu.add(getActionManagement().get("help.contents"));
 			helpMenu.add(getActionManagement().get("help.aboutMenu"));
 			helpMenu.add(getActionManagement().get("help.researchGate"));
+			helpMenu.add(getActionManagement().get("help.issues"));
 			helpMenu.addSeparator();
 			helpMenu.add(getActionManagement().get("help.homepage"));
 			helpMenu.add(getActionManagement().get("help.about"));
+			helpMenu.add(getActionManagement().get("help.privacyPolicy"));
 			helpMenu.addSeparator();
 			helpMenu.add(getActionManagement().get("help.bioinfweb"));
 			helpMenu.add(getActionManagement().get("help.twitter"));
@@ -550,6 +575,8 @@ public class MainFrame extends JFrame implements Runnable {
 			windowMenu = new JMenu();
 			windowMenu.setText("Window");
 			windowMenu.setMnemonic(KeyEvent.VK_W);
+			windowMenu.add(getActionManagement().get("window.preferences"));
+			windowMenu.addSeparator();
 			windowMenu.add(getActionManagement().get("window.tileVertical"));
 			windowMenu.add(getActionManagement().get("window.tileHorizontal"));
 			windowMenu.add(getActionManagement().get("window.cascade"));

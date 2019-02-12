@@ -111,6 +111,7 @@ public class TreeSelectionSynchronizer implements TreeViewPanelListener, Documen
 				
 				if (selectionTargetNodeInfo != null) {
 					selection.add(selectionTargetNodeInfo.getNode());
+					
 					if (!(defaultSupportAdapter instanceof VoidNodeBranchDataAdapter)) {
 						Node conflictingNode = topologicalCalculator.findHighestConflict(
 								activeTree.getDocument().getTree(), selectionTargetTree.getDocument().getTree(), 
@@ -118,8 +119,10 @@ public class TreeSelectionSynchronizer implements TreeViewPanelListener, Documen
 								topologicalCalculator.getLeafSet(selectionTargetNodeInfo.getNode()), defaultSupportAdapter);
 						
 						if (conflictingNode != null) {
+							
 							if (defaultSupportAdapter instanceof IDElementAdapter) {
 								Label label = conflictingNode.getAfferentBranch().getLabels().get(((IDElementAdapter)defaultSupportAdapter).getID());
+								
 								if (label != null) {
 									selection.add(label);
 								}

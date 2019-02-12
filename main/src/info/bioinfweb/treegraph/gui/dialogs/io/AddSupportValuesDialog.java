@@ -30,7 +30,6 @@ import info.bioinfweb.treegraph.document.io.phyloxml.PhyloXMLFilter;
 import info.bioinfweb.treegraph.document.io.xtg.XTGFilter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextElementDataAdapter;
 import info.bioinfweb.treegraph.document.undo.file.AddSupportValuesParameters;
-import info.bioinfweb.treegraph.gui.dialogs.io.loadlogger.LoadLoggerDialog;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdata.TextIDElementTypeInput;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataInput;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
@@ -118,7 +117,7 @@ public class AddSupportValuesDialog extends FileDialog {
     DocumentReader reader = ReadWriteFactory.getInstance().getReader(file);
 		try {
 			ReadWriteParameterMap parameterMap = new ReadWriteParameterMap();
-			parameterMap.putApplicationLogger(LoadLoggerDialog.getInstance());
+			parameterMap.putApplicationLogger(MainFrame.getInstance().getReadWriteLogDialog());  //TODO When is the dialog displayed? Is it at all?
 			parameterMap.put(ReadWriteParameterMap.KEY_TREE_SELECTOR, TreeSelectionDialog.getInstance());
 			parameterMap.put(ReadWriteParameterMap.KEY_TRANSLATE_INTERNAL_NODE_NAMES, 
 					getTranslateInternalsCheckBox().isSelected());

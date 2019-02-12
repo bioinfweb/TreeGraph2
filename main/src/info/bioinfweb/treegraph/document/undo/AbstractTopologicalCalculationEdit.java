@@ -28,7 +28,7 @@ import info.bioinfweb.treegraph.document.topologicalcalculation.TopologicalCalcu
 
 /**
  * Implements basic functionalities for all edits that depend on calculations based on the tree topology
- * and therefore need the tree nodes to be decorated with information in their subtrees. 
+ * and therefore need the tree nodes to be decorated with information in their subtrees.
  * 
  * @author Ben St&ouml;ver
  */

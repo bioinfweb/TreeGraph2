@@ -500,7 +500,7 @@ public class XTGReader extends AbstractDocumentReader implements XTGConstants {
 		
 		readDistanceValueAttr(f.getTreeDistance(), element, ATTR_SCALE_BAR_DISTANCE);
 		readScaleValueAttr(f.getWidth(), element, ATTR_SCALE_BAR_WIDTH);
-		readDistanceValueAttr(f.getTreeDistance(), element, ATTR_SCALE_BAR_HEIGHT);
+		readDistanceValueAttr(f.getHeight(), element, ATTR_SCALE_BAR_HEIGHT);
 		f.setSmallInterval(XMLUtils.readFloatAttr(element, ATTR_SMALL_INTERVAL, f.getSmallInterval()));
 		f.setLongInterval(XMLUtils.readIntAttr(element, ATTR_LONG_INTERVAL, f.getLongInterval()));
 		f.setStartLeft(XMLUtils.readBooleanAttr(element, ATTR_SCALE_BAR_START, f.isStartLeft()));

@@ -29,6 +29,7 @@ import info.bioinfweb.treegraph.gui.treeframe.TreeInternalFrame;
 
 /**
  * Superclass for all actions that display a dialog.
+ * 
  * @author Ben St&ouml;ver
  */
 public abstract class EditDialogAction extends DocumentAction {

@@ -31,7 +31,6 @@ import info.bioinfweb.treegraph.document.io.phyloxml.PhyloXMLFilter;
 import info.bioinfweb.treegraph.document.io.xtg.XTGFilter;
 import info.bioinfweb.treegraph.document.nodebranchdata.BranchLengthAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NewTextLabelAdapter;
-import info.bioinfweb.treegraph.gui.dialogs.io.loadlogger.LoadLoggerDialog;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NewNodeBranchDataInput;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 
@@ -111,7 +110,7 @@ public class OpenDialog extends FileDialog {
 						getFileChooser().getSelectedFile());
 				if (reader != null) {
 					ReadWriteParameterMap parameterMap = new ReadWriteParameterMap();
-					parameterMap.putApplicationLogger(LoadLoggerDialog.getInstance());
+					parameterMap.putApplicationLogger(MainFrame.getInstance().getReadWriteLogDialog());
 					parameterMap.put(ReadWriteParameterMap.KEY_INTERNAL_NODE_NAMES_ADAPTER, 
 							getNodeNamesDataInput().getSelectedAdapter());
 					parameterMap.put(ReadWriteParameterMap.KEY_BRANCH_LENGTH_ADAPTER, 
@@ -121,7 +120,7 @@ public class OpenDialog extends FileDialog {
 							getTranslateInternalNodesCheckBox().isSelected());
 					
 					MainFrame.getInstance().addInternalFrame(reader.read(file, parameterMap));
-					LoadLoggerDialog.getInstance().display();
+					MainFrame.getInstance().getReadWriteLogDialog().display();
 				}
 				else {
 					JOptionPane.showMessageDialog(this, "The selected file has an unsupported format.", 

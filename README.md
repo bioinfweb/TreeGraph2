@@ -14,6 +14,10 @@ There is an extensive [documentation](http://treegraph.bioinfweb.info/Help) incl
 
 If you have further questions, feel free to ask one on our [ResearchGate project page](http://r.bioinfweb.info/RGTreeGraph2) or contact support@bioinfweb.info.
 
+## Issues
+
+If you want to submit a bug report or feature request, please use our public bug tracking system at http://treegraph.bioinfweb.info/Bugs. (We do not manage issues on GitHub directly.)
+
 ## License
 
 *TreeGraph 2* is distrubuted under [GNU General Public License Version 3](http://treegraph.bioinfweb.info/License). See [NOTICE.txt](https://github.com/bioinfweb/TreeGraph2/blob/master/main/src/NOTICE.txt) for further details.
@@ -23,3 +27,8 @@ This product includes dependencies developed by the [Apache Software Foundation]
 ## Binary releases
 
 Binary releases can be found at http://treegraph.bioinfweb.info/Download.
+
+## About *bioinfweb*
+
+* Legal notice: http://bioinfweb.info/About
+* Privacy policy: http://bioinfweb.info/Privacy

@@ -165,7 +165,8 @@ public class ImportTableEdit extends DocumentEdit implements WarningMessageEdit 
   		}
   	}
   	else {
-  		throw new IllegalArgumentException("The number of adapters and columns do not match.");
+  		throw new IllegalArgumentException("The number of adapters (" + parameters.getImportAdapters().length + 
+  				") and columns (" + data.columnCount() + ") do not match.");
   	}
   }
   

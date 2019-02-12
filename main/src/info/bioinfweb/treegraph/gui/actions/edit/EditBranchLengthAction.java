@@ -39,10 +39,10 @@ public class EditBranchLengthAction extends EditDialogAction {
 		super(mainFrame);
 	  
 		putValue(Action.NAME, "Edit branch length..."); 
-	  putValue(Action.MNEMONIC_KEY, KeyEvent.VK_E);
+		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_E);
 		putValue(Action.ACCELERATOR_KEY, 
 				KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
-  }
+	}
 
 	
 	@Override

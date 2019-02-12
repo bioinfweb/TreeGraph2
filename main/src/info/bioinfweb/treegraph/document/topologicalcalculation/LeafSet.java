@@ -62,7 +62,7 @@ public class LeafSet {
 	
 	
 	public void setChild(int pos, boolean value) {
-		if (value){
+		if (value) {
 			field[pos / Integer.SIZE] = field[pos / Integer.SIZE] | Math2.intPow(2, pos % Integer.SIZE);
 		}
 		else {
@@ -121,8 +121,8 @@ public class LeafSet {
 	 * Compares this field or its complement to another. Note that both fields have to be of the 
 	 * same size.
 	 * 
-	 * @param other - the leaf field to be compared
-	 * @param complement - defines whether the original of this field or its complement shall be compared
+	 * @param other the leaf field to be compared
+	 * @param complement defines whether the original of this field or its complement shall be compared
 	 * @return 0 if exactly the same leaves are contained in both fields, 
 	 *         -1 if the other field does not contain all leaves that this field contains (if so the 
 	 *         complement of this field is also tested before -1 is returned)
@@ -152,10 +152,8 @@ public class LeafSet {
 	
 	
 	/**
-	 * Returns <code>false</code> if this field (or its complement) contains any terminal the specified 
-	 * field does not contain and this field (or its complement) contains at least one terminal less than
-	 * the specified field. (Tests whether this field (or its complement) is in the subtree of the 
-	 * specified field.)
+	 * Tests whether this field (or its complement) is in the subtree of the specified field. Identical fields are
+	 * not considered as subtrees of each other.
 	 * 
 	 * @param parent a leaf set describing a subtree that shall be tested be be the parent of the subtree
 	 *        represented by this instance

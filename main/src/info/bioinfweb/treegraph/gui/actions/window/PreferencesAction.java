@@ -16,21 +16,42 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.gui.actions.help;
+package info.bioinfweb.treegraph.gui.actions.window;
 
 
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.Action;
 
-import info.bioinfweb.treegraph.gui.dialogs.AboutDialog;
+import info.bioinfweb.commons.swing.ExtendedAbstractAction;
+import info.bioinfweb.treegraph.gui.dialogs.PreferencesDialog;
+import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 
 
 
-public class AboutAction extends BasicAboutAction {
-	public AboutAction() {
-		super(AboutDialog.GENERAL_TAB_INDEX);
-		putValue(Action.NAME, "About..."); 
-	  putValue(Action.MNEMONIC_KEY, KeyEvent.VK_A);
+public class PreferencesAction extends ExtendedAbstractAction {
+	private PreferencesDialog dialog = null;
+	
+	
+	public PreferencesAction() {
+		super();
+		putValue(Action.NAME, "Preferences..."); 
+	  putValue(Action.MNEMONIC_KEY, KeyEvent.VK_P);
+		putValue(Action.SHORT_DESCRIPTION, "Edit preferences of TreeGraph 2"); 
+	}
+	
+
+	public PreferencesDialog getDialog() {
+		if (dialog == null) {
+			dialog = new PreferencesDialog();
+		}
+		return dialog;
+	}
+
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		getDialog().execute();
 	}
 }
