@@ -24,6 +24,8 @@ import info.bioinfweb.treegraph.document.format.GlobalFormats;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.gui.CurrentDirectoryModel;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
+import info.bioinfweb.treegraph.gui.treeframe.table.DocumentTableModel;
+import info.bioinfweb.treegraph.gui.treeframe.table.MetadataTreePanel;
 import info.bioinfweb.commons.swing.TableColumnModelAdapter;
 import info.bioinfweb.commons.swing.scrollpaneselector.ExtendedScrollPaneSelector;
 import javax.swing.*;
@@ -38,7 +40,15 @@ import javax.swing.table.TableColumnModel;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.Rectangle;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 
 
@@ -58,7 +68,9 @@ public class TreeInternalFrame extends JInternalFrame {
 	private JPanel jContentPane = null;
 	private JSplitPane documentSplitPane = null;
 	private TreeScrollPane treeScrollPane = null;
-	private JScrollPane tableScrollPane = null;
+	private JScrollPane metadataScrollPane = null;
+	private JPanel metadataPanel = null;
+	private MetadataTreePanel metadataTree = null;
 	private JTable table = null;
 	
 	
@@ -184,7 +196,7 @@ public class TreeInternalFrame extends JInternalFrame {
 	private JSplitPane getDocumentSplitPane() {
 		if (documentSplitPane == null) {
 			documentSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, 
-					getTreeScrollPane(), getTableScrollPane());
+					getTreeScrollPane(), getMetadataScrollPane());
 			documentSplitPane.setDividerSize(8);
 			documentSplitPane.setOneTouchExpandable(true);
 			documentSplitPane.setResizeWeight(TREE_WIDTH_RATIO);
@@ -222,17 +234,49 @@ public class TreeInternalFrame extends JInternalFrame {
 	 * 	
 	 * @return javax.swing.JScrollPane	
 	 */
-	private JScrollPane getTableScrollPane() {
-		if (tableScrollPane == null) {
-			tableScrollPane = new JScrollPane();
-			tableScrollPane.setViewportView(getTable());
-			ExtendedScrollPaneSelector.installScrollPaneSelector(tableScrollPane);
-			tableScrollPane.setCorner(JScrollPane.UPPER_RIGHT_CORNER, new HelpButton(45));
+	private JScrollPane getMetadataScrollPane() {
+		if (metadataScrollPane == null) {
+			metadataScrollPane = new JScrollPane();
+			metadataScrollPane.setViewportView(getMetadataPanel());
+			ExtendedScrollPaneSelector.installScrollPaneSelector(metadataScrollPane);
+			metadataScrollPane.setCorner(JScrollPane.UPPER_RIGHT_CORNER, new HelpButton(45));
     }
-		return tableScrollPane;
+		return metadataScrollPane;
 	}
 
 
+	private JPanel getMetadataPanel() {
+		if (metadataPanel == null) {
+			metadataPanel = new JPanel();
+			metadataPanel.setLayout(new GridBagLayout());
+			
+			GridBagConstraints treeGBC = new GridBagConstraints();
+			treeGBC.anchor = GridBagConstraints.NORTHWEST;
+			treeGBC.insets = new Insets(0, 0, 5, 0);
+			treeGBC.fill = GridBagConstraints.HORIZONTAL;
+			treeGBC.gridx = 0;
+			treeGBC.gridy = 0;
+			metadataPanel.add(getMetadataTree(), treeGBC);
+			
+			GridBagConstraints tableGBC = new GridBagConstraints();
+			tableGBC.fill = GridBagConstraints.BOTH;
+			tableGBC.gridx = 0;
+			tableGBC.gridy = 1;
+			metadataPanel.add(getTable(), tableGBC);
+		}
+		return metadataPanel;
+	}
+	
+	
+	private MetadataTreePanel getMetadataTree() {
+		if (metadataTree == null) {
+			metadataTree = new MetadataTreePanel();
+			//TODO Register listeners/connect with table
+		}
+		return metadataTree;
+	}
+	
+	
 	/**
 	 * This method initializes table	
 	 * 	
@@ -248,7 +292,7 @@ public class TreeInternalFrame extends JInternalFrame {
 			table.getTableHeader().setReorderingAllowed(false);
 			table.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			
-			ListSelectionListener listener = new ListSelectionListener() {  //TODO Muss zus�tzlich auch ein Model-Listener her? Muss der Tastenstatus initialisiert werden?
+			ListSelectionListener listener = new ListSelectionListener() {  //TODO Muss zusätzlich auch ein Model-Listener her? Muss der Tastenstatus initialisiert werden?
 					  public void valueChanged(ListSelectionEvent e) {
 					  	if ((table.getSelectedColumnCount() > 0) && (table.getSelectedRowCount() > 0)) {
 					  		int selRow = table.getSelectedRows()[table.getSelectedRowCount() - 1];
@@ -269,6 +313,15 @@ public class TreeInternalFrame extends JInternalFrame {
 							setColumnWidths();
 						}
 					});
+			table.addComponentListener(new ComponentAdapter() {
+						@Override
+						public void componentResized(ComponentEvent e) {
+							System.out.println("componentResized");
+							getMetadataPanel().setSize(e.getComponent().getWidth(), 25);
+							//TODO Update metadata tree component here. (Column resizing automatically leads to component resizing. columnModel.columnMarginChanged is also triggered, but I would not be sure that this is reliable.)
+						}
+					});
+			
 			
 			getTreeViewPanel().addTreeViewPanelListener(new TreeViewPanelListener() {
 						public void selectionChanged(ChangeEvent e) {

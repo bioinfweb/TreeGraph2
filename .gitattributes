@@ -778,7 +778,6 @@ main/src/info/bioinfweb/treegraph/gui/mainframe/TreeSelectionSynchronizer.java -
 main/src/info/bioinfweb/treegraph/gui/mainframe/TreeViewPanelIterable.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/mainframe/package.html -text
 main/src/info/bioinfweb/treegraph/gui/package.html -text
-main/src/info/bioinfweb/treegraph/gui/treeframe/DocumentTableModel.java -text
 main/src/info/bioinfweb/treegraph/gui/treeframe/HelpButton.java -text
 main/src/info/bioinfweb/treegraph/gui/treeframe/TreeEditlInputListener.java -text
 main/src/info/bioinfweb/treegraph/gui/treeframe/TreeInternalFrame.java -text
@@ -792,6 +791,9 @@ main/src/info/bioinfweb/treegraph/gui/treeframe/ruler/RulerUnit.java -text
 main/src/info/bioinfweb/treegraph/gui/treeframe/ruler/TreeViewRuler.java -text
 main/src/info/bioinfweb/treegraph/gui/treeframe/ruler/TreeViewRulerConstants.java -text
 main/src/info/bioinfweb/treegraph/gui/treeframe/ruler/TreeViewRulerUnitField.java -text
+main/src/info/bioinfweb/treegraph/gui/treeframe/table/DocumentTableModel.java -text
+main/src/info/bioinfweb/treegraph/gui/treeframe/table/MetadataTreePanel.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/gui/treeframe/table/TableHeaderRendererProvider.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/package.html -text
 main/src/resources/Splash.png -text
 main/src/resources/about/ApacheLicense.html -text svneol=unset#text/plain
