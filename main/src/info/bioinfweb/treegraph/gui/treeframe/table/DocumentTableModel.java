@@ -21,36 +21,29 @@ package info.bioinfweb.treegraph.gui.treeframe.table;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
+import javax.swing.JTable;
+import javax.swing.table.AbstractTableModel;
+
+import info.bioinfweb.commons.Math2;
 import info.bioinfweb.treegraph.document.AbstractPaintableElement;
-import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.NodeType;
 import info.bioinfweb.treegraph.document.TextLabel;
 import info.bioinfweb.treegraph.document.change.DocumentChangeEvent;
 import info.bioinfweb.treegraph.document.change.DocumentListener;
-import info.bioinfweb.treegraph.document.metadata.MetadataPath;
-import info.bioinfweb.treegraph.document.metadata.MetadataTree;
+import info.bioinfweb.treegraph.document.nodebranchdata.AbstractTextElementDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.BranchLengthAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.GeneralIDAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.LiteralMetadataAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.ResourceMetadataAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.AbstractTextElementDataAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.UniqueNameAdapter;
 import info.bioinfweb.treegraph.document.tools.IDManager;
 import info.bioinfweb.treegraph.document.tools.PathManager;
 import info.bioinfweb.treegraph.document.undo.edit.ChangeCellTypeEdit;
 import info.bioinfweb.treegraph.document.undo.edit.ChangeNumercalValueEdit;
 import info.bioinfweb.treegraph.document.undo.edit.ChangeTextualValueEdit;
-import info.bioinfweb.commons.Math2;
-
-import javax.swing.JTable;
-import javax.swing.table.AbstractTableModel;
 
 
 
@@ -65,8 +58,8 @@ public class DocumentTableModel extends AbstractTableModel implements DocumentLi
 	public static final String DECIMAL_COLUMN_HEADING = "Dec";
 	
 	
-	private Vector<NodeBranchDataAdapter> adapters = new Vector<NodeBranchDataAdapter>();
-	private Vector<Node> nodes = new Vector<Node>();
+	private List<NodeBranchDataAdapter> adapters = new ArrayList<NodeBranchDataAdapter>();
+	private List<Node> nodes = new ArrayList<Node>();
 	private Document document = null;
 	
 	

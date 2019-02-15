@@ -26,6 +26,7 @@ import info.bioinfweb.treegraph.gui.CurrentDirectoryModel;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.table.DocumentTableModel;
 import info.bioinfweb.treegraph.gui.treeframe.table.MetadataTreePanel;
+import info.bioinfweb.treegraph.gui.treeframe.table.TableHeaderRendererProvider;
 import info.bioinfweb.commons.swing.TableColumnModelAdapter;
 import info.bioinfweb.commons.swing.scrollpaneselector.ExtendedScrollPaneSelector;
 import javax.swing.*;
@@ -69,7 +70,7 @@ public class TreeInternalFrame extends JInternalFrame {
 	private JSplitPane documentSplitPane = null;
 	private TreeScrollPane treeScrollPane = null;
 	private JScrollPane metadataScrollPane = null;
-	private JPanel metadataPanel = null;
+	private JPanel tableHeadingPanel = null;
 	private MetadataTreePanel metadataTree = null;
 	private JTable table = null;
 	
@@ -237,7 +238,17 @@ public class TreeInternalFrame extends JInternalFrame {
 	private JScrollPane getMetadataScrollPane() {
 		if (metadataScrollPane == null) {
 			metadataScrollPane = new JScrollPane();
-			metadataScrollPane.setViewportView(getMetadataPanel());
+			//getTable().setTableHeader(getTableHeadingPanel());
+			metadataScrollPane.setViewportView(getTable());
+			//metadataScrollPane.getColumnHeader().add(comp)
+//			SwingUtilities.invokeLater(new Runnable() {
+//				@Override
+//				public void run() {
+//					metadataScrollPane.setColumnHeaderView(getTableHeadingPanel());
+//				}
+//			});
+			metadataScrollPane.setColumnHeaderView(getTableHeadingPanel());
+			System.out.println(metadataScrollPane.getColumnHeader().getView());
 			ExtendedScrollPaneSelector.installScrollPaneSelector(metadataScrollPane);
 			metadataScrollPane.setCorner(JScrollPane.UPPER_RIGHT_CORNER, new HelpButton(45));
     }
@@ -245,10 +256,10 @@ public class TreeInternalFrame extends JInternalFrame {
 	}
 
 
-	private JPanel getMetadataPanel() {
-		if (metadataPanel == null) {
-			metadataPanel = new JPanel();
-			metadataPanel.setLayout(new GridBagLayout());
+	private JPanel getTableHeadingPanel() {
+		if (tableHeadingPanel == null) {
+			tableHeadingPanel = new JPanel();
+			tableHeadingPanel.setLayout(new GridBagLayout());
 			
 			GridBagConstraints treeGBC = new GridBagConstraints();
 			treeGBC.anchor = GridBagConstraints.NORTHWEST;
@@ -256,15 +267,15 @@ public class TreeInternalFrame extends JInternalFrame {
 			treeGBC.fill = GridBagConstraints.HORIZONTAL;
 			treeGBC.gridx = 0;
 			treeGBC.gridy = 0;
-			metadataPanel.add(getMetadataTree(), treeGBC);
+			tableHeadingPanel.add(getMetadataTree(), treeGBC);
 			
-			GridBagConstraints tableGBC = new GridBagConstraints();
-			tableGBC.fill = GridBagConstraints.BOTH;
-			tableGBC.gridx = 0;
-			tableGBC.gridy = 1;
-			metadataPanel.add(getTable(), tableGBC);
+			GridBagConstraints tableHeaderGBC = new GridBagConstraints();
+			tableHeaderGBC.fill = GridBagConstraints.HORIZONTAL;
+			tableHeaderGBC.gridx = 0;
+			tableHeaderGBC.gridy = 1;
+			tableHeadingPanel.add(getTable().getTableHeader(), tableHeaderGBC);
 		}
-		return metadataPanel;
+		return tableHeadingPanel;
 	}
 	
 	
@@ -290,6 +301,7 @@ public class TreeInternalFrame extends JInternalFrame {
 			table.setColumnSelectionAllowed(true);
 			table.setRowSelectionAllowed(true);
 			table.getTableHeader().setReorderingAllowed(false);
+			table.getTableHeader().setDefaultRenderer(new TableHeaderRendererProvider());
 			table.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			
 			ListSelectionListener listener = new ListSelectionListener() {  //TODO Muss zusätzlich auch ein Model-Listener her? Muss der Tastenstatus initialisiert werden?
@@ -316,8 +328,8 @@ public class TreeInternalFrame extends JInternalFrame {
 			table.addComponentListener(new ComponentAdapter() {
 						@Override
 						public void componentResized(ComponentEvent e) {
-							System.out.println("componentResized");
-							getMetadataPanel().setSize(e.getComponent().getWidth(), 25);
+							System.out.println("componentResized " + getMetadataScrollPane().getColumnHeader().getView());
+							getTableHeadingPanel().setSize(e.getComponent().getWidth(), 25);
 							//TODO Update metadata tree component here. (Column resizing automatically leads to component resizing. columnModel.columnMarginChanged is also triggered, but I would not be sure that this is reliable.)
 						}
 					});

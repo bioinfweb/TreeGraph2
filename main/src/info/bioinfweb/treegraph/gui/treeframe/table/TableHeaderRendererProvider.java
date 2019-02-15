@@ -20,6 +20,7 @@ package info.bioinfweb.treegraph.gui.treeframe.table;
 
 
 import java.awt.Component;
+import java.awt.Dimension;
 
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
@@ -33,14 +34,24 @@ import javax.swing.table.TableCellRenderer;
  * @author Ben St&ouml;ver
  */
 public class TableHeaderRendererProvider implements TableCellRenderer {
+	private DataColumnHeadingComponent component;
+	
+	
 	//TODO Minimal widths for some cells may need to be provided. Can this be done using the minWidth of the returned components or must it be done somewhere else?
 	//TODO When is getTableCellRendererComponent() called? How can the renderer for a certain column be changes, when the metadata tree changes? Do any additional 
 	//     events need to be triggered?
 
+
+	public TableHeaderRendererProvider() {
+		super();
+		component = new DataColumnHeadingComponent();
+		component.setPreferredSize(new Dimension(50, 20));  // Only necessary to set a height > 0. The width will be set to the respective column width automatically.
+	}
+	
 	
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-		// TODO Auto-generated method stub
-		return null;
+		component.setData(table, isSelected, hasFocus, column);
+		return component;
 	}
 }
