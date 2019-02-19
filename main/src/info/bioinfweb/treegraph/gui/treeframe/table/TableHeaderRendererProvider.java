@@ -42,16 +42,16 @@ public class TableHeaderRendererProvider implements TableCellRenderer {
 	//     events need to be triggered?
 
 
-	public TableHeaderRendererProvider() {
+	public TableHeaderRendererProvider(JTable table) {
 		super();
-		component = new DataColumnHeadingComponent();
+		component = new DataColumnHeadingComponent(table);
 		component.setPreferredSize(new Dimension(50, 20));  // Only necessary to set a height > 0. The width will be set to the respective column width automatically.
 	}
 	
 	
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-		component.setData(table, isSelected, hasFocus, column);
+		component.setData(isSelected, hasFocus, column);
 		return component;
 	}
 }

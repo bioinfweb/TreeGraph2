@@ -69,7 +69,7 @@ public class PathManager {
 		List<MetadataPath> pathList = createPathList(root, nodeType, useNodeData, !useNodeData);
 		
 		for (MetadataPath child : pathList) {			
-			tree.searchAndCreateNodeByPath(child, true); //Create paths in tree.
+			tree.searchAndCreateNodeByPath(child, true);  // Create paths in tree.
 		}
 		if (root != null) {
 			for (Node child : root.getChildren()) {

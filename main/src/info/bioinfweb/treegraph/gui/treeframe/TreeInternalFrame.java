@@ -248,7 +248,6 @@ public class TreeInternalFrame extends JInternalFrame {
 //				}
 //			});
 			metadataScrollPane.setColumnHeaderView(getTableHeadingPanel());
-			System.out.println(metadataScrollPane.getColumnHeader().getView());
 			ExtendedScrollPaneSelector.installScrollPaneSelector(metadataScrollPane);
 			metadataScrollPane.setCorner(JScrollPane.UPPER_RIGHT_CORNER, new HelpButton(45));
     }
@@ -301,7 +300,7 @@ public class TreeInternalFrame extends JInternalFrame {
 			table.setColumnSelectionAllowed(true);
 			table.setRowSelectionAllowed(true);
 			table.getTableHeader().setReorderingAllowed(false);
-			table.getTableHeader().setDefaultRenderer(new TableHeaderRendererProvider());
+			table.getTableHeader().setDefaultRenderer(new TableHeaderRendererProvider(table));
 			table.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			
 			ListSelectionListener listener = new ListSelectionListener() {  //TODO Muss zusätzlich auch ein Model-Listener her? Muss der Tastenstatus initialisiert werden?
@@ -328,7 +327,6 @@ public class TreeInternalFrame extends JInternalFrame {
 			table.addComponentListener(new ComponentAdapter() {
 						@Override
 						public void componentResized(ComponentEvent e) {
-							System.out.println("componentResized " + getMetadataScrollPane().getColumnHeader().getView());
 							getTableHeadingPanel().setSize(e.getComponent().getWidth(), 25);
 							//TODO Update metadata tree component here. (Column resizing automatically leads to component resizing. columnModel.columnMarginChanged is also triggered, but I would not be sure that this is reliable.)
 						}

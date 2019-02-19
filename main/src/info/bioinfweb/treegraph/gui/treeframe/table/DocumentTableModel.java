@@ -34,7 +34,6 @@ import info.bioinfweb.treegraph.document.TextLabel;
 import info.bioinfweb.treegraph.document.change.DocumentChangeEvent;
 import info.bioinfweb.treegraph.document.change.DocumentListener;
 import info.bioinfweb.treegraph.document.metadata.MetadataTree;
-import info.bioinfweb.treegraph.document.nodebranchdata.AbstractTextElementDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.BranchLengthAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
@@ -42,7 +41,6 @@ import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.UniqueNameAdapter;
 import info.bioinfweb.treegraph.document.tools.IDManager;
 import info.bioinfweb.treegraph.document.tools.PathManager;
-import info.bioinfweb.treegraph.document.undo.edit.ChangeCellTypeEdit;
 import info.bioinfweb.treegraph.document.undo.edit.ChangeNumercalValueEdit;
 import info.bioinfweb.treegraph.document.undo.edit.ChangeTextualValueEdit;
 
@@ -54,21 +52,23 @@ import info.bioinfweb.treegraph.document.undo.edit.ChangeTextualValueEdit;
  * @author Ben St&ouml;ver
  */
 public class DocumentTableModel extends AbstractTableModel implements DocumentListener {
-	public static final int COL_UNIQUE_NAME_DATA_TYPE = 1;
-	public static final int COL_BRANCH_LENGTH_DATA_TYPE = 5;
-	public static final String DECIMAL_COLUMN_HEADING = "Dec";
+	public static final int ROW_DATA_TYPE = 0;
+	public static final int COLUMN_UNIQUE_NAMES = 0;
 	
 	
+	private Document document = null;
 	private MetadataTree nodeTree;
 	private MetadataTree branchTree;
 	private List<NodeBranchDataAdapter> adapters = new ArrayList<NodeBranchDataAdapter>();
 	private List<Node> nodes = new ArrayList<Node>();
-	private Document document = null;
+	private int maxTreeDepth = 0;  // Initial value for an empty document.
+	private int[] subtreeDepths;
 	
 	
 	/**
 	 * Creates a new <code>DocumentTableModel</code> which shows the tree contained in document.
 	 * This class registers itself as a view at the given document.
+	 * 
 	 * @param document the document to show
 	 */
 	public DocumentTableModel(Document document) {
@@ -112,6 +112,19 @@ public class DocumentTableModel extends AbstractTableModel implements DocumentLi
 	}
 
 
+	/**
+	 * Returns the length of the longest path from the root any leaf in both the node and the branch metadata tree.
+	 * <p>
+	 * The returned value is updated each time a {@link DocumentChangeEvent} is received. Before the first event is received,
+	 * the returned length will always be 0.
+	 * 
+	 * @return the length of longest path in the metadata trees
+	 */
+	public int getMaxTreeDepth() {
+		return maxTreeDepth;
+	}
+
+
 	public AbstractPaintableElement getTreeElement(int row, int col) {
   	return getAdapter(col).getDataElement(nodes.get(row));
   }
@@ -130,6 +143,7 @@ public class DocumentTableModel extends AbstractTableModel implements DocumentLi
 	private void fillAdapterList(Node root) {
 		nodeTree = PathManager.createCombinedMetadataTreeFromNodes(root, NodeType.BOTH);
 		branchTree = PathManager.createCombinedMetadataTreeFromBranches(root, NodeType.BOTH);
+		maxTreeDepth = Math.max(nodeTree.determineMaxDepth(), branchTree.determineMaxDepth());
 		
 		adapters.clear();
 		adapters.add(new UniqueNameAdapter());
@@ -159,83 +173,66 @@ public class DocumentTableModel extends AbstractTableModel implements DocumentLi
 	
   @Override
 	public Class<?> getColumnClass(int col) {
-		if (col % 2 == 0) {
-			if (adapters.get(col / 2).decimalOnly()) {
-				return Double.class;
-			}
-			else {
-				return Object.class;
-			}
+		if (adapters.get(col).decimalOnly()) {
+			return Double.class;
 		}
 		else {
-			return Boolean.class;
+			return Object.class;
 		}
 	}
 
 	
 	@Override
 	public String getColumnName(int columnIndex) {
-		if (columnIndex % 2 == 0) {
-			NodeBranchDataAdapter adapter = adapters.get(columnIndex / 2);
-			if (adapter instanceof TextLabelAdapter) {
-				return ((TextLabelAdapter)adapter).getID() + " (text labels)";
-			}
-			else {
-				return adapter.toString();
-			}
+		NodeBranchDataAdapter adapter = adapters.get(columnIndex);
+		if (adapter instanceof TextLabelAdapter) {
+			return ((TextLabelAdapter)adapter).getID() + " (text labels)";
 		}
 		else {
-			return DECIMAL_COLUMN_HEADING;
+			return adapter.toString();
 		}
 	}
 
 	
 	@Override
 	public boolean isCellEditable(int row, int col) {
-		boolean result = (col != COL_UNIQUE_NAME_DATA_TYPE) && 
-		    (col != COL_BRANCH_LENGTH_DATA_TYPE)
-		    && !(getAdapter(col) instanceof UniqueNameAdapter);
-		if (result && (col % 2 == 1)) {
-			result = !getAdapter(col).isEmpty(nodes.get(row));
-		}
-		return result;
+		return !(getAdapter(col) instanceof UniqueNameAdapter);
+		//TODO Some lines of a column may not be editable, because parent or child values (in other columns of that line) are editable.
+		//     - May resource metadata elements have URLs and child nodes at the same time?
+		//     - Should using the same predicated for literal and parent resource metadata on different node be discouraged anyway?
 	}
 
 	
 	@Override
 	public int getColumnCount() {
-		return 2 * adapters.size();  // Includes columns to set the data type
+		return adapters.size();
 	}
 
 	
 	@Override
 	public int getRowCount() {
-		return nodes.size();
+		return nodes.size() + 1;  // First line contains the data type list.
 	}
 
 	
 	@Override
 	public Object getValueAt(int row, int col) {
-		NodeBranchDataAdapter adapter = adapters.get(col / 2);
-		Node n = nodes.get(row);
-		
-		if (col % 2 == 0) {			
+		if (row == ROW_DATA_TYPE) {
+			//TODO Return data type
+			return null;
+		}
+		else {
+			NodeBranchDataAdapter adapter = adapters.get(col);
+			Node n = nodes.get(row - 1);
+			
 			if (adapter.isDecimal(n)) {
 				return new Double(adapter.getDecimal(n));
 			}
-			else if (adapter.isString(n)) {
+			else if (adapter.isString(n)) {  //TODO Adjust this when more data types are supported/available.
 				return adapter.getText(n);
 			}
 			else {
 				return null;  //TODO So sinnvoll?
-			}
-		}
-		else {
-			if (adapter.isDecimal(n)) {
-				return new Boolean(true);
-			}
-			else {
-				return new Boolean(false);
 			}
 		}
 	}
@@ -243,10 +240,15 @@ public class DocumentTableModel extends AbstractTableModel implements DocumentLi
 	
 	@Override
 	public void setValueAt(Object value, int row, int col) {
-		NodeBranchDataAdapter adapter = adapters.get(col / 2);
-		Node n = nodes.get(row);
-		
-		if (col % 2 == 0) {
+		if (row == ROW_DATA_TYPE) {
+			//TODO Set data type similar to the (previous) code below.
+//			getDocument().executeEdit(new ChangeCellTypeEdit(getDocument(), (AbstractTextElementDataAdapter)adapter, 
+//					n, (Boolean)value));
+		}
+		else {
+			NodeBranchDataAdapter adapter = adapters.get(col);
+			Node n = nodes.get(row - 1);
+			
 			String str = "";
 			if (value != null) {
 				str = value.toString();
@@ -256,23 +258,19 @@ public class DocumentTableModel extends AbstractTableModel implements DocumentLi
 				getDocument().executeEdit(new ChangeNumercalValueEdit(getDocument(), adapter, n, 
 						Math2.parseDouble(str)));
 			}
-			else {
+			else {  //TODO Adjust when more data types  are supported/available.
 				getDocument().executeEdit(new ChangeTextualValueEdit(getDocument(), adapter, n, str));
 			}
-		}
-		else if ((value instanceof Boolean) && (adapter instanceof AbstractTextElementDataAdapter)) {
-			getDocument().executeEdit(new ChangeCellTypeEdit(getDocument(), (AbstractTextElementDataAdapter)adapter, 
-					n, (Boolean)value));
 		}
 	}
 	
 	
 	public NodeBranchDataAdapter getAdapter(int col) {
-		return adapters.get(col / 2);
+		return adapters.get(col);
 	}
 	
 	
 	public int getRow(Node node) {
-		return nodes.indexOf(node);
+		return nodes.indexOf(node) + 1;
 	}
 }

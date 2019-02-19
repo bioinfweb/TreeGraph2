@@ -100,6 +100,54 @@ public class MetadataTree implements Cloneable {
 	}
 
 
+	public List<Integer> determineSubtreeDepths() {
+		List<Integer> result = new ArrayList<Integer>();
+		result.add(-1);  // Add placeholder for root.
+		int rootDepth = determineMaxDepth(getChildren());
+		result.set(0, rootDepth);
+		return result;
+	}
+	
+		
+	public int determineSubtreeDepths(List<MetadataNode> children, List<Integer> depths) {
+		int maxDepth = 0;
+		int rootIndex = depths.size();
+		depths.add(-1);  // Add placeholder for this level.
+		
+		for (MetadataNode child : children) {
+			if (child instanceof ResourceMetadataNode) {
+				maxDepth = Math.max(maxDepth, determineSubtreeDepths(children, depths));
+			}
+			else {
+				depths.add(0);  // No additional levels under a literal metadata node
+				maxDepth = Math.max(maxDepth, 1);
+			}
+		}
+		
+		depths.set(rootIndex, maxDepth);
+		return maxDepth + 1;
+	}
+	
+	
+	public int determineMaxDepth() {
+		return determineMaxDepth(getChildren());
+	}
+	
+	
+	private int determineMaxDepth(List<MetadataNode> children) {
+		int additionalDepth = 0;
+		for (MetadataNode child : children) {
+			if (child instanceof ResourceMetadataNode) {
+				additionalDepth = Math.max(additionalDepth, determineMaxDepth(((ResourceMetadataNode)child).getChildren()));
+			}
+			else {
+				additionalDepth = Math.max(additionalDepth, 1);
+			}
+		}
+		return additionalDepth + 1;  // Count the root of this level.
+	}
+	
+
 	@Override
 	public MetadataTree clone() {
 		try {
