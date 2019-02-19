@@ -61,8 +61,8 @@ public class DocumentTableModel extends AbstractTableModel implements DocumentLi
 	private MetadataTree branchTree;
 	private List<NodeBranchDataAdapter> adapters = new ArrayList<NodeBranchDataAdapter>();
 	private List<Node> nodes = new ArrayList<Node>();
-	private int maxTreeDepth = 0;  // Initial value for an empty document.
 	private int[] subtreeDepths;
+	private int maxTreeDepth = 0;
 	
 	
 	/**
@@ -123,6 +123,11 @@ public class DocumentTableModel extends AbstractTableModel implements DocumentLi
 	public int getMaxTreeDepth() {
 		return maxTreeDepth;
 	}
+	
+	
+	public int getSubtreeDepth(int column) {
+		return subtreeDepths[column];
+	}
 
 
 	public AbstractPaintableElement getTreeElement(int row, int col) {
@@ -140,10 +145,31 @@ public class DocumentTableModel extends AbstractTableModel implements DocumentLi
 	}
 	
 	
+	private void updateSubtreeDepths() {
+		List<Integer> nodeTreeDepths = nodeTree.determineSubtreeDepths();
+		List<Integer> branchTreeDepths = branchTree.determineSubtreeDepths();
+		
+		subtreeDepths = new int[1 + nodeTreeDepths.size() + branchTreeDepths.size()];
+		subtreeDepths[0] = 0;  // Unique node names have no levels displayed underneath them.
+		
+		int offset = 1;
+		for (int i = 0; i < nodeTreeDepths.size(); i++) {
+			subtreeDepths[offset + i] = nodeTreeDepths.get(i);
+		}
+		
+		offset = 1 + nodeTreeDepths.size();
+		for (int i = 0; i < branchTreeDepths.size(); i++) {
+			subtreeDepths[offset + i] = branchTreeDepths.get(i);
+		}
+		
+		maxTreeDepth = Math.max(nodeTreeDepths.get(0), branchTreeDepths.get(0)) + 1;  // + 1 to count the level for the "node" and "branch" roots.
+	}
+	
+	
 	private void fillAdapterList(Node root) {
 		nodeTree = PathManager.createCombinedMetadataTreeFromNodes(root, NodeType.BOTH);
 		branchTree = PathManager.createCombinedMetadataTreeFromBranches(root, NodeType.BOTH);
-		maxTreeDepth = Math.max(nodeTree.determineMaxDepth(), branchTree.determineMaxDepth());
+		updateSubtreeDepths();
 		
 		adapters.clear();
 		adapters.add(new UniqueNameAdapter());

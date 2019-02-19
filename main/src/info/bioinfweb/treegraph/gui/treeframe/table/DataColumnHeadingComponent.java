@@ -31,6 +31,7 @@ import javax.swing.JTable;
 import info.bioinfweb.commons.graphics.FontCalculator;
 import info.bioinfweb.treegraph.document.nodebranchdata.MetadataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 
 
 
@@ -83,22 +84,27 @@ public class DataColumnHeadingComponent extends JComponent {
 		g.setFont(new Font(FONT_NAME, FONT_STYLE, 1).deriveFont(
 				FontCalculator.getInstance().getFontSizeByTextHeight(TEXT_HEIGHT, FONT_NAME, FONT_STYLE)));
 		
+		// Draw text:
+		int height = getHeight();
+		int levelsUnderneath = getTableModel().getSubtreeDepth(column);
+		//int level = ((MetadataAdapter) adapter).getPath().getElementList().size();  // Values start with one, because the node and branch roots are painted on level 0.
+		int textBaseY = height - (levelsUnderneath + 1) * LEVEL_HEIGHT + TEXT_HEIGHT + TEXT_MARGIN;
+		g.drawString(table.getColumnName(column), TEXT_MARGIN, textBaseY);
+		
+		// Draw vertical line to data column: 
+		g.drawLine(VERTICAL_LINE_DISTANCE, textBaseY + TEXT_MARGIN, VERTICAL_LINE_DISTANCE, height);
+
+		// Draw horizontal lines for tree topology:
 		NodeBranchDataAdapter adapter = getTableModel().getAdapter(column);
-		if (adapter instanceof MetadataAdapter) {
-			int level = ((MetadataAdapter) adapter).getPath().getElementList().size();  // Values start with one, because the node and branch roots are painted on level 0.
-			int textBaseY = TEXT_HEIGHT + TEXT_MARGIN + level * LEVEL_HEIGHT;
-			g.drawString(table.getColumnName(column), TEXT_MARGIN, textBaseY);
+		if (adapter instanceof NodeNameAdapter) {
+			g.drawLine(VERTICAL_LINE_DISTANCE, textBaseY + TEXT_MARGIN + HORIZONTAL_LINE_DISTANCE, HORIZONTAL_LINE_DISTANCE, height);
+		}
+		else if (adapter instanceof MetadataAdapter) {
 			
-			g.drawLine(HORIZONTAL_LINE_DISTANCE, textBaseY + TEXT_MARGIN, HORIZONTAL_LINE_DISTANCE, getHeight());
 		}
 		else {
-			//TODO Paint headers of other columns (or use a different header component there)
+			
 		}
 		
-//		g.setColor(Color.GREEN);
-//		g.drawLine(0, 0, getSize().width, getSize().height);
-//		if (table != null) {
-//			g.drawString(table.getColumnName(column), 2, 8);
-//		}
 	}
 }
