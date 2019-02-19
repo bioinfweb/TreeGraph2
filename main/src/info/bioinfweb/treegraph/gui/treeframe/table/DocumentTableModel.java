@@ -33,6 +33,7 @@ import info.bioinfweb.treegraph.document.NodeType;
 import info.bioinfweb.treegraph.document.TextLabel;
 import info.bioinfweb.treegraph.document.change.DocumentChangeEvent;
 import info.bioinfweb.treegraph.document.change.DocumentListener;
+import info.bioinfweb.treegraph.document.metadata.MetadataTree;
 import info.bioinfweb.treegraph.document.nodebranchdata.AbstractTextElementDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.BranchLengthAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
@@ -58,6 +59,8 @@ public class DocumentTableModel extends AbstractTableModel implements DocumentLi
 	public static final String DECIMAL_COLUMN_HEADING = "Dec";
 	
 	
+	private MetadataTree nodeTree;
+	private MetadataTree branchTree;
 	private List<NodeBranchDataAdapter> adapters = new ArrayList<NodeBranchDataAdapter>();
 	private List<Node> nodes = new ArrayList<Node>();
 	private Document document = null;
@@ -99,7 +102,17 @@ public class DocumentTableModel extends AbstractTableModel implements DocumentLi
 	}
 
 
-  public AbstractPaintableElement getTreeElement(int row, int col) {
+  public MetadataTree getNodeTree() {
+		return nodeTree;
+	}
+
+
+	public MetadataTree getBranchTree() {
+		return branchTree;
+	}
+
+
+	public AbstractPaintableElement getTreeElement(int row, int col) {
   	return getAdapter(col).getDataElement(nodes.get(row));
   }
   
@@ -115,32 +128,24 @@ public class DocumentTableModel extends AbstractTableModel implements DocumentLi
 	
 	
 	private void fillAdapterList(Node root) {
+		nodeTree = PathManager.createCombinedMetadataTreeFromNodes(root, NodeType.BOTH);
+		branchTree = PathManager.createCombinedMetadataTreeFromBranches(root, NodeType.BOTH);
+		
 		adapters.clear();
 		adapters.add(new UniqueNameAdapter());
+		
 		adapters.add(new NodeNameAdapter());
+		adapters.addAll(PathManager.createAdapterList(NodeType.BOTH, nodeTree));
+		
 		adapters.add(new BranchLengthAdapter());
+		adapters.addAll(PathManager.createAdapterList(NodeType.BOTH, branchTree));
 
+		// TODO The following can be removed as soon as text label do not store data anymore but reference a metadata path.
 		List<String> ids = IDManager.getLabelIDListFromSubtree(root, TextLabel.class);
 		for (int i = 0; i < ids.size(); i++) {
 			adapters.add(new TextLabelAdapter(ids.get(i), 
 					((TextLabel)IDManager.getFirstLabel(root, TextLabel.class, ids.get(i))).getFormats().getDecimalFormat()));
 		}
-		
-		List<NodeBranchDataAdapter> adapterList = PathManager.createAdapterList(root, NodeType.BOTH);
-		for (NodeBranchDataAdapter child : adapterList) {
-			adapters.add(child);
-		}
-  	
-//		MetadataTree tree = new MetadataTree(root);
-//		PathManager.createCombinedMetadataTree(root, tree, true, true); //TODO what values should the booleans have?
-//		
-//		List<NodeBranchDataAdapter> metadataAdapters = PathManager.createAdapterList(tree, new ArrayList<NodeBranchDataAdapter>(), true);
-//		
-//		if (root instanceof Node) {			
-//			for (NodeBranchDataAdapter nodeBranchDataAdapter : metadataAdapters) {
-//				adapters.add(nodeBranchDataAdapter);
-//			}
-//		}
 	}
 	
 	

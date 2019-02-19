@@ -79,28 +79,32 @@ public class PathManager {
 	}
 		
 	
-	//Create combined branch and node trees
-	//Create path list from both trees
-	//Create adapter list from path list (Concrete instance depends on path.)
-	public static List<NodeBranchDataAdapter> createAdapterList(Node root, NodeType nodeType) {
+	public static List<NodeBranchDataAdapter> createAdapterList(NodeType nodeType, MetadataTree... trees) {
 		List<NodeBranchDataAdapter> result = new ArrayList<NodeBranchDataAdapter>();
 		
-		MetadataTree nodeTree = createCombinedMetadataTreeFromNodes(root, nodeType);
-		MetadataTree branchTree = createCombinedMetadataTreeFromBranches(root, nodeType);
-		
-		List<MetadataPath> pathList = createPathList(nodeTree, nodeType);
-		pathList.addAll(createPathList(branchTree, nodeType));
-		
-		for (MetadataPath path : pathList) {
-			boolean isLiteral = path.isLiteral();
-			if(isLiteral) {
-				result.add(new LiteralMetadataAdapter(path));
+		if (trees.length > 0) {
+			List<MetadataPath> pathList = createPathList(trees[0], nodeType);
+			for (int i = 1; i < trees.length; i++) {
+				pathList.addAll(createPathList(trees[i], nodeType));
 			}
-			else {
-				result.add(new ResourceMetadataAdapter(path));
+			
+			for (MetadataPath path : pathList) {
+				boolean isLiteral = path.isLiteral();
+				if(isLiteral) {
+					result.add(new LiteralMetadataAdapter(path));
+				}
+				else {
+					result.add(new ResourceMetadataAdapter(path));
+				}
 			}
 		}
 		return result;
+	}
+
+	
+	
+	public static List<NodeBranchDataAdapter> createAdapterList(Node root, NodeType nodeType) {
+		return createAdapterList(nodeType, createCombinedMetadataTreeFromNodes(root, nodeType), createCombinedMetadataTreeFromBranches(root, nodeType));
 	}
 		
 		
@@ -111,7 +115,6 @@ public class PathManager {
 				fillPathList(root.getMetadataTree().getChildren(), true, nodeType, new ArrayList<MetadataPathElement>(), result);
 			}
 			if (includeBranchData) {
-//				fillPathList(root.getAfferentBranch().getMetadataTree().getChildren(), false, nodeType, Collections.<MetadataPathElement>emptyList(), result);
 				fillPathList(root.getAfferentBranch().getMetadataTree().getChildren(), false, nodeType, new ArrayList<MetadataPathElement>(), result);
 			}
 		}
@@ -121,7 +124,6 @@ public class PathManager {
 	
 	public static List<MetadataPath> createPathList(MetadataTree tree, NodeType nodeType) {
 		List<MetadataPath> result = new ArrayList<MetadataPath>();
-//		fillPathList(tree.getChildren(), tree.getParent() instanceof Node, nodeType, Collections.<MetadataPathElement>emptyList(), result);
 		fillPathList(tree.getChildren(), tree.getParent() instanceof Node, nodeType, new ArrayList<MetadataPathElement>(), result);
 		return result;
 	}
