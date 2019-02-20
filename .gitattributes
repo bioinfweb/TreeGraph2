@@ -877,6 +877,8 @@ test/.classpath -text svneol=unset#text/plain
 test/.project -text svneol=unset#text/plain
 test/.settings/org.eclipse.jdt.core.prefs -text svneol=unset#text/plain
 test/.settings/org.eclipse.jdt.ui.prefs -text svneol=unset#text/plain
+test/data/MetadataTree.xml -text svneol=unset#text/plain
+test/data/MetadataTree_doublePathUse.xml -text svneol=unset#text/plain
 test/data/RerootByLeaves.xtg -text
 test/data/addSupport/Polytomy.xtg -text
 test/data/addSupport/PolytomyAddTerminals.xtg -text
