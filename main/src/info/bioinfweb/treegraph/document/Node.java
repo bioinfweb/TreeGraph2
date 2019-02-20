@@ -19,19 +19,24 @@
 package info.bioinfweb.treegraph.document;
 
 
-import info.bioinfweb.treegraph.document.format.*;
-import info.bioinfweb.treegraph.document.metadata.MetadataNode;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Vector;
+
+import info.bioinfweb.treegraph.document.format.ElementFormats;
+import info.bioinfweb.treegraph.document.format.LegendFormats;
+import info.bioinfweb.treegraph.document.format.NodeFormats;
 import info.bioinfweb.treegraph.document.metadata.MetadataTree;
 import info.bioinfweb.treegraph.document.tools.TreeSerializer;
 import info.bioinfweb.treegraph.graphics.positionpaint.PositionPaintType;
 import info.bioinfweb.treegraph.graphics.positionpaint.positiondata.NodePositionData;
 
-import java.util.*;
-
 
 
 /**
- * This class represents a node of a tree in the TreeGraph data structure. 
+ * This class represents a node of a tree in the TreeGraph data structure.
+ *  
  * @author Ben St&ouml;ver
  */
 public class Node extends AbstractTextElement 

@@ -20,22 +20,13 @@ package info.bioinfweb.treegraph.document.metadata;
 
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
 
 import javax.xml.namespace.QName;
-
-import info.bioinfweb.jphyloio.events.meta.ResourceMetadataEvent;
-import info.bioinfweb.jphyloio.events.meta.URIOrStringIdentifier;
-import info.bioinfweb.treegraph.document.Node;
-import info.bioinfweb.treegraph.document.TextElementData;
 
 
 
 public class ResourceMetadataNode extends MetadataNode {
-	private List<MetadataNode> children = new ArrayList<MetadataNode>();
+	private MetadataNodeList children = new MetadataNodeList();
 	private URI href = null;
 	
 	
@@ -59,7 +50,7 @@ public class ResourceMetadataNode extends MetadataNode {
 	}
 	
 	
-	public List<MetadataNode> getChildren() {
+	public MetadataNodeList getChildren() {
 		return children;
 	}
 	
@@ -84,7 +75,7 @@ public class ResourceMetadataNode extends MetadataNode {
 	@Override
 	public ResourceMetadataNode clone() {
 		ResourceMetadataNode result = (ResourceMetadataNode)super.clone();
-		result.children = new ArrayList<MetadataNode>();
+		result.children = new MetadataNodeList();
 		for (MetadataNode child : getChildren()) {
 			MetadataNode childClone = child.clone();
 			childClone.setParent(result);

@@ -323,6 +323,7 @@ main/src/info/bioinfweb/treegraph/document/io/xtg/XTGWriter.java -text
 main/src/info/bioinfweb/treegraph/document/io/xtg/package.html -text
 main/src/info/bioinfweb/treegraph/document/metadata/LiteralMetadataNode.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/metadata/MetadataNode.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/metadata/MetadataNodeList.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/metadata/MetadataPath.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/metadata/MetadataPathElement.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/metadata/MetadataTree.java -text svneol=unset#text/plain

@@ -23,8 +23,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import info.bioinfweb.jphyloio.formats.xtg.XTGConstants;
-
 
 
 public class MetadataPath  {

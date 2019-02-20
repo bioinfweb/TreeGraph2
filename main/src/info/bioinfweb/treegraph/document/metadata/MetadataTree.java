@@ -29,7 +29,7 @@ import info.bioinfweb.treegraph.document.HiddenDataElement;
 
 public class MetadataTree implements Cloneable {
 	private HiddenDataElement parent;
-	private List<MetadataNode> children = new ArrayList<MetadataNode>();
+	private MetadataNodeList children = new MetadataNodeList();
 	
 	
 	public MetadataTree(HiddenDataElement parent) {
@@ -47,8 +47,13 @@ public class MetadataTree implements Cloneable {
 	}
 	
 	
-	public List<MetadataNode> getChildren() {
+	public MetadataNodeList getChildren() {
 		return children;
+	}
+	
+	
+	public boolean isEmpty() {
+		return (getChildren().size() == 0);
 	}
 	
 	
@@ -151,7 +156,7 @@ public class MetadataTree implements Cloneable {
 		try {
 			MetadataTree result = (MetadataTree)super.clone();
 			result.setParent(null);
-			result.children = new ArrayList<MetadataNode>();
+			result.children = new MetadataNodeList();
 			for (MetadataNode child : getChildren()) {
 				MetadataNode childClone = child.clone();
 				result.getChildren().add(childClone);

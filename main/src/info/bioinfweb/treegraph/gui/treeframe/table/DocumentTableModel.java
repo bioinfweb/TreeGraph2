@@ -63,6 +63,8 @@ public class DocumentTableModel extends AbstractTableModel implements DocumentLi
 	private List<Node> nodes = new ArrayList<Node>();
 	private int[] subtreeDepths;
 	private int maxTreeDepth = 0;
+	private int nodeTreeDepth = 0;
+	private int branchTreeDepth = 0;
 	
 	
 	/**
@@ -125,6 +127,16 @@ public class DocumentTableModel extends AbstractTableModel implements DocumentLi
 	}
 	
 	
+	public int getNodeTreeDepth() {
+		return nodeTreeDepth;
+	}
+
+
+	public int getBranchTreeDepth() {
+		return branchTreeDepth;
+	}
+
+
 	public int getSubtreeDepth(int column) {
 		return subtreeDepths[column];
 	}
@@ -162,12 +174,14 @@ public class DocumentTableModel extends AbstractTableModel implements DocumentLi
 			subtreeDepths[offset + i] = branchTreeDepths.get(i);
 		}
 		
-		maxTreeDepth = Math.max(nodeTreeDepths.get(0), branchTreeDepths.get(0)) + 1;  // + 1 to count the level for the "node" and "branch" roots.
+		nodeTreeDepth = nodeTreeDepths.get(0) + 1;  // + 1 to count the level for the "node" and "branch" roots.
+		branchTreeDepth = branchTreeDepths.get(0) + 1;
+		maxTreeDepth = Math.max(nodeTreeDepth, branchTreeDepth);
 	}
 	
 	
 	private void fillAdapterList(Node root) {
-		nodeTree = PathManager.createCombinedMetadataTreeFromNodes(root, NodeType.BOTH);
+		nodeTree = PathManager.createCombinedMetadataTreeFromNodes(root, NodeType.BOTH);  //TODO Does this take too long for large phylogenetic trees?
 		branchTree = PathManager.createCombinedMetadataTreeFromBranches(root, NodeType.BOTH);
 		updateSubtreeDepths();
 		
