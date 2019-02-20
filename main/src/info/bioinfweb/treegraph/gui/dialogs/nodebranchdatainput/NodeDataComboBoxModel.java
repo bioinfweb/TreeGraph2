@@ -25,7 +25,7 @@ import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.metadata.MetadataPath;
 import info.bioinfweb.treegraph.document.nodebranchdata.*;
 import info.bioinfweb.treegraph.document.tools.IDManager;
-import info.bioinfweb.treegraph.document.tools.PathManager;
+import info.bioinfweb.treegraph.document.tools.MetadataTreeTools;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -122,7 +122,7 @@ public class NodeDataComboBoxModel extends AbstractListModel<NodeBranchDataAdapt
 		
 		if (tree != null) {
 			String[] labelIDs = IDManager.getLabelIDs(tree.getPaintStart(), TextLabel.class);
-			List<NodeBranchDataAdapter> metadataAdapters = PathManager.createAdapterList(tree.getPaintStart(),NodeType.BOTH); //TODO What should the nodeType be?
+			List<NodeBranchDataAdapter> metadataAdapters = MetadataTreeTools.createAdapterList(tree.getPaintStart(),NodeType.BOTH); //TODO What should the nodeType be?
 			Map<String, Integer> idDuplication = new TreeMap<String, Integer>();
 			
 			for (int i = 0; i < labelIDs.length; i++) {

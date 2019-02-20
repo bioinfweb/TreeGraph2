@@ -20,7 +20,6 @@ package info.bioinfweb.treegraph.gui.treeframe.table;
 
 
 import java.awt.Component;
-import java.awt.Dimension;
 
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
@@ -45,7 +44,7 @@ public class TableHeaderRendererProvider implements TableCellRenderer {
 	public TableHeaderRendererProvider(JTable table) {
 		super();
 		component = new DataColumnHeadingComponent(table);
-		component.setPreferredSize(new Dimension(50, 20));  // Only necessary to set a height > 0. The width will be set to the respective column width automatically.
+		//component.setPreferredSize(new Dimension(50, 20));  // Only necessary to set a height > 0. The width will be set to the respective column width automatically.
 	}
 	
 	

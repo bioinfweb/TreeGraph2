@@ -25,7 +25,9 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.SystemColor;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JTable;
@@ -53,6 +55,7 @@ public class DataColumnHeadingComponent extends JComponent {
 	
 	
 	private JTable table;
+	private ColumnHeadingPaintInfoList paintInfos;
 	private boolean isSelected;
 	private boolean hasFocus; 
 	private int column;
@@ -61,6 +64,7 @@ public class DataColumnHeadingComponent extends JComponent {
 	public DataColumnHeadingComponent(JTable table) {
 		super();
 		this.table = table;
+		this.paintInfos = new ColumnHeadingPaintInfoList(getTableModel());
 	}
 
 
@@ -78,16 +82,10 @@ public class DataColumnHeadingComponent extends JComponent {
 	
 	@Override
 	public Dimension getPreferredSize() {
-		return new Dimension(40, LEVEL_HEIGHT * getTableModel().getMaxTreeDepth());  //TODO Specify a preferred width that depends on the title length in the future?
+		return new Dimension(40, LEVEL_HEIGHT * paintInfos.getMaxTreeDepth());  //TODO Specify a preferred width that depends on the title length in the future?
 	}
 	
 	
-	private void paintHorizontalLineStart(Graphics2D g, int yUnderText) {
-		yUnderText += HORIZONTAL_LINE_DISTANCE;
-		g.drawLine(VERTICAL_LINE_DISTANCE, yUnderText, getWidth(), yUnderText);
-	}
-
-
 	@Override
 	public void paint(Graphics g1) {
 		super.paint(g1);
@@ -101,70 +99,38 @@ public class DataColumnHeadingComponent extends JComponent {
 		//TODO Indicate selection and focus?
 		
 		// Draw text:
-		int height = getHeight();
-		int levelsUnderneath = getTableModel().getSubtreeDepth(column);
-		int y = height - (levelsUnderneath + 1) * LEVEL_HEIGHT + TEXT_HEIGHT + TEXT_MARGIN;
+		ColumnHeadingPaintInfo info = paintInfos.get(column);
+		int y = info.getLabelLevel() * LEVEL_HEIGHT + TEXT_HEIGHT + TEXT_MARGIN;
 		g.drawString(table.getColumnName(column), TEXT_MARGIN, y);
-		
+
 		// Draw vertical line to data column: 
 		y += TEXT_MARGIN;
-		g.drawLine(VERTICAL_LINE_DISTANCE, y, VERTICAL_LINE_DISTANCE, height);
-
-		// Draw horizontal lines for tree topology:
-		NodeBranchDataAdapter adapter = getTableModel().getAdapter(column);
-		if (adapter instanceof NodeNameAdapter) {
-			if (!getTableModel().getNodeTree().isEmpty()) {
-				paintHorizontalLineStart(g, y);
+		g.drawLine(VERTICAL_LINE_DISTANCE, y, VERTICAL_LINE_DISTANCE, getHeight());
+		
+		// Draw horizontal lines from grandparents and above:
+		for (int level = 0; level < info.getLabelLevel() - 1; level++) {
+			if (info.hasLine(level)) {
+				y = (level + 1) * LEVEL_HEIGHT - HORIZONTAL_LINE_DISTANCE - LINE_WIDTH;
+				g.drawLine(0, y, getWidth(), y);
 			}
 		}
-		else if (adapter instanceof BranchLengthAdapter) {
-			if (!getTableModel().getBranchTree().isEmpty()) {
-				paintHorizontalLineStart(g, y);
+		
+		// Draw line from parent:
+		if ((info.getLabelLevel() > 0) && info.hasLine(info.getLabelLevel() - 1)) {  // (hasLine() for the parent level should always be true.)
+			int x = getWidth();
+			if (info.isLastUnderParent()) {
+				x = VERTICAL_LINE_DISTANCE;
 			}
+			y = info.getLabelLevel() * LEVEL_HEIGHT - HORIZONTAL_LINE_DISTANCE - LINE_WIDTH;
+			
+			g.drawLine(0, y, x, y);  // horizontal line
+			g.drawLine(VERTICAL_LINE_DISTANCE, y, VERTICAL_LINE_DISTANCE, y + HORIZONTAL_LINE_DISTANCE);  // vertical line
 		}
-		else if (adapter instanceof MetadataAdapter) {
-			MetadataAdapter metadataAdapter = (MetadataAdapter)adapter;
-			MetadataNodeList list;
-			int levelsAboveRoot = getTableModel().getMaxTreeDepth();
-			if (metadataAdapter.getPath().isNode()) {
-				list = getTableModel().getNodeTree().getChildren();
-				levelsAboveRoot -= getTableModel().getNodeTreeDepth(); 
-			}
-			else {
-				list = getTableModel().getBranchTree().getChildren();
-				levelsAboveRoot -= getTableModel().getBranchTreeDepth(); 
-			}
-			
-			Iterator<MetadataPathElement> iterator = metadataAdapter.getPath().getElementList().iterator();
-			int parentLineY = LEVEL_HEIGHT * (1 + levelsAboveRoot) - HORIZONTAL_LINE_DISTANCE - LINE_WIDTH;
-			while (iterator.hasNext()) {
-				//TODO The levels underneath from all parent nodes need to be considered. Either an iteration over the columns on the left or another way of saving or
-				//     accessing the number of underneath levels must be implemented. (The latter might be the better option. Otherwise the code will probably get too 
-				//     complex.)
-				
-				int index = list.indexOf(iterator.next());
-				if (index < list.size() - 1) {  // Sibling(s) on the right are present
-					g.drawLine(0, parentLineY, getWidth(), parentLineY);  // Paint horizontal lines of parent nodes if additional children are right of this node.
-				}
-				else if (!iterator.hasNext()) {
-					g.drawLine(0, parentLineY, VERTICAL_LINE_DISTANCE, parentLineY);  // Paint horizontal line from the direct parent to the position of this node
-				}
-				
-				if (list.get(index) instanceof ResourceMetadataNode) {
-					list = ((ResourceMetadataNode)list.get(index)).getChildren();
-				}
-				else {
-					break;  // Should only happen in the last iteration.
-				}
-				parentLineY += LEVEL_HEIGHT;
-			}
-			
-			//TODO Paint vertical line leading to this node
-			
-			//TODO Call paintHorizontalLineStart() if children are present. 
-		}
-		else {
-			
+		
+		// Draw line to children:
+		if (info.hasLine(info.getLabelLevel())) {
+			y = (info.getLabelLevel() + 1) * LEVEL_HEIGHT - HORIZONTAL_LINE_DISTANCE - LINE_WIDTH;
+			g.drawLine(VERTICAL_LINE_DISTANCE, y, getWidth(), y);
 		}
 	}
 }

@@ -20,8 +20,6 @@ package info.bioinfweb.treegraph.document.tools;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +40,7 @@ import info.bioinfweb.treegraph.document.nodebranchdata.ResourceMetadataAdapter;
 
 
 
-public class PathManager {
+public class MetadataTreeTools {
 	/**
 	 * Creates the combined metadata tree from all node and branch metadata trees on the specified phylogenetic node and its children.
 	 * 

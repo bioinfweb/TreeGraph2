@@ -40,7 +40,7 @@ import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.UniqueNameAdapter;
 import info.bioinfweb.treegraph.document.tools.IDManager;
-import info.bioinfweb.treegraph.document.tools.PathManager;
+import info.bioinfweb.treegraph.document.tools.MetadataTreeTools;
 import info.bioinfweb.treegraph.document.undo.edit.ChangeNumercalValueEdit;
 import info.bioinfweb.treegraph.document.undo.edit.ChangeTextualValueEdit;
 
@@ -61,10 +61,6 @@ public class DocumentTableModel extends AbstractTableModel implements DocumentLi
 	private MetadataTree branchTree;
 	private List<NodeBranchDataAdapter> adapters = new ArrayList<NodeBranchDataAdapter>();
 	private List<Node> nodes = new ArrayList<Node>();
-	private int[] subtreeDepths;
-	private int maxTreeDepth = 0;
-	private int nodeTreeDepth = 0;
-	private int branchTreeDepth = 0;
 	
 	
 	/**
@@ -114,34 +110,6 @@ public class DocumentTableModel extends AbstractTableModel implements DocumentLi
 	}
 
 
-	/**
-	 * Returns the length of the longest path from the root any leaf in both the node and the branch metadata tree.
-	 * <p>
-	 * The returned value is updated each time a {@link DocumentChangeEvent} is received. Before the first event is received,
-	 * the returned length will always be 0.
-	 * 
-	 * @return the length of longest path in the metadata trees
-	 */
-	public int getMaxTreeDepth() {
-		return maxTreeDepth;
-	}
-	
-	
-	public int getNodeTreeDepth() {
-		return nodeTreeDepth;
-	}
-
-
-	public int getBranchTreeDepth() {
-		return branchTreeDepth;
-	}
-
-
-	public int getSubtreeDepth(int column) {
-		return subtreeDepths[column];
-	}
-
-
 	public AbstractPaintableElement getTreeElement(int row, int col) {
   	return getAdapter(col).getDataElement(nodes.get(row));
   }
@@ -157,42 +125,18 @@ public class DocumentTableModel extends AbstractTableModel implements DocumentLi
 	}
 	
 	
-	private void updateSubtreeDepths() {
-		List<Integer> nodeTreeDepths = nodeTree.determineSubtreeDepths();
-		List<Integer> branchTreeDepths = branchTree.determineSubtreeDepths();
-		
-		subtreeDepths = new int[1 + nodeTreeDepths.size() + branchTreeDepths.size()];
-		subtreeDepths[0] = 0;  // Unique node names have no levels displayed underneath them.
-		
-		int offset = 1;
-		for (int i = 0; i < nodeTreeDepths.size(); i++) {
-			subtreeDepths[offset + i] = nodeTreeDepths.get(i);
-		}
-		
-		offset = 1 + nodeTreeDepths.size();
-		for (int i = 0; i < branchTreeDepths.size(); i++) {
-			subtreeDepths[offset + i] = branchTreeDepths.get(i);
-		}
-		
-		nodeTreeDepth = nodeTreeDepths.get(0) + 1;  // + 1 to count the level for the "node" and "branch" roots.
-		branchTreeDepth = branchTreeDepths.get(0) + 1;
-		maxTreeDepth = Math.max(nodeTreeDepth, branchTreeDepth);
-	}
-	
-	
 	private void fillAdapterList(Node root) {
-		nodeTree = PathManager.createCombinedMetadataTreeFromNodes(root, NodeType.BOTH);  //TODO Does this take too long for large phylogenetic trees?
-		branchTree = PathManager.createCombinedMetadataTreeFromBranches(root, NodeType.BOTH);
-		updateSubtreeDepths();
+		nodeTree = MetadataTreeTools.createCombinedMetadataTreeFromNodes(root, NodeType.BOTH);  //TODO Does this take too long for large phylogenetic trees?
+		branchTree = MetadataTreeTools.createCombinedMetadataTreeFromBranches(root, NodeType.BOTH);
 		
 		adapters.clear();
 		adapters.add(new UniqueNameAdapter());
 		
 		adapters.add(new NodeNameAdapter());
-		adapters.addAll(PathManager.createAdapterList(NodeType.BOTH, nodeTree));
+		adapters.addAll(MetadataTreeTools.createAdapterList(NodeType.BOTH, nodeTree));
 		
 		adapters.add(new BranchLengthAdapter());
-		adapters.addAll(PathManager.createAdapterList(NodeType.BOTH, branchTree));
+		adapters.addAll(MetadataTreeTools.createAdapterList(NodeType.BOTH, branchTree));
 
 		// TODO The following can be removed as soon as text label do not store data anymore but reference a metadata path.
 		List<String> ids = IDManager.getLabelIDListFromSubtree(root, TextLabel.class);

@@ -50,7 +50,7 @@ import info.bioinfweb.treegraph.document.metadata.LiteralMetadataNode;
 import info.bioinfweb.treegraph.document.metadata.MetadataNode;
 import info.bioinfweb.treegraph.document.metadata.MetadataPath;
 import info.bioinfweb.treegraph.document.metadata.ResourceMetadataNode;
-import info.bioinfweb.treegraph.document.tools.PathManager;
+import info.bioinfweb.treegraph.document.tools.MetadataTreeTools;
 import info.bioinfweb.treegraph.document.tools.TreeSerializer;
 
 

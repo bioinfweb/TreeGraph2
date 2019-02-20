@@ -19,17 +19,17 @@
 package info.bioinfweb.treegraph.gui.treeframe;
 
 
-import info.bioinfweb.treegraph.document.*;
-import info.bioinfweb.treegraph.document.format.GlobalFormats;
-import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
-import info.bioinfweb.treegraph.gui.CurrentDirectoryModel;
-import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
-import info.bioinfweb.treegraph.gui.treeframe.table.DocumentTableModel;
-import info.bioinfweb.treegraph.gui.treeframe.table.MetadataTreePanel;
-import info.bioinfweb.treegraph.gui.treeframe.table.TableHeaderRendererProvider;
-import info.bioinfweb.commons.swing.TableColumnModelAdapter;
-import info.bioinfweb.commons.swing.scrollpaneselector.ExtendedScrollPaneSelector;
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Rectangle;
+
+import javax.swing.JInternalFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.WindowConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
@@ -39,17 +39,16 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableColumnModelEvent;
 import javax.swing.table.TableColumnModel;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.Rectangle;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import info.bioinfweb.commons.swing.TableColumnModelAdapter;
+import info.bioinfweb.commons.swing.scrollpaneselector.ExtendedScrollPaneSelector;
+import info.bioinfweb.treegraph.document.Document;
+import info.bioinfweb.treegraph.document.TreeElement;
+import info.bioinfweb.treegraph.document.format.GlobalFormats;
+import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
+import info.bioinfweb.treegraph.gui.CurrentDirectoryModel;
+import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
+import info.bioinfweb.treegraph.gui.treeframe.table.DocumentTableModel;
+import info.bioinfweb.treegraph.gui.treeframe.table.TableHeaderRendererProvider;
 
 
 
@@ -71,7 +70,6 @@ public class TreeInternalFrame extends JInternalFrame {
 	private TreeScrollPane treeScrollPane = null;
 	private JScrollPane metadataScrollPane = null;
 	private JPanel tableHeadingPanel = null;
-	private MetadataTreePanel metadataTree = null;
 	private JTable table = null;
 	
 	
@@ -238,16 +236,7 @@ public class TreeInternalFrame extends JInternalFrame {
 	private JScrollPane getMetadataScrollPane() {
 		if (metadataScrollPane == null) {
 			metadataScrollPane = new JScrollPane();
-			//getTable().setTableHeader(getTableHeadingPanel());
 			metadataScrollPane.setViewportView(getTable());
-			//metadataScrollPane.getColumnHeader().add(comp)
-//			SwingUtilities.invokeLater(new Runnable() {
-//				@Override
-//				public void run() {
-//					metadataScrollPane.setColumnHeaderView(getTableHeadingPanel());
-//				}
-//			});
-			metadataScrollPane.setColumnHeaderView(getTableHeadingPanel());
 			ExtendedScrollPaneSelector.installScrollPaneSelector(metadataScrollPane);
 			metadataScrollPane.setCorner(JScrollPane.UPPER_RIGHT_CORNER, new HelpButton(45));
     }
@@ -255,38 +244,6 @@ public class TreeInternalFrame extends JInternalFrame {
 	}
 
 
-	private JPanel getTableHeadingPanel() {
-		if (tableHeadingPanel == null) {
-			tableHeadingPanel = new JPanel();
-			tableHeadingPanel.setLayout(new GridBagLayout());
-			
-			GridBagConstraints treeGBC = new GridBagConstraints();
-			treeGBC.anchor = GridBagConstraints.NORTHWEST;
-			treeGBC.insets = new Insets(0, 0, 5, 0);
-			treeGBC.fill = GridBagConstraints.HORIZONTAL;
-			treeGBC.gridx = 0;
-			treeGBC.gridy = 0;
-			tableHeadingPanel.add(getMetadataTree(), treeGBC);
-			
-			GridBagConstraints tableHeaderGBC = new GridBagConstraints();
-			tableHeaderGBC.fill = GridBagConstraints.HORIZONTAL;
-			tableHeaderGBC.gridx = 0;
-			tableHeaderGBC.gridy = 1;
-			tableHeadingPanel.add(getTable().getTableHeader(), tableHeaderGBC);
-		}
-		return tableHeadingPanel;
-	}
-	
-	
-	private MetadataTreePanel getMetadataTree() {
-		if (metadataTree == null) {
-			metadataTree = new MetadataTreePanel();
-			//TODO Register listeners/connect with table
-		}
-		return metadataTree;
-	}
-	
-	
 	/**
 	 * This method initializes table	
 	 * 	
@@ -324,14 +281,6 @@ public class TreeInternalFrame extends JInternalFrame {
 							setColumnWidths();
 						}
 					});
-			table.addComponentListener(new ComponentAdapter() {
-						@Override
-						public void componentResized(ComponentEvent e) {
-							getTableHeadingPanel().setSize(e.getComponent().getWidth(), 25);
-							//TODO Update metadata tree component here. (Column resizing automatically leads to component resizing. columnModel.columnMarginChanged is also triggered, but I would not be sure that this is reliable.)
-						}
-					});
-			
 			
 			getTreeViewPanel().addTreeViewPanelListener(new TreeViewPanelListener() {
 						public void selectionChanged(ChangeEvent e) {

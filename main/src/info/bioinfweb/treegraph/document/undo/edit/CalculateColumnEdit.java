@@ -38,7 +38,7 @@ import info.bioinfweb.treegraph.document.nodebranchdata.TextIDElementType;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.UniqueNameAdapter;
 import info.bioinfweb.treegraph.document.tools.IDManager;
-import info.bioinfweb.treegraph.document.tools.PathManager;
+import info.bioinfweb.treegraph.document.tools.MetadataTreeTools;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
 import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.AbstractFunction;
 import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.ErrorInfo;
@@ -229,8 +229,8 @@ public class CalculateColumnEdit extends DocumentEdit {
 		Map<Object, NodeBranchDataAdapter> result = new HashMap<Object, NodeBranchDataAdapter>();
 		
 		String[] ids = IDManager.getLabelIDs(getDocument().getTree().getPaintStart(), TextLabel.class);
-		List<MetadataPath> paths = PathManager.createPathList(getDocument().getTree().getPaintStart(), NodeType.BOTH, true, false);
-		paths.addAll(PathManager.createPathList(getDocument().getTree().getPaintStart(), NodeType.BOTH, false, true));
+		List<MetadataPath> paths = MetadataTreeTools.createPathList(getDocument().getTree().getPaintStart(), NodeType.BOTH, true, false);
+		paths.addAll(MetadataTreeTools.createPathList(getDocument().getTree().getPaintStart(), NodeType.BOTH, false, true));
 		
 		for (int i = 0; i < ids.length; i++) {
 			result.put(ids[i], new TextLabelAdapter(ids[i], 

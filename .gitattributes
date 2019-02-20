@@ -355,7 +355,7 @@ main/src/info/bioinfweb/treegraph/document/nodebranchdata/factory/SingleNodeBran
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/package.html -text
 main/src/info/bioinfweb/treegraph/document/package.html -text
 main/src/info/bioinfweb/treegraph/document/tools/IDManager.java -text
-main/src/info/bioinfweb/treegraph/document/tools/PathManager.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/tools/MetadataTreeTools.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/tools/TextElementDataAsStringIterator.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/tools/TreeSerializer.java -text
 main/src/info/bioinfweb/treegraph/document/topologicalcalculation/LeafSet.java -text
@@ -792,9 +792,10 @@ main/src/info/bioinfweb/treegraph/gui/treeframe/ruler/RulerUnit.java -text
 main/src/info/bioinfweb/treegraph/gui/treeframe/ruler/TreeViewRuler.java -text
 main/src/info/bioinfweb/treegraph/gui/treeframe/ruler/TreeViewRulerConstants.java -text
 main/src/info/bioinfweb/treegraph/gui/treeframe/ruler/TreeViewRulerUnitField.java -text
+main/src/info/bioinfweb/treegraph/gui/treeframe/table/ColumnHeadingPaintInfo.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/gui/treeframe/table/ColumnHeadingPaintInfoList.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/treeframe/table/DataColumnHeadingComponent.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/treeframe/table/DocumentTableModel.java -text
-main/src/info/bioinfweb/treegraph/gui/treeframe/table/MetadataTreePanel.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/treeframe/table/TableHeaderRendererProvider.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/package.html -text
 main/src/resources/Splash.png -text
