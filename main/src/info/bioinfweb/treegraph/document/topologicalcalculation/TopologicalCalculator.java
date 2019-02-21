@@ -19,7 +19,6 @@
 package info.bioinfweb.treegraph.document.topologicalcalculation;
 
 
-import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -28,8 +27,6 @@ import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
-import info.bioinfweb.treegraph.document.topologicalcalculation.LeafSet;
-import info.bioinfweb.treegraph.document.topologicalcalculation.NodeInfo;
 import info.bioinfweb.treegraph.document.undo.CompareTextElementDataParameters;
 import info.bioinfweb.treegraph.document.undo.file.AddSupportValuesEdit;
 
@@ -42,10 +39,10 @@ import info.bioinfweb.treegraph.document.undo.file.AddSupportValuesEdit;
  * @author Ben St&ouml;ver
  */
 public class TopologicalCalculator {
-	protected Map<TextElementData, Integer> leafValueToIndexMap = new TreeMap<TextElementData, Integer>();
+	protected Map<TextElementData, Integer> leafValueToIndexMap;
+	protected Map<TextElementData, Integer> leafValueToIndexMapBackup;
 	protected boolean processRooted;
 	protected String keyLeafReference;
-	protected LeafSet fullSourceLeafSet = null;  //TODO Cannot be specified in the constructor, since leaf sets may change on every call. Should be set, e.g., in AddSupportValuesEdit.redo(). Do all callers need this property or could it be optionally null?
 	protected CompareTextElementDataParameters parameters;
 	
 	
@@ -53,8 +50,14 @@ public class TopologicalCalculator {
 		this.processRooted = processRooted;
 		this.keyLeafReference = keyLeafReference;
 		this.parameters = parameters;
+		createNewIndexMap();
 	}
 
+	
+	private void createNewIndexMap() {
+		leafValueToIndexMap = new TreeMap<TextElementData, Integer>();
+	}
+	
 
 	/**
 	 * Indicates whether the root of the trees used with this instance shall be considered as an additional
@@ -72,16 +75,6 @@ public class TopologicalCalculator {
 	}
 
 
-	public LeafSet getFullSourceLeafSet() {
-		return fullSourceLeafSet;
-	}
-
-
-	public void setFullSourceLeafSet(LeafSet fullSourceLeafSet) {
-		this.fullSourceLeafSet = fullSourceLeafSet;
-	}
-
-
 	/**
 	 * Registers the leaf values of the subtree under {@code root} to the leaf value map of this instance.
 	 * This map is used to map leaves to indices in a leaf set internally. Therefore all terminals under nodes 
@@ -95,28 +88,47 @@ public class TopologicalCalculator {
 	 * @param adapter the adapter to be used to obtain leaf values from the terminals
 	 */
 	public void addSubtreeToLeafValueToIndexMap(Node root, NodeBranchDataAdapter adapter) {
-		addSubtreeToLeafValueToIndexMap(leafValueToIndexMap, root, adapter);
+		if (root.isLeaf()) {
+			TextElementData data = parameters.createEditedValue(adapter.toTextElementData(root).toString());
+			if (!leafValueToIndexMap.containsKey(data)) {
+				leafValueToIndexMap.put(data, leafValueToIndexMap.size());
+			}
+		}
+		else {
+			for (Node child : root.getChildren()) {
+				addSubtreeToLeafValueToIndexMap(child, adapter);
+			}
+		}
 	}
 	
 	
 	/**
-	 * Fills the specified map with the values of all leafs under {@code root} and an according index.
+	 * Removes all entries from the current index map that are not present in the specified subtree. Note that this method may change
+	 * the indices associated with leaves. It should therefore be called before creating any leaf sets based in this index map.
+	 * <p>
+	 * This method can be used to make sure the index map only contains entries for leaves that are present in two separate trees.
 	 * 
-	 * @param list
-	 * @param root
-	 * @param adapter
+	 * @param root the root of the subtree
+	 * @param adapter the node/branch data adapter that defines the column used to identify a leaf
 	 */
-	private void addSubtreeToLeafValueToIndexMap(Map<TextElementData, Integer> leafMap, Node root, NodeBranchDataAdapter adapter) {
+	public void filterIndexMapBySubtree(Node root, NodeBranchDataAdapter adapter) {
+		leafValueToIndexMapBackup = leafValueToIndexMap;
+		createNewIndexMap();
+		filterIndexMapBySubtreeRek(root, adapter);
+		leafValueToIndexMapBackup = null;  // Allow to free memory of previous map.
+	}
+	
+	
+	private void filterIndexMapBySubtreeRek(Node root, NodeBranchDataAdapter adapter) {
 		if (root.isLeaf()) {
 			TextElementData data = parameters.createEditedValue(adapter.toTextElementData(root).toString());
-			if (!leafMap.containsKey(data)) {
-				leafMap.put(data, leafMap.size());
+			if (leafValueToIndexMapBackup.containsKey(data) && !leafValueToIndexMap.containsKey(data)) {  // Only use values that were present in the previous map.
+				leafValueToIndexMap.put(data, leafValueToIndexMap.size());
 			}
 		}
 		else {
-			Iterator<Node> iterator = root.getChildren().iterator();
-			while (iterator.hasNext()) {
-				addSubtreeToLeafValueToIndexMap(leafMap, iterator.next(), adapter);
+			for (Node child : root.getChildren()) {
+				addSubtreeToLeafValueToIndexMap(child, adapter);
 			}
 		}
 	}
@@ -159,10 +171,9 @@ public class TopologicalCalculator {
 	
 
 	/**
-	 * Adds a boolean set which indicates the leafs located under <code>root</code> to
-	 * the attribute map of <code>root</code>.`
+	 * Adds a boolean set which indicates the leafs located under {@code root} to its attribute map.
 	 * 
-	 * @param root - the root of the subtree
+	 * @param root the root of the subtree to be processed
 	 */
 	public void addLeafSets(Node root, NodeBranchDataAdapter adapter) {
 		root.getAttributeMap().remove(keyLeafReference);  // Necessary to overwrite possible leaf sets from previous edits which might not be valid anymore.
@@ -172,7 +183,10 @@ public class TopologicalCalculator {
 				Node child = root.getChildren().get(i);
 				addLeafSets(child, adapter);
 				if (child.isLeaf()) {
-					field.setChild(getLeafIndex(adapter.toTextElementData(child).toString()), true);
+					int index = getLeafIndex(adapter.toTextElementData(child).toString());
+					if (index >= 0) {  // Ignore leaves that are not contained in the index list (e.g. leafs not present in both trees when adding support values) 
+						field.setChild(index, true);
+					}
 				}
 				else {
 					field.addField(getLeafSet(child));
@@ -180,7 +194,10 @@ public class TopologicalCalculator {
 			}
 		}
 		else {
-			field.setChild(getLeafIndex(adapter.toTextElementData(root).toString()), true);
+			int index = getLeafIndex(adapter.toTextElementData(root).toString());
+			if (index >= 0) {  // see comment above
+				field.setChild(index, true);
+			}
 		}
 	}
 	
@@ -210,9 +227,6 @@ public class TopologicalCalculator {
 		}
 		
 		LeafSet comparedLeafSet = getLeafSet(root);
-		if (fullSourceLeafSet != null) {  //TODO Will this check remain necessary in the future or should all callers specify one? (In this case an IllegalStateException could be thrown here instead.)
-			comparedLeafSet = comparedLeafSet.and(fullSourceLeafSet);  // Necessary for trees with different sets of terminals. (Searched leaf set is edited in findSourceNodeWithAllLeaves().)
-		}
 		int additionalCount = searchedLeafSet.compareTo(comparedLeafSet, false);
 		boolean downwards = additionalCount != -1;
 		if (!downwards) {
