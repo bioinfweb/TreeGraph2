@@ -179,7 +179,7 @@ public class ImportBayesTraitsDataEdit extends AbstractTopologicalCalculationEdi
 			}
 		}
 		
-		Node result = getTopologicalCalculator().findSourceNodeWithAllLeaves(getDocument().getTree(), leafSet).getNode();
+		Node result = getTopologicalCalculator().findNodeWithAllLeaves(getDocument().getTree(), leafSet).getNode();
 		if (internalNodes.keySet().contains(result)) {
 			internalDataNotAdded.add(result.getUniqueName());
 			if (internalNodes.get(result).size() < leafSet.size()) {				

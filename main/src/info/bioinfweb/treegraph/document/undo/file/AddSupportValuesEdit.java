@@ -88,10 +88,8 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit imp
 		this.sourceLeavesAdapter = parameters.getSourceLeavesColumn();
 		this.parseNumericValues = parameters.isParseNumericValues();
 		
-		targetSupportAdapter = parameters.getTargetType().createAdapterInstance(
-				parameters.getIDPrefix() + SUPPORT_NAME, SUPPORT_DECIMAL_FORMAT);
-		targetConflictAdapter = parameters.getTargetType().createAdapterInstance(
-				parameters.getIDPrefix() + CONFLICT_NAME, CONFLICT_DECIMAL_FORMAT);
+		targetSupportAdapter = parameters.getTargetType().createAdapterInstance(parameters.getIDPrefix() + SUPPORT_NAME, SUPPORT_DECIMAL_FORMAT);
+		targetConflictAdapter = parameters.getTargetType().createAdapterInstance(parameters.getIDPrefix() + CONFLICT_NAME, CONFLICT_DECIMAL_FORMAT);
 		getTopologicalCalculator().filterIndexMapBySubtree(sourceDocument.getTree().getPaintStart(), sourceLeavesAdapter);  // Remove all leaves from the index map that are not present in the source tree, as well. (Leaves from the target tree have already been added in the super constructor.)
 	}
 	
@@ -100,70 +98,12 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit imp
 	protected void performRedo() {
 		getTopologicalCalculator().addLeafSets(sourceDocument.getTree().getPaintStart(), sourceLeavesAdapter);  // Only leaves present in both trees will be considered, since
 		getTopologicalCalculator().addLeafSets(getDocument().getTree().getPaintStart(), getTargetLeavesAdapter());  // filterIndexMapBySubtree() was called in the constructor.
+		// (Adding these leave sets must happen after filterIndexMapBySubtree(), since this methods may change indices of terminals.)
 		
 		processSubtree(sourceDocument.getTree().getPaintStart());
 		warningMessage = createWarningMessage();
 	}
 
-	
-	private boolean checkOtherPaintStartBranch(Node sourceNode) {
-		return !getTopologicalCalculator().isProcessRooted() &&  // no root node between the two branches 
-				sourceNode.hasParent() && !sourceNode.getParent().hasParent() &&  // the source node is attached to the paint start   
-				(sourceNode.getParent().getChildren().size() == 2);  // no polytomy at the paint start
-		
-		//TODO Does this method also need to be refactored to take only terminals present in both trees into account?
-	}
-	
-	
-	/**
-	 * Checks if the subtree under {@code root} contains at least two terminals includes in {@code combinedLeafSet}. Terminals located
-	 * under {@code excluded SubtreeRoot} are not counted.
-	 * 
-	 * @param root
-	 * @param excludedSubtreeRoot
-	 * @param combinedLeafSet
-	 * @return the leaf count <= 2
-	 */
-	private int countLeaves(Node root, Node excludedSubtreeRoot, LeafSet combinedLeafSet) {
-		int result = 0;
-		if (root != excludedSubtreeRoot) {
-			if (root.isLeaf()) {
-				combinedLeafSet.isChild(getTopologicalCalculator().getLeafIndex(sourceLeavesAdapter.getDataElement(root).toString()));  //TODO Double check if root is part of the source and not the target tree.
-			}
-			else {
-				for (Node child: root.getChildren()) {
-					result += countLeaves(child, excludedSubtreeRoot, combinedLeafSet);
-					if (result >= 2) { return result; }  // Skip additional iterations.
-				}
-			}
-		}
-		return result;
-	}
-	
-	
-	/**
-	 * Checks if the branch leading to {@code node} separates at least two terminal nodes on each end that are present in the source and the 
-	 * target tree.  
-	 * 
-	 * @param node
-	 * @param combinedLeafSet
-	 * @return
-	 */
-	private boolean hasTwoOrMoreSharedTerminalsOnBothSides(Node node, LeafSet combinedLeafSet) {
-		int countAbove = 0;
-		if (countLeaves(node, null, combinedLeafSet) >= 2) {  // Check if at least two nodes present in both trees are located below "node".
-		  // Check if at least two nodes present in both trees are located above "node":
-			Node position = node;
-			while (position.hasParent() && (countAbove < 2)) {
-				position = position.getParent();
-				countAbove += countLeaves(position, node, combinedLeafSet);
-			}
-		}
-		return (countAbove >= 2);
-	}
-	// combinedLeafSet is not equal to sourceCombinedLeafSet, since it needs to contain all shared terminals.
-	// => One combined instance should be created once if that is not already done somewhere.
-	
 	
 	private boolean hasTwoOrMoreSharedTerminalsOnBothSides(Node node) {
 		LeafSet leafSet = getTopologicalCalculator().getLeafSet(node);
@@ -177,16 +117,33 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit imp
 	 * @param sourceRoot the root of the subtree to add support values to (a node of the target document)
 	 */
 	private void processSubtree(Node sourceRoot) {
-		//TODO Check if support value is present and the branch separates two or more members of the combined leaf set on each side. 
-		//     (The root may or may not be a member of the leaf set, depending on the selected comparison mode.)
-		if (sourceSupportAdapter.isDecimal(sourceRoot) && hasTwoOrMoreSharedTerminalsOnBothSides(sourceRoot)) {
+		double importedValue = getSupportValue(sourceRoot);  //TODO In some cases the other paint start branch might have to be checked in addition or is this already covered by visiting all branches?
+		if (!Double.isNaN(importedValue) && hasTwoOrMoreSharedTerminalsOnBothSides(sourceRoot)) {  // Check if a support value is present and its branch separated at least two shared terminals on each side.
+			NodeInfo bestTargetNode = getTopologicalCalculator().findNodeWithAllLeaves(getDocument().getTree(), 
+					getTopologicalCalculator().getLeafSet(sourceRoot));
 			
+			if (bestTargetNode != null) {
+				if (bestTargetNode.getAdditionalCount() == 0) {  //TODO Is checking for conflicts still necessary here? (It should not be, because only shared terminals were considered.)
+					targetSupportAdapter.setDecimal(bestTargetNode.getNode(), importedValue);
+				}
+				else {
+					Node conflict = getTopologicalCalculator().findHighestConflict(sourceDocument.getTree(), 
+							getDocument().getTree(), bestTargetNode.getNode(), getTopologicalCalculator().getLeafSet(sourceRoot), 
+							getTopologicalCalculator().getLeafSet(bestTargetNode.getNode()), sourceSupportAdapter);  //TODO Check later if this method can also be simplified now that combined leaf sets are used.
+					
+					if (conflict != null) {
+						targetConflictAdapter.setDecimal(bestTargetNode.getNode(), getSupportValue(conflict));  // getSupportValue() should never return NaN here, since the numeric values were already compared before.
+					}
+					else {
+						System.out.println("conflict == null");
+					}
+				}
+			}
+			else {  // Should not happen, since if was checked that two shared terminals are present on both sides. 
+				throw new InternalError("No target node could be found. This is an unexpected internal error. Please inform support@bioinfweb.info "
+						+ "if you see this message or send an error report.");
+			}
 		}
-		
-		//TODO Search for the respective branch in the target tree.
-		//	NodeInfo bestTargetNode = getTopologicalCalculator().findSourceNodeWithAllLeaves(getDocument().getTree(), sourceLeafSet);
-		
-		//TODO Import values as support or conflict
 		
 		for (Node child : sourceRoot.getChildren()) {
 			processSubtree(child);
@@ -262,7 +219,7 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit imp
 	}
 	
 	
-	public double getSupportValue(Node node) {
+	private double getSupportValue(Node node) {
 		if (sourceSupportAdapter.isDecimal(node)) {
 			return sourceSupportAdapter.getDecimal(node);
 		}

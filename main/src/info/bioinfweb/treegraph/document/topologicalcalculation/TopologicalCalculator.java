@@ -128,7 +128,7 @@ public class TopologicalCalculator {
 		}
 		else {
 			for (Node child : root.getChildren()) {
-				addSubtreeToLeafValueToIndexMap(child, adapter);
+				filterIndexMapBySubtreeRek(child, adapter);
 			}
 		}
 	}
@@ -206,22 +206,20 @@ public class TopologicalCalculator {
 	 * Searches the MRCA in {@code tree} containing all leaves defined in the specified leaf set.
 	 * <p>
 	 * This method will return {@code null} if either an empty leaf set is provided or the specified
-	 * leaf set contains only terminals, that are not contained in {@code tree}. (The latter
-	 * can only happen if trees with different leaves have been registered in this instance using
-	 * {@link #addSubtreeToLeafValueToIndexMap(Node, NodeBranchDataAdapter)}.)
+	 * leaf set contains only terminals, that are not contained in {@code tree}.
 	 * 
 	 * @param tree the tree to be searched
 	 * @param leafSet the leaves that shall be contained in the sought-after subtree
 	 * @return a node info describing the found subtree root or {@code null} if no according subtree could 
 	 *         be found. 
 	 */
-	public NodeInfo findSourceNodeWithAllLeaves(Tree tree, LeafSet leafSet) {
+	public NodeInfo findNodeWithAllLeaves(Tree tree, LeafSet leafSet) {
 		leafSet = leafSet.and(getLeafSet(tree.getPaintStart()));  //TODO Is this necessary for other cases then AddSupportValues?
-		return findSourceNodeWithAllLeavesRecursive(tree.getPaintStart(), leafSet);
+		return findNodeWithAllLeavesRecursive(tree.getPaintStart(), leafSet);
 	}
 	
 	
-	private NodeInfo findSourceNodeWithAllLeavesRecursive(Node root, LeafSet searchedLeafSet) {
+	private NodeInfo findNodeWithAllLeavesRecursive(Node root, LeafSet searchedLeafSet) {
 		if (isLeafSetEmpty(searchedLeafSet)) {
 			return null;
 		}
@@ -238,7 +236,7 @@ public class TopologicalCalculator {
   	}
   	
 		for (int i = 0; i < root.getChildren().size(); i++) {
-			NodeInfo childResult = findSourceNodeWithAllLeavesRecursive(root.getChildren().get(i), searchedLeafSet);
+			NodeInfo childResult = findNodeWithAllLeavesRecursive(root.getChildren().get(i), searchedLeafSet);
 			if (childResult != null) {
 				if (result == null) {
 					result = childResult;
