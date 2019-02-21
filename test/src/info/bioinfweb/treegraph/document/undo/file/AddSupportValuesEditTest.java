@@ -50,8 +50,6 @@ public class AddSupportValuesEditTest {
 	//TODO Add more test cases
 	//     - Test case where only one terminal from the combined set is above a node (inverted case of test_polytomyIntoSolvedAddTerminals())
 	//     - Test conflicting values for all situations
-	//     - Test unrooted cases. Add parameter to executeEdit(). (Support values directly below the root should not be imported then, but currently seem to be for in test_polytomyIntoSolvedAddTerminals(). This needs to be checked.)
-	//     - Test cases with support near root, especially regarding TODO in AddSupportValuesEdit:135.
 	
 	private Tree executeEdit(String targetName, String sourceName, boolean rooted) throws Exception {
 	  Document target = ReadWriteFactory.getInstance().getReader(ReadWriteFormat.XTG).read(
@@ -197,5 +195,86 @@ public class AddSupportValuesEditTest {
 		
 		assertNoAnnotation(tree, "cz8kravy5o", SUPPORT_COLUMN);
 		assertNoAnnotation(tree, "cz8kravy5o", CONFLICT_COLUMN);
+	}
+	
+	
+	@Test
+	public void test_solvedIntoPolytomyAddTerminalsUnrooted() throws Exception {
+		Tree tree = executeEdit("PolytomyAddTerminals.xtg", "SolvedAddTerminals.xtg", false);
+		
+		assertNoAnnotation(tree, "egkw6pwe2g", SUPPORT_COLUMN);
+		assertNoAnnotation(tree, "egkw6pwe2g", CONFLICT_COLUMN);
+		
+		assertNoAnnotation(tree, "mcvscb0eq5", SUPPORT_COLUMN);
+		assertNoAnnotation(tree, "mcvscb0eq5", CONFLICT_COLUMN);
+		
+		assertAnnotation(tree, "yt4x200u57", SUPPORT_COLUMN, 2.0);
+		assertNoAnnotation(tree, "yt4x200u57", CONFLICT_COLUMN);
+		
+		assertNoAnnotation(tree, "cz8kravy5o", SUPPORT_COLUMN);
+		assertNoAnnotation(tree, "cz8kravy5o", CONFLICT_COLUMN);
+	}
+
+	
+	@Test
+	public void test_polytomyIntoSolvedAddTerminalsAtRootUnrooted1() throws Exception {
+		Tree tree = executeEdit("SolvedAddTerminals.xtg", "PolytomyAddTerminalsAtRoot.xtg", false);
+		
+		assertNoAnnotation(tree, "egkw6pwe2g", SUPPORT_COLUMN);
+		assertNoAnnotation(tree, "egkw6pwe2g", CONFLICT_COLUMN);
+		
+		assertNoAnnotation(tree, "x7474zcnij", SUPPORT_COLUMN);  // The 2.0 does not separate more then one terminal on each side if the tree is considered unrooted.
+		assertNoAnnotation(tree, "x7474zcnij", CONFLICT_COLUMN);
+		
+		assertAnnotation(tree, "yt4x200u57", SUPPORT_COLUMN, 1.0);
+		assertNoAnnotation(tree, "yt4x200u57", CONFLICT_COLUMN);
+		
+		assertNoAnnotation(tree, "051l0uv3ok", SUPPORT_COLUMN);
+		assertNoAnnotation(tree, "051l0uv3ok", CONFLICT_COLUMN);
+		
+		assertNoAnnotation(tree, "71ralxvypp", SUPPORT_COLUMN);
+		assertNoAnnotation(tree, "71ralxvypp", CONFLICT_COLUMN);
+	}
+
+	
+	@Test
+	public void test_polytomyIntoSolvedAddTerminalsAtRootUnrooted2() throws Exception {
+		Tree tree = executeEdit("SolvedAddTerminalsAtRoot.xtg", "PolytomyAddTerminals.xtg", false);
+		
+		assertNoAnnotation(tree, "egkw6pwe2g", SUPPORT_COLUMN);
+		assertNoAnnotation(tree, "egkw6pwe2g", CONFLICT_COLUMN);
+		
+		assertNoAnnotation(tree, "x7474zcnij", SUPPORT_COLUMN);  // The 2.0 does not separate more then one terminal on each side if the tree is considered unrooted.
+		assertNoAnnotation(tree, "x7474zcnij", CONFLICT_COLUMN);
+		
+		assertAnnotation(tree, "yt4x200u57", SUPPORT_COLUMN, 1.0);
+		assertNoAnnotation(tree, "yt4x200u57", CONFLICT_COLUMN);
+		
+		assertNoAnnotation(tree, "051l0uv3ok", SUPPORT_COLUMN);
+		assertNoAnnotation(tree, "051l0uv3ok", CONFLICT_COLUMN);
+		
+		assertNoAnnotation(tree, "71ralxvypp", SUPPORT_COLUMN);
+		assertNoAnnotation(tree, "71ralxvypp", CONFLICT_COLUMN);
+	}
+
+	
+	@Test
+	public void test_polytomyIntoSolvedAddTerminalsAtRootUnrooted3() throws Exception {
+		Tree tree = executeEdit("SolvedAddTerminalsAtRoot.xtg", "PolytomyAddTerminalsAtRoot.xtg", false);
+		
+		assertNoAnnotation(tree, "egkw6pwe2g", SUPPORT_COLUMN);
+		assertNoAnnotation(tree, "egkw6pwe2g", CONFLICT_COLUMN);
+		
+		assertNoAnnotation(tree, "x7474zcnij", SUPPORT_COLUMN);  // The 2.0 does not separate more then one terminal on each side if the tree is considered unrooted.
+		assertNoAnnotation(tree, "x7474zcnij", CONFLICT_COLUMN);
+		
+		assertAnnotation(tree, "yt4x200u57", SUPPORT_COLUMN, 1.0);
+		assertNoAnnotation(tree, "yt4x200u57", CONFLICT_COLUMN);
+		
+		assertNoAnnotation(tree, "051l0uv3ok", SUPPORT_COLUMN);
+		assertNoAnnotation(tree, "051l0uv3ok", CONFLICT_COLUMN);
+		
+		assertNoAnnotation(tree, "71ralxvypp", SUPPORT_COLUMN);
+		assertNoAnnotation(tree, "71ralxvypp", CONFLICT_COLUMN);
 	}
 }
