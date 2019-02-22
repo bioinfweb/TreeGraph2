@@ -201,7 +201,7 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit imp
 //						}
 //					}
 //					else if (bestTargetNode.getAdditionalCount() == -1) {
-//						throw new InternalError("An unexpected error has occorred. (Undefined bestTargetNode.getAdditionalCount().) "
+//						throw new InternalError("An unexpected error has occurred. (Undefined bestTargetNode.getAdditionalCount().) "
 //								+ "Please contact the developers at support@bioinfweb.info.");  // Should not happen.
 //					}
 //					else {  // conflict found						
