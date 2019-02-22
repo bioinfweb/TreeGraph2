@@ -864,12 +864,17 @@ test/.project -text svneol=unset#text/plain
 test/.settings/org.eclipse.jdt.core.prefs -text svneol=unset#text/plain
 test/.settings/org.eclipse.jdt.ui.prefs -text svneol=unset#text/plain
 test/data/RerootByLeaves.xtg -text
+test/data/addSupport/Conflict.xtg -text
 test/data/addSupport/Polytomy.xtg -text
 test/data/addSupport/PolytomyAddTerminals.xtg -text
 test/data/addSupport/PolytomyAddTerminalsAtRoot.xtg -text
 test/data/addSupport/Solved.xtg -text
+test/data/addSupport/SolvedAddClusteredTerminalsWithSupportForSharedGroup.xtg -text
 test/data/addSupport/SolvedAddTerminals.xtg -text
 test/data/addSupport/SolvedAddTerminalsAtRoot.xtg -text
+test/data/addSupport/SolvedAddTerminalsWithSupportForSharedGroup.xtg -text
+test/data/addSupport/SolvedTwoGroupsFromPaintStart_supportAbove.xtg -text
+test/data/addSupport/SolvedTwoGroupsFromPaintStart_supportBelow.xtg -text
 test/data/ancestralState/Primates.txt.log.txt -text svneol=unset#text/plain
 test/data/getFirstNodeByData.xtg -text
 test/data/importTable/TableNodeNames.txt -text svneol=unset#text/plain
