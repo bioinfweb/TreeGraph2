@@ -75,10 +75,18 @@ public interface NodeBranchDataAdapter {
 	 * @return
 	 */
 	public AbstractPaintableElement getDataElement(Node node);
-	
-	/**
-	 * A description of the adapter that is readable by the user should be returned here.
-	 * @return
-	 */
-	public String toString();
+		
+
+	default double getNumericValue(Node node, boolean parseText) {
+		if (isDecimal(node)) {
+			return getDecimal(node);
+		}
+		else if (parseText) {
+			try {
+				return Double.parseDouble(getText(node));
+			}
+			catch (Exception e) {}
+		}
+		return Double.NaN;
+	}
 }

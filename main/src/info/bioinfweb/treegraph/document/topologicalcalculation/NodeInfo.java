@@ -33,6 +33,7 @@ public class NodeInfo {
   private Node node = null;
   private int additionalCount = -1;
   private boolean downwards = true;
+  private Node alternativeNode = null;
   
   
 	public NodeInfo(Node node, int additionalCount, boolean downwards) {
@@ -63,12 +64,30 @@ public class NodeInfo {
 	}
 
 
-	public boolean getDownwards() {
+	public boolean isDownwards() {
 		return downwards;
 	}
 
 
 	public void setDownwards(boolean downwards) {
 		this.downwards = downwards;
+	}
+
+
+	/**
+	 * If an exact leaf set match is found ({@link #getAdditionalCount()} == 0), a second node might also match that leaf set in case of an 
+	 * unrooted tree.
+	 * <p>
+	 * The direction of the second node would be {@code!}{@link #isDownwards()}.
+	 * 
+	 * @return the second matching node or {@code null}
+	 */
+	public Node getAlternativeNode() {
+		return alternativeNode;
+	}
+
+
+	public void setAlternativeNode(Node alternativeNode) {
+		this.alternativeNode = alternativeNode;
 	}
 }

@@ -214,7 +214,7 @@ public class TopologicalCalculator {
 	 *         be found. 
 	 */
 	public NodeInfo findNodeWithAllLeaves(Tree tree, LeafSet leafSet) {
-		leafSet = leafSet.and(getLeafSet(tree.getPaintStart()));  //TODO Is this necessary for other cases then AddSupportValues?
+		//leafSet = leafSet.and(getLeafSet(tree.getPaintStart()));  //TODO Is this necessary for other cases then AddSupportValues?  //TODO Since AddSupportValues only uses shared leaf sets from now on, this should not be necessary anymore.
 		return findNodeWithAllLeavesRecursive(tree.getPaintStart(), leafSet);
 	}
 	
@@ -246,9 +246,55 @@ public class TopologicalCalculator {
 					
 					result = childResult;
 				}
+				else if (result.getAdditionalCount() == childResult.getAdditionalCount()) {
+					result.setAlternativeNode(childResult.getNode());
+				}
 			}
 		}
 		return result;
+	}
+	
+
+	// New method implementation for addSupportValues.  //TODO Check if it can also be used for TreeSelectionSynchronizer.
+	public Node findHighestConflict(Node searchRoot, LeafSet conflictNodeLeafSet, NodeBranchDataAdapter supportAdapter, boolean parseText) {
+		Node highestConflictingNode = null;
+		// The root is not tested since it 
+		for (int i = 0; i < searchRoot.getChildren().size(); i++) {
+			highestConflictingNode = findHighestConflictRecursive(searchRoot.getChildren().get(i), conflictNodeLeafSet, highestConflictingNode, 
+					supportAdapter, parseText);
+		}
+		return highestConflictingNode;
+	}
+
+	
+	// New method implementation for addSupportValues.  //TODO Check if it can also be used for TreeSelectionSynchronizer.
+	private Node findHighestConflictRecursive(Node searchRoot, LeafSet conflictNodeLeafSet, Node highestConflictingNode, 
+			NodeBranchDataAdapter supportAdapter, boolean parseText) {
+		
+		LeafSet currentSearchRootLeafSet = getLeafSet(searchRoot);
+		if (currentSearchRootLeafSet.containsAnyAndOther(conflictNodeLeafSet, false)
+				|| currentSearchRootLeafSet.containsAnyAndOther(conflictNodeLeafSet, true)) {
+			
+			double currentSupport = supportAdapter.getNumericValue(searchRoot, parseText);
+			if (!Double.isNaN(currentSupport)) {
+				if (highestConflictingNode == null) {
+					highestConflictingNode = searchRoot;
+				}
+				else {
+					double previousSupport = supportAdapter.getNumericValue(highestConflictingNode, parseText);
+					if (previousSupport < currentSupport) {
+						highestConflictingNode = searchRoot;
+					}
+				}
+			}
+		}
+
+		for (int i = 0; i < searchRoot.getChildren().size(); i++) {
+			highestConflictingNode = findHighestConflictRecursive(searchRoot.getChildren().get(i), conflictNodeLeafSet, highestConflictingNode, 
+					supportAdapter, parseText);
+		}
+		
+		return highestConflictingNode;
 	}
 	
 	
@@ -276,8 +322,8 @@ public class TopologicalCalculator {
 	 *        be {@code null}.)
 	 * @param conflictingReferenceLeafSet a leaf set describing the node from the reference tree that is in conflict with the searched
 	 *        tree (For {@link AddSupportValuesEdit}: The node in the target document to attach a support value to)
-	 * @param completeSearchedLeafSet a leaf set describing the MRCA in the searched tree of all leaves under the conflicting 
-	 *        node in the reference tree (described by {@code conflictingReferenceLeafSet})
+	 * @param completeSearchedLeafSet a leaf set describing the MRCA (in the searched tree) of all shared leaves contained under the 
+	 *        conflicting node in the reference tree (These leaves are described by {@code conflictingReferenceLeafSet}.)
 	 * @param info information about the node in the source document which contains all terminals of
 	 *        {@code targetNode} in its subtree
 	 * @return the node with the highest support value found (in the source document)
@@ -295,7 +341,7 @@ public class TopologicalCalculator {
 			if (searchedSupportAdapter.isDecimal(currentSearchRoot)) {
 				currentSupport = searchedSupportAdapter.getDecimal(currentSearchRoot);
 			}
-			else if (searchedSupportAdapter.isString(currentSearchRoot)) {
+			else if (searchedSupportAdapter.isString(currentSearchRoot)) {  //TODO Do that only of parameter for parsing numeric values is set.
 				try {
 					currentSupport = Math2.parseDouble(searchedSupportAdapter.getText(currentSearchRoot));
 				}
@@ -312,7 +358,7 @@ public class TopologicalCalculator {
 						previousSupport = searchedSupportAdapter.getDecimal(highestConflictingNode);
 					}
 					else {
-						previousSupport = Math2.parseDouble(searchedSupportAdapter.getText(highestConflictingNode));
+						previousSupport = Math2.parseDouble(searchedSupportAdapter.getText(highestConflictingNode));  //TODO Do that only of parameter for parsing numeric values is set.
 					}
 					
 					if (previousSupport < currentSupport) {

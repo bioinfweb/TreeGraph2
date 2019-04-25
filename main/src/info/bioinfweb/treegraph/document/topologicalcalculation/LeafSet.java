@@ -188,8 +188,8 @@ public class LeafSet {
 	
 	
 	/**
-	 * Tests if this field (or its complement) contains at least one element from the specified field and
-	 * at least one which is not contained in <code>other</code>.
+	 * Tests if this field contains at least one element from the specified field and
+	 * at least one which is not contained in {@code other}.
 	 * 
 	 * @param other
 	 * @param complement
