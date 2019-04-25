@@ -24,7 +24,6 @@ import java.io.IOException;
 
 import info.bioinfweb.commons.io.TextReader;
 import info.bioinfweb.treegraph.Main;
-import info.bioinfweb.wikihelp.client.JHTMLLabel;
 
 
 
@@ -92,7 +91,7 @@ public class AboutDialog extends info.bioinfweb.commons.swing.AboutDialog {
 					"<p>Development: <a href='http://bioinfweb.info/People/Stoever'>Ben St&ouml;ver</a>, " +
 							"<a href='http://bioinfweb.info/People/Wiechers'>Sarah Wiechers</a>, " + 
 					    "<a href='http://bioinfweb.info/People/Mueller'>Kai M&uuml;ller</a><br />" +
-					"Copyright 2007-2018 Ben St&ouml;ver, Sarah Wiechers, Kai M&uuml;ller. All rights reserved.</p>" +
+					"Copyright 2007-2011, 2013-2019 Ben St&ouml;ver, Sarah Wiechers, Kai M&uuml;ller. All rights reserved.</p>" +
 					"<p>Website: <a href='http://treegraph.bioinfweb.info/'>treegraph.bioinfweb.info</a><br />" +
 					"ResearchGate: <a href='http://r.bioinfweb.info/RGTreeGraph2'>r.bioinfweb.info/RGTreeGraph2</a><br />" +
 					"GitHub: <a href='https://github.com/bioinfweb/TreeGraph2'>github.com/bioinfweb/TreeGraph2</a><br />" +
