@@ -60,7 +60,7 @@ public interface NodeBranchDataAdapter {
 	 * Implementing classes should return an instance of {@link TextElementData} here. This should not be
 	 * the same instance as the underlying data in contrast to {@link TextElementDataAdapter#getData(Node)}.
 	 * 
-	 * @param node - the node that carries the data
+	 * @param node the node that carries the data
 	 */
 	public TextElementData toTextElementData(Node node);
 	
