@@ -57,7 +57,7 @@ public class AboutDialog extends info.bioinfweb.commons.swing.AboutDialog {
 	private void addContentFromFile(String title, String path, String altURL) {
 		String text;
 		try {
-			text = TextReader.readText(Object.class.getResource(path));
+			text = TextReader.readText(AboutDialog.class.getResource(path));
 		}
 		catch (IOException e) {
 			text = "<html><body>Unable to read licence file. Licence is available at <a href=\"" + altURL + "\">\" + altURL + \"</a>.</body></html>";

@@ -37,7 +37,7 @@ import javax.swing.JButton;
  */
 public class HelpButton extends JButton {
   public HelpButton(final int helpIndex) {
-  	super(new ImageIcon(Object.class.getResource("/resources/symbols/Help16.png")));
+  	super(new ImageIcon(HelpButton.class.getResource("/resources/symbols/Help16.png")));
   	setBorder(BorderFactory.createEmptyBorder());
   	setMargin(new Insets(0, 0, 0, 0));
   	

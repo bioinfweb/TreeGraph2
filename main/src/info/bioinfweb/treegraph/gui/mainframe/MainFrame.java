@@ -348,14 +348,14 @@ public class MainFrame extends JFrame implements Runnable {
 	private void loadIcons() {
 		List<BufferedImage> icons = new Vector<BufferedImage>(7, 1);
 		try {
-			icons.add(ImageIO.read(Object.class.getResource("/resources/symbols/TreeGraph16.png")));
-			icons.add(ImageIO.read(Object.class.getResource("/resources/symbols/TreeGraph20.png")));
-			icons.add(ImageIO.read(Object.class.getResource("/resources/symbols/TreeGraph22.png")));
-			icons.add(ImageIO.read(Object.class.getResource("/resources/symbols/TreeGraph24.png")));
-			icons.add(ImageIO.read(Object.class.getResource("/resources/symbols/TreeGraph32.png")));
-			icons.add(ImageIO.read(Object.class.getResource("/resources/symbols/TreeGraph48.png")));
-			icons.add(ImageIO.read(Object.class.getResource("/resources/symbols/TreeGraph64.png")));
-			icons.add(ImageIO.read(Object.class.getResource("/resources/symbols/TreeGraph256.png")));
+			icons.add(ImageIO.read(MainFrame.class.getResource("/resources/symbols/TreeGraph16.png")));
+			icons.add(ImageIO.read(MainFrame.class.getResource("/resources/symbols/TreeGraph20.png")));
+			icons.add(ImageIO.read(MainFrame.class.getResource("/resources/symbols/TreeGraph22.png")));
+			icons.add(ImageIO.read(MainFrame.class.getResource("/resources/symbols/TreeGraph24.png")));
+			icons.add(ImageIO.read(MainFrame.class.getResource("/resources/symbols/TreeGraph32.png")));
+			icons.add(ImageIO.read(MainFrame.class.getResource("/resources/symbols/TreeGraph48.png")));
+			icons.add(ImageIO.read(MainFrame.class.getResource("/resources/symbols/TreeGraph64.png")));
+			icons.add(ImageIO.read(MainFrame.class.getResource("/resources/symbols/TreeGraph256.png")));
 			setIconImages(icons);
 		}
 		catch (IOException e) {
@@ -667,7 +667,7 @@ public class MainFrame extends JFrame implements Runnable {
 			undoMenu = new JMenu();
 			undoMenu.setText("Undo");
 			undoMenu.setMnemonic(KeyEvent.VK_U);
-			undoMenu.setIcon(new ImageIcon(Object.class.getResource("/resources/symbols/Undo16.png")));
+			undoMenu.setIcon(new ImageIcon(MainFrame.class.getResource("/resources/symbols/Undo16.png")));
 		}
 		return undoMenu;
 	}
@@ -683,7 +683,7 @@ public class MainFrame extends JFrame implements Runnable {
 			redoMenu = new JMenu();
 			redoMenu.setText("Redo");
 			redoMenu.setMnemonic(KeyEvent.VK_R);
-			redoMenu.setIcon(new ImageIcon(Object.class.getResource("/resources/symbols/Redo16.png")));
+			redoMenu.setIcon(new ImageIcon(MainFrame.class.getResource("/resources/symbols/Redo16.png")));
 		}
 		return redoMenu;
 	}
