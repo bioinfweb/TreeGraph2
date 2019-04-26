@@ -875,6 +875,8 @@ test/data/addSupport/SolvedAddTerminalsAtRoot.xtg -text
 test/data/addSupport/SolvedAddTerminalsWithSupportForSharedGroup.xtg -text
 test/data/addSupport/SolvedTwoGroupsFromPaintStart_supportAbove.xtg -text
 test/data/addSupport/SolvedTwoGroupsFromPaintStart_supportBelow.xtg -text
+test/data/addSupport/SolvedTwoGroupsFromPaintStart_supportBelow_addTerminalAbove.xtg -text
+test/data/addSupport/SolvedTwoGroupsFromPaintStart_supportBelow_addTerminalBelow.xtg -text
 test/data/ancestralState/Primates.txt.log.txt -text svneol=unset#text/plain
 test/data/getFirstNodeByData.xtg -text
 test/data/importTable/TableNodeNames.txt -text svneol=unset#text/plain

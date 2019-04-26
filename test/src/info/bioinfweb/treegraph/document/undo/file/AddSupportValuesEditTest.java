@@ -367,4 +367,40 @@ public class AddSupportValuesEditTest {
 		assertAnnotation(tree, "051l0uv3ok", SUPPORT_COLUMN, 1.0);
 		assertNoAnnotation(tree, "051l0uv3ok", CONFLICT_COLUMN);
 	}
+
+	
+	@Test
+	public void test_twoGroupsFromPaintStartAbove_addTerminalAbove() throws Exception {
+		Tree tree = executeEdit("Solved.xtg", "SolvedTwoGroupsFromPaintStart_supportBelow_addTerminalAbove.xtg", false);
+		
+		assertNoAnnotation(tree, "egkw6pwe2g", SUPPORT_COLUMN);
+		assertNoAnnotation(tree, "egkw6pwe2g", CONFLICT_COLUMN);
+		
+		assertNoAnnotation(tree, "x7474zcnij", SUPPORT_COLUMN);
+		assertNoAnnotation(tree, "x7474zcnij", CONFLICT_COLUMN);
+		
+		assertAnnotation(tree, "yt4x200u57", SUPPORT_COLUMN, 2.0);
+		assertNoAnnotation(tree, "yt4x200u57", CONFLICT_COLUMN);
+		
+		assertAnnotation(tree, "051l0uv3ok", SUPPORT_COLUMN, 1.0);
+		assertNoAnnotation(tree, "051l0uv3ok", CONFLICT_COLUMN);
+	}
+
+	
+	@Test
+	public void test_twoGroupsFromPaintStartAbove_addTerminalBelow() throws Exception {
+		Tree tree = executeEdit("Solved.xtg", "SolvedTwoGroupsFromPaintStart_supportBelow_addTerminalBelow.xtg", false);
+		
+		assertNoAnnotation(tree, "egkw6pwe2g", SUPPORT_COLUMN);
+		assertNoAnnotation(tree, "egkw6pwe2g", CONFLICT_COLUMN);
+		
+		assertNoAnnotation(tree, "x7474zcnij", SUPPORT_COLUMN);
+		assertNoAnnotation(tree, "x7474zcnij", CONFLICT_COLUMN);
+		
+		assertAnnotation(tree, "yt4x200u57", SUPPORT_COLUMN, 2.0);
+		assertNoAnnotation(tree, "yt4x200u57", CONFLICT_COLUMN);
+		
+		assertAnnotation(tree, "051l0uv3ok", SUPPORT_COLUMN, 1.0);
+		assertNoAnnotation(tree, "051l0uv3ok", CONFLICT_COLUMN);
+	}
 }
