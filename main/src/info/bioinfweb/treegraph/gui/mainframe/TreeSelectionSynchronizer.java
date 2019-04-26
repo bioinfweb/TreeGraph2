@@ -39,6 +39,7 @@ import info.bioinfweb.treegraph.gui.treeframe.TreeViewPanelListener;
 import java.awt.event.ContainerEvent;
 import java.awt.event.ContainerListener;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.event.ChangeEvent;
 
@@ -106,8 +107,13 @@ public class TreeSelectionSynchronizer implements TreeViewPanelListener, Documen
 			
 			NodeBranchDataAdapter defaultSupportAdapter = selectionTargetTree.getDocument().getDefaultSupportAdapter();
 			for (Node activeNode : activeTree.getSelection().getAllElementsOfType(Node.class, false)) {
-				NodeInfo selectionTargetNodeInfo = topologicalCalculator.findNodeWithAllLeaves(
+				List<NodeInfo> selectionTargetNodeInfos = topologicalCalculator.findNodeWithAllLeaves(
 						selectionTargetTree.getDocument().getTree(), topologicalCalculator.getLeafSet(activeNode));
+				NodeInfo selectionTargetNodeInfo = null;
+				if (!selectionTargetNodeInfos.isEmpty()) {
+					selectionTargetNodeInfo = selectionTargetNodeInfos.get(0);
+				}
+				//TODO Possibly handle case when multiple equivalent nodes are found?
 				
 				if (selectionTargetNodeInfo != null) {
 					selection.add(selectionTargetNodeInfo.getNode());

@@ -21,6 +21,7 @@ package info.bioinfweb.treegraph.document.undo.file.ancestralstate;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -37,6 +38,7 @@ import info.bioinfweb.treegraph.document.io.ancestralstate.BayesTraitsReader;
 import info.bioinfweb.treegraph.document.nodebranchdata.IDElementAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.VoidNodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.topologicalcalculation.LeafSet;
+import info.bioinfweb.treegraph.document.topologicalcalculation.NodeInfo;
 import info.bioinfweb.treegraph.document.undo.AbstractTopologicalCalculationEdit;
 import info.bioinfweb.treegraph.document.undo.WarningMessageEdit;
 import info.bioinfweb.treegraph.gui.actions.DocumentAction;
@@ -179,7 +181,13 @@ public class ImportBayesTraitsDataEdit extends AbstractTopologicalCalculationEdi
 			}
 		}
 		
-		Node result = getTopologicalCalculator().findNodeWithAllLeaves(getDocument().getTree(), leafSet).getNode();
+		List<NodeInfo> results = getTopologicalCalculator().findNodeWithAllLeaves(getDocument().getTree(), leafSet);
+		Node result = null;
+		if (!results.isEmpty()) {
+			result = results.get(0).getNode();
+		}
+		//TODO Possibly handle case when multiple equivalent nodes are found?
+
 		if (internalNodes.keySet().contains(result)) {
 			internalDataNotAdded.add(result.getUniqueName());
 			if (internalNodes.get(result).size() < leafSet.size()) {				

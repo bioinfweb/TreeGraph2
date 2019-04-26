@@ -19,6 +19,8 @@
 package info.bioinfweb.treegraph.document.topologicalcalculation;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -213,45 +215,46 @@ public class TopologicalCalculator {
 	 * @return a node info describing the found subtree root or {@code null} if no according subtree could 
 	 *         be found. 
 	 */
-	public NodeInfo findNodeWithAllLeaves(Tree tree, LeafSet leafSet) {
-		//leafSet = leafSet.and(getLeafSet(tree.getPaintStart()));  //TODO Is this necessary for other cases then AddSupportValues?  //TODO Since AddSupportValues only uses shared leaf sets from now on, this should not be necessary anymore.
-		return findNodeWithAllLeavesRecursive(tree.getPaintStart(), leafSet);
+	public List<NodeInfo> findNodeWithAllLeaves(Tree tree, LeafSet leafSet) {
+		//leafSet = leafSet.and(getLeafSet(tree.getPaintStart()));  //TODO Is this necessary for other cases then AddSupportValues?
+		List<NodeInfo> result = new ArrayList<NodeInfo>();
+		findNodeWithAllLeavesRecursive(result, tree.getPaintStart(), leafSet);
+		return result;
 	}
 	
 	
-	private NodeInfo findNodeWithAllLeavesRecursive(Node root, LeafSet searchedLeafSet) {
-		if (isLeafSetEmpty(searchedLeafSet)) {
-			return null;
-		}
-		
-		LeafSet comparedLeafSet = getLeafSet(root);
-		int additionalCount = searchedLeafSet.compareTo(comparedLeafSet, false);
-		boolean downwards = additionalCount != -1;
-		if (!downwards) {
-			additionalCount = searchedLeafSet.compareTo(comparedLeafSet, true);
-		}
-  	NodeInfo result = null;
-  	if (additionalCount != -1) {
-  		result = new NodeInfo(root, additionalCount, downwards);
-  	}
-  	
-		for (int i = 0; i < root.getChildren().size(); i++) {
-			NodeInfo childResult = findNodeWithAllLeavesRecursive(root.getChildren().get(i), searchedLeafSet);
-			if (childResult != null) {
-				if (result == null) {
-					result = childResult;
+	private void findNodeWithAllLeavesRecursive(List<NodeInfo> result, Node root, LeafSet searchedLeafSet) {
+		if (!isLeafSetEmpty(searchedLeafSet)) {
+			LeafSet comparedLeafSet = getLeafSet(root);
+			int additionalCount = searchedLeafSet.compareTo(comparedLeafSet, false);
+			boolean downwards = additionalCount != -1;
+			if (!downwards) {
+				additionalCount = searchedLeafSet.compareTo(comparedLeafSet, true);
+			}
+	  	//NodeInfo result = null;
+  		NodeInfo info = new NodeInfo(root, additionalCount, downwards);
+	  	if (additionalCount != -1) {
+				if (result.isEmpty()) {
+					result.add(info);
 				}
-				else if ((childResult.getAdditionalCount() != -1) && 
-						((childResult.getAdditionalCount() < result.getAdditionalCount()) || (result.getAdditionalCount() == -1))) {
-					
-					result = childResult;
+				else {
+					int previousAdditionalCount = result.get(0).getAdditionalCount();
+					if (additionalCount < previousAdditionalCount) {  // previousAdditionalCount should never be -1. (Was tested here before.)
+						result.clear();
+						result.add(info);
+					}
+					else if (additionalCount == previousAdditionalCount) {
+						result.add(info);
+					}
 				}
-				else if (result.getAdditionalCount() == childResult.getAdditionalCount()) {
-					result.setAlternativeNode(childResult.getNode());
-				}
+
+	  		
+	  	}
+	  	
+	  	for (Node child : root.getChildren()) {
+				findNodeWithAllLeavesRecursive(result, child, searchedLeafSet);
 			}
 		}
-		return result;
 	}
 	
 

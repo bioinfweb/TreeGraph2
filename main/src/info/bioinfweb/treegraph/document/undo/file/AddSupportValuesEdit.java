@@ -36,6 +36,8 @@ import info.bioinfweb.treegraph.gui.actions.DocumentAction;
 
 import java.text.DecimalFormat;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 
@@ -120,27 +122,21 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit imp
 		LeafSet leafSet = getTopologicalCalculator().getLeafSet(targetRoot);
 		
 		if (hasTwoOrMoreSharedTerminalsOnBothSides(targetRoot)) {
-			NodeInfo bestSourceNode = getTopologicalCalculator().findNodeWithAllLeaves(sourceDocument.getTree(), leafSet);  // null should never be returned, since two shared terminals were ensured to be present.
-			//TODO Multiple support values to be imported could be present, if the source tree contains non-shared terminals in the current region.
-			//     Handling this should be implemented in a second step.  
+			List<NodeInfo> bestSourceNodes = getTopologicalCalculator().findNodeWithAllLeaves(sourceDocument.getTree(), leafSet);  // An empty list should never be returned here, since two shared terminals were ensured to be present.
 			
-			if (bestSourceNode.getAdditionalCount() == 0) {  // Exact match found.
-				double importedValue = sourceSupportAdapter.getNumericValue(bestSourceNode.getNode(), parseNumericValues);
+			if (bestSourceNodes.get(0).getAdditionalCount() == 0) {  // Exact match found.
+				double importedValue = Double.NaN;
+				Iterator<NodeInfo> iterator = bestSourceNodes.iterator();
+				while (Double.isNaN(importedValue) && iterator.hasNext()) {
+					importedValue = sourceSupportAdapter.getNumericValue(iterator.next().getNode(), parseNumericValues);
+				} 
 				if (!Double.isNaN(importedValue)) {
 					targetSupportAdapter.setDecimal(targetRoot, importedValue);
-					if (bestSourceNode.getAlternativeNode() != null) {  // Two support values on topologically equivalent nodes on an unrooted tree have been found.
-						//TODO Log warning? Use the higher of both values?
-					}
-				}
-				else if (bestSourceNode.getAlternativeNode() != null) {  // Try to use the equivalent node. (This can be the sibling directly under the root or a deeper node if non-shared terminals are present. There is no such option if additional count was > 0.)
-					importedValue = sourceSupportAdapter.getNumericValue(bestSourceNode.getAlternativeNode(), parseNumericValues);
-					if (!Double.isNaN(importedValue)) {
-						targetSupportAdapter.setDecimal(targetRoot, importedValue);
-					}
 				}
 			}
 			else {  // There must be a conflict, since no direct matching group of shared terminals was found.
-				Node conflict = getTopologicalCalculator().findHighestConflict(bestSourceNode.getNode(), leafSet, sourceSupportAdapter, parseNumericValues);
+				Node conflict = getTopologicalCalculator().findHighestConflict(bestSourceNodes.get(0).getNode(), leafSet, sourceSupportAdapter, parseNumericValues);
+						//TODO Which node from the list should be used here? The closest to the root? The most distant one? (The closest to the root should be the first in the list.)
 				if ((conflict != null) && hasTwoOrMoreSharedTerminalsOnBothSides(conflict)) {
 					targetConflictAdapter.setDecimal(targetRoot, sourceSupportAdapter.getNumericValue(conflict, parseNumericValues));  // getSupportValue() should never return NaN here, since the numeric values were already compared before.
 				}
