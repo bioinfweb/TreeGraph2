@@ -54,8 +54,8 @@ main/include/lib/batik/xerces_2_5_0.jar -text
 main/include/lib/batik/xml-apis-ext.jar -text
 main/include/lib/batik/xml-apis.jar -text
 main/include/lib/bioinfweb-commons-java-bio-3.0.0.jar -text
-main/include/lib/bioinfweb-commons-java-core-3.2.0.jar -text
-main/include/lib/bioinfweb-commons-java-swing-3.1.0.jar -text
+main/include/lib/bioinfweb-commons-java-core-3.3.1.jar -text
+main/include/lib/bioinfweb-commons-java-swing-3.3.1.jar -text
 main/include/lib/commons-collections4-4.1.jar -text
 main/include/lib/commons-lang3-3.1.jar -text
 main/include/lib/errorReporter/ErrorReporter.jar -text
