@@ -136,7 +136,7 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit imp
 			}
 			else {  // There must be a conflict, since no direct matching group of shared terminals was found.
 				Node conflict = getTopologicalCalculator().findHighestConflict(bestSourceNodes.get(0).getNode(), leafSet, sourceSupportAdapter, parseNumericValues);
-						//TODO Which node from the list should be used here? The closest to the root? The most distant one? (The closest to the root should be the first in the list.)
+						// The first node in the list is the closest to the root. This one should be used as the search starting point if multiple topologically equivalent nodes (regarding the shared set of terminals) are present.
 				if ((conflict != null) && hasTwoOrMoreSharedTerminalsOnBothSides(conflict)) {
 					targetConflictAdapter.setDecimal(targetRoot, sourceSupportAdapter.getNumericValue(conflict, parseNumericValues));  // getSupportValue() should never return NaN here, since the numeric values were already compared before.
 				}
