@@ -70,7 +70,7 @@ main/include/lib/freehep-graphicsio.jar -text
 main/include/lib/javax.activation-api-1.2.0.jar -text
 main/include/lib/jaxb-api-2.4.0-b180830.0359.jar -text
 main/include/lib/jep-2.4.1.jar -text
-main/include/lib/jphyloio-core-0.5.2.jar -text
+main/include/lib/jphyloio-core-0.5.4.jar -text
 main/include/lib/l2fprod-common-directorychooser-7.3.jar -text
 main/include/lib/org.jdesktop.swingx.scrollpaneselector.jar -text
 main/include/lib/owlapi-XMLUtils-4.1.4.jar -text

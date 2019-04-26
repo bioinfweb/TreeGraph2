@@ -4,7 +4,7 @@ SplashScreen-Image: resources/Splash.png
 Class-Path: lib/bioinfweb-commons-java-core-3.3.1.jar
             lib/bioinfweb-commons-java-swing-3.3.1.jar
             lib/bioinfweb-commons-java-bio-3.0.0.jar
-            lib/jphyloio-core-0.5.2.jar
+            lib/jphyloio-core-0.5.4.jar
             lib/batik/batik-anim.jar
             lib/batik/batik-awt-util.jar
             lib/batik/batik-bridge.jar
