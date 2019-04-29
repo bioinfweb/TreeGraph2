@@ -129,7 +129,14 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit imp
 				Iterator<NodeInfo> iterator = bestSourceNodes.iterator();
 				while (Double.isNaN(importedValue) && iterator.hasNext()) {
 					importedValue = sourceSupportAdapter.getNumericValue(iterator.next().getNode(), parseNumericValues);
-				} 
+					//TODO Create (additional?) label showing topological position of equivalent matching branches. Consider global preferences (implement these first).
+				}
+				
+//				iterator = bestSourceNodes.iterator();
+//				while (iterator.hasNext()) {
+//					System.out.println(iterator.next().getNode());
+//				}
+				
 				if (!Double.isNaN(importedValue)) {
 					targetSupportAdapter.setDecimal(targetRoot, importedValue);
 				}
