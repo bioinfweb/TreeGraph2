@@ -109,13 +109,8 @@ public class TreeSelectionSynchronizer implements TreeViewPanelListener, Documen
 			for (Node activeNode : activeTree.getSelection().getAllElementsOfType(Node.class, false)) {
 				List<NodeInfo> selectionTargetNodeInfos = topologicalCalculator.findNodeWithAllLeaves(
 						selectionTargetTree.getDocument().getTree(), topologicalCalculator.getLeafSet(activeNode));
-				NodeInfo selectionTargetNodeInfo = null;
-				if (!selectionTargetNodeInfos.isEmpty()) {
-					selectionTargetNodeInfo = selectionTargetNodeInfos.get(0);
-				}
-				//TODO Possibly handle case when multiple equivalent nodes are found?
 				
-				if (selectionTargetNodeInfo != null) {
+				for (NodeInfo selectionTargetNodeInfo : selectionTargetNodeInfos) {
 					selection.add(selectionTargetNodeInfo.getNode());
 					
 					if (!(defaultSupportAdapter instanceof VoidNodeBranchDataAdapter)) {
