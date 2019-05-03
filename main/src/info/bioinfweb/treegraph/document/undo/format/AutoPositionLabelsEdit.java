@@ -38,7 +38,7 @@ import info.bioinfweb.treegraph.document.format.LabelFormats;
 import info.bioinfweb.treegraph.document.tools.IDManager;
 import info.bioinfweb.treegraph.document.tools.TreeSerializer;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
-import info.bioinfweb.treegraph.document.undo.file.AddSupportValuesEdit;
+import info.bioinfweb.treegraph.document.undo.file.addsupportvalues.AddSupportValuesEdit;
 
 
 

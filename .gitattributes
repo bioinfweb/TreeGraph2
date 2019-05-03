@@ -442,10 +442,12 @@ main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/vararg/Prod
 main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/vararg/SumFunction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/vararg/VarArgFunction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/edit/calculatecolumn/vararg/WholeColumnFunction.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/treegraph/document/undo/file/AddSupportValuesEdit.java -text
-main/src/info/bioinfweb/treegraph/document/undo/file/AddSupportValuesParameters.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/file/ImportDataColumnsParameters.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/file/NodeSupportEdit.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/file/addsupportvalues/AddSupportValuesEdit.java -text
+main/src/info/bioinfweb/treegraph/document/undo/file/addsupportvalues/AddSupportValuesParameters.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/file/addsupportvalues/EquivalentBranchHandler.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/undo/file/addsupportvalues/ValueListHandler.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/file/ancestralstate/AncestralStateImportParameters.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/file/ancestralstate/ImportBayesTraitsDataEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/undo/file/importtable/DuplicateKeyException.java -text svneol=unset#text/plain

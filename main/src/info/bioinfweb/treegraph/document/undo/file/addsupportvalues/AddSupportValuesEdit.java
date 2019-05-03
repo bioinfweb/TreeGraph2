@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.document.undo.file;
+package info.bioinfweb.treegraph.document.undo.file.addsupportvalues;
 
 
 import info.bioinfweb.treegraph.document.Document;
@@ -74,6 +74,7 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit imp
 	private TextElementDataAdapter targetConflictAdapter = null;
 	
 	private boolean parseNumericValues;
+	private EquivalentBranchHandler equivalentBranchHandler;
 	private String warningMessage = null;
 	
 	
@@ -89,6 +90,7 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit imp
 		this.sourceSupportAdapter = parameters.getSourceSupportColumn();
 		this.sourceLeavesAdapter = parameters.getSourceLeavesColumn();
 		this.parseNumericValues = parameters.isParseNumericValues();
+		this.equivalentBranchHandler = parameters.getEquivalentBranchHandler();
 		
 		targetSupportAdapter = parameters.getTargetType().createAdapterInstance(parameters.getIDPrefix() + SUPPORT_NAME, SUPPORT_DECIMAL_FORMAT);
 		targetConflictAdapter = parameters.getTargetType().createAdapterInstance(parameters.getIDPrefix() + CONFLICT_NAME, CONFLICT_DECIMAL_FORMAT);
@@ -125,21 +127,23 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit imp
 			List<NodeInfo> bestSourceNodes = getTopologicalCalculator().findNodeWithAllLeaves(sourceDocument.getTree(), leafSet);  // An empty list should never be returned here, since two shared terminals were ensured to be present.
 			
 			if (bestSourceNodes.get(0).getAdditionalCount() == 0) {  // Exact match found.
-				double importedValue = Double.NaN;
-				Iterator<NodeInfo> iterator = bestSourceNodes.iterator();
-				while (Double.isNaN(importedValue) && iterator.hasNext()) {
-					importedValue = sourceSupportAdapter.getNumericValue(iterator.next().getNode(), parseNumericValues);
-					//TODO Create (additional?) label showing topological position of equivalent matching branches. Consider global preferences (implement these first).
-				}
+				equivalentBranchHandler.handleBranches(bestSourceNodes, targetRoot, sourceSupportAdapter, targetSupportAdapter, parseNumericValues);
 				
-//				iterator = bestSourceNodes.iterator();
-//				while (iterator.hasNext()) {
-//					System.out.println(iterator.next().getNode());
+//				double importedValue = Double.NaN;
+//				Iterator<NodeInfo> iterator = bestSourceNodes.iterator();
+//				while (Double.isNaN(importedValue) && iterator.hasNext()) {
+//					importedValue = sourceSupportAdapter.getNumericValue(iterator.next().getNode(), parseNumericValues);
+//					//TODO Create (additional?) label showing topological position of equivalent matching branches. Consider global preferences (implement these first).
 //				}
-				
-				if (!Double.isNaN(importedValue)) {
-					targetSupportAdapter.setDecimal(targetRoot, importedValue);
-				}
+//				
+////				iterator = bestSourceNodes.iterator();
+////				while (iterator.hasNext()) {
+////					System.out.println(iterator.next().getNode());
+////				}
+//				
+//				if (!Double.isNaN(importedValue)) {
+//					targetSupportAdapter.setDecimal(targetRoot, importedValue);
+//				}
 			}
 			else {  // There must be a conflict, since no direct matching group of shared terminals was found.
 				Node conflict = getTopologicalCalculator().findHighestConflict(bestSourceNodes.get(0).getNode(), leafSet, sourceSupportAdapter, parseNumericValues);

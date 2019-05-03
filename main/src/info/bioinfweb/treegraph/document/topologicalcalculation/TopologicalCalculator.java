@@ -30,7 +30,7 @@ import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.CompareTextElementDataParameters;
-import info.bioinfweb.treegraph.document.undo.file.AddSupportValuesEdit;
+import info.bioinfweb.treegraph.document.undo.file.addsupportvalues.AddSupportValuesEdit;
 
 
 

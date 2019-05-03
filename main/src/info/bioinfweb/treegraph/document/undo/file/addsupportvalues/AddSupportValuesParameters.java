@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.document.undo.file;
+package info.bioinfweb.treegraph.document.undo.file.addsupportvalues;
 
 
 import info.bioinfweb.treegraph.document.Document;
@@ -35,6 +35,7 @@ public class AddSupportValuesParameters {
 	private NodeBranchDataAdapter sourceLeavesColumn;
 	private boolean rooted;
 	private boolean parseNumericValues;
+	private EquivalentBranchHandler equivalentBranchHandler = new ValueListHandler();  //TODO Remove instance creation after testing phase.
 	
 	
 	public Document getSourceDocument() {
@@ -119,5 +120,15 @@ public class AddSupportValuesParameters {
 
 	public void setParseNumericValues(boolean parseNumericValues) {
 		this.parseNumericValues = parseNumericValues;
+	}
+
+
+	public EquivalentBranchHandler getEquivalentBranchHandler() {
+		return equivalentBranchHandler;
+	}
+
+
+	public void setEquivalentBranchHandler(EquivalentBranchHandler equivalentBranchHandler) {
+		this.equivalentBranchHandler = equivalentBranchHandler;
 	}
 }

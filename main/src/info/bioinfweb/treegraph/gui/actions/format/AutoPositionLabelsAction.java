@@ -35,7 +35,7 @@ import info.bioinfweb.treegraph.document.NodeType;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.tools.IDManager;
 import info.bioinfweb.treegraph.document.tools.TreeSerializer;
-import info.bioinfweb.treegraph.document.undo.file.AddSupportValuesEdit;
+import info.bioinfweb.treegraph.document.undo.file.addsupportvalues.AddSupportValuesEdit;
 import info.bioinfweb.treegraph.document.undo.format.AutoPositionLabelsEdit;
 import info.bioinfweb.treegraph.gui.actions.DocumentAction;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;

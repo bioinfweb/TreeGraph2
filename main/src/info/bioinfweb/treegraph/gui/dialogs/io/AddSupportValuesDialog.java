@@ -29,7 +29,7 @@ import info.bioinfweb.treegraph.document.io.nexus.NexusFilter;
 import info.bioinfweb.treegraph.document.io.phyloxml.PhyloXMLFilter;
 import info.bioinfweb.treegraph.document.io.xtg.XTGFilter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextElementDataAdapter;
-import info.bioinfweb.treegraph.document.undo.file.AddSupportValuesParameters;
+import info.bioinfweb.treegraph.document.undo.file.addsupportvalues.AddSupportValuesParameters;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdata.TextIDElementTypeInput;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataInput;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
