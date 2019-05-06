@@ -247,8 +247,6 @@ public class TopologicalCalculator {
 						result.add(info);
 					}
 				}
-
-	  		
 	  	}
 	  	
 	  	for (Node child : root.getChildren()) {

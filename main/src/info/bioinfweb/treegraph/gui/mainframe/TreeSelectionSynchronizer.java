@@ -100,8 +100,8 @@ public class TreeSelectionSynchronizer implements TreeViewPanelListener, Documen
 	}
 	
 	
-	private void selectAccordingNodes(TreeViewPanel activeTree, TreeViewPanel selectionTargetTree) {
-		if ((!activeTree.equals(selectionTargetTree)) && (!selectionTargetTree.getDocument().getTree().isEmpty())) {
+	private void selectCorrespondingNodes(TreeViewPanel activeTree, TreeViewPanel selectionTargetTree) {
+		if (!activeTree.equals(selectionTargetTree) && !selectionTargetTree.getDocument().getTree().isEmpty()) {
 			TreeSelection selection = selectionTargetTree.getSelection();
 			selection.clear();
 			
@@ -120,7 +120,6 @@ public class TreeSelectionSynchronizer implements TreeViewPanelListener, Documen
 								topologicalCalculator.getLeafSet(selectionTargetNodeInfo.getNode()), defaultSupportAdapter);
 						
 						if (conflictingNode != null) {
-							
 							if (defaultSupportAdapter instanceof IDElementAdapter) {
 								Label label = conflictingNode.getAfferentBranch().getLabels().get(((IDElementAdapter)defaultSupportAdapter).getID());
 								
@@ -149,7 +148,7 @@ public class TreeSelectionSynchronizer implements TreeViewPanelListener, Documen
 			try {
 				TreeViewPanel source = (TreeViewPanel)e.getSource();
 				for (TreeViewPanel target : treeSource) {
-					selectAccordingNodes(source, target);
+					selectCorrespondingNodes(source, target);
         }
 			}
 			finally {
