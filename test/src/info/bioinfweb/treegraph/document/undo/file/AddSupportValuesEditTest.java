@@ -32,6 +32,8 @@ import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextIDElementType;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;
+import info.bioinfweb.treegraph.document.undo.file.addsupportvalues.AddSupportValuesEdit;
+import info.bioinfweb.treegraph.document.undo.file.addsupportvalues.AddSupportValuesParameters;
 
 import java.io.File;
 
