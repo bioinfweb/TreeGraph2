@@ -181,7 +181,7 @@ public class ImportBayesTraitsDataEdit extends AbstractTopologicalCalculationEdi
 			}
 		}
 		
-		List<NodeInfo> results = getTopologicalCalculator().findNodeWithAllLeaves(getDocument().getTree(), leafSet);
+		List<NodeInfo> results = getTopologicalCalculator().findNodeWithAllLeaves(getDocument().getTree(), leafSet, null);  //TODO Use a restricting leaf set here?
 		Node result = null;
 		if (!results.isEmpty()) {
 			result = results.get(0).getNode();

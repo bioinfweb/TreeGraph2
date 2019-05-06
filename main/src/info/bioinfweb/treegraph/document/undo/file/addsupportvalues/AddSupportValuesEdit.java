@@ -124,7 +124,7 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit imp
 		LeafSet leafSet = getTopologicalCalculator().getLeafSet(targetRoot);
 		
 		if (hasTwoOrMoreSharedTerminalsOnBothSides(targetRoot)) {
-			List<NodeInfo> bestSourceNodes = getTopologicalCalculator().findNodeWithAllLeaves(sourceDocument.getTree(), leafSet);  // An empty list should never be returned here, since two shared terminals were ensured to be present.
+			List<NodeInfo> bestSourceNodes = getTopologicalCalculator().findNodeWithAllLeaves(sourceDocument.getTree(), leafSet, null);  // An empty list should never be returned here, since two shared terminals were ensured to be present.
 			
 			if (bestSourceNodes.get(0).getAdditionalCount() == 0) {  // Exact match found.
 				equivalentBranchHandler.handleBranches(bestSourceNodes, targetRoot, sourceSupportAdapter, targetSupportAdapter, parseNumericValues);

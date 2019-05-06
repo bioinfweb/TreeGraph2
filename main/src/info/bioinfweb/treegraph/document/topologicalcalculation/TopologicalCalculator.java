@@ -204,6 +204,16 @@ public class TopologicalCalculator {
 	}
 	
 	
+	private LeafSet restrictLeafSet(LeafSet leafSet, LeafSet restrictingLeafSet) {
+		if (restrictingLeafSet != null) {
+			return leafSet.and(restrictingLeafSet);
+		}
+		else {
+			return leafSet;
+		}
+	}
+	
+	
 	/**
 	 * Searches the MRCA in {@code tree} containing all leaves defined in the specified leaf set.
 	 * <p>
@@ -211,21 +221,25 @@ public class TopologicalCalculator {
 	 * leaf set contains only terminals, that are not contained in {@code tree}.
 	 * 
 	 * @param tree the tree to be searched
-	 * @param leafSet the leaves that shall be contained in the sought-after subtree
+	 * @param leafSet the leaves that should be contained in the sought-after subtree
+	 * @param restrictingLeafSet an optional set of terminals that contains the leaves to be considered for comparison (All other 
+	 *        nodes found in compared leaf sets will be ignored. This parameter may be {@code null}.)
 	 * @return a node info describing the found subtree root or {@code null} if no according subtree could 
 	 *         be found. 
 	 */
-	public List<NodeInfo> findNodeWithAllLeaves(Tree tree, LeafSet leafSet) {
-		//leafSet = leafSet.and(getLeafSet(tree.getPaintStart()));  //TODO Is this necessary for other cases then AddSupportValues?
+	public List<NodeInfo> findNodeWithAllLeaves(Tree tree, LeafSet searchedLeafSet, LeafSet restrictingLeafSet) {
+		searchedLeafSet = restrictLeafSet(searchedLeafSet, restrictingLeafSet);
 		List<NodeInfo> result = new ArrayList<NodeInfo>();
-		findNodeWithAllLeavesRecursive(result, tree.getPaintStart(), leafSet);
+		findNodeWithAllLeavesRecursive(result, tree.getPaintStart(), searchedLeafSet, restrictingLeafSet);
 		return result;
 	}
 	
 	
-	private void findNodeWithAllLeavesRecursive(List<NodeInfo> result, Node root, LeafSet searchedLeafSet) {
+	private void findNodeWithAllLeavesRecursive(List<NodeInfo> result, Node root, LeafSet searchedLeafSet, LeafSet restrictingLeafSet) {
 		if (!isLeafSetEmpty(searchedLeafSet)) {
 			LeafSet comparedLeafSet = getLeafSet(root);
+			comparedLeafSet = restrictLeafSet(comparedLeafSet, restrictingLeafSet);
+			
 			int additionalCount = searchedLeafSet.compareTo(comparedLeafSet, false);
 			boolean downwards = additionalCount != -1;
 			if (!downwards) {
@@ -250,7 +264,7 @@ public class TopologicalCalculator {
 	  	}
 	  	
 	  	for (Node child : root.getChildren()) {
-				findNodeWithAllLeavesRecursive(result, child, searchedLeafSet);
+				findNodeWithAllLeavesRecursive(result, child, searchedLeafSet, restrictingLeafSet);
 			}
 		}
 	}

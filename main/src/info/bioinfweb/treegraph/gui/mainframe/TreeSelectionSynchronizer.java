@@ -28,6 +28,7 @@ import info.bioinfweb.treegraph.document.change.DocumentListener;
 import info.bioinfweb.treegraph.document.nodebranchdata.IDElementAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.VoidNodeBranchDataAdapter;
+import info.bioinfweb.treegraph.document.topologicalcalculation.LeafSet;
 import info.bioinfweb.treegraph.document.topologicalcalculation.NodeInfo;
 import info.bioinfweb.treegraph.document.topologicalcalculation.TopologicalCalculator;
 import info.bioinfweb.treegraph.document.undo.SelectionSynchronizationCompareParameters;
@@ -104,11 +105,13 @@ public class TreeSelectionSynchronizer implements TreeViewPanelListener, Documen
 		if (!activeTree.equals(selectionTargetTree) && !selectionTargetTree.getDocument().getTree().isEmpty()) {
 			TreeSelection selection = selectionTargetTree.getSelection();
 			selection.clear();
-			
+
+			LeafSet restrictingLeafSet = topologicalCalculator.getLeafSet(selectionTargetTree.getDocument().getTree().getPaintStart()).and(
+					topologicalCalculator.getLeafSet(activeTree.getDocument().getTree().getPaintStart()));  // Use shared terminals as the restricting leaf set for comparisons in findNodeWithAllLeaves(). 
 			NodeBranchDataAdapter defaultSupportAdapter = selectionTargetTree.getDocument().getDefaultSupportAdapter();
 			for (Node activeNode : activeTree.getSelection().getAllElementsOfType(Node.class, false)) {
 				List<NodeInfo> selectionTargetNodeInfos = topologicalCalculator.findNodeWithAllLeaves(
-						selectionTargetTree.getDocument().getTree(), topologicalCalculator.getLeafSet(activeNode));
+						selectionTargetTree.getDocument().getTree(), topologicalCalculator.getLeafSet(activeNode), restrictingLeafSet);
 				
 				for (NodeInfo selectionTargetNodeInfo : selectionTargetNodeInfos) {
 					selection.add(selectionTargetNodeInfo.getNode());
