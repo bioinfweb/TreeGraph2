@@ -887,6 +887,7 @@ test/data/addSupport/SolvedTwoGroupsFromPaintStart_supportBelow.xtg -text
 test/data/addSupport/SolvedTwoGroupsFromPaintStart_supportBelow_addTerminalAbove.xtg -text
 test/data/addSupport/SolvedTwoGroupsFromPaintStart_supportBelow_addTerminalBelow.xtg -text
 test/data/ancestralState/Primates.txt.log.txt -text svneol=unset#text/plain
+test/data/columnStatus/ColumnTest.xtg -text
 test/data/getFirstNodeByData.xtg -text
 test/data/importTable/TableNodeNames.txt -text svneol=unset#text/plain
 test/data/importTable/TableNodeNames_numbersAsDec.txt -text svneol=unset#text/plain
@@ -928,6 +929,7 @@ test/src/info/bioinfweb/treegraph/document/TreeTest.java -text svneol=unset#text
 test/src/info/bioinfweb/treegraph/document/io/ancestralstate/BayesTraitsReaderTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/io/jphyloio/JPhyloIOReaderTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/tools/IDManagerTest.java -text svneol=unset#text/plain
+test/src/info/bioinfweb/treegraph/document/tools/NodeBranchDataColumnAnalyzerTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/tools/TreeSerializerTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/topologicalcalculation/LeafSetTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/undo/edit/RerootByLeafSetEditTest.java -text svneol=unset#text/plain
