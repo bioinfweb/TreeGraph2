@@ -55,7 +55,7 @@ public class NodeBranchDataColumnAnalyzerTest {
 	
 	
 	private void assertColumnStatus(Document document, ColumnStatus status, String suffix) {
-		assertEquals(status, NodeBranchDataColumnAnalyzer.analyzeColumnStatus(document, new TextLabelAdapter(status.name() + suffix)));
+		assertEquals(status, NodeBranchDataColumnAnalyzer.analyzeColumnStatus(document.getTree(), new TextLabelAdapter(status.name() + suffix)));
 	}
 	
 	
@@ -89,7 +89,7 @@ public class NodeBranchDataColumnAnalyzerTest {
 		list.add(new TextLabelAdapter("NO_NUMERIC_OR_PARSABLE"));
 		list.add(new TextLabelAdapter("ALL_NUMERIC_INTERNAL"));
 		
-		NodeBranchDataColumnAnalyzer.sortColumnListByStatus(document, list);
+		NodeBranchDataColumnAnalyzer.sortColumnListByStatus(document.getTree(), list);
 		
 		Iterator<NodeBranchDataAdapter> iterator = list.iterator();
 		assertAdapter(iterator.next(), "ALL_NUMERIC_INTERNAL_IN_RANGE");
