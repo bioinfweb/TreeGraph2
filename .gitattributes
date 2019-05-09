@@ -346,6 +346,7 @@ main/src/info/bioinfweb/treegraph/document/nodebranchdata/factory/SingleNodeBran
 main/src/info/bioinfweb/treegraph/document/nodebranchdata/package.html -text
 main/src/info/bioinfweb/treegraph/document/package.html -text
 main/src/info/bioinfweb/treegraph/document/tools/IDManager.java -text
+main/src/info/bioinfweb/treegraph/document/tools/NodeBranchDataColumnAnalyzer.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/tools/TextElementDataAsStringIterator.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/tools/TreeSerializer.java -text
 main/src/info/bioinfweb/treegraph/document/topologicalcalculation/LeafSet.java -text
