@@ -26,8 +26,8 @@ import java.util.List;
 import java.util.Map;
 
 import info.bioinfweb.commons.Math2;
-import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 
 
@@ -114,9 +114,9 @@ public class NodeBranchDataColumnAnalyzer {
 	}
 	
 	
-	public static ColumnStatus analyzeColumnStatus(Document document, NodeBranchDataAdapter column) {
+	public static ColumnStatus analyzeColumnStatus(Tree tree, NodeBranchDataAdapter column) {
 		ColumnCharacters characters = new ColumnCharacters();
-		analyzeColumnCharacters(document.getTree().getPaintStart(), column, characters);
+		analyzeColumnCharacters(tree.getPaintStart(), column, characters);
 		
 		if (!characters.containsNonParsableValue) {
 			if (characters.containsInternalValues && !characters.containsTerminalValues) {
@@ -148,10 +148,10 @@ public class NodeBranchDataColumnAnalyzer {
 	}
 	
 	
-	public static void sortColumnListByStatus(Document document, List<NodeBranchDataAdapter> list) {
+	public static void sortColumnListByStatus(Tree tree, List<NodeBranchDataAdapter> list) {
 		Map<String, ColumnStatus> statusMap = new HashMap<String, NodeBranchDataColumnAnalyzer.ColumnStatus>();	
 		for (NodeBranchDataAdapter column : list) {
-			statusMap.put(column.toString(), analyzeColumnStatus(document, column));
+			statusMap.put(column.toString(), analyzeColumnStatus(tree, column));
 		}
 		Collections.sort(list, new ColumnStatusComparator(statusMap));
 	}
