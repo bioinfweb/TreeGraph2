@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.treegraph.gui.dialogs.io;
+package info.bioinfweb.treegraph.gui.dialogs.io.addsupportvalues;
 
 
 import info.bioinfweb.treegraph.document.Document;
@@ -30,6 +30,9 @@ import info.bioinfweb.treegraph.document.io.phyloxml.PhyloXMLFilter;
 import info.bioinfweb.treegraph.document.io.xtg.XTGFilter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextElementDataAdapter;
 import info.bioinfweb.treegraph.document.undo.file.addsupportvalues.AddSupportValuesParameters;
+import info.bioinfweb.treegraph.gui.dialogs.io.FileDialog;
+import info.bioinfweb.treegraph.gui.dialogs.io.TreeSelectionDialog;
+import info.bioinfweb.treegraph.gui.dialogs.io.FileDialog.Option;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdata.TextIDElementTypeInput;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataInput;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;

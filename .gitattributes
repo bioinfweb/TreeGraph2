@@ -710,8 +710,6 @@ main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/ScaleValueInput.jav
 main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/piecolor/PieColorCellRenderer.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/piecolor/PieColorIcon.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/elementformats/piecolor/PieColorListEntry.java -text
-main/src/info/bioinfweb/treegraph/gui/dialogs/io/AddSupportValueColumnsDialog.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/treegraph/gui/dialogs/io/AddSupportValuesDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/FileDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/NewickExceptionDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/NodeSupportDialog.java -text svneol=unset#text/plain
@@ -719,6 +717,8 @@ main/src/info/bioinfweb/treegraph/gui/dialogs/io/OpenDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/TableSeparatorPanel.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/TextFileFilter.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/TreeSelectionDialog.java -text
+main/src/info/bioinfweb/treegraph/gui/dialogs/io/addsupportvalues/AddSupportValueColumnsDialog.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/gui/dialogs/io/addsupportvalues/AddSupportValuesDialog.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/ancestralstate/AssignBayesTraitsImportColumnsDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/ancestralstate/CharacterInput.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/io/ancestralstate/GenerateBayesTraitsInputDialog.java -text svneol=unset#text/plain
