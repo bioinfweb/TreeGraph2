@@ -222,6 +222,22 @@ public class NodeDataComboBoxModel extends AbstractListModel<NodeBranchDataAdapt
 	
 	
 	/**
+	 * Replaces the current adapter list with the contents of the specified list.
+	 * 
+	 * @param list the list with the new contents
+	 */
+	public void replaceAdapterListContents(List<NodeBranchDataAdapter> list) {
+		clear();
+		adapters.addAll(list);
+		
+		if (getSize() > 0) {
+			fireIntervalAdded(this, 0, adapters.size() - 1);
+			setSelectedItem(adapters.get(0));
+		}
+	}
+	
+	
+	/**
 	 * Selects the adapter which is an instance (not instance of a subclass) of the 
 	 * given class.
 	 * 

@@ -21,7 +21,9 @@ package info.bioinfweb.treegraph.gui.dialogs.io.addsupportvalues;
 
 import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.treegraph.document.Tree;
+import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
+import info.bioinfweb.treegraph.document.tools.NodeBranchDataColumnAnalyzer;
 import info.bioinfweb.treegraph.document.undo.file.addsupportvalues.AddSupportValuesParameters;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataInput;
 import info.bioinfweb.wikihelp.client.OkCancelApplyWikiHelpDialog;
@@ -30,6 +32,8 @@ import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
@@ -57,10 +61,18 @@ public class AddSupportValueColumnsDialog extends OkCancelApplyWikiHelpDialog {
 	}
 	
 	
+	private void sortSupportAdapters(Tree tree) {
+		List<NodeBranchDataAdapter> list = new ArrayList<NodeBranchDataAdapter>(supportColumnInput.getModel().getAdapters());
+		NodeBranchDataColumnAnalyzer.sortColumnListByStatus(tree, list);  // Sorting directly is not possible, since supportColumnInput.getModel().getAdapters() is unmodifiable.
+		supportColumnInput.getModel().replaceAdapterListContents(list);
+	}
+	
+	
 	public boolean execute(AddSupportValuesParameters addSupportValuesParameters, Tree tree) {
 		this.addSupportValuesParameters = addSupportValuesParameters;
 		
 		supportColumnInput.setAdapters(tree, false, true, true, false, false, "");
+		sortSupportAdapters(tree);
 		supportColumnInput.setSelectedAdapter(addSupportValuesParameters.getSourceDocument().getDefaultSupportAdapter());
 		leavesColumnInput.setAdapters(tree, true, true, false, false, false, "");  //TODO Ideally unique node names would only be selectable, if the XTG is the imported format. In all other cases the unique node names have just been generated and were not present in the source file.
 		leavesColumnInput.setSelectedAdapter(NodeNameAdapter.class);
