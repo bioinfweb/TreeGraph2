@@ -59,7 +59,7 @@ public abstract class NodeBranchDataAdapterCellEditor extends AbstractCellEditor
 	}
 	
 	
-	JComboBox<NodeBranchDataAdapter> comboBox;  //TODO The current implementation of using a shared combo box model might be too slow for large trees, since the whole tree is searched for node/branch data columns each time a cell in the table is selected in getDefaultAdapter().
+	private JComboBox<NodeBranchDataAdapter> comboBox;
 	
 	
 	public NodeBranchDataAdapterCellEditor() {
