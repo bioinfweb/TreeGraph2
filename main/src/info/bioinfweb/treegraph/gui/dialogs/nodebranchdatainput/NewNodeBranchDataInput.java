@@ -42,7 +42,7 @@ import javax.swing.JTextField;
  */ 
 public class NewNodeBranchDataInput extends NodeBranchDataInput {
 	private JTextField textField = null;
-	private List<NodeDataInputListener> inputListeners = new ArrayList<NodeDataInputListener>();
+	private List<NodeBranchDataInputListener> inputListeners = new ArrayList<NodeBranchDataInputListener>();
 	
 	
 	public NewNodeBranchDataInput(JPanel panel, int x, int y, boolean horizontal) {
@@ -129,12 +129,12 @@ public class NewNodeBranchDataInput extends NodeBranchDataInput {
 	}
 
 
-	public boolean addInputListener(NodeDataInputListener listener) {
+	public boolean addInputListener(NodeBranchDataInputListener listener) {
 		return inputListeners.add(listener);
 	}
 
 
-	public boolean removeInputListener(NodeDataInputListener listener) {
+	public boolean removeInputListener(NodeBranchDataInputListener listener) {
 		return inputListeners.remove(listener);
 	}
 	

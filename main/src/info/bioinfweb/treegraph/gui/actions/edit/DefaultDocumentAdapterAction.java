@@ -18,14 +18,17 @@
  */
 package info.bioinfweb.treegraph.gui.actions.edit;
 
+
 import javax.swing.Action;
 
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.gui.actions.EditDialogAction;
-import info.bioinfweb.treegraph.gui.dialogs.nodebranchdata.DefaultDocumentAdapterDialog;
+import info.bioinfweb.treegraph.gui.dialogs.nodebranchdata.defaultadapter.DefaultDocumentAdapterDialog;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
+
+
 
 public class DefaultDocumentAdapterAction extends EditDialogAction {
 	public DefaultDocumentAdapterAction(MainFrame mainFrame) {
@@ -42,6 +45,6 @@ public class DefaultDocumentAdapterAction extends EditDialogAction {
 
 	@Override
 	public void setEnabled(Document document, TreeSelection selection, NodeBranchDataAdapter tableAdapter) {
-		setEnabled((document != null) && !document.getTree().isEmpty());
+		setEnabled(document != null);  // This should not be null if at least one document is currently opened.  //TODO Could no window be selected although one exists in some L&Fs?
 	}
 }

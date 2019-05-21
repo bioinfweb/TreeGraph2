@@ -20,7 +20,7 @@ package info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput;
 
 
 
-public interface NodeDataInputListener {
+public interface NodeBranchDataInputListener {
   /**
    * This Method is called if the user selects "label with new ID" or "branch data with new ID" from
    * the combo box of <code>NewNodeDataInput</code>.

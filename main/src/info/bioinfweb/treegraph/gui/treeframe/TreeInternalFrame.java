@@ -248,7 +248,7 @@ public class TreeInternalFrame extends JInternalFrame {
 			table.getTableHeader().setReorderingAllowed(false);
 			table.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			
-			ListSelectionListener listener = new ListSelectionListener() {  //TODO Muss zus�tzlich auch ein Model-Listener her? Muss der Tastenstatus initialisiert werden?
+			ListSelectionListener listener = new ListSelectionListener() {  //TODO Muss zusätzlich auch ein Model-Listener her? Muss der Tastenstatus initialisiert werden?
 					  public void valueChanged(ListSelectionEvent e) {
 					  	if ((table.getSelectedColumnCount() > 0) && (table.getSelectedRowCount() > 0)) {
 					  		int selRow = table.getSelectedRows()[table.getSelectedRowCount() - 1];

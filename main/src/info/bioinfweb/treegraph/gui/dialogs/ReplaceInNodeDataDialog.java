@@ -22,7 +22,7 @@ package info.bioinfweb.treegraph.gui.dialogs;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.edit.ReplaceInNodeDataEdit;
 import info.bioinfweb.treegraph.document.undo.edit.ReplaceInNodeDataEdit.InsertPosition;
-import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeDataComboBoxModel;
+import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataComboBoxModel;
 
 import javax.swing.JPanel;
 
@@ -96,7 +96,7 @@ public class ReplaceInNodeDataDialog extends EditDialog {
 
 	@Override
 	protected boolean onExecute() {
-		((NodeDataComboBoxModel)getAdapterComboBox().getModel()).setAdapters(
+		((NodeBranchDataComboBoxModel)getAdapterComboBox().getModel()).setAdapters(
 				getDocument().getTree());
 		return true;
 	}
@@ -210,7 +210,7 @@ public class ReplaceInNodeDataDialog extends EditDialog {
 	 */
 	private JComboBox<NodeBranchDataAdapter> getAdapterComboBox() {
 		if (adapterComboBox == null) {
-			adapterComboBox = new JComboBox<NodeBranchDataAdapter>(new NodeDataComboBoxModel());
+			adapterComboBox = new JComboBox<NodeBranchDataAdapter>(new NodeBranchDataComboBoxModel());
 		}
 		return adapterComboBox;
 	}

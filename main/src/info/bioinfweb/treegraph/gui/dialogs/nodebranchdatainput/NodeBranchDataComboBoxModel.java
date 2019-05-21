@@ -41,7 +41,7 @@ import javax.swing.ComboBoxModel;
  * 
  * @author Ben St&ouml;ver
  */
-public class NodeDataComboBoxModel extends AbstractListModel<NodeBranchDataAdapter> 
+public class NodeBranchDataComboBoxModel extends AbstractListModel<NodeBranchDataAdapter> 
     implements ComboBoxModel<NodeBranchDataAdapter> {
 	
 	private List<NodeBranchDataAdapter> adapters = new ArrayList<NodeBranchDataAdapter>();
@@ -52,7 +52,7 @@ public class NodeDataComboBoxModel extends AbstractListModel<NodeBranchDataAdapt
    * Equivalent to a call of <code>setAdapters(tree, false, true, false, false)</code>.
    * 
    * @param tree
-   * @see info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeDataComboBoxModel#setAdapters(Tree, boolean, boolean)
+   * @see info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataComboBoxModel#setAdapters(Tree, boolean, boolean)
    */
   public void setAdapters(Tree tree) {
   	setAdapters(tree, false, true, true, false, false, "");

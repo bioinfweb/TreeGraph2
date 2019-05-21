@@ -28,7 +28,7 @@ import info.bioinfweb.treegraph.document.undo.edit.SortLeavesEdit;
 import info.bioinfweb.treegraph.gui.CurrentDirectoryModel;
 import info.bioinfweb.treegraph.gui.actions.edit.SortLeavesAction;
 import info.bioinfweb.treegraph.gui.dialogs.io.TextFileFilter;
-import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeDataComboBoxModel;
+import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataComboBoxModel;
 
 import java.awt.Dimension;
 import java.awt.Frame;
@@ -401,26 +401,26 @@ public class SortLeavesDialog extends EditDialog {
 	
 	private JComboBox<NodeBranchDataAdapter> getSourceAdapterComboBox() {
 		if (sourceAdapterComboBox == null) {
-			sourceAdapterComboBox = new JComboBox<NodeBranchDataAdapter>(new NodeDataComboBoxModel());
+			sourceAdapterComboBox = new JComboBox<NodeBranchDataAdapter>(new NodeBranchDataComboBoxModel());
 		}
 		return sourceAdapterComboBox;
 	}
 	
 	
-	private NodeDataComboBoxModel getSourceAdapterModel() {
-		return (NodeDataComboBoxModel)getSourceAdapterComboBox().getModel();
+	private NodeBranchDataComboBoxModel getSourceAdapterModel() {
+		return (NodeBranchDataComboBoxModel)getSourceAdapterComboBox().getModel();
 	}
 	
 	
 	private JComboBox<NodeBranchDataAdapter> getTargetAdapterComboBox() {
 		if (targetAdapterComboBox == null) {
-			targetAdapterComboBox = new JComboBox<NodeBranchDataAdapter>(new NodeDataComboBoxModel());
+			targetAdapterComboBox = new JComboBox<NodeBranchDataAdapter>(new NodeBranchDataComboBoxModel());
 		}
 		return targetAdapterComboBox;
 	}
 
 	
-	private NodeDataComboBoxModel getTargetAdapterModel() {
-		return (NodeDataComboBoxModel)getTargetAdapterComboBox().getModel();
+	private NodeBranchDataComboBoxModel getTargetAdapterModel() {
+		return (NodeBranchDataComboBoxModel)getTargetAdapterComboBox().getModel();
 	}
 }

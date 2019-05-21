@@ -59,14 +59,14 @@ public class NodeBranchDataInput {
 	}
 	
 	
-	public NodeDataComboBoxModel getModel() {
-		return (NodeDataComboBoxModel)getComboBox().getModel();
+	public NodeBranchDataComboBoxModel getModel() {
+		return (NodeBranchDataComboBoxModel)getComboBox().getModel();
 	}
 
 
 	protected JComboBox<NodeBranchDataAdapter> getComboBox() {
 		if (comboBox == null) {
-			comboBox = new JComboBox<NodeBranchDataAdapter>(new NodeDataComboBoxModel());
+			comboBox = new JComboBox<NodeBranchDataAdapter>(new NodeBranchDataComboBoxModel());
 		}
 		return comboBox;
 	}
@@ -82,7 +82,7 @@ public class NodeBranchDataInput {
    * available.
    */
   public void setOnlyNewAdapters() {
-  	((NodeDataComboBoxModel)getComboBox().getModel()).setOnlyNewAdapters();
+  	((NodeBranchDataComboBoxModel)getComboBox().getModel()).setOnlyNewAdapters();
   }
   
   
@@ -92,7 +92,7 @@ public class NodeBranchDataInput {
    * @param tree - the tree which contains the data
    */
   public void setAdapters(Tree tree) {
-  	((NodeDataComboBoxModel)getComboBox().getModel()).setAdapters(tree);
+  	((NodeBranchDataComboBoxModel)getComboBox().getModel()).setAdapters(tree);
   }
   
   
@@ -117,7 +117,7 @@ public class NodeBranchDataInput {
   public void setAdapters(Tree tree, boolean uniqueNamesSelectable, boolean nodeNamesSelectable, 
   		boolean branchLengthSelectable,	boolean decimalOnly, boolean newIDSelectable, String voidAdapterText) {
   	
-  	((NodeDataComboBoxModel)getComboBox().getModel()).setAdapters(tree, uniqueNamesSelectable,
+  	((NodeBranchDataComboBoxModel)getComboBox().getModel()).setAdapters(tree, uniqueNamesSelectable,
   			nodeNamesSelectable, branchLengthSelectable, decimalOnly, newIDSelectable, voidAdapterText);
   }
   
@@ -130,7 +130,7 @@ public class NodeBranchDataInput {
 	 * @return {@code true}, if one adapter was selected, {@code false}, if no adapter of the given class was found
 	 */
 	public boolean setSelectedAdapter(Class<? extends NodeBranchDataAdapter> adapterClass) {
-		return ((NodeDataComboBoxModel)getComboBox().getModel()).setSelectedAdapter(
+		return ((NodeBranchDataComboBoxModel)getComboBox().getModel()).setSelectedAdapter(
 				adapterClass);
 	}
 	
@@ -144,7 +144,7 @@ public class NodeBranchDataInput {
 	 *         was found
 	 */
 	public boolean setSelectedAdapter(NodeBranchDataAdapter adapter) {
-		return ((NodeDataComboBoxModel)getComboBox().getModel()).setSelectedAdapter(adapter);
+		return ((NodeBranchDataComboBoxModel)getComboBox().getModel()).setSelectedAdapter(adapter);
 	}
 	
 	
@@ -154,6 +154,6 @@ public class NodeBranchDataInput {
    * @return the selected adapter (not a copy of it)
    */
   public NodeBranchDataAdapter getSelectedAdapter() {
-  	return ((NodeDataComboBoxModel)getComboBox().getModel()).getSelectedItem();
+  	return ((NodeBranchDataComboBoxModel)getComboBox().getModel()).getSelectedItem();
   }
 }

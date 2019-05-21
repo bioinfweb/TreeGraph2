@@ -36,7 +36,7 @@ import javax.swing.border.TitledBorder;
 
 import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
-import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeDataComboBoxModel;
+import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataComboBoxModel;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.wikihelp.client.WikiHelpOptionPane;
 
@@ -79,9 +79,9 @@ public abstract class FormatsByNodeBranchDataDialog extends SpecialFormatsDialog
 	 */
 	@Override
 	protected boolean onExecute() {
-		((NodeDataComboBoxModel)getSourceComboBox().getModel()).setAdapters(
+		((NodeBranchDataComboBoxModel)getSourceComboBox().getModel()).setAdapters(
 				getDocument().getTree(), false, true, true, true, false, "");
-		((NodeDataComboBoxModel)getSourceComboBox().getModel()).setSelectedAdapter(getDocument().getDefaultSupportAdapter());
+		((NodeBranchDataComboBoxModel)getSourceComboBox().getModel()).setSelectedAdapter(getDocument().getDefaultSupportAdapter());
 		
 		boolean result = getSourceComboBox().getModel().getSize() > 0; 
 		if (result) {
@@ -127,13 +127,13 @@ public abstract class FormatsByNodeBranchDataDialog extends SpecialFormatsDialog
 	 */
 	protected JComboBox<NodeBranchDataAdapter> getSourceComboBox() {
 		if (sourceComboBox == null) {
-			sourceComboBox = new JComboBox<NodeBranchDataAdapter>(new NodeDataComboBoxModel());
+			sourceComboBox = new JComboBox<NodeBranchDataAdapter>(new NodeBranchDataComboBoxModel());
 		}
 		return sourceComboBox;
 	}
 
 
-	protected NodeDataComboBoxModel getSourceComboBoxModel() {
-		return (NodeDataComboBoxModel)getSourceComboBox().getModel();
+	protected NodeBranchDataComboBoxModel getSourceComboBoxModel() {
+		return (NodeBranchDataComboBoxModel)getSourceComboBox().getModel();
 	}
 }
