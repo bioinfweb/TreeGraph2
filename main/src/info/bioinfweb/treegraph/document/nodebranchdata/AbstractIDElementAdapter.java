@@ -67,8 +67,7 @@ public abstract class AbstractIDElementAdapter extends AbstractTextElementDataAd
 
 
 	/**
-	 * Returns <code>true</code> if the specified object is an instance of the same class and has the same
-	 * ID.
+	 * Returns {@code true} if the specified object is an instance of the same class and has the same ID.
 	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */

@@ -31,12 +31,12 @@ import info.bioinfweb.treegraph.document.TextElementData;
  */
 public abstract class AbstractNodeBranchDataAdapter implements NodeBranchDataAdapter {
 	/**
-	 * Returns <code>true</code> if the specified object is an instance of the same class.
+	 * Returns {@code true} if the specified object is an instance of the same class.
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
 	public boolean equals(Object other) {
-		return (other != null) && other.getClass().equals(getClass());  //TODO Liefert dieser Vergleich das richtige Ergebnis? 
+		return (other != null) && other.getClass().equals(getClass()); 
 	}
 
 	

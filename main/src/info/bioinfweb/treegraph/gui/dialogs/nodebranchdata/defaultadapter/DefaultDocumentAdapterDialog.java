@@ -111,8 +111,8 @@ public class DefaultDocumentAdapterDialog extends EditDialog {
 		
 		for (int rowIndex = 0; rowIndex < getTable().getRowCount(); rowIndex++) {
 			Document document = getTableModel().getDocument(rowIndex);
-			if (document.getDefaultLeafAdapter().equals(getTableModel().getSelectedLeafAdapter(rowIndex)) || 
-					document.getDefaultSupportAdapter().equals(getTableModel().getSelectedSupportAdapter(rowIndex))) {  //TODO Is equals properly implemented?
+			if (!document.getDefaultLeafAdapter().equals(getTableModel().getSelectedLeafAdapter(rowIndex)) || 
+					!document.getDefaultSupportAdapter().equals(getTableModel().getSelectedSupportAdapter(rowIndex))) {
 				
 				System.out.println("Setting adapters in " + document.getDefaultNameOrPath() + " to " + getTableModel().getSelectedLeafAdapter(rowIndex) + " and " + getTableModel().getSelectedSupportAdapter(rowIndex));
 				document.executeEdit(new DefaultDocumentAdapterEdit(document, 
