@@ -114,7 +114,6 @@ public class DefaultDocumentAdapterDialog extends EditDialog {
 			if (!document.getDefaultLeafAdapter().equals(getTableModel().getSelectedLeafAdapter(rowIndex)) || 
 					!document.getDefaultSupportAdapter().equals(getTableModel().getSelectedSupportAdapter(rowIndex))) {
 				
-				System.out.println("Setting adapters in " + document.getDefaultNameOrPath() + " to " + getTableModel().getSelectedLeafAdapter(rowIndex) + " and " + getTableModel().getSelectedSupportAdapter(rowIndex));
 				document.executeEdit(new DefaultDocumentAdapterEdit(document, 
 						getTableModel().getSelectedLeafAdapter(rowIndex), getTableModel().getSelectedSupportAdapter(rowIndex)));
 			}
