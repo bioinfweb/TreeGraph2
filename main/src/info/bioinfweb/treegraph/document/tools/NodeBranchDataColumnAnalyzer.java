@@ -29,6 +29,7 @@ import info.bioinfweb.commons.Math2;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.VoidNodeBranchDataAdapter;
 
 
 
@@ -65,7 +66,21 @@ public class NodeBranchDataColumnAnalyzer {
 
 		@Override
 		public int compare(NodeBranchDataAdapter column1, NodeBranchDataAdapter column2) {
-			return statusMap.get(column1.toString()).compareTo(statusMap.get(column2.toString()));  // The string representations of the adapters are used since these should be unique for both type and column ID and hashCode() and equals() are not properly implemented for all node/branch data adapter classes.
+			if (column1 instanceof VoidNodeBranchDataAdapter) {
+				if (column2 instanceof VoidNodeBranchDataAdapter) {
+					return 0;
+				}
+				else {
+					return 1;
+				}
+			}
+			else if (column2 instanceof VoidNodeBranchDataAdapter) {
+				return -1;
+			}
+			else {
+				return statusMap.get(column1.toString()).compareTo(statusMap.get(column2.toString()));  // The string representations of the adapters are used since these should be unique for both type and column ID and hashCode() and equals() are not properly implemented for all node/branch data adapter classes.
+				                                                                                        //TODO That is probably not the case and the adapters could also be used directly.
+			}
 		}
 	}
 	
