@@ -116,33 +116,35 @@ public class NodeBranchDataColumnAnalyzer {
 	
 	public static ColumnStatus analyzeColumnStatus(Tree tree, NodeBranchDataAdapter column) {
 		ColumnCharacters characters = new ColumnCharacters();
-		analyzeColumnCharacters(tree.getPaintStart(), column, characters);
-		
-		if (!characters.containsNonParsableValue) {
-			if (characters.containsInternalValues && !characters.containsTerminalValues) {
-				if (characters.containsNumericValue && !characters.containsParsableValue) {
-					if (characters.containsValueOutsideRange) {
-						return ColumnStatus.ALL_NUMERIC_INTERNAL;
+		if (!tree.isEmpty()) {
+			analyzeColumnCharacters(tree.getPaintStart(), column, characters);
+			
+			if (!characters.containsNonParsableValue) {
+				if (characters.containsInternalValues && !characters.containsTerminalValues) {
+					if (characters.containsNumericValue && !characters.containsParsableValue) {
+						if (characters.containsValueOutsideRange) {
+							return ColumnStatus.ALL_NUMERIC_INTERNAL;
+						}
+						else {
+							return ColumnStatus.ALL_NUMERIC_INTERNAL_IN_RANGE;
+						}
 					}
-					else {
-						return ColumnStatus.ALL_NUMERIC_INTERNAL_IN_RANGE;
+					if (characters.containsNumericValue || characters.containsParsableValue) {
+						if (characters.containsValueOutsideRange) {
+							return ColumnStatus.ALL_NUMERIC_OR_PARSABLE_INTERNAL;
+						}
+						else {
+							return ColumnStatus.ALL_NUMERIC_OR_PARSABLE_INTERNAL_IN_RANGE;
+						}
 					}
 				}
-				if (characters.containsNumericValue || characters.containsParsableValue) {
-					if (characters.containsValueOutsideRange) {
-						return ColumnStatus.ALL_NUMERIC_OR_PARSABLE_INTERNAL;
-					}
-					else {
-						return ColumnStatus.ALL_NUMERIC_OR_PARSABLE_INTERNAL_IN_RANGE;
-					}
+				if (characters.containsTerminalValues) {
+					return ColumnStatus.ALL_NUMERIC_OR_PARSABLE;
 				}
 			}
-			if (characters.containsTerminalValues) {
-				return ColumnStatus.ALL_NUMERIC_OR_PARSABLE;
+			if (characters.containsNumericValue || characters.containsParsableValue) {
+				return ColumnStatus.SOME_NUMERIC_OR_PARSABLE;
 			}
-		}
-		if (characters.containsNumericValue || characters.containsParsableValue) {
-			return ColumnStatus.SOME_NUMERIC_OR_PARSABLE;
 		}
 		return ColumnStatus.NO_NUMERIC_OR_PARSABLE;
 	}
