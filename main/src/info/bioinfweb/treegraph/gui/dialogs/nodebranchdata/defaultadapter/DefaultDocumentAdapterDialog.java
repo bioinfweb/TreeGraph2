@@ -27,7 +27,6 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -41,7 +40,6 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
 import info.bioinfweb.treegraph.document.Document;
-import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.edit.DefaultDocumentAdapterEdit;
 import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
@@ -66,6 +64,9 @@ public class DefaultDocumentAdapterDialog extends EditDialog {
 	private JLabel combinedSupportColumnLabel = null;
 	private JComboBox<CombinedAdapterEntry> combinedSupportColumnComboBox = null;
 	private JButton combinedSupportColumnApplyButton = null;
+	private JButton autoSelectUndefinedButton;
+	private JPanel autoSelectSupportColumnsPanel;
+	private JButton autoSelectAllButton;
 	
 	
 	public DefaultDocumentAdapterDialog(MainFrame mainFrame) {
@@ -176,7 +177,6 @@ public class DefaultDocumentAdapterDialog extends EditDialog {
 			headingPanelGBC.fill = GridBagConstraints.HORIZONTAL;
 			headingPanelGBC.gridx = 0;
 			headingPanelGBC.gridy = 0;
-			headingPanelGBC.weightx = 1.0;
 			headingPanelGBC.weighty = 0.0;
 			jContentPane.add(getHeadingPanel(), headingPanelGBC);
 			
@@ -205,51 +205,59 @@ public class DefaultDocumentAdapterDialog extends EditDialog {
 	
 	private JPanel getHeadingPanel() {
 		if (headingPanel == null) {
-			headingPanel = new JPanel();
+			headingPanel = new JPanel(new GridBagLayout());
 			headingPanel.setBorder(new TitledBorder(null, "Set columns for all documents", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 			
-			GridBagLayout gbl_headingPanel = new GridBagLayout();
-			gbl_headingPanel.columnWidths = new int[] {0, 0, 0};
-			gbl_headingPanel.rowHeights = new int[] {0, 0};
-			gbl_headingPanel.columnWeights = new double[]{0.0, 1.0, 0.0};
-			gbl_headingPanel.rowWeights = new double[]{0.0, 0.0};
-			headingPanel.setLayout(gbl_headingPanel);
 			GridBagConstraints combinedLeafColumnsLabel = new GridBagConstraints();
 			combinedLeafColumnsLabel.insets = new Insets(0, 0, 5, 5);
 			combinedLeafColumnsLabel.anchor = GridBagConstraints.WEST;
 			combinedLeafColumnsLabel.gridx = 0;
 			combinedLeafColumnsLabel.gridy = 0;
 			headingPanel.add(getCombinedLeavesColumnLabel(), combinedLeafColumnsLabel);
+			
 			GridBagConstraints combinedLeafColumnsComboBox = new GridBagConstraints();
-			combinedLeafColumnsComboBox.weightx = 1.0;
+			combinedLeafColumnsComboBox.weightx = 2.0;
 			combinedLeafColumnsComboBox.insets = new Insets(0, 0, 5, 5);
 			combinedLeafColumnsComboBox.fill = GridBagConstraints.HORIZONTAL;
 			combinedLeafColumnsComboBox.gridx = 1;
 			combinedLeafColumnsComboBox.gridy = 0;
 			headingPanel.add(getCombinedLeavesColumnComboBox(), combinedLeafColumnsComboBox);
+			
 			GridBagConstraints combinedLeafColumnsApplyButton = new GridBagConstraints();
-			combinedLeafColumnsApplyButton.insets = new Insets(0, 0, 5, 5);
+			combinedLeafColumnsApplyButton.insets = new Insets(0, 0, 5, 0);
 			combinedLeafColumnsApplyButton.gridx = 2;
 			combinedLeafColumnsApplyButton.gridy = 0;
 			headingPanel.add(getCombinedLeavesColumnApplyButton(), combinedLeafColumnsApplyButton);
+			
 			GridBagConstraints combinedSupportColumnsLabel = new GridBagConstraints();
-			combinedSupportColumnsLabel.anchor = GridBagConstraints.EAST;
+			combinedSupportColumnsLabel.anchor = GridBagConstraints.WEST;
 			combinedSupportColumnsLabel.insets = new Insets(0, 0, 5, 5);
 			combinedSupportColumnsLabel.gridx = 0;
 			combinedSupportColumnsLabel.gridy = 1;
 			headingPanel.add(getCombinedSupportColumnLabel(), combinedSupportColumnsLabel);
+			
 			GridBagConstraints combinedSupportColumnsComboBox = new GridBagConstraints();
-			combinedSupportColumnsComboBox.weightx = 1.0;
+			combinedSupportColumnsComboBox.weightx = 2.0;
 			combinedSupportColumnsComboBox.insets = new Insets(0, 0, 5, 5);
 			combinedSupportColumnsComboBox.fill = GridBagConstraints.HORIZONTAL;
 			combinedSupportColumnsComboBox.gridx = 1;
 			combinedSupportColumnsComboBox.gridy = 1;
 			headingPanel.add(getCombinedSupportColumnComboBox(), combinedSupportColumnsComboBox);
+			
 			GridBagConstraints combinedSupportColumnsApplyButton = new GridBagConstraints();
-			combinedSupportColumnsApplyButton.insets = new Insets(0, 0, 5, 5);
+			combinedSupportColumnsApplyButton.insets = new Insets(0, 0, 5, 0);
 			combinedSupportColumnsApplyButton.gridx = 2;
 			combinedSupportColumnsApplyButton.gridy = 1;
 			headingPanel.add(getCombinedSupportColumnApplyButton(), combinedSupportColumnsApplyButton);
+			
+			GridBagConstraints gbc_panel = new GridBagConstraints();
+			gbc_panel.weighty = 1.0;  //TODO Why does this panel not fill all three columns, so that the two buttons are equally aligned instead of centered?
+			gbc_panel.gridwidth = 3;
+			gbc_panel.insets = new Insets(0, 0, 5, 0);
+			gbc_panel.fill = GridBagConstraints.BOTH;
+			gbc_panel.gridx = 0;
+			gbc_panel.gridy = 2;
+			headingPanel.add(getAutoSelectSupportColumnsPanel(), gbc_panel);
 		}
 		return headingPanel;
 	}
@@ -344,11 +352,57 @@ public class DefaultDocumentAdapterDialog extends EditDialog {
 		if (combinedSupportColumnApplyButton == null) {
 			combinedSupportColumnApplyButton = new JButton("Set where applicable");
 			combinedSupportColumnApplyButton.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
+				public void actionPerformed(ActionEvent e) {
+					stopCellEditing();
 					getTableModel().setSupportAdapterToAll(getCombinedSupportColumnComboBoxModel().getSelectedAdapter());
 				}
 			});
 		}
 		return combinedSupportColumnApplyButton;
+	}
+	
+	
+	private JPanel getAutoSelectSupportColumnsPanel() {
+		if (autoSelectSupportColumnsPanel == null) {
+			autoSelectSupportColumnsPanel = new JPanel(new GridBagLayout());
+			
+			GridBagConstraints undefinedButtonGBC = new GridBagConstraints();
+			undefinedButtonGBC.insets = new Insets(0, 0, 0, 5);
+			undefinedButtonGBC.weighty = 1.0;
+			undefinedButtonGBC.gridx = 0;
+			undefinedButtonGBC.gridy = 0;
+			autoSelectSupportColumnsPanel.add(getAutoSelectUndefinedButton(), undefinedButtonGBC);
+			
+			GridBagConstraints allButtonGBC = new GridBagConstraints();
+			allButtonGBC.gridx = 1;
+			allButtonGBC.gridy = 0;
+			allButtonGBC.weighty = 1.0;
+			autoSelectSupportColumnsPanel.add(getAutoSelectAllButton(), allButtonGBC);
+		}
+		return autoSelectSupportColumnsPanel;
+	}
+	
+	
+	private JButton getAutoSelectUndefinedButton() {
+		if (autoSelectUndefinedButton == null) {
+			autoSelectUndefinedButton = new JButton("Auto select undefined default support columns");
+			autoSelectUndefinedButton.setMnemonic('u');
+			autoSelectUndefinedButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					stopCellEditing();
+					getTableModel().autoSelectSupportColumns(true);
+				}
+			});
+		}
+		return autoSelectUndefinedButton;
+	}
+	
+	
+	private JButton getAutoSelectAllButton() {
+		if (autoSelectAllButton == null) {
+			autoSelectAllButton = new JButton("Auto select all default support columns");
+			autoSelectAllButton.setMnemonic('d');
+		}
+		return autoSelectAllButton;
 	}
 }

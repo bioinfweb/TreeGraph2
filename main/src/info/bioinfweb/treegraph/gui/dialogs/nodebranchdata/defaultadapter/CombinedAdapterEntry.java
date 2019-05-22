@@ -116,6 +116,10 @@ public class CombinedAdapterEntry implements Comparable<CombinedAdapterEntry> {
 
 	@Override
 	public String toString() {
-		return adapter.toString() + " (Appears in " + count + " documents.)";
+		String suffix = " documents.)";
+		if (count == 1) {
+			suffix = " document.)";
+		}
+		return adapter.toString() + " (Available in " + count + suffix;
 	}
 }

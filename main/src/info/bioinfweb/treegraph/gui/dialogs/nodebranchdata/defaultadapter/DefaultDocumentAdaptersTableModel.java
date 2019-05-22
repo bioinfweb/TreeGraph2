@@ -27,6 +27,8 @@ import javax.swing.table.AbstractTableModel;
 
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.VoidNodeBranchDataAdapter;
+import info.bioinfweb.treegraph.document.tools.NodeBranchDataColumnAnalyzer;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataComboBoxModel;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeInternalFrame;
@@ -52,7 +54,15 @@ public class DefaultDocumentAdaptersTableModel extends AbstractTableModel {
 		public NodeBranchDataComboBoxModel leafAdapters;
 		public NodeBranchDataAdapter selectedSupportAdapter;  // The selected item of supportAdapters cannot be used since JTable will reset this before displaying a cell editor.
 		public NodeBranchDataComboBoxModel supportAdapters;
+		
+		
+		private void sortSupportAdapters() {
+			List<NodeBranchDataAdapter> adapters = new ArrayList<NodeBranchDataAdapter>(supportAdapters.getAdapters());
+			NodeBranchDataColumnAnalyzer.sortColumnListByStatus(document.getTree(), adapters);
+			supportAdapters.replaceAdapterListContents(adapters);
+		}
 
+		
 		public DocumentListElement(Document document) {
 			super();
 			this.document = document;
@@ -63,6 +73,7 @@ public class DefaultDocumentAdaptersTableModel extends AbstractTableModel {
 			
 			supportAdapters = new NodeBranchDataComboBoxModel();
 			supportAdapters.setAdapters(document.getTree(), false, true, true, false, false, "No support values available");  // DecimalOnly is not set because previously set default document adapters may not be displayed then.
+			sortSupportAdapters();
 			selectedSupportAdapter = document.getDefaultSupportAdapter();
 		}
 	}
@@ -231,6 +242,22 @@ public class DefaultDocumentAdaptersTableModel extends AbstractTableModel {
 			if (element.supportAdapters.getAdapters().contains(adapter)) {
 				element.selectedSupportAdapter = adapter;
 				fireTableCellUpdated(rowIndex, SUPPORT_ADAPTER_COLUMN);
+			}
+		}
+	}
+	
+	
+	/**
+	 * Sets all or all undefined default support adapters to the first entry of their combo box model. (These entries are
+	 * sorted by suitability.)
+	 * 
+	 * @param onlyUndefined Specify {@code true} here if only currently undefined default columns should be set or {@code false}
+	 *        if all columns should be set.
+	 */
+	public void autoSelectSupportColumns(boolean onlyUndefined) {
+		for (int rowIndex = 0; rowIndex < getRowCount(); rowIndex++) {
+			if (!onlyUndefined || getValueAt(rowIndex, SUPPORT_ADAPTER_COLUMN) instanceof VoidNodeBranchDataAdapter) {
+				setValueAt(documentList.get(rowIndex).supportAdapters.getAdapters().get(0), rowIndex, SUPPORT_ADAPTER_COLUMN);  // Range check should not be needed, since each list must at least contain a void adapter.
 			}
 		}
 	}

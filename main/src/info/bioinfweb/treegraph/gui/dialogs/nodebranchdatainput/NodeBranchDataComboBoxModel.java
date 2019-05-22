@@ -217,7 +217,7 @@ public class NodeBranchDataComboBoxModel extends AbstractListModel<NodeBranchDat
 
 
 	public List<NodeBranchDataAdapter> getAdapters() {
-		return Collections.unmodifiableList(adapters);  //TODO Would it be a problem, if the result would be modifiable?
+		return Collections.unmodifiableList(adapters);
 	}
 	
 	
