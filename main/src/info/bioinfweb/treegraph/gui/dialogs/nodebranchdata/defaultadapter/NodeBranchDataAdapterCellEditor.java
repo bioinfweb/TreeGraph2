@@ -26,63 +26,45 @@ import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.table.TableCellEditor;
 
-import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
-import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataComboBoxModel;
 
 
 
 public abstract class NodeBranchDataAdapterCellEditor extends AbstractCellEditor implements TableCellEditor {
 	public static class LeafAdapterEditor extends NodeBranchDataAdapterCellEditor {
 		@Override
-		protected NodeBranchDataAdapter getDefaultAdapter(Document document) {
-			return document.getDefaultLeafAdapter();
-		}
-
-		@Override
-		protected void setAdapters(NodeBranchDataComboBoxModel model, Document document) {
-			model.setAdapters(document.getTree(), true, true, false, false, false, null);
+		protected void setModel(DefaultDocumentAdaptersTableModel tableModel, int rowIndex) {
+			comboBox.setModel(tableModel.getLeafComboBoxModel(rowIndex));
+			comboBox.setSelectedItem(tableModel.getSelectedLeafAdapter(rowIndex));
 		}
 	}
 	
 	
 	public static class SupportAdapterEditor extends NodeBranchDataAdapterCellEditor {
 		@Override
-		protected NodeBranchDataAdapter getDefaultAdapter(Document document) {
-			return document.getDefaultSupportAdapter();
-		}
-
-		@Override
-		protected void setAdapters(NodeBranchDataComboBoxModel model, Document document) {
-			model.setAdapters(document.getTree(), false, true, true, false, false, "No support values available");  // DecimalOnly is not set because previously set default document adapters may not be displayed then.
+		protected void setModel(DefaultDocumentAdaptersTableModel tableModel, int rowIndex) {
+			comboBox.setModel(tableModel.getSupportComboBoxModel(rowIndex));
+			comboBox.setSelectedItem(tableModel.getSelectedSupportAdapter(rowIndex));
 		}
 	}
 	
 	
-	private JComboBox<NodeBranchDataAdapter> comboBox;
+	protected JComboBox<NodeBranchDataAdapter> comboBox;
 	
 	
 	public NodeBranchDataAdapterCellEditor() {
 		super();
-		
-		comboBox = new JComboBox<NodeBranchDataAdapter>(new NodeBranchDataComboBoxModel());
+		comboBox = new JComboBox<NodeBranchDataAdapter>();  // The model will be set by getTableCellEditorComponent().
 	}
 
 
-	protected abstract NodeBranchDataAdapter getDefaultAdapter(Document document);
-	
-	
-	protected abstract void setAdapters(NodeBranchDataComboBoxModel model, Document document);
+	protected abstract void setModel(DefaultDocumentAdaptersTableModel tableModel, int rowIndex);
 	
 	
 	@Override
 	public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
 		if (table.getModel() instanceof DefaultDocumentAdaptersTableModel) {
-			DefaultDocumentAdaptersTableModel model = (DefaultDocumentAdaptersTableModel)table.getModel();
-			Document document = model.getDocument(row);
-			setAdapters((NodeBranchDataComboBoxModel)comboBox.getModel(), document);
-			
-			comboBox.setSelectedItem(model.getValueAt(row, column)); 
+			setModel((DefaultDocumentAdaptersTableModel)table.getModel(), row);
 			return comboBox;
 		}
 		else {

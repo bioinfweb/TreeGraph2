@@ -27,11 +27,18 @@ import javax.swing.table.AbstractTableModel;
 
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
+import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataComboBoxModel;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeInternalFrame;
 
 
 
+/**
+ * Table model for the {@link DefaultDocumentAdapterDialog} containing the default document adapters of all currently opened documents.
+ * 
+ * @author Ben St&ouml;ver
+ * @since 2.16.0
+ */
 public class DefaultDocumentAdaptersTableModel extends AbstractTableModel {
 	public static final int FILE_NAME_COLUMN = 0;
 	public static final int LEAF_ADAPTER_COLUMN = 1;
@@ -41,14 +48,22 @@ public class DefaultDocumentAdaptersTableModel extends AbstractTableModel {
 	
 	private static class DocumentListElement {
 		public Document document;
-		public NodeBranchDataAdapter leafAdapter;
-		public NodeBranchDataAdapter supportAdapter;
+		public NodeBranchDataAdapter selectedLeafAdapter;  // The selected item of leafAdapters cannot be used since JTable will reset this before displaying a cell editor.
+		public NodeBranchDataComboBoxModel leafAdapters;
+		public NodeBranchDataAdapter selectedSupportAdapter;  // The selected item of supportAdapters cannot be used since JTable will reset this before displaying a cell editor.
+		public NodeBranchDataComboBoxModel supportAdapters;
 
 		public DocumentListElement(Document document) {
 			super();
 			this.document = document;
-			this.leafAdapter = document.getDefaultLeafAdapter();
-			this.supportAdapter = document.getDefaultSupportAdapter();
+			
+			leafAdapters = new NodeBranchDataComboBoxModel();
+			leafAdapters.setAdapters(document.getTree(), true, true, false, false, false, null);
+			selectedLeafAdapter = document.getDefaultLeafAdapter();
+			
+			supportAdapters = new NodeBranchDataComboBoxModel();
+			supportAdapters.setAdapters(document.getTree(), false, true, true, false, false, "No support values available");  // DecimalOnly is not set because previously set default document adapters may not be displayed then.
+			selectedSupportAdapter = document.getDefaultSupportAdapter();
 		}
 	}
 	
@@ -143,10 +158,10 @@ public class DefaultDocumentAdaptersTableModel extends AbstractTableModel {
 					}
 			
 			case LEAF_ADAPTER_COLUMN:
-				return element.leafAdapter;
+				return element.selectedLeafAdapter;
 			
 			case SUPPORT_ADAPTER_COLUMN:
-				return element.supportAdapter;
+				return element.selectedSupportAdapter;
 			
 			case PATH_COLUMN:
 				if (element.document.getFile() != null) {
@@ -163,12 +178,22 @@ public class DefaultDocumentAdaptersTableModel extends AbstractTableModel {
 
 
 	public NodeBranchDataAdapter getSelectedLeafAdapter(int rowIndex) {
-		return documentList.get(rowIndex).leafAdapter;
+		return documentList.get(rowIndex).selectedLeafAdapter;
 	}
 	
 
 	public NodeBranchDataAdapter getSelectedSupportAdapter(int rowIndex) {
-		return documentList.get(rowIndex).supportAdapter;
+		return documentList.get(rowIndex).selectedSupportAdapter;
+	}
+	
+	
+	public NodeBranchDataComboBoxModel getLeafComboBoxModel(int rowIndex) {
+		return documentList.get(rowIndex).leafAdapters;
+	}
+	
+
+	public NodeBranchDataComboBoxModel getSupportComboBoxModel(int rowIndex) {
+		return documentList.get(rowIndex).supportAdapters;
 	}
 	
 
@@ -177,12 +202,36 @@ public class DefaultDocumentAdaptersTableModel extends AbstractTableModel {
 		DocumentListElement element = documentList.get(rowIndex);
 		switch (columnIndex) {
 			case LEAF_ADAPTER_COLUMN:
-				element.leafAdapter = (NodeBranchDataAdapter)value;
+				element.selectedLeafAdapter = (NodeBranchDataAdapter)value;
+				fireTableCellUpdated(rowIndex, columnIndex);
 				break;
 			
 			case SUPPORT_ADAPTER_COLUMN:
-				element.supportAdapter = (NodeBranchDataAdapter)value;
+				element.selectedSupportAdapter = (NodeBranchDataAdapter)value;
+				fireTableCellUpdated(rowIndex, columnIndex);
 				break;
+		}
+	}
+	
+	
+	public void setLeafAdapterToAll(NodeBranchDataAdapter adapter) {
+		for (int rowIndex = 0; rowIndex < documentList.size(); rowIndex++) {
+			DocumentListElement element = documentList.get(rowIndex);
+			if (element.leafAdapters.getAdapters().contains(adapter)) {
+				element.selectedLeafAdapter = adapter;
+				fireTableCellUpdated(rowIndex, LEAF_ADAPTER_COLUMN);
+			}
+		}
+	}
+	
+	
+	public void setSupportAdapterToAll(NodeBranchDataAdapter adapter) {
+		for (int rowIndex = 0; rowIndex < documentList.size(); rowIndex++) {
+			DocumentListElement element = documentList.get(rowIndex);
+			if (element.supportAdapters.getAdapters().contains(adapter)) {
+				element.selectedSupportAdapter = adapter;
+				fireTableCellUpdated(rowIndex, SUPPORT_ADAPTER_COLUMN);
+			}
 		}
 	}
 }

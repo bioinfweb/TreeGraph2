@@ -750,6 +750,8 @@ main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/calculatecolumn/Cal
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/calculatecolumn/CalculateColumnErrorsDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/calculatecolumn/ErrorsTableModel.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/calculatecolumn/package-info.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/defaultadapter/CombinedAdapterEntry.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/defaultadapter/CombinedAdaptersComboBoxModel.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/defaultadapter/DefaultDocumentAdapterDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/defaultadapter/DefaultDocumentAdaptersTableModel.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/defaultadapter/NodeBranchDataAdapterCellEditor.java -text svneol=unset#text/plain

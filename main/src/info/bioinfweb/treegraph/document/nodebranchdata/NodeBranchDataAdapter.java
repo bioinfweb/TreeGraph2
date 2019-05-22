@@ -75,8 +75,17 @@ public interface NodeBranchDataAdapter {
 	 * @return
 	 */
 	public AbstractPaintableElement getDataElement(Node node);
-		
+	
+	@Override
+	public boolean equals(Object other);
 
+	@Override
+	public int hashCode();
+
+	@Override
+	public String toString();
+
+	
 	default double getNumericValue(Node node, boolean parseText) {
 		if (isDecimal(node)) {
 			return getDecimal(node);

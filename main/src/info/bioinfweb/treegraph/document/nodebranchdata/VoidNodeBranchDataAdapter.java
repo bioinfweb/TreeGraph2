@@ -31,7 +31,7 @@ import info.bioinfweb.treegraph.document.TextElementData;
  * 
  * @author Ben St&ouml;ver
  */
-public class VoidNodeBranchDataAdapter implements NodeBranchDataAdapter {
+public class VoidNodeBranchDataAdapter extends AbstractNodeBranchDataAdapter implements NodeBranchDataAdapter {  // Extends AbstractNodeBranchDataAdapter to inherit equals() and hashCode().
 	private String text = getClass().getName();
 	
 	

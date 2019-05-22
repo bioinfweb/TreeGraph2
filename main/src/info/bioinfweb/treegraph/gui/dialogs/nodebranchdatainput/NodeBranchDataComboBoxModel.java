@@ -49,7 +49,7 @@ public class NodeBranchDataComboBoxModel extends AbstractListModel<NodeBranchDat
 	
 
 	/**
-   * Equivalent to a call of <code>setAdapters(tree, false, true, false, false)</code>.
+   * Equivalent to a call of {@code setAdapters(tree, false, true, false, false)}.
    * 
    * @param tree
    * @see info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataComboBoxModel#setAdapters(Tree, boolean, boolean)
@@ -115,7 +115,7 @@ public class NodeBranchDataComboBoxModel extends AbstractListModel<NodeBranchDat
 		if (branchLengthSelectable) {
 			adapters.add(BranchLengthAdapter.getSharedInstance());
 		}
-	// More adapters can be added here.
+		// More adapters can be added here.
 		
 		if (tree != null) {
 			String[] labelIDs = IDManager.getLabelIDs(tree.getPaintStart(), TextLabel.class);
