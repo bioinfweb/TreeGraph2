@@ -56,7 +56,7 @@ public class DefaultDocumentAdapterDialog extends EditDialog {
 	
 	
 	private JPanel jContentPane = null;
-	JPanel headingPanel = null;
+	private JPanel headingPanel = null;
 	private JTable table = null;
 	private JLabel combinedLeavesColumnLabel = null;
 	private JComboBox<CombinedAdapterEntry> combinedLeavesColumnComboBox = null;
