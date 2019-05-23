@@ -19,7 +19,7 @@
 package info.bioinfweb.treegraph.document;
 
 
-import info.bioinfweb.treegraph.document.tools.IDManager;
+import info.bioinfweb.treegraph.document.tools.NodeBranchDataColumnManager;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -90,7 +90,7 @@ public class HiddenDataMap implements Map<String, TextElementData> {
 	public Object putForID(String id, TextElementData value) {
 		Object result = null;
 		if (getOwner() != null) {
-			result = IDManager.removeElementWithID(getOwner(), id);
+			result = NodeBranchDataColumnManager.removeElementWithID(getOwner(), id);
 		}
 		map.put(id, value);
 		return result;

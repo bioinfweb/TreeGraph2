@@ -21,7 +21,7 @@ package info.bioinfweb.treegraph.gui.dialogs;
 
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
-import info.bioinfweb.treegraph.document.tools.IDManager;
+import info.bioinfweb.treegraph.document.tools.NodeBranchDataColumnManager;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataInput;
 
 import javax.swing.DefaultComboBoxModel;
@@ -49,7 +49,7 @@ public class DataIDComboBox extends JComboBox<String> {
 		if (root != null) {
 			DefaultComboBoxModel<String> model = getModel();
 			model.removeAllElements();
-			String[] ids = IDManager.getIDs(document.getTree().getPaintStart());
+			String[] ids = NodeBranchDataColumnManager.getIDs(document.getTree().getPaintStart());
 			for (int i = 0; i < ids.length; i++) {
 				model.addElement(ids[i]);
 			}

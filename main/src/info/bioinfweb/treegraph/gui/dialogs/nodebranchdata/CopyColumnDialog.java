@@ -23,7 +23,7 @@ import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.treegraph.document.nodebranchdata.NewTextLabelAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NewNodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
-import info.bioinfweb.treegraph.document.tools.IDManager;
+import info.bioinfweb.treegraph.document.tools.NodeBranchDataColumnManager;
 import info.bioinfweb.treegraph.document.undo.edit.CopyColumnEdit;
 import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NewNodeBranchDataInput;
@@ -87,7 +87,7 @@ public class CopyColumnDialog extends EditDialog {
 	@Override
 	protected boolean apply() {
 		boolean result = !getDestAdapter().isNewColumn() || 
-		    !IDManager.idExistsInSubtree(getDocument().getTree().getPaintStart(), 
+		    !NodeBranchDataColumnManager.idExistsInSubtree(getDocument().getTree().getPaintStart(), 
 				    ((NewNodeBranchDataAdapter)getDestAdapter()).getID());
 		if (result) {
 			getDocument().executeEdit(new CopyColumnEdit(getDocument(), getSrcAdapter(), getDestAdapter(), 

@@ -24,7 +24,7 @@ import javax.swing.undo.CannotUndoException;
 
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.change.DocumentChangeType;
-import info.bioinfweb.treegraph.document.tools.IDManager;
+import info.bioinfweb.treegraph.document.tools.NodeBranchDataColumnManager;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
 
 
@@ -55,7 +55,7 @@ public class RenameDataIDEdit extends DocumentEdit {
 	@Override
 	public void redo() throws CannotRedoException {
 		for (int i = 0; i < oldIDs.length; i++) {
-			IDManager.renameID(oldIDs[i], newIDs[i], getDocument());
+			NodeBranchDataColumnManager.renameID(oldIDs[i], newIDs[i], getDocument());
 		}
 		super.redo();
 	}
@@ -64,7 +64,7 @@ public class RenameDataIDEdit extends DocumentEdit {
 	@Override
 	public void undo() throws CannotUndoException {
 		for (int i = 0; i < oldIDs.length; i++) {
-			IDManager.renameID(newIDs[i], oldIDs[i], getDocument());
+			NodeBranchDataColumnManager.renameID(newIDs[i], oldIDs[i], getDocument());
 		}
 		super.undo();
 	}

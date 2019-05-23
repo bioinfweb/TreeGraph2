@@ -34,7 +34,7 @@ import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.nodebranchdata.IDElementAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.VoidNodeBranchDataAdapter;
-import info.bioinfweb.treegraph.document.tools.IDManager;
+import info.bioinfweb.treegraph.document.tools.NodeBranchDataColumnManager;
 import info.bioinfweb.treegraph.gui.actions.DocumentAction;
 import info.bioinfweb.wikihelp.client.OkCancelApplyWikiHelpDialog;
 import info.bioinfweb.wikihelp.client.WikiHelp;
@@ -97,7 +97,7 @@ public abstract class AbstractNodeBranchDataColumnsDialog extends OkCancelApplyW
 					boolean columnExists = false;
 					if (!(adapter instanceof VoidNodeBranchDataAdapter)) {	
 						if (adapter instanceof IDElementAdapter) {
-							columnExists = IDManager.idExistsInSubtree(tree.getPaintStart(), ((IDElementAdapter)adapter).getID());
+							columnExists = NodeBranchDataColumnManager.idExistsInSubtree(tree.getPaintStart(), ((IDElementAdapter)adapter).getID());
 							if (columnExists) {
 								duplicateColumns.add("Node/branch data columns with the ID \"" + ((IDElementAdapter)adapter).getID() + "\"");
 							}						

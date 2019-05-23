@@ -33,7 +33,7 @@ import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Label;
 import info.bioinfweb.treegraph.document.NodeType;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
-import info.bioinfweb.treegraph.document.tools.IDManager;
+import info.bioinfweb.treegraph.document.tools.NodeBranchDataColumnManager;
 import info.bioinfweb.treegraph.document.tools.TreeSerializer;
 import info.bioinfweb.treegraph.document.undo.file.addsupportvalues.AddSupportValuesEdit;
 import info.bioinfweb.treegraph.document.undo.format.AutoPositionLabelsEdit;
@@ -60,7 +60,7 @@ public class AutoPositionLabelsAction extends DocumentAction {
 
 
 	private boolean containsSupportConflictIDs(Document document) {
-  	List<String> ids = new ArrayList<String>(Arrays.asList(IDManager.getLabelIDs(
+  	List<String> ids = new ArrayList<String>(Arrays.asList(NodeBranchDataColumnManager.getLabelIDs(
   			document.getTree().getPaintStart(), Label.class)));
 		for (String id : ids) {
 			if (id.endsWith(AddSupportValuesEdit.SUPPORT_NAME) && 

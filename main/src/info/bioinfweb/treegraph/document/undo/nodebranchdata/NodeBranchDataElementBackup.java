@@ -26,7 +26,7 @@ import info.bioinfweb.treegraph.document.TextLabel;
 import info.bioinfweb.treegraph.document.nodebranchdata.IDElementAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;
-import info.bioinfweb.treegraph.document.tools.IDManager;
+import info.bioinfweb.treegraph.document.tools.NodeBranchDataColumnManager;
 
 
 
@@ -63,7 +63,7 @@ public class NodeBranchDataElementBackup {
 	
 	
 	private void backupIDElement(String id, Node node) {
-		Object element = IDManager.getElementByID(node, id);
+		Object element = NodeBranchDataColumnManager.getElementByID(node, id);
 		if (element != null) {
 			if (element instanceof Label) {
 				label = (Label)element;
@@ -101,7 +101,7 @@ public class NodeBranchDataElementBackup {
 	public void restoreNode(NodeBranchDataAdapter adapter, Node node) {
 		// Remove possible other elements with the same ID:
 		if (adapter instanceof IDElementAdapter) {
-			IDManager.removeElementWithID(node, ((IDElementAdapter)adapter).getID());  // adapter.delete() would not delete elements in other columns with the same ID.
+			NodeBranchDataColumnManager.removeElementWithID(node, ((IDElementAdapter)adapter).getID());  // adapter.delete() would not delete elements in other columns with the same ID.
 		}
 		
 		// Restore old element:

@@ -20,7 +20,7 @@ package info.bioinfweb.treegraph.document;
 
 
 import info.bioinfweb.treegraph.document.format.TextFormats;
-import info.bioinfweb.treegraph.document.tools.IDManager;
+import info.bioinfweb.treegraph.document.tools.NodeBranchDataColumnManager;
 
 
 
@@ -33,7 +33,7 @@ import info.bioinfweb.treegraph.document.tools.IDManager;
 public interface TextElement extends PaintableElement {
 	/**
 	 * Returns the data associated with this text element.
-	 * @see IDManager#getDataByID(Node, String)
+	 * @see NodeBranchDataColumnManager#getDataByID(Node, String)
 	 */
 	public TextElementData getData();
 

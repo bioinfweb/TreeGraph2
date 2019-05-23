@@ -35,7 +35,7 @@ import info.bioinfweb.treegraph.document.nodebranchdata.TextElementDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextIDElementType;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.UniqueNameAdapter;
-import info.bioinfweb.treegraph.document.tools.IDManager;
+import info.bioinfweb.treegraph.document.tools.NodeBranchDataColumnManager;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
 import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.AbstractFunction;
 import info.bioinfweb.treegraph.document.undo.edit.calculatecolumn.ErrorInfo;
@@ -225,18 +225,18 @@ public class CalculateColumnEdit extends DocumentEdit {
 	private Map<String, NodeBranchDataAdapter> createAdapterMap() {
 		Map<String, NodeBranchDataAdapter> result = new HashMap<String, NodeBranchDataAdapter>();
 		
-		String[] ids = IDManager.getLabelIDs(getDocument().getTree().getPaintStart(), TextLabel.class);
+		String[] ids = NodeBranchDataColumnManager.getLabelIDs(getDocument().getTree().getPaintStart(), TextLabel.class);
 		for (int i = 0; i < ids.length; i++) {
 			result.put(ids[i], new TextLabelAdapter(ids[i], 
 					new DecimalFormat(TextFormats.DEFAULT_DECIMAL_FORMAT_EXPR)));
 		}
 		
-		ids = IDManager.getHiddenNodeDataIDs(getDocument().getTree().getPaintStart());
+		ids = NodeBranchDataColumnManager.getHiddenNodeDataIDs(getDocument().getTree().getPaintStart());
 		for (int i = 0; i < ids.length; i++) {
 			result.put(ids[i], new HiddenNodeDataAdapter(ids[i])); 
 		}
 		
-		ids = IDManager.getHiddenBranchDataIDs(getDocument().getTree().getPaintStart());
+		ids = NodeBranchDataColumnManager.getHiddenBranchDataIDs(getDocument().getTree().getPaintStart());
 		for (int i = 0; i < ids.length; i++) {
 			result.put(ids[i], new HiddenBranchDataAdapter(ids[i])); 
 		}

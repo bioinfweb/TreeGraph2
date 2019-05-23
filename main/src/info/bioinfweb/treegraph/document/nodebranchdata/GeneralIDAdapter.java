@@ -24,7 +24,7 @@ import info.bioinfweb.treegraph.document.Label;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.TextLabel;
-import info.bioinfweb.treegraph.document.tools.IDManager;
+import info.bioinfweb.treegraph.document.tools.NodeBranchDataColumnManager;
 
 import java.text.DecimalFormat;
 
@@ -73,7 +73,7 @@ public class GeneralIDAdapter extends AbstractIDElementAdapter {
 
 	@Override
 	public TextElementData getData(Node node) {
-		return IDManager.getDataByID(node, id);
+		return NodeBranchDataColumnManager.getDataByID(node, id);
 	}
 	
 

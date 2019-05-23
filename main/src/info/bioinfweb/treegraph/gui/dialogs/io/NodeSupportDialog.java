@@ -28,7 +28,7 @@ import info.bioinfweb.treegraph.document.nodebranchdata.NewNodeBranchDataAdapter
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextElementDataAdapter;
-import info.bioinfweb.treegraph.document.tools.IDManager;
+import info.bioinfweb.treegraph.document.tools.NodeBranchDataColumnManager;
 import info.bioinfweb.treegraph.document.undo.file.NodeSupportEdit;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NewNodeBranchDataInput;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput.NodeBranchDataInput;
@@ -100,7 +100,7 @@ public class NodeSupportDialog extends FileDialog {
 		}
 		if (adapter instanceof NewNodeBranchDataAdapter){
 			String id = ((NewNodeBranchDataAdapter)adapter).getID();
-			if (IDManager.idExistsInSubtree(getDocument().getTree().getPaintStart(), id)){
+			if (NodeBranchDataColumnManager.idExistsInSubtree(getDocument().getTree().getPaintStart(), id)){
 				JOptionPane.showMessageDialog(this, "The ID " + id + " already exists", "Error", JOptionPane.ERROR_MESSAGE);
 				result = false; 
 			}

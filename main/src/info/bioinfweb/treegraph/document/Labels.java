@@ -20,7 +20,7 @@ package info.bioinfweb.treegraph.document;
 
 
 import info.bioinfweb.treegraph.document.format.*;
-import info.bioinfweb.treegraph.document.tools.IDManager;
+import info.bioinfweb.treegraph.document.tools.NodeBranchDataColumnManager;
 import info.bioinfweb.commons.Math2;
 
 import java.util.*;
@@ -116,7 +116,7 @@ public class Labels implements Cloneable {
 	public Object add(Label label) {
 		Object result = null;
 		if (getHoldingBranch() != null) {
-			result = IDManager.removeElementWithID(getHoldingBranch().getTargetNode(), label.getID());
+			result = NodeBranchDataColumnManager.removeElementWithID(getHoldingBranch().getTargetNode(), label.getID());
 		}
 		
 		label.setLabels(this);

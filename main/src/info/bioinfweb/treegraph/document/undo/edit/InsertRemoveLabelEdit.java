@@ -22,7 +22,7 @@ package info.bioinfweb.treegraph.document.undo.edit;
 import info.bioinfweb.treegraph.document.*;
 import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.format.LabelFormats;
-import info.bioinfweb.treegraph.document.tools.IDManager;
+import info.bioinfweb.treegraph.document.tools.NodeBranchDataColumnManager;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
 
 
@@ -45,7 +45,7 @@ public abstract class InsertRemoveLabelEdit extends DocumentEdit {
 	
 	
 	protected void insert() {
-		if (!IDManager.idExistsOnNode(owner.getHoldingBranch().getTargetNode(), label.getID())) {
+		if (!NodeBranchDataColumnManager.idExistsOnNode(owner.getHoldingBranch().getTargetNode(), label.getID())) {
 			LabelFormats f = label.getFormats();  
 			f.setLinePosition(owner.getLastLinePos(f.isAbove(), f.getLineNumber()));
 			label.setLabels(owner);

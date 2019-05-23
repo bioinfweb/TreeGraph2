@@ -21,7 +21,7 @@ package info.bioinfweb.treegraph.gui.dialogs.nodebranchdata;
 
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
-import info.bioinfweb.treegraph.document.tools.IDManager;
+import info.bioinfweb.treegraph.document.tools.NodeBranchDataColumnManager;
 import info.bioinfweb.treegraph.document.undo.edit.RenameDataIDEdit;
 import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
 import info.bioinfweb.commons.Math2;
@@ -77,7 +77,7 @@ public class RenameIDDialog extends EditDialog {
 	private void setNames() {
 		Node root = getDocument().getTree().getPaintStart();
 		if (root != null) {
-			oldNames = IDManager.getIDs(root);
+			oldNames = NodeBranchDataColumnManager.getIDs(root);
 			DefaultListModel model = (DefaultListModel)getIdList().getModel();
 			model.removeAllElements();
 			if (oldNames.length > 0) {

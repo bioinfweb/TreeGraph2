@@ -35,7 +35,7 @@ import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.NodeType;
 import info.bioinfweb.treegraph.document.change.DocumentChangeType;
 import info.bioinfweb.treegraph.document.format.LabelFormats;
-import info.bioinfweb.treegraph.document.tools.IDManager;
+import info.bioinfweb.treegraph.document.tools.NodeBranchDataColumnManager;
 import info.bioinfweb.treegraph.document.tools.TreeSerializer;
 import info.bioinfweb.treegraph.document.undo.DocumentEdit;
 import info.bioinfweb.treegraph.document.undo.file.addsupportvalues.AddSupportValuesEdit;
@@ -73,7 +73,7 @@ public class AutoPositionLabelsEdit extends DocumentEdit {
   
   private static List<String> readIDs(Node root, boolean equalSupportConflictPosition) {
   	// Create list of all IDs:
-  	List<String> result = new ArrayList<String>(Arrays.asList(IDManager.getLabelIDs(root, Label.class)));
+  	List<String> result = new ArrayList<String>(Arrays.asList(NodeBranchDataColumnManager.getLabelIDs(root, Label.class)));
   	Collections.sort(result);  // Position labels in alphabetical order.
   	
   	if (equalSupportConflictPosition) {

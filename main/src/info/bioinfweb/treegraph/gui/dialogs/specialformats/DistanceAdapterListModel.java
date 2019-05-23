@@ -26,7 +26,7 @@ import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextLabel;
 import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.format.adapters.distance.*;
-import info.bioinfweb.treegraph.document.tools.IDManager;
+import info.bioinfweb.treegraph.document.tools.NodeBranchDataColumnManager;
 import info.bioinfweb.treegraph.document.tools.TreeSerializer;
 
 import java.util.List;
@@ -81,12 +81,12 @@ public class DistanceAdapterListModel extends AbstractListModel implements ListM
 		adapters.add(new LeafMarginTopAdapter());
 		adapters.add(new LeafMarginBottomAdapter());
 		
-		String[] ids = IDManager.getLabelIDs(root, TextLabel.class);
+		String[] ids = NodeBranchDataColumnManager.getLabelIDs(root, TextLabel.class);
 		for (int i = 0; i < ids.length; i++) {
 			adapters.add(new LabelTextHeightAdapter(ids[i]));
 		}
 		
-		ids = IDManager.getLabelIDs(root, GraphicalLabel.class);
+		ids = NodeBranchDataColumnManager.getLabelIDs(root, GraphicalLabel.class);
 		for (int i = 0; i < ids.length; i++) {
 			adapters.add(new LabelWidthAdapter(ids[i]));
 		}
@@ -97,7 +97,7 @@ public class DistanceAdapterListModel extends AbstractListModel implements ListM
 			adapters.add(new LabelLineWidthAdapter(ids[i]));
 		}
 		
-		ids = IDManager.getLabelIDs(root, Label.class);
+		ids = NodeBranchDataColumnManager.getLabelIDs(root, Label.class);
 		for (int i = 0; i < ids.length; i++) {
 			adapters.add(new LabelMarginLeftAdapter(ids[i]));
 		}

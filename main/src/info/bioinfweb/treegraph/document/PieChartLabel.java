@@ -22,7 +22,7 @@ package info.bioinfweb.treegraph.document;
 import info.bioinfweb.treegraph.document.format.ElementFormats;
 import info.bioinfweb.treegraph.document.format.PieChartLabelCaptionContentType;
 import info.bioinfweb.treegraph.document.format.PieChartLabelFormats;
-import info.bioinfweb.treegraph.document.tools.IDManager;
+import info.bioinfweb.treegraph.document.tools.NodeBranchDataColumnManager;
 import info.bioinfweb.treegraph.graphics.positionpaint.PositionPaintType;
 import info.bioinfweb.treegraph.graphics.positionpaint.positiondata.PieChartLabelPositionData;
 
@@ -136,7 +136,7 @@ public class PieChartLabel extends GraphicalLabel implements LineElement, TextEl
 	 *         or a textual value is stored
 	 * @throws NoLinkedNodeException - if this label has no linked node (no linked {@link Labels} object).
 	 * @see #getPieChartAngles()
-	 * @see IDManager#getDataByID(Node, String)
+	 * @see NodeBranchDataColumnManager#getDataByID(Node, String)
 	 */
 	public double getValue(int index) {
 		Node node = getLinkedNode();
@@ -144,7 +144,7 @@ public class PieChartLabel extends GraphicalLabel implements LineElement, TextEl
 			throw new NoLinkedNodeException();
 		}
 		else {
-			TextElementData data = IDManager.getDataByID(node, getSectionDataList().get(index).getValueColumnID());
+			TextElementData data = NodeBranchDataColumnManager.getDataByID(node, getSectionDataList().get(index).getValueColumnID());
 			if (data != null) {
 				return data.getDecimal(); 
 			}

@@ -21,7 +21,7 @@ package info.bioinfweb.treegraph.gui.dialogs;
 
 import info.bioinfweb.treegraph.Main;
 import info.bioinfweb.treegraph.document.Branch;
-import info.bioinfweb.treegraph.document.tools.IDManager;
+import info.bioinfweb.treegraph.document.tools.NodeBranchDataColumnManager;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.wikihelp.client.OkCancelApplyWikiHelpDialog;
 
@@ -121,12 +121,12 @@ public class CollidingIDsDialog extends OkCancelApplyWikiHelpDialog {
 		}
 		else {
 			String idText = "";
-			if ((IDManager.idConflict(getPresentLabelID(), selection) || additionalReservedIDs.contains(getPresentLabelID())) 
+			if ((NodeBranchDataColumnManager.idConflict(getPresentLabelID(), selection) || additionalReservedIDs.contains(getPresentLabelID())) 
 					&& !getPresentLabelID().equals(initialNewID)) {
 				
 				idText = "\"" + getPresentLabelID() + "\"";
 			}
-			if ((IDManager.idConflict(getNewLabelID(), selection) || additionalReservedIDs.contains(getNewLabelID())) 
+			if ((NodeBranchDataColumnManager.idConflict(getNewLabelID(), selection) || additionalReservedIDs.contains(getNewLabelID())) 
 					&& !(getNewLabelID().equals(initialNewID) && !getPresentLabelID().equals(initialNewID))) {
 				
 				if (idText.equals("")) {
@@ -152,12 +152,12 @@ public class CollidingIDsDialog extends OkCancelApplyWikiHelpDialog {
 	
 	
 	public String checkConflicts(Branch[] selection, String id, List<String> additionalReservedIDs) {
-		if (IDManager.idConflict(id, selection)) {
+		if (NodeBranchDataColumnManager.idConflict(id, selection)) {
 			CollidingIDsDialog dialog = CollidingIDsDialog.getInstance();
 			if (!dialog.promt(id, selection, additionalReservedIDs)){
 				for (int i = 0; i < selection.length; i++) {
-					if (IDManager.idExistsOnNode(selection[i].getTargetNode(), id)) {
-						IDManager.renameID(id, dialog.getPresentLabelID(), selection[i].getTargetNode());
+					if (NodeBranchDataColumnManager.idExistsOnNode(selection[i].getTargetNode(), id)) {
+						NodeBranchDataColumnManager.renameID(id, dialog.getPresentLabelID(), selection[i].getTargetNode());
 					}
 				}
 				id = dialog.getNewLabelID();

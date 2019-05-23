@@ -19,6 +19,14 @@
 package info.bioinfweb.treegraph.document.tools;
 
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
 import info.bioinfweb.commons.RandomValues;
 import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Document;
@@ -29,23 +37,30 @@ import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.PieChartLabel;
 import info.bioinfweb.treegraph.document.TextElementData;
 import info.bioinfweb.treegraph.document.TextLabel;
+import info.bioinfweb.treegraph.document.Tree;
+import info.bioinfweb.treegraph.document.nodebranchdata.BranchLengthAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.GeneralIDAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.HiddenBranchDataAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.HiddenNodeDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.IDElementAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.NewHiddenBranchDataAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.NewHiddenNodeDataAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.NewTextLabelAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
-
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Vector;
+import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.UniqueNameAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.VoidNodeBranchDataAdapter;
 
 
 
 /**
- * Tool class that offers multiple methods to deal with ID elements (labels, hidden data).
+ * Tool class that offers multiple methods to deal with available node/branch data adapters and ID elements (labels, hidden data)
+ * in a document.
  * 
  * @author Ben St&ouml;ver
  */
-public class IDManager {
+public class NodeBranchDataColumnManager {
 	public static final String RAND_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890";
 	public static final int RAND_LENGTH = 12;
 	
@@ -219,12 +234,12 @@ public class IDManager {
   
   
   /**
-   * Returns a vector of IDs from a whole subtree which is sorted alphabetically.
+   * Returns a list of IDs from a whole subtree which is sorted alphabetically.
    */
   public static List<String> getListFromSubtree(Node root, Class<? extends Label> labelClass, 
   		boolean includeHiddenNodeData, boolean includeHiddenBranchData) {
   	
-  	Vector<String> list = new Vector<String>();
+  	List<String> list = new ArrayList<String>();
   	searchIDsInSubtree(root, list, labelClass, includeHiddenNodeData, 
   			includeHiddenBranchData);
   	Collections.sort(list, STRING_COMPARATOR);
@@ -233,12 +248,12 @@ public class IDManager {
   
   
   /**
-   * Returns a vector of IDs from a single node which is sorted alphabetically.
+   * Returns a list of IDs from a single node which is sorted alphabetically.
    */
   private static List<String> getListFromNode(Node node, Class<? extends Label> labelClass, 
   		boolean includeNodeHiddenData, boolean includeBranchHiddenData) {
   	
-  	Vector<String> list = new Vector<String>();
+  	List<String> list = new ArrayList<String>();
   	searchIDsOnNode(node, list, labelClass, includeNodeHiddenData, includeBranchHiddenData);
   	Collections.sort(list, STRING_COMPARATOR);
   	return list;
@@ -551,10 +566,120 @@ public class IDManager {
    */
   public static boolean idConflict(String id, Branch[] selection){
 		for (int i = 0; i < selection.length; i++) {
-			if (IDManager.idExistsOnNode(selection[i].getTargetNode(), id)){
+			if (NodeBranchDataColumnManager.idExistsOnNode(selection[i].getTargetNode(), id)){
 				return true;
 			}
 		}
 		return false;
 	}
+  
+  
+  private static void countIDs(String id, Map<String, Integer> idMap) {
+  	if (idMap.get(id) != null) {
+  		idMap.put(id, idMap.get(id) + 1);
+		}
+		else {
+			idMap.put(id, 1);
+		}
+  }
+  
+  
+  /**
+   * Returns a list of node/branch data adapters that provide access to the column contained in the specified tree.
+   * 
+   * @param tree the tree to obtain the columns from (If {@code null} is specified , only new ID adapters would be returned.)
+   * @param uniqueNamesSelectable determines whether the unique node names adapter is included
+   * @param nodeNamesSelectable determines whether the node names adapter is included
+   * @param branchLengthSelectable determines whether the branch length adapter is included
+   * @param decimalOnly only adapters for node/branch data columns that contain at least one decimal
+   *        element are included (This parameter overwrites {@code nodeNamesSelectable} and
+   *        {@code branchLengthSelectable}.)
+   * @param newIDSelectable If {@code true} an adaptor for a new user defined ID columns is 
+   *        added. Note that the ID has still to be set. These adapters are also added if 
+   *        {@code decimalOnly} is {@code true}.
+   * @param voidAdapterText the name to be displayed for instances of {@link VoidNodeBranchDataAdapter} (No such adapter will 
+   *        be added, if {@code null} or {@code ""} is specified here.)
+   * @return a list with node/branch data adapters matching the specified tree and parameters
+   */
+  public static List<NodeBranchDataAdapter> listAdapters(Tree tree, boolean uniqueNamesSelectable, boolean nodeNamesSelectable, 
+  		boolean branchLengthSelectable,	boolean decimalOnly, boolean newIDSelectable, String voidAdapterText) {
+  	
+  	List<NodeBranchDataAdapter> result = new ArrayList<NodeBranchDataAdapter>();
+  	
+  	if ((voidAdapterText != null) && !voidAdapterText.equals("")) {
+			result.add(new VoidNodeBranchDataAdapter(voidAdapterText));
+		}  	
+  	if (uniqueNamesSelectable) {
+  		result.add(UniqueNameAdapter.getSharedInstance());
+  	}
+  	if (nodeNamesSelectable) {
+  		result.add(NodeNameAdapter.getSharedInstance());
+  	}
+		if (branchLengthSelectable) {
+			result.add(BranchLengthAdapter.getSharedInstance());
+		}
+		// More adapters can be added here.
+		
+		if (tree != null) {
+			String[] labelIDs = NodeBranchDataColumnManager.getLabelIDs(tree.getPaintStart(), TextLabel.class);
+			String[] hiddenBranchDataIDs = NodeBranchDataColumnManager.getHiddenBranchDataIDs(tree.getPaintStart());
+			String[] hiddenNodeDataIDs = NodeBranchDataColumnManager.getHiddenNodeDataIDs(tree.getPaintStart());
+			Map<String, Integer> idDuplication = new TreeMap<String, Integer>();
+			
+			for (int i = 0; i < labelIDs.length; i++) {
+				countIDs(labelIDs[i], idDuplication);
+			}			
+			for (int i = 0; i < hiddenBranchDataIDs.length; i++) {
+				countIDs(hiddenBranchDataIDs[i], idDuplication);
+			}			
+			for (int i = 0; i < hiddenNodeDataIDs.length; i++) {
+				countIDs(hiddenNodeDataIDs[i], idDuplication);
+			}
+			
+			for (String key : idDuplication.keySet()) {
+				if (idDuplication.get(key) > 1) {
+					result.add(new GeneralIDAdapter(key));
+				}
+			}
+			
+			for (int i = 0; i < labelIDs.length; i++) {				
+				result.add(new TextLabelAdapter(labelIDs[i],((TextLabel)NodeBranchDataColumnManager.getFirstLabel(tree.getPaintStart(), TextLabel.class, labelIDs[i])).getFormats().getDecimalFormat()));
+			}			
+			for (int i = 0; i < hiddenBranchDataIDs.length; i++) {
+				result.add(new HiddenBranchDataAdapter(hiddenBranchDataIDs[i]));				
+			}			
+			for (int i = 0; i < hiddenNodeDataIDs.length; i++) {				
+				result.add(new HiddenNodeDataAdapter(hiddenNodeDataIDs[i]));							
+			}
+		}
+		
+		// Delete all adapters for columns that contain no decimal value
+		if (decimalOnly && (tree != null)) {
+			for (int i = result.size() - 1; i >= 0; i--) {
+				if (!tree.containsDecimal(result.get(i)) && !(result.get(i) instanceof VoidNodeBranchDataAdapter)) {
+					result.remove(i);
+				}
+			}
+		}
+		
+		if (newIDSelectable) {  // New adapters can all be numeric
+			result.add(new NewTextLabelAdapter());
+			result.add(new NewHiddenBranchDataAdapter());
+			result.add(new NewHiddenNodeDataAdapter());
+		}
+
+		return result;
+  }
+  
+  
+	/**
+   * Equivalent to a call of {@code listAdapters(tree, false, true, false, false)}.
+   * 
+   * @param tree the tree to obtain the columns from (If {@code null} is specified , only new ID adapters would be returned.)
+   * @return a list with node/branch data adapters matching the specified tree
+   * @see #listAdapters(Tree, boolean, boolean, boolean, boolean, boolean, String)
+   */
+  public static List<NodeBranchDataAdapter> listAdapters(Tree tree) {
+  	return listAdapters(tree, false, true, true, false, false, "");
+  }
 }

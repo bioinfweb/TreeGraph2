@@ -25,7 +25,7 @@ import javax.swing.Action;
 
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
-import info.bioinfweb.treegraph.document.tools.IDManager;
+import info.bioinfweb.treegraph.document.tools.NodeBranchDataColumnManager;
 import info.bioinfweb.treegraph.gui.actions.EditDialogAction;
 import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdata.RenameIDDialog;
@@ -56,6 +56,6 @@ public class RenameDataIDAction extends EditDialogAction {
 	@Override
 	public void setEnabled(Document document, TreeSelection selection, NodeBranchDataAdapter tableAdapter) {
 		setEnabled((document != null) && 
-				IDManager.containsIDElements(document.getTree().getPaintStart()));
+				NodeBranchDataColumnManager.containsIDElements(document.getTree().getPaintStart()));
 	}
 }

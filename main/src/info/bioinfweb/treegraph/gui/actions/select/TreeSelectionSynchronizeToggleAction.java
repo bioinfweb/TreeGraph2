@@ -26,6 +26,7 @@ import javax.swing.Action;
 
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
+import info.bioinfweb.treegraph.document.tools.NodeBranchDataColumnAnalyzer;
 import info.bioinfweb.treegraph.gui.actions.DocumentAction;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeInternalFrame;
@@ -48,25 +49,46 @@ public class TreeSelectionSynchronizeToggleAction extends DocumentAction {
 	}
 	
 	
+	private void checkDefaultColumns() {
+		//TODO Check default support columns of all documents and possibly display modal dialog.
+		//     - Check for each document until all are processed or one with a possible better column is found
+		//       - if current column is suitable
+		//         - check if there are better columns
+		
+		boolean betterColumnFound = false;
+		Iterator<TreeInternalFrame> iterator = MainFrame.getInstance().treeFrameIterator();
+		while (iterator.hasNext() && !betterColumnFound) {
+			Document document = iterator.next().getDocument();
+			if (NodeBranchDataColumnAnalyzer.ColumnStatus.NO_NUMERIC_OR_PARSABLE.equals(
+					NodeBranchDataColumnAnalyzer.analyzeColumnStatus(document.getTree(), document.getDefaultSupportAdapter()))) {
+				
+				
+			}
+		}
+	}
+	
+	
 	@Override
 	protected void onActionPerformed(ActionEvent e, TreeInternalFrame frame) {
 		Iterator<TreeInternalFrame> treeFrameIterator = getMainFrame().treeFrameIterator();
-		if (isActive()) {		// Reset TreeSelectionSynchronizer and add listeners:
+		if (isActive()) {  // Reset TreeSelectionSynchronizer and add listeners:
+			checkDefaultColumns();
+			
 			getMainFrame().getTreeSelectionSynchronizer().reset();
 			getMainFrame().addChildWindowListener(getMainFrame().getTreeSelectionSynchronizer());
-			while(treeFrameIterator.hasNext()) {
+			while (treeFrameIterator.hasNext()) {
 				TreeInternalFrame currentFrame = treeFrameIterator.next();
 				currentFrame.getTreeViewPanel().addTreeViewPanelListener(getMainFrame().getTreeSelectionSynchronizer());
 				currentFrame.getTreeViewPanel().getDocument().addView(getMainFrame().getTreeSelectionSynchronizer());
-				}
 			}
-		else {		// Unregister listeners:
+		}
+		else {  // Unregister listeners:
 			getMainFrame().removeChildWindowListener(getMainFrame().getTreeSelectionSynchronizer());
-			while(treeFrameIterator.hasNext()) {
+			while (treeFrameIterator.hasNext()) {
 				TreeInternalFrame currentFrame = treeFrameIterator.next();		
 				currentFrame.getTreeViewPanel().removeTreeViewPanelListener(getMainFrame().getTreeSelectionSynchronizer());
 				currentFrame.getTreeViewPanel().getDocument().removeView(getMainFrame().getTreeSelectionSynchronizer());
-				}
+			}
 		}
 	}
 	

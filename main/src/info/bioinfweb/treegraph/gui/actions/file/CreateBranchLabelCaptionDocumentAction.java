@@ -29,7 +29,7 @@ import info.bioinfweb.treegraph.document.TextLabel;
 import info.bioinfweb.treegraph.document.format.PieChartLabelCaptionContentType;
 import info.bioinfweb.treegraph.document.format.PieChartLabelFormats;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
-import info.bioinfweb.treegraph.document.tools.IDManager;
+import info.bioinfweb.treegraph.document.tools.NodeBranchDataColumnManager;
 import info.bioinfweb.treegraph.document.tools.TreeSerializer;
 import info.bioinfweb.treegraph.gui.actions.DocumentAction;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
@@ -81,7 +81,7 @@ public class CreateBranchLabelCaptionDocumentAction extends DocumentAction {
 		Node root = new Node(); 
 		root.setAfferentBranch(sourceBranch.clone());
 		d.getTree().setPaintStart(root);
-		String sourceDataID = IDManager.newID(SOURCE_DATA_COLUMN_ID, IDManager.getIDListFromSubtree(root));
+		String sourceDataID = NodeBranchDataColumnManager.newID(SOURCE_DATA_COLUMN_ID, NodeBranchDataColumnManager.getIDListFromSubtree(root));
 		root.getHiddenDataMap().put(sourceDataID, new TextElementData(1.0));
 		
 		Label[] labels = TreeSerializer.getElementsOnNode(root, Label.class);

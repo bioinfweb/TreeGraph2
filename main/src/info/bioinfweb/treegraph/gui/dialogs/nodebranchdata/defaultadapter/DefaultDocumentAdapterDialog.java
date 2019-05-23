@@ -29,6 +29,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -64,9 +65,10 @@ public class DefaultDocumentAdapterDialog extends EditDialog {
 	private JLabel combinedSupportColumnLabel = null;
 	private JComboBox<CombinedAdapterEntry> combinedSupportColumnComboBox = null;
 	private JButton combinedSupportColumnApplyButton = null;
-	private JButton autoSelectUndefinedButton;
-	private JPanel autoSelectSupportColumnsPanel;
-	private JButton autoSelectAllButton;
+	private JButton autoSelectUndefinedButton = null;
+	private JPanel autoSelectSupportColumnsPanel = null;
+	private JButton autoSelectAllButton = null;
+	private JComponent additionalHeadComponent = null;
 	
 	
 	public DefaultDocumentAdapterDialog(MainFrame mainFrame) {
@@ -86,6 +88,36 @@ public class DefaultDocumentAdapterDialog extends EditDialog {
 		return -1;
 	}
 	
+
+	public JComponent getAdditionalHeadComponent() {
+		return additionalHeadComponent;
+	}
+
+
+	public void setAdditionalHeadComponent(JComponent additionalHeadComponent) {
+		if (this.additionalHeadComponent != additionalHeadComponent) {
+			// Remove current component:
+			if (this.additionalHeadComponent != null) {
+				getJContentPane().remove(this.additionalHeadComponent);
+			}
+			
+			// Set component:
+			this.additionalHeadComponent = additionalHeadComponent;
+			
+			// Add new component:
+			if (additionalHeadComponent != null) {
+				GridBagConstraints addHeadingComponentGBC = new GridBagConstraints();
+				addHeadingComponentGBC.fill = GridBagConstraints.HORIZONTAL;
+				addHeadingComponentGBC.gridx = 0;
+				addHeadingComponentGBC.gridy = 0;
+				addHeadingComponentGBC.weightx = 1.0;
+				getJContentPane().add(additionalHeadComponent, addHeadingComponentGBC);
+			}
+			
+			validate();  //TODO Possibly use pack()?
+		}
+	}
+
 
 	private void stopCellEditing() {
 		if (getTable().getCellEditor() != null) {
@@ -176,14 +208,14 @@ public class DefaultDocumentAdapterDialog extends EditDialog {
 			GridBagConstraints headingPanelGBC = new GridBagConstraints();
 			headingPanelGBC.fill = GridBagConstraints.HORIZONTAL;
 			headingPanelGBC.gridx = 0;
-			headingPanelGBC.gridy = 0;
+			headingPanelGBC.gridy = 1;
 			headingPanelGBC.weighty = 0.0;
 			jContentPane.add(getHeadingPanel(), headingPanelGBC);
 			
 			GridBagConstraints scrollPaneGBC = new GridBagConstraints();
 			scrollPaneGBC.fill = GridBagConstraints.BOTH;
 			scrollPaneGBC.gridx = 0;
-			scrollPaneGBC.gridy = 1;
+			scrollPaneGBC.gridy = 2;
 			scrollPaneGBC.weightx = 1.0;
 			scrollPaneGBC.weighty = 1.0;
 			JScrollPane scrollPane = new JScrollPane();
@@ -193,7 +225,7 @@ public class DefaultDocumentAdapterDialog extends EditDialog {
 			GridBagConstraints buttonsPanelGBC = new GridBagConstraints();
 			buttonsPanelGBC.fill = GridBagConstraints.HORIZONTAL;
 			buttonsPanelGBC.gridx = 0;
-			buttonsPanelGBC.gridy = 2;
+			buttonsPanelGBC.gridy = 3;
 			buttonsPanelGBC.weightx = 1.0;
 			buttonsPanelGBC.weighty = 0.0;
 			getApplyButton().setVisible(false);

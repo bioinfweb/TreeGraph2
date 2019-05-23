@@ -22,7 +22,7 @@ package info.bioinfweb.treegraph.gui.dialogs.nodebranchdatainput;
 import info.bioinfweb.treegraph.document.TextLabel;
 import info.bioinfweb.treegraph.document.Tree;
 import info.bioinfweb.treegraph.document.nodebranchdata.*;
-import info.bioinfweb.treegraph.document.tools.IDManager;
+import info.bioinfweb.treegraph.document.tools.NodeBranchDataColumnManager;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -72,97 +72,31 @@ public class NodeBranchDataComboBoxModel extends AbstractListModel<NodeBranchDat
   }
   
   
-  private void countIDs(String id, Map<String, Integer> idMap) {
-  	if (idMap.get(id) != null) {
-  		idMap.put(id, idMap.get(id) + 1);
-		}
-		else {
-			idMap.put(id, 1);
-		}
-  }
-  
-  
   /**
    * Refreshes the selectable node data adapters.
    * 
-   * @param tree the tree to obtain the IDs from (If <code>null</code> no existing IDAdapters can be selected.)
+   * @param tree the tree to obtain the IDs from (If {@code null} is specified, no existing ID adapters can be selected.)
    * @param uniqueNamesSelectable determines whether the unique node names adapter can be selected
    * @param nodeNamesSelectable determines whether the node names adapter can be selected
    * @param branchLengthSelectable determines whether the branch length adapter can be
    *        selected
    * @param decimalOnly only adapters for node/branch data columns that contain at least one decimal
-   *        element are included (This flag overwrites <code>nodeNamesSelectable</code> and
-   *        <code>branchLengthSelectable</code>.)
-   * @param newIDSelectable If true an adaptor for a new user defined label ID is 
-   *        added. Note that the label ID has still to be set. These adapters are also added if 
-   *        <code>decimalOnly</code> is <code>true</code>.
-   * @param voidAdapterText the name to be displayed for instances of {@link VoidNodeBranchDataAdapter}
+   *        element are included (This parameter overwrites {@code nodeNamesSelectable} and
+   *        {@code branchLengthSelectable}.)
+   * @param newIDSelectable If true an adaptor for a new user defined ID elements is 
+   *        added. Note that the ID has still to be set. These adapters are also added if 
+   *        {@code decimalOnly} is {@code true}.
+   * @param voidAdapterText the name to be displayed for instances of {@link VoidNodeBranchDataAdapter} (No such adapter will 
+   *        be selectable, if {@code null} or {@code ""} is specified here.)
    */
   public void setAdapters(Tree tree, boolean uniqueNamesSelectable, boolean nodeNamesSelectable, 
   		boolean branchLengthSelectable,	boolean decimalOnly, boolean newIDSelectable, String voidAdapterText) {
 
   	clear();
   	
-  	if ((voidAdapterText != null) && !voidAdapterText.equals("")) {
-			adapters.add(new VoidNodeBranchDataAdapter(voidAdapterText));
-		}  	
-  	if (uniqueNamesSelectable) {
-  		adapters.add(UniqueNameAdapter.getSharedInstance());
-  	}
-  	if (nodeNamesSelectable) {
-  		adapters.add(NodeNameAdapter.getSharedInstance());
-  	}
-		if (branchLengthSelectable) {
-			adapters.add(BranchLengthAdapter.getSharedInstance());
-		}
-		// More adapters can be added here.
-		
-		if (tree != null) {
-			String[] labelIDs = IDManager.getLabelIDs(tree.getPaintStart(), TextLabel.class);
-			String[] hiddenBranchDataIDs = IDManager.getHiddenBranchDataIDs(tree.getPaintStart());
-			String[] hiddenNodeDataIDs = IDManager.getHiddenNodeDataIDs(tree.getPaintStart());
-			Map<String, Integer> idDuplication = new TreeMap<String, Integer>();
-			
-			for (int i = 0; i < labelIDs.length; i++) {
-				countIDs(labelIDs[i], idDuplication);
-			}			
-			for (int i = 0; i < hiddenBranchDataIDs.length; i++) {
-				countIDs(hiddenBranchDataIDs[i], idDuplication);
-			}			
-			for (int i = 0; i < hiddenNodeDataIDs.length; i++) {
-				countIDs(hiddenNodeDataIDs[i], idDuplication);
-			}
-			
-			for (String key : idDuplication.keySet()) {
-				if (idDuplication.get(key) > 1) {
-					adapters.add(new GeneralIDAdapter(key));
-				}
-			}
-			
-			for (int i = 0; i < labelIDs.length; i++) {				
-				adapters.add(new TextLabelAdapter(labelIDs[i],((TextLabel)IDManager.getFirstLabel(tree.getPaintStart(), TextLabel.class, labelIDs[i])).getFormats().getDecimalFormat()));
-			}			
-			for (int i = 0; i < hiddenBranchDataIDs.length; i++) {
-				adapters.add(new HiddenBranchDataAdapter(hiddenBranchDataIDs[i]));				
-			}			
-			for (int i = 0; i < hiddenNodeDataIDs.length; i++) {				
-				adapters.add(new HiddenNodeDataAdapter(hiddenNodeDataIDs[i]));							
-			}
-		}
-		
-		// Delete all adapters for columns that contain no decimal value
-		if (decimalOnly && (tree != null)) {
-			for (int i = getSize() - 1; i >= 0; i--) {
-				if (!tree.containsDecimal(adapters.get(i)) && !(adapters.get(i) instanceof VoidNodeBranchDataAdapter)) {
-					adapters.remove(i);
-				}
-			}
-		}
-		
-		if (newIDSelectable) {  // New adapters can all be numeric
-	  	addNewAdapters();
-		}
-		
+  	adapters.addAll(NodeBranchDataColumnManager.listAdapters(tree, uniqueNamesSelectable, nodeNamesSelectable, branchLengthSelectable, 
+  			decimalOnly, newIDSelectable, voidAdapterText));
+  	
 		if (getSize() > 0) {
 			fireIntervalAdded(this, 0, adapters.size() - 1);
 			setSelectedItem(adapters.get(0));
@@ -175,8 +109,8 @@ public class NodeBranchDataComboBoxModel extends AbstractListModel<NodeBranchDat
 	 * is only for special tasks and in general {@link #setAdapters(Tree, boolean, boolean, boolean, boolean, boolean, String)}
 	 * should be used.
 	 * 
-	 * @param index - the index of the new adapter
-	 * @param adapter - the new adapter instance.
+	 * @param index the index of the new adapter
+	 * @param adapter the new adapter instance.
 	 * 
 	 * @see #setAdapters(Tree)
 	 * @see #setAdapters(Tree, boolean, boolean, boolean, boolean, boolean, String)

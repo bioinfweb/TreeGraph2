@@ -37,7 +37,7 @@ import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.AbstractTextElementDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.UniqueNameAdapter;
-import info.bioinfweb.treegraph.document.tools.IDManager;
+import info.bioinfweb.treegraph.document.tools.NodeBranchDataColumnManager;
 import info.bioinfweb.treegraph.document.undo.edit.ChangeCellTypeEdit;
 import info.bioinfweb.treegraph.document.undo.edit.ChangeNumercalValueEdit;
 import info.bioinfweb.treegraph.document.undo.edit.ChangeTextualValueEdit;
@@ -121,18 +121,18 @@ public class DocumentTableModel extends AbstractTableModel implements DocumentLi
 		adapters.add(new NodeNameAdapter());
 		adapters.add(new BranchLengthAdapter());
 
-		List<String> ids = IDManager.getLabelIDListFromSubtree(root, TextLabel.class);
+		List<String> ids = NodeBranchDataColumnManager.getLabelIDListFromSubtree(root, TextLabel.class);
 		for (int i = 0; i < ids.size(); i++) {
 			adapters.add(new TextLabelAdapter(ids.get(i), 
-					((TextLabel)IDManager.getFirstLabel(root, TextLabel.class, ids.get(i))).getFormats().getDecimalFormat()));
+					((TextLabel)NodeBranchDataColumnManager.getFirstLabel(root, TextLabel.class, ids.get(i))).getFormats().getDecimalFormat()));
 		}
   	        
-		ids = IDManager.getHiddenNodeDataIDListFromSubtree(root);
+		ids = NodeBranchDataColumnManager.getHiddenNodeDataIDListFromSubtree(root);
 		for (int i = 0; i < ids.size(); i++) {
 			adapters.add(new HiddenNodeDataAdapter(ids.get(i)));
 		}
 		
-		ids = IDManager.getHiddenBranchDataIDListFromSubtree(root);
+		ids = NodeBranchDataColumnManager.getHiddenBranchDataIDListFromSubtree(root);
 		for (int i = 0; i < ids.size(); i++) {
 			adapters.add(new HiddenBranchDataAdapter(ids.get(i)));
 		}
