@@ -24,7 +24,9 @@ public interface PreferencesConstants {
 	public static final String FIRST_RUN_PREF_KEY = "isFirstRun";
 	public static final String LAST_VERSION_CHECK_PREF_KEY = "lastVersionCheck";
 	public static final String DO_VERSION_CHECK_PREF_KEY = "doVersionCheck";
+	public static final String DO_CHECK_SEL_SYNC_PREF_KEY = "doCheckAdaptersOnSelSync";
 
 	public static final boolean DO_VERSION_CHECK_DEFAULT_VALUE = true;
+	public static final boolean DO_CHECK_SEL_SYNC_DEFAULT_VALUE = true;
 	public static final long VERSION_CHECK_INTERVAL_DEFAULT_VALUE = 1000 * 60 * 60;  // 1 h
 }

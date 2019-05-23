@@ -66,5 +66,4 @@ public class SelectionSynchronizationMessagePanel extends JPanel {
 		showAgainCheckBoxGBC.gridy = 1;
 		add(showAgainCheckBox, showAgainCheckBoxGBC);
 	}
-	
 }

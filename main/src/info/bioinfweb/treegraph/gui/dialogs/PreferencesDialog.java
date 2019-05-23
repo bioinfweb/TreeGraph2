@@ -44,6 +44,7 @@ public class PreferencesDialog extends OkCancelApplyWikiHelpDialog implements Pr
 	
 	private JPanel preferencesPanel;
 	private JCheckBox checkForUpdatesCB;
+	private JCheckBox checkSelSyncCB;
 
 	
 	/**
@@ -86,10 +87,17 @@ public class PreferencesDialog extends OkCancelApplyWikiHelpDialog implements Pr
 			preferencesPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 			
 			GridBagConstraints checkForUpdatesGBC = new GridBagConstraints();
+			checkForUpdatesGBC.anchor = GridBagConstraints.WEST;
 			checkForUpdatesGBC.insets = new Insets(0, 0, 5, 0);
 			checkForUpdatesGBC.gridx = 0;
 			checkForUpdatesGBC.gridy = 0;
 			preferencesPanel.add(getCheckForUpdatesCB(), checkForUpdatesGBC);
+			
+			GridBagConstraints checkSelSyncGBC = new GridBagConstraints();
+			checkSelSyncGBC.anchor = GridBagConstraints.WEST;
+			checkSelSyncGBC.gridx = 0;
+			checkSelSyncGBC.gridy = 1;
+			preferencesPanel.add(getCheckSelSyncCB(), checkSelSyncGBC);
 		}
 		return preferencesPanel;
 	}
@@ -103,10 +111,19 @@ public class PreferencesDialog extends OkCancelApplyWikiHelpDialog implements Pr
 	}
 
 
+	private JCheckBox getCheckSelSyncCB() {
+		if (checkSelSyncCB == null) {
+			checkSelSyncCB = new JCheckBox("Check for missing default support columns when activating tree selection synchronization");
+		}
+		return checkSelSyncCB;
+	}
+
+
 	@Override
 	public boolean execute() {
 		Preferences preferences = Main.getInstance().getPreferences();
 		getCheckForUpdatesCB().setSelected(preferences.getBoolean(DO_VERSION_CHECK_PREF_KEY, DO_VERSION_CHECK_DEFAULT_VALUE));
+		getCheckSelSyncCB().setSelected(preferences.getBoolean(DO_CHECK_SEL_SYNC_PREF_KEY, DO_CHECK_SEL_SYNC_DEFAULT_VALUE));
 		
 		return super.execute();
 	}
@@ -116,6 +133,7 @@ public class PreferencesDialog extends OkCancelApplyWikiHelpDialog implements Pr
 	protected boolean apply() {
 		Preferences preferences = Main.getInstance().getPreferences();
 		preferences.putBoolean(DO_VERSION_CHECK_PREF_KEY, getCheckForUpdatesCB().isSelected());
+		preferences.putBoolean(DO_CHECK_SEL_SYNC_PREF_KEY, getCheckSelSyncCB().isSelected());
 		
 		return true;
 	}

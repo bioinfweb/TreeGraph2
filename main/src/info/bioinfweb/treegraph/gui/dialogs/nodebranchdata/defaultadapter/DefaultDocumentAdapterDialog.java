@@ -208,7 +208,7 @@ public class DefaultDocumentAdapterDialog extends EditDialog {
 			GridBagConstraints headingPanelGBC = new GridBagConstraints();
 			headingPanelGBC.fill = GridBagConstraints.HORIZONTAL;
 			headingPanelGBC.gridx = 0;
-			headingPanelGBC.gridy = 1;
+			headingPanelGBC.gridy = 1;  // Starts with 1 since the additional heading panel would be in 0, if present.
 			headingPanelGBC.weighty = 0.0;
 			jContentPane.add(getHeadingPanel(), headingPanelGBC);
 			
