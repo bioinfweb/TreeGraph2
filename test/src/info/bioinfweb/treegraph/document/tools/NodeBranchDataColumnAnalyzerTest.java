@@ -27,6 +27,7 @@ import info.bioinfweb.treegraph.document.io.ReadWriteFactory;
 import info.bioinfweb.treegraph.document.io.ReadWriteFormat;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.VoidNodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.tools.NodeBranchDataColumnAnalyzer.ColumnStatus;
 
 import static org.junit.Assert.* ;
@@ -81,6 +82,7 @@ public class NodeBranchDataColumnAnalyzerTest {
 	@Test
 	public void test_sortColumnListByStatus() throws Exception {
 		List<NodeBranchDataAdapter> list = new ArrayList<NodeBranchDataAdapter>();
+		list.add(new VoidNodeBranchDataAdapter("Void adapter"));
 		list.add(new TextLabelAdapter("ALL_NUMERIC_OR_PARSABLE_numericOnLeaf"));
 		list.add(new TextLabelAdapter("ALL_NUMERIC_INTERNAL_IN_RANGE"));
 		list.add(new TextLabelAdapter("ALL_NUMERIC_OR_PARSABLE_INTERNAL"));
@@ -99,5 +101,7 @@ public class NodeBranchDataColumnAnalyzerTest {
 		assertAdapter(iterator.next(), "ALL_NUMERIC_OR_PARSABLE_numericOnLeaf");
 		assertAdapter(iterator.next(), "SOME_NUMERIC_OR_PARSABLE");
 		assertAdapter(iterator.next(), "NO_NUMERIC_OR_PARSABLE");
+		assertTrue(iterator.next() instanceof VoidNodeBranchDataAdapter);
+		assertFalse(iterator.hasNext());
 	}
 }
