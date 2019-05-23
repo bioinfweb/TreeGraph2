@@ -22,6 +22,7 @@ package info.bioinfweb.treegraph.document;
 import info.bioinfweb.treegraph.document.format.DistanceDimension;
 import info.bioinfweb.treegraph.document.format.GlobalFormats;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
+import info.bioinfweb.treegraph.document.tools.NodeBranchDataColumnManager;
 import info.bioinfweb.treegraph.document.tools.TreeSerializer;
 import info.bioinfweb.treegraph.document.undo.CompareTextElementDataParameters;
 import info.bioinfweb.treegraph.graphics.positionpaint.PositionPaintType;
@@ -432,28 +433,6 @@ public class Tree {
 	
 	
 	/**
-	 * Tests if the subtree under <code>root</code> contains a node which would be 
-	 * able to return a decimal value to the given adapter.
-	 * 
-	 * @param adapter - the adapter to obtain the decimal value
-	 * @param root - the root of the subtree to be checked
-	 * @return <code>true</code> if at least one decimal value could be returned 
-	 */
-	public static boolean containsDecimal(NodeBranchDataAdapter adapter, Node root) {
-		if (adapter.isDecimal(root)) {
-			return true;
-		}
-		Iterator<Node> iterator = root.getChildren().iterator();
-		while (iterator.hasNext()) {
-			if (containsDecimal(adapter, iterator.next())) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	
-	/**
 	 * Tests if the tree contains a node which would be able to return a decimal value
 	 * to the given adapter.
 	 * 
@@ -465,7 +444,7 @@ public class Tree {
 			return false;
 		}
 		else {
-			return containsDecimal(adapter, getPaintStart());
+			return NodeBranchDataColumnManager.containsDecimal(adapter, getPaintStart());
 		}
 	}
 }

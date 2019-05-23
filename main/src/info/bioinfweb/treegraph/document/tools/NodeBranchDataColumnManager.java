@@ -574,6 +574,28 @@ public class NodeBranchDataColumnManager {
 	}
   
   
+	/**
+	 * Tests if the subtree under {@code root} contains a node with a decimal value in the columns
+	 * specified by {@code adapter}.
+	 * 
+	 * @param adapter the adapter to obtain the decimal value
+	 * @param root the root of the subtree to be checked
+	 * @return {@code true} if at least one decimal value could be returned 
+	 */
+	public static boolean containsDecimal(NodeBranchDataAdapter adapter, Node root) {
+		if (adapter.isDecimal(root)) {
+			return true;
+		}
+		Iterator<Node> iterator = root.getChildren().iterator();
+		while (iterator.hasNext()) {
+			if (containsDecimal(adapter, iterator.next())) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
   private static void countIDs(String id, Map<String, Integer> idMap) {
   	if (idMap.get(id) != null) {
   		idMap.put(id, idMap.get(id) + 1);
