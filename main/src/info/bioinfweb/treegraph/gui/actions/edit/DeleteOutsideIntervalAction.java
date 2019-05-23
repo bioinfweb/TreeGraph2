@@ -26,7 +26,6 @@ import javax.swing.Action;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.gui.actions.EditDialogAction;
-import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdata.IntervalDialog;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
@@ -37,7 +36,7 @@ import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
  * @author Ben St&ouml;ver
  * @since 2.0.24
  */
-public class DeleteOutsideIntervalAction extends EditDialogAction {
+public class DeleteOutsideIntervalAction extends EditDialogAction<IntervalDialog> {
 	public DeleteOutsideIntervalAction(MainFrame mainFrame) {
 		super(mainFrame);
 		putValue(Action.NAME, "Delete values outside interval..."); 
@@ -46,7 +45,7 @@ public class DeleteOutsideIntervalAction extends EditDialogAction {
 
 	
 	@Override
-	public EditDialog createDialog() {
+	protected IntervalDialog createDialog() {
 		return new IntervalDialog(getMainFrame());
 	}
 

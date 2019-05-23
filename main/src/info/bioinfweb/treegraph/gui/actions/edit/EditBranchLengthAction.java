@@ -20,6 +20,7 @@ package info.bioinfweb.treegraph.gui.actions.edit;
 
 
 import java.awt.event.KeyEvent;
+
 import javax.swing.Action;
 import javax.swing.KeyStroke;
 
@@ -27,14 +28,13 @@ import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.gui.actions.EditDialogAction;
-import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
 import info.bioinfweb.treegraph.gui.dialogs.editelement.EditBranchLengthDialog;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 
 
 
-public class EditBranchLengthAction extends EditDialogAction {
+public class EditBranchLengthAction extends EditDialogAction<EditBranchLengthDialog> {
 	public EditBranchLengthAction (MainFrame mainFrame) {
 		super(mainFrame);
 	  
@@ -46,7 +46,7 @@ public class EditBranchLengthAction extends EditDialogAction {
 
 	
 	@Override
-	public EditDialog createDialog() {
+	protected EditBranchLengthDialog createDialog() {
 		return new EditBranchLengthDialog(getMainFrame());
 	}
 

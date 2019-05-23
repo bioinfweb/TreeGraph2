@@ -27,14 +27,13 @@ import javax.swing.KeyStroke;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.gui.actions.EditDialogAction;
-import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
 import info.bioinfweb.treegraph.gui.dialogs.io.exporttree.ExportToTreeDialog;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 
 
 
-public class ExportToTreeFormatAction extends EditDialogAction {
+public class ExportToTreeFormatAction extends EditDialogAction<ExportToTreeDialog> {
 	public ExportToTreeFormatAction(MainFrame mainFrame) {
 		super(mainFrame);
 		putValue(Action.NAME, "Export to tree format..."); 
@@ -45,7 +44,7 @@ public class ExportToTreeFormatAction extends EditDialogAction {
 
 	
 	@Override
-	public EditDialog createDialog() {
+	protected ExportToTreeDialog createDialog() {
 		return new ExportToTreeDialog(getMainFrame());
 	}
 

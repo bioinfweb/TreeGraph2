@@ -32,8 +32,8 @@ import info.bioinfweb.treegraph.gui.treeframe.TreeInternalFrame;
  * 
  * @author Ben St&ouml;ver
  */
-public abstract class EditDialogAction extends DocumentAction {
-  private EditDialog dialog = null;
+public abstract class EditDialogAction<D extends EditDialog> extends DocumentAction {
+  private D dialog = null;
   
   
   public EditDialogAction(MainFrame mainFrame) {
@@ -53,10 +53,10 @@ public abstract class EditDialogAction extends DocumentAction {
 	}
 	
 	
-	public abstract EditDialog createDialog();
+	protected abstract D createDialog();
 	
 
-	public EditDialog getDialog() {
+	public D getDialog() {
 		if (dialog == null) {
 			dialog = createDialog();
 		}

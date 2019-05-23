@@ -20,20 +20,20 @@ package info.bioinfweb.treegraph.gui.actions.format;
 
 
 import java.awt.event.KeyEvent;
+
 import javax.swing.Action;
 import javax.swing.KeyStroke;
 
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.gui.actions.EditDialogAction;
-import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
 import info.bioinfweb.treegraph.gui.dialogs.elementformats.ElementFormatsDialog;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 
 
 
-public class EditElementFormatsAction extends EditDialogAction {
+public class EditElementFormatsAction extends EditDialogAction<ElementFormatsDialog> {
   public EditElementFormatsAction(MainFrame mainFrame) {
 		super(mainFrame);
 	  putValue(Action.NAME, "Element formats..."); 
@@ -43,7 +43,7 @@ public class EditElementFormatsAction extends EditDialogAction {
 
   
   @Override
-	public EditDialog createDialog() {
+	protected ElementFormatsDialog createDialog() {
 		return new ElementFormatsDialog(getMainFrame());
 	}
 

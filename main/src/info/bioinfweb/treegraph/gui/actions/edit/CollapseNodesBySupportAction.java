@@ -28,7 +28,6 @@ import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.edit.CollapseNodesBySupportEdit;
 import info.bioinfweb.treegraph.gui.actions.EditDialogAction;
 import info.bioinfweb.treegraph.gui.dialogs.CollapseNodesBySupportDialog;
-import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 
@@ -40,7 +39,7 @@ import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
  * @author Ben St&ouml;ver
  * @since 2.2.0
  */
-public class CollapseNodesBySupportAction extends EditDialogAction {
+public class CollapseNodesBySupportAction extends EditDialogAction<CollapseNodesBySupportDialog> {
 	public CollapseNodesBySupportAction (MainFrame mainFrame) {
 		super(mainFrame);
 		putValue(Action.NAME, "Collapse nodes by support..."); 
@@ -49,7 +48,7 @@ public class CollapseNodesBySupportAction extends EditDialogAction {
 
 
 	@Override
-  public EditDialog createDialog() {
+  protected CollapseNodesBySupportDialog createDialog() {
 	  return new CollapseNodesBySupportDialog(getMainFrame());
   }
 

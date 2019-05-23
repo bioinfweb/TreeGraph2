@@ -30,14 +30,13 @@ import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Label;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.gui.actions.EditDialogAction;
-import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
 import info.bioinfweb.treegraph.gui.dialogs.editelement.ChangeIDDialog;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 
 
 
-public class ChangeLabelIDAction extends EditDialogAction {
+public class ChangeLabelIDAction extends EditDialogAction<ChangeIDDialog> {
 	public ChangeLabelIDAction(MainFrame mainFrame) {
 		super(mainFrame);
 		putValue(Action.NAME, "Change label ID..."); 
@@ -48,7 +47,7 @@ public class ChangeLabelIDAction extends EditDialogAction {
 	
 
 	@Override
-	public EditDialog createDialog() {
+	protected ChangeIDDialog createDialog() {
 		return new ChangeIDDialog(getMainFrame());
 	}
 

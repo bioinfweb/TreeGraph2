@@ -19,23 +19,22 @@
 package info.bioinfweb.treegraph.gui.actions.edit;
 
 
-import info.bioinfweb.treegraph.document.Document;
-import info.bioinfweb.treegraph.document.TextElement;
-import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
-import info.bioinfweb.treegraph.gui.actions.EditDialogAction;
-import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
-import info.bioinfweb.treegraph.gui.dialogs.editelement.EditTextElementDialog;
-import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
-import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
-
 import java.awt.event.KeyEvent;
 
 import javax.swing.Action;
 import javax.swing.KeyStroke;
 
+import info.bioinfweb.treegraph.document.Document;
+import info.bioinfweb.treegraph.document.TextElement;
+import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
+import info.bioinfweb.treegraph.gui.actions.EditDialogAction;
+import info.bioinfweb.treegraph.gui.dialogs.editelement.EditTextElementDialog;
+import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
+import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 
 
-public class EditTextElementAction extends EditDialogAction {
+
+public class EditTextElementAction extends EditDialogAction<EditTextElementDialog> {
 	public EditTextElementAction (MainFrame mainFrame) {
 		super(mainFrame);
 		putValue(Action.NAME, "Edit text..."); 
@@ -45,7 +44,7 @@ public class EditTextElementAction extends EditDialogAction {
 
 	
 	@Override
-	public EditDialog createDialog() {
+	protected EditTextElementDialog createDialog() {
 		return new EditTextElementDialog(getMainFrame());
 	}
 

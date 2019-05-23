@@ -27,7 +27,6 @@ import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.undo.edit.SortLeavesEdit;
 import info.bioinfweb.treegraph.gui.actions.EditDialogAction;
-import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
 import info.bioinfweb.treegraph.gui.dialogs.SortLeavesDialog;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
@@ -41,7 +40,7 @@ import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
  * @since 2.2.0
  * @see SortLeavesEdit
  */
-public class SortLeavesAction extends EditDialogAction {
+public class SortLeavesAction extends EditDialogAction<SortLeavesDialog> {
 	public SortLeavesAction(MainFrame mainFrame) {
 	  super(mainFrame);
 		putValue(Action.NAME, "Sort terminal nodes..."); 
@@ -50,7 +49,7 @@ public class SortLeavesAction extends EditDialogAction {
 
 	
 	@Override
-  public EditDialog createDialog() {
+  protected SortLeavesDialog createDialog() {
 	  return new SortLeavesDialog(getMainFrame());
   }
 

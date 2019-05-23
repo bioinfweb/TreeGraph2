@@ -30,7 +30,7 @@ import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 
 
 
-public class DefaultDocumentAdapterAction extends EditDialogAction {
+public class DefaultDocumentAdapterAction extends EditDialogAction<DefaultDocumentAdapterDialog> {
 	public DefaultDocumentAdapterAction(MainFrame mainFrame) {
 		super(mainFrame);
 		putValue(Action.NAME, "Set default node/branch data columns...");
@@ -38,7 +38,7 @@ public class DefaultDocumentAdapterAction extends EditDialogAction {
 
 	
 	@Override
-	public DefaultDocumentAdapterDialog createDialog() {
+	protected DefaultDocumentAdapterDialog createDialog() {
 		return new DefaultDocumentAdapterDialog(getMainFrame());
 	}
 

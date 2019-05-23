@@ -19,25 +19,22 @@
 package info.bioinfweb.treegraph.gui.actions.format;
 
 
+import java.awt.event.KeyEvent;
+
+import javax.swing.Action;
+
 import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.gui.actions.EditDialogAction;
-import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
 import info.bioinfweb.treegraph.gui.dialogs.specialformats.ScaleDistanceValuesDialog;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
-
-import javax.swing.Action;
-import javax.swing.KeyStroke;
 
 
-
-public class ScaleDistanceValuesAction extends EditDialogAction {
+public class ScaleDistanceValuesAction extends EditDialogAction<ScaleDistanceValuesDialog> {
 	public ScaleDistanceValuesAction(MainFrame mainFrame) {
 		super(mainFrame);
 	  putValue(Action.NAME, "Scale distance values..."); 
@@ -46,7 +43,7 @@ public class ScaleDistanceValuesAction extends EditDialogAction {
 
 	
 	@Override
-	public EditDialog createDialog() {
+	protected ScaleDistanceValuesDialog createDialog() {
 		return new ScaleDistanceValuesDialog(getMainFrame());
 	}
 

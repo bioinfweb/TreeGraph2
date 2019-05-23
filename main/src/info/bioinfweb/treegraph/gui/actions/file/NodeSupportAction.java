@@ -19,17 +19,16 @@
 package info.bioinfweb.treegraph.gui.actions.file;
 
 
-import info.bioinfweb.treegraph.document.Document;
-import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
-import info.bioinfweb.treegraph.gui.actions.EditDialogAction;
-import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
-import info.bioinfweb.treegraph.gui.dialogs.io.NodeSupportDialog;
-import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
-import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
-
 import java.awt.event.KeyEvent;
 
 import javax.swing.Action;
+
+import info.bioinfweb.treegraph.document.Document;
+import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
+import info.bioinfweb.treegraph.gui.actions.EditDialogAction;
+import info.bioinfweb.treegraph.gui.dialogs.io.NodeSupportDialog;
+import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
+import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 
 
 
@@ -38,7 +37,7 @@ import javax.swing.Action;
  * 
  * @author Ben St&ouml;ver
  */
-public class NodeSupportAction extends EditDialogAction {
+public class NodeSupportAction extends EditDialogAction<NodeSupportDialog> {
 	public NodeSupportAction(MainFrame mainFrame) {
 		super(mainFrame);
 		putValue(Action.NAME, "Determine node frequency ..."); 
@@ -49,7 +48,7 @@ public class NodeSupportAction extends EditDialogAction {
 
 	
 	@Override
-	public EditDialog createDialog() {
+	protected NodeSupportDialog createDialog() {
 		return new NodeSupportDialog(getMainFrame());
 	}
 

@@ -26,14 +26,13 @@ import javax.swing.Action;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.gui.actions.EditDialogAction;
-import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
 import info.bioinfweb.treegraph.gui.dialogs.ScaleBranchLengthsDialog;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 
 
 
-public class ScaleBranchLengthsAction extends EditDialogAction {
+public class ScaleBranchLengthsAction extends EditDialogAction<ScaleBranchLengthsDialog> {
 	public ScaleBranchLengthsAction(MainFrame mainFrame) {
 		super(mainFrame);
 	  putValue(Action.NAME, "Scale branch lengths..."); 
@@ -42,7 +41,7 @@ public class ScaleBranchLengthsAction extends EditDialogAction {
 
 	
 	@Override
-	public EditDialog createDialog() {
+	protected ScaleBranchLengthsDialog createDialog() {
 		return new ScaleBranchLengthsDialog(getMainFrame());
 	}
 

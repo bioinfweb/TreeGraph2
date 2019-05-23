@@ -34,7 +34,7 @@ import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 
 
 
-public class ColorsByNodeBranchDataAction extends EditDialogAction {
+public class ColorsByNodeBranchDataAction extends EditDialogAction<ColorsByNodeBranchDataDialog> {
 	public ColorsByNodeBranchDataAction(MainFrame mainFrame) {
 		super(mainFrame);
 	  putValue(Action.NAME, "Set colors by node/branch data..."); 
@@ -43,7 +43,7 @@ public class ColorsByNodeBranchDataAction extends EditDialogAction {
 
 	
 	@Override
-	public EditDialog createDialog() {
+	protected ColorsByNodeBranchDataDialog createDialog() {
 		return new ColorsByNodeBranchDataDialog(getMainFrame());
 	}
 

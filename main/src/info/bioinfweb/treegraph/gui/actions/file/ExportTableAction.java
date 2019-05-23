@@ -28,7 +28,6 @@ import javax.swing.KeyStroke;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.gui.actions.EditDialogAction;
-import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
 import info.bioinfweb.treegraph.gui.dialogs.io.imexporttable.ExportTableDialog;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
@@ -39,7 +38,7 @@ import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
  * @author Ben St&ouml;ver
  * @since 2.0.24
  */
-public class ExportTableAction extends EditDialogAction {
+public class ExportTableAction extends EditDialogAction<ExportTableDialog> {
 	public ExportTableAction(MainFrame mainFrame) {
 		super(mainFrame);
 		putValue(Action.NAME, "Export node/branch data as table..."); 
@@ -50,7 +49,7 @@ public class ExportTableAction extends EditDialogAction {
 
 	
 	@Override
-	public EditDialog createDialog() {
+	protected ExportTableDialog createDialog() {
 		return new ExportTableDialog(getMainFrame());
 	}
 

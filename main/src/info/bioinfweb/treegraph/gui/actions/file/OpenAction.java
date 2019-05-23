@@ -29,14 +29,13 @@ import javax.swing.KeyStroke;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.gui.actions.EditDialogAction;
-import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
 import info.bioinfweb.treegraph.gui.dialogs.io.OpenDialog;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 
 
 
-public class OpenAction extends EditDialogAction {
+public class OpenAction extends EditDialogAction<OpenDialog> {
 	public OpenAction(MainFrame mainFrame) {
 		super(mainFrame);
 
@@ -50,7 +49,7 @@ public class OpenAction extends EditDialogAction {
 	
 	
 	@Override
-	public EditDialog createDialog() {
+	protected OpenDialog createDialog() {
 		return new OpenDialog(getMainFrame());
 	}
 

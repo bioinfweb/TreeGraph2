@@ -19,21 +19,17 @@
 package info.bioinfweb.treegraph.gui.actions.edit;
 
 
+import java.awt.event.KeyEvent;
+
+import javax.swing.Action;
+
 import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.gui.actions.EditDialogAction;
-import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
 import info.bioinfweb.treegraph.gui.dialogs.editelement.NewPieChartLabelsDialog;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
-
-import java.awt.Toolkit;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
-
-import javax.swing.Action;
-import javax.swing.KeyStroke;
 
 
 
@@ -41,7 +37,7 @@ import javax.swing.KeyStroke;
  * @author Ben St&ouml;ver
  * @since 2.0.43
  */
-public class NewPieChartLabelsAction extends EditDialogAction {
+public class NewPieChartLabelsAction extends EditDialogAction<NewPieChartLabelsDialog> {
 	public NewPieChartLabelsAction(MainFrame mainFrame) {
 		super(mainFrame);
 		putValue(Action.NAME, "New pie chart label(s)..."); 
@@ -53,7 +49,7 @@ public class NewPieChartLabelsAction extends EditDialogAction {
 	
 	
 	@Override
-	public EditDialog createDialog() {
+	protected NewPieChartLabelsDialog createDialog() {
 		return new NewPieChartLabelsDialog(getMainFrame());
 	}
 

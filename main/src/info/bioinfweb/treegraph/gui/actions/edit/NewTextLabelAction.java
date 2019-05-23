@@ -30,14 +30,13 @@ import info.bioinfweb.treegraph.document.Branch;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.gui.actions.EditDialogAction;
-import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
 import info.bioinfweb.treegraph.gui.dialogs.editelement.NewTextLabelDialog;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 
 
 
-public class NewTextLabelAction extends EditDialogAction {
+public class NewTextLabelAction extends EditDialogAction<NewTextLabelDialog> {
 	public NewTextLabelAction(MainFrame mainFrame) {
 		super(mainFrame);
 		putValue(Action.NAME, "New text label..."); 
@@ -49,7 +48,7 @@ public class NewTextLabelAction extends EditDialogAction {
 	
 	
 	@Override
-	public EditDialog createDialog() {
+	protected NewTextLabelDialog createDialog() {
 		return new NewTextLabelDialog(getMainFrame());
 	}
 

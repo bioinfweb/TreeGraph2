@@ -35,7 +35,7 @@ import javax.swing.KeyStroke;
 
 
 
-public class EditGlobalFormatsAction extends EditDialogAction {
+public class EditGlobalFormatsAction extends EditDialogAction<GlobalFormatsDialog> {
 	public EditGlobalFormatsAction(MainFrame mainFrame) {
 		super(mainFrame);
 		putValue(Action.NAME, "Document formats...");
@@ -47,7 +47,7 @@ public class EditGlobalFormatsAction extends EditDialogAction {
   
   
 	@Override
-	public EditDialog createDialog() {
+	protected GlobalFormatsDialog createDialog() {
 		return new GlobalFormatsDialog(getMainFrame());
 	}
 

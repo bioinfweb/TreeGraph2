@@ -28,7 +28,6 @@ import javax.swing.KeyStroke;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.gui.actions.EditDialogAction;
-import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
 import info.bioinfweb.treegraph.gui.dialogs.ReplaceInNodeDataDialog;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
@@ -40,7 +39,7 @@ import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
  *  
  * @author Ben St&ouml;ver
  */
-public class ReplaceInNodeDataAction extends EditDialogAction {
+public class ReplaceInNodeDataAction extends EditDialogAction<ReplaceInNodeDataDialog> {
 	public static final String TEXT = "Replace text in node/branch data...";
 	
 	
@@ -55,7 +54,7 @@ public class ReplaceInNodeDataAction extends EditDialogAction {
 
 	
 	@Override
-	public EditDialog createDialog() {
+	protected ReplaceInNodeDataDialog createDialog() {
 		return new ReplaceInNodeDataDialog(getMainFrame());
 	}
 

@@ -27,7 +27,6 @@ import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.tools.NodeBranchDataColumnManager;
 import info.bioinfweb.treegraph.gui.actions.EditDialogAction;
-import info.bioinfweb.treegraph.gui.dialogs.EditDialog;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdata.RenameIDDialog;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
@@ -38,7 +37,7 @@ import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
  * @author Ben St&ouml;ver
  * @since 2.0.24
  */
-public class RenameDataIDAction extends EditDialogAction {
+public class RenameDataIDAction extends EditDialogAction<RenameIDDialog> {
 	public RenameDataIDAction(MainFrame mainFrame) {
 		super(mainFrame);
 		putValue(Action.NAME, "Rename data ID..."); 
@@ -48,7 +47,7 @@ public class RenameDataIDAction extends EditDialogAction {
 
 	
 	@Override
-	public EditDialog createDialog() {
+	protected RenameIDDialog createDialog() {
 		return new RenameIDDialog(getMainFrame());
 	}
 
