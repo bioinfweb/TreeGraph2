@@ -68,6 +68,7 @@ public class PreferencesDialog extends OkCancelApplyWikiHelpDialog implements Pr
 		restoreDefaultsButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						getCheckForUpdatesCB().setSelected(DO_VERSION_CHECK_DEFAULT_VALUE);
+						getCheckSelSyncCB().setSelected(DO_CHECK_SEL_SYNC_DEFAULT_VALUE);
 					}
 				});
 		

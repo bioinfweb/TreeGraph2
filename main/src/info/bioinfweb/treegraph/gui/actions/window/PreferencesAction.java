@@ -26,7 +26,6 @@ import javax.swing.Action;
 
 import info.bioinfweb.commons.swing.ExtendedAbstractAction;
 import info.bioinfweb.treegraph.gui.dialogs.PreferencesDialog;
-import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 
 
 

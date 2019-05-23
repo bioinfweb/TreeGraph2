@@ -24,23 +24,21 @@ import java.util.Iterator;
 
 import javax.swing.Action;
 
+import info.bioinfweb.treegraph.Main;
+import info.bioinfweb.treegraph.PreferencesConstants;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.tools.NodeBranchDataColumnAnalyzer;
 import info.bioinfweb.treegraph.document.tools.NodeBranchDataColumnManager;
-import info.bioinfweb.treegraph.gui.actions.DocumentAction;
-import info.bioinfweb.treegraph.gui.actions.edit.DefaultDocumentAdapterAction;
-import info.bioinfweb.treegraph.gui.dialogs.nodebranchdata.defaultadapter.SelectionSynchronizationMessagePanel;
+import info.bioinfweb.treegraph.gui.actions.EditDialogAction;
+import info.bioinfweb.treegraph.gui.dialogs.nodebranchdata.defaultadapter.SelSyncDefaultDocumentAdapterDialog;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeInternalFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 
 
 
-public class TreeSelectionSynchronizeToggleAction extends DocumentAction {
-	private SelectionSynchronizationMessagePanel messagePanel = new SelectionSynchronizationMessagePanel();
-	
-	
+public class TreeSelectionSynchronizeToggleAction extends EditDialogAction<SelSyncDefaultDocumentAdapterDialog> implements PreferencesConstants {
 	public TreeSelectionSynchronizeToggleAction(MainFrame mainFrame) {
 		super(mainFrame);
 		putValue(Action.NAME, "Synchronize tree selection");
@@ -55,30 +53,30 @@ public class TreeSelectionSynchronizeToggleAction extends DocumentAction {
 	}
 	
 	
-	private void checkDefaultColumns(ActionEvent e) {
-		boolean betterColumnFound = false;
-		Iterator<TreeInternalFrame> iterator = MainFrame.getInstance().treeFrameIterator();
-		while (iterator.hasNext() && !betterColumnFound) {
-			Document document = iterator.next().getDocument();
-			if (NodeBranchDataColumnAnalyzer.ColumnStatus.NO_NUMERIC_OR_PARSABLE.equals(
-					NodeBranchDataColumnAnalyzer.analyzeColumnStatus(document.getTree(), document.getDefaultSupportAdapter()))) {
-				
-				betterColumnFound = betterColumnFound || 
-						!NodeBranchDataColumnManager.listAdapters(document.getTree(), false, true, true, true, false, null).isEmpty();  // That means that at least one other column contains at least one decimal value.
-						//TODO This does not find columns with parsable values. Should these also be considered and analyzeColumnStatus() be used instead here?
+	@Override
+	protected SelSyncDefaultDocumentAdapterDialog createDialog() {
+		return new SelSyncDefaultDocumentAdapterDialog(getMainFrame());
+	}
+
+
+	private void checkDefaultColumns(ActionEvent e, TreeInternalFrame frame) {
+		if (Main.getInstance().getPreferences().getBoolean(DO_CHECK_SEL_SYNC_PREF_KEY, true)) {
+			boolean betterColumnFound = false;
+			Iterator<TreeInternalFrame> iterator = MainFrame.getInstance().treeFrameIterator();
+			while (iterator.hasNext() && !betterColumnFound) {
+				Document document = iterator.next().getDocument();
+				if (NodeBranchDataColumnAnalyzer.ColumnStatus.NO_NUMERIC_OR_PARSABLE.equals(
+						NodeBranchDataColumnAnalyzer.analyzeColumnStatus(document.getTree(), document.getDefaultSupportAdapter()))) {
+					
+					betterColumnFound = betterColumnFound || 
+							!NodeBranchDataColumnManager.listAdapters(document.getTree(), false, true, true, true, false, null).isEmpty();  // That means that at least one other column contains at least one decimal value.
+							//TODO This does not find columns with parsable values. Should these also be considered and analyzeColumnStatus() be used instead here?
+				}
 			}
-		}
-		
-		if (betterColumnFound) {
-			DefaultDocumentAdapterAction action = (DefaultDocumentAdapterAction)MainFrame.getInstance().getActionManagement().get("edit.defaultDocumentAdapters");
-			action.getDialog().setAdditionalHeadComponent(messagePanel);
-			try {
-				action.actionPerformed(e);
+			
+			if (betterColumnFound) {
+				super.onActionPerformed(e, frame);  // Displays the dialog. Note that canceling the dialog will not apply changes made to the default adapters but still activate the selection synchronization.
 			}
-			finally {
-				action.getDialog().setAdditionalHeadComponent(null);
-			}
-			//TODO An inherited class with the message panel could alternatively be used. setAdditionalHeadComponent() would then be obsolete. The dialog would be in memory twice, though.
 		}
 	}
 	
@@ -87,7 +85,7 @@ public class TreeSelectionSynchronizeToggleAction extends DocumentAction {
 	protected void onActionPerformed(ActionEvent e, TreeInternalFrame frame) {
 		Iterator<TreeInternalFrame> treeFrameIterator = getMainFrame().treeFrameIterator();
 		if (isActive()) {  // Reset TreeSelectionSynchronizer and add listeners:
-			checkDefaultColumns(e);
+			checkDefaultColumns(e, frame);
 			
 			getMainFrame().getTreeSelectionSynchronizer().reset();
 			getMainFrame().addChildWindowListener(getMainFrame().getTreeSelectionSynchronizer());

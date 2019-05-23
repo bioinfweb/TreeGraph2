@@ -755,7 +755,7 @@ main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/defaultadapter/Comb
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/defaultadapter/DefaultDocumentAdapterDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/defaultadapter/DefaultDocumentAdaptersTableModel.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/defaultadapter/NodeBranchDataAdapterCellEditor.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/defaultadapter/SelectionSynchronizationMessagePanel.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdata/defaultadapter/SelSyncDefaultDocumentAdapterDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdatainput/NewNodeBranchDataInput.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdatainput/NodeBranchDataComboBoxModel.java -text
 main/src/info/bioinfweb/treegraph/gui/dialogs/nodebranchdatainput/NodeBranchDataInput.java -text

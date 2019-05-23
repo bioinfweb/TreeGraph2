@@ -89,36 +89,6 @@ public class DefaultDocumentAdapterDialog extends EditDialog {
 	}
 	
 
-	public JComponent getAdditionalHeadComponent() {
-		return additionalHeadComponent;
-	}
-
-
-	public void setAdditionalHeadComponent(JComponent additionalHeadComponent) {
-		if (this.additionalHeadComponent != additionalHeadComponent) {
-			// Remove current component:
-			if (this.additionalHeadComponent != null) {
-				getJContentPane().remove(this.additionalHeadComponent);
-			}
-			
-			// Set component:
-			this.additionalHeadComponent = additionalHeadComponent;
-			
-			// Add new component:
-			if (additionalHeadComponent != null) {
-				GridBagConstraints addHeadingComponentGBC = new GridBagConstraints();
-				addHeadingComponentGBC.fill = GridBagConstraints.HORIZONTAL;
-				addHeadingComponentGBC.gridx = 0;
-				addHeadingComponentGBC.gridy = 0;
-				addHeadingComponentGBC.weightx = 1.0;
-				getJContentPane().add(additionalHeadComponent, addHeadingComponentGBC);
-			}
-			
-			validate();  //TODO Possibly use pack()?
-		}
-	}
-
-
 	private void stopCellEditing() {
 		if (getTable().getCellEditor() != null) {
 			getTable().getCellEditor().stopCellEditing();
@@ -194,6 +164,11 @@ public class DefaultDocumentAdapterDialog extends EditDialog {
 		setMinimumSize(new Dimension(300, 150));
 		pack();
 	}
+
+	
+	protected JComponent getAdditionalHeadComponent() {
+		return null;
+	}
 	
 	
 	/**
@@ -204,7 +179,17 @@ public class DefaultDocumentAdapterDialog extends EditDialog {
 	private JPanel getJContentPane() {
 		if (jContentPane == null) {
 			jContentPane = new JPanel(new GridBagLayout());
-			
+
+			additionalHeadComponent = getAdditionalHeadComponent();
+			if (additionalHeadComponent != null) {
+				GridBagConstraints addHeadingComponentGBC = new GridBagConstraints();
+				addHeadingComponentGBC.fill = GridBagConstraints.HORIZONTAL;
+				addHeadingComponentGBC.gridx = 0;
+				addHeadingComponentGBC.gridy = 0;
+				addHeadingComponentGBC.weightx = 1.0;
+				getJContentPane().add(additionalHeadComponent, addHeadingComponentGBC);
+			}
+
 			GridBagConstraints headingPanelGBC = new GridBagConstraints();
 			headingPanelGBC.fill = GridBagConstraints.HORIZONTAL;
 			headingPanelGBC.gridx = 0;
