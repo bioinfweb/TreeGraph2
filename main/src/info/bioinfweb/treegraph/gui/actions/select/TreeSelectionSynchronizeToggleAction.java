@@ -27,7 +27,10 @@ import javax.swing.Action;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.tools.NodeBranchDataColumnAnalyzer;
+import info.bioinfweb.treegraph.document.tools.NodeBranchDataColumnManager;
 import info.bioinfweb.treegraph.gui.actions.DocumentAction;
+import info.bioinfweb.treegraph.gui.actions.edit.DefaultDocumentAdapterAction;
+import info.bioinfweb.treegraph.gui.dialogs.nodebranchdata.defaultadapter.SelectionSynchronizationMessagePanel;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeInternalFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
@@ -35,6 +38,9 @@ import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 
 
 public class TreeSelectionSynchronizeToggleAction extends DocumentAction {
+	private SelectionSynchronizationMessagePanel messagePanel = new SelectionSynchronizationMessagePanel();
+	
+	
 	public TreeSelectionSynchronizeToggleAction(MainFrame mainFrame) {
 		super(mainFrame);
 		putValue(Action.NAME, "Synchronize tree selection");
@@ -49,12 +55,7 @@ public class TreeSelectionSynchronizeToggleAction extends DocumentAction {
 	}
 	
 	
-	private void checkDefaultColumns() {
-		//TODO Check default support columns of all documents and possibly display modal dialog.
-		//     - Check for each document until all are processed or one with a possible better column is found
-		//       - if current column is suitable
-		//         - check if there are better columns
-		
+	private void checkDefaultColumns(ActionEvent e) {
 		boolean betterColumnFound = false;
 		Iterator<TreeInternalFrame> iterator = MainFrame.getInstance().treeFrameIterator();
 		while (iterator.hasNext() && !betterColumnFound) {
@@ -62,8 +63,22 @@ public class TreeSelectionSynchronizeToggleAction extends DocumentAction {
 			if (NodeBranchDataColumnAnalyzer.ColumnStatus.NO_NUMERIC_OR_PARSABLE.equals(
 					NodeBranchDataColumnAnalyzer.analyzeColumnStatus(document.getTree(), document.getDefaultSupportAdapter()))) {
 				
-				
+				betterColumnFound = betterColumnFound || 
+						!NodeBranchDataColumnManager.listAdapters(document.getTree(), false, true, true, true, false, null).isEmpty();  // That means that at least one other column contains at least one decimal value.
+						//TODO This does not find columns with parsable values. Should these also be considered and analyzeColumnStatus() be used instead here?
 			}
+		}
+		
+		if (betterColumnFound) {
+			DefaultDocumentAdapterAction action = (DefaultDocumentAdapterAction)MainFrame.getInstance().getActionManagement().get("edit.defaultDocumentAdapters");
+			action.getDialog().setAdditionalHeadComponent(messagePanel);
+			try {
+				action.actionPerformed(e);
+			}
+			finally {
+				action.getDialog().setAdditionalHeadComponent(null);
+			}
+			//TODO An inherited class with the message panel could alternatively be used. setAdditionalHeadComponent() would then be obsolete. The dialog would be in memory twice, though.
 		}
 	}
 	
@@ -72,7 +87,7 @@ public class TreeSelectionSynchronizeToggleAction extends DocumentAction {
 	protected void onActionPerformed(ActionEvent e, TreeInternalFrame frame) {
 		Iterator<TreeInternalFrame> treeFrameIterator = getMainFrame().treeFrameIterator();
 		if (isActive()) {  // Reset TreeSelectionSynchronizer and add listeners:
-			checkDefaultColumns();
+			checkDefaultColumns(e);
 			
 			getMainFrame().getTreeSelectionSynchronizer().reset();
 			getMainFrame().addChildWindowListener(getMainFrame().getTreeSelectionSynchronizer());

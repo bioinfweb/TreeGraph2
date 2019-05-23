@@ -29,11 +29,15 @@ import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JCheckBox;
 import java.awt.Insets;
+import javax.swing.border.TitledBorder;
+import java.awt.SystemColor;
 
 
 
 public class SelectionSynchronizationMessagePanel extends JPanel {
 	public SelectionSynchronizationMessagePanel() {
+		setBackground(SystemColor.info);
+		setBorder(new TitledBorder(null, "Message", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		setLayout(new GridBagLayout());
 		
 		JTextArea messageArea = new JTextArea("In one or more of the currently opened documents, default support node/branch data columns are not " + 
@@ -43,8 +47,8 @@ public class SelectionSynchronizationMessagePanel extends JPanel {
 		messageArea.setWrapStyleWord(true);
 		messageArea.setLineWrap(true);
 		messageArea.setEditable(false);
-		messageArea.setBackground(UIManager.getColor("Label.background"));
-		messageArea.setFont(new Font("Dialog", Font.PLAIN, 12));
+		messageArea.setBackground(SystemColor.info);
+		messageArea.setFont(UIManager.getFont("Label.font"));
 		messageArea.setBorder(new EmptyBorder(2, 2, 2, 2));
 		GridBagConstraints messageAreaGBC = new GridBagConstraints();
 		messageAreaGBC.insets = new Insets(0, 0, 5, 0);
@@ -55,6 +59,7 @@ public class SelectionSynchronizationMessagePanel extends JPanel {
 		add(messageArea, messageAreaGBC);
 		
 		JCheckBox showAgainCheckBox = new JCheckBox("Don't show this message again");
+		showAgainCheckBox.setBackground(SystemColor.info);
 		GridBagConstraints showAgainCheckBoxGBC = new GridBagConstraints();
 		showAgainCheckBoxGBC.anchor = GridBagConstraints.WEST;
 		showAgainCheckBoxGBC.gridx = 0;
