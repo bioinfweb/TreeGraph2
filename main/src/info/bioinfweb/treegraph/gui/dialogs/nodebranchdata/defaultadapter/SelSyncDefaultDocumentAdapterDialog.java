@@ -39,9 +39,9 @@ import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 
 
 public class SelSyncDefaultDocumentAdapterDialog extends DefaultDocumentAdapterDialog implements PreferencesConstants{
-	private JPanel messagePanel = null;
-	private JTextArea messageArea = null;
-	private JCheckBox notShowAgainCheckBox = null;
+	private JPanel messagePanel;  // Must not be set to null here!
+	private JTextArea messageArea;  // Must not be set to null here!
+	private JCheckBox notShowAgainCheckBox;  // Must not be set to null here!
 	
 	
 	public SelSyncDefaultDocumentAdapterDialog(MainFrame mainFrame) {
@@ -52,9 +52,9 @@ public class SelSyncDefaultDocumentAdapterDialog extends DefaultDocumentAdapterD
 	public JTextArea getMessageArea() {
 		if (messageArea == null) {
 			messageArea = new JTextArea("In one or more of the currently opened documents, default support node/branch data columns are not " + 
-					"specified., although columns with numeric values are available.\n\n"
-					+ "You should specify a column cotaining support values for each document. Otherwise topological conflicts will not be hightlighted "
-					+ "by the selection synchronization feature.");
+					"specified., although columns with numeric values are available.\n\n" +
+					"You should specify a column cotaining support values for each document. Otherwise topological conflicts will not be hightlighted " +
+					"by the selection synchronization feature.");
 			messageArea.setWrapStyleWord(true);
 			messageArea.setLineWrap(true);
 			messageArea.setEditable(false);
@@ -102,15 +102,14 @@ public class SelSyncDefaultDocumentAdapterDialog extends DefaultDocumentAdapterD
 
 	@Override
 	protected boolean onExecute() {
-		System.out.println("reading " + !Main.getInstance().getPreferences().getBoolean(DO_CHECK_SEL_SYNC_PREF_KEY, DO_CHECK_SEL_SYNC_DEFAULT_VALUE));
-		getNotShowAgainCheckBox().setSelected(!Main.getInstance().getPreferences().getBoolean(DO_CHECK_SEL_SYNC_PREF_KEY, DO_CHECK_SEL_SYNC_DEFAULT_VALUE));
+		getNotShowAgainCheckBox().setSelected(!Main.getInstance().getPreferences().getBoolean(
+				DO_CHECK_SEL_SYNC_PREF_KEY, DO_CHECK_SEL_SYNC_DEFAULT_VALUE));
 		return super.onExecute();
 	}
 
 	
 	@Override
 	protected boolean apply() {
-		System.out.println("Applying " + !getNotShowAgainCheckBox().isSelected());
 		Main.getInstance().getPreferences().putBoolean(DO_CHECK_SEL_SYNC_PREF_KEY, !getNotShowAgainCheckBox().isSelected());
 		return super.apply();
 	}
