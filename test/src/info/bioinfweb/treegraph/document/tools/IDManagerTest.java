@@ -40,7 +40,7 @@ import static org.junit.Assert.* ;
 
 
 /**
- * Tests {@link IDManager}.
+ * Tests {@link NodeBranchDataColumnManager}.
  * 
  * @author BenStoever
  */
@@ -87,12 +87,12 @@ public class IDManagerTest {
   public void test_getFirstLabel_TextLabel_firstLevel() {
    	Tree tree = createBasicTree(false, true, true, true);
   	
-  	assertEquals(TEXT_LABEL_ID, IDManager.getFirstLabel(tree.getPaintStart(), Label.class, TEXT_LABEL_ID).getID());
-  	assertEquals(TEXT_LABEL_ID, IDManager.getFirstLabel(tree.getPaintStart(), TextLabel.class, TEXT_LABEL_ID).getID());
-  	assertEquals(null, IDManager.getFirstLabel(tree.getPaintStart(), GraphicalLabel.class, TEXT_LABEL_ID));
-  	assertEquals(null, IDManager.getFirstLabel(tree.getPaintStart(), IconLabel.class, TEXT_LABEL_ID));
-  	assertEquals(null, IDManager.getFirstLabel(tree.getPaintStart(), PieChartLabel.class, TEXT_LABEL_ID));
-  	assertEquals(null, IDManager.getFirstLabel(tree.getPaintStart(), Label.class, "otherID"));
+  	assertEquals(TEXT_LABEL_ID, NodeBranchDataColumnManager.getFirstLabel(tree.getPaintStart(), Label.class, TEXT_LABEL_ID).getID());
+  	assertEquals(TEXT_LABEL_ID, NodeBranchDataColumnManager.getFirstLabel(tree.getPaintStart(), TextLabel.class, TEXT_LABEL_ID).getID());
+  	assertEquals(null, NodeBranchDataColumnManager.getFirstLabel(tree.getPaintStart(), GraphicalLabel.class, TEXT_LABEL_ID));
+  	assertEquals(null, NodeBranchDataColumnManager.getFirstLabel(tree.getPaintStart(), IconLabel.class, TEXT_LABEL_ID));
+  	assertEquals(null, NodeBranchDataColumnManager.getFirstLabel(tree.getPaintStart(), PieChartLabel.class, TEXT_LABEL_ID));
+  	assertEquals(null, NodeBranchDataColumnManager.getFirstLabel(tree.getPaintStart(), Label.class, "otherID"));
   }
   
   
@@ -100,12 +100,12 @@ public class IDManagerTest {
   public void test_getFirstLabel_TextLabel_secondLevel() {
    	Tree tree = createBasicTree(true, true, true, true);
   	
-  	assertEquals(TEXT_LABEL_ID, IDManager.getFirstLabel(tree.getPaintStart(), Label.class, TEXT_LABEL_ID).getID());
-  	assertEquals(TEXT_LABEL_ID, IDManager.getFirstLabel(tree.getPaintStart(), TextLabel.class, TEXT_LABEL_ID).getID());
-  	assertEquals(null, IDManager.getFirstLabel(tree.getPaintStart(), GraphicalLabel.class, TEXT_LABEL_ID));
-  	assertEquals(null, IDManager.getFirstLabel(tree.getPaintStart(), IconLabel.class, TEXT_LABEL_ID));
-  	assertEquals(null, IDManager.getFirstLabel(tree.getPaintStart(), PieChartLabel.class, TEXT_LABEL_ID));
-  	assertEquals(null, IDManager.getFirstLabel(tree.getPaintStart(), Label.class, "otherID"));
+  	assertEquals(TEXT_LABEL_ID, NodeBranchDataColumnManager.getFirstLabel(tree.getPaintStart(), Label.class, TEXT_LABEL_ID).getID());
+  	assertEquals(TEXT_LABEL_ID, NodeBranchDataColumnManager.getFirstLabel(tree.getPaintStart(), TextLabel.class, TEXT_LABEL_ID).getID());
+  	assertEquals(null, NodeBranchDataColumnManager.getFirstLabel(tree.getPaintStart(), GraphicalLabel.class, TEXT_LABEL_ID));
+  	assertEquals(null, NodeBranchDataColumnManager.getFirstLabel(tree.getPaintStart(), IconLabel.class, TEXT_LABEL_ID));
+  	assertEquals(null, NodeBranchDataColumnManager.getFirstLabel(tree.getPaintStart(), PieChartLabel.class, TEXT_LABEL_ID));
+  	assertEquals(null, NodeBranchDataColumnManager.getFirstLabel(tree.getPaintStart(), Label.class, "otherID"));
   }
   
   
@@ -113,12 +113,12 @@ public class IDManagerTest {
   public void test_getFirstLabel_IconLabel() {
    	Tree tree = createBasicTree(true, true, true, true);
   	
-  	assertEquals(ICON_LABEL_ID, IDManager.getFirstLabel(tree.getPaintStart(), Label.class, ICON_LABEL_ID).getID());
-  	assertEquals(null, IDManager.getFirstLabel(tree.getPaintStart(), TextLabel.class, ICON_LABEL_ID));
-  	assertEquals(ICON_LABEL_ID, IDManager.getFirstLabel(tree.getPaintStart(), GraphicalLabel.class, ICON_LABEL_ID).getID());
-  	assertEquals(ICON_LABEL_ID, IDManager.getFirstLabel(tree.getPaintStart(), IconLabel.class, ICON_LABEL_ID).getID());
-  	assertEquals(null, IDManager.getFirstLabel(tree.getPaintStart(), PieChartLabel.class, ICON_LABEL_ID));
-  	assertEquals(null, IDManager.getFirstLabel(tree.getPaintStart(), Label.class, "otherID"));
+  	assertEquals(ICON_LABEL_ID, NodeBranchDataColumnManager.getFirstLabel(tree.getPaintStart(), Label.class, ICON_LABEL_ID).getID());
+  	assertEquals(null, NodeBranchDataColumnManager.getFirstLabel(tree.getPaintStart(), TextLabel.class, ICON_LABEL_ID));
+  	assertEquals(ICON_LABEL_ID, NodeBranchDataColumnManager.getFirstLabel(tree.getPaintStart(), GraphicalLabel.class, ICON_LABEL_ID).getID());
+  	assertEquals(ICON_LABEL_ID, NodeBranchDataColumnManager.getFirstLabel(tree.getPaintStart(), IconLabel.class, ICON_LABEL_ID).getID());
+  	assertEquals(null, NodeBranchDataColumnManager.getFirstLabel(tree.getPaintStart(), PieChartLabel.class, ICON_LABEL_ID));
+  	assertEquals(null, NodeBranchDataColumnManager.getFirstLabel(tree.getPaintStart(), Label.class, "otherID"));
   }
   
   
@@ -126,18 +126,18 @@ public class IDManagerTest {
   public void test_getFirstLabel_PieChartLabel() {
    	Tree tree = createBasicTree(true, true, true, true);
   	
-  	assertEquals(PIE_CHART_LABEL_ID, IDManager.getFirstLabel(tree.getPaintStart(), Label.class, PIE_CHART_LABEL_ID).getID());
-  	assertEquals(null, IDManager.getFirstLabel(tree.getPaintStart(), TextLabel.class, PIE_CHART_LABEL_ID));
-  	assertEquals(PIE_CHART_LABEL_ID, IDManager.getFirstLabel(tree.getPaintStart(), GraphicalLabel.class, PIE_CHART_LABEL_ID).getID());
-  	assertEquals(null, IDManager.getFirstLabel(tree.getPaintStart(), IconLabel.class, PIE_CHART_LABEL_ID));
-  	assertEquals(PIE_CHART_LABEL_ID, IDManager.getFirstLabel(tree.getPaintStart(), PieChartLabel.class, PIE_CHART_LABEL_ID).getID());
-  	assertEquals(null, IDManager.getFirstLabel(tree.getPaintStart(), Label.class, "otherID"));
+  	assertEquals(PIE_CHART_LABEL_ID, NodeBranchDataColumnManager.getFirstLabel(tree.getPaintStart(), Label.class, PIE_CHART_LABEL_ID).getID());
+  	assertEquals(null, NodeBranchDataColumnManager.getFirstLabel(tree.getPaintStart(), TextLabel.class, PIE_CHART_LABEL_ID));
+  	assertEquals(PIE_CHART_LABEL_ID, NodeBranchDataColumnManager.getFirstLabel(tree.getPaintStart(), GraphicalLabel.class, PIE_CHART_LABEL_ID).getID());
+  	assertEquals(null, NodeBranchDataColumnManager.getFirstLabel(tree.getPaintStart(), IconLabel.class, PIE_CHART_LABEL_ID));
+  	assertEquals(PIE_CHART_LABEL_ID, NodeBranchDataColumnManager.getFirstLabel(tree.getPaintStart(), PieChartLabel.class, PIE_CHART_LABEL_ID).getID());
+  	assertEquals(null, NodeBranchDataColumnManager.getFirstLabel(tree.getPaintStart(), Label.class, "otherID"));
   }
   
   
   @Test
   public void test_searchLabelIDsInLabelBlock_absent() {
-  	Method method = TestTools.getPrivateMethod(IDManager.class, "searchLabelIDsInLabelBlock", 
+  	Method method = TestTools.getPrivateMethod(NodeBranchDataColumnManager.class, "searchLabelIDsInLabelBlock", 
   					Labels.class, boolean.class, Class.class, List.class);
   	
   	Tree tree = createBasicTree(true, false, false, true);
@@ -156,7 +156,7 @@ public class IDManagerTest {
   
   @Test
   public void test_searchLabelIDsInLabelBlock_present() {
-  	Method method = TestTools.getPrivateMethod(IDManager.class, "searchLabelIDsInLabelBlock", 
+  	Method method = TestTools.getPrivateMethod(NodeBranchDataColumnManager.class, "searchLabelIDsInLabelBlock", 
   					Labels.class, boolean.class,  Class.class, List.class);
   	
   	Tree tree = createBasicTree(false, true, false, true);
@@ -176,6 +176,6 @@ public class IDManagerTest {
   @Test
   public void test_getLabelIDVector() {
   	Tree tree = createBasicTree(false, false, false, true);
-  	assertEquals(0, IDManager.getLabelIDListFromSubtree(tree.getPaintStart(), TextLabel.class).size());
+  	assertEquals(0, NodeBranchDataColumnManager.getLabelIDListFromSubtree(tree.getPaintStart(), TextLabel.class).size());
   }
 }
