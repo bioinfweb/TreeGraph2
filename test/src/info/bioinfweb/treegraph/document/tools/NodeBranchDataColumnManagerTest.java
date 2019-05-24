@@ -44,7 +44,7 @@ import static org.junit.Assert.* ;
  * 
  * @author BenStoever
  */
-public class IDManagerTest {
+public class NodeBranchDataColumnManagerTest {
 	public static final String TEXT_LABEL_ID = "Text";
 	public static final String ICON_LABEL_ID = "Icon";
 	public static final String PIE_CHART_LABEL_ID = "PieChart";

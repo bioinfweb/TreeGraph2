@@ -933,8 +933,8 @@ test/src/info/bioinfweb/treegraph/document/TextElementDataTest.java -text svneol
 test/src/info/bioinfweb/treegraph/document/TreeTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/io/ancestralstate/BayesTraitsReaderTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/io/jphyloio/JPhyloIOReaderTest.java -text svneol=unset#text/plain
-test/src/info/bioinfweb/treegraph/document/tools/IDManagerTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/tools/NodeBranchDataColumnAnalyzerTest.java -text svneol=unset#text/plain
+test/src/info/bioinfweb/treegraph/document/tools/NodeBranchDataColumnManagerTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/tools/TreeSerializerTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/topologicalcalculation/LeafSetTest.java -text svneol=unset#text/plain
 test/src/info/bioinfweb/treegraph/document/undo/edit/RerootByLeafSetEditTest.java -text svneol=unset#text/plain
