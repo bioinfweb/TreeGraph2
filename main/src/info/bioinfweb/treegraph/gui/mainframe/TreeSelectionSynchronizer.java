@@ -47,7 +47,7 @@ import javax.swing.event.ChangeEvent;
 
 
 /**
- * Synchronizes the selection in all opened trees, of the according function is switched on.
+ * Synchronizes the selection in all opened tree when this functionality is enabled.
  * 
  * @author Sarah Wiechers
  * @author Ben St&ouml;ver
