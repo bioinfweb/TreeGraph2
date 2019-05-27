@@ -54,6 +54,8 @@ public class TreeInternalFrame extends JInternalFrame {
 	
 	
 	private Document document = null;
+	private boolean treeSelectionSyncToTableOngoing = false;
+	private boolean tableSelectionSyncToTreeOngoing = false;
 	private InternalFrameListener internalFrameListener = null;  //  @jve:decl-index=0:
 	private JPanel jContentPane = null;
 	private JSplitPane documentSplitPane = null;
@@ -250,18 +252,20 @@ public class TreeInternalFrame extends JInternalFrame {
 			
 			ListSelectionListener listener = new ListSelectionListener() {  //TODO Muss zusätzlich auch ein Model-Listener her? Muss der Tastenstatus initialisiert werden?
 					  public void valueChanged(ListSelectionEvent e) {
-					  	if ((table.getSelectedColumnCount() > 0) && (table.getSelectedRowCount() > 0)) {
-					  		int selRow = table.getSelectedRows()[table.getSelectedRowCount() - 1];
-					  		int selCol = table.getSelectedColumns()[table.getSelectedColumnCount() - 1];
-					  		table.changeSelection(selRow,	selCol,	false, false);
-					  		
-					  		getTreeViewPanel().getSelection().set(
-					  				getTableModel().getTreeElement(selRow, selCol));			  		
+				  		if (!treeSelectionSyncToTableOngoing && !e.getValueIsAdjusting()) {
+				  			try {
+				  				tableSelectionSyncToTreeOngoing = true;  // Avoid alternating selection updates.
+						  		int selRow = table.getSelectedRows()[table.getSelectedRowCount() - 1];
+						  		int selCol = table.getSelectedColumns()[table.getSelectedColumnCount() - 1];
+						  		getTreeViewPanel().getSelection().set(getTableModel().getTreeElement(selRow, selCol));
+				  			}
+				  			finally {
+				  				tableSelectionSyncToTreeOngoing = false;
+				  			}
 					  	}
 					  }
 				  };
 			table.getSelectionModel().addListSelectionListener(listener);
-			table.getColumnModel().getSelectionModel().addListSelectionListener(listener);
 			
 			table.getColumnModel().addColumnModelListener(new TableColumnModelAdapter() {
 						@Override
@@ -272,10 +276,18 @@ public class TreeInternalFrame extends JInternalFrame {
 			
 			getTreeViewPanel().addTreeViewPanelListener(new TreeViewPanelListener() {
 						public void selectionChanged(ChangeEvent e) {
-							TreeElement element = getTreeViewPanel().getSelection().getFirstElementOfType(TreeElement.class);
-							if (element != null) {
-								getTable().changeSelection(getTableModel().getRow(element.getLinkedNode()), 
-										getTable().getSelectedColumn(), false, false);
+							if (!tableSelectionSyncToTreeOngoing) {
+								TreeElement element = getTreeViewPanel().getSelection().getFirstElementOfType(TreeElement.class);
+								if (element != null) {
+									try {
+										treeSelectionSyncToTableOngoing = true;  // Avoid alternating selection updates.
+										getTable().changeSelection(getTableModel().getRow(element.getLinkedNode()), 
+												getTable().getSelectedColumn(), false, false);
+									}
+									finally {
+										treeSelectionSyncToTableOngoing = false;
+									}
+								}
 							}
 						}
 		
