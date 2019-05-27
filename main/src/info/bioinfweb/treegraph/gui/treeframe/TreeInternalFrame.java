@@ -248,11 +248,13 @@ public class TreeInternalFrame extends JInternalFrame {
 			table.setColumnSelectionAllowed(true);
 			table.setRowSelectionAllowed(true);
 			table.getTableHeader().setReorderingAllowed(false);
-			table.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+			table.getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 			
-			ListSelectionListener listener = new ListSelectionListener() {  //TODO Muss zusätzlich auch ein Model-Listener her? Muss der Tastenstatus initialisiert werden?
+			ListSelectionListener listener = new ListSelectionListener() {  // Sets the new table selection to the tree.
 					  public void valueChanged(ListSelectionEvent e) {
-				  		if (!treeSelectionSyncToTableOngoing && !e.getValueIsAdjusting()) {
+				  		if (!treeSelectionSyncToTableOngoing && !e.getValueIsAdjusting() && 
+				  				(table.getSelectedRowCount() > 0) && (table.getSelectedColumnCount() > 0)) {
+				  			
 				  			try {
 				  				tableSelectionSyncToTreeOngoing = true;  // Avoid alternating selection updates.
 						  		int selRow = table.getSelectedRows()[table.getSelectedRowCount() - 1];
@@ -274,19 +276,26 @@ public class TreeInternalFrame extends JInternalFrame {
 						}
 					});
 			
-			getTreeViewPanel().addTreeViewPanelListener(new TreeViewPanelListener() {
+			getTreeViewPanel().addTreeViewPanelListener(new TreeViewPanelListener() {  // Sets the new tree selection to the table.
 						public void selectionChanged(ChangeEvent e) {
 							if (!tableSelectionSyncToTreeOngoing) {
-								TreeElement element = getTreeViewPanel().getSelection().getFirstElementOfType(TreeElement.class);
-								if (element != null) {
+								try {
+									treeSelectionSyncToTableOngoing = true;  // Avoid alternating selection updates.
+									ListSelectionModel model = getTable().getSelectionModel();
 									try {
-										treeSelectionSyncToTableOngoing = true;  // Avoid alternating selection updates.
-										getTable().changeSelection(getTableModel().getRow(element.getLinkedNode()), 
-												getTable().getSelectedColumn(), false, false);
+										model.setValueIsAdjusting(true);
+										model.clearSelection();
+										for (Node node : getTreeViewPanel().getSelection().getAllLinkedNodes()) {
+											int rowIndex = getTableModel().getRow(node);
+											model.addSelectionInterval(rowIndex, rowIndex);
+										}
 									}
 									finally {
-										treeSelectionSyncToTableOngoing = false;
+										getTable().getSelectionModel().setValueIsAdjusting(false);  // Must be done before treeSelectionSyncToTableOngoing is reset!
 									}
+								}
+								finally {
+									treeSelectionSyncToTableOngoing = false;
 								}
 							}
 						}

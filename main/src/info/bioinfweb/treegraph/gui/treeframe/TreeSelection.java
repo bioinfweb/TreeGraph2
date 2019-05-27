@@ -30,6 +30,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Set;
 import java.util.Vector;
 
 
@@ -413,5 +414,16 @@ public class TreeSelection implements Collection<PaintableElement> {
 			}
 		}
   	return result;
+	}
+	
+	
+	public Node[] getAllLinkedNodes() {
+		Set<Node> result = new HashSet<Node>();
+		for (PaintableElement element : elements) {
+			if (element instanceof TreeElement) {
+				result.add(((TreeElement)element).getLinkedNode());
+			}
+		}
+		return result.toArray(new Node[result.size()]);
 	}
 }
