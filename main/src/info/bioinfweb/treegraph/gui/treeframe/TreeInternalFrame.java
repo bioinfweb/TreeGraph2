@@ -257,9 +257,19 @@ public class TreeInternalFrame extends JInternalFrame {
 				  			
 				  			try {
 				  				tableSelectionSyncToTreeOngoing = true;  // Avoid alternating selection updates.
-						  		int selRow = table.getSelectedRows()[table.getSelectedRowCount() - 1];
-						  		int selCol = table.getSelectedColumns()[table.getSelectedColumnCount() - 1];
-						  		getTreeViewPanel().getSelection().set(getTableModel().getTreeElement(selRow, selCol));
+						  		TreeSelection selection = getTreeViewPanel().getSelection();
+						  		try {
+						  			selection.setValueIsAdjusting(true);
+						  			selection.clear();
+						  			for (int selCol : table.getSelectedColumns()) {  // Usually only one column will be selected.
+							  			for (int selRow : table.getSelectedRows()) {
+									  		getTreeViewPanel().getSelection().add(getTableModel().getTreeElement(selRow, selCol));
+											}
+										}
+						  		}
+						  		finally {
+						  			selection.setValueIsAdjusting(false);
+						  		}
 				  			}
 				  			finally {
 				  				tableSelectionSyncToTreeOngoing = false;

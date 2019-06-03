@@ -154,24 +154,24 @@ public class TreeSelection implements Collection<PaintableElement> {
 	
 	@Override
 	public boolean add(PaintableElement element) {
-		if (!owner.getDocument().getTree().contains(element)) {
-			throw new IllegalArgumentException(
-					"The element \"" + element + "\" can only be added to the selection if it is contained in the associated tree.");
-		}
-		else if (element != null) {
-			boolean result = true;
-			if (!contains(element)) {  // kein Element doppelt hinzufg.
-				result = elements.add(element) && result;
-				if (!valueIsAdjusting) {
-					owner.scrollElementToVisible(element);
-					owner.fireSelectionChanged();
-				}
+		if (element != null) {
+			if (!owner.getDocument().getTree().contains(element)) {
+				throw new IllegalArgumentException(
+						"The element \"" + element + "\" can only be added to the selection if it is contained in the associated tree.");
 			}
-			return result;
+			else if (element != null) {
+				boolean result = true;
+				if (!contains(element)) {  // do not add elements twice
+					result = elements.add(element) && result;
+					if (!valueIsAdjusting) {
+						owner.scrollElementToVisible(element);
+						owner.fireSelectionChanged();
+					}
+				}
+				return result;
+			}
 		}
-		else {
-			return false;
-		}
+		return false;
 	}
 	
 	
