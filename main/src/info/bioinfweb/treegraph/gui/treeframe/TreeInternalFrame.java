@@ -281,13 +281,22 @@ public class TreeInternalFrame extends JInternalFrame {
 							if (!tableSelectionSyncToTreeOngoing) {
 								try {
 									treeSelectionSyncToTableOngoing = true;  // Avoid alternating selection updates.
-									ListSelectionModel model = getTable().getSelectionModel();
+
+								  // Select the node name column if no other column is currently selected to make the selection visible:
+									TableColumnModel columnModel = getTable().getColumnModel();
+									if (columnModel.getSelectedColumnCount() == 0) {
+										columnModel.getSelectionModel().setSelectionInterval(
+												DocumentTableModel.COL_NODE_NAME_VALUES, DocumentTableModel.COL_NODE_NAME_VALUES);
+									}
+									
+									// Select respective rows:
+									ListSelectionModel rowModel = getTable().getSelectionModel();
 									try {
-										model.setValueIsAdjusting(true);
-										model.clearSelection();
+										rowModel.setValueIsAdjusting(true);
+										rowModel.clearSelection();
 										for (Node node : getTreeViewPanel().getSelection().getAllLinkedNodes()) {
 											int rowIndex = getTableModel().getRow(node);
-											model.addSelectionInterval(rowIndex, rowIndex);
+											rowModel.addSelectionInterval(rowIndex, rowIndex);
 										}
 									}
 									finally {

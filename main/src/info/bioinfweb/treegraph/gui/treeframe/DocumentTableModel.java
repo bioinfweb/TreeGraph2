@@ -22,29 +22,28 @@ package info.bioinfweb.treegraph.gui.treeframe;
 import java.util.List;
 import java.util.Vector;
 
+import javax.swing.JTable;
+import javax.swing.table.AbstractTableModel;
+
+import info.bioinfweb.commons.Math2;
 import info.bioinfweb.treegraph.document.AbstractPaintableElement;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.TextLabel;
 import info.bioinfweb.treegraph.document.change.DocumentChangeEvent;
 import info.bioinfweb.treegraph.document.change.DocumentListener;
+import info.bioinfweb.treegraph.document.nodebranchdata.AbstractTextElementDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.BranchLengthAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.GeneralIDAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.HiddenBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.HiddenNodeDataAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.NodeNameAdapter;
-import info.bioinfweb.treegraph.document.nodebranchdata.AbstractTextElementDataAdapter;
+import info.bioinfweb.treegraph.document.nodebranchdata.TextLabelAdapter;
 import info.bioinfweb.treegraph.document.nodebranchdata.UniqueNameAdapter;
 import info.bioinfweb.treegraph.document.tools.NodeBranchDataColumnManager;
 import info.bioinfweb.treegraph.document.undo.edit.ChangeCellTypeEdit;
 import info.bioinfweb.treegraph.document.undo.edit.ChangeNumercalValueEdit;
 import info.bioinfweb.treegraph.document.undo.edit.ChangeTextualValueEdit;
-import info.bioinfweb.commons.Math2;
-
-import javax.swing.JTable;
-import javax.swing.table.AbstractTableModel;
 
 
 
@@ -55,6 +54,7 @@ import javax.swing.table.AbstractTableModel;
  */
 public class DocumentTableModel extends AbstractTableModel implements DocumentListener {
 	public static final int COL_UNIQUE_NAME_DATA_TYPE = 1;
+	public static final int COL_NODE_NAME_VALUES = 2;
 	public static final int COL_BRANCH_LENGTH_DATA_TYPE = 5;
 	public static final String DECIMAL_COLUMN_HEADING = "Dec";
 	
