@@ -188,9 +188,7 @@ public class DocumentTableModel extends AbstractTableModel implements DocumentLi
 	
 	@Override
 	public boolean isCellEditable(int row, int col) {
-		boolean result = (col != COL_UNIQUE_NAME_DATA_TYPE) && 
-		    (col != COL_BRANCH_LENGTH_DATA_TYPE)
-		    && !(getAdapter(col) instanceof UniqueNameAdapter);
+		boolean result = (col != COL_UNIQUE_NAME_DATA_TYPE) && (col != COL_BRANCH_LENGTH_DATA_TYPE) && !(getAdapter(col) instanceof UniqueNameAdapter);
 		if (result && (col % 2 == 1)) {
 			result = !getAdapter(col).isEmpty(nodes.get(row));
 		}

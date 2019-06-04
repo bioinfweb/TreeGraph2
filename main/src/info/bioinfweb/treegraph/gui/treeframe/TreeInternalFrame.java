@@ -19,14 +19,17 @@
 package info.bioinfweb.treegraph.gui.treeframe;
 
 
-import info.bioinfweb.treegraph.document.*;
-import info.bioinfweb.treegraph.document.format.GlobalFormats;
-import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
-import info.bioinfweb.treegraph.gui.CurrentDirectoryModel;
-import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
-import info.bioinfweb.commons.swing.TableColumnModelAdapter;
-import info.bioinfweb.commons.swing.scrollpaneselector.ExtendedScrollPaneSelector;
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Rectangle;
+
+import javax.swing.JInternalFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.WindowConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
@@ -36,9 +39,13 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableColumnModelEvent;
 import javax.swing.table.TableColumnModel;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Rectangle;
+import info.bioinfweb.commons.swing.TableColumnModelAdapter;
+import info.bioinfweb.commons.swing.scrollpaneselector.ExtendedScrollPaneSelector;
+import info.bioinfweb.treegraph.document.Document;
+import info.bioinfweb.treegraph.document.format.GlobalFormats;
+import info.bioinfweb.treegraph.document.nodebranchdata.NodeBranchDataAdapter;
+import info.bioinfweb.treegraph.gui.CurrentDirectoryModel;
+import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
 
 
 
@@ -54,8 +61,6 @@ public class TreeInternalFrame extends JInternalFrame {
 	
 	
 	private Document document = null;
-	private boolean treeSelectionSyncToTableOngoing = false;
-	private boolean tableSelectionSyncToTreeOngoing = false;
 	private InternalFrameListener internalFrameListener = null;  //  @jve:decl-index=0:
 	private JPanel jContentPane = null;
 	private JSplitPane documentSplitPane = null;
@@ -235,6 +240,12 @@ public class TreeInternalFrame extends JInternalFrame {
 	}
 
 
+	private void decorateDefaultCellRenderer(Class<?> valueClass) {
+		table.setDefaultRenderer(valueClass, new DocumentTableCellRenderer(table.getDefaultRenderer(valueClass), 
+				(DocumentTableModel)table.getModel(), getTreeViewPanel().getSelection()));
+	}
+	
+	
 	/**
 	 * This method initializes table	
 	 * 	
@@ -248,36 +259,36 @@ public class TreeInternalFrame extends JInternalFrame {
 			table.setColumnSelectionAllowed(true);
 			table.setRowSelectionAllowed(true);
 			table.getTableHeader().setReorderingAllowed(false);
-			table.getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+			table.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+			
+			decorateDefaultCellRenderer(Object.class);
+			decorateDefaultCellRenderer(Double.class);
+			decorateDefaultCellRenderer(Boolean.class);  // One shared renderer class cannot be used since the boolean renderer differs from the others.
+			// Add more default renderers here if more data types are added in the future.
 			
 			ListSelectionListener listener = new ListSelectionListener() {  // Sets the new table selection to the tree.
 					  public void valueChanged(ListSelectionEvent e) {
-				  		if (!treeSelectionSyncToTableOngoing && !e.getValueIsAdjusting() && 
+				  		if (!e.getValueIsAdjusting() && 
 				  				(table.getSelectedRowCount() > 0) && (table.getSelectedColumnCount() > 0)) {
 				  			
-				  			try {
-				  				tableSelectionSyncToTreeOngoing = true;  // Avoid alternating selection updates.
-						  		TreeSelection selection = getTreeViewPanel().getSelection();
-						  		try {
-						  			selection.setValueIsAdjusting(true);
-						  			selection.clear();
-						  			for (int selCol : table.getSelectedColumns()) {  // Usually only one column will be selected.
-							  			for (int selRow : table.getSelectedRows()) {
-									  		getTreeViewPanel().getSelection().add(getTableModel().getTreeElement(selRow, selCol));
-											}
+					  		TreeSelection selection = getTreeViewPanel().getSelection();
+					  		try {
+					  			selection.setValueIsAdjusting(true);
+					  			selection.clear();
+					  			for (int selCol : table.getSelectedColumns()) {  // Usually only one column will be selected.
+						  			for (int selRow : table.getSelectedRows()) {
+								  		getTreeViewPanel().getSelection().add(getTableModel().getTreeElement(selRow, selCol));
 										}
-						  		}
-						  		finally {
-						  			selection.setValueIsAdjusting(false);
-						  		}
-				  			}
-				  			finally {
-				  				tableSelectionSyncToTreeOngoing = false;
-				  			}
+									}
+					  		}
+					  		finally {
+					  			selection.setValueIsAdjusting(false);
+					  		}
 					  	}
 					  }
 				  };
-			table.getSelectionModel().addListSelectionListener(listener);
+			table.getSelectionModel().addListSelectionListener(listener);  // Registering here is necessary to be informed on selection changes when the previous and newly selected cell are in the same column.
+			table.getColumnModel().getSelectionModel().addListSelectionListener(listener);  // Registering here is necessary to be informed on selection changes when the previous and newly selected cell are in the same row.
 			
 			table.getColumnModel().addColumnModelListener(new TableColumnModelAdapter() {
 						@Override
@@ -288,35 +299,7 @@ public class TreeInternalFrame extends JInternalFrame {
 			
 			getTreeViewPanel().addTreeViewPanelListener(new TreeViewPanelListener() {  // Sets the new tree selection to the table.
 						public void selectionChanged(ChangeEvent e) {
-							if (!tableSelectionSyncToTreeOngoing) {
-								try {
-									treeSelectionSyncToTableOngoing = true;  // Avoid alternating selection updates.
-
-								  // Select the node name column if no other column is currently selected to make the selection visible:
-									TableColumnModel columnModel = getTable().getColumnModel();
-									if (columnModel.getSelectedColumnCount() == 0) {
-										columnModel.getSelectionModel().setSelectionInterval(
-												DocumentTableModel.COL_NODE_NAME_VALUES, DocumentTableModel.COL_NODE_NAME_VALUES);
-									}
-									
-									// Select respective rows:
-									ListSelectionModel rowModel = getTable().getSelectionModel();
-									try {
-										rowModel.setValueIsAdjusting(true);
-										rowModel.clearSelection();
-										for (Node node : getTreeViewPanel().getSelection().getAllLinkedNodes()) {
-											int rowIndex = getTableModel().getRow(node);
-											rowModel.addSelectionInterval(rowIndex, rowIndex);
-										}
-									}
-									finally {
-										getTable().getSelectionModel().setValueIsAdjusting(false);  // Must be done before treeSelectionSyncToTableOngoing is reset!
-									}
-								}
-								finally {
-									treeSelectionSyncToTableOngoing = false;
-								}
-							}
+							getTable().repaint();  // Necessary to update possible color highlighting.
 						}
 		
 						public void sizeChanged(ChangeEvent e) {}
