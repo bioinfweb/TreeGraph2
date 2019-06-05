@@ -19,6 +19,7 @@
 package info.bioinfweb.treegraph.gui.mainframe;
 
 
+import info.bioinfweb.commons.graphics.GraphicsUtils;
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Label;
 import info.bioinfweb.treegraph.document.Node;
@@ -32,16 +33,19 @@ import info.bioinfweb.treegraph.document.topologicalcalculation.LeafSet;
 import info.bioinfweb.treegraph.document.topologicalcalculation.NodeInfo;
 import info.bioinfweb.treegraph.document.topologicalcalculation.TopologicalCalculator;
 import info.bioinfweb.treegraph.document.undo.SelectionSynchronizationCompareParameters;
+import info.bioinfweb.treegraph.gui.treeframe.HighlightedGroup;
 import info.bioinfweb.treegraph.gui.treeframe.TreeInternalFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 import info.bioinfweb.treegraph.gui.treeframe.TreeViewPanel;
 import info.bioinfweb.treegraph.gui.treeframe.TreeViewPanelListener;
 
+import java.awt.Color;
 import java.awt.event.ContainerEvent;
 import java.awt.event.ContainerListener;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 
 
@@ -55,7 +59,10 @@ import javax.swing.event.ChangeEvent;
  */
 public class TreeSelectionSynchronizer implements TreeViewPanelListener, DocumentListener, ContainerListener {
 	public static final String KEY_LEAF_REFERENCE = TreeSelectionSynchronizer.class.getName() + ".LeafSet";
-	
+	public static final String CONFLICT_HIGHLIGHT_GROUP_NAME = "Topological conflict";
+	public static final Color PRIMARY_CONFLICT_COLOR = Color.RED;
+	public static final Color ALTERNATIVE_CONFLICT_COLOR = GraphicsUtils.invertColor(PRIMARY_CONFLICT_COLOR);  //TODO Possibly adjust colors.
+
 	private Iterable<TreeViewPanel> treeSource;
 	protected boolean isUpdating = false;
 	private TopologicalCalculator topologicalCalculator = null;
@@ -77,13 +84,26 @@ public class TreeSelectionSynchronizer implements TreeViewPanelListener, Documen
 		return compareParameters;
 	}
 
+	
+	public static HighlightedGroup getConflictHighlightGroup(TreeViewPanel panel) {
+		HighlightedGroup result = panel.getHighlighting().get(CONFLICT_HIGHLIGHT_GROUP_NAME);
+		if (result != null) {
+			result.clear();
+		}
+		else {
+			result = new HighlightedGroup(panel, CONFLICT_HIGHLIGHT_GROUP_NAME, PRIMARY_CONFLICT_COLOR, ALTERNATIVE_CONFLICT_COLOR);
+			panel.getHighlighting().put(CONFLICT_HIGHLIGHT_GROUP_NAME, result);
+		}
+		return result;
+	}
+	
 
 	public void reset() {
 		topologicalCalculator = new TopologicalCalculator(compareParameters.isProcessRooted(), KEY_LEAF_REFERENCE, compareParameters);
 		
 		// Add leaves from documents to map:
 		Iterator<TreeViewPanel> iterator = getTreeSource().iterator();
-		while(iterator.hasNext()) {
+		while (iterator.hasNext()) {
 			Document document = iterator.next().getDocument();
 			if (!document.getTree().isEmpty()) {
 				topologicalCalculator.addSubtreeToLeafValueToIndexMap(document.getTree().getPaintStart(), document.getDefaultLeafAdapter());
@@ -92,16 +112,22 @@ public class TreeSelectionSynchronizer implements TreeViewPanelListener, Documen
 		
 		// Create leaf sets on all trees:
 		iterator = getTreeSource().iterator();
-		while(iterator.hasNext()) {
-			Document document = iterator.next().getDocument();
+		while (iterator.hasNext()) {
+			TreeViewPanel treeViewPanel = iterator.next();
+			Document document = treeViewPanel.getDocument();
 			if (!document.getTree().isEmpty()) {
 				topologicalCalculator.addLeafSets(document.getTree().getPaintStart(), document.getDefaultLeafAdapter());
 			}
+			
+			getConflictHighlightGroup(treeViewPanel).clear();;
     }
 	}
 	
 	
 	private void selectCorrespondingNodes(TreeViewPanel activeTree, TreeViewPanel selectionTargetTree) {
+		HighlightedGroup conflictGroup = getConflictHighlightGroup(selectionTargetTree);
+		conflictGroup.clear();  // Conflict group also needs to be cleared for activeTree.
+		
 		if (!activeTree.equals(selectionTargetTree) && !selectionTargetTree.getDocument().getTree().isEmpty()) {
 			TreeSelection selection = selectionTargetTree.getSelection();
 			selection.clear();
@@ -127,14 +153,14 @@ public class TreeSelectionSynchronizer implements TreeViewPanelListener, Documen
 								Label label = conflictingNode.getAfferentBranch().getLabels().get(((IDElementAdapter)defaultSupportAdapter).getID());
 								
 								if (label != null) {
-									selection.add(label);
+									conflictGroup.add(label);
 								}
 								else {
-									selection.add(conflictingNode.getAfferentBranch());
+									conflictGroup.add(conflictingNode.getAfferentBranch());
 								}
 							}
 							else {
-								selection.add(conflictingNode.getAfferentBranch());
+								conflictGroup.add(conflictingNode.getAfferentBranch());
 							}
 						}
 					}

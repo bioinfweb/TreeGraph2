@@ -19,12 +19,17 @@
 package info.bioinfweb.treegraph.gui.treeframe;
 
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.SystemColor;
+import java.util.Iterator;
 
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
+
+import info.bioinfweb.commons.graphics.GraphicsUtils;
+import info.bioinfweb.treegraph.document.PaintableElement;
 
 
 
@@ -41,13 +46,17 @@ public class DocumentTableCellRenderer implements TableCellRenderer {
 	private TableCellRenderer underlyingRenderer;
 	private DocumentTableModel tableModel;
 	private TreeSelection treeSelection;
+	private ElementHighlighting treeHighlighting;
 	
 	
-	public DocumentTableCellRenderer(TableCellRenderer underlyingRenderer, DocumentTableModel tableModel, TreeSelection treeSelection) {
+	public DocumentTableCellRenderer(TableCellRenderer underlyingRenderer, DocumentTableModel tableModel, TreeSelection treeSelection, 
+			ElementHighlighting treeHighlighting) {
+		
 		super();
 		this.underlyingRenderer = underlyingRenderer;
 		this.tableModel = tableModel;
 		this.treeSelection = treeSelection;
+		this.treeHighlighting = treeHighlighting;
 	}
 
 
@@ -55,13 +64,28 @@ public class DocumentTableCellRenderer implements TableCellRenderer {
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 		Component result = underlyingRenderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
-		if (treeSelection.contains(tableModel.getTreeElement(row, column))) {
+		PaintableElement element = tableModel.getTreeElement(row, column);
+		if (treeSelection.contains(element)) {
 			result.setBackground(SystemColor.textHighlight);
 			result.setForeground(SystemColor.textHighlightText);
 		}
 		else {
-			result.setBackground(SystemColor.text);
-			result.setForeground(SystemColor.textText);
+			boolean highlighted = false;
+			Iterator<String> iterator = treeHighlighting.keyIterator();
+			while (!highlighted && iterator.hasNext()) {
+				HighlightedGroup group = treeHighlighting.get(iterator.next());
+				if (group.contains(element)) {
+					Color bgColor = group.suitableColor(tableModel.getDocument().getTree().getFormats().getBackgroundColor());
+					result.setBackground(bgColor);
+					result.setForeground(GraphicsUtils.getContrastColor(SystemColor.textText, bgColor, TreeViewPanel.MAX_SELECTION_COLOR_DIF));
+					highlighted = true;
+				}
+			}
+			
+			if (!highlighted) {
+				result.setBackground(SystemColor.text);
+				result.setForeground(SystemColor.textText);
+			}
 		}
 		
 		return result;

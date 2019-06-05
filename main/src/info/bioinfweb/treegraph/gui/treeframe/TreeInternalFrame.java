@@ -242,7 +242,7 @@ public class TreeInternalFrame extends JInternalFrame {
 
 	private void decorateDefaultCellRenderer(Class<?> valueClass) {
 		table.setDefaultRenderer(valueClass, new DocumentTableCellRenderer(table.getDefaultRenderer(valueClass), 
-				(DocumentTableModel)table.getModel(), getTreeViewPanel().getSelection()));
+				(DocumentTableModel)table.getModel(), getTreeViewPanel().getSelection(), getTreeViewPanel().getHighlighting()));
 	}
 	
 	

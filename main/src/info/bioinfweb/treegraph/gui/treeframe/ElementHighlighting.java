@@ -49,7 +49,7 @@ public class ElementHighlighting {
 	}
 
 
-	public HighlightedGroup get(Object key) {
+	public HighlightedGroup get(String key) {
 		return groups.get(key);
 	}
 

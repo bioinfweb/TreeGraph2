@@ -33,6 +33,7 @@ import info.bioinfweb.treegraph.document.tools.NodeBranchDataColumnManager;
 import info.bioinfweb.treegraph.gui.actions.EditDialogAction;
 import info.bioinfweb.treegraph.gui.dialogs.nodebranchdata.defaultadapter.SelSyncDefaultDocumentAdapterDialog;
 import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
+import info.bioinfweb.treegraph.gui.mainframe.TreeSelectionSynchronizer;
 import info.bioinfweb.treegraph.gui.treeframe.TreeInternalFrame;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 
@@ -101,6 +102,7 @@ public class TreeSelectionSynchronizeToggleAction extends EditDialogAction<SelSy
 				TreeInternalFrame currentFrame = treeFrameIterator.next();		
 				currentFrame.getTreeViewPanel().removeTreeViewPanelListener(getMainFrame().getTreeSelectionSynchronizer());
 				currentFrame.getTreeViewPanel().getDocument().removeView(getMainFrame().getTreeSelectionSynchronizer());
+				TreeSelectionSynchronizer.getConflictHighlightGroup(currentFrame.getTreeViewPanel()).clear();
 			}
 		}
 	}

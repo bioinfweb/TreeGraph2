@@ -107,11 +107,7 @@ public class RectangularCladogramPainter implements TreePainter {
 	
 	
 	private void paintSelectionAndHighlighting(PaintableElement element) {
-		if ((selection != null) && selection.contains(element)) {
-			g.setColor(TreeViewPanel.selectionColor(document.getTree().getFormats().getBackgroundColor()));
-			paintHighlightingFrame(element);
-		}
-		
+		// Paint highlighting: (Done before painting the selection to have the selection visible on highlighted elements.)
 		if (highlighting != null) {
 			Iterator<String> iterator = highlighting.keyIterator();
 			while (iterator.hasNext()) {
@@ -119,8 +115,15 @@ public class RectangularCladogramPainter implements TreePainter {
 				if (group.contains(element)) {
 					g.setColor(group.suitableColor(document.getTree().getFormats().getBackgroundColor()));
 					paintHighlightingFrame(element);
+					break;  // Only one frame can be painted. Additional ones would hide previous ones.
 				}
 			}
+		}
+
+		// Paint selection:
+		if ((selection != null) && selection.contains(element)) {
+			g.setColor(TreeViewPanel.selectionColor(document.getTree().getFormats().getBackgroundColor()));
+			paintHighlightingFrame(element);
 		}
 	}
 		
