@@ -880,6 +880,7 @@ test/data/RerootByLeaves.xtg -text
 test/data/addSupport/Conflict.xtg -text
 test/data/addSupport/Conflict_addTerminalAbove.xtg -text
 test/data/addSupport/Conflict_addTerminalBelow.xtg -text
+test/data/addSupport/Conflict_selectionSyncTest.xtg -text
 test/data/addSupport/Polytomy.xtg -text
 test/data/addSupport/PolytomyAddTerminals.xtg -text
 test/data/addSupport/PolytomyAddTerminalsAtRoot.xtg -text
