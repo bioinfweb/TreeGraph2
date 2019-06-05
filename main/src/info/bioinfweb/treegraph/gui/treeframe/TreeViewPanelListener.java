@@ -31,9 +31,33 @@ import javax.swing.event.*;
  * @author Ben St&ouml;ver
  */
 public interface TreeViewPanelListener extends EventListener {
+  /**
+   * Called after the selection of paintable elements in a tree (and the node/branch data table) changed.
+   * 
+   * @param e a change event with the {@link TreeViewPanel} as the source
+   */
   public void selectionChanged(ChangeEvent e);
   
+  /**
+   * Called after a highlighting group of paintable elements in a tree (and the node/branch data table) changed.
+   * 
+   * @param e a change event with the {@link HighlightedGroup} as the source (Note that this event does not use the {@link TreeViewPanel} as its 
+   *        source. This can be determined using {@link HighlightedGroup#getOwner()} if necessary.)
+   * @since 2.16.0
+   */
+  public void highlightingChanged(ChangeEvent e);
+  
+  /**
+   * Called after the tree was zoomed in or out.
+   * 
+   * @param e a change event with the {@link TreeViewPanel} as the source
+   */
   public void zoomChanged(ChangeEvent e);
   
+  /**
+   * Called after the size of the tree changed. That can happen due to edits of the tree. Zoom changes are not covered by this event.
+   * 
+   * @param e a change event with the {@link TreeViewPanel} as the source
+   */
   public void sizeChanged(ChangeEvent e);
 }

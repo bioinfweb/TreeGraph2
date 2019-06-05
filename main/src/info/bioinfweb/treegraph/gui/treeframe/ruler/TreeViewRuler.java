@@ -129,6 +129,10 @@ public class TreeViewRuler extends JPanel
 	public void selectionChanged(ChangeEvent e) {}
 
 
+	@Override
+	public void highlightingChanged(ChangeEvent e) {}
+
+
 	public void zoomChanged(ChangeEvent e) {
 		repaint();
 	}

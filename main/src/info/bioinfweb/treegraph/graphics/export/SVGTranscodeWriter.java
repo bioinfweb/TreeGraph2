@@ -139,7 +139,7 @@ public class SVGTranscodeWriter extends AbstractGraphicWriter implements Graphic
 	  svgGenerator.setSVGCanvasSize(new Dimension(Math2.roundUp(width), Math2.roundUp(height)));
 	  svgGenerator.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 	  
-	  painter.paintTree(svgGenerator, document, null, paintResolution, hints.getBoolean(KEY_TRANSPARENT, false));
+	  painter.paintTree(svgGenerator, document, null, null, paintResolution, hints.getBoolean(KEY_TRANSPARENT, false));
 	  StringWriter stringWriter = new StringWriter();
   	svgGenerator.stream(stringWriter);
   	

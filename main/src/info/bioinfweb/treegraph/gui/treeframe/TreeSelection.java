@@ -52,9 +52,14 @@ public class TreeSelection implements Collection<PaintableElement> {
 	}
 	
 	
+	public TreeViewPanel getOwner() {
+		return owner;
+	}
+
+
 	private void fireSelectionChanged() {
 		if (!valueIsAdjusting) {
-			owner.fireSelectionChanged();
+			owner.fireSelectionChanged(this);
 		}
 	}
 	
@@ -120,7 +125,7 @@ public class TreeSelection implements Collection<PaintableElement> {
 	 */
 	public void setValueIsAdjusting(boolean valueIsAdjusting) {
 		if (!valueIsAdjusting && this.valueIsAdjusting) {
-			owner.fireSelectionChanged();
+			owner.fireSelectionChanged(this);
 		}
 		this.valueIsAdjusting = valueIsAdjusting;
 	}
@@ -141,9 +146,7 @@ public class TreeSelection implements Collection<PaintableElement> {
 					owner.scrollElementToVisible(element);
 				}
 			}
-			if (!valueIsAdjusting) {
-				owner.fireSelectionChanged();
-			}
+			fireSelectionChanged();
 		}
 		else {
 			throw new IllegalArgumentException("The element \"" + element + 
@@ -165,7 +168,7 @@ public class TreeSelection implements Collection<PaintableElement> {
 					result = elements.add(element) && result;
 					if (!valueIsAdjusting) {
 						owner.scrollElementToVisible(element);
-						owner.fireSelectionChanged();
+						owner.fireSelectionChanged(this);
 					}
 				}
 				return result;
@@ -180,7 +183,7 @@ public class TreeSelection implements Collection<PaintableElement> {
 		boolean result = elements.addAll(collection);
 		if (result && !valueIsAdjusting) {
 			owner.scrollElementToVisible(collection.iterator().next());
-			owner.fireSelectionChanged();
+			owner.fireSelectionChanged(this);
 		}
 		return result;
 	}

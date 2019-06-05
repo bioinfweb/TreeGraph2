@@ -779,7 +779,9 @@ main/src/info/bioinfweb/treegraph/gui/mainframe/package.html -text
 main/src/info/bioinfweb/treegraph/gui/package.html -text
 main/src/info/bioinfweb/treegraph/gui/treeframe/DocumentTableCellRenderer.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/treeframe/DocumentTableModel.java -text
+main/src/info/bioinfweb/treegraph/gui/treeframe/ElementHighlighting.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/treeframe/HelpButton.java -text
+main/src/info/bioinfweb/treegraph/gui/treeframe/HighlightedGroup.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/gui/treeframe/TreeEditlInputListener.java -text
 main/src/info/bioinfweb/treegraph/gui/treeframe/TreeInternalFrame.java -text
 main/src/info/bioinfweb/treegraph/gui/treeframe/TreeScrollPane.java -text svneol=unset#text/plain

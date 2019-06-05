@@ -302,8 +302,15 @@ public class TreeInternalFrame extends JInternalFrame {
 							getTable().repaint();  // Necessary to update possible color highlighting.
 						}
 		
+						@Override
+						public void highlightingChanged(ChangeEvent e) {
+							getTable().repaint();  // Necessary to update possible color highlighting.
+						}
+
+						@Override
 						public void sizeChanged(ChangeEvent e) {}
 		
+						@Override
 						public void zoomChanged(ChangeEvent e) {}
 		  		});
 			

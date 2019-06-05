@@ -162,6 +162,10 @@ public class TreeSelectionSynchronizer implements TreeViewPanelListener, Documen
 
 	
 	@Override
+	public void highlightingChanged(ChangeEvent e) {}
+
+
+	@Override
 	public void zoomChanged(ChangeEvent e) {}
 
 	

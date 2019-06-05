@@ -28,6 +28,7 @@ import info.bioinfweb.treegraph.document.Labels;
 import info.bioinfweb.treegraph.document.Legend;
 import info.bioinfweb.treegraph.document.Legends;
 import info.bioinfweb.treegraph.document.Node;
+import info.bioinfweb.treegraph.document.PaintableElement;
 import info.bioinfweb.treegraph.document.ScaleBar;
 import info.bioinfweb.treegraph.document.format.BranchFormats;
 import info.bioinfweb.treegraph.document.format.DistanceDimension;
@@ -44,6 +45,8 @@ import info.bioinfweb.treegraph.graphics.positionpaint.label.LabelPainterMap;
 import info.bioinfweb.treegraph.graphics.positionpaint.positiondata.LegendPositionData;
 import info.bioinfweb.treegraph.graphics.positionpaint.positiondata.NodePositionData;
 import info.bioinfweb.treegraph.graphics.positionpaint.positiondata.PositionData;
+import info.bioinfweb.treegraph.gui.treeframe.ElementHighlighting;
+import info.bioinfweb.treegraph.gui.treeframe.HighlightedGroup;
 import info.bioinfweb.treegraph.gui.treeframe.TreeSelection;
 import info.bioinfweb.treegraph.gui.treeframe.TreeViewPanel;
 
@@ -58,6 +61,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
+import java.util.Iterator;
 
 
 
@@ -77,6 +81,7 @@ public class RectangularCladogramPainter implements TreePainter {
 	private Rectangle visibleRect = null;
 	private Document document = null;
 	private TreeSelection selection = null;
+	private ElementHighlighting highlighting = null;
 	private float pixelsPerMillimeter = 1;
 	
 	
@@ -91,17 +96,31 @@ public class RectangularCladogramPainter implements TreePainter {
 	}
 	
 	
-	private void paintSelection(AbstractPaintableElement element) {
+	private void paintHighlightingFrame(PaintableElement element) {
+		PositionData pd = element.getPosition(type);
+		g.draw(new Rectangle2D.Float(
+				pd.getLeft().getInPixels(pixelsPerMillimeter) - SELECTION_DISTANCE, 
+				pd.getTop().getInPixels(pixelsPerMillimeter) - SELECTION_DISTANCE, 
+				pd.getWidth().getInPixels(pixelsPerMillimeter) + 2 * SELECTION_DISTANCE, 
+				pd.getHeight().getInPixels(pixelsPerMillimeter) + 2 * SELECTION_DISTANCE));
+	}
+	
+	
+	private void paintSelectionAndHighlighting(PaintableElement element) {
 		if ((selection != null) && selection.contains(element)) {
-			g.setColor(TreeViewPanel.selectionColor(
-					document.getTree().getFormats().getBackgroundColor()));
-			
-			PositionData pd = element.getPosition(type);
-			g.draw(new Rectangle2D.Float(
-					pd.getLeft().getInPixels(pixelsPerMillimeter) - SELECTION_DISTANCE, 
-					pd.getTop().getInPixels(pixelsPerMillimeter) - SELECTION_DISTANCE, 
-					pd.getWidth().getInPixels(pixelsPerMillimeter) + 2 * SELECTION_DISTANCE, 
-					pd.getHeight().getInPixels(pixelsPerMillimeter) + 2 * SELECTION_DISTANCE));
+			g.setColor(TreeViewPanel.selectionColor(document.getTree().getFormats().getBackgroundColor()));
+			paintHighlightingFrame(element);
+		}
+		
+		if (highlighting != null) {
+			Iterator<String> iterator = highlighting.keyIterator();
+			while (iterator.hasNext()) {
+				HighlightedGroup group = highlighting.get(iterator.next());
+				if (group.contains(element)) {
+					g.setColor(group.suitableColor(document.getTree().getFormats().getBackgroundColor()));
+					paintHighlightingFrame(element);
+				}
+			}
 		}
 	}
 		
@@ -147,7 +166,7 @@ public class RectangularCladogramPainter implements TreePainter {
 		g.setColor(b.getFormats().getLineColor());
 		g.fill(path);
 		
-  	paintSelection(b);
+  	paintSelectionAndHighlighting(b);
 	}
 	
 	
@@ -165,7 +184,7 @@ public class RectangularCladogramPainter implements TreePainter {
 					throw new InternalError("Unsupported label of type " + label.getClass().getCanonicalName() + " found.");
 				}
 				
-  			paintSelection(label);
+  			paintSelectionAndHighlighting(label);
 			}
 		}
 	}
@@ -228,7 +247,7 @@ public class RectangularCladogramPainter implements TreePainter {
 		}
 		g.setStroke(oldStroke);
 		
-		paintSelection(n);
+		paintSelectionAndHighlighting(n);
 	}
 	
 	
@@ -241,7 +260,7 @@ public class RectangularCladogramPainter implements TreePainter {
 				pd.getTop().getInPixels(pixelsPerMillimeter) + 0.5f * pd.getHeight().getInPixels(pixelsPerMillimeter) - radius,
 				2 *  radius, 2 *  radius));
 		
-		paintSelection(n);
+		paintSelectionAndHighlighting(n);
 	}
 	
 	
@@ -255,7 +274,7 @@ public class RectangularCladogramPainter implements TreePainter {
 				pd.getTop().getInPixels(pixelsPerMillimeter) + 
 				m.getTop().getInPixels(pixelsPerMillimeter) + 
 				g.getFontMetrics(f.getFont(pixelsPerMillimeter)).getAscent());
-		paintSelection(leaf);
+		paintSelectionAndHighlighting(leaf);
 	}
 	
 	
@@ -385,7 +404,7 @@ public class RectangularCladogramPainter implements TreePainter {
   			baseLineY + fm.getHeight() + fm.getAscent());
   	g.setStroke(previousStroke);
     
-		paintSelection(scaleBar);
+		paintSelectionAndHighlighting(scaleBar);
 	}
 	
 	
@@ -480,20 +499,19 @@ public class RectangularCladogramPainter implements TreePainter {
 			paintText(l.getData().formatValue(f.getDecimalFormat()), f, x, y + ascent);
 			g.setTransform(oldTrans);
 			
-			paintSelection(l);
+			paintSelectionAndHighlighting(l);
 		}
 	}
 	
 	
 	@Override
-	public void paintTree(Graphics2D g, Document document,
-			TreeSelection selection, float pixelsPerMm, boolean transparent) {
-		
-		paintTree(g, null, document, selection, pixelsPerMm, transparent);
+	public void paintTree(Graphics2D g, Document document, TreeSelection selection, ElementHighlighting highlighting, 
+			float pixelsPerMm, boolean transparent) {
+		paintTree(g, null, document, selection, highlighting, pixelsPerMm, transparent);
 	}
 
 
-	public void paintTree(Graphics2D g, Rectangle visibleRect, Document document, TreeSelection selection, 
+	public void paintTree(Graphics2D g, Rectangle visibleRect, Document document, TreeSelection selection, ElementHighlighting highlighting,
 			float pixelsPerMillimeter, boolean transparent) {
 		
 		this.g = g;
@@ -505,6 +523,7 @@ public class RectangularCladogramPainter implements TreePainter {
 		this.visibleRect = visibleRect;
 		this.document = document;
 		this.selection = selection;
+		this.highlighting = highlighting;
 		this.pixelsPerMillimeter = pixelsPerMillimeter;
 		
 		if (!transparent) {

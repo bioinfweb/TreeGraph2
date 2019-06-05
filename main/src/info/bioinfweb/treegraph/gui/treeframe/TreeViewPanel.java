@@ -66,8 +66,9 @@ public class TreeViewPanel extends JPanel implements DocumentListener, Scrollabl
 	public static final int MAX_SELECTION_COLOR_DIF = 200;
 
 	
-	private TreeSelection selection = new TreeSelection(this);
 	private Document document = null;
+	private TreeSelection selection = new TreeSelection(this);
+	private ElementHighlighting highlighting = new ElementHighlighting(this);
 	private float zoom = 1f;
 	private PositionPaintType painterType = PositionPaintFactory.getDefaultType();
 	private Vector<TreeViewPanelListener> treeViewListeners = new Vector<TreeViewPanelListener>(2, 2);
@@ -86,16 +87,6 @@ public class TreeViewPanel extends JPanel implements DocumentListener, Scrollabl
 		ToolTipManager.sharedInstance().registerComponent(this);
 	}
 	
-
-	public float pixelsPerMillimeter() {
-		return PIXELS_PER_MM_100 * getZoom();
-	}
-  
-  
-	public TreeSelection getSelection() {
-		return selection;
-	}
-
 
 	/**
 	 * Returns the currently associated document.
@@ -127,6 +118,21 @@ public class TreeViewPanel extends JPanel implements DocumentListener, Scrollabl
 			getSelection().set(null);
 		  changeHappened(new DocumentChangeEvent(document, null));
 		}
+	}
+
+
+	public float pixelsPerMillimeter() {
+		return PIXELS_PER_MM_100 * getZoom();
+	}
+  
+  
+	public TreeSelection getSelection() {
+		return selection;
+	}
+
+
+	public ElementHighlighting getHighlighting() {
+		return highlighting;
 	}
 
 
@@ -171,11 +177,18 @@ public class TreeViewPanel extends JPanel implements DocumentListener, Scrollabl
 	}
 	
 	
-	public void fireSelectionChanged() {
+	public void fireSelectionChanged(TreeSelection source) {
 		repaint();
-		MainFrame.getInstance().getActionManagement().refreshActionStatus();  //TODO besser: MainFrame als Listener registrieren 
-		for (int i = 0; i < treeViewListeners.size(); i++) {
-			treeViewListeners.get(i).selectionChanged(new ChangeEvent(this));
+		if (getSelection() == source) {
+			MainFrame.getInstance().getActionManagement().refreshActionStatus();  //TODO besser: MainFrame als Listener registrieren
+			for (TreeViewPanelListener listener : treeViewListeners) {
+				listener.selectionChanged(new ChangeEvent(this));
+			}
+		}
+		else {
+			for (TreeViewPanelListener listener : treeViewListeners) {
+				listener.highlightingChanged(new ChangeEvent(source));
+			}
 		}
 	}
 	
@@ -210,7 +223,7 @@ public class TreeViewPanel extends JPanel implements DocumentListener, Scrollabl
   	g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
   	g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 		PositionPaintFactory.getInstance().getPainter(painterType).paintTree(
-				g2, getVisibleRect(), getDocument(), getSelection(), pixelsPerMillimeter(), false);
+				g2, getVisibleRect(), getDocument(), getSelection(), getHighlighting(), pixelsPerMillimeter(), false);
 	}
 
 
@@ -220,7 +233,7 @@ public class TreeViewPanel extends JPanel implements DocumentListener, Scrollabl
   	g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
   	g.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 		PositionPaintFactory.getInstance().getPainter(painterType).paintTree(g, getDocument(), 
-				getSelection(), pixelsPerMillimeter() * (float)scale, false);
+				getSelection(), getHighlighting(), pixelsPerMillimeter() * (float)scale, false);
 	}
 
 
