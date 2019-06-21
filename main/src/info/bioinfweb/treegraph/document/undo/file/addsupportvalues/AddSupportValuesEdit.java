@@ -19,6 +19,11 @@
 package info.bioinfweb.treegraph.document.undo.file.addsupportvalues;
 
 
+import java.text.DecimalFormat;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import info.bioinfweb.treegraph.document.Document;
 import info.bioinfweb.treegraph.document.Node;
 import info.bioinfweb.treegraph.document.NodeType;
@@ -33,12 +38,6 @@ import info.bioinfweb.treegraph.document.topologicalcalculation.NodeInfo;
 import info.bioinfweb.treegraph.document.undo.AbstractTopologicalCalculationEdit;
 import info.bioinfweb.treegraph.document.undo.WarningMessageEdit;
 import info.bioinfweb.treegraph.gui.actions.DocumentAction;
-
-import java.text.DecimalFormat;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
 
 
 
@@ -76,6 +75,7 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit imp
 	private boolean parseNumericValues;
 	private EquivalentBranchHandler equivalentBranchHandler;
 	private String warningMessage = null;
+	private boolean multipleValuesMappedToOneNode;
 	
 	
 	/**
@@ -104,6 +104,7 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit imp
 		getTopologicalCalculator().addLeafSets(getDocument().getTree().getPaintStart(), getTargetLeavesAdapter());  // filterIndexMapBySubtree() was called in the constructor.
 		// (Adding these leave sets must happen after filterIndexMapBySubtree(), since this methods may change indices of terminals.)
 		
+		multipleValuesMappedToOneNode = false;
 		processSubtree(getDocument().getTree().getPaintStart());
 		warningMessage = createWarningMessage();
 	}
@@ -127,23 +128,9 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit imp
 			List<NodeInfo> bestSourceNodes = getTopologicalCalculator().findNodeWithAllLeaves(sourceDocument.getTree(), leafSet, null);  // An empty list should never be returned here, since two shared terminals were ensured to be present.
 			
 			if (bestSourceNodes.get(0).getAdditionalCount() == 0) {  // Exact match found.
-				equivalentBranchHandler.handleBranches(bestSourceNodes, targetRoot, sourceSupportAdapter, targetSupportAdapter, parseNumericValues);
-				
-//				double importedValue = Double.NaN;
-//				Iterator<NodeInfo> iterator = bestSourceNodes.iterator();
-//				while (Double.isNaN(importedValue) && iterator.hasNext()) {
-//					importedValue = sourceSupportAdapter.getNumericValue(iterator.next().getNode(), parseNumericValues);
-//					//TODO Create (additional?) label showing topological position of equivalent matching branches. Consider global preferences (implement these first).
-//				}
-//				
-////				iterator = bestSourceNodes.iterator();
-////				while (iterator.hasNext()) {
-////					System.out.println(iterator.next().getNode());
-////				}
-//				
-//				if (!Double.isNaN(importedValue)) {
-//					targetSupportAdapter.setDecimal(targetRoot, importedValue);
-//				}
+				multipleValuesMappedToOneNode = equivalentBranchHandler.handleBranches(bestSourceNodes, targetRoot, sourceSupportAdapter, targetSupportAdapter, parseNumericValues) 
+						|| multipleValuesMappedToOneNode;  // The condition must be specified in this order. Otherwise handleBranches() would not be called anymore as soon as multipleValuesMappedToOneNode is true.
+				System.out.println(multipleValuesMappedToOneNode);
 			}
 			else {  // There must be a conflict, since no direct matching group of shared terminals was found.
 				Node conflict = getTopologicalCalculator().findHighestConflict(bestSourceNodes.get(0).getNode(), leafSet, sourceSupportAdapter, parseNumericValues);
@@ -182,17 +169,42 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit imp
 				getDocument().getTree().getPaintStart(), NodeType.LEAVES, targetLeavesAdapter, null);
 		Set<TextElementData> remainingSourceLeaves = TreeSerializer.addTextElementDataCopiesFromSubtree(new HashSet<TextElementData>(), 
 				sourceDocument.getTree().getPaintStart(), NodeType.LEAVES, sourceLeavesAdapter, targetLeaves);
+
+		int index = -1;  // Do not use index.
+		if (multipleValuesMappedToOneNode && !remainingSourceLeaves.isEmpty()) {
+			index = 1;  // Use index if two messages are there.
+		}
+		StringBuilder result = new StringBuilder();
 		
-		if (remainingSourceLeaves.isEmpty()) {
+		if (multipleValuesMappedToOneNode) {
+			if (index > -1) {
+				result.append(index);
+				result.append(") ");
+				index++;
+			}
+			
+			result.append("For one or more nodes in the target document multiple topologically equivalent nodes with support values were found in the source document.\n");
+			result.append("(This can happen if the source document contains terminal nodes with no equivalent in the source document.)\n\n");
+			result.append("A list of support values was mapped onto the respective taget node(s). You can edit these imports and highlight their source nodes using the\n");
+			result.append("selection synchronization feature.\n\n\n");
+		}
+		
+		if (!remainingSourceLeaves.isEmpty()) {
+			if (index > -1) {
+				result.append(index);
+				result.append(") ");
+			}
+			result.append("There were no respective terminal nodes in the target document for the following terminal nodes from the source document found:\n\n");
+			result.append(DocumentAction.createElementList(new TextElementDataAsStringIterator(remainingSourceLeaves.iterator()), remainingSourceLeaves.size(), true));
+			result.append("\n\nConsequently, some support values may not have been imported from the source tree (which may have been desired).\n");
+			result.append("(Note that matching also may have failed because the specified leaf node/branch data columns for the source or target document were not correct.)");
+		}
+
+		if (result.length() == 0) {
 			return null;
 		}
 		else {
-			return "There were no respective terminal nodes in the target document for the following terminal nodes from the source "
-					+ "document found:\n\n" + DocumentAction.createElementList(new TextElementDataAsStringIterator(
-							remainingSourceLeaves.iterator()), remainingSourceLeaves.size(), true)
-					+ "\n\nConsequently, some support values may not have been imported from the source tree (which may have been desired).\n"
-					+ "(Note that matching also may have failed because the specified leaf node/branch data columns for the source or "
-					+ "target document were not correct.)";
+			return result.toString();
 		}
 	}
 }

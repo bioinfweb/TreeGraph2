@@ -53,7 +53,7 @@ public class ValueListHandler implements EquivalentBranchHandler {
 	
 	
 	@Override
-	public void handleBranches(List<NodeInfo> sourceNodes, Node targetRoot, NodeBranchDataAdapter sourceSupportAdapter, 
+	public boolean handleBranches(List<NodeInfo> sourceNodes, Node targetRoot, NodeBranchDataAdapter sourceSupportAdapter, 
 			NodeBranchDataAdapter targetSupportAdapter, boolean parseNumericValues) {
 
 		double firstValue = Double.NaN;
@@ -78,6 +78,8 @@ public class ValueListHandler implements EquivalentBranchHandler {
 		}
 		else if (valueCount > 1) {
 			targetSupportAdapter.setText(targetRoot, result.substring(0, result.length() - separator.length()));  // Set list if multiple values were found. Remove trailing separator.
+			return true;  // More than one value was mapped.
 		}
+		return false;  // One or no value was mapped.
 	}
 }

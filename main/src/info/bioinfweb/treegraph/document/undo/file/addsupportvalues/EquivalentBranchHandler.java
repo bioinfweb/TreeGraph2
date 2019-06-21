@@ -35,6 +35,17 @@ import info.bioinfweb.treegraph.document.topologicalcalculation.NodeInfo;
  * @since 2.16.0
  */
 public interface EquivalentBranchHandler {
-	public void handleBranches(List<NodeInfo> sourceNodes, Node targetRoot, NodeBranchDataAdapter sourceSupportAdapter, 
+	/**
+	 * Maps the support values from the specified node list onto the specified target node. If more than one node from the specified 
+	 * list carries a support value, the implementing class will decide how to handle multiple values. 
+	 * 
+	 * @param sourceNodes
+	 * @param targetRoot
+	 * @param sourceSupportAdapter
+	 * @param targetSupportAdapter
+	 * @param parseNumericValues
+	 * @return {@code true} if more than one support value was mapped or {@code false} if one or no value was mapped
+	 */
+	public boolean handleBranches(List<NodeInfo> sourceNodes, Node targetRoot, NodeBranchDataAdapter sourceSupportAdapter, 
 			NodeBranchDataAdapter targetSupportAdapter,	boolean parseNumericValues);
 }
