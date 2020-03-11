@@ -245,9 +245,9 @@ public class TopologicalCalculator {
 			if (!downwards) {
 				additionalCount = searchedLeafSet.compareTo(comparedLeafSet, true);
 			}
-	  	//NodeInfo result = null;
-  		NodeInfo info = new NodeInfo(root, additionalCount, downwards);
-	  	if (additionalCount != -1) {
+			//NodeInfo result = null;
+			NodeInfo info = new NodeInfo(root, additionalCount, downwards);
+			if (additionalCount != -1) {
 				if (result.isEmpty()) {
 					result.add(info);
 				}
@@ -261,9 +261,9 @@ public class TopologicalCalculator {
 						result.add(info);
 					}
 				}
-	  	}
+			}
 	  	
-	  	for (Node child : root.getChildren()) {
+			for (Node child : root.getChildren()) {
 				findNodeWithAllLeavesRecursive(result, child, searchedLeafSet, restrictingLeafSet);
 			}
 		}
