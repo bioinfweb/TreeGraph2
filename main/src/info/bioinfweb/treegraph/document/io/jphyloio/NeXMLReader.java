@@ -85,40 +85,40 @@ public class NeXMLReader extends AbstractDocumentReader {
 		try {
 			JPhyloIOEvent event;
 			while (reader.hasNextEvent()) {
-	      event = reader.next();
-	      switch (event.getType().getContentType()) {
-	      	case DOCUMENT:
-	      		if (event.getType().getTopologyType().equals(EventTopologyType.START)) {
-	      			document = createEmptyDocument();
-	      		}
-	      		else if (event.getType().getTopologyType().equals(EventTopologyType.END)) {
-		          reader.close();
-		          
-		          if (!trees.isEmpty()) {
-		          	Tree tree = trees.get(parameterMap.getTreeSelector().select(names.toArray(new String[names.size()]), trees));
-		          	document.setTree(tree);
-		          }
-		          else {
-		          	throw new IOException("The document did not contain any tree or no valid tree could be read from the document.");
-		          }
-		          
-		          return document;
-	      		}
-	      		break;
-	      	case TREE_NETWORK_GROUP:
-	      		readTreeNetworkGroup(event.asLinkedLabeledIDEvent());
-	        	break;
-	        default:
-	        	if (event.getType().getTopologyType().equals(EventTopologyType.START)) {  // Possible additional element, which is not read. SOLE and END events do not have to be processed here, because they have no further content.
-	        		JPhyloIOReadingUtils.reachElementEnd(reader);
-	      		}
-	        	break;
-	      }
-	    }
+				event = reader.next();
+				switch (event.getType().getContentType()) {
+					case DOCUMENT:
+						if (event.getType().getTopologyType().equals(EventTopologyType.START)) {
+							document = createEmptyDocument();
+						}
+						else if (event.getType().getTopologyType().equals(EventTopologyType.END)) {
+							reader.close();
+
+							if (!trees.isEmpty()) {
+								Tree tree = trees.get(parameterMap.getTreeSelector().select(names.toArray(new String[names.size()]), trees));
+								document.setTree(tree);
+							}
+							else {
+								throw new IOException("The document did not contain any tree or no valid tree could be read from the document.");
+							}
+
+							return document;
+						}
+						break;
+					case TREE_NETWORK_GROUP:
+						readTreeNetworkGroup(event.asLinkedLabeledIDEvent());
+						break;
+					default:
+						if (event.getType().getTopologyType().equals(EventTopologyType.START)) {  // Possible additional element, which is not read. SOLE and END events do not have to be processed here, because they have no further content.
+							JPhyloIOReadingUtils.reachElementEnd(reader);
+						}
+						break;
+				}
+			}
 		}
 		finally {
-	    reader.close();
-	    stream.close();
+			reader.close();
+			stream.close();
 		}		
 		trees.clear();
 		return null;
