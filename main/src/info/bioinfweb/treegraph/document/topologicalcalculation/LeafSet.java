@@ -220,7 +220,7 @@ public class LeafSet {
 	 * @param subset - the other set to be compared
 	 * @return {@code true} if this set contains at least all children that are contained in {@code other},
 	 *         {@code false} if {@code subset} contains at least one child that is not contained in this set.
-	 * @throws IllegalArgumentException - if the other set differs in size from this set.
+	 * @throws IllegalArgumentException if the other set differs in size from this set.
 	 */
 	public boolean containsAll(LeafSet subset) {
 		if (subset.size() == size()) {
