@@ -271,6 +271,7 @@ main/src/info/bioinfweb/treegraph/document/io/ancestralstate/AncestralStateData.
 main/src/info/bioinfweb/treegraph/document/io/ancestralstate/BayesTraitsCommandsWriter.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/io/ancestralstate/BayesTraitsReader.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/io/jphyloio/JPhyloIOTools.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/treegraph/document/io/jphyloio/JPhyloIOTreeReader.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/io/jphyloio/NeXMLFactory.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/io/jphyloio/NeXMLFilter.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/treegraph/document/io/jphyloio/NeXMLReader.java -text svneol=unset#text/plain

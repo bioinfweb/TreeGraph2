@@ -59,15 +59,9 @@ import javax.xml.stream.XMLStreamException;
 
 public class NeXMLReader extends AbstractDocumentReader {
 	private JPhyloIOEventReader reader;
-	private String currentTreeName;
+	private JPhyloIOTreeReader treeReader = new JPhyloIOTreeReader();
 	private List<Tree> trees = new ArrayList<Tree>();
 	private List<String> names = new ArrayList<String>();
-	private Map<String, Node> idToNodeMap = new HashMap<String, Node>();
-	private List<String> possiblePaintStartIDs = new ArrayList<String>();
-	private List<String> rootNodeIDs = new ArrayList<String>(); //TODO Mark all root nodes with icon label or something similar
-	private String currentColumnID = null;
-	private NodeBranchDataAdapter nodeNameAdapter = NodeNameAdapter.getSharedInstance();
-	private BranchLengthAdapter branchLengthAdapter = BranchLengthAdapter.getSharedInstance();
 	
 
 	public NeXMLReader() {
@@ -142,194 +136,21 @@ public class NeXMLReader extends AbstractDocumentReader {
 	
 	
 	private void readTree(LabeledIDEvent treeEvent) throws XMLStreamException, IOException {
-		if ((treeEvent.getLabel() != null) && !treeEvent.getLabel().isEmpty()) {
-			currentTreeName = treeEvent.getLabel();
+		JPhyloIOTreeReader.TreeResult result = treeReader.readTree(treeEvent, reader, parameterMap.getApplicationLogger());
+		
+		String treeName;
+		if ((result.getLabel() != null) && !result.getLabel().isEmpty()) {
+			treeName = result.getLabel();
     }
 		else {
-			currentTreeName = treeEvent.getID();
+			treeName = result.getID();
 		}
 		
-		possiblePaintStartIDs.clear();
-		idToNodeMap.clear();
-		
-    JPhyloIOEvent event = reader.next();
-    while (!event.getType().getTopologyType().equals(EventTopologyType.END)) {    	
-    	if (event.getType().getContentType().equals(EventContentType.NODE)) {
-    		readNode(event.asNodeEvent());
-    	}
-    	else if (event.getType().getContentType().equals(EventContentType.EDGE) || event.getType().getContentType().equals(EventContentType.ROOT_EDGE)) {
-    		readEdge(event.asEdgeEvent());
-    	}
-    	else {  // Possible additional element, which is not read
-      	if (event.getType().getTopologyType().equals(EventTopologyType.START)) {  // SOLE and END events do not have to be processed here, because they have no further content.
-      		JPhyloIOReadingUtils.reachElementEnd(reader);
-    		}
-      }
-      event = reader.next();
-    }
-    
-    if (possiblePaintStartIDs.size() > 1) {
-    	throw new IOException("More than one root node was found for the tree \"" + currentTreeName + "\", but this can not be displayed in TreeGraph 2.");
-    }
-    
-    Tree tree = new Tree();
-    tree.setPaintStart(idToNodeMap.get(possiblePaintStartIDs.get(0)));
-    tree.assignUniqueNames();
-    if (!rootNodeIDs.isEmpty()) {
-    	tree.getFormats().setShowRooted(true);
-    }
-    trees.add(tree);
-    names.add(currentTreeName);    
-  }
-	
-	
-	private void readNode(NodeEvent nodeEvent) throws XMLStreamException, IOException {
-		Node node = Node.newInstanceWithBranch();
-
-		nodeNameAdapter.setText(node, nodeEvent.getLabel());
-		idToNodeMap.put(nodeEvent.getID(), node);
-		possiblePaintStartIDs.add(nodeEvent.getID());
-		
-		if (nodeEvent.isRootNode()) {
-			rootNodeIDs.add(nodeEvent.getID());
-		}
-		
-		JPhyloIOEvent event = reader.next();
-    while (!event.getType().getTopologyType().equals(EventTopologyType.END)) {  // It is assumed that events are correctly nested
-    	if (event.getType().getContentType().equals(EventContentType.LITERAL_META) || event.getType().getContentType().equals(EventContentType.RESOURCE_META)) {
-    		readMetadata(event, node.getHiddenDataMap());
-    	}
-    	else if (event.getType().getContentType().equals(EventContentType.LITERAL_META_CONTENT)) {
-    		readLiteralContent(event.asLiteralMetadataContentEvent(), node.getHiddenDataMap()); 
-    	}
-      else {  // Possible additional element, which is not read
-      	if (event.getType().getTopologyType().equals(EventTopologyType.START)) {  // SOLE and END events do not have to be processed here, because they have no further content.
-      		JPhyloIOReadingUtils.reachElementEnd(reader);
-    		}
-      }
-      event = reader.next();
-    }
-  }
-	
-	
-	private void readEdge(EdgeEvent edgeEvent) throws XMLStreamException, IOException {
-		Node targetNode = idToNodeMap.get(edgeEvent.getTargetID());
-		Node sourceNode = idToNodeMap.get(edgeEvent.getSourceID());		
-		
-		if (targetNode.getParent() == null) {
-			targetNode.setParent(sourceNode);
-			branchLengthAdapter.setDecimal(targetNode, edgeEvent.getLength());
-			
-			if (sourceNode != null) {
-				sourceNode.getChildren().add(targetNode);
-				possiblePaintStartIDs.remove(edgeEvent.getTargetID());  // Nodes that were not referenced as target are possible paint starts
-			}
-		}
-		else {  // Edge is network edge
-			throw new IOException("Multiple parent nodes were specified for the node \"" + edgeEvent.getTargetID() + "\" in the tree \"" + currentTreeName 
-					+ "\", but networks can not be displayed by TreeGraph 2.");
-		}
-		
-		JPhyloIOEvent event = reader.next();
-    while (!event.getType().getTopologyType().equals(EventTopologyType.END)) {  // It is assumed that events are correctly nested
-    	if (event.getType().getContentType().equals(EventContentType.LITERAL_META) || event.getType().getContentType().equals(EventContentType.RESOURCE_META)) {
-    		readMetadata(event, targetNode.getAfferentBranch().getHiddenDataMap());
-    	}
-    	else if (event.getType().getContentType().equals(EventContentType.LITERAL_META_CONTENT)) {
-    		readLiteralContent(event.asLiteralMetadataContentEvent(), targetNode.getAfferentBranch().getHiddenDataMap()); 
-    	}
-    	else {  // Possible additional element, which is not read
-      	if (event.getType().getTopologyType().equals(EventTopologyType.START)) {  // SOLE and END events do not have to be processed here, because they have no further content.
-      		JPhyloIOReadingUtils.reachElementEnd(reader);
-    		}
-      }
-      event = reader.next();
-    }
-  }
-	
-	
-	private String extractMetadataKey(URIOrStringIdentifier predicate) {
-		return predicate.getURI().getNamespaceURI() + predicate.getURI().getLocalPart();
-		//TODO Extend functionality of this method when more formats are supported. (Make use of string representation alternatively.)
-		//TODO Will a '/' separating namespace URI and local part always be present/necessary? 
+    trees.add(result.getTree());
+    names.add(treeName);    
 	}
 	
 	
-	private void readMetadata(JPhyloIOEvent metaEvent, HiddenDataMap map) throws IOException {
-		if (metaEvent.getType().getTopologyType().equals(EventTopologyType.START)) {
-			if (metaEvent.getType().getContentType().equals(EventContentType.RESOURCE_META)) {
-				ResourceMetadataEvent resourceMeta = metaEvent.asResourceMetadataEvent();
-				if ((resourceMeta.getHRef() != null) && (resourceMeta.getRel().getURI() != null)) {
-					storeMetaData(map, extractMetadataKey(resourceMeta.getRel()), new TextElementData(resourceMeta.getHRef().toString()));  // The whole predicate URI is used as a key here
-				}
-			}
-			else if (metaEvent.getType().getContentType().equals(EventContentType.LITERAL_META)) {
-				LiteralMetadataEvent literalMeta = metaEvent.asLiteralMetadataEvent();
-				if (literalMeta.getPredicate().getURI() != null) {
-					currentColumnID = extractMetadataKey(literalMeta.getPredicate());
-				}
-			}
-		}
-		
-		JPhyloIOEvent event = reader.next();
-	    while (!event.getType().getTopologyType().equals(EventTopologyType.END)) {
-	    	if (event.getType().getContentType().equals(EventContentType.LITERAL_META) || event.getType().getContentType().equals(EventContentType.RESOURCE_META)) {
-	    		readMetadata(event, map);
-	    	}
-	    	else if (event.getType().getContentType().equals(EventContentType.LITERAL_META_CONTENT)) {
-	    		readLiteralContent(event.asLiteralMetadataContentEvent(), map);
-	    	}
-	    	else {  // Possible additional element, which is not read
-	      	if (event.getType().getTopologyType().equals(EventTopologyType.START)) {  // SOLE and END events do not have to be processed here, because they have no further content.
-	      		JPhyloIOReadingUtils.reachElementEnd(reader);
-	    		}
-	      }
-	      event = reader.next();
-	    }
-	}
-	
-	
-	private void readLiteralContent(LiteralMetadataContentEvent literalEvent, HiddenDataMap map) throws IOException {
-		StringBuffer content = new StringBuffer();
-		TextElementData data = null;
-		
-		if (literalEvent.getObjectValue() != null) {
-			if (literalEvent.getObjectValue() instanceof Number) {
-				data = new TextElementData(((Number)literalEvent.getObjectValue()).doubleValue());
-			}
-			else {
-				content.append(literalEvent.getObjectValue().toString());    	  
-			}
-    }
-    else {
-    	content.append(literalEvent.getStringValue());
-    }
-		
-		JPhyloIOEvent event = reader.peek();
-    while (event.getType().getContentType().equals(EventContentType.LITERAL_META_CONTENT)) {    	
-      event = reader.next();
-      content.append(event.asLiteralMetadataContentEvent().getStringValue());  // Content can only be continued if it has only a string value      
-    }
-    
-    if (data == null) {
-    	data = new TextElementData(content.toString());
-    }
-		
-    storeMetaData(map, currentColumnID, data);
-	}
-	
-	
-	private void storeMetaData(HiddenDataMap map, String key, TextElementData data) {
-		if (!map.containsKey(key)) {
-			map.put(key, data);
-		}
-		else {
-			parameterMap.getApplicationLogger().addMessage("More than one value with the key \"" + currentColumnID + "\" was encountered for one node or branch."
-					+ " Only the first encountered value was imported.");
-		}
-	}
-	
-
 	@Override
 	public DocumentIterator createIterator(BufferedInputStream stream) throws Exception {
 		return new SingleDocumentIterator(read(stream));
