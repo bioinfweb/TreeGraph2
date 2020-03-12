@@ -176,16 +176,17 @@ public class TopologicalCalculator {
 	 * Adds a boolean set which indicates the leafs located under {@code root} to its attribute map.
 	 * 
 	 * @param root the root of the subtree to be processed
+	 * @param leafAdapter the node/branch data adapter that provides access to the node/branch data column that defined a leaf node
 	 */
-	public void addLeafSets(Node root, NodeBranchDataAdapter adapter) {
+	public void addLeafSets(Node root, NodeBranchDataAdapter leafAdapter) {
 		root.getAttributeMap().remove(keyLeafReference);  // Necessary to overwrite possible leaf sets from previous edits which might not be valid anymore.
 		LeafSet field = getLeafSet(root);
 		if (!root.isLeaf()) {
 			for (int i = 0; i < root.getChildren().size(); i++) {
 				Node child = root.getChildren().get(i);
-				addLeafSets(child, adapter);
+				addLeafSets(child, leafAdapter);
 				if (child.isLeaf()) {
-					int index = getLeafIndex(adapter.toTextElementData(child).toString());
+					int index = getLeafIndex(leafAdapter.toTextElementData(child).toString());
 					if (index >= 0) {  // Ignore leaves that are not contained in the index list (e.g. leafs not present in both trees when adding support values) 
 						field.setChild(index, true);
 					}
@@ -196,7 +197,7 @@ public class TopologicalCalculator {
 			}
 		}
 		else {
-			int index = getLeafIndex(adapter.toTextElementData(root).toString());
+			int index = getLeafIndex(leafAdapter.toTextElementData(root).toString());
 			if (index >= 0) {  // see comment above
 				field.setChild(index, true);
 			}
