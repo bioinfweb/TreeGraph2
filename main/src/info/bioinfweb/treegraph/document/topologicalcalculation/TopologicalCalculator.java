@@ -36,7 +36,7 @@ import info.bioinfweb.treegraph.document.undo.file.addsupportvalues.AddSupportVa
 
 /**
  * Implements basic functionalities for all edits and operations that depend on calculations based on the 
- * tree topology and therefore need the tree nodes to be decorated with information in their subtrees. 
+ * tree topology and therefore need leaf set information to be attached to tree nodes. 
  * 
  * @author Ben St&ouml;ver
  */
