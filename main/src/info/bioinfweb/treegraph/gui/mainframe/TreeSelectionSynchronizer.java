@@ -148,6 +148,9 @@ public class TreeSelectionSynchronizer implements TreeViewPanelListener, Documen
 								selectionTargetNodeInfo.getNode(), topologicalCalculator.getLeafSet(activeNode), 
 								topologicalCalculator.getLeafSet(selectionTargetNodeInfo.getNode()), defaultSupportAdapter);
 						
+						//TODO Use findAllConflicts() here instead and highlight all conflicting branches as soon as considering changing shared leaf sets is possible in this method.
+						//List<Node> conflicts = topologicalCalculator.findAllConflicts(searchRoot, conflictNodeLeafSet)
+						
 						if (conflictingNode != null) {
 							if (defaultSupportAdapter instanceof IDElementAdapter) {
 								Label label = conflictingNode.getAfferentBranch().getLabels().get(((IDElementAdapter)defaultSupportAdapter).getID());

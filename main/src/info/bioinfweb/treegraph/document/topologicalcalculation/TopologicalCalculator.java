@@ -218,15 +218,17 @@ public class TopologicalCalculator {
 	/**
 	 * Searches the MRCA in {@code tree} containing all leaves defined in the specified leaf set.
 	 * <p>
-	 * This method will return {@code null} if either an empty leaf set is provided or the specified
+	 * This method will return an empty list if either an empty leaf set is provided or the specified
 	 * leaf set contains only terminals, that are not contained in {@code tree}.
+	 * <p>
+	 * The returned list may contain more than one entry of multiple splits were found that only differ the the placement of terminals
+	 * that are not contained in the restricting leaf set (if one was provided).
 	 * 
 	 * @param tree the tree to be searched
-	 * @param leafSet the leaves that should be contained in the sought-after subtree
+	 * @param searchedLeafSet the leaves that should be contained in the sought-after subtree
 	 * @param restrictingLeafSet an optional set of terminals that contains the leaves to be considered for comparison (All other 
 	 *        nodes found in compared leaf sets will be ignored. This parameter may be {@code null}.)
-	 * @return a node info describing the found subtree root or {@code null} if no according subtree could 
-	 *         be found. 
+	 * @return a list of node info objects describing the found subtree root nodes or an empty list if no matching subtree could be found
 	 */
 	public List<NodeInfo> findNodeWithAllLeaves(Tree tree, LeafSet searchedLeafSet, LeafSet restrictingLeafSet) {
 		searchedLeafSet = restrictLeafSet(searchedLeafSet, restrictingLeafSet);
@@ -273,47 +275,53 @@ public class TopologicalCalculator {
 
 	// New method implementation for addSupportValues.  //TODO Check if it can also be used for TreeSelectionSynchronizer.
 	public Node findHighestConflict(Node searchRoot, LeafSet conflictNodeLeafSet, NodeBranchDataAdapter supportAdapter, boolean parseText) {
-		Node highestConflictingNode = null;
-		// The root is not tested since it 
-		for (int i = 0; i < searchRoot.getChildren().size(); i++) {
-			highestConflictingNode = findHighestConflictRecursive(searchRoot.getChildren().get(i), conflictNodeLeafSet, highestConflictingNode, 
-					supportAdapter, parseText);
-		}
-		return highestConflictingNode;
-	}
-
-	
-	// New method implementation for addSupportValues.  //TODO Check if it can also be used for TreeSelectionSynchronizer.
-	private Node findHighestConflictRecursive(Node searchRoot, LeafSet conflictNodeLeafSet, Node highestConflictingNode, 
-			NodeBranchDataAdapter supportAdapter, boolean parseText) {
-		
-		LeafSet currentSearchRootLeafSet = getLeafSet(searchRoot);
-		if (currentSearchRootLeafSet.containsAnyAndOther(conflictNodeLeafSet, false)
-				|| currentSearchRootLeafSet.containsAnyAndOther(conflictNodeLeafSet, true)) {
-			
-			double currentSupport = supportAdapter.getNumericValue(searchRoot, parseText);
+		List<Node> conflicts = findAllConflicts(searchRoot, conflictNodeLeafSet);
+		Node result = null;
+		for (Node conflict : conflicts) {
+			double currentSupport = supportAdapter.getNumericValue(conflict, parseText);
 			if (!Double.isNaN(currentSupport)) {
-				if (highestConflictingNode == null) {
-					highestConflictingNode = searchRoot;
+				if (result == null) {
+					result = conflict;
 				}
 				else {
-					double previousSupport = supportAdapter.getNumericValue(highestConflictingNode, parseText);
+					double previousSupport = supportAdapter.getNumericValue(result, parseText);
 					if (previousSupport < currentSupport) {
-						highestConflictingNode = searchRoot;
+						result = conflict;
 					}
 				}
 			}
 		}
-
-		for (int i = 0; i < searchRoot.getChildren().size(); i++) {
-			highestConflictingNode = findHighestConflictRecursive(searchRoot.getChildren().get(i), conflictNodeLeafSet, highestConflictingNode, 
-					supportAdapter, parseText);
-		}
 		
-		return highestConflictingNode;
+		return result;
 	}
 	
 	
+	public List<Node> findAllConflicts(Node searchRoot, LeafSet conflictNodeLeafSet) {
+		List<Node> conflicts = new ArrayList<Node>();
+		// The root is not tested, since it should already contain all terminals from conflictNodeLeafSet. 
+		for (int i = 0; i < searchRoot.getChildren().size(); i++) {
+			findAllConflictsRecursive(searchRoot.getChildren().get(i), conflictNodeLeafSet, conflicts);
+		}
+		return conflicts;
+	}
+
+	
+	// New method implementation for addSupportValues.  //TODO Check if it can also be used for TreeSelectionSynchronizer.
+	private void findAllConflictsRecursive(Node searchRoot, LeafSet conflictNodeLeafSet , List<Node> conflicts) {
+		LeafSet currentSearchRootLeafSet = getLeafSet(searchRoot);
+		if (currentSearchRootLeafSet.containsAnyAndOther(conflictNodeLeafSet, false)
+				|| currentSearchRootLeafSet.containsAnyAndOther(conflictNodeLeafSet, true)) {
+			
+			conflicts.add(searchRoot);
+		}
+
+		for (int i = 0; i < searchRoot.getChildren().size(); i++) {
+			findAllConflictsRecursive(searchRoot.getChildren().get(i), conflictNodeLeafSet, conflicts);
+		}
+	}
+	
+	
+	//TODO Try to use the above methods everywhere instead of this one and remove it. (Current difference: This method calculates the shared leaf set on the fly, while the implementation above expects it to be applied to the leaf sets on the nodes already.)
 	public Node findHighestConflict(Tree referenceTree, Tree searchedTree, Node searchRoot, LeafSet conflictingReferenceLeafSet, 
 			LeafSet completeSearchedLeafSet, NodeBranchDataAdapter searchedSupportAdapter) {
 		
@@ -327,6 +335,7 @@ public class TopologicalCalculator {
 	}
 	
 	
+	//TODO Try to use the above methods everywhere instead of this one and remove it.
 	/**
 	 * This method is the recursive part called by {@code findHighestConflict}. The only difference between 
 	 * the two is that this method can return the support value of root itself as {@code findHighestConflict} does not.
@@ -336,8 +345,8 @@ public class TopologicalCalculator {
 	 *        searched tree)
 	 * @param highestConflictingNode the conflicting node carrying the highest support value, that was found until now (Can
 	 *        be {@code null}.)
-	 * @param conflictingReferenceLeafSet a leaf set describing the node from the reference tree that is in conflict with the searched
-	 *        tree (For {@link AddSupportValuesEdit}: The node in the target document to attach a support value to)
+	 * @param conflictingReferenceLeafSet a leaf set describing the node from the reference tree that is in conflict with a node in 
+	 *        the searched tree (For {@link AddSupportValuesEdit}: The node in the target document to attach a support value to)
 	 * @param completeSearchedLeafSet a leaf set describing the MRCA (in the searched tree) of all shared leaves contained under the 
 	 *        conflicting node in the reference tree (These leaves are described by {@code conflictingReferenceLeafSet}.)
 	 * @param info information about the node in the source document which contains all terminals of
