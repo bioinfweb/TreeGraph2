@@ -321,7 +321,10 @@ public class TopologicalCalculator {
 	}
 	
 	
-	//TODO Try to use the above methods everywhere instead of this one and remove it. (Current difference: This method calculates the shared leaf set on the fly, while the implementation above expects it to be applied to the leaf sets on the nodes already.)
+	//TODO Try to use the above methods everywhere instead of this one and remove it. 
+	// (Current difference: This method calculates the shared leaf set on the fly, while the implementation above expects it to be applied to the leaf sets on the nodes already.)
+	// On the fly calculation is required when working with many trees (as for selection synchronization and OSR filtering), though.
+	// (In any case, parameter naming should be improved here.)
 	public Node findHighestConflict(Tree referenceTree, Tree searchedTree, Node searchRoot, LeafSet conflictingReferenceLeafSet, 
 			LeafSet completeSearchedLeafSet, NodeBranchDataAdapter searchedSupportAdapter) {
 		
