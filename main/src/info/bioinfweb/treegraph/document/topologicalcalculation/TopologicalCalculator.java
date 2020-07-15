@@ -221,7 +221,7 @@ public class TopologicalCalculator {
 	 * This method will return an empty list if either an empty leaf set is provided or the specified
 	 * leaf set contains only terminals, that are not contained in {@code tree}.
 	 * <p>
-	 * The returned list may contain more than one entry of multiple splits were found that only differ the the placement of terminals
+	 * The returned list may contain more than one entry of multiple splits were found that only differ by the placement of terminals
 	 * that are not contained in the restricting leaf set (if one was provided).
 	 * 
 	 * @param tree the tree to be searched
