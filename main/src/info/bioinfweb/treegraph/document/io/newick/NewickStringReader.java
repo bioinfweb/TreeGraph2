@@ -292,19 +292,19 @@ public class NewickStringReader extends NewickStringChars {
 	}
 	
 
-	protected Tree read(final String newick) throws NewickException {  // does not provide information about hidden data or internal names that could have been read
+	public Tree read(final String newick) throws NewickException {  // does not provide information about hidden data or internal names that could have been read
   	return read(newick, LEAF_ADAPTER, BRANCH_LENGTH_ADAPTER, null, false);
   }
   
   
-	protected Tree read(final String newick, NodeBranchDataAdapter internalAdapter, 
+	public Tree read(final String newick, NodeBranchDataAdapter internalAdapter, 
   		NodeBranchDataAdapter branchLengthsAdapter) throws NewickException {  // does not provide information about hidden data or internal names that could have been read
   	
   	return read(newick, internalAdapter, branchLengthsAdapter, null, false);
   }
   
   
-	protected Tree read(final String newick, NodeBranchDataAdapter internalAdapter, 
+	public Tree read(final String newick, NodeBranchDataAdapter internalAdapter, 
   		NodeBranchDataAdapter branchLengthsAdapter, TranslTable translTable, 
   		boolean translateInternals) throws NewickException {
   	
