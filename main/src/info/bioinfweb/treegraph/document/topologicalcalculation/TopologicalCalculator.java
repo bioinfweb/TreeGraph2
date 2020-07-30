@@ -307,10 +307,10 @@ public class TopologicalCalculator {
 
 	
 	// New method implementation for addSupportValues.  //TODO Check if it can also be used for TreeSelectionSynchronizer.
-	private void findAllConflictsRecursive(Node searchRoot, LeafSet conflictNodeLeafSet , List<Node> conflicts) {
+	private void findAllConflictsRecursive(Node searchRoot, LeafSet conflictNodeLeafSet, List<Node> conflicts) {
 		LeafSet currentSearchRootLeafSet = getLeafSet(searchRoot);
 		if (currentSearchRootLeafSet.containsAnyAndOther(conflictNodeLeafSet, false)
-				|| currentSearchRootLeafSet.containsAnyAndOther(conflictNodeLeafSet, true)) {
+				&& currentSearchRootLeafSet.containsAnyAndOther(conflictNodeLeafSet, true)) {  // Both directions need to be checked together to rule out situations with no match and no conflict resulting from a polytomy in one tree.
 			
 			conflicts.add(searchRoot);
 		}
