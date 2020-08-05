@@ -312,6 +312,7 @@ public class TopologicalCalculator {
 		if (restrictingLeafSet != null) {
 			currentSearchRootLeafSet = currentSearchRootLeafSet.and(restrictingLeafSet);
 		}
+		
 		if (currentSearchRootLeafSet.containsAnyAndOther(conflictNodeLeafSet, false)
 				&& currentSearchRootLeafSet.containsAnyAndOther(conflictNodeLeafSet, true)) {  // Both directions need to be checked together to rule out situations with no match and no conflict resulting from a polytomy in one tree.
 			
