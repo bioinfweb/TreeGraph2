@@ -274,8 +274,8 @@ public class TopologicalCalculator {
 	
 
 	// New method implementation for addSupportValues.  //TODO Check if it can also be used for TreeSelectionSynchronizer.
-	public Node findHighestConflict(Node searchRoot, LeafSet conflictNodeLeafSet, NodeBranchDataAdapter supportAdapter, boolean parseText) {
-		List<Node> conflicts = findAllConflicts(searchRoot, conflictNodeLeafSet);
+	public Node findHighestConflict(Node searchRoot, LeafSet conflictNodeLeafSet, NodeBranchDataAdapter supportAdapter, boolean parseText, LeafSet restrictingLeafSet) {
+		List<Node> conflicts = findAllConflicts(searchRoot, conflictNodeLeafSet, restrictingLeafSet);
 		Node result = null;
 		for (Node conflict : conflicts) {
 			double currentSupport = supportAdapter.getNumericValue(conflict, parseText);
@@ -296,19 +296,22 @@ public class TopologicalCalculator {
 	}
 	
 	
-	public List<Node> findAllConflicts(Node searchRoot, LeafSet conflictNodeLeafSet) {
+	public List<Node> findAllConflicts(Node searchRoot, LeafSet conflictNodeLeafSet, LeafSet restrictingLeafSet) {
 		List<Node> conflicts = new ArrayList<Node>();
 		// The root is not tested, since it should already contain all terminals from conflictNodeLeafSet. 
 		for (int i = 0; i < searchRoot.getChildren().size(); i++) {
-			findAllConflictsRecursive(searchRoot.getChildren().get(i), conflictNodeLeafSet, conflicts);
+			findAllConflictsRecursive(searchRoot.getChildren().get(i), conflictNodeLeafSet, restrictingLeafSet, conflicts);
 		}
 		return conflicts;
 	}
 
 	
 	// New method implementation for addSupportValues.  //TODO Check if it can also be used for TreeSelectionSynchronizer.
-	private void findAllConflictsRecursive(Node searchRoot, LeafSet conflictNodeLeafSet, List<Node> conflicts) {
+	private void findAllConflictsRecursive(Node searchRoot, LeafSet conflictNodeLeafSet, LeafSet restrictingLeafSet, List<Node> conflicts) {
 		LeafSet currentSearchRootLeafSet = getLeafSet(searchRoot);
+		if (restrictingLeafSet != null) {
+			currentSearchRootLeafSet = currentSearchRootLeafSet.and(restrictingLeafSet);
+		}
 		if (currentSearchRootLeafSet.containsAnyAndOther(conflictNodeLeafSet, false)
 				&& currentSearchRootLeafSet.containsAnyAndOther(conflictNodeLeafSet, true)) {  // Both directions need to be checked together to rule out situations with no match and no conflict resulting from a polytomy in one tree.
 			
@@ -316,7 +319,7 @@ public class TopologicalCalculator {
 		}
 
 		for (int i = 0; i < searchRoot.getChildren().size(); i++) {
-			findAllConflictsRecursive(searchRoot.getChildren().get(i), conflictNodeLeafSet, conflicts);
+			findAllConflictsRecursive(searchRoot.getChildren().get(i), conflictNodeLeafSet, restrictingLeafSet, conflicts);
 		}
 	}
 	
