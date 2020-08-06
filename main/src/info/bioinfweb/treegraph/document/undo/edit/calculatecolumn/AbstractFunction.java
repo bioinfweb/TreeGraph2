@@ -19,13 +19,11 @@
 package info.bioinfweb.treegraph.document.undo.edit.calculatecolumn;
 
 
-import java.util.Stack;
+import org.nfunk.jep.ParseException;
+import org.nfunk.jep.function.PostfixMathCommandI;
 
 import info.bioinfweb.commons.Math2;
 import info.bioinfweb.treegraph.document.undo.edit.CalculateColumnEdit;
-
-import org.nfunk.jep.ParseException;
-import org.nfunk.jep.function.PostfixMathCommandI;
 
 
 
