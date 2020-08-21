@@ -99,11 +99,11 @@ public class WholeColumnFunction extends IDFunction {
 		}
 		else if (idValue instanceof NodeBranchDataAdapter) {
 			NodeBranchDataAdapter adapter = (NodeBranchDataAdapter)idValue;
-			if (adapter.equals(getEdit().getCurrentTargetAdapter())) {
+			if (!adapter.equals(getEdit().getCurrentTargetAdapter())) {
 				stack.push(calculate(adapter));
 			}
 			else {
-				throw new ParseException("Functions iterating over all lines of a column cannot be called with \"THIS\".");
+				throw new ParseException("Functions iterating over all lines of a column cannot be called with \"THIS\" or their target column.");
 			}
 		}
 		else {
