@@ -19,15 +19,14 @@
 package info.bioinfweb.treegraph.gui.dialogs;
 
 
-import info.bioinfweb.treegraph.document.undo.CompareTextElementDataParameters;
-import info.bioinfweb.treegraph.gui.mainframe.MainFrame;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import info.bioinfweb.treegraph.document.undo.CompareTextElementDataParameters;
 
 
 
