@@ -56,7 +56,7 @@ public abstract class IDFunction extends AbstractFunction {
 	 * Default implementation that returns the value in the specified node/branch data column at the 
 	 * current node.
 	 * 
-	 * @param id - the ID of the column to be used
+	 * @param id the ID of the column to be used
 	 * @return the value found in the node/branch data column or some default value depending on the current
 	 *         evaluation status of the associated {@link CalculateColumnEdit}
 	 * @throws ParseException if the associated {@link CalculateColumnEdit} is not in evaluation mode and the 
@@ -71,7 +71,7 @@ public abstract class IDFunction extends AbstractFunction {
 	 * Default implementation that returns the value in the specified node/branch data column at the 
 	 * current node.
 	 * 
-	 * @param adapter - the node/branch data adapter of the column to be used
+	 * @param adapter the node/branch data adapter of the column to be used
 	 * @return the value found in the node/branch data column or some default value depending on the current
 	 *         evaluation status of the associated {@link CalculateColumnEdit}
 	 * @throws ParseException if the associated {@link CalculateColumnEdit} is not in evaluation mode and the 
