@@ -130,7 +130,6 @@ public class AddSupportValuesEdit extends AbstractTopologicalCalculationEdit imp
 			if (bestSourceNodes.get(0).getAdditionalCount() == 0) {  // Exact match found.
 				multipleValuesMappedToOneNode = equivalentBranchHandler.handleBranches(bestSourceNodes, targetRoot, sourceSupportAdapter, targetSupportAdapter, parseNumericValues) 
 						|| multipleValuesMappedToOneNode;  // The condition must be specified in this order. Otherwise handleBranches() would not be called anymore as soon as multipleValuesMappedToOneNode is true.
-				System.out.println(multipleValuesMappedToOneNode);
 			}
 			else {  // There must be a conflict, since no direct matching group of shared terminals was found.
 				Node conflict = getTopologicalCalculator().findHighestConflict(bestSourceNodes.get(0).getNode(), leafSet, sourceSupportAdapter, parseNumericValues, null);
